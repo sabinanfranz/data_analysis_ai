@@ -16,3 +16,12 @@ __pycache__/
 # Logs, checkpoints, and run artifacts (may contain sensitive data)
 logs/
 backups/
+
+# Generated databases and exports
+*.db
+*.db-*
+*.sqlite
+
+# Generated HTML outputs
+org_tables.html
+org_mindmap.html

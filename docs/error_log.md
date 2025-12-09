@@ -27,3 +27,16 @@
 - 필요 시 `--checkpoint-interval`을 줄여 더 자주 저장.
 - 장시간 실행 시 로그/백업 디스크 공간 확보.
 - 실패 후 재실행 시 `--resume` 또는 특정 `--resume-run-tag` 사용.
+
+## 2025-12-09 – 체크포인트 rename 권한 거부(WinError 5)
+- **증상**: 체크포인트 저장 시 `checkpoint_<run_tag>.json.tmp -> .json` rename 단계에서 `PermissionError [WinError 5]`로 크래시.
+- **원인 추정**: Windows에서 `.json` 또는 `.tmp`에 대한 잠금/권한 충돌(편집기/탐색기/백업 도구 등).
+- **영향**: 데이터는 temp DB(`salesmap_latest.db.tmp`)에 쓰였으나, 최신 체크포인트가 `.tmp`에만 존재해 재개가 번거로움. run_history/manifest 미완료.
+- **조치**:
+  - `CheckpointManager.save_table`에 rename 3회 재시도 후 tmp→본 파일 복사 폴백 추가(로그 경고).
+  - 수동 복구 절차 문서화: `.tmp`를 `.json`으로 복사(`Copy-Item checkpoint_xxx.json.tmp checkpoint_xxx.json -Force`) 후 `--resume --resume-run-tag xxx`로 재개.
+- **회복 절차**:
+  1. 관련 파일을 열어둔 앱/탐색기 탭을 닫아 잠금 해제.
+  2. `.tmp`를 `.json`으로 수동 복사(필요 시 `.bak` 백업 후 덮어쓰기).
+  3. `--resume --resume-run-tag <run_tag>`로 재실행하여 manifest/run_history까지 마무리.
+  4. 완료 후 `logs/run_history.jsonl`의 `final_db_path`와 DB의 `run_info`/`manifest` 테이블을 확인.

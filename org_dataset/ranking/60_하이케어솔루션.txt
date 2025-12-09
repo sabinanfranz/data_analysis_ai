@@ -1,0 +1,244 @@
+{
+  "organization": {
+    "id": "64d328801750f5b1d531cdd8",
+    "name": "하이케어솔루션",
+    "size": "대기업",
+    "industry": "서비스업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "HR(추정)",
+      "team": "인재육성팀",
+      "deals": [
+        {
+          "id": "0196cd83-d0b2-7bbb-a77f-f8ada08953d7",
+          "created_at": "2025-05-13T15:00:00.000Z",
+          "name": "하이케어솔루션_진급 연계 직무학점제 오프라인",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-23T09:46:31.659Z",
+          "expected_amount": 17690000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2025-07-22T15:00:00.000Z",
+          "amount": 20993001.0,
+          "start_date": "2025-07-22T15:00:00.000Z",
+          "end_date": "2025-09-10T15:00:00.000Z",
+          "net_percent": "61.0",
+          "people": {
+            "id": "0196cd83-d00e-7bbb-a77f-ec6b9d978d38",
+            "name": "최성재",
+            "upper_org": "HR(추정)",
+            "team": "인재육성팀",
+            "title": "선임",
+            "edu_area": "전영역"
+          },
+          "memos": [
+            {
+              "date": "2025-05-14",
+              "text": "담당자 소속 : 인재육성팀 최성재 선임\n- 대상 : 전체 임직원- 시기 : 6~10월 중 월 1회씩 오프라인 운영 (1일 or 최대 2일 과정)- 주제 : *최근 트렌드 교육 주제 잡아서 진행 기존에는 OA심화과정, 보고서 작성 과정 등 운영했음 *임직원 규모가 크지 않아서 특정 직무교육은 어려움*리더십 과정은 매년 1회 진급자과정에서 별도 운영중이라 리더십도 제외\n- fup 필요 : 1)추천 과정 5개 주제 정도, 2)과정별 대략 견적서"
+            },
+            {
+              "date": "2025-07-10",
+              "text": "1. AI 커리큘럼/ 14H/ 8.21 ~ 22-AI 리터러시 For 실무자-생성형 AI를 활용한 OA 실무\n2. 업무 생산성/ 14H/ 9.11 ~ 12-엑셀 시각화 : 설득력 있는 데이터 대시보드\n3. 리더십/ 7H/ 7.23-함께 일하고 싶은 리더의 대화법"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "0196cd83-d00e-7bbb-a77f-ec6b9d978d38",
+          "name": "최성재",
+          "upper_org": "HR(추정)",
+          "team": "인재육성팀",
+          "title": "선임",
+          "edu_area": "전영역",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64d328801750f5b1d531ce40",
+          "created_at": "2023-08-09T05:47:44.534Z",
+          "name": "전략적 데이터분석 하반기 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-08-16T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-09-04T01:38:52.279Z",
+          "amount": 12250000.0,
+          "start_date": "2023-08-16T15:00:00.000Z",
+          "end_date": "2023-09-07T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6cd7707f-a6e8-40fd-b0f1-894a680106f0",
+            "name": "양승원",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2023-11-15",
+              "text": "23/11/15(수) 양승원 선임님과 통화: 24년도 온라인 교육 제안 요청 (메일로 상세내용 전달 예정): 24년도 오프라인 교육 관련해서는 내부 논의사항이 아직 정리되지 않아, 추후 연락"
+            }
+          ]
+        },
+        {
+          "id": "e5bb7400-119f-4a07-a7dc-146a984e62a5",
+          "created_at": "2023-11-16T01:26:58.217Z",
+          "name": "하이케어솔루션 온라인 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": "2023-12-19T05:36:13.321Z",
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "8242bf17-05a8-4344-b317-997a6531bd99",
+            "name": "이소라",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2023-12-06",
+              "text": "11/21 제안서 및 견적서 제출 완료12/8 오후 1시 PT 발표 예정 (w. 별님)"
+            },
+            {
+              "date": "2023-12-19",
+              "text": "Lost 처리- 사유 1) 비용 허들이 높았음 (타 업체에 비해 비쌈)2) 법정교육, 직무 교육, 산업안전교육 등의 컨텐츠 수요가 더 높아 패캠이 보유한 컨텐츠가 본인들이 찾는 컨텐츠와 핏하지 않음 ( but, 임원진과 실무진의 의견이 다름 - 실무진은 DX / AI 쪽도 학습해야한다고 보는 편) "
+            }
+          ]
+        },
+        {
+          "id": "861875da-9396-442b-85f6-883199b5bdb3",
+          "created_at": "2024-03-07T01:48:58.519Z",
+          "name": "하이케어솔루션_전략적 데이터 분석 심화 과정(2024)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-03-12T15:00:00.000Z",
+          "expected_amount": 7750000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": "2024-03-13T12:37:17.670Z",
+          "amount": 7750000.0,
+          "start_date": "2024-03-18T15:00:00.000Z",
+          "end_date": "2024-03-19T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6cd7707f-a6e8-40fd-b0f1-894a680106f0",
+            "name": "양승원",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "0197d3f3-4989-7ffb-a01c-67cf84c4015a",
+          "created_at": "2025-07-04T05:40:00.000Z",
+          "name": "하이케어솔루션 비전교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-08-01T05:41:37.514Z",
+          "expected_amount": 3650000.0,
+          "lost_confirmed_at": "2025-10-22T15:00:00.000Z",
+          "lost_reason": "[\"내부 의사결정\"]",
+          "course_format": "출강",
+          "category": "소프트스킬",
+          "contract_date": null,
+          "amount": 3650000.0,
+          "start_date": "2025-08-18T15:00:00.000Z",
+          "end_date": "2025-08-18T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0197d3f3-48dc-7ffb-a01c-53e33d3e284b",
+            "name": "박선영",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-07-04",
+              "text": "■ 교육 요청 내용\n-조직 가치 및 비전 수립 :기업의 가치와 비전을 내재화하고, 개인의 비전과 연계함으로써 함께 성장할 수 있는 방향 설정\n- 교육을 통해 회사의 비전을 이해하고, 나를 성장하게 하는 원동력이 된다는 것을 느끼게 하기 위함- 또한 가치와 비전 공유를 통한 구성원 간 협력 증진 및 조직 전체 통일성 강화하기 위함\n■ 1Day 과정(7시간)\n■ 진행 시기: 7월 14/15일 , 8월18~20일 중 택 1일/  내부적 회의 하여 결정되면 다시 전달 드리겠습니다.\n■ 인원 : 20-25명(사원~책임, 팀으로 진행)"
+            },
+            {
+              "date": "2025-08-05",
+              "text": "급하게 요청주셔서 제안드리고 f-up이후 연락 안되시는 상황. 다시 연락드려보고 안되면 drop 필요."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "8242bf17-05a8-4344-b317-997a6531bd99",
+          "name": "이소라",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "6cd7707f-a6e8-40fd-b0f1-894a680106f0",
+          "name": "양승원",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0197d3f3-48dc-7ffb-a01c-53e33d3e284b",
+          "name": "박선영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

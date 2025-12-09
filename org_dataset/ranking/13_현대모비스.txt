@@ -1,0 +1,1032 @@
+{
+  "organization": {
+    "id": "654062483c32eb96748b2a90",
+    "name": "현대모비스",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "R&D 부문",
+      "team": "R&D인사팀",
+      "deals": [
+        {
+          "id": "0193f720-ca22-7ee5-9db8-8046f77ebab3",
+          "created_at": "2024-12-24T05:25:41.546Z",
+          "name": "현대모비스_AI 직무교육과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "서정연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-21T05:40:13.540Z",
+          "expected_amount": 47825000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-04-20T15:00:00.000Z",
+          "amount": 47825000.0,
+          "start_date": "2025-04-21T15:00:00.000Z",
+          "end_date": "2025-11-16T15:00:00.000Z",
+          "net_percent": "69.0",
+          "people": {
+            "id": "01930433-3d0c-777a-a52f-8ff843c5ddb2",
+            "name": "이하린",
+            "upper_org": "R&D 부문",
+            "team": "R&D인사팀",
+            "title": "매니저",
+            "edu_area": "출강(AI/직무 교육)"
+          },
+          "memos": [
+            {
+              "date": "2024-12-24",
+              "text": "12.24 문의 안녕하세요, 현대모비스 R&D인사팀 이하린 매니저입니다. 지난 HRD포럼(12.18, 섬유센터) 에서 인사이트 넘치는 강연 잘 들었습니다. 감사합니다. 이에 현대모비스에서도 R&D조직 대상 생성형 AI 관련 과정들을 신규 개설하고자 하는데, 관련한 과정 제안서를 종합적으로 요청드립니다.                       - 요 청 -▣ 요청 사항: 생성형 AI 관련 과정 제안 ▣ 교육 대상: R&D리더, 연구직 임직원 모두 포함▣ 교육 기간: 미정 (2025년 4월~)▣ 운영 방식: 온/오프라인 모두 고려 中 생성형 AI 기본과정부터 프로젝트 방식의 장기과정까지 종합적으로 검토해보고자 하오니, 자세하게 과정 제안주시면 감사하겠습니다.   아울러 자세한 일정과 기간 등은 제안서 검토 후 협의하면 좋을 것 같습니다."
+            },
+            {
+              "date": "2024-12-24",
+              "text": "1차 유선 FUP- 현재 내부적으로 정해진 바 전혀 없음- AI 교육은 무조건 진행할 예정이나, 25년 내부 인사 이동이 있을 예정이라 교육 방식/커리큘럼 확정도 어려움 - 1월 초(~1/10)까지 다양한 교육 방식으로 제안서 공유해주시면 해당 사항을 토대로 논의해보고 교육 방향을 정하고자 함- 강의 시작일 : 4월 예정  1. R&D 리더 대상 (2가지 요청)   - 1) 특강 : 생성형AI 중요성 (2H)        2) 최소한의 실습이 들어간 기초 교육(4H-6H)   2. 전체 대상    - 기초 이론 + 사례 + 간단한 프로젝트 실습 등 (2~3일 과정)3. 프로젝트형   - 수강생 선별(2-30명) > 장기과정 (ON/OFF 상관 없음) 제안서 토대로 1차 내부 논의 후 구체화 예정"
+            },
+            {
+              "date": "2024-12-24",
+              "text": "18일 송년포럼 이후 문의하여 딜 전환유형 업데이트 했습니다."
+            }
+          ]
+        },
+        {
+          "id": "0194de4b-488f-711e-9d8d-b5236e52125d",
+          "created_at": "2025-02-07T02:44:23.320Z",
+          "name": "현대모비스_PPT교육과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "서정연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-01T08:50:46.634Z",
+          "expected_amount": 1120000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "OA/업무자동화",
+          "contract_date": "2025-05-31T15:00:00.000Z",
+          "amount": 1920000.0,
+          "start_date": "2025-10-20T15:00:00.000Z",
+          "end_date": "2025-10-20T15:00:00.000Z",
+          "net_percent": "48.0",
+          "people": {
+            "id": "01930433-3d0c-777a-a52f-8ff843c5ddb2",
+            "name": "이하린",
+            "upper_org": "R&D 부문",
+            "team": "R&D인사팀",
+            "title": "매니저",
+            "edu_area": "출강(AI/직무 교육)"
+          },
+          "memos": [
+            {
+              "date": "2025-02-24",
+              "text": "입문교육 진행 예정 > 제안서 전달 완료 하반기 진행 예정"
+            },
+            {
+              "date": "2025-04-17",
+              "text": "★현대모비스 PPT과정 확정★일정 : 10월 21일(화) 08:00~ 12:00장소 : 경기 용인시 기흥구 마북로 240번길 17 KB증권연수원 2층 현대모비스 SW아카데미대상 : 25년 신규입사자 20명 내외 (신입)강사 : 이지훈 강사 (시간당 25만원)"
+            },
+            {
+              "date": "2025-05-28",
+              "text": "기업측에서 계약서 검토 진행중으로, 수주예정일 6월로 미뤄짐"
+            }
+          ]
+        },
+        {
+          "id": "0194fcec-0cf0-7996-b9a7-ae66f6d4074d",
+          "created_at": "2025-02-13T01:28:35.864Z",
+          "name": "현대모비스_싱글플랜",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-05-05T04:43:47.369Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": "2025-05-26T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "구독제(온라인)",
+          "category": "DX Essential",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2025-05-04T15:00:00.000Z",
+          "end_date": "2026-05-04T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0192d255-b967-7445-80c8-6819874bdbae",
+            "name": "소다미",
+            "upper_org": "R&D 부문",
+            "team": "R&D인사팀",
+            "title": "책임매니저",
+            "edu_area": "출강(AI/직무 교육)+온라인"
+          },
+          "memos": [
+            {
+              "date": "2025-04-22",
+              "text": "저희가 직무교육 준비하느라 온라인 과정 검토가 지연되고 있습니다.보내주신 과정목록은 전반적으로 검토했고,업체 선정 과정을 거쳐 5월부터 온라인 과정을 진행할 계획입니다. 평가를 위한 이러닝 과정 제안서를 받을 수 있을까요?일반적인 과정이라 표준제안서 형태로 전달 주셔도 될 것 같습니다.과정 소개는 잘 되어 있을 것 같고, 타사 대비 운영플랫폼 특징 알려주시면 평가 시 참고 하겠습니다.메일 확인하시면 바로 보내주시면 감사하겠습니다.>> 전달 완료 >> 4월 검토 후 5월 중 전달 예정"
+            },
+            {
+              "date": "2025-05-19",
+              "text": "5/19 확인\n성사가능성 높음 -> 낮음으로 변경\n- 유선 부재- 메일 미회신 상황- 추가 컨택 해볼 예정"
+            },
+            {
+              "date": "2025-05-28",
+              "text": "5/27 확인\n지속적으로 컨택해보았으나 담당자 연락 부재로 잠정종료 메일 발송"
+            },
+            {
+              "date": "2025-05-29",
+              "text": "Lost 사유타업체 선정\n*메일본문패스트캠퍼스가 다양한 수준의 풍부한 교육과정을 보유하고 있어서 온라인 교육 도입을 검토하였으나,연속성 있는 교육을 위해 기존 업체와 진행하게 되었습니다.선정 과정이 지연되어 연락이 늦은 점 양해 부탁 드리며,추후 좋은 교육으로 협업할 기회가 있길 바라겠습니다."
+            }
+          ]
+        },
+        {
+          "id": "0198e025-3a3a-7221-87ab-80605857a578",
+          "created_at": "2025-08-25T07:33:00.000Z",
+          "name": "현대모비스_연구직 실무 리더를 위한 AI 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "서정연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-11-16T15:00:00.000Z",
+          "expected_amount": 67625000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-11-16T15:00:00.000Z",
+          "amount": 67625000.0,
+          "start_date": "2025-12-02T15:00:00.000Z",
+          "end_date": "2026-01-27T15:00:00.000Z",
+          "net_percent": "63.0",
+          "people": {
+            "id": "0192d255-b967-7445-80c8-6819874bdbae",
+            "name": "소다미",
+            "upper_org": "R&D 부문",
+            "team": "R&D인사팀",
+            "title": "책임매니저",
+            "edu_area": "출강(AI/직무 교육)+온라인"
+          },
+          "memos": [
+            {
+              "date": "2025-08-25",
+              "text": "저희 연구원들 대상으로 진행하고 있는 AI 교육이 높은 만족도로 진행되고 있다고 들었습니다.연말에 리더 대상 교육도 준비하고 있어서 리더를 위한 AI 교육과정 제안 요청 드립니다. 내용 : 연구직 실무 리더를 위한 AI 교육과정* SW 직군 / 비SW 직군 나누어 실습 과정 설계 필요대상 : 연구직 워킹그룹장 (약 200명 중 희망자)일정 : 11월 중순 ~ 12월 중교육시간 : 2일(14H) * 2차수(SW 1차수, 비SW 1차수)장소 : 마북연구단지 내 SW 아카데미정원 : 30명참고A.      실습용 노트북 대여 필요B.      신청자 대상 사전 설문을 통한 니즈 파악 필요C.      SW 직군 실습 시 조교 필요D.      2일차 실습 과제 발표 및 수강생간 Discussion 세션 필요 최신 AI 트랜드를 가볍게 다루고,본인과 워킹그룹의 업무를 효율화 할 수 있는 MVP를 얻어 갈 수 있었으면 좋겠습니다.ChatGPT 기반 실습을 생각하고 있고 견적에는 실습용 노트북 대여와 라이선스를 포함해 주세요.과정별로 1차수 씩 총 2차수를 기본으로 하고 수요에 따라 차수를 확대할 수도 있을 것 같습니다.우선 각 1차씩만 진행하는 것으로 제안 부탁 드립니다."
+            },
+            {
+              "date": "2025-10-01",
+              "text": "9/30 - 담당 소다미 책임님 개인사정으로 급하게 장기 휴가에 들어가, 평가를 시작하지 못했다고 연락주심- 추석 연휴 이후 평가 시작될 예정이라, 결과 공유가 지연될 예정"
+            }
+          ]
+        },
+        {
+          "id": "019999da-c0bc-7bb5-8db7-8c0fca0973af",
+          "created_at": "2025-09-30T09:01:00.000Z",
+          "name": "현대모비스_AI 직무교육과정(12월&1월 추가 차수)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "서정연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-11-30T15:00:00.000Z",
+          "expected_amount": 26325000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-11-30T15:00:00.000Z",
+          "amount": 52650000.0,
+          "start_date": "2025-11-30T15:00:00.000Z",
+          "end_date": "2026-01-13T15:00:00.000Z",
+          "net_percent": "70.0",
+          "people": {
+            "id": "01930433-3d0c-777a-a52f-8ff843c5ddb2",
+            "name": "이하린",
+            "upper_org": "R&D 부문",
+            "team": "R&D인사팀",
+            "title": "매니저",
+            "edu_area": "출강(AI/직무 교육)"
+          },
+          "memos": [
+            {
+              "date": "2025-10-30",
+              "text": "11월 10일 주차에 12월, 1월 추가 차수 계약 예정"
+            }
+          ]
+        },
+        {
+          "id": "019a7098-2c6b-7ff7-a2f7-e7e2aea422c3",
+          "created_at": "2025-11-11T01:46:00.000Z",
+          "name": "현대모비스_26년도 AI 직무 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "서정연",
+          "status": "SQL",
+          "probability": "[\"낮음\"]",
+          "expected_date": "2026-01-15T15:00:00.000Z",
+          "expected_amount": 20000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "0192d255-b967-7445-80c8-6819874bdbae",
+            "name": "소다미",
+            "upper_org": "R&D 부문",
+            "team": "R&D인사팀",
+            "title": "책임매니저",
+            "edu_area": "출강(AI/직무 교육)+온라인"
+          },
+          "memos": [
+            {
+              "date": "2025-11-18",
+              "text": "- R&D 조직 內 AI 체계도 구성 필요- 스킬 기반 체계 →  AI 관련 스킬셋 / 수요조사 할 수 있는 서베이 구성부터 기획 중"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "0192d255-b967-7445-80c8-6819874bdbae",
+          "name": "소다미",
+          "upper_org": "R&D 부문",
+          "team": "R&D인사팀",
+          "title": "책임매니저",
+          "edu_area": "출강(AI/직무 교육)+온라인",
+          "webforms": [
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-28",
+              "text": "- 고객 이름 : 소다미\n- 고객 전화 : 01041173289\n- 고객 이메일 : dami.so@mobis.com\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241028\n- 고객 utm_content : lead-gen^mktg-agreed^lms3\n"
+            }
+          ]
+        },
+        {
+          "id": "01930433-3d0c-777a-a52f-8ff843c5ddb2",
+          "name": "이하린",
+          "upper_org": "R&D 부문",
+          "team": "R&D인사팀",
+          "title": "매니저",
+          "edu_area": "출강(AI/직무 교육)",
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "5-22. 24년 HRD송년포럼 발표 자료 신청 resource_presentation_hrd2024"
+          ],
+          "memos": [
+            {
+              "date": "2024-11-07",
+              "text": "- 고객 이름 : 이하린\n- 고객 이메일 : hr.lee@mobis.com\n- 고객 전화 : 01053963634\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-12-18",
+              "text": "- 고객 이름 : 이하린\n- 고객 전화 : 01053963634\n- 고객 이메일 : hr.lee@mobis.com\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : (공백)\n- 고객 직급/직책 : (공백)\n- 회사 기업 규모 : (공백)\n- 회사 업종 : (공백)\n- 해당 콘텐츠 신청 이유 : (공백)\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "경영혁신부문",
+      "team": "데이터사이언스팀",
+      "deals": [
+        {
+          "id": "b749f638-f917-4fb0-ad60-209ccfcae293",
+          "created_at": "2024-01-08T08:41:34.422Z",
+          "name": "현대모비스 AIM OJT 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "빅데이터/AI",
+          "contract_date": "2024-03-06T05:25:46.243Z",
+          "amount": 152370000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "eabbfe5f-c819-4bc2-b149-027c51553003",
+            "name": "박봉준",
+            "upper_org": "경영혁신부문",
+            "team": "데이터사이언스팀",
+            "title": "책임",
+            "edu_area": "DT/AI 온라인/출강"
+          },
+          "memos": []
+        },
+        {
+          "id": "0fe51d24-7105-4aea-b570-186bfef2fe19",
+          "created_at": "2024-02-01T00:03:40.247Z",
+          "name": "현대모비스 AI코칭센터 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "오진선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-03-24T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "데이터분석/CDS",
+          "contract_date": "2024-03-26T23:50:32.732Z",
+          "amount": 205050000.0,
+          "start_date": "2024-04-07T15:00:00.000Z",
+          "end_date": "2024-10-06T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "eabbfe5f-c819-4bc2-b149-027c51553003",
+            "name": "박봉준",
+            "upper_org": "경영혁신부문",
+            "team": "데이터사이언스팀",
+            "title": "책임",
+            "edu_area": "DT/AI 온라인/출강"
+          },
+          "memos": []
+        },
+        {
+          "id": "0191ea6c-9f48-7116-88ba-23e4a7e97232",
+          "created_at": "2024-09-13T08:07:52.914Z",
+          "name": "(B2B) 현대모비스_번들플랜_2410",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김동찬",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-22T15:00:00.000Z",
+          "expected_amount": 4000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "데이터분석/CDS",
+          "contract_date": "2024-09-22T15:00:00.000Z",
+          "amount": 4000000.0,
+          "start_date": "2024-10-20T15:00:00.000Z",
+          "end_date": "2025-04-20T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "eabbfe5f-c819-4bc2-b149-027c51553003",
+            "name": "박봉준",
+            "upper_org": "경영혁신부문",
+            "team": "데이터사이언스팀",
+            "title": "책임",
+            "edu_area": "DT/AI 온라인/출강"
+          },
+          "memos": [
+            {
+              "date": "2024-09-20",
+              "text": "- 2+1 온라인구독 희망- 강의리스트 공유 요청- 6개월 * 20명 예정 > 견적 전달 완료"
+            },
+            {
+              "date": "2024-09-23",
+              "text": "- 강의리스트 공유 예정"
+            },
+            {
+              "date": "2024-09-26",
+              "text": "- 수강 인원 : 20명(16명 우선 입과 / 4명 추후 입과) - 수강 신청 기간 : 10/1~10/16(수)- 수강 시작 : 10/21(월)"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "eabbfe5f-c819-4bc2-b149-027c51553003",
+          "name": "박봉준",
+          "upper_org": "경영혁신부문",
+          "team": "데이터사이언스팀",
+          "title": "책임",
+          "edu_area": "DT/AI 온라인/출강",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "경영혁신부문",
+      "team": "정보화기획팀",
+      "deals": [
+        {
+          "id": "0193a909-0b88-7bb9-a18e-b73d59dd897b",
+          "created_at": "2024-12-09T01:29:22.586Z",
+          "name": "현대모비스_온라인과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김동찬",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-12-24T06:51:28.551Z",
+          "expected_amount": 27000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "생성형AI",
+          "contract_date": "2024-12-23T15:00:00.000Z",
+          "amount": 27000000.0,
+          "start_date": "2025-01-02T15:00:00.000Z",
+          "end_date": "2026-01-02T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0193a907-8172-700b-be1c-d840872e550f",
+            "name": "양인선",
+            "upper_org": "경영혁신부문",
+            "team": "정보화기획팀",
+            "title": "매니저",
+            "edu_area": "온라인/단기/올플랜"
+          },
+          "memos": [
+            {
+              "date": "2024-12-09",
+              "text": "- 딜 문의 주제 (최초) : 생성형 AI (챗GPT 활용)\n- 딜 예상 교육 일정 : 2개월 이내\n- 딜 서비스 유형 (최초) : 온라인 단체 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 회사 이름 : 현대모비스\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 양인선\n- 고객 이메일 : isyang@mobis.com\n- 고객 전화 : 01055096505\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 상담 문의 내용 : 실원들이 필요할 때 원하는 교육을 자유롭게 수강할 수 있는 서비스가 있을지 제안 받아보고 싶습니다.\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-12-09",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            },
+            {
+              "date": "2024-12-09",
+              "text": "유선 fup 완료- 올해 예산 써야해서 급하게 진행 희망- 인원 : 약 60명 - 싱글플랜/올플랜 소개서 전달 후 희망 과정에 맞추어 견적 전달 예정"
+            }
+          ]
+        },
+        {
+          "id": "0194da9e-924e-7007-be0b-c1673025855b",
+          "created_at": "2025-02-06T09:36:52.824Z",
+          "name": "현대모비스_올플랜(2월)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김동찬",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-02-28T09:39:33.330Z",
+          "expected_amount": 4050000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-02-12T15:00:00.000Z",
+          "amount": 4200000.0,
+          "start_date": "2025-02-16T15:00:00.000Z",
+          "end_date": "2026-01-02T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0193a907-8172-700b-be1c-d840872e550f",
+            "name": "양인선",
+            "upper_org": "경영혁신부문",
+            "team": "정보화기획팀",
+            "title": "매니저",
+            "edu_area": "온라인/단기/올플랜"
+          },
+          "memos": [
+            {
+              "date": "2025-02-06",
+              "text": "24년 12월 올플랜 입과 후 신규직원 추가 입과 요청 > 9명 추가 예정"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "0193a907-8172-700b-be1c-d840872e550f",
+          "name": "양인선",
+          "upper_org": "경영혁신부문",
+          "team": "정보화기획팀",
+          "title": "매니저",
+          "edu_area": "온라인/단기/올플랜",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서"
+          ],
+          "memos": [
+            {
+              "date": "2024-12-09",
+              "text": "- 고객 이름 : 양인선\n- 고객 이메일 : isyang@mobis.com\n- 고객 전화 : 01055096505\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "654082e51eaeda0807fdc28a",
+          "created_at": "2023-10-31T04:30:29.787Z",
+          "name": "[OB] 현대모비스 전사 온라인 구독",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": "2024-04-14T23:39:16.084Z",
+          "amount": 300000000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "654082b47089b0b5a794689c",
+            "name": "이세준",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2023-11-01",
+              "text": "이미지"
+            },
+            {
+              "date": "2023-11-06",
+              "text": "온라인 교육 과정리스트 및 소개서 전달 완료함. 제안요청 대기 중"
+            }
+          ]
+        },
+        {
+          "id": "b23c8854-5c3b-43f0-b29b-60895efc49d1",
+          "created_at": "2024-03-22T06:13:12.630Z",
+          "name": "현대모비스_2024 알고리즘 경진대회",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2024-04-29T15:00:00.000Z",
+          "expected_amount": 227400000.0,
+          "lost_confirmed_at": "2024-07-25T01:59:15.825Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "개발/CD",
+          "contract_date": null,
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "fe23b260-7a3c-41bc-8e93-c40743ee8d07",
+            "name": "송화신",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "e508fdb9-4418-426b-a865-c712118d22a5",
+          "created_at": "2024-04-02T02:39:09.368Z",
+          "name": "현대모비스 딜_AI부트캠프",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}, {\"id\": \"55affe17-4092-4619-96b5-3ffc808417a3\", \"name\": \"마케팅팀\"}]",
+          "owner": "최예인",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 16000000.0,
+          "lost_confirmed_at": "2024-08-19T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "fe23b260-7a3c-41bc-8e93-c40743ee8d07",
+            "name": "송화신",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-05-13",
+              "text": "4/15 Fup 메일 보냈으나, 내부 보고 후 과정 전체 방향성에 대해 다시 논의 중이라고 함. 5월 초에 다시 fup 예정→ 5/8 2차 fup, 내부적으로 방향성 잡히면 다시 RFP 나올 예정"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "654082b47089b0b5a794689c",
+          "name": "이세준",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "36edf96a-b132-4fc9-b34e-8891d8cbb5bf",
+          "name": "고현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-20",
+              "text": "- 문의 교육 주제 : 생성형 AI\n- 문의 서비스 : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원  : 100명 이하 \n- 회사 이름 : 현대모비스\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 고현\n- 고객 담당 업무 : 운영/총무/지원\n- 고객 직급/직책 : 실무자\n- 고객 이메일 : hyeonko@mobis.co.kr\n- 고객 전화 : 01030413975\n- 상담 문의 내용 : \n안녕하세요.\n현대모비스 전장사업지원팀 고현 매니저라고 합니다.\n업무에 노고가 많으십니다.\n\n저희 현대모비스 전장BU(사업부)의 실장급 이상 주요 조직장 (총 30~40명 예상)을 대상으로 연말 일정과 연계한 행사를 계획중입니다. (예정일자 : 12/8 금요일)\n조직장 대상의 특강을 하면 어떨지 생각하고 있고 이에 문의드리게 되었습니다.\n아래는 대략적인 계획입니다.\n\n======================================\n1. 강의 소요시간 : 1시간~2시간\n2. 장소 : 현대모비스 마북연구소(경기도 용인) 또는 본사(서울 강남구)\n3. 계획 일시 : 12/8(금) 오후 중\n  - 업무 일정 완료 후 진행 가능하여 15:00 또는 16:00 시작 가능 예상됩니다.\n    다만 상황에 따라 시간은 유동적일 수 있습니다.\n4. 강의 주제 : 리더를 위한 생성형 AI\n5. 수강 대상 : 현대모비스 전장BU 주요 조직장\n(실장급 이상, 30~40명 예상)\n======================================\n\n해당 내용에 맞는 강의 커리큘럼이나 로드맵이 있을지 문의드립니다.\n아울러 강의 비용이 얼마인지도 알고 싶습니다.\n \n \n감사합니다.\n\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2023-11-23",
+              "text": "계획 잡으면서 특강은 현재 취소되었음. 다시 계획 세워지는대로 필요한 부분 요청주시겠다고함"
+            },
+            {
+              "date": "2023-12-18",
+              "text": "아직 구체적으로 논의되고 있는 단계는 아니여서 필요 시 연락주시겠다고 함,"
+            },
+            {
+              "date": "2024-04-26",
+              "text": "이메일이 바뀌었다고 회신이 와서 hyeonko@mobis.com 으로 변경해두었습니다."
+            }
+          ]
+        },
+        {
+          "id": "fe23b260-7a3c-41bc-8e93-c40743ee8d07",
+          "name": "송화신",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-3. 세미나 다시보기: 생성형 AI를 활용한 업무효율화 실제 교육 사례 소개"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-22",
+              "text": "- 고객 이름 : 송화신\n- 고객 이메일 : hwasin@mobis.co.kr\n- 고객 전화 : 01033008403\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^231122\n- 고객 utm_content : lead-gen^hrda^edm-cta1\n"
+            },
+            {
+              "date": "2023-12-15",
+              "text": "관심있어서 신청해서 보았고, 미팅할 단계는 아님."
+            }
+          ]
+        },
+        {
+          "id": "2651accc-d9ea-45df-8e1f-974001923c0a",
+          "name": "소다미",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-12. 백서 신청 (report_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-15",
+              "text": "- 고객 이름 : 소다미\n- 고객 이메일 : dami.so@mobis.co.kr\n- 고객 전화 : 01041173289\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240111\n- 고객 utm_content : nurturing^salesmap^ebook\n"
+            },
+            {
+              "date": "2024-01-26",
+              "text": "전화기록- 메일보내주면 확인해보겠다고 함."
+            }
+          ]
+        },
+        {
+          "id": "e8be2f2b-ba0d-441f-bfd2-1a50fae62a06",
+          "name": "도민우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-08",
+              "text": "- 고객 이름 : 도민우\n- 고객 이메일 : minwoo.do@mobis.com\n- 고객 전화 : 010-6844-0128\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-15",
+              "text": "- 고객 이름 : 도민우\n- 고객 이메일 : minwoo.do@mobis.com\n- 고객 전화 : 010-6844-0128\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : kakaotalk\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240215\n- 고객 utm_content : lead-gen^hrda^openchat\n"
+            },
+            {
+              "date": "2024-02-22",
+              "text": "- 고객 이름 : 도민우\n- 고객 이메일 : minwoo.do@mobis.com\n- 고객 전화 : 010-6844-0128\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : kakaotalk\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240222\n- 고객 utm_content : lead-gen^hrda^openchat\n"
+            },
+            {
+              "date": "2024-06-27",
+              "text": "- 고객 이름 : 도민우\n- 고객 이메일 : minwoo.do@mobis.com\n- 고객 전화 : 010-6844-0128\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240626\n- 고객 utm_content : lead-gen^dbr^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "3394ff51-81d3-4e4d-a468-b0fca9e683d5",
+          "name": "한대희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-16",
+              "text": "- 고객 이름 : 한대희\n- 고객 이메일 : daihee.han@mobis.com\n- 고객 전화 : 010-3384-1740\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 현대모비스\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : marketing\n- 고객 utm_medium : email\n- 고객 utm_campaign : GLOBAL-2024-Email-Marketing-GLOBAL-KOR-EARLYBIRD-20240515-31187\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "2d0da548-3199-45eb-9d0a-82e5ab7778b6",
+          "name": "이승환",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-08",
+              "text": "- 고객 이름 : 이승환\n- 고객 이메일 : wagen@mobis.com\n- 고객 전화 : 01024304365\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 임원급/대표이사\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240708\n- 고객 utm_content : lead-gen^hrbulletin^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "01913094-3b5a-755b-8b94-e096a8706df6",
+          "name": "이예준",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-9. 백서 신청 (report_skilltrans)"
+          ],
+          "memos": [
+            {
+              "date": "2024-08-08",
+              "text": "- 고객 이름 : 이예준\n- 고객 이메일 : yejunlee@mobis.com\n- 고객 전화 : 01097703147\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0192daaa-815f-7ff5-9d9c-129ea2b53ebd",
+          "name": "김동철",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 김동철\n- 고객 전화 : 01098739585\n- 고객 이메일 : 1622256@mobis.co.kr\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0193f658-17d8-7778-bb48-633c5163f9c1",
+          "name": "강신재",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0193f659-3389-7778-bb4d-78f794819435",
+          "name": "김은희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)",
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2025-07-02",
+              "text": "- 고객 뉴스레터 : (공백)\n- 고객 이름 : 김은희\n- 고객 이메일 : eh.kim@mobis.com\n- 고객 전화 : 01077676942\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250702\n- 고객 utm_content : nurturing^letter^subscribe\n"
+            },
+            {
+              "date": "2025-12-04",
+              "text": "- 고객 이름 : 김은희\n- 고객 전화 : 01077676942\n- 고객 이메일 : eh.kim@mobis.com\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0193f659-a906-7dda-9a40-9244491e4e2e",
+          "name": "배예진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0195376b-7054-7669-b98d-4e881b1dcbf2",
+          "name": "이슬기",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-21. 백서 신청 (report_lmsguide)"
+          ],
+          "memos": [
+            {
+              "date": "2025-02-24",
+              "text": "- 고객 이름 : 이슬기\n- 고객 전화 : 01026449871\n- 고객 이메일 : kra0328@hanmail.net\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250220\n- 고객 utm_content : lead-gen^khrd^lmsguide\n"
+            }
+          ]
+        },
+        {
+          "id": "01958dd7-f716-7117-9cea-0788e95435a9",
+          "name": "서채범",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-20. 백서 신청 (report_skilltrend)",
+            "3-28. 소개서 : 일반 직무 대상 디지털 역량 교육 (main_digitaledu)",
+            "3-30. 소개서 : DX 역량 강화 (main_dt)",
+            "3-32. 소개서 : 기존 직무 업스킬링 (main_upskill)",
+            "3-35. 소개서 : 승진자 직급별 스킬업 (main_promo)",
+            "3-62. 소개서 :Skill Match 진단 평가 서비스 소개서 (skillmatch_proposal)",
+            "5-10. 템플릿 신청 (template_skillmatrix)",
+            "5-17. 템플릿 신청 (template_skillgapanalysis)"
+          ],
+          "memos": [
+            {
+              "date": "2025-03-13",
+              "text": "- 고객 이름 : 서채범\n- 고객 이메일 : suhcb@mobis.com\n- 고객 전화 : 010-5167-4347\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n"
+            },
+            {
+              "date": "2025-03-13",
+              "text": "- 고객 이름 : 서채범\n- 고객 이메일 : suhcb@mobis.com\n- 고객 전화 : 010-5167-4347\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 해당 콘텐츠 신청 이유 : 향후 교육 설계에 참고하기 위해\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-03-13",
+              "text": "- 고객 이름 : 서채범\n- 고객 전화 : 010-5167-4347\n- 고객 이메일 : suhcb@mobis.com\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 해당 콘텐츠 신청 이유 : 향후 교육 설계에 참고하기 위해\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-03-13",
+              "text": "- 고객 이름 : 서채범\n- 고객 이메일 : suhcb@mobis.com\n- 고객 전화 : 010-5167-4347\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n"
+            },
+            {
+              "date": "2025-03-13",
+              "text": "- 고객 이름 : 서채범\n- 고객 이메일 : suhcb@mobis.com\n- 고객 전화 : 010-5167-4347\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n"
+            },
+            {
+              "date": "2025-03-13",
+              "text": "- 고객 이름 : 서채범\n- 고객 이메일 : suhcb@mobis.com\n- 고객 전화 : 010-5167-4347\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 지인 추천, 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n"
+            },
+            {
+              "date": "2025-03-13",
+              "text": "- 고객 이름 : 서채범\n- 고객 전화 : 010-5167-4347\n- 고객 이메일 : suhcb@mobis.com\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-03-13",
+              "text": "- 고객 이름 : 서채범\n- 고객 이메일 : suhcb@mobis.com\n- 고객 전화 : 010-5167-4347\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01965b27-317e-7ee1-9500-ce281ae6ccb3",
+          "name": "김시원",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-14. 백서 신청 (report_leadershipfw)"
+          ],
+          "memos": [
+            {
+              "date": "2025-04-22",
+              "text": "- 고객 이름 : 김시원\n- 고객 이메일 : siwon.kim@mobis.com\n- 고객 전화 : 01025028931\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0197d36d-8114-7ee6-afda-4f7275ebc103",
+          "name": "김동철",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-33. 온라인 교육 템플릿 3종 (package_onlineopstpl)"
+          ],
+          "memos": [
+            {
+              "date": "2025-07-04",
+              "text": "- 고객 이름 : 김동철\n- 고객 전화 : 01098739585\n- 고객 이메일 : 1622256@mobis.com\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250704\n- 고객 utm_content : lead-gen^khrd^cta2\n"
+            }
+          ]
+        },
+        {
+          "id": "01988801-647d-7bb9-ae84-8e86f2baed6e",
+          "name": "김수로",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)"
+          ],
+          "memos": [
+            {
+              "date": "2025-08-08",
+              "text": "- 고객 이름 : 김수로\n- 고객 전화 : 01090037001\n- 고객 이메일 : suro.kim@mobis.com\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천, 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-08-08",
+              "text": "- 고객 이름 : 김수로\n- 고객 전화 : 01090037001\n- 고객 이메일 : suro.kim@mobis.com\n- 회사 이름 : 현대모비스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천, 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "샤시모듈부품설계팀",
+      "deals": [
+        {
+          "id": "0197aa79-5a2b-711e-91d3-d3232ca8743d",
+          "created_at": "2025-06-26T04:22:00.000Z",
+          "name": "현대모비스_데이터 전처리 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "서정연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-27T15:00:00.000Z",
+          "expected_amount": 2300000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": "2025-08-27T15:00:00.000Z",
+          "amount": 2300000.0,
+          "start_date": "2025-09-01T15:00:00.000Z",
+          "end_date": "2025-09-01T15:00:00.000Z",
+          "net_percent": "59.0",
+          "people": {
+            "id": "0197aa79-5998-711e-91d3-be4bd351518c",
+            "name": "임동진",
+            "upper_org": "미입력",
+            "team": "샤시모듈부품설계팀",
+            "title": "책임연구원",
+            "edu_area": "샤시모듈부품설계팀 대상 교육 限"
+          },
+          "memos": [
+            {
+              "date": "2025-06-26",
+              "text": "- 리드 서비스 유형 (최초) : 오프라인 교육, 온라인 단체 교육\n- 리드 예상 교육 인원 : 30명 이하\n- 리드 예상 교육 일정 : 2개월 이내\n- 회사 이름 : 현대모비스\n- 회사 기업 규모 : 대기업\n- 리드 문의 주제 (최초) : (공백)\n- 고객 이름 : 임동진\n- 고객 이메일 : dj@mobis.com\n- 고객 담당 업무 : (공백)\n- 고객 전화 : 010-8536-5326\n- 상담 문의 내용 : 오프라인 또는 온라인 단체 교육 진행하고자 합니다.\n - 일정 : 8월 말\n - 시간 : 2시간 (1회)\n - 오프라인 강의 시 장소 : 용인시 기흥구\n - 주제 : 실무자를 위한 데이터 전처리 기초\n - 목적 : 데이터 전처리 개념과 주요 기법 요약 및 실무 적용 방안 모색\n - 희망 커리큘럼 : 데이터전처리 개요, Pandas를 이용한 기본 실습, 실무 자동화 관점 사례 등\n\n대략적인 견적 먼저 회신 받을 수 있을까요? 죄송하지만 오늘(6/26) 오후 중으로 회신 부탁 드립니다.\n- 리드 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-06-26",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            },
+            {
+              "date": "2025-06-30",
+              "text": "6/26 오프라인 출강 견적서 송부 + 구독 금액 및 리스트 전달\n임동진 책임님 / 샷시모듈~~부서\n\n[교육 문의 상세 내용]교육 주제 : 데이터 전처리 (기초/사례 위주)교육 대상 및 난이도 : 데이터 분석 관련 기초 지식이 많지 않은 교육생 대상다루는 데이터는 많지만, 관련된 지식이 많지 않아, 목적에 맞게 어떻게 전처리 하는지 등과 같은 기초적인 개념 정리 필요특히, 한정적인 분야를 중심으로 다루는 부서/직군이다 보니, 다양한 사례를 통해 사고 확장에 대한 니즈 有교육 장소 : 내부 강의장 or 연수원예산 : 미정일정 : 미정"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "0197aa79-5998-711e-91d3-be4bd351518c",
+          "name": "임동진",
+          "upper_org": "미입력",
+          "team": "샤시모듈부품설계팀",
+          "title": "책임연구원",
+          "edu_area": "샤시모듈부품설계팀 대상 교육 限",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

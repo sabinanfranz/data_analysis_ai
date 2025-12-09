@@ -1,0 +1,156 @@
+{
+  "organization": {
+    "id": "64f975dafb15689232a8f984",
+    "name": "에스케이실트론",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "기업문화담당",
+      "team": "행복경영팀",
+      "deals": [
+        {
+          "id": "0197580f-c1bc-7440-8ed2-60580a93c624",
+          "created_at": "2025-06-10T04:18:00.000Z",
+          "name": "SK실트론_LMS 도입(26)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김별",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-12-31T06:55:39.855Z",
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-10-19T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "기타",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64f975dafb15689232a8f9c8",
+            "name": "문혜정",
+            "upper_org": "기업문화담당",
+            "team": "행복경영팀",
+            "title": "프로",
+            "edu_area": "온라인+출강"
+          },
+          "memos": [
+            {
+              "date": "2025-06-10",
+              "text": "- 딜 서비스 유형 (최초) : 온라인 단체 교육, 맞춤형 온/오프라인 교육, 스킬 진단/평가\n- 딜 예상 교육 인원 : 1000명 이상\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 회사 이름 : SK실트론\n- 회사 기업 규모 : 대기업\n- 딜 문의 주제 (최초) : (공백)\n- 고객 이름 : 문혜정\n- 고객 이메일 : hyejeong.mun@sk.com\n- 고객 담당 업무 : (공백)\n- 고객 전화 : 010-4480-2623\n- 상담 문의 내용 : 패스트캠퍼스에서 구축/운영 가능한 LMS 서비스에 대한 소개를 받고 싶습니다.\n- 딜 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-06-10",
+              "text": "6/10\n- 담당자 : 행복경영팀 / 문혜정 프로\n- 도입시기 : 26/1월, 빨라질수도- 현재 LMS : 마이써니 & 휴넷 둘 다 이용중- 교체 이유 : 올해 중으로 매각/분리예정, 다른 LMS 사용을 해야하는데 휴넷 외에도 타 플랫폼 비교 예정- SK렌터카 동일 레퍼런스로 1차 제시*차주 중 미팅 어레인지 예정"
+            }
+          ]
+        },
+        {
+          "id": "0197eccc-7420-7000-81e5-09a06afc3c1c",
+          "created_at": "2025-07-09T01:28:00.000Z",
+          "name": "문혜정 리드",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김별",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": "2025-08-10T15:00:00.000Z",
+          "lost_reason": "[\"내부 의사결정\"]",
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64f975dafb15689232a8f9c8",
+            "name": "문혜정",
+            "upper_org": "기업문화담당",
+            "team": "행복경영팀",
+            "title": "프로",
+            "edu_area": "온라인+출강"
+          },
+          "memos": [
+            {
+              "date": "2025-07-09",
+              "text": "- 리드 서비스 유형 (최초) : 온라인 단체 교육\n- 리드 예상 교육 인원 : 100명 이하\n- 리드 예상 교육 일정 : 3~6개월 이내\n- 회사 이름 : SK실트론\n- 회사 기업 규모 : 대기업\n- 리드 문의 주제 (최초) : (공백)\n- 고객 이름 : 문혜정\n- 고객 이메일 : hyejeong.mun@sk.com\n- 고객 담당 업무 : (공백)\n- 고객 전화 : 010-4480-2623\n- 상담 문의 내용 : 임원/팀장 대상으로 총 4회 정도 비대면 라이브 특강 진행하고 싶습니다. 생성형 AI 활용에 대한 내용으로 4회차 내용 구성했으면 하고 회차별로 1시간 또는 1시간 30분 정도로 진행하고자 합니다. 대략적으로 원하는 교육 내용은 제조업 회사에서 AI 활용하고 있는 사례, 용도별 AI 서비스 추천, Chat GPT 고급 기능 사용 소개, Deep Research 활용 시연, 다른 생성형 AI 활용 시연, GPTs 생성 및 활용하기, AI Agent 사용 소개 및 시연 등입니다. 강사프로필과 비용 견적 등 알려주시면 교육 진행 검토에 참고하고자 합니다.\n- 리드 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-07-09",
+              "text": "커리큘럼은 조율해나가고 싶어서 중요 요소가 아니라 1)강사, 2)비대면 녹화 후 플랫폼 탑재 가능여부, 3)예산교육대상 : 임원/팀장 140명 정도 (전략/마케팅/연구/개발 등 직무 다양)교육시기 : 8월 중순기존 교육 :→올해 5월에 외부 강사(오프라인)로 GPT 사용법, 프롬프트엔지니어링 기초 진행했음→사내 보안 문제로 한정적인 실습만 진행니즈 :→외부 툴 다양하게 학습하고, 사내 보안 제약을 벗어나서 교육원함 (그래서 비대면)→상부에서 디테일을 주진 않고, AI가 중요하다던데~ 해봐 정도"
+            }
+          ]
+        },
+        {
+          "id": "01994ffc-f1d9-7000-8147-0f052c0a385b",
+          "created_at": "2025-09-16T00:46:00.000Z",
+          "name": "SK실트론 AI Agent 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-10-21T15:00:00.000Z",
+          "expected_amount": 8320000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-10-21T15:00:00.000Z",
+          "amount": 8320000.0,
+          "start_date": "2025-10-21T15:00:00.000Z",
+          "end_date": "2025-11-04T15:00:00.000Z",
+          "net_percent": "86.0",
+          "people": {
+            "id": "64f975dafb15689232a8f9c8",
+            "name": "문혜정",
+            "upper_org": "기업문화담당",
+            "team": "행복경영팀",
+            "title": "프로",
+            "edu_area": "온라인+출강"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64f975dafb15689232a8f9c8",
+          "name": "문혜정",
+          "upper_org": "기업문화담당",
+          "team": "행복경영팀",
+          "title": "프로",
+          "edu_area": "온라인+출강",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서",
+            "4-6. 세미나 다시보기: 고성과자 발굴 프레임워크를 활용한 기업 맞춤 리더십 교육 설계",
+            "5-4. 총정리 자료집 신청 (package_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-29",
+              "text": "- 고객 이름 : 문혜정\n- 고객 이메일 : hyejeong.mun@sk.com\n- 고객 전화 : 01044802623\n- 회사 이름 : SK실트론\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240129\n- 고객 utm_content : lead-gen^hrda^edm-cta4\n"
+            },
+            {
+              "date": "2024-01-29",
+              "text": "- 고객 이름 : 문혜정\n- 고객 이메일 : hyejeong.mun@sk.com\n- 고객 전화 : 01044802623\n- 회사 이름 : SK실트론\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240129\n- 고객 utm_content : lead-gen^hrda^edm-cta4\n"
+            },
+            {
+              "date": "2024-01-29",
+              "text": "단순 정보성 컨택- 문자로 명함 전달"
+            },
+            {
+              "date": "2025-06-10",
+              "text": "- 고객 이름 : 문혜정\n- 고객 이메일 : hyejeong.mun@sk.com\n- 고객 전화 : 010-4480-2623\n- 회사 이름 : SK실트론\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

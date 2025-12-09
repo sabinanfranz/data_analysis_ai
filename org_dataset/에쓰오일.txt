@@ -1,0 +1,307 @@
+{
+  "organization": {
+    "id": "64dd761396e775eee7e39777",
+    "name": "에쓰오일",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "IT부문",
+      "team": "빅데이터팀",
+      "deals": [
+        {
+          "id": "0192b4b1-34cf-755c-a295-39bc0916fddb",
+          "created_at": "2024-10-22T14:46:05.273Z",
+          "name": "에쓰오일_생성형 AI 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 4500000.0,
+          "lost_confirmed_at": "2024-11-13T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2024-12-08T15:00:00.000Z",
+          "end_date": "2024-12-08T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "60e93a7c-a7be-4b82-9241-a79eac6518cb",
+            "name": "박재현",
+            "upper_org": "IT부문",
+            "team": "빅데이터팀",
+            "title": "책임매니저",
+            "edu_area": "온/오프라인 직무 교육"
+          },
+          "memos": [
+            {
+              "date": "2024-10-22",
+              "text": "- 생성형 AI 원데이 교육- 경쟁 입찰 예정 ( 11월 4일에 RFP , 입찰 요청 메일 발송 예정)- 교육목적 : 당사 생성형 AI 도입(S-OIL GPT)에 맞추어 생성형 AI의 개념 및 활용법교육을 통해, 직원 업무 생산성 향상을 도모하고자 Pilot 교육 시행*S-OIL GPT: 내부망에 구성된 AOAI(Azure Open AI) 기반의 GPT 서비스로 문서나 내부 정보의 유출 위험성이 적음(GPT 4o-mini 기반)- 교육 일정 : 12월 9일 (월) - 교육 장소 : S-OIL 마곡 TS&D 센터- 교육 대상  생성형 AI 에 대한 기초 지식이 없는 직원- 교육 인원 : 35명 ~ 45명 수준에서 시행 예정- 교육 시수 : 1 day, 8시간 (파일럿 교육)- 교육 내용 : ChatGPT의 기본 개념 및 활용 방안 / 멀티모달 활용법(ChatGPT) 내용 제외하고는 S-OIL GPT 모델을 기반으로 교육 진행 필요- 특이 사항 : 강사(외부전문가) 1인, 실습 조교 1인, 현장 운영인력 1인으로 구성 요청** 제안 시 포함하는 강사는 반드시 섭외 가능해야 함"
+            },
+            {
+              "date": "2024-11-14",
+              "text": "RFP건이었고, 타 업체 선정으로 탈락되었다고 함 ( 선정된 업체 공개 불가 )"
+            }
+          ]
+        },
+        {
+          "id": "0197573b-4676-7dd8-b795-b6b81fa5ad10",
+          "created_at": "2025-06-10T00:26:00.000Z",
+          "name": "에쓰오일_임원대상 생성형 AI 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-09-29T15:00:00.000Z",
+          "expected_amount": 12800000.0,
+          "lost_confirmed_at": "2025-09-09T15:00:00.000Z",
+          "lost_reason": "[\"내부 의사결정\"]",
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "60e93a7c-a7be-4b82-9241-a79eac6518cb",
+            "name": "박재현",
+            "upper_org": "IT부문",
+            "team": "빅데이터팀",
+            "title": "책임매니저",
+            "edu_area": "온/오프라인 직무 교육"
+          },
+          "memos": [
+            {
+              "date": "2025-06-10",
+              "text": "문의 내용에쓰오일 임원대상 생성형 AI 교육 문의타사 진행 커리큘럼들 샘플안 전달 요청(차주 중 전달 소통 완료)삼성화재 사례, HL 만도 사례 구두 안내기업 내부 아젠다 금일 등장, 9월 중 진행 예상2시간 ~ 4시간(4시간으로 소통)"
+            },
+            {
+              "date": "2025-09-22",
+              "text": "수주 실패 원인정량 평가가 주된 원인으로 보임- 가격은 적당하였으나, 스파르타가 약간 더 저렴했던 듯.\n+a- 임원대상 AI 교육 진행 레퍼런스의 수- 강사의 임원대상 AI 실습 교육 진행 경험 수- 커리큘럼, 참신성 등 정성평가 점수는 상위권이었고, 경쟁사와 유사했음."
+            }
+          ]
+        },
+        {
+          "id": "0198e0b1-ea0c-7dd3-a8c8-748b7d2e260f",
+          "created_at": "2025-08-25T10:06:00.000Z",
+          "name": "에쓰오일_AX해커톤",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-11-12T15:00:00.000Z",
+          "expected_amount": 70000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "생성형AI",
+          "contract_date": "2025-11-12T15:00:00.000Z",
+          "amount": 70000000.0,
+          "start_date": "2025-11-23T15:00:00.000Z",
+          "end_date": "2025-11-25T15:00:00.000Z",
+          "net_percent": "36.0",
+          "people": {
+            "id": "62284975-dd36-4abc-b8b9-cd2f76ed912e",
+            "name": "남경우",
+            "upper_org": "IT부문",
+            "team": "빅데이터팀",
+            "title": "책임",
+            "edu_area": "출강(Power BI, 해커톤 등)"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "62284975-dd36-4abc-b8b9-cd2f76ed912e",
+          "name": "남경우",
+          "upper_org": "IT부문",
+          "team": "빅데이터팀",
+          "title": "책임",
+          "edu_area": "출강(Power BI, 해커톤 등)",
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "60e93a7c-a7be-4b82-9241-a79eac6518cb",
+          "name": "박재현",
+          "upper_org": "IT부문",
+          "team": "빅데이터팀",
+          "title": "책임매니저",
+          "edu_area": "온/오프라인 직무 교육",
+          "webforms": [
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서"
+          ],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "경영전략본부",
+      "team": "인력개발팀",
+      "deals": [
+        {
+          "id": "cd52af36-993c-492d-b584-646f0543693c",
+          "created_at": "2023-12-05T09:33:22.955Z",
+          "name": "에쓰오일 신입사원 온라인 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "권태희",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": "2024-02-29T15:00:00.000Z",
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": "2024-03-28T12:04:43.085Z",
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "742e7305-b260-40af-b1ed-69df56fdbfb7",
+            "name": "이소영",
+            "upper_org": "경영전략본부",
+            "team": "인력개발팀",
+            "title": "선임매니저",
+            "edu_area": "온/오프라인 직무 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "26ea5e09-0be3-4104-be43-004a8d7f2a4f",
+          "created_at": "2024-01-10T06:42:42.887Z",
+          "name": "S-Oil Data Scientist 양성 교육 Basic 과정 (2024)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-02-28T15:00:00.000Z",
+          "expected_amount": 63400000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "데이터분석/CDS",
+          "contract_date": "2024-03-29T02:04:56.000Z",
+          "amount": 63400000.0,
+          "start_date": "2024-03-24T15:00:00.000Z",
+          "end_date": "2024-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "742e7305-b260-40af-b1ed-69df56fdbfb7",
+            "name": "이소영",
+            "upper_org": "경영전략본부",
+            "team": "인력개발팀",
+            "title": "선임매니저",
+            "edu_area": "온/오프라인 직무 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0193731c-fb6c-7662-9902-0ec5c8d80350",
+          "created_at": "2024-11-28T14:11:39.510Z",
+          "name": "에쓰오일_신입사원 대상 생성형 AI 활용 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-01-30T15:00:00.000Z",
+          "expected_amount": 1900000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-01-21T15:00:00.000Z",
+          "amount": 1900000.0,
+          "start_date": "2025-01-21T15:00:00.000Z",
+          "end_date": "2025-01-21T15:00:00.000Z",
+          "net_percent": "67.0",
+          "people": {
+            "id": "742e7305-b260-40af-b1ed-69df56fdbfb7",
+            "name": "이소영",
+            "upper_org": "경영전략본부",
+            "team": "인력개발팀",
+            "title": "선임매니저",
+            "edu_area": "온/오프라인 직무 교육"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "742e7305-b260-40af-b1ed-69df56fdbfb7",
+          "name": "이소영",
+          "upper_org": "경영전략본부",
+          "team": "인력개발팀",
+          "title": "선임매니저",
+          "edu_area": "온/오프라인 직무 교육",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "1-16. 백서 신청 (report_aileadership)",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-12",
+              "text": "- 고객 이름 : 이소영\n- 고객 이메일 : soyoung.lee@s-oil.com\n- 고객 전화 : 01051905175\n- 회사 이름 : 에쓰오일\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^offline^booth\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "인사부문",
+      "team": "인력개발팀",
+      "deals": [
+        {
+          "id": "01950070-5c43-7000-8496-94d5a97d7b4f",
+          "created_at": "2025-02-13T17:51:58.540Z",
+          "name": "에쓰오일_2025 생성형 AI 과정_RFP",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-30T01:33:30.605Z",
+          "expected_amount": 109900000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "생성형AI",
+          "contract_date": "2025-04-27T15:00:00.000Z",
+          "amount": 109900000.0,
+          "start_date": "2025-05-12T15:00:00.000Z",
+          "end_date": "2025-10-30T15:00:00.000Z",
+          "net_percent": "56.0",
+          "people": {
+            "id": "019582c5-b5c1-7337-9593-f1bfd24e2f38",
+            "name": "이영열",
+            "upper_org": "인사부문",
+            "team": "인력개발팀",
+            "title": "책임",
+            "edu_area": "출강"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "019582c5-b5c1-7337-9593-f1bfd24e2f38",
+          "name": "이영열",
+          "upper_org": "인사부문",
+          "team": "인력개발팀",
+          "title": "책임",
+          "edu_area": "출강",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

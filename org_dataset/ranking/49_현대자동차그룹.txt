@@ -1,0 +1,58 @@
+{
+  "organization": {
+    "id": "2318423f-cb05-4ef4-a72d-bdd93cc197ab",
+    "name": "현대자동차그룹",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "cec5e966-f448-4687-83af-92438541e568",
+          "created_at": "2024-03-11T09:10:21.285Z",
+          "name": "현대자동차그룹_재경 세미나 (출강)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "심예본",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 30000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "재무회계",
+          "contract_date": "2024-04-26T05:57:58.781Z",
+          "amount": 0.0,
+          "start_date": "2024-05-05T15:00:00.000Z",
+          "end_date": "2024-06-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "25e89cf8-48e8-4654-9fd6-ea03ac27f3a6",
+            "name": "김성구",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "25e89cf8-48e8-4654-9fd6-ea03ac27f3a6",
+          "name": "김성구",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

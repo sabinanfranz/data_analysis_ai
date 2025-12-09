@@ -1,0 +1,237 @@
+{
+  "organization": {
+    "id": "2c95b197-cddf-4844-93f1-04fb6e8af1bd",
+    "name": "한화자산운용",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "40790ffc-c654-45a7-9c4d-dc5c58444e78",
+          "created_at": "2024-03-27T06:11:48.396Z",
+          "name": "한화자산운용(박종우)_비매출입과_올플랜",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-05-14T09:43:13.077Z",
+          "amount": 0.0,
+          "start_date": "2024-03-28T15:00:00.000Z",
+          "end_date": "2024-05-24T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "ceeaf46d-0a9e-47b0-b7ad-129db09b2ab4",
+            "name": "박종우",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "a4fad510-fa36-4190-9080-a9cbee713fcf",
+          "created_at": "2024-04-29T04:30:19.750Z",
+          "name": "한화자산운용(박종우)_올플랜_24년",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-05-30T15:00:00.000Z",
+          "expected_amount": 24300000.0,
+          "lost_confirmed_at": "2024-11-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-06-17T03:01:27.190Z",
+          "amount": 24300000.0,
+          "start_date": "2024-06-13T15:00:00.000Z",
+          "end_date": "2025-06-12T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "ceeaf46d-0a9e-47b0-b7ad-129db09b2ab4",
+            "name": "박종우",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "ceeaf46d-0a9e-47b0-b7ad-129db09b2ab4",
+          "name": "박종우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "4-9.  세미나 다시보기 : 금융권 특화 AI 활용 세미나"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-11",
+              "text": "- 고객 이름 : 박종우\n- 고객 전화 : 010-5682-0912\n- 고객 이메일 : ilovead@hanwha.com\n- 회사 이름 : 한화자산운용\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 리포트/제안서\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250911\n- 고객 utm_content : lead-gen^cold-hd^finance-hrd\n"
+            },
+            {
+              "date": "2025-10-01",
+              "text": "- 고객 이름 : 박종우\n- 고객 전화 : 01056820912\n- 고객 이메일 : ilovead@hanwha.com\n- 회사 이름 : 한화자산운용\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-10-01",
+              "text": "- 고객 이름 : 박종우\n- 고객 전화 : 01056820912\n- 고객 이메일 : ilovead@hanwha.com\n- 회사 이름 : 한화자산운용\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-09",
+              "text": "- 고객 이름 : 박종우\n- 고객 전화 : 01056820912\n- 고객 이메일 : ilovead@hanwha.com\n- 회사 이름 : 한화자산운용\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-09",
+              "text": "- 고객 이름 : 박종우\n- 고객 전화 : 01056820912\n- 고객 이메일 : ilovead@hanwha.com\n- 회사 이름 : 한화자산운용\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "9919224f-2652-43e0-92ff-482dcc81e1a9",
+          "name": "권동아",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 권동아\n- 고객 이메일 : dongakwon@hanwha.com\n- 고객 전화 : 01097706911\n- 회사 이름 : 한화자산운용\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 지인 추천\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- GPT 전사 교육 검토 중, 자료 살펴보고 연락 드리겠음2. 후속 액션- 신규 콜드콜 시퀀스 등록 + AI 교육 자료 전달"
+            },
+            {
+              "date": "2024-02-23",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 휴가 중이라 다시 연락 드리겠음2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            },
+            {
+              "date": "2024-03-29",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 결정되면 연락드리겠음2. 후속 액션- 추후 재컨택"
+            }
+          ]
+        },
+        {
+          "id": "0192acc2-0d9b-7337-af79-9a58febf3a1a",
+          "name": "김지영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-21",
+              "text": "- 고객 이름 : 김지영\n- 고객 전화 : 01039740328\n- 고객 이메일 : jiyoung.kim@hanwha.com\n- 회사 이름 : 한화자산운용\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^241021\n- 고객 utm_content : lead-gen^hrbulletin^seminar_2025\n"
+            }
+          ]
+        },
+        {
+          "id": "019937e4-c2d1-7dd3-ae0a-498bb033b61f",
+          "name": "김유수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-19. 금융권 특화 AI 활용 아카데미"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-11",
+              "text": "- 고객 이름 : 김유수\n- 고객 전화 : 01096258789\n- 고객 이메일 : yusoo.kim@hanwha.com\n- 회사 이름 : 한화자산운용\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 지인 추천\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250911\n- 고객 utm_content : lead-gen^cold-hd^finance-hrd#salesmap-web-form\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "일반운용유닛",
+      "team": "Global Talent Team",
+      "deals": [
+        {
+          "id": "0197cf62-9d08-7002-98e0-c1b1e477d442",
+          "created_at": "2025-07-03T08:23:00.000Z",
+          "name": "한화자산운용 25년 올플랜",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김동찬",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-02T08:25:16.654Z",
+          "expected_amount": 9690000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-07-01T15:00:00.000Z",
+          "amount": 9690000.0,
+          "start_date": "2025-07-14T15:00:00.000Z",
+          "end_date": "2026-01-14T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "59ebb239-beaa-4a93-a2bf-8c857c11c388",
+            "name": "장준희",
+            "upper_org": "일반운용유닛",
+            "team": "Global Talent Team",
+            "title": "Analyst",
+            "edu_area": "HRD"
+          },
+          "memos": [
+            {
+              "date": "2025-07-03",
+              "text": "스킬매치 제공 예정 (30명 입과자에 한하여 제공_장기고객사 베네핏)관리자 아이디에도 올플랜 함께 부여 예정 (금액상 30명이나, 1명 추가제공 _ 장기고객사 베네핏)\n7월 11일 명단 송부예정, 7월 15일 세팅 완료예정"
+            },
+            {
+              "date": "2025-07-10",
+              "text": "온라인 명단"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "59ebb239-beaa-4a93-a2bf-8c857c11c388",
+          "name": "장준희",
+          "upper_org": "일반운용유닛",
+          "team": "Global Talent Team",
+          "title": "Analyst",
+          "edu_area": "HRD",
+          "webforms": [
+            "5-30. 온라인 교육 템플릿 4종 (package_onlinetpl)"
+          ],
+          "memos": [
+            {
+              "date": "2025-06-20",
+              "text": "- 고객 이름 : 장준희\n- 고객 전화 : 010-9041-1619\n- 고객 이메일 : junni@hanwha.com\n- 회사 이름 : 한화자산운용\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250620\n- 고객 utm_content : lead-gen^khrd^cta3#salesmap-web-form\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

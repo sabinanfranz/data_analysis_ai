@@ -199,6 +199,19 @@
       font-size: 13px;
     }
 
+    .code-block {
+      background: #0c182c;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 320px;
+      overflow: auto;
+    }
+
     th,
     td {
       padding: 8px 9px;
@@ -394,6 +407,7 @@
         max-height: 260px;
       }
     }
+
   </style>
 </head>
 
@@ -443,9 +457,11 @@
     const state = {
       activeMenuId: "org-view",
       size: "대기업",
+      rankSize: "전체",
       orgs: [],
       orgSearch: "",
       selectedOrg: null,
+      wonGroupJson: null,
       personWith: null,
       personWithout: null,
       dealWith: null,
@@ -473,13 +489,15 @@
     };
 
     const cache = {
+      sizes: null,
+      wonGroupJsonByOrg: new Map(),
       orgMemos: new Map(),
       peopleWith: new Map(),
       peopleWithout: new Map(),
       deals: new Map(),
       personMemos: new Map(),
       dealMemos: new Map(),
-      rank2025: null,
+      rank2025BySize: new Map(),
       orgLookup: new Map(),
       wonSummary: new Map(),
     };
@@ -493,6 +511,33 @@
       showToast._timer = setTimeout(() => {
         el.style.display = "none";
       }, 3200);
+    }
+
+    function setWonGroupCopyEnabled(enabled) {
+      const btn = document.getElementById("copyWonGroupJsonBtn");
+      if (!btn) return;
+      btn.disabled = !enabled;
+      btn.title = enabled ? "" : "불러온 JSON이 없습니다.";
+    }
+
+    async function copyWonGroupJson() {
+      if (!state.wonGroupJson) {
+        showToast("복사할 JSON이 없습니다.", "error");
+        return;
+      }
+      const text = JSON.stringify(state.wonGroupJson, null, 2);
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("JSON을 복사했습니다.", "success");
+      } catch (_) {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        showToast("JSON을 복사했습니다.", "success");
+      }
     }
 
     function openMemoModal({ createdAt, ownerName, ownerId, text }) {
@@ -639,10 +684,17 @@
       });
     }
 
+    async function getSizes() {
+      if (cache.sizes) return cache.sizes;
+      const data = await fetchJson("/sizes");
+      const sizes = Array.from(new Set(["전체", ...(data.sizes || [])]));
+      cache.sizes = sizes;
+      return sizes;
+    }
+
     async function loadSizes() {
       try {
-        const data = await fetchJson("/sizes");
-        const sizes = Array.from(new Set(["전체", ...(data.sizes || [])]));
+        const sizes = await getSizes();
         const sel = document.getElementById("sizeSelect");
         sel.innerHTML = sizes.map((s) => `<option value="${s}">${s}</option>`).join("");
         if (!sizes.includes(state.size)) {
@@ -650,6 +702,7 @@
         }
         sel.value = state.size;
       } catch (err) {
+        cache.sizes = null;
         showToast(`규모 목록을 불러오지 못했습니다: ${err.message}`, "error");
       }
     }
@@ -710,8 +763,10 @@
       state.dealMemoWith = [];
       state.dealMemoWithout = [];
       state.wonSummary = [];
+      state.wonGroupJson = null;
       renderOrgMemos([]);
       renderWonSummary([]);
+      renderWonGroupJson(null);
       renderPeople("with", []);
       renderPeople("without", []);
       renderDeals("with", []);
@@ -728,7 +783,9 @@
       state.personWithout = null;
       state.dealWith = null;
       state.dealWithout = null;
+      state.wonGroupJson = null;
       setBreadcrumb();
+      renderWonGroupJson(null);
 
       const memoPromise = cache.orgMemos.get(orgId)
         ? Promise.resolve(cache.orgMemos.get(orgId))
@@ -768,6 +825,7 @@
         renderPeople("with", withList);
         renderPeople("without", withoutList);
         setBreadcrumb();
+        await loadWonGroupJson(orgId);
       } catch (err) {
         showToast(`회사 데이터 로드 오류: ${err.message}`, "error");
         clearOrgViews();
@@ -828,6 +886,66 @@
         </thead>
         <tbody>${rowsHtml}</tbody>
       `;
+    }
+
+    function renderWonGroupJson(data) {
+      const hint = document.getElementById("wonGroupJsonHint");
+      const body = document.getElementById("wonGroupJsonBody");
+      if (!hint || !body) return;
+      if (!state.selectedOrg) {
+        hint.textContent = "회사를 선택하세요.";
+        body.textContent = "";
+        setWonGroupCopyEnabled(false);
+        return;
+      }
+      if (!data) {
+        hint.textContent = "불러오는 중...";
+        body.textContent = "";
+        setWonGroupCopyEnabled(false);
+        return;
+      }
+      const groups = data.groups || [];
+      if (!groups.length) {
+        hint.textContent = "23/24/25 Won 딜이 있는 상위 조직이 없습니다.";
+      } else {
+        hint.textContent = "";
+      }
+      body.textContent = JSON.stringify(data, null, 2);
+      setWonGroupCopyEnabled(true);
+    }
+
+    async function loadWonGroupJson(orgId) {
+      const card = document.getElementById("wonGroupJsonCard");
+      if (!card) return;
+      if (!orgId) {
+        state.wonGroupJson = null;
+        renderWonGroupJson(null);
+        return;
+      }
+      const cached = cache.wonGroupJsonByOrg.get(orgId);
+      if (cached) {
+        state.wonGroupJson = cached;
+        renderWonGroupJson(cached);
+        return;
+      }
+      state.wonGroupJson = null;
+      renderWonGroupJson(null);
+      try {
+        const data = await fetchJson(`/orgs/${orgId}/won-groups-json`);
+        cache.wonGroupJsonByOrg.set(orgId, data);
+        state.wonGroupJson = data;
+        renderWonGroupJson(data);
+      } catch (err) {
+        showToast(`상위 조직 JSON 오류: ${err.message}`, "error");
+        state.wonGroupJson = null;
+        const hint = document.getElementById("wonGroupJsonHint");
+        const body = document.getElementById("wonGroupJsonBody");
+        if (hint && body) {
+          hint.textContent = "오류가 발생했습니다.";
+          body.textContent = "";
+        }
+        setWonGroupCopyEnabled(false);
+      }
     }
 
     function renderOrgMemos(memos) {
@@ -1116,6 +1234,7 @@
         loadOrgDetail(val);
       });
       document.getElementById("resetBtn").addEventListener("click", resetSelection);
+      document.getElementById("copyWonGroupJsonBtn").addEventListener("click", copyWonGroupJson);
 
       state.modal.backdrop = document.getElementById("memoModalBackdrop");
       state.modal.close = document.getElementById("memoModalClose");
@@ -1169,6 +1288,16 @@
           </div>
         </header>
 
+        <section class="card" id="wonGroupJsonCard">
+          <div class="control-row">
+            <h2>상위 조직별 JSON (23/24/25 Won 기준)</h2>
+            <div class="spacer"></div>
+            <button id="copyWonGroupJsonBtn" type="button">JSON 복사</button>
+          </div>
+          <div class="muted" id="wonGroupJsonHint">회사를 선택하세요.</div>
+          <pre class="code-block" id="wonGroupJsonBody"></pre>
+        </section>
+
         <div class="breadcrumb" id="breadcrumb">
           <span>경로:</span>
           <span id="crumb-org">-</span>
@@ -1220,12 +1349,21 @@
           <section class="card">
             <h2>People (딜 없음) <span class="badge" id="peopleWithoutCount">0</span></h2>
             <div class="muted" id="peopleWithoutHint">회사를 선택하세요.</div>
-            <div class="quad-grid" style="grid-template-columns: 1fr 1fr;">
+            <div class="quad-grid">
               <div class="table-wrap">
                 <table id="peopleWithoutTable"></table>
               </div>
               <div class="table-wrap">
                 <table id="personMemoWithoutTable"></table>
+              </div>
+              <div>
+                <div class="muted" id="dealWithoutHint">사람을 선택하세요.</div>
+                <div class="table-wrap">
+                  <table id="dealWithoutTable"></table>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table id="dealMemoWithoutTable"></table>
               </div>
             </div>
           </section>
@@ -1233,6 +1371,19 @@
       `;
 
       await initOrgScreen();
+    }
+
+    async function loadRankData(size) {
+      const key = size && size !== "전체" ? size : "전체";
+      const cached = cache.rank2025BySize.get(key);
+      if (cached) return cached;
+      const params = new URLSearchParams();
+      if (size && size !== "전체") params.set("size", size);
+      const query = params.toString();
+      const data = await fetchJson(`/rank/2025-deals${query ? `?${query}` : ""}`);
+      const items = data.items || [];
+      cache.rank2025BySize.set(key, items);
+      return items;
     }
 
     function renderRankTable(items) {
@@ -1271,44 +1422,67 @@
     async function renderRank2025Screen(contentRoot) {
       contentRoot.innerHTML = `
         <section class="card">
-          <h2>2025년 체결액 순위 (Won 상태)</h2>
+          <div class="control-row">
+            <h2>2025년 체결액 순위 (Won 상태)</h2>
+            <div class="spacer"></div>
+            <label class="muted">기업 규모</label>
+            <select id="rankSizeSelect"></select>
+          </div>
           <div id="rankBody" class="muted">불러오는 중...</div>
         </section>
       `;
       const target = document.getElementById("rankBody");
+      const sizeSelect = document.getElementById("rankSizeSelect");
       try {
-        if (!cache.rank2025) {
-          const data = await fetchJson("/rank/2025-deals");
-          cache.rank2025 = data.items || [];
+        const sizes = await getSizes();
+        sizeSelect.innerHTML = sizes.map((s) => `<option value="${s}">${s}</option>`).join("");
+        if (!sizes.includes(state.rankSize)) {
+          state.rankSize = sizes[0] || "전체";
         }
-        target.innerHTML = renderRankTable(cache.rank2025);
-        // attach popup for course formats
-        target.querySelectorAll(".format-cell").forEach((cell) => {
-          cell.addEventListener("click", () => {
-            const idx = Number(cell.getAttribute("data-idx"));
-            const row = cache.rank2025[idx];
-            if (!row) return;
-            const lines = (row.formats || []).map((f) => `${f.courseFormat || "-"}: ${formatAmount(f.totalAmount)}`).join("\n");
-            openMemoModal({
-              createdAt: "",
-              ownerName: row.orgName || row.orgId || "-",
-              ownerId: "",
-              text: lines || "(데이터 없음)",
-            });
-          });
-        });
-        // attach navigation on org name click
-        target.querySelectorAll(".org-link").forEach((cell) => {
-          cell.addEventListener("click", async () => {
-            const idx = Number(cell.getAttribute("data-idx"));
-            const row = cache.rank2025[idx];
-            if (!row) return;
-            await navigateToOrg(row.orgId);
-          });
-        });
+        sizeSelect.value = state.rankSize;
       } catch (err) {
         target.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        showToast(`랭킹 규모 목록 오류: ${err.message}`, "error");
+        return;
       }
+      const refresh = async () => {
+        target.textContent = "불러오는 중...";
+        try {
+          const items = await loadRankData(state.rankSize);
+          target.innerHTML = renderRankTable(items);
+          // attach popup for course formats
+          target.querySelectorAll(".format-cell").forEach((cell) => {
+            cell.addEventListener("click", () => {
+              const idx = Number(cell.getAttribute("data-idx"));
+              const row = items[idx];
+              if (!row) return;
+              const lines = (row.formats || []).map((f) => `${f.courseFormat || "-"}: ${formatAmount(f.totalAmount)}`).join("\n");
+              openMemoModal({
+                createdAt: "",
+                ownerName: row.orgName || row.orgId || "-",
+                ownerId: "",
+                text: lines || "(데이터 없음)",
+              });
+            });
+          });
+          // attach navigation on org name click
+          target.querySelectorAll(".org-link").forEach((cell) => {
+            cell.addEventListener("click", async () => {
+              const idx = Number(cell.getAttribute("data-idx"));
+              const row = items[idx];
+              if (!row) return;
+              await navigateToOrg(row.orgId);
+            });
+          });
+        } catch (err) {
+          target.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        }
+      };
+      sizeSelect.addEventListener("change", async (e) => {
+        state.rankSize = e.target.value;
+        await refresh();
+      });
+      await refresh();
     }
 
     function initApp() {

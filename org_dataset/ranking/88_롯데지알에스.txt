@@ -1,0 +1,614 @@
+{
+  "organization": {
+    "id": "64f9757efb15689232a83b92",
+    "name": "롯데지알에스",
+    "size": "대기업",
+    "industry": "유통/공급업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "9ef83769-34e6-4203-a589-f7524096cc43",
+          "created_at": "2024-05-01T08:08:54.754Z",
+          "name": "롯데지알에스_사내강사양성과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": "2024-05-20T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "기타",
+          "contract_date": null,
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "361768c2-5a86-4197-bc38-bbe0b7d28d49",
+            "name": "김선정",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-05-01",
+              "text": "- 딜 문의 주제 (최초) : 리더십 역량 강화 (하이퍼 리더십)\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 10명 이하\n- 딜 예상 교육 일정 : 2개월 이내\n- 회사 이름 : 롯데지알에스\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 김선정\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 이메일 : seonjeong.kim@lotte.net\n- 고객 전화 : 01051835210\n- 상담 문의 내용 : 안녕하세요 롯데GRS 인재육성팀 인턴 김선정입니다. 혹시 패스트캠퍼스에서 오프라인 사내강사 양성과정 프로그램을 운영 중인지 알고 싶어 문의드렸습니다. 혹시 현재 해당 교육과정을 운영 중이시라면 해당 프로그램에 대한 방식, 커리큘럼, 가격 등 세부 내용을 알고 싶습니다. 감사합니다.\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-13",
+              "text": "교육기획단계라 담당자대신 김선정 인턴이 문의. 5/3일자로 커리큘럼만 발송."
+            },
+            {
+              "date": "2024-05-21",
+              "text": "데일리투두담당자 계속 부재중이라 문자로 회신요청"
+            },
+            {
+              "date": "2024-05-22",
+              "text": "출강교육이 아닌 방문교육으로 가닥이 잡혀 방문교육 진행하는 업체로 교육 진행 예정(방문교육의 의미에 대해 문의드렸으나 응답없음)"
+            }
+          ]
+        },
+        {
+          "id": "fa051f28-6bb8-44be-8759-821a54c5997b",
+          "created_at": "2024-06-04T04:20:15.548Z",
+          "name": "박승국 리드",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-08-02T07:01:33.176Z",
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "b99f0707-712b-48e4-8b4b-0bb1a25e3959",
+            "name": "박승국",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64f97580fb15689232a83e38",
+          "name": "이성재",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64f97580fb15689232a83e82",
+          "name": "문경아",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2024-03-06",
+              "text": "소라님 같은 팀, 소라님 통해서 연락"
+            }
+          ]
+        },
+        {
+          "id": "64fed5fd1a51b899ee1e26e9",
+          "name": "문경아",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-9. 백서 신청 (report_skilltrans)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "5-29. 온라인 직무교육 자료집 (package_jobonline)",
+            "5-34. 온라인 교육 템플릿 7종 (package_onlinehrdtpl)",
+            "5-37. 이러닝 GPT프롬프트 템플릿  (template_elearningprompt)"
+          ],
+          "memos": [
+            {
+              "date": "2024-08-28",
+              "text": "- 고객 이름 : 문경아\n- 고객 이메일 : moonjjang@lotte.net\n- 고객 전화 : 01089544107\n- 회사 이름 : 롯데GRS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-07-14",
+              "text": "- 고객 이름 : 문경아\n- 고객 전화 : 01089544107\n- 고객 이메일 : moonjjang@lotte.net\n- 회사 이름 : 롯데GRS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250709\n- 고객 utm_content : lead-gen^khrd^cta1#salesmap-web-form\n"
+            },
+            {
+              "date": "2025-07-14",
+              "text": "- 고객 이름 : 문경아\n- 고객 전화 : 01089544107\n- 고객 이메일 : moonjjang@lotte.net\n- 회사 이름 : 롯데GRS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250711\n- 고객 utm_content : lead-gen^khrd^cta2\n"
+            }
+          ]
+        },
+        {
+          "id": "651232a2b056813181cee0db",
+          "name": "박해림",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "3-15. 소개서 : 디지털 마케팅 패키지 플랜 (mktg_plan)",
+            "3-17. 소개서 : GA를 활용한 퍼포먼스 마케팅 (mktg_ga)",
+            "3-18. 소개서 : 디지털 프로덕트 매니저 마인드셋 (po_mindset)",
+            "3-19. 소개서 : 디지털 프로덕트 오너 양성 (po_owner)",
+            "3-20. 소개서 : 리더를 위한 디지털 프로덕트 오너십 에센스 (po_essence)",
+            "3-53. 소개서 : 데이터 기반 의사결정 (content_dataanalysis_roadmap)",
+            "3-7. 소개서 : 리더를 위한 AI 적용 (main_datadriven)"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-20",
+              "text": "데이터분석쪽 파이썬 교육 진행 예정인워 5명이고 개인별로 역량 차이도 있어 온라인 과정 추천.관련 소개서 먼저 보내드리기로 함."
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 박해림\n- 고객 이메일 : haerimpark@lotte.net\n- 고객 전화 : 01092812296\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 박해림\n- 고객 이메일 : haerimpark@lotte.net\n- 고객 전화 : 01092812296\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 박해림\n- 고객 이메일 : haerimpark@lotte.net\n- 고객 전화 : 01092812296\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 박해림\n- 고객 이메일 : haerimpark@lotte.net\n- 고객 전화 : 01092812296\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 박해림\n- 고객 이메일 : haerimpark@lotte.net\n- 고객 전화 : 01092812296\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 박해림\n- 고객 이메일 : haerimpark@lotte.net\n- 고객 전화 : 01092812296\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 박해림\n- 고객 이메일 : haerimpark@lotte.net\n- 고객 전화 : 01092812296\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            }
+          ]
+        },
+        {
+          "id": "5ac71d3a-a6d0-4f24-b5a9-2241a3cbc25c",
+          "name": "이혜린",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-2. 템플릿 신청 (template_exonboarding)"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-10",
+              "text": "- 고객 이름 : 이혜린\n- 고객 이메일 : hyelin.lee@lotte.net\n- 고객 전화 : 01042269600\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : 운영/총무/지원\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고, 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^231211\n- 고객 utm_content : lead-gen^hrinsight^edm-cta2\n"
+            }
+          ]
+        },
+        {
+          "id": "361768c2-5a86-4197-bc38-bbe0b7d28d49",
+          "name": "김선정",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "1-9. 백서 신청 (report_skilltrans)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "5-2. 템플릿 신청 (template_exonboarding)"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-10",
+              "text": "- 고객 이름 : 김선정\n- 고객 이메일 : seonjeong.kim@lotte.net\n- 고객 전화 : 01051835210\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-21",
+              "text": "- 고객 이름 : 김선정\n- 고객 이메일 : seonjeong.kim@lotte.net\n- 고객 전화 : 01051835210\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-06-04",
+              "text": "- 고객 이름 : 김선정\n- 고객 이메일 : seonjeong.kim@lotte.net\n- 고객 전화 : 01051835210\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "74854538-5e15-4c3e-88c6-e67efc532dc0",
+          "name": "윤슬아",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "6-1. ATD Korea Summit (Standard Only)",
+            "6-6. ATD Korea Summit (Certificate Program - Brochure)"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-24",
+              "text": "- 고객 이름 : 윤슬아\n- 고객 이메일 : seulah.yun@lotte.net\n- 고객 전화 : 01098090218\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : LOTTE GRS\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "b99f0707-712b-48e4-8b4b-0bb1a25e3959",
+          "name": "박승국",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "3-31. 소개서 : 업종별 베스트 셀링 (main_bestselling)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "bf3e4173-e487-45ed-b6c7-5f096e20d729",
+          "name": "강민주",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-61. 소개서 : ChatGPT for Biz 소개서 (gptforbiz_proposal)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-04",
+              "text": "- 고객 이름 : 강민주\n- 고객 이메일 : minju-kang@lotte.net\n- 고객 전화 : 01063600432\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "b25a1ec8-9cd8-49f0-9f49-001528a831f9",
+          "name": "이지홍",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-13. 백서 신청 (report_skillbasedcerti)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-11",
+              "text": "- 고객 이름 : 이지홍\n- 고객 이메일 : jihong_lee@lotte.net\n- 고객 전화 : 01043654307\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^offline^booth\n"
+            }
+          ]
+        },
+        {
+          "id": "043eced7-bcc6-46e5-8e15-82a4341665d5",
+          "name": "이호림",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0192b280-f058-7000-82d1-3139cc0d58f9",
+          "name": "김승태",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)",
+            "5-16. 내부 인재 관리 총정리 자료집 신청 (package_internaltalent)",
+            "5-30. 온라인 교육 템플릿 4종 (package_onlinetpl)"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-22",
+              "text": "- 고객 이름 : 김승태\n- 고객 전화 : 010-9972-7698\n- 고객 이메일 : seungtae_kim@lotte.net\n- 회사 이름 : 롯데지알에스(주)\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^241022\n- 고객 utm_content : lead-gen^khrd^edm\n"
+            },
+            {
+              "date": "2025-01-14",
+              "text": "- 고객 이름 : 김승태\n- 고객 전화 : 010-9972-7698\n- 고객 이메일 : seungtae_kim@lotte.net\n- 회사 이름 : 롯데지알에스(주)\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250114\n- 고객 utm_content : nurturing^salesmap-db^genaisubject\n"
+            },
+            {
+              "date": "2025-06-20",
+              "text": "- 고객 이름 : 김승태\n- 고객 전화 : 010-9972-7698\n- 고객 이메일 : seungtae_kim@lotte.net\n- 회사 이름 : 롯데지알에스(주)\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250620\n- 고객 utm_content : lead-gen^khrd^cta3\n"
+            }
+          ]
+        },
+        {
+          "id": "019a8d02-bff2-766d-a916-543527544f04",
+          "name": "임진희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "인재육성팀",
+      "deals": [
+        {
+          "id": "87a1fc40-aa42-44f0-9e27-8cc43b2588b2",
+          "created_at": "2024-04-22T23:40:37.449Z",
+          "name": "[부가세 별도] (B2B) 롯데지알에스 - 업무 효율성 향상을 위한 생성형 AI",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-05-30T15:00:00.000Z",
+          "expected_amount": 4800000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-05-03T02:59:09.267Z",
+          "amount": 4800000.0,
+          "start_date": "2024-06-23T15:00:00.000Z",
+          "end_date": "2024-06-24T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "bce922e5-02ef-46ec-9aa0-d2c449dfae97",
+            "name": "문혜진",
+            "upper_org": "미입력",
+            "team": "인재육성팀",
+            "title": "책임",
+            "edu_area": "온라인+출강"
+          },
+          "memos": []
+        },
+        {
+          "id": "01992cbe-1e9d-7000-80a2-155996446878",
+          "created_at": "2025-09-09T04:31:00.000Z",
+          "name": "롯데지알에스 생성형 AI CoP 활용 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "SQL",
+          "probability": "[\"낮음\"]",
+          "expected_date": "2026-02-28T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64f9757efb15689232a83bd6",
+            "name": "박소라",
+            "upper_org": "미입력",
+            "team": "인재육성팀",
+            "title": "책임",
+            "edu_area": "온라인+출강"
+          },
+          "memos": [
+            {
+              "date": "2025-09-12",
+              "text": "’23년: 생성형 AI 기초·프롬프트 엔지니어링 과정 운영’24년: AI 활용 엑셀/데이터 분석 자동화 과정 운영피드백: 현업 체감·활용도 낮음 → 프로젝트 기반 필요성 제기’25년 방향: 직무 단위 프로젝트형 교육(아이디어 도출~문제 해결·멘토링) 기획 중F/up: 9월 통화로 기획 방향 확인, 10월 미팅 예정(레퍼런스 공유)\n교육대상 : 전략기획 / CX / 고객관리 / 마케팅 / 영업 등 5개 직군별 약 30~ 40명교육시수 : 총 6주 ※협의가능교육형태 : 온/오프라인(멘토링/코칭/교육)"
+            },
+            {
+              "date": "2025-11-16",
+              "text": "- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 회사 이름 : 롯데지알에스\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 임진희\n- 고객 이메일 : jinheelim@lotte.net\n- 고객 담당 업무 : (공백)\n- 고객 전화 : 01020328439\n- 딜 상담 문의 내용 : 대표 직무(마케팅, 전략기획, 상품개발등) AX 과정을 진행을 하려고 합니다.\n생성형 AI 활용 과정을 2회 진행하였습니다.\n26년도에는 일회성이 아닌 실무 중심의 직무 맞춤형 AX 과정을 통해 협업에 즉시 적용 가능하고\n조직 내 전파 통한 AI 문화 확산으로 이어갈 수 있는 솔루션을 기획하려고 합니다.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 딜 utm_source : (공백)\n- 딜 utm_medium : (공백)\n- 딜 utm_campaign : (공백)\n- 딜 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-16",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            },
+            {
+              "date": "2025-11-16",
+              "text": "- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 회사 이름 : 롯데지알에스\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 임진희\n- 고객 이메일 : jinheelim@lotte.net\n- 고객 담당 업무 : (공백)\n- 고객 전화 : 01020328439\n- 딜 상담 문의 내용 : 대표 직무(경영전략, 구매전략, 디자인, 마케팅등) AX 과정을 진행하려고 합니다.\n생성형 AI 활용 과정을 2회 진행하였고,\n26년도에는 일회성이 아닌 실무 중심의 직무 맞춤형 AX 과정을 통해 \n협업에 즉시 적용 가능하고 향후 조직 내 전파 통한 AI 문화 확산으로 이어갈 수 있는 \n워크샵(비대면)을 기획하려고 합니다. 패스트캠퍼스에서 직무 맞춤형 AX 과정이 있다면 \n연락주시면 감사하겠습니다.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 딜 utm_source : (공백)\n- 딜 utm_medium : (공백)\n- 딜 utm_campaign : (공백)\n- 딜 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-16",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64f9757efb15689232a83bd6",
+          "name": "박소라",
+          "upper_org": "미입력",
+          "team": "인재육성팀",
+          "title": "책임",
+          "edu_area": "온라인+출강",
+          "webforms": [
+            "1-21. 백서 신청 (report_lmsguide)",
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)",
+            "5-15. ATD Korea Summit 2024 하이라이트북 신청 (report_atdkorea2024)",
+            "5-4. 총정리 자료집 신청 (package_leadership)",
+            "5-8. 템플릿 신청 (template_onlinelnd)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-29",
+              "text": "교육장 이전 이슈 때문에 내년도에 여유가 날것 같다. 외부교육 때문에 신입사원 팀빌딩 보고있다. 자료 있으면. >>비즈니스 매너 쪽 자료 달라. 소통 교육 등 있으면 달라. 알잘딱깔센 전달드리기"
+            },
+            {
+              "date": "2024-01-25",
+              "text": "<전화 문의옴>본사 경영지원직군 대상 gpt 교육 최대 50명 고려중. 시간은 4시간 정도 괜찮다심. 상세 커리큘럼 보내달라심."
+            },
+            {
+              "date": "2024-01-25",
+              "text": "- 희정님을 통해 문의 전달 받음.차주 목요일 10시 미팅 예정"
+            },
+            {
+              "date": "2024-04-22",
+              "text": "- 고객 이름 : 박소라\n- 고객 이메일 : sora_park@lotte.net\n- 고객 전화 : 01025841024\n- 회사 이름 : 롯데지알에스(주)\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : (공백)\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^\n- 고객 utm_content : lead-gen^hrda^edm\n"
+            },
+            {
+              "date": "2024-11-04",
+              "text": "- 고객 이름 : 박소라\n- 고객 전화 : 01025841024\n- 고객 이메일 : sora_park@lotte.net\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^241104\n- 고객 utm_content : lead-gen^hrinsight^edm1\n"
+            },
+            {
+              "date": "2025-02-20",
+              "text": "- 고객 이름 : 박소라\n- 고객 전화 : 01025841024\n- 고객 이메일 : sora_park@lotte.net\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250220\n- 고객 utm_content : lead-gen^khrd^lmsguide\n"
+            },
+            {
+              "date": "2025-02-20",
+              "text": "- 고객 이름 : 박소라\n- 고객 전화 : 01025841024\n- 고객 이메일 : sora_park@lotte.net\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250220\n- 고객 utm_content : lead-gen^khrd^lmsguide\n"
+            },
+            {
+              "date": "2025-02-24",
+              "text": "- 고객 이름 : 박소라\n- 고객 이메일 : sora_park@lotte.net\n- 고객 전화 : 01025841024\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 해당 콘텐츠 신청 이유 : 향후 교육 설계에 참고하기 위해\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^lmsguide\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2025-09-05",
+              "text": "- 고객 이름 : 박소라\n- 고객 전화 : 01025841024\n- 고객 이메일 : sora_park@lotte.net\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-09-08",
+              "text": "- 고객 이름 : 박소라\n- 고객 전화 : 01025841024\n- 고객 이메일 : sora_park@lotte.net\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^welcome\n- 고객 utm_content : nurturing^deck^aicontents\n"
+            }
+          ]
+        },
+        {
+          "id": "bce922e5-02ef-46ec-9aa0-d2c449dfae97",
+          "name": "문혜진",
+          "upper_org": "미입력",
+          "team": "인재육성팀",
+          "title": "책임",
+          "edu_area": "온라인+출강",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인재육성팀",
+      "team": "인재육성팀",
+      "deals": [
+        {
+          "id": "bd9f9bd0-90b7-449e-b39c-2824490537e0",
+          "created_at": "2024-02-01T06:52:23.479Z",
+          "name": "[부가세 별도] (B2B) 롯데지알에스 - 업무 효율성 향상을 위한 생성형 AI",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-03-07T15:00:00.000Z",
+          "expected_amount": 6700000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-03-08T05:27:26.000Z",
+          "amount": 6700000.0,
+          "start_date": "2024-03-12T15:00:00.000Z",
+          "end_date": "2024-03-13T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6501094aa9ad3022c106bd59",
+            "name": "문혜진",
+            "upper_org": "인재육성팀",
+            "team": "인재육성팀",
+            "title": "책임",
+            "edu_area": "온라인+출강"
+          },
+          "memos": [
+            {
+              "date": "2024-02-02",
+              "text": "📌미팅 사후 로그1. 참석자 (고객사에서 참석하는 이의 소속과 직급/직책 모두 파악해 적어주세요)고객사 : 박소라 / 문혜진팀 : 최지용2. 미팅 내용 상세 - 롯데 그룹 내에서 자체적을 생성형AI 개발함- 직접 사용해보니까 제대로된 답변도 안주고 업무에 활용 못하겠다는 생각을 했음.- 근데 잘 쓰는 사람도 있다고 하니 한번 얘기 들어보고자 미팅 진행.- 프롬프트엔지니어링 사례 보여드렸고 관심 높아짐.- 차주 중에 진행 여부 확정 예정3. 원하는 교육 내용- 1DAY 8H 교육- 생성형 AI 기술 겉핥기 (3H) : 오전- 프롬프트 엔지니어링 (5H) : 오후- 기술 겉핥기 및 프롬프트 엔지니어링 각각 설명 드렸고 30명 내외 진행 예정.- 오전에 진행하는 생성형 AI 기술 겉핥기 과정은 일부 임원을 추가해 40명 진행될 수 있음.4. 교육 목표- 상품기획 등 다양한 업무에 직접 활용 가능한 수준.5. 대상- 마케팅/기획팀 등 실무자 위주 신청자6. 교육 일정 - 3월 초 1DAY7. 교육 시수- 8H8. 방식 - 오프라인9. 교육 장소- 독산동 롯데지알에스10. 교육 예산- 500만원11. SDR 안내사항- 시간당 60~70만원 안내"
+            }
+          ]
+        },
+        {
+          "id": "0195a1f7-a436-7885-b3d1-528f4d0e6b53",
+          "created_at": "2025-03-17T02:38:36.097Z",
+          "name": "[부가세별도] 롯데지알에스 AI 활용 업무 생산성 향상 과정 (출강)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-05-30T05:25:54.215Z",
+          "expected_amount": 9180000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-05-18T15:00:00.000Z",
+          "amount": 9180000.0,
+          "start_date": "2025-05-29T15:00:00.000Z",
+          "end_date": "2025-06-29T15:00:00.000Z",
+          "net_percent": "59.0",
+          "people": {
+            "id": "6501094aa9ad3022c106bd59",
+            "name": "문혜진",
+            "upper_org": "인재육성팀",
+            "team": "인재육성팀",
+            "title": "책임",
+            "edu_area": "온라인+출강"
+          },
+          "memos": [
+            {
+              "date": "2025-04-02",
+              "text": "7시간 -> 6시간으로 조정교육 인원 : 약 100명 / 차수 당 25명 진행 (약 3~5차수 진행 예정)F/U 사항 : 최재석 강사님 5~6월 출강 가능 일정 전달.추후 F/U 사항 : 롯데 GRS에서 사용하고 있는 엑셀 시트를 공유 받아서 실습 진행할 수 있을지? 강사 미팅 원함."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "6501094aa9ad3022c106bd59",
+          "name": "문혜진",
+          "upper_org": "인재육성팀",
+          "team": "인재육성팀",
+          "title": "책임",
+          "edu_area": "온라인+출강",
+          "webforms": [
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "1-9. 백서 신청 (report_skilltrans)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-22",
+              "text": "ㄴㄴ필요할때 연락하겠다."
+            },
+            {
+              "date": "2024-01-11",
+              "text": "- 고객 이름 : 문혜진\n- 고객 이메일 : munhyejin@lotte.net\n- 고객 전화 : 02-709-1018\n- 회사 이름 : 롯데지알에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240108\n- 고객 utm_content : lead-gen^hrinsight^edm\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

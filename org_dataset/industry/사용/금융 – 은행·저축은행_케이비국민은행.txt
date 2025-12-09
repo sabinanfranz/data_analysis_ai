@@ -1,0 +1,968 @@
+{
+  "organization": {
+    "id": "64d328831750f5b1d531d2f3",
+    "name": "케이비국민은행",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "경영지원그룹",
+      "team": "인재개발부",
+      "deals": [
+        {
+          "id": "2f66dd02-9ebd-432c-90b1-537452c47312",
+          "created_at": "2023-11-14T08:36:39.014Z",
+          "name": "KB국민은행(송영주)_2024 디지털 분야 위탁교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2023-11-29T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": null,
+          "contract_date": "2023-12-31T15:00:00.000Z",
+          "amount": 480000000.0,
+          "start_date": "2024-01-31T15:00:00.000Z",
+          "end_date": "2024-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "ffef2c34-bbd9-4a02-9da5-3e52d735bebf",
+            "name": "송영주",
+            "upper_org": "경영지원그룹",
+            "team": "인재개발부",
+            "title": "대리",
+            "edu_area": "전사 대상 DT 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01934722-caab-700a-9319-a2227ab77aa8",
+          "created_at": "2024-11-20T01:14:42.743Z",
+          "name": "KB국민은행_신입행원과정 디지털 역량 강화 프로그램_2412",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-12-31T05:10:49.086Z",
+          "expected_amount": 19208000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "생성형AI",
+          "contract_date": "2024-12-30T15:00:00.000Z",
+          "amount": 19208000.0,
+          "start_date": "2024-12-12T15:00:00.000Z",
+          "end_date": "2024-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01934725-17a4-700a-9322-b9b5535c2342",
+            "name": "장효선",
+            "upper_org": "경영지원그룹",
+            "team": "인재개발부",
+            "title": "과장",
+            "edu_area": "신입 대상 DT 교육"
+          },
+          "memos": [
+            {
+              "date": "2024-12-23",
+              "text": "KB국민은행 24년도 디지털 연간 계약에 갈음하여 진행"
+            },
+            {
+              "date": "2025-09-03",
+              "text": "금액: 19,208,000원"
+            }
+          ]
+        },
+        {
+          "id": "0193f688-0b17-7dda-9b08-b68f5032b541",
+          "created_at": "2024-12-24T02:38:51.171Z",
+          "name": "KB국민은행(송영주)_2025 디지털 분야 위탁교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-12-31T02:39:56.101Z",
+          "expected_amount": 480000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "DX Essential",
+          "contract_date": "2025-01-09T15:00:00.000Z",
+          "amount": 480000000.0,
+          "start_date": "2024-12-31T15:00:00.000Z",
+          "end_date": "2025-12-31T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "ffef2c34-bbd9-4a02-9da5-3e52d735bebf",
+            "name": "송영주",
+            "upper_org": "경영지원그룹",
+            "team": "인재개발부",
+            "title": "대리",
+            "edu_area": "전사 대상 DT 교육"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "ffef2c34-bbd9-4a02-9da5-3e52d735bebf",
+          "name": "송영주",
+          "upper_org": "경영지원그룹",
+          "team": "인재개발부",
+          "title": "대리",
+          "edu_area": "전사 대상 DT 교육",
+          "webforms": [
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "1-14. 백서 신청 (report_leadershipfw)",
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 송영주\n- 고객 이메일 : 2542854@kbfg.com\n- 고객 전화 : 01027263598\n- 회사 이름 : KB국민은행\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "- 고객 이름 : 송영주\n- 고객 이메일 : 2542854@kbfg.com\n- 고객 전화 : 01027263598\n- 회사 이름 : KB국민은행\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "- 고객 이름 : 송영주\n- 고객 이메일 : 2542854@kbfg.com\n- 고객 전화 : 01027263598\n- 회사 이름 : KB국민은행\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "- 고객 이름 : 송영주\n- 고객 이메일 : 2542854@kbfg.com\n- 고객 전화 : 01027263598\n- 회사 이름 : KB국민은행\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^remind-seminar\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "- 고객 이름 : 송영주\n- 고객 이메일 : 2542854@kbfg.com\n- 고객 전화 : 01027263598\n- 회사 이름 : KB국민은행\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240103\n- 고객 utm_content : nurturing^after^subscribe\"\n"
+            }
+          ]
+        },
+        {
+          "id": "01934725-17a4-700a-9322-b9b5535c2342",
+          "name": "장효선",
+          "upper_org": "경영지원그룹",
+          "team": "인재개발부",
+          "title": "과장",
+          "edu_area": "신입 대상 DT 교육",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64d328831750f5b1d531d35b",
+          "created_at": "2023-08-09T05:47:47.402Z",
+          "name": "AI 트랙",
+          "team": null,
+          "owner": "김다미",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": "2023-09-12T06:43:28.575Z",
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64d328831750f5b1d531d32a",
+            "name": "김광준",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64d328831750f5b1d531d3d7",
+          "created_at": "2023-08-09T05:47:47.772Z",
+          "name": "신입행원 AI 세미나",
+          "team": null,
+          "owner": "김다미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-10-27T02:05:38.808Z",
+          "amount": 7800000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64d328831750f5b1d531d3a4",
+            "name": "김보은",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd760196e775eee7e373fb",
+          "created_at": "2023-08-17T01:21:05.342Z",
+          "name": "국민은행_올플랜_2021 선결제",
+          "team": null,
+          "owner": "김다미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 95000000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760196e775eee7e373ca",
+            "name": "이진원",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd760196e775eee7e37505",
+          "created_at": "2023-08-17T01:21:05.805Z",
+          "name": "KB국민은행_선결제건_1차(16명)",
+          "team": null,
+          "owner": "김다미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760196e775eee7e374d4",
+            "name": "김영은",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd760296e775eee7e37576",
+          "created_at": "2023-08-17T01:21:06.026Z",
+          "name": "KB국민은행_올플랜_선결제건_2차(100명)_2207",
+          "team": null,
+          "owner": "김다미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 1167506363.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760196e775eee7e374d4",
+            "name": "김영은",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd760296e775eee7e375e7",
+          "created_at": "2023-08-17T01:21:06.257Z",
+          "name": "국민은행_올플랜_2022 선결제",
+          "team": null,
+          "owner": "김다미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 1167506363.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760196e775eee7e374d4",
+            "name": "김영은",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd760296e775eee7e37658",
+          "created_at": "2023-08-17T01:21:06.463Z",
+          "name": "KB국민은행_올플랜_선결제건_3차(21명)_2211",
+          "team": null,
+          "owner": "김다미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 1167506363.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760196e775eee7e374d4",
+            "name": "김영은",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd760296e775eee7e376c9",
+          "created_at": "2023-08-17T01:21:06.679Z",
+          "name": "KB국민은행_올플랜_선결제건_4차(12명)_2301",
+          "team": null,
+          "owner": "김다미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 1167506363.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760196e775eee7e374d4",
+            "name": "김영은",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd760296e775eee7e3773a",
+          "created_at": "2023-08-17T01:21:06.883Z",
+          "name": "KB국민은행_올플랜_선결제건_5차(101명)_2301",
+          "team": null,
+          "owner": "김다미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 1167506363.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760196e775eee7e374d4",
+            "name": "김영은",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd762996e775eee7e3c866",
+          "created_at": "2023-08-17T01:21:45.677Z",
+          "name": "[부가세 별도] (코딩 18) JAVA 알고리즘 코딩테스트",
+          "team": null,
+          "owner": "김다미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "기타",
+          "category": null,
+          "contract_date": null,
+          "amount": 1167506363.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760196e775eee7e374d4",
+            "name": "김영은",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd762996e775eee7e3c8d7",
+          "created_at": "2023-08-17T01:21:45.899Z",
+          "name": "2023 디지털 분야 연간교육",
+          "team": null,
+          "owner": "김다미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 1167506363.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760196e775eee7e374d4",
+            "name": "김영은",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "019564e5-e181-7cc6-b3b6-b5daf93fad5b",
+          "created_at": "2025-03-05T06:02:21.965Z",
+          "name": "KB국민은행(DT추진부)-PO 과정 문의",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-04-30T01:16:40.601Z",
+          "expected_amount": 20700000.0,
+          "lost_confirmed_at": "2025-03-18T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "PM/PO",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": "60.0",
+          "people": {
+            "id": "019564e5-e0ea-7cc6-b3b6-a18c36b3c59e",
+            "name": "박현숙",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-03-19",
+              "text": "LOST 사유메일 회신 본문제안해주신  Master PO 교육 과정에 대해 내부적으로 검토를 진행하였습니다.다만, 아쉽게도 이번에는 함께 진행하기 어려울 것 같습니다.소중한 제안을 주셨음에도 긍정적인 답변을 드리지 못해 죄송합니다.앞으로도 좋은 기회가 있으면 다시 논의할 수 있기를 바랍니다.이후 추가 세부 사유 요청드렸으나 회신이 없는 상황"
+            }
+          ]
+        },
+        {
+          "id": "019564e9-2efc-7ee6-86bf-ed48b9b4b231",
+          "created_at": "2025-03-05T06:05:58.403Z",
+          "name": "KB국민은행-생성형 AI 장기과정 문의",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-04-30T01:15:53.432Z",
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-03-30T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "019564e9-2e8d-7ee6-86bf-dfdd12903551",
+            "name": "김영주",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-03-31",
+              "text": "LOST 사유KB국민은행 디지털 연간 교육 일부로 갈음되어 진행할 예정바이트디그리 형태로 변경하여 진행하고자 함."
+            }
+          ]
+        },
+        {
+          "id": "01967a17-1380-799a-a84d-1ffc6c892963",
+          "created_at": "2025-04-28T01:50:54.865Z",
+          "name": "KB국민은행- 생성형 AI(n8n) 특강 문의",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-05-21T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "01967a17-12d5-799a-a84d-08934541993e",
+            "name": "정태영",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-04-28",
+              "text": "기업명 : KB국민은행담당자 : 금융AI2센터 정태영 과장교육 배경 : KB에서 진행하고 있는 생성형 AI 구축 플랫폼에서 n8n 도입을 의한 특강 진행 희망교육 대상자  : KB 임직원 200명 내외교육 일시 : 약 5월 중순으로 희망(21일 or 28일)교육 시수 : 1~2H 특강* 2회차교육 상세KB 내부망에서 사용할 수 있도록 n8n 구축을 희망해당 내용에 대한 특강(1~2H) 이론설명을 희망요청자료 : 특강 견적/ 4H*2회차 견적 / 커리큘럼"
+            },
+            {
+              "date": "2025-05-22",
+              "text": "LOST 사유\n현재 사내에서 n8n 사용 가능 여부 파악 후 교육 진행할 예정다만, 현 시점에서는 교육을 진행하지 않고 추후에 재 문의주시기로 하심."
+            }
+          ]
+        },
+        {
+          "id": "01985931-77f3-7bb6-b6d0-5a4f7528e3b6",
+          "created_at": "2025-07-30T02:37:00.000Z",
+          "name": "케이비국민은행_Microsoft 365 분석가 에이전트 활용 과정 (오프라인 단기)_25년 8월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-09-29T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": "2025-09-01T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": 5000000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "019564e5-e0ea-7cc6-b3b6-a18c36b3c59e",
+            "name": "박현숙",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-09-02",
+              "text": "데이터 실무를 더 잘다루는 강사 VS 분석가 에이전트 기능을 잘 알고 지원해줄 수 있는 강사 위와 같은 선택권에서 고민중. \n- 기업에서는 VDI계정 발급이 어렵고, 분석가 에이전트 기능은 기업용 라이선스에서만 제공되지 못하는 상황으로분석가 에이전트 기능은 사용하지 못하지만 코파일럿이나 파워비아이를 활용한 실무 과정 추천 제안했으나, 내부 의사결정이 길어지면서 이번 교육은 진행하지 않기로함. 조금 더 구체적인 방향성이 잡히면 추후 재문의주신다고 함 ."
+            }
+          ]
+        },
+        {
+          "id": "019a57c4-244b-7335-ab17-1c82178b2ae7",
+          "created_at": "2025-11-06T06:04:00.000Z",
+          "name": "케이비국민은행_신임 부점장 대상 재무제표 교육과정(오프라인_단기)_25년 11월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "SQL",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-12-30T15:00:00.000Z",
+          "expected_amount": 4800000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "재무회계",
+          "contract_date": null,
+          "amount": 4800000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": "36.0",
+          "people": {
+            "id": "64d328831750f5b1d531d32a",
+            "name": "김광준",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-11-06",
+              "text": "신임 부점장 대상 180명 '재무제표 기초' 오프라인 교육 확정 - 권오상회계사+ 온라인 구독/비대면 라이브 특강 문의"
+            }
+          ]
+        },
+        {
+          "id": "019a7a66-f2db-7883-9d55-51ffb15eb6f5",
+          "created_at": "2025-11-12T23:29:00.000Z",
+          "name": "케이비국민은행_재무제표기초 특강(비대면 실시간_단기)_25년 11월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "SQL",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-12-30T15:00:00.000Z",
+          "expected_amount": 1820000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "재무회계",
+          "contract_date": null,
+          "amount": 1820000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": "56.0",
+          "people": {
+            "id": "64d328831750f5b1d531d32a",
+            "name": "김광준",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "019a7a67-6e9a-7552-bef0-ac5048a1b27b",
+          "created_at": "2025-11-12T23:29:00.000Z",
+          "name": "(L-T) 케이비국민은행_권오상 금융아카데미(온라인_단기)_25년 11월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "SQL",
+          "probability": "[\"높음\"]",
+          "expected_date": "2025-12-30T15:00:00.000Z",
+          "expected_amount": 6936000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "재무회계",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64d328831750f5b1d531d32a",
+            "name": "김광준",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64d328831750f5b1d531d32a",
+          "name": "김광준",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64d328831750f5b1d531d3a4",
+          "name": "김보은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64dd760196e775eee7e373ca",
+          "name": "이진원",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64dd760196e775eee7e374d4",
+          "name": "김영은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "652e1b9a5315a163a0dea293",
+          "name": "박승호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "6538d702de0407d7d7dcc669",
+          "name": "김승영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-02",
+              "text": "아쉬운 점이 있었음장표가 좀 빠져있어서 다시 받아보고 싶음미팅은 불가"
+            }
+          ]
+        },
+        {
+          "id": "c01e827d-918a-4fea-9df4-3fb4f6550953",
+          "name": "도신희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-29",
+              "text": "- 고객 이름 : 도신희\n- 고객 이메일 : seenii@kbfg.com\n- 고객 전화 : 01064348211\n- 회사 이름 : KB국민은행\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240227\n- 고객 utm_content : lead-gen^cio^edm\n"
+            },
+            {
+              "date": "2024-03-08",
+              "text": "전화기록- 스킬 셋 구축에 관심은 있음. - 자세한 얘기는 해주지 않으심..- 발표자료 받았고 보고 궁금한 점 있으면 말씀주시겠다고 함."
+            },
+            {
+              "date": "2024-03-12",
+              "text": "전화기록- 역량진단 관련하여 소개 메일 발송 및 안내 차 연락 완료"
+            }
+          ]
+        },
+        {
+          "id": "783ab89b-4836-4a2e-bd7a-dbffd0916f40",
+          "name": "김영환",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-03",
+              "text": "- 고객 이름 : 김영환\n- 고객 이메일 : yhkim88@kbfg.com\n- 고객 전화 : 01031940089\n- 회사 이름 : 국민은행\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "fb13e63f-9ed2-4be6-9661-13bdb7ffc79e",
+          "name": "정은주",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "d98f262c-484c-40f3-b4ba-5063dcbbce33",
+          "name": "강우용",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01924c86-4ff4-7aa1-9e34-97c614fb83e4",
+          "name": "윤세완",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-9. 백서 신청 (report_skilltrans)",
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-17",
+              "text": "- 고객 이름 : 윤세완\n- 고객 전화 : 01046553360\n- 고객 이메일 : sewan.yun@kbfg.com\n- 회사 이름 : 국민은행\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : linkedin\n- 고객 utm_medium : social\n- 고객 utm_campaign : all^mktg^241011\n- 고객 utm_content : lead-gen^set3^ad4_speaker_linkedin\n"
+            }
+          ]
+        },
+        {
+          "id": "019564e5-e0ea-7cc6-b3b6-a18c36b3c59e",
+          "name": "박현숙",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019564e9-2e8d-7ee6-86bf-dfdd12903551",
+          "name": "김영주",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01967a17-12d5-799a-a84d-08934541993e",
+          "name": "정태영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인재개발부",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "01973e88-77ba-7223-9021-a85279377d26",
+          "created_at": "2025-06-05T05:20:00.000Z",
+          "name": "KB국민은행_신입사원 AI 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-31T15:00:00.000Z",
+          "expected_amount": 4890000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-07-31T15:00:00.000Z",
+          "amount": 4890000.0,
+          "start_date": "2025-08-05T15:00:00.000Z",
+          "end_date": "2025-08-05T15:00:00.000Z",
+          "net_percent": "67.0",
+          "people": {
+            "id": "01973e88-7746-7223-9021-9ec2567671e6",
+            "name": "김유진",
+            "upper_org": "인재개발부",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-06-05",
+              "text": "- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 300명 이하\n- 딜 예상 교육 일정 : 2개월 이내\n- 회사 이름 : 국민은행\n- 회사 기업 규모 : 대기업\n- 딜 문의 주제 (최초) : (공백)\n- 고객 이름 : 김유진\n- 고객 이메일 : beautyyj@kbfg.com\n- 고객 담당 업무 : (공백)\n- 고객 전화 : 010-6514-7614\n- 상담 문의 내용 : 신입행원 교육\n- 딜 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-06-05",
+              "text": "*담당자 : 김유진 차장님 / 인재개발부\n25년 상반기에 코파일럿 (6시간 교육+1시간 평가) & AI 로우 코딩 입문과정 (4시간) 진행했음올해 신입행원 110명 (2차수 고려), 강의장은 있는 듯 / 노트북은 대여 필요상반기 과정 외에 좀 더 레벨업 할 수 있는 AI 과정 제안 받길 희망 (2-3개 주제)난이도 : 문과생 기반이라 너무 높지 않았으면 함\n요청사항레벨업 과정 제안 (과정당 4시간 정도)6/25 시작이라 교육일자는 그 이후, 6월 말 1시간 정도 평가 필요"
+            },
+            {
+              "date": "2025-06-09",
+              "text": "담당자 : 김유진 차장님 / 인재개발부25년 상반기에 코파일럿 (6시간 교육+1시간 평가) & AI 로우 코딩 입문과정 (4시간) 진행했음올해 신입행원 110명 (2차수 고려), 강의장은 있는 듯 / 노트북은 대여 필요상반기 과정 외에 좀 더 레벨업 할 수 있는 AI 과정 제안 받길 희망 (2-3개 주제)난이도 : 문과생 기반이라 너무 높지 않았으면 함요청사항레벨업 과정 제안 (과정당 4시간 정도)6/25 시작이라 교육일자는 그 이후, 6월 말 1시간 정도 평가 필요\n\n작년과 동일하게 진행 예정교육 형태 :  사전 온라인 + 현장 평가 + 오프라인 강의사전 온라인은 KB측에서 자체 제작한 컨텐츠가 있으므로 이번에 사용 X현장 평가의 경우 작년에 사용했던 퀴즈 그대로 사용LMS에 입과하여 테스트 진행하는 형태따라서 LMS 사용비 + 테스트 응시비만 청구하는 형태교육 장소 : 작년과 동일(천안 연수원)교육 시수 : 4H or 8H25년 상반기 커리큘럼과 8H 커리큘럼 비교 후 결정 예정진행 툴 : 생성형 AI 무료 버전 (코파일럿으로 한정할 필요 X)작년과 동일교육 인원 : 약 110명 내외"
+            },
+            {
+              "date": "2025-08-01",
+              "text": "총 견적금액: 8,630,000원온라인 평가는 kb국민은행 연간교육계약에 갈음"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "01973e88-7746-7223-9021-9ec2567671e6",
+          "name": "김유진",
+          "upper_org": "인재개발부",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

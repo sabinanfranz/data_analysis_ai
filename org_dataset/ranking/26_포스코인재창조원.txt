@@ -1,0 +1,899 @@
+{
+  "organization": {
+    "id": "64dd75e996e775eee7e34661",
+    "name": "포스코인재창조원",
+    "size": "대기업",
+    "industry": "서비스업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "글로벌리더십센터",
+      "team": "글로벌교육그룹",
+      "deals": [
+        {
+          "id": "0193dcc1-4526-711b-b0b5-efe3fbae3d93",
+          "created_at": "2024-12-19T02:31:13.968Z",
+          "name": "포스코인재창조원_온라인 콘텐츠 포팅_2025 1분기",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-05-31T06:52:58.512Z",
+          "expected_amount": 300000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-05-30T15:00:00.000Z",
+          "amount": 300000.0,
+          "start_date": "2025-04-30T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0193dcc1-4472-711b-b0b5-dea63494991c",
+            "name": "이은지",
+            "upper_org": "글로벌리더십센터",
+            "team": "글로벌교육그룹",
+            "title": "차장",
+            "edu_area": "온라인/포팅"
+          },
+          "memos": [
+            {
+              "date": "2024-12-19",
+              "text": "분기마다 실 집행비용 정산하는 식1월 내 계약 진행 및 첫 포팅 예정 / 2월 계산서 발행"
+            }
+          ]
+        },
+        {
+          "id": "019881d4-bde2-7000-8e22-4b9126caaa53",
+          "created_at": "2025-08-07T00:00:00.000Z",
+          "name": "포스코인재창조원_온라인 콘텐츠 포팅_2025 3분기",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-06T15:00:00.000Z",
+          "expected_amount": 21860000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-08-06T15:00:00.000Z",
+          "amount": 28160000.0,
+          "start_date": "2025-08-19T15:00:00.000Z",
+          "end_date": "2026-08-18T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0193dcc1-4472-711b-b0b5-dea63494991c",
+            "name": "이은지",
+            "upper_org": "글로벌리더십센터",
+            "team": "글로벌교육그룹",
+            "title": "차장",
+            "edu_area": "온라인/포팅"
+          },
+          "memos": []
+        },
+        {
+          "id": "0198dc06-ae83-7339-bce3-060243773125",
+          "created_at": "2025-08-24T12:21:00.000Z",
+          "name": "포스코인재창조원_온라인 콘텐츠 포팅_2025 4분기",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-09-29T15:00:00.000Z",
+          "expected_amount": 30000000.0,
+          "lost_confirmed_at": "2025-08-28T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2025-09-14T15:00:00.000Z",
+          "end_date": "2026-09-13T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0193dcc1-4472-711b-b0b5-dea63494991c",
+            "name": "이은지",
+            "upper_org": "글로벌리더십센터",
+            "team": "글로벌교육그룹",
+            "title": "차장",
+            "edu_area": "온라인/포팅"
+          },
+          "memos": []
+        },
+        {
+          "id": "019a4cd3-3e73-733d-8a28-e70dd34a2c40",
+          "created_at": "2025-11-04T03:05:00.000Z",
+          "name": "포스코인재창조원_2026 콘텐츠 임대 문의",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "SQL",
+          "probability": "[\"높음\"]",
+          "expected_date": "2025-12-30T15:00:00.000Z",
+          "expected_amount": 30000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "0193dcc1-4472-711b-b0b5-dea63494991c",
+            "name": "이은지",
+            "upper_org": "글로벌리더십센터",
+            "team": "글로벌교육그룹",
+            "title": "차장",
+            "edu_area": "온라인/포팅"
+          },
+          "memos": []
+        },
+        {
+          "id": "019ad90d-e5de-7bbd-afb0-94534033d260",
+          "created_at": "2025-12-01T08:35:00.000Z",
+          "name": "포스코인재창조원_온라인 콘텐츠 포팅_2025 4분기",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-11-30T15:00:00.000Z",
+          "expected_amount": 22400000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-11-30T15:00:00.000Z",
+          "amount": 22400000.0,
+          "start_date": "2025-12-07T15:00:00.000Z",
+          "end_date": "2026-12-06T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0193dcc1-4472-711b-b0b5-dea63494991c",
+            "name": "이은지",
+            "upper_org": "글로벌리더십센터",
+            "team": "글로벌교육그룹",
+            "title": "차장",
+            "edu_area": "온라인/포팅"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "0193dcc1-4472-711b-b0b5-dea63494991c",
+          "name": "이은지",
+          "upper_org": "글로벌리더십센터",
+          "team": "글로벌교육그룹",
+          "title": "차장",
+          "edu_area": "온라인/포팅",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "디지털직무교육그룹",
+      "team": "디지털직무교육그룹",
+      "deals": [
+        {
+          "id": "01941689-1831-7113-9a0a-ce5fa68261ca",
+          "created_at": "2024-12-30T07:47:50.968Z",
+          "name": "포스코인재창조원_AI아카데미_2025",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-01-31T07:48:29.157Z",
+          "expected_amount": 37125000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-01-30T15:00:00.000Z",
+          "amount": 39600000.0,
+          "start_date": "2025-02-16T15:00:00.000Z",
+          "end_date": "2026-09-27T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0194fdfd-6bee-7000-8ed8-cfa1c0442986",
+            "name": "정지나",
+            "upper_org": "디지털직무교육그룹",
+            "team": "디지털직무교육그룹",
+            "title": "계약직",
+            "edu_area": "아카데미교육"
+          },
+          "memos": [
+            {
+              "date": "2025-02-13",
+              "text": "1차 입과 완료2025-02-17 ~ 2026-02-16 75명"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "0194fdfd-6bee-7000-8ed8-cfa1c0442986",
+          "name": "정지나",
+          "upper_org": "디지털직무교육그룹",
+          "team": "디지털직무교육그룹",
+          "title": "계약직",
+          "edu_area": "아카데미교육",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64dd75ea96e775eee7e34761",
+          "created_at": "2023-08-17T01:20:42.171Z",
+          "name": "포스코인재창조원_포팅_2302",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2023-01-30T15:00:00.000Z",
+          "expected_amount": 50000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": null,
+          "contract_date": "2023-01-30T15:00:00.000Z",
+          "amount": 50000000.0,
+          "start_date": "2023-01-31T15:00:00.000Z",
+          "end_date": "2023-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd75ea96e775eee7e3472f",
+            "name": "이미나",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-08-07",
+              "text": "부가세 포함 시 55,000,000"
+            }
+          ]
+        },
+        {
+          "id": "dae841d4-d20e-4c3f-a93c-c10c40d6d2ed",
+          "created_at": "2023-12-06T04:47:58.269Z",
+          "name": "포스코인재창조원(이미나)_포팅_초과금액 건_2312",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-12-07T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": null,
+          "contract_date": "2023-12-08T06:28:11.000Z",
+          "amount": 3275000.0,
+          "start_date": "2023-12-21T15:00:00.000Z",
+          "end_date": "2024-12-20T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd75ea96e775eee7e3472f",
+            "name": "이미나",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2023-12-29",
+              "text": "부가세 포함 시 3,602,500원"
+            }
+          ]
+        },
+        {
+          "id": "2c6411e6-ce4b-451f-b705-b60cf86e83f3",
+          "created_at": "2024-01-18T00:42:09.665Z",
+          "name": "포스코인재창조원(이미나)_온라인_포팅_2024",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2024-01-30T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2024-01-31T03:18:01.000Z",
+          "amount": 50000000.0,
+          "start_date": "2024-01-31T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd75ea96e775eee7e3472f",
+            "name": "이미나",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-01-18",
+              "text": "부가세 포함 시 55,000,000원"
+            }
+          ]
+        },
+        {
+          "id": "54954593-a10a-4554-8832-f103dd69b459",
+          "created_at": "2024-03-21T01:12:36.069Z",
+          "name": "포스코인재창조원_AI 전문가 육성 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 308750000.0,
+          "lost_confirmed_at": "2024-08-13T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "빅데이터/AI",
+          "contract_date": null,
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "fb02af7e-5b0b-4d13-bec0-178033ae0d18",
+            "name": "이찬미",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-03-21",
+              "text": "- 딜 문의 주제 (최초) : 데이터 분석 및 AI 실무, 생성형 AI (챗GPT 활용), 영업/디지털 마케팅, PO/PM (프로젝트 관리, 제품 및 서비스 기획), OA (사무자동화)\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 회사 이름 : 포스코인재창조원\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 이찬미\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 고객 이메일 : chanmi.lee_hrd@poscohrd.com\n- 고객 전화 : 01050983550\n- 상담 문의 내용 : ○ 목적 : 포스코그룹 사업/직무별 맞춤형 AI인재 육성 강화 \n○ 대상 : 선발직원 30~50명(AI 인재로의 성장을 희망하는 인원)\n○ 운영 : 블렌디드 러닝(온라인+비대면) \n○ 기간 : 4주 내외 \n○ 요청사항 \n  (1) 최신 트렌드 반영 직무 맞춤형 커리큘럼 구성(기술/연구/마케팅/물류 등) \n    - 공통 : 파이썬 코딩, 생성AI, OA(사무자동화) \n    - 기술 : 데이터 분석 및 AI 실무(데이터 사이언티스트 육성) \n    - 연구 : 컴퓨터비전, 물체감지 등 AI 기술 \n    - 마케팅 : 영업/마케팅 업무 관련 AI 기술 \n    - 물류 : 물류 업무 관련 AI 기술 \n  (2) 풍부한 실무경험을 가진 AI 전문강사 라인업\n  (3) 오프라인 강의장 제공가능 여부 문의\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-22",
+              "text": "3/29(금)까지 제안/견적 전달로 기업측과 일정 논의 완!"
+            },
+            {
+              "date": "2024-03-25",
+              "text": "포스코인재창조원 : 포스코그룹의 사내 HRD 전문교육기관→ 직원들의 DX 역량 향상을 위해 「뉴칼라(New Collar) 프로그램」을 운영 중전 직원 대상 파이썬 기초 프로그래밍부터 데이터 분석, RPA, 물체탐지, 컴퓨터비전, AutoML 등기본적인 수준의 현업 실무형 디지털 교육을 인재창조원 강사진이 온라인/대면으로 진행 중[ 포스코그룹 AI활용전문가 양성과정 ] ○ 목적 : 포스코그룹 현업 AI 과제 수행을 주도하는 실무형 디지털 전문가 육성→ 현업에서 AI기술 적용이 가능한 개선과제를 도출하고, 해결방향까지 제시할 수 있는 수준의 실무형 AI활용 전문인력 양성이 목표 ○ 대상 : 선발인원 30~50명 내외 (인공지능 과제 수행자, 인공지능 업무 수행자 등 잠재적 AI 우수인재)→ 다양한 사업/직무/업무로 구성된 인원이라 교육 니즈가 굉장히 다양함 ○ 운영 : 블렌디드 러닝 (온라인+대면) ○ 기간 : 4주 내외 (대면 집합교육은 전일 Off-Job 형태로 최대 4주까지 가능) ○ 요청사항     (1) ChatGPT 등 최신 AI 트렌드를 반영하여, 직무 맞춤형 커리큘럼으로 구성 부탁드립니다.         직무는 크게 4가지로 분류하여, 기술(공학, 학사급 엔지니어), 연구(공학, 석·박사급 연구원),          마케팅, 물류 분야 입니다. ( 공통직무 모두 수강하고, 그 이후 직무별로 분반하여 수강 희망 )          - 공통(모든 직무 대상)  : 파이썬 프로그래밍, 생성 AI 활용법, 데이터 분석 기초 등 → 1주          - 기술 : 데이터 분석 심화, 머신러닝, 딥러닝 등 AI 활용기술 → 3주          - 연구 : 머신러닝, 딥러닝, 컴퓨터비전, 물체감지, AutoML 등 고급 데이터 분석 및 AI 기술 → 3주          - 마케팅 : 영업/마케팅 업무 관련 AI 활용기술 → 3주          - 물류 : 물류/유통 업무 관련 AI 활용기술→ 3주     (2) 풍부한 실무 경험을 가진 AI 전문강사 라인업으로 요청드립니다.          교육을 이수하고 바로 현업에 복귀하여 실무에 적용할 수 있어야 하므로,           지나친 이론수업보다는 실습 중심 커리큘럼을 희망합니다.     (3) 회사 보안문제로 사내 연수시설은 교육 진행에 한계가 많습니다.          대면 집합교육을 진행할 수 있는 오프라인 강의시설을 별도로 운영하고 계시다면           대여 가능여부 문의드립니다."
+            },
+            {
+              "date": "2024-04-04",
+              "text": "* 포스코 내부 상황▶ 포스코는 본 교육을 포스텍이랑 진행중- 내부교육대상자들이 포스텍 교육 내용에 불만이 굉장히 많은 상태지만, 포스코와 연계되어있어서 교육주최를 바꾸는 의사결정이 쉽지 않음- 하지만 실무진단에서는 내부 클레임을 잠재우고 교육효과를 높이기 위해 외부업체에 커리큘럼과 구성을 받아, 외부에서 진행하는게 훨씬 트렌디하고 좋은 내용이다는 방향으로 의사결정자 설득을 하고자 함- 하지만 설득이 쉽지 않을 거고, 모두가 OK해도 대표님 선에서 컷트되면 교육 진행 못하는 상황이라 진행여부에 대해 말씀을 못해주시는 상황현재 패스트캠퍼스 제안/견적 내용은 실무진, 의사결정자 보고는 올라간 상황이고 내용 중 한 주제가 핀트가 엇나가서 4/8주까지 수정해서 제안드리면 반영해서 검토해보실 예정!변경 필요한 커리큘럼 (기술 직무- 데이터사이언티스트 육성)○ 기술직무 엔지니어 대부분이 SQL, BI Matrix, MES에서 조업 데이터를 가져오기 때문에,    데이터 크롤링은 주로 사용하는 데이터 수집방법이 아니어서 불필요할 것으로 판단됩니다.○ 자연어 처리 커리큘럼도 기술직무 엔지니어에게는 활용도가 낮아 불필요할 것으로 판단됩니다.    (주로 수치형 조업데이터를 다루므로 정형 데이터 분석에 초점을 두면 좋겠습니다!) ○ 딥러닝 모델 중 CNN, RNN까지 제안되어 있는데, 좀 더 최신 알고리즘이 있으면 좋겠습니다.    Transformer 등 요즘 나오는 최신 모델도 함께 다루기를 희망합니다.    정형 데이터 분석에 Transformer 활용이 어렵다면, AutoML 또는 이상탐지 커리큘럼도 좋을 것 같습니다!    (품질 편차에 영향을 주는 이상치 탐색, 원인파악을 위한 모델 등)"
+            },
+            {
+              "date": "2024-05-20",
+              "text": "데일리투두대표가 변경되면서 AI교육에 대한 내부 교육 전면 재검토중,AI 유관부서가 6개정도 되어서 교육 컨셉,내용,일정 모두 재논의 중6월까지는 내부적으로 계속 논의하고 조율해야 하고RFP가 나와도 7월 중 나온다고 예상됨교육은 가급적 9-10월 하반기에는 시작하고 싶은데, 현재 이 생각도 담당자님의 생각이라조금 더 정리해보고 빠르면 6월, 늦으면 7월 중 연락주신다고 함→ 하지만, 연락을 먼저 주지 않으실 가능성이 커서 6월 말까지 연락 안오면 제가 다시 연락해보겠습니다..!"
+            },
+            {
+              "date": "2024-08-15",
+              "text": "Lost 사유- 내부 의사결정 연기로 교육 진행 여부 불확실"
+            }
+          ]
+        },
+        {
+          "id": "01961335-ecb5-788a-8f84-040c3a7e1631",
+          "created_at": "2025-04-08T02:23:43.293Z",
+          "name": "포스코인재창조원_25년 포스코그룹 제로톤",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-04-30T02:25:14.176Z",
+          "expected_amount": 97844000.0,
+          "lost_confirmed_at": "2025-04-16T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "복합(출강+온라인)",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": "49.0",
+          "people": {
+            "id": "fb02af7e-5b0b-4d13-bec0-178033ae0d18",
+            "name": "이찬미",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-04-17",
+              "text": "패스트캠퍼스 포함하여 총 3군데 입찰 참여그 중 팀 스파르타 선정선정 사유로 가장 큰점은 24년도에 기 진행했던 레퍼런스와, 그 레퍼런스가 긍정적인 반응이었다는 점에서 가장 큰 점수를 받았음(비전공자 대상으로 코칭을 잘해주었던 점이 긍정적인 요소였음)패스트캠퍼스가 기술 역량에서 부족한 점은 없었고, 내부에서도 긍정적인 평가여서 내부 논의가 꽤 길었음해커톤은 같이 못하지만 4월 말에 나오는 AI 활용 전문가 과정에 입찰도 꼭 참여 해주길 바람!( 부트캠프 형태로 진행 예정 )"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64dd75ea96e775eee7e3472f",
+          "name": "이미나",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64e52ef2f920a7b8b96f120f",
+          "name": "윤섭",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-4. 백서 신청 (report_workflowlearning)"
+          ],
+          "memos": [
+            {
+              "date": "2023-09-18",
+              "text": "온라인 서비스 이용 중현재 오프라인 출강교육 계획이 없음"
+            }
+          ]
+        },
+        {
+          "id": "64f975acfb15689232a898f1",
+          "name": "이인태",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2023-11-23",
+              "text": "1차 Call: 교육 기획 부서가 따로 있어서 거기서 진행하고 있다보니 필요 없어서 미팅 거절"
+            }
+          ]
+        },
+        {
+          "id": "64f975adfb15689232a89945",
+          "name": "강형근",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2023-11-16",
+              "text": "1차 Call1월 ~2월 중에 다시 미팅요청하기. 지금은 연말이라 미팅하기 어렵다포항"
+            }
+          ]
+        },
+        {
+          "id": "653635e11b904e5702735c21",
+          "name": "위미란",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-01",
+              "text": "11/1 Call (1차 콜드콜)부재중"
+            },
+            {
+              "date": "2023-11-02",
+              "text": "11/02 Call (2차 콜드콜)11월에 교육을 계속 진행하고 있어서 어려움DX는 주 담당분야는 아님.리더십 교육, 신입사원교육  담당하고 있음.    내년도 계획 준비 중내년도 교육 계획에 참고할 수 있게 콘텐츠 북 요청마음챙김, 명상에 대한 교육을 계획 중이라 콘텐츠가 있는지 문의"
+            }
+          ]
+        },
+        {
+          "id": "cebcd4f3-7cb7-4cd9-abda-2b74ff598a80",
+          "name": "김지현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "faa1e0b4-37ee-45d5-9834-74b8d53695f2",
+          "name": "김수희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "4944eb0c-91c5-4883-9081-80472fa9614d",
+          "name": "곽윤정",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-12. 백서 신청 (report_leadership)",
+            "3-53. 소개서 : 데이터 기반 의사결정 (content_dataanalysis_roadmap)",
+            "3-7. 소개서 : 리더를 위한 AI 적용 (main_datadriven)",
+            "4-6. 세미나 다시보기: 고성과자 발굴 프레임워크를 활용한 기업 맞춤 리더십 교육 설계",
+            "5-4. 총정리 자료집 신청 (package_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-29",
+              "text": "- 고객 이름 : 곽윤정\n- 고객 이메일 : yjkwak@poscohrd.com\n- 고객 전화 : 010-5469-2858\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240129\n- 고객 utm_content : lead-gen^hrda^edm-cta4\n"
+            },
+            {
+              "date": "2024-01-29",
+              "text": "- 고객 이름 : 곽윤정\n- 고객 이메일 : yjkwak@poscohrd.com\n- 고객 전화 : 010-5469-2858\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 지인 추천\n- 이번 웨비나 관련 고민이나 궁금한 점 : 어떠한 관점에서 리더십 교육을 전달해야 하는지\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240129\n- 고객 utm_content : lead-gen^hrda^edm-cta4\n"
+            },
+            {
+              "date": "2024-01-29",
+              "text": "- 고객 이름 : 곽윤정\n- 고객 이메일 : yjkwak@poscohrd.com\n- 고객 전화 : 010-5469-2858\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240129\n- 고객 utm_content : lead-gen^hrda^edm-cta4\n"
+            },
+            {
+              "date": "2024-01-29",
+              "text": "- 고객 이름 : 곽윤정\n- 고객 이메일 : yjkwak@poscohrd.com\n- 고객 전화 : 010-5469-2858\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240129\n- 고객 utm_content : lead-gen^hrda^edm-cta4\n"
+            },
+            {
+              "date": "2024-01-29",
+              "text": "- 고객 이름 : 곽윤정\n- 고객 이메일 : yjkwak@poscohrd.com\n- 고객 전화 : 010-5469-2858\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240129\n- 고객 utm_content : lead-gen^hrda^edm-cta4\n"
+            },
+            {
+              "date": "2024-02-05",
+              "text": "전화기록- 웨비나 이후 연락주시기로 함."
+            }
+          ]
+        },
+        {
+          "id": "63d9e2b0-a8e3-45f9-8cd8-44631990238b",
+          "name": "김현실",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-6. 세미나 다시보기: 고성과자 발굴 프레임워크를 활용한 기업 맞춤 리더십 교육 설계",
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-29",
+              "text": "- 고객 이름 : 김현실\n- 고객 이메일 : hyunsil@poscohrd.com\n- 고객 전화 : 010-2816-5084\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 지인 추천\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240129\n- 고객 utm_content : lead-gen^hrda^edm-cta4\n"
+            },
+            {
+              "date": "2024-01-29",
+              "text": "웨비나 신청 관련 안내 완료"
+            },
+            {
+              "date": "2024-02-01",
+              "text": "전화기록- 리더십 교육 그룹 소속- 신입사원 대상 교육 -> 경영철학, 경영이념 전파를 하기 위해 활동 중- 내재화하고 있는 방법에 대해서 궁금- 대리, 과장 승진자 대상 교육- 직책자 중 리더십 진단 도구가 있는지?"
+            },
+            {
+              "date": "2024-02-07",
+              "text": "전화기록- 회의가 있어서 참석하지 못했음.- 이동 중이라 연휴지나고 다시 연락 요청하셨음."
+            },
+            {
+              "date": "2024-02-14",
+              "text": "전화기록- 21일 송도에서 미팅 확정"
+            },
+            {
+              "date": "2025-11-17",
+              "text": "- 고객 이름 : 김현실\n- 고객 전화 : 01028165084\n- 고객 이메일 : hyunsil@poscohrd.com\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "a841d53c-bc71-4023-b4a4-67b6b6969b08",
+          "name": "조현욱",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-6. 세미나 다시보기: 고성과자 발굴 프레임워크를 활용한 기업 맞춤 리더십 교육 설계"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-29",
+              "text": "- 고객 이름 : 조현욱\n- 고객 이메일 : kaze5202_hrd@poscohrd.com\n- 고객 전화 : 010-6473-6964\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 지인 추천\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-06-27",
+              "text": "지금 통화가 길게 어려워서 나중에 연락주신다고 함."
+            }
+          ]
+        },
+        {
+          "id": "fed6ad51-992e-4d30-9fbb-ed73fc9365ce",
+          "name": "김건영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-22",
+              "text": "- 고객 이름 : 김건영\n- 고객 이메일 : happyhrd@poscohrd.com\n- 고객 전화 : 010-2399-9075\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : kakaotalk\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240222\n- 고객 utm_content : lead-gen^hrda^openchat\n"
+            }
+          ]
+        },
+        {
+          "id": "fb02af7e-5b0b-4d13-bec0-178033ae0d18",
+          "name": "이찬미",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "3-59. 소개서 : AI 구독제 서비스(aisubs_proposal)",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-21",
+              "text": "- 고객 이름 : 이찬미\n- 고객 이메일 : chanmi.lee_hrd@poscohrd.com\n- 고객 전화 : 01050983550\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-09-23",
+              "text": "- 고객 이름 : 이찬미\n- 고객 전화 : 01050983550\n- 고객 이메일 : chanmi.lee_hrd@poscohrd.com\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240923\n- 고객 utm_content : nurturing^mktg-agreed^casebook_genai_subject\n"
+            }
+          ]
+        },
+        {
+          "id": "d9cb5346-1c1e-43b4-b60b-704263d63c82",
+          "name": "이형모",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-17. 백서 신청 (report_trainingroi)"
+          ],
+          "memos": [
+            {
+              "date": "2024-08-21",
+              "text": "- 고객 이름 : 이형모\n- 고객 이메일 : leehm@poscohrd.com\n- 고객 전화 : 010-996707688\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240820\n- 고객 utm_content : lead-gen^khrd^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "c765ed73-60e2-4c75-89d6-ec84c271b06a",
+          "name": "송지수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0193aa57-5129-7bb9-a666-ed8104b0af21",
+          "name": "이덕현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-20. 스킬 기반 조직 전환 3종 패키지 (package_skilltransformation)"
+          ],
+          "memos": [
+            {
+              "date": "2024-12-09",
+              "text": "- 고객 이름 : 이덕현\n- 고객 전화 : 01090259502\n- 고객 이메일 : mbsann@naver.com\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^241209\n- 고객 utm_content : lead-gen^khrd^cta_package\n"
+            }
+          ]
+        },
+        {
+          "id": "01941689-17c5-7113-9a0a-bcd22d3e8f4e",
+          "name": "김서영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01996096-1ccb-7000-85ac-10c14d06616c",
+          "name": "우지연",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-19",
+              "text": "- 고객 이름 : 우지연\n- 고객 전화 : 01075730574\n- 고객 이메일 : yeon2025@poscohrd.com\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "019a949b-565d-7ee6-9bfe-1d6f33f8ab80",
+          "name": "류민식",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-62. 소개서 :Skill Match 진단 평가 서비스 소개서 (skillmatch_proposal)",
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)"
+          ],
+          "memos": [
+            {
+              "date": "2025-11-18",
+              "text": "- 고객 이름 : 류민식\n- 고객 전화 : 01045784253\n- 고객 이메일 : elsunhwan@poscohrd.com\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 직접 검색, 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-18",
+              "text": "- 고객 이름 : 류민식\n- 고객 이메일 : elsunhwan@poscohrd.com\n- 고객 전화 : 001045784253\n- 회사 이름 : 포스코인재창조원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "혁신기술센터",
+      "team": "디지털직무교육그룹",
+      "deals": [
+        {
+          "id": "64dd75e996e775eee7e346c6",
+          "created_at": "2023-08-17T01:20:41.867Z",
+          "name": "주식회사 포스코인재창조원_싱글플랜_2201",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": 95647500.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75e996e775eee7e34695",
+            "name": "배강국",
+            "upper_org": "혁신기술센터",
+            "team": "디지털직무교육그룹",
+            "title": "선생님",
+            "edu_area": "온라인 교육/AI"
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd75ea96e775eee7e347d2",
+          "created_at": "2023-08-17T01:20:42.407Z",
+          "name": "포스코인재창조원_싱글플랜_2302",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": 95647500.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75e996e775eee7e34695",
+            "name": "배강국",
+            "upper_org": "혁신기술센터",
+            "team": "디지털직무교육그룹",
+            "title": "선생님",
+            "edu_area": "온라인 교육/AI"
+          },
+          "memos": []
+        },
+        {
+          "id": "d3b410d4-5631-4316-b2cc-15e690f30fb3",
+          "created_at": "2024-01-02T10:41:12.274Z",
+          "name": "포스코인재창조원 - AI 아카데미 (싱글플랜 24~25년도)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "최석환",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-12-30T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-12-31T10:41:30.000Z",
+          "amount": 49500000.0,
+          "start_date": "2024-02-04T15:00:00.000Z",
+          "end_date": "2025-09-28T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd75e996e775eee7e34695",
+            "name": "배강국",
+            "upper_org": "혁신기술센터",
+            "team": "디지털직무교육그룹",
+            "title": "선생님",
+            "edu_area": "온라인 교육/AI"
+          },
+          "memos": [
+            {
+              "date": "2024-01-23",
+              "text": "커스텀한 b2e 코스: 235782계산서용 코스 : 235671"
+            }
+          ]
+        },
+        {
+          "id": "8489de21-e460-44a0-9d56-a9f4369ecf0e",
+          "created_at": "2024-01-02T11:25:17.312Z",
+          "name": "포스코인재창조원 - AI아카데미_23~24년도",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "최석환",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-01-29T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "데이터분석/CDS",
+          "contract_date": "2024-01-05T06:14:16.369Z",
+          "amount": 48847500.0,
+          "start_date": "2023-01-29T15:00:00.000Z",
+          "end_date": "2024-09-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd75e996e775eee7e34695",
+            "name": "배강국",
+            "upper_org": "혁신기술센터",
+            "team": "디지털직무교육그룹",
+            "title": "선생님",
+            "edu_area": "온라인 교육/AI"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64dd75e996e775eee7e34695",
+          "name": "배강국",
+          "upper_org": "혁신기술센터",
+          "team": "디지털직무교육그룹",
+          "title": "선생님",
+          "edu_area": "온라인 교육/AI",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

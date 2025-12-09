@@ -1,0 +1,117 @@
+{
+  "organization": {
+    "id": "bb76ae89-91be-4a4d-8b32-370845f276af",
+    "name": "삼성전자인재원",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "019a05d2-29c1-7119-bc62-2437b40f11f1",
+          "created_at": "2025-10-21T08:10:00.000Z",
+          "name": "삼성전자_2026 구매 with AI 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김정은",
+          "status": "SQL",
+          "probability": "[\"높음\"]",
+          "expected_date": "2025-12-30T15:00:00.000Z",
+          "expected_amount": 10000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2026-03-01T15:00:00.000Z",
+          "end_date": "2026-06-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "019a05d2-28d3-7119-bc62-15f02b4dd7f0",
+            "name": "정희진",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "019a2dc2-6ab5-7fff-9abc-34cd0804ab4b",
+          "created_at": "2025-10-29T02:18:00.000Z",
+          "name": "삼성전자 인재개발원_GMP/Meta 교육 (11월)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김정은",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-11-05T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "마케팅",
+          "contract_date": "2025-11-05T15:00:00.000Z",
+          "amount": 5000000.0,
+          "start_date": "2025-11-05T15:00:00.000Z",
+          "end_date": "2025-11-17T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "019a2dc2-69e6-7fff-9abc-2778f585074f",
+            "name": "지형배",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "01997f05-1d9f-7662-8f8d-06af2664dda8",
+          "name": "이준구",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019a05d2-28d3-7119-bc62-15f02b4dd7f0",
+          "name": "정희진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019a2dc2-69e6-7fff-9abc-2778f585074f",
+          "name": "지형배",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019a707f-45af-733b-b1ef-a199b3610867",
+          "name": "신윤미",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

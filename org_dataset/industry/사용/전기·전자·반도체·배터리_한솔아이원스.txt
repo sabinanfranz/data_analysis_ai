@@ -1,0 +1,28 @@
+{
+  "organization": {
+    "id": "f1b36dc4-2c8e-414c-a528-0a5d63ec509d",
+    "name": "한솔아이원스",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [],
+      "people": [
+        {
+          "id": "0196c8b3-0b17-7ff1-b7e6-ee4fd2f1aeb5",
+          "name": "이연재",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

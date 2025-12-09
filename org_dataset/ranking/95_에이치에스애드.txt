@@ -1,0 +1,398 @@
+{
+  "organization": {
+    "id": "64e2e8a77a38114d409a12e0",
+    "name": "에이치에스애드",
+    "size": "대기업",
+    "industry": "서비스업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "HR(추정)",
+      "team": "인사기획팀",
+      "deals": [
+        {
+          "id": "0197bf31-2cc0-7ccf-8c40-c350125973aa",
+          "created_at": "2025-06-30T04:56:00.000Z",
+          "name": "HS애드_싱글플랜_분기별입과_2507",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-07T04:57:08.883Z",
+          "expected_amount": 3308200.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-07-06T15:00:00.000Z",
+          "amount": 3308200.0,
+          "start_date": "2025-07-06T15:00:00.000Z",
+          "end_date": "2025-09-29T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0194d033-8db5-766c-9586-93bf2dadea76",
+            "name": "이현호",
+            "upper_org": "HR(추정)",
+            "team": "인사기획팀",
+            "title": "팀원",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        },
+        {
+          "id": "01993223-d305-7332-9310-9455771914c6",
+          "created_at": "2025-09-10T05:40:00.000Z",
+          "name": "HS애드_싱글플랜_분기별입과_2510",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-10-12T15:00:00.000Z",
+          "expected_amount": 1000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-10-12T15:00:00.000Z",
+          "amount": 4426700.0,
+          "start_date": "2025-10-12T15:00:00.000Z",
+          "end_date": "2025-12-11T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0194d033-8db5-766c-9586-93bf2dadea76",
+            "name": "이현호",
+            "upper_org": "HR(추정)",
+            "team": "인사기획팀",
+            "title": "팀원",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "0194d033-8db5-766c-9586-93bf2dadea76",
+          "name": "이현호",
+          "upper_org": "HR(추정)",
+          "team": "인사기획팀",
+          "title": "팀원",
+          "edu_area": "온라인",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64e2e8a77a38114d409a136a",
+          "created_at": "2023-08-21T04:31:35.888Z",
+          "name": "HS애드(HS Ad)_온라인 구독 싱글플랜_31인_분기별입과",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-08-20T15:00:00.000Z",
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-09-03T09:43:13.000Z",
+          "amount": 5655500.0,
+          "start_date": "2023-08-20T15:00:00.000Z",
+          "end_date": "2024-08-19T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64e2e8a77a38114d409a131f",
+            "name": "차혜수",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2023-08-21",
+              "text": "입과자 명단 링크"
+            }
+          ]
+        },
+        {
+          "id": "ae637f67-ad6a-4780-b7b9-5dbf355be34e",
+          "created_at": "2023-11-15T04:23:48.930Z",
+          "name": "HS애드(차혜수)_싱글플랜_분기별입과_2311",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2023-11-14T15:00:00.000Z",
+          "expected_amount": 6628000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-11-15T07:30:03.000Z",
+          "amount": 6628000.0,
+          "start_date": "2023-11-19T15:00:00.000Z",
+          "end_date": "2024-11-18T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64e2e8a77a38114d409a131f",
+            "name": "차혜수",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "4f091198-70f3-4a0f-9aa0-fb9ecb3d1a62",
+          "created_at": "2024-04-09T04:53:54.936Z",
+          "name": "HS애드(차혜수)_싱글플랜_분기별입과_2404",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-04-29T15:00:00.000Z",
+          "expected_amount": 4880600.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-04-30T09:45:17.000Z",
+          "amount": 4880600.0,
+          "start_date": "2024-04-14T15:00:00.000Z",
+          "end_date": "2025-04-13T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64e2e8a77a38114d409a131f",
+            "name": "차혜수",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-04-09",
+              "text": "수강생명단 : https://docs.google.com/spreadsheets/d/1bzwHeTh4uXHyIEy0kpHo0YyfZ925t7PyxLRV229sEEc/edit#gid=455046971"
+            }
+          ]
+        },
+        {
+          "id": "ea864e1b-b3bd-4fc7-b5b6-66c7054de3b2",
+          "created_at": "2024-04-23T09:13:38.697Z",
+          "name": "HS애드(차혜수)_싱글플랜_분기별입과_2405(추가)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-05-29T15:00:00.000Z",
+          "expected_amount": 4434600.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-05-31T00:13:36.645Z",
+          "amount": 4434600.0,
+          "start_date": "2024-05-12T15:00:00.000Z",
+          "end_date": "2025-05-11T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64e2e8a77a38114d409a131f",
+            "name": "차혜수",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-05-07",
+              "text": "수강생 명단 : https://docs.google.com/spreadsheets/d/1bzwHeTh4uXHyIEy0kpHo0YyfZ925t7PyxLRV229sEEc/edit#gid=944660363"
+            }
+          ]
+        },
+        {
+          "id": "a70808df-20ad-4c18-aa47-360adb3a05dd",
+          "created_at": "2024-07-23T08:30:18.975Z",
+          "name": "HS애드(차혜수)_싱글플랜_분기별입과_2407",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-07-30T15:00:00.000Z",
+          "expected_amount": 6240000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-07-31T00:13:36.000Z",
+          "amount": 6240000.0,
+          "start_date": "2024-07-28T15:00:00.000Z",
+          "end_date": "2025-07-27T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64e2e8a77a38114d409a131f",
+            "name": "차혜수",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "01927a89-4c23-766f-af7a-62887647b963",
+          "created_at": "2024-10-11T07:44:31.274Z",
+          "name": "HS애드(차혜수)_싱글플랜_분기별입과_2410",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-10-30T15:00:00.000Z",
+          "expected_amount": 2217600.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-10-31T00:13:36.000Z",
+          "amount": 2217600.0,
+          "start_date": "2024-10-13T15:00:00.000Z",
+          "end_date": "2025-10-12T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64e2e8a77a38114d409a131f",
+            "name": "차혜수",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "01956563-2168-7441-9985-484438fd9d13",
+          "created_at": "2025-03-05T08:19:10.320Z",
+          "name": "HS애드- 협력사 온라인 구독 문의",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-04-30T01:16:18.500Z",
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-04-28T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "01955faf-bddc-7220-842e-badb0b4657fa",
+            "name": "임은빈",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-04-29",
+              "text": "LOST 사유내부적으로 보고 순위에서 밀리고 있으며 검토 일정이 미뤄짐에 따라 잠정 종료 후 추후에 연락드리기로 소통"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64e2e8a77a38114d409a131f",
+          "name": "차혜수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2024-04-29",
+              "text": "전화- 오프라인 교육을 따로 진행하고 있지 않고 계획도 없음."
+            },
+            {
+              "date": "2025-04-28",
+              "text": "퇴사로 이메일 바운스 처리"
+            }
+          ]
+        },
+        {
+          "id": "c059ff42-f3bb-4db3-975d-956addd93eba",
+          "name": "이덕한",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2024-02-05",
+              "text": "부재중"
+            }
+          ]
+        },
+        {
+          "id": "01930095-d4d0-7eee-9593-ecd8ef2f8edb",
+          "name": "이민주",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)",
+            "5-15. ATD Korea Summit 2024 하이라이트북 신청 (report_atdkorea2024)",
+            "5-26. 온라인 교육 사례집 (casebook_online)"
+          ],
+          "memos": [
+            {
+              "date": "2024-11-06",
+              "text": "- 고객 이름 : 이민주\n- 고객 전화 : +4915750759406\n- 고객 이메일 : minjoo.lee@hsadgermany.com\n- 회사 이름 : HSAD Germany\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^241106\n- 고객 utm_content : lead-gen^hrbulletin^edm1\n"
+            },
+            {
+              "date": "2024-11-19",
+              "text": "HSAD 독일법인 소속"
+            },
+            {
+              "date": "2025-04-01",
+              "text": "- 고객 이름 : 이민주\n- 고객 전화 : +4915750759406\n- 고객 이메일 : minjoo.lee@hsadgermany.com\n- 회사 이름 : HSAD Germany\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250401\n- 고객 utm_content : nurturing^mktg-agreed^aiedu\n"
+            }
+          ]
+        },
+        {
+          "id": "01955faf-bddc-7220-842e-badb0b4657fa",
+          "name": "임은빈",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서"
+          ],
+          "memos": [
+            {
+              "date": "2025-03-04",
+              "text": "- 고객 이름 : 임은빈\n- 고객 이메일 : energizer365@hsad.co.kr\n- 고객 전화 : 01099144355\n- 회사 이름 : 에이치에스애드\n- 고객 담당 업무 : 기타\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

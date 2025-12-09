@@ -235,7 +235,27 @@ class CheckpointManager:
         self.state["updated_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z")
         tmp_path = self.path.with_suffix(self.path.suffix + ".tmp")
         tmp_path.write_text(json.dumps(self.state, ensure_ascii=False, indent=2), encoding="utf-8")
-        tmp_path.replace(self.path)
+        last_exc: Optional[Exception] = None
+        for attempt in range(3):
+            try:
+                tmp_path.replace(self.path)
+                return
+            except PermissionError as exc:
+                last_exc = exc
+                time.sleep(0.2 * (attempt + 1))
+        log = logging.getLogger(LOG_NAME)
+        log.warning(
+            "Checkpoint replace failed (tmp=%s, target=%s): %s. Trying copy fallback.",
+            tmp_path,
+            self.path,
+            last_exc,
+        )
+        try:
+            shutil.copyfile(tmp_path, self.path)
+            tmp_path.unlink(missing_ok=True)
+        except Exception as exc:
+            log.error("Checkpoint copy fallback failed; leaving tmp at %s: %s", tmp_path, exc)
+            raise
 
 
 def load_checkpoint_file(checkpoint_dir: Path, run_tag: Optional[str]) -> Optional[Dict[str, Any]]:

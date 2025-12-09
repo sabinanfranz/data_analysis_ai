@@ -1,0 +1,707 @@
+{
+  "organization": {
+    "id": "64f97590fb15689232a85ce6",
+    "name": "신한카드",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "651398549f6e226f4843c01a",
+          "created_at": "2023-09-27T02:49:56.402Z",
+          "name": "신한카드_면접관 교육",
+          "team": null,
+          "owner": "강지수",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-10-12T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-10-13T02:34:14.000Z",
+          "amount": 4830000.0,
+          "start_date": "2023-10-12T15:00:00.000Z",
+          "end_date": "2023-10-12T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f97590fb15689232a85d2a",
+            "name": "김동현",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "3c483982-8a4b-4787-9924-29b75548f9c8",
+          "created_at": "2024-02-29T01:45:50.725Z",
+          "name": "신한카드(김동현)_올플랜_2403",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2024-03-05T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-03-06T01:07:37.000Z",
+          "amount": 6528000.0,
+          "start_date": "2024-03-05T15:00:00.000Z",
+          "end_date": "2024-09-04T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f97590fb15689232a85d2a",
+            "name": "김동현",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "fbbd8fe7-2724-4df4-b42b-84fab909268e",
+          "created_at": "2024-07-08T04:17:11.017Z",
+          "name": "신한카드_싱글플랜(단건)_2408",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-07-30T15:00:00.000Z",
+          "expected_amount": 8870700.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-07-30T15:00:00.000Z",
+          "amount": 9321900.0,
+          "start_date": "2024-07-31T15:00:00.000Z",
+          "end_date": "2025-07-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f97590fb15689232a85d2a",
+            "name": "김동현",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64f97590fb15689232a85d2a",
+          "name": "김동현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)",
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "3-30. 소개서 : DX 역량 강화 (main_dt)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기",
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "4-9.  세미나 다시보기 : 금융권 특화 AI 활용 세미나"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-31",
+              "text": "전화기록- 올플랜 6개월 5명 문의"
+            },
+            {
+              "date": "2024-04-29",
+              "text": "- 고객 이름 : 김동현\n- 고객 이메일 : kimlue@shinhan.com\n- 고객 전화 : 01094462603\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : 맞춤형 교육 개발\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240429\n- 고객 utm_content : lead-gen^cold-mail^cta\n"
+            },
+            {
+              "date": "2024-07-11",
+              "text": "- 고객 이름 : 김동현\n- 고객 이메일 : kimlue@shinhan.com\n- 고객 전화 : 01094462603\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^offline^booth\n"
+            },
+            {
+              "date": "2024-07-12",
+              "text": "- 고객 이름 : 김동현\n- 고객 이메일 : kimlue@shinhan.com\n- 고객 전화 : 01094462603\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^aileadership-report\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-07-12",
+              "text": "- 고객 이름 : 김동현\n- 고객 이메일 : kimlue@shinhan.com\n- 고객 전화 : 01094462603\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-01-24",
+              "text": "- 고객 이름 : 김동현\n- 고객 이메일 : kimlue@shinhan.com\n- 고객 전화 : 01094462603\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색, 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2025-09-03",
+              "text": "- 고객 이름 : 김동현\n- 고객 전화 : 01094462603\n- 고객 이메일 : kimlue@shinhan.com\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-10-02",
+              "text": "- 고객 이름 : 김동현\n- 고객 전화 : 01094462603\n- 고객 이메일 : kimlue@shinhan.com\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "1cde3d4a-a54b-428a-8620-6a616b65509a",
+          "name": "서홍종",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2024-03-19",
+              "text": "소규모 인원에 대한 온라인 강의 계획은 없다고 함"
+            }
+          ]
+        },
+        {
+          "id": "1256fa7c-4013-4026-8e58-0dd6825f7b3f",
+          "name": "김진우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-17. 백서 신청 (report_trainingroi)",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-1. 템플릿 신청 (template_lndkpi)",
+            "5-29. 온라인 직무교육 자료집 (package_jobonline)",
+            "5-3. 템플릿 신청 (template_leadership)",
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)",
+            "6-6. ATD Korea Summit (Certificate Program - Brochure)"
+          ],
+          "memos": [
+            {
+              "date": "2024-06-04",
+              "text": "- 고객 이름 : 김진우\n- 고객 이메일 : jinukim8922@naver.com\n- 고객 전화 : 01087212964\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 이름 : 신한카드\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-06-19",
+              "text": "- 고객 이름 : 김진우\n- 고객 이메일 : jinukim8922@naver.com\n- 고객 전화 : 01087212964\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240619\n- 고객 utm_content : nurturing^contents-mail^edm-cta3\n"
+            },
+            {
+              "date": "2024-08-28",
+              "text": "- 고객 이름 : 김진우\n- 고객 이메일 : jinukim8922@naver.com\n- 고객 전화 : 01087212964\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240827\n- 고객 utm_content : lead-gen^mktg-agreed^report-trainingroi\n"
+            },
+            {
+              "date": "2024-09-06",
+              "text": "- 고객 이름 : 김진우\n- 고객 이메일 : jinukim8922@naver.com\n- 고객 전화 : 01087212964\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240904\n- 고객 utm_content : nurturing^cold^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 김진우\n- 고객 전화 : 01087212964\n- 고객 이메일 : jinukim8922@naver.com\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고, 지인 추천\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-18",
+              "text": "- 고객 이름 : 김진우\n- 고객 전화 : 01087212964\n- 고객 이메일 : jinukim8922@naver.com\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일 광고, 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^251105\n- 고객 utm_content : nurturing^skillcasebook^cta3\n"
+            },
+            {
+              "date": "2025-12-02",
+              "text": "- 고객 이름 : 김진우\n- 고객 전화 : 01087212964\n- 고객 이메일 : jinukim8922@naver.com\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 리포트/제안서, 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^251127\n- 고객 utm_content : lead-gen^khrd^cta1\n"
+            }
+          ]
+        },
+        {
+          "id": "0193ce3e-05bc-7559-9c80-3f92d42ced84",
+          "name": "김현진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0198a146-7d91-777a-99c5-4c33ddd6df2d",
+          "name": "강경호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0198a148-bd9c-7ddb-b35b-f5807b180d6f",
+          "name": "김성우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0198a149-2a8b-7eee-92f7-63073a3df637",
+          "name": "김태우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01995f61-155d-7ee7-bd9b-bd85a3dd34f3",
+          "name": "송윤희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-70. 소개서 : 패스트캠퍼스 기업교육 대표 콘텐츠북"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-19",
+              "text": "- 고객 이름 : 송윤희\n- 고객 전화 : 01098245999\n- 고객 이메일 : sbyj@shinhan.com\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01999338-6764-7775-853f-18dc0f662516",
+          "name": "안건이",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019a9474-87dc-7bb6-9d50-4c53657ff952",
+          "name": "김진우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)"
+          ],
+          "memos": [
+            {
+              "date": "2025-11-18",
+              "text": "- 고객 이름 : 김진우\n- 고객 전화 : 01087212964\n- 고객 이메일 : jinu@shinhan.com\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일 광고, 리포트/제안서, 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^251105\n- 고객 utm_content : nurturing^skillcasebook^cta3\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "조직문화팀",
+      "team": "인재개발파트",
+      "deals": [
+        {
+          "id": "dc44cea6-fb06-4010-92b8-2136d7e5f890",
+          "created_at": "2023-11-22T13:10:12.241Z",
+          "name": "[OB] 신한카드 딜_온라인구독/올플랜",
+          "team": null,
+          "owner": "김정현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-12-31T15:00:00.000Z",
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": "2024-01-04T15:15:21.102Z",
+          "amount": 1590000.0,
+          "start_date": "2023-12-31T15:00:00.000Z",
+          "end_date": "2024-01-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "5ae904ec-e6d3-4961-896c-537aa4766fe0",
+            "name": "박원희",
+            "upper_org": "조직문화팀",
+            "team": "인재개발파트",
+            "title": "과장",
+            "edu_area": "리더 대상 교육 (주제X)"
+          },
+          "memos": [
+            {
+              "date": "2023-11-22",
+              "text": "📌미팅 사후 로그1. 참석자     - 고객사: 박원희, 박정환    - 팀 : 김정현2. 미팅 내용 상세      -  직무교육은 패캠강의 중에서 영역 별로 나눠서 교육 진행하고 있음 -> 비싸다는 의견    - 온라인 사전학습 후 오프라인 교육 진행        리더십교육은 온라인 교육으로만 진행    - 오프라인 교육은 SAS프로그램을 사용하다가 권한 이슈로 인해 SQL로 넘어가고 있는 추세임.        기초 역량은 가지고 있어서 SQL튜닝에 대한 고급과정(3일정도) 제안 요청.    - 스킬 컨설팅의 경우 레거시 쪽에서 수요가 있을 듯(레거시 교육은 거의 없음)    - 시의성 기준으로는 면보직자 대상 교육이 급함 -> 퇴직한 임원 대상 교육        면보직자 대상 소프트랜딩 교육.         멘탈케어(더레드같은 교육이 필요)        인원은 15명이 안될 것으로 예상. 1개월 기준 15만원 제안받은 적있음(15명 기준 올플랜)        실무를 다시 할 수 있는 교육이 필요 -> 커뮤니케이션 스킬, OA교육 등    - 외국어 교육은 링글 이용 중(40분)        최소 30분 이상 필요, 강사님 스펙 중요, 레모네이드 소개 시 학습지와 병행한다는 점이 좋았음.    - Chat GPT 교육도 관심있음.#후속자료    . 스킬아카데미 소개서    . 온라인구독 온라인콘텐츠리스트    . 면보직자 대상 교육 진행할만한 커리큘럼3. AE인계를 위한 필수 확인 사항 - 교육 시작 일정: 미정 -  교육 규모(시수): 미정 - 수강인원: 미정 - 수강 대상 특징: 미정 - 예산:미정"
+            }
+          ]
+        },
+        {
+          "id": "1bb76bcd-a7aa-45f1-a41d-2f47847ddaf6",
+          "created_at": "2024-01-29T07:49:27.649Z",
+          "name": "[OB] 신한카드 딜_뉴스프레소 스피킹",
+          "team": null,
+          "owner": "김정현",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "기타",
+          "category": "외국어",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "5ae904ec-e6d3-4961-896c-537aa4766fe0",
+            "name": "박원희",
+            "upper_org": "조직문화팀",
+            "team": "인재개발파트",
+            "title": "과장",
+            "edu_area": "리더 대상 교육 (주제X)"
+          },
+          "memos": [
+            {
+              "date": "2024-01-29",
+              "text": "뉴스프레소도 무료 체험 가능뉴스프레소 회원 가입 후 아래 url로 0원으로 되어 있는 패키지 결제하시면 교육 운영 담당자님께서 안내 문자드릴 예정입니다.[뉴스프레소] 985)[내부 직원 전용] B2B 1:1 스피킹 (1회 체험권) (NSP)https://newspresso.kr/cart?add-to-cart=4219커리큘럼 상 [25분 = 가벼운 학습지 교재 1권/ 뉴스프레소 기사 1개] 로 수업을 진행하게 되어 25분 수업으로 고정이라고 합니다. 다만, 연강으로 총 50분 수업하시는 것은 가능하다고 하니 참고 부탁드립니다."
+            }
+          ]
+        },
+        {
+          "id": "abf2e943-c2f5-4c13-988f-6b050c371300",
+          "created_at": "2024-07-08T04:18:04.555Z",
+          "name": "신한카드_올플랜1개월(단건)_2407",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-07-30T15:00:00.000Z",
+          "expected_amount": 14850000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-07-28T15:00:00.000Z",
+          "amount": 13365000.0,
+          "start_date": "2024-07-28T15:00:00.000Z",
+          "end_date": "2024-08-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "5ae904ec-e6d3-4961-896c-537aa4766fe0",
+            "name": "박원희",
+            "upper_org": "조직문화팀",
+            "team": "인재개발파트",
+            "title": "과장",
+            "edu_area": "리더 대상 교육 (주제X)"
+          },
+          "memos": []
+        },
+        {
+          "id": "0191b5c0-bd99-711f-a6cf-b5c180d8bd3b",
+          "created_at": "2024-09-03T02:39:53.249Z",
+          "name": "신한카드_온라인구독_올/단건_2409",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-02T15:00:00.000Z",
+          "expected_amount": 5130000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-09-02T15:00:00.000Z",
+          "amount": 5130000.0,
+          "start_date": "2024-09-08T15:00:00.000Z",
+          "end_date": "2024-11-07T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f97591fb15689232a85d73",
+            "name": "박정환",
+            "upper_org": "조직문화팀",
+            "team": "인재개발파트",
+            "title": "대리",
+            "edu_area": "SW 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0194020c-6b35-7000-82d8-633a9e749573",
+          "created_at": "2024-12-26T08:19:15.901Z",
+          "name": "신한카드_온라인 구독_올_2501",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": 1350000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-12-25T15:00:00.000Z",
+          "amount": 1350000.0,
+          "start_date": "2024-12-31T15:00:00.000Z",
+          "end_date": "2025-01-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "5ae904ec-e6d3-4961-896c-537aa4766fe0",
+            "name": "박원희",
+            "upper_org": "조직문화팀",
+            "team": "인재개발파트",
+            "title": "과장",
+            "edu_area": "리더 대상 교육 (주제X)"
+          },
+          "memos": []
+        },
+        {
+          "id": "01963c83-6420-7bb1-a92f-9aceac3c0ad8",
+          "created_at": "2025-04-16T02:52:45.992Z",
+          "name": "신한카드_올플랜_2505",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-05-01T02:54:25.458Z",
+          "expected_amount": 11400000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-04-27T15:00:00.000Z",
+          "amount": 14976000.0,
+          "start_date": "2025-04-30T15:00:00.000Z",
+          "end_date": "2025-10-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "5ae904ec-e6d3-4961-896c-537aa4766fe0",
+            "name": "박원희",
+            "upper_org": "조직문화팀",
+            "team": "인재개발파트",
+            "title": "과장",
+            "edu_area": "리더 대상 교육 (주제X)"
+          },
+          "memos": []
+        },
+        {
+          "id": "019715e5-58d6-7446-954c-e99ed97275b6",
+          "created_at": "2025-05-28T07:57:00.000Z",
+          "name": "신한카드(김동현)_싱글플랜_2506",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-13T07:58:23.612Z",
+          "expected_amount": 10391200.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-06-12T15:00:00.000Z",
+          "amount": 10481200.0,
+          "start_date": "2025-05-31T15:00:00.000Z",
+          "end_date": "2026-05-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0196ae23-2670-7cc3-a308-ca7e8641ac8c",
+            "name": "김동현",
+            "upper_org": "조직문화팀",
+            "team": "인재개발파트",
+            "title": "사원",
+            "edu_area": "디지털 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0197a477-2851-722b-95ad-7659cf26a7e7",
+          "created_at": "2025-06-25T00:22:00.000Z",
+          "name": "신한카드_어학_뉴스프레소_2507",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-11T00:32:17.385Z",
+          "expected_amount": 3360000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "외국어",
+          "contract_date": "2025-06-25T15:00:00.000Z",
+          "amount": 3360000.0,
+          "start_date": "2025-06-30T15:00:00.000Z",
+          "end_date": "2026-06-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0196ae23-2670-7cc3-a308-ca7e8641ac8c",
+            "name": "김동현",
+            "upper_org": "조직문화팀",
+            "team": "인재개발파트",
+            "title": "사원",
+            "edu_area": "디지털 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0198e4c3-f31f-7774-b55e-ca16d1bab800",
+          "created_at": "2025-08-26T05:05:00.000Z",
+          "name": "신한카드_온라인_25년 하반기_싱글",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-11-20T15:00:00.000Z",
+          "expected_amount": 10000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-10-21T15:00:00.000Z",
+          "amount": 8490200.0,
+          "start_date": "2025-10-23T15:00:00.000Z",
+          "end_date": "2026-10-22T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0196ae23-2670-7cc3-a308-ca7e8641ac8c",
+            "name": "김동현",
+            "upper_org": "조직문화팀",
+            "team": "인재개발파트",
+            "title": "사원",
+            "edu_area": "디지털 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01996fb3-a8e8-777b-9eda-b24b6c51efc4",
+          "created_at": "2025-09-22T04:34:00.000Z",
+          "name": "신한카드_어학_뉴스프레소_2510",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-10-12T15:00:00.000Z",
+          "expected_amount": 2520000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "외국어",
+          "contract_date": "2025-10-12T15:00:00.000Z",
+          "amount": 2520000.0,
+          "start_date": "2025-10-12T15:00:00.000Z",
+          "end_date": "2026-10-11T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0193ce3a-49c5-7aa5-a154-ab262d47871e",
+            "name": "강민철",
+            "upper_org": "조직문화팀",
+            "team": "인재개발파트",
+            "title": "대리",
+            "edu_area": "디지털 교육"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64f97591fb15689232a85d73",
+          "name": "박정환",
+          "upper_org": "조직문화팀",
+          "team": "인재개발파트",
+          "title": "대리",
+          "edu_area": "SW 교육",
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2023-11-15",
+              "text": "1차 부재"
+            },
+            {
+              "date": "2023-11-20",
+              "text": " 교육 수립중이긴 하나 필요한 사항 없음"
+            },
+            {
+              "date": "2023-12-12",
+              "text": "신입사원 연수중으로미팅 불가 추후 연락 주기로"
+            }
+          ]
+        },
+        {
+          "id": "5ae904ec-e6d3-4961-896c-537aa4766fe0",
+          "name": "박원희",
+          "upper_org": "조직문화팀",
+          "team": "인재개발파트",
+          "title": "과장",
+          "edu_area": "리더 대상 교육 (주제X)",
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0193ce3a-49c5-7aa5-a154-ab262d47871e",
+          "name": "강민철",
+          "upper_org": "조직문화팀",
+          "team": "인재개발파트",
+          "title": "대리",
+          "edu_area": "디지털 교육",
+          "webforms": [
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)",
+            "3-55. 소개서 : 가벼운학습지 스피킹탭",
+            "5-23. 생성형AI 교육 설계 핵심 자료집 (package_genaicontents)",
+            "5-31. 생성형 AI 온라인 교육 패키지(package_aionlineroadmap)"
+          ],
+          "memos": [
+            {
+              "date": "2024-12-16",
+              "text": "12/16 미팅로그- 신한카드 조직문화팀 김현진 부부장, 강민철 대리 / 패캠 박종협, 정다혜 - 강민철 대리 > 디지털 역량 직무 교육 메인 담당 현 상황- 전사 임직원 약 2,500명 - 내년 교육 계획은 굉장히 러프하게 잡긴 했으나, CEO 변경 예정으로 1월 중순 이후 확실히 방향 확정 할 수 있을듯   (생성AI 분야 교육 확대 등 큰 틀은 비슷하겠으나 세부 방향이 변동될 수 있음) - 데이터 관련 교육은 이미 많이 하고 있고, 체계도 잘 잡혀있다고 생각 (체계를 다시 잡을 니즈는 아직 없어 보임) - 유데미, 클라썸 컨택 / LMS는 휴넷 쓰는 중- AI 서비스를 내부에 적용하지 못함 - AI CoP는 상당히 활발하게 진행 중 (자체 스터디 정도..) 내년 교육 계획 - 생성형 AI 과정을 직무/레벨별로 구성하여 제공하는 것을 고려 중 - 전 직원 대상으로 AI 기초~프롬프팅, 영상 제작 등 기초 과정은 이미 진행 했음 고민 - 금융권 맞춤 교육 부재 (내부 통제 교육 등 콘텐츠가 아예 없어서) - AI 유관 부서의 전문성 강화 - 심화 콘텐츠 - 자기주도 콘텐츠/환경 지원 todo - 생성형 AI 직무별 강의 콘텐츠 제안 (직무별 특화 콘텐츠, AI 심화 과정 (LLM 등) 커리큘럼) - 스킬매치 소개서 전달 - 금융권 레퍼런스"
+            },
+            {
+              "date": "2025-02-22",
+              "text": "- 고객 이름 : 강민철\n- 고객 전화 : 01090753456\n- 고객 이메일 : shb01066@naver.com\n- 회사 이름 : 개인\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 임원급/대표이사\n- 회사 기업 규모 : 기타\n- 회사 업종 : 서비스업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250205\n- 고객 utm_content : lead-gen^khrd^genaicontents\n"
+            },
+            {
+              "date": "2025-04-28",
+              "text": "- 고객 이름 : 강민철\n- 고객 이메일 : shb01066@naver.com\n- 고객 전화 : 01090753456\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 리포트/제안서, 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-07-02",
+              "text": "- 고객 뉴스레터 : 비즈레터(HRD트렌드, 기업 사례 등), AX아카이브(맞춤형 AI 교육 사례)\n- 고객 이름 : 강민철\n- 고객 이메일 : shb01066@naver.com\n- 고객 전화 : 01090753456\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250702\n- 고객 utm_content : nurturing^letter^subscribe\n"
+            },
+            {
+              "date": "2025-07-02",
+              "text": "- 고객 이름 : 강민철\n- 고객 전화 : 01090753456\n- 고객 이메일 : shb01066@naver.com\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250702\n- 고객 utm_content : lead-gen^khrd^cta3\n"
+            }
+          ]
+        },
+        {
+          "id": "0196ae23-2670-7cc3-a308-ca7e8641ac8c",
+          "name": "김동현",
+          "upper_org": "조직문화팀",
+          "team": "인재개발파트",
+          "title": "사원",
+          "edu_area": "디지털 교육",
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)",
+            "1-21. 백서 신청 (report_lmsguide)",
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)"
+          ],
+          "memos": [
+            {
+              "date": "2025-05-08",
+              "text": "- 고객 이름 : 김동현\n- 고객 전화 : 01094462603\n- 고객 이메일 : kimlue2000@naver.com\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250508\n- 고객 utm_content : lead-gen^khrd^cta1\n"
+            },
+            {
+              "date": "2025-07-02",
+              "text": "- 고객 뉴스레터 : AX아카이브(맞춤형 AI 교육 사례), 비즈레터(HRD트렌드, 기업 사례 등)\n- 고객 이름 : 김동현\n- 고객 이메일 : kimlue2000@naver.com\n- 고객 전화 : 01094462603\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250702\n- 고객 utm_content : nurturing^letter^subscribe\n"
+            },
+            {
+              "date": "2025-07-02",
+              "text": "- 고객 이름 : 김동현\n- 고객 이메일 : kimlue2000@naver.com\n- 고객 전화 : 01094462603\n- 회사 이름 : 신한카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "organization": {
+    "id": "64f97586fb15689232a849f9",
+    "name": "빙그레",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": [
+      {
+        "date": "2024-01-31",
+        "text": "드랍 처리 : 3차 연락 거절"
+      }
+    ]
+  },
+  "groups": [
+    {
+      "upper_org": "인재혁신센터",
+      "team": "인재육성팀",
+      "deals": [
+        {
+          "id": "01928985-2302-7003-9488-4c584a15da47",
+          "created_at": "2024-10-14T05:34:16.843Z",
+          "name": "[부가세 별도] (B2B) 빙그레 - 2025 BC AI역량강화 교육 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-17T15:00:00.000Z",
+          "expected_amount": 54200000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "생성형AI",
+          "contract_date": "2025-08-17T15:00:00.000Z",
+          "amount": 54200000.0,
+          "start_date": "2025-08-17T15:00:00.000Z",
+          "end_date": "2025-11-27T15:00:00.000Z",
+          "net_percent": "52.0",
+          "people": {
+            "id": "64f97586fb15689232a84a86",
+            "name": "김민수",
+            "upper_org": "인재혁신센터",
+            "team": "인재육성팀",
+            "title": "프로",
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-10-08",
+              "text": "RFP전달"
+            },
+            {
+              "date": "2024-10-24",
+              "text": "1) 제안서 접수 (~10/14 (월)) *필요시 추가 미팅/PT 심사 등 요청 예정2) 제안서 심사 및 우선협상 대상자 선정 (~10/23 (수))3) 대면·비대면 미팅(필요사항 조율·협의) & 최종 업체 선정 (~10/31 (목))4) 실 운영 계획 수립/협의 커리큘럼 커스터마이징(11~12月)"
+            },
+            {
+              "date": "2024-10-30",
+              "text": "※ 10/30(수) 유선 통화 완료 : 사전/사후 진단 및 평가 서비스, 실습 방법 및 결과물, 온라인 구독 등 제안서 내 상세 질의에 대한 응답으로 30분간 통화 진행.※ 교육 분반 구성- 오전(기조강연) / 오후(본 교육) 5개 분반으로 나눠 이어서 교육 진행.- 기조 강연 강사진 교수급으로 컨택, 동일한 커리큘럼으로 진행 할 강사 5명 컨택 필요- 과정 진행 시 실습 코치 구인 필요할 수도. (4시간 기준/15만원 안내)※ 사전 온라인 콘텐츠 (무상제공) 건- 컨텐츠 변경 가능 함.※ 사후 스킬매치 관련 건- 스킬(ChatGPT) 진단 후 맞춤형 큐레이션 진행 >> 콘텐츠 제공까지 XX- 스킬매치 가이드 및 온라인 LXP 소개서 전달 완료※ 견적 조정 가능할지 문의줌.※  11월 첫째주 내부 논의하여 회신 예정"
+            },
+            {
+              "date": "2024-11-08",
+              "text": "- 11/07 세부 운영 미팅 진행- 11월 15일 임원 보고 이후 계약 진행 예정."
+            },
+            {
+              "date": "2025-07-01",
+              "text": "8~ 9월 : 영업 350명 대상 / 총 7차수/ 실시간 비대면10~11월 : 마케팅, R&D 100명대상/ 총 3차수 / 오프라인11~12월 : 생산 직군 150명/ 총 4차수/ 오프라인 or 비대면26년 1월 : 경영지원 직군 100명/ 총 2차수/ 비대면"
+            }
+          ]
+        },
+        {
+          "id": "019a2f03-dd3b-7009-95e0-8f8ac2c4cbb1",
+          "created_at": "2025-10-29T08:09:00.000Z",
+          "name": "[L-T] 빙그레 26년도 사내 AI 전문가 육성 프로그램",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "SQL",
+          "probability": "[\"높음\"]",
+          "expected_date": "2026-01-29T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2026-02-01T15:00:00.000Z",
+          "end_date": "2026-04-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f97586fb15689232a84a86",
+            "name": "김민수",
+            "upper_org": "인재혁신센터",
+            "team": "인재육성팀",
+            "title": "프로",
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "019a2f0d-7b39-7000-8cdb-769d33af4491",
+          "created_at": "2025-10-29T08:20:00.000Z",
+          "name": "빙그레 2026년 경력사원·신입사원 온라인 연수 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "SQL",
+          "probability": "[\"높음\"]",
+          "expected_date": "2025-12-30T15:00:00.000Z",
+          "expected_amount": 2934000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": 2934000.0,
+          "start_date": "2025-12-14T15:00:00.000Z",
+          "end_date": "2026-12-13T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f97586fb15689232a84a86",
+            "name": "김민수",
+            "upper_org": "인재혁신센터",
+            "team": "인재육성팀",
+            "title": "프로",
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64f97586fb15689232a84a86",
+          "name": "김민수",
+          "upper_org": "인재혁신센터",
+          "team": "인재육성팀",
+          "title": "프로",
+          "edu_area": null,
+          "webforms": [
+            "1-22. 백서 신청 (service_online_topcontent25)",
+            "3-82. 직무/수준 맞춤형 온라인 AI 교육 체계도",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)",
+            "5-27. 비즈니스 성과 중심의 교육 사례 자료집 (casebook_combination)",
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)",
+            "5-7. 템플릿 신청 (template_leadershipfw)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-23",
+              "text": "연말이라 미팅 잡기가 어렵다. 자료 전달달라. 박현철님도 같은 팀이다. "
+            },
+            {
+              "date": "2024-04-29",
+              "text": "- 고객 이름 : 김민수\n- 고객 이메일 : lasyyb@bing.co.kr\n- 고객 전화 : 01032208409\n- 회사 이름 : 빙그레\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240425\n- 고객 utm_content : lead-gen^hrda^edm\n"
+            },
+            {
+              "date": "2024-10-16",
+              "text": "- 고객 이름 : 김민수\n- 고객 전화 : 01032208409\n- 고객 이메일 : lasyyb@bing.co.kr\n- 회사 이름 : 빙그레\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^241015\n- 고객 utm_content : lead-gen^khrd^genai_subject\n"
+            },
+            {
+              "date": "2025-05-28",
+              "text": "- 고객 이름 : 김민수\n- 고객 전화 : 01032208409\n- 고객 이메일 : lasyyb@bing.co.kr\n- 회사 이름 : 빙그레\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250528\n- 고객 utm_content : lead-gen^khrd^cta1#salesmap-web-form\n"
+            },
+            {
+              "date": "2025-06-23",
+              "text": "- 고객 이름 : 김민수\n- 고객 전화 : 01032208409\n- 고객 이메일 : lasyyb@bing.co.kr\n- 회사 이름 : 빙그레\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250623\n- 고객 utm_content : lead-gen^khrd^cta1\n"
+            },
+            {
+              "date": "2025-07-11",
+              "text": "- 고객 이름 : 김민수\n- 고객 전화 : 01032208409\n- 고객 이메일 : lasyyb@bing.co.kr\n- 회사 이름 : 빙그레\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250710\n- 고객 utm_content : lead-gen^khrd^cta1\n"
+            },
+            {
+              "date": "2025-11-10",
+              "text": "- 고객 이름 : 김민수\n- 고객 전화 : 01032208409\n- 고객 이메일 : lasyyb@bing.co.kr\n- 회사 이름 : 빙그레\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^251110\n- 고객 utm_content : lead-gen^khrd^cta1\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

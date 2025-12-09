@@ -1,0 +1,330 @@
+{
+  "organization": {
+    "id": "65126513ac50181a27aa003c",
+    "name": "한국증권금융",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "인사부",
+      "team": "인재개발팀",
+      "deals": [
+        {
+          "id": "65126514ac50181a27aa00e4",
+          "created_at": "2023-09-26T04:59:00.204Z",
+          "name": "한국증권금융(이현성)_패키지플랜_분기별입과_2310",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-09-29T15:00:00.000Z",
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-10-25T01:53:30.658Z",
+          "amount": 2880000.0,
+          "start_date": "2023-09-30T15:00:00.000Z",
+          "end_date": "2023-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "65126513ac50181a27aa0085",
+            "name": "이현성",
+            "upper_org": "인사부",
+            "team": "인재개발팀",
+            "title": "대리",
+            "edu_area": "온라인 - 2511 김상벽 주임이 담당"
+          },
+          "memos": [
+            {
+              "date": "2023-09-26",
+              "text": "수강생 명단https://docs.google.com/spreadsheets/d/1Emr4VOgpIG-2_XtIUhm6toOv4a_YWB1nlUGsC_QO7C8/edit#gid=1182583752"
+            }
+          ]
+        },
+        {
+          "id": "2f666e10-1ebb-45c7-a828-9fb2f664c49f",
+          "created_at": "2023-12-19T05:31:54.728Z",
+          "name": "한국증권금융(이현성)_패키지플랜_분기별입과_2401",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-12-31T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-01-01T01:53:51.000Z",
+          "amount": 3240000.0,
+          "start_date": "2023-12-31T15:00:00.000Z",
+          "end_date": "2024-03-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "65126513ac50181a27aa0085",
+            "name": "이현성",
+            "upper_org": "인사부",
+            "team": "인재개발팀",
+            "title": "대리",
+            "edu_area": "온라인 - 2511 김상벽 주임이 담당"
+          },
+          "memos": [
+            {
+              "date": "2023-12-19",
+              "text": "12.26 신청 마감 이후 수강인원과 금액 확정 예정"
+            }
+          ]
+        },
+        {
+          "id": "0e403558-1890-4c60-a5fe-9d389560cd0c",
+          "created_at": "2024-03-14T02:42:56.590Z",
+          "name": "한국증권금융_2404(온라인)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2024-03-31T15:00:00.000Z",
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-03-27T09:40:30.166Z",
+          "amount": 5760000.0,
+          "start_date": "2024-03-31T15:00:00.000Z",
+          "end_date": "2024-06-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "65126513ac50181a27aa0085",
+            "name": "이현성",
+            "upper_org": "인사부",
+            "team": "인재개발팀",
+            "title": "대리",
+            "edu_area": "온라인 - 2511 김상벽 주임이 담당"
+          },
+          "memos": []
+        },
+        {
+          "id": "a8cba494-4023-40d5-b4dc-912ec3b10460",
+          "created_at": "2024-06-28T07:02:33.316Z",
+          "name": "한국증권금융_2407 (온라인)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-03-31T15:00:00.000Z",
+          "expected_amount": 5040000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-06-28T07:03:39.177Z",
+          "amount": 5040000.0,
+          "start_date": "2024-06-30T15:00:00.000Z",
+          "end_date": "2024-09-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "65126513ac50181a27aa0085",
+            "name": "이현성",
+            "upper_org": "인사부",
+            "team": "인재개발팀",
+            "title": "대리",
+            "edu_area": "온라인 - 2511 김상벽 주임이 담당"
+          },
+          "memos": []
+        },
+        {
+          "id": "019240c8-a938-744f-a155-96241abbc206",
+          "created_at": "2024-09-30T02:35:45.361Z",
+          "name": "한국증권금융_2410 (온라인)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-30T15:00:00.000Z",
+          "expected_amount": 3600000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-09-30T15:00:00.000Z",
+          "amount": 3600000.0,
+          "start_date": "2024-09-30T15:00:00.000Z",
+          "end_date": "2024-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "65126513ac50181a27aa0085",
+            "name": "이현성",
+            "upper_org": "인사부",
+            "team": "인재개발팀",
+            "title": "대리",
+            "edu_area": "온라인 - 2511 김상벽 주임이 담당"
+          },
+          "memos": []
+        },
+        {
+          "id": "01941689-500a-744f-bfa2-96bdfe36c414",
+          "created_at": "2024-12-30T07:48:05.270Z",
+          "name": "한국증권금융_2501 (온라인)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-12-30T07:53:02.772Z",
+          "expected_amount": 4680000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-12-29T15:00:00.000Z",
+          "amount": 4680000.0,
+          "start_date": "2024-12-31T15:00:00.000Z",
+          "end_date": "2025-03-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0194168c-3a23-7113-9a17-7ebb820c5892",
+            "name": "조중범",
+            "upper_org": "인사부",
+            "team": "인재개발팀",
+            "title": "대리",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        },
+        {
+          "id": "019582bc-47dd-7337-9564-ea243748235c",
+          "created_at": "2025-03-11T01:05:32.135Z",
+          "name": "한국증권금융 올플랜 구독 2504",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-24T04:26:57.259Z",
+          "expected_amount": 3000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-03-30T15:00:00.000Z",
+          "amount": 9720000.0,
+          "start_date": "2025-03-31T15:00:00.000Z",
+          "end_date": "2025-06-29T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "01958373-5ffd-7bba-9823-3de2fd7bbe78",
+            "name": "유승일",
+            "upper_org": "인사부",
+            "team": "인재개발팀",
+            "title": "대리",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        },
+        {
+          "id": "01975934-17c8-7000-815c-4b294fd0cd1e",
+          "created_at": "2025-06-10T09:37:00.000Z",
+          "name": "한국증권금융_2507(온라인)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-01T04:12:53.362Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-06-30T15:00:00.000Z",
+          "amount": 7560000.0,
+          "start_date": "2025-06-30T15:00:00.000Z",
+          "end_date": "2025-09-29T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "01958373-5ffd-7bba-9823-3de2fd7bbe78",
+            "name": "유승일",
+            "upper_org": "인사부",
+            "team": "인재개발팀",
+            "title": "대리",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        },
+        {
+          "id": "0199130b-b29b-733f-a614-068b9b3dc8a7",
+          "created_at": "2025-09-04T04:45:00.000Z",
+          "name": "한국증권금융_2510(온라인)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-09-30T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-09-30T15:00:00.000Z",
+          "amount": 3960000.0,
+          "start_date": "2025-09-30T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0199130e-3412-7005-bbcd-78e27816663b",
+            "name": "김상벽",
+            "upper_org": "인사부",
+            "team": "인재개발팀",
+            "title": "주임",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "65126513ac50181a27aa0085",
+          "name": "이현성",
+          "upper_org": "인사부",
+          "team": "인재개발팀",
+          "title": "대리",
+          "edu_area": "온라인 - 2511 김상벽 주임이 담당",
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0194168c-3a23-7113-9a17-7ebb820c5892",
+          "name": "조중범",
+          "upper_org": "인사부",
+          "team": "인재개발팀",
+          "title": "대리",
+          "edu_area": "온라인",
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01958373-5ffd-7bba-9823-3de2fd7bbe78",
+          "name": "유승일",
+          "upper_org": "인사부",
+          "team": "인재개발팀",
+          "title": "대리",
+          "edu_area": "온라인",
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0199130e-3412-7005-bbcd-78e27816663b",
+          "name": "김상벽",
+          "upper_org": "인사부",
+          "team": "인재개발팀",
+          "title": "주임",
+          "edu_area": "온라인",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

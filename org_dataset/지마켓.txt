@@ -1,0 +1,298 @@
+{
+  "organization": {
+    "id": "64dd75df96e775eee7e3323f",
+    "name": "지마켓",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "People & Org. Development",
+      "team": "People Growth Team",
+      "deals": [
+        {
+          "id": "0196e7d3-84df-7ff4-a868-327cab4c8d9c",
+          "created_at": "2025-05-18T15:00:00.000Z",
+          "name": "지마켓 라이선스플랜 2025",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-30T09:16:39.238Z",
+          "expected_amount": 63000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-06-29T15:00:00.000Z",
+          "amount": 63000000.0,
+          "start_date": "2025-06-30T15:00:00.000Z",
+          "end_date": "2026-06-29T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "81f05278-86d4-4568-80b4-c61651aecddd",
+            "name": "이은옥",
+            "upper_org": "People & Org. Development",
+            "team": "People Growth Team",
+            "title": "매니저",
+            "edu_area": "온라인"
+          },
+          "memos": [
+            {
+              "date": "2025-06-16",
+              "text": "견적 비용-300명 6300만원-400명 7200만원"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "81f05278-86d4-4568-80b4-c61651aecddd",
+          "name": "이은옥",
+          "upper_org": "People & Org. Development",
+          "team": "People Growth Team",
+          "title": "매니저",
+          "edu_area": "온라인",
+          "webforms": [
+            "1-14. 백서 신청 (report_leadershipfw)",
+            "1-15. 백서 신청 (report_talentmarketplace)",
+            "1-18. 백서 신청 (report_talentmanagement)",
+            "3-62. 소개서 :Skill Match 진단 평가 서비스 소개서 (skillmatch_proposal)",
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-15. ATD Korea Summit 2024 하이라이트북 신청 (report_atdkorea2024)",
+            "5-3. 템플릿 신청 (template_leadership)",
+            "5-35. 마케터를 위한 프롬프트 템플릿 15가지 (template_mktprompt)"
+          ],
+          "memos": [
+            {
+              "date": "2024-08-14",
+              "text": "- 고객 이름 : 이은옥\n- 고객 이메일 : eunolee@gmarket.com\n- 고객 전화 : 010-9255-7221\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^paper^qrmap\n"
+            },
+            {
+              "date": "2024-09-05",
+              "text": "- 고객 이름 : 이은옥\n- 고객 이메일 : eunolee@gmarket.com\n- 고객 전화 : 01092557221\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240904\n- 고객 utm_content : nurturing^cold^salesmap-db\n"
+            },
+            {
+              "date": "2024-10-16",
+              "text": "- 고객 이름 : 이은옥\n- 고객 전화 : 01092557221\n- 고객 이메일 : eunolee@gmarket.com\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240417\n- 고객 utm_content : lead-gen^bizletter^atd_report\n"
+            },
+            {
+              "date": "2024-10-21",
+              "text": "- 고객 이름 : 이은옥\n- 고객 전화 : 01092557221\n- 고객 이메일 : eunolee@gmarket.com\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^241021\n- 고객 utm_content : lead-gen^skillletter^seminar_2025#REGISTRATION\n"
+            },
+            {
+              "date": "2025-03-05",
+              "text": "- 고객 이름 : 이은옥\n- 고객 이메일 : eunolee@gmarket.com\n- 고객 전화 : 01092557221\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-03-05",
+              "text": "- 고객 이름 : 이은옥\n- 고객 이메일 : eunolee@gmarket.com\n- 고객 전화 : 01092557221\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고, 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^skillmarch-proposal\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2025-03-05",
+              "text": "- 고객 이름 : 이은옥\n- 고객 전화 : 01092557221\n- 고객 이메일 : eunolee@gmarket.com\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^skillmatch-proposal\n- 고객 utm_content : nurturing^after^cta_guide\n"
+            },
+            {
+              "date": "2025-04-01",
+              "text": "- 고객 이름 : 이은옥\n- 고객 전화 : 01092557221\n- 고객 이메일 : eunolee@gmarket.com\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250401\n- 고객 utm_content : nurturing^mktg-agreed^aiedu\n"
+            },
+            {
+              "date": "2025-08-05",
+              "text": "- 고객 이름 : 이은옥\n- 고객 전화 : 01092557221\n- 고객 이메일 : eunolee@gmarket.com\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64dd75df96e775eee7e332a5",
+          "created_at": "2023-08-17T01:20:31.570Z",
+          "name": "지마켓_라이선스 플랜_2307",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": "2023-06-30T15:00:00.000Z",
+          "amount": 374400000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75df96e775eee7e33274",
+            "name": "박성민",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd75df96e775eee7e33348",
+          "created_at": "2023-08-17T01:20:31.871Z",
+          "name": "지마켓글로벌_라이선스 플랜(2207)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": "2022-06-30T15:00:00.000Z",
+          "amount": 374400000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75df96e775eee7e33274",
+            "name": "박성민",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "a27e5bf3-6d75-4805-9905-a8ed2ee7bd4f",
+          "created_at": "2024-06-04T08:12:28.906Z",
+          "name": "지마켓글로벌_라이선스 플랜(2407)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-06-30T15:00:00.000Z",
+          "expected_amount": 72000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-06-27T08:30:19.000Z",
+          "amount": 72000000.0,
+          "start_date": "2024-06-30T15:00:00.000Z",
+          "end_date": "2025-06-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "c42e331d-c994-4829-871b-61460e00b289",
+            "name": "김미혜",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64dd75df96e775eee7e33274",
+          "name": "박성민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "cf704926-409b-4851-a848-d1078f6771bc",
+          "name": "이종우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "fca08fb8-fd67-44fa-a30b-f83242e8c8c0",
+          "name": "이은옥",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-15",
+              "text": "- 고객 이름 : 이은옥\n- 고객 이메일 : Keepgoingeva@gmail.com\n- 고객 전화 : 01092557221\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : 직원이 직접 피부로 와닿게 스킬기반 역량교육을 지속적으로 하는방법\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : kakaotalk\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240215\n- 고객 utm_content : lead-gen^hrda^openchat\n"
+            },
+            {
+              "date": "2024-03-12",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 육아 휴직 중인 상태2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            },
+            {
+              "date": "2024-04-03",
+              "text": "- 고객 이름 : 이은옥\n- 고객 이메일 : Keepgoingeva@gmail.com\n- 고객 전화 : 01092557221\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240403\n- 고객 utm_content : nurturing^salesmap-nurturing^mktg-agreed\n"
+            }
+          ]
+        },
+        {
+          "id": "c42e331d-c994-4829-871b-61460e00b289",
+          "name": "김미혜",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0194d344-6b30-7cc8-8650-d9d90ae3fe21",
+          "name": "서대홍",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-3. 백서 신청 (report_cds)"
+          ],
+          "memos": [
+            {
+              "date": "2025-02-04",
+              "text": "- 고객 이름 : 서대홍\n- 고객 이메일 : daseo@gmarket.com\n- 고객 전화 : 01092745471\n- 회사 이름 : 지마켓\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0196ec11-22c9-7993-841e-96623f92f130",
+          "name": "현혜린",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0196ec11-234f-7993-841e-a4a295ea6d66",
+          "name": "박진아",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

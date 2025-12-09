@@ -1,0 +1,827 @@
+{
+  "organization": {
+    "id": "64dd762696e775eee7e3c0f6",
+    "name": "한국타이어앤테크놀로지",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "HR Division",
+      "team": "HR개발팀",
+      "deals": [
+        {
+          "id": "58b5f10e-89de-4022-a92e-e9d3e4dc971f",
+          "created_at": "2023-12-04T00:36:13.177Z",
+          "name": "[OB] 한국타이어앤테크놀로지_주윤진",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김광년",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64ebe44386c7fa32a28d4433",
+            "name": "주윤진",
+            "upper_org": "HR Division",
+            "team": "HR개발팀",
+            "title": "X",
+            "edu_area": "전사 교육 (데이터 분석, 시각화 등)"
+          },
+          "memos": [
+            {
+              "date": "2023-12-04",
+              "text": "📌미팅 사후 로그비대면 진행. 1. 참석자 (고객사에서 참석하는 이의 소속과 직급/직책 모두 파악해 적어주세요)- 고객사 : 주윤진님, (+ 팀원 한 명 더 있었는데 소개 안해줌.) 아마도 이덕혜님..?- 팀 : 원희정, 2. 미팅 내용 상세 (고객사의 질문과 답 / 참여하지 않은 사람도 이해할 수 있게 상세히 적어주세요.)- 이동규 강사님 오셔서, 태블로 교육했어서 알고있긴 하다. 배영민 매니저님도 안다고 - 하고있는 교육으로는 연간 신입사원 교육 (멘토링 OJT 등), 경력자 교육, 임원대상 어학 화상서비스 교육 지원, 승격자 교육, 사내강사 양성교육, 리더십 임파워먼트 교육, 팀빌딩 교육, 주재원 부임자주임자 교육?, 트렌드 인사이트 레터 발송, 조직활성화프로그램 등 하고있다. - PMI? 교육이라고 전직원 승격 교육 프로그램이 있는데,  학점이수제랑 비슷하다.  매년 2개씩 이수해야하는 교육 프로그램이고, 리더십교육-직무고통 교육- 디지털 교육. 이렇게 세 카테고리 에서 반드시 2개 이상 이수해야하는 그런 프로그램도 운영중이다. 관련 과정만 26개 운영 중. 디지털 분야에만 6개짜리 온라인 과정이 있고, 5개정도 오프라인으로 운영하고있는데, 데이터 분석, 데이터 시각화, 생성형AI 추가해서 진행하고있고, 디지털 마인드셋도 했는데, 엑셀 위주의 교육들을 많이 했다. - 직무교육은 사업장별로 또 별도로 진행하고있다. -  디지털 전략실이 별도로 있고, 디지털 인증제라는 것도 있다. 기초 심화 과정 인증 프로그램을 운영하고있다. -  공통적으로 하는 교육 이외에, 산학 연계 교육도 있다. 카이스트랑 연계해서 하고는 있는데, 내년도에 좀 새롭게 바꿔봐야하나 고민중. - 멀티캠퍼스 플랫폼 쓰는데, 패캠 온라인 과정 단건으로 듣게 해주고 싶을 경우 가능한가? (링크 안내식으로 운영들하신다고 안내.)- HRD 포럼에서 발표할 스킬베이스 컨설팅 내용도 궁금하다심[문의]  1. 카이스트와 AI 교육 하는데, 사전 수강 과정으로 제안해줄 만한 교육으로 기초 통계와 수학쪽 관련 교육 있다면 제안 달라. 2.  패캠의 태블로 온라인 과정 봤는데, 양이 좀 많더라. 1개월 안으로 제공되기 어려울 것 같던데, 좀 잘라서 반으로 나눠서도 제공 가능한가? (가능하다고 안내)3. 시티즌 디벨로퍼 과정 소개서도 전달달라. 자료 전달주면 살펴보고 추가 문의 하겠다. 3. AE인계를 위한 필수 확인 사항    당장 없음.. 교육 내용/운영 (주제): (희망커리큘럼, 프로젝트유무, 평가유무)교육추진배경: (Top-down/Bottom-up, 추진부서)교육목표: (교육대상 활용계획, 희망도달수준)교육 시수: 모듈별 평균 진행 시수: 교육 1건 당 일반적으로 진행하는 시간 & 일자별 운영 시수 (예, 일반적으로 2-3일 단위로 교육함, 하루 8시간 강의 기준)\"교육대상: (인원, 직급/직무, 참여형태, 현재수준, 인원수 등)교육 형태: (대면/비대면/온라인/블랜디드, 강의장 대관 여부)교육 시작 일정: 교육 시작 예정 시기 (구체적일수록 좋음)예산송부완료한 자료: 4. 세일즈 담당자의 Action Item (보낼 자료, 잡아야 할 미팅, 언제쯤 다시 연락할지 등 적어주세요) - 스킬 아카데미 소개서 - CD 소개서- 생성형 AI 교육 소개서- 통계, 수학 기초 과정 소개서 "
+            }
+          ]
+        },
+        {
+          "id": "78b8c5d0-e587-435c-8eaf-dca72bed11cd",
+          "created_at": "2024-01-24T09:38:27.358Z",
+          "name": "[부가세 별도] (B2B) 한국타이어앤테크놀로지 - 실무 능력 향상을 위한 데이터 분석 초급(엑셀)",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2024-03-28T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "OA/업무자동화",
+          "contract_date": "2024-03-14T02:41:43.000Z",
+          "amount": 5200000.0,
+          "start_date": "2024-04-07T15:00:00.000Z",
+          "end_date": "2024-04-14T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64ebe44386c7fa32a28d4433",
+            "name": "주윤진",
+            "upper_org": "HR Division",
+            "team": "HR개발팀",
+            "title": "X",
+            "edu_area": "전사 교육 (데이터 분석, 시각화 등)"
+          },
+          "memos": []
+        },
+        {
+          "id": "019365f8-0cd3-7666-aeb0-69037f91a776",
+          "created_at": "2024-11-26T00:56:15.328Z",
+          "name": "한국타이어앤테크놀로지_생성형AI",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "오진선",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2024-12-26T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-12-11T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64ebe44386c7fa32a28d4433",
+            "name": "주윤진",
+            "upper_org": "HR Division",
+            "team": "HR개발팀",
+            "title": "X",
+            "edu_area": "전사 교육 (데이터 분석, 시각화 등)"
+          },
+          "memos": [
+            {
+              "date": "2024-11-26",
+              "text": "안녕하세요. 한국타이어앤테크놀로지 HR개발팀 이덕혜입니다.1월 중 신입사원 입문교육으로 진행 예정인 교육 프로그램에 대한 제안 요청드리고자 메일드립니다.교육 일정, 대상 및 목적 확인하여 주시고, 바쁘시더라도 금주 금요일까지 (~11/29, 금) 교육 커리큘럼과 강사 프로필을 전달해주시면 감사하겠습니다.[교육 정보]1. 교육 일정 및 장소  - 일정 : 1월 3주차  - 장소 : 대전 연구소 (한국타이어 테크노돔)2. 교육 대상   - 신규입사자 약 120명 (3분반 진행으로 교육 최대 3회 진행 요청)3. 교육 내용 및 목적   - 내용 : 생성형 AI 이론 /실습 (3시간) + 생성형 AI 실습 (아이디에이션 방법 및 구체화) (3시간)  - 목적 : 생성형 AI 친숙해지기, 프롬프트 엔지니어링 기법, 생성형 AI를 통해 아이디어 구상, (과정 수강 후) 생성형 AI 관련 사업 제안 프로젝트 실시 예정4. 추가 요청사항   - 생성형 AI 소개 및 실습을 진행할 때 무료 Tool을 활용한 내용으로 구성해주십시오.   - Chat GPT를 활용하실 경우, 교육 실습은 사내 생성형 AI인 Chat HK를 활용하고자 합니다.      강사님께서는 권한이 없으신 관계로 Chat GPT를 사용하시더라도 실습생에게는 Chat HK를 사용하는 것으로 실습 진행해주시면 감사하겠습니다.   - 회신은 한국타이어 HR개발팀 주윤진님 (21602660@hankookn.com), 이덕혜 (21602360@hankookn.com) 으로 주시면 감사드리겠습니다문의사항 있으시면 연락부탁드립니다.감사합니다.이덕혜드림."
+            },
+            {
+              "date": "2024-12-12",
+              "text": "타업체와 진행으로 LOST 처리- 타 기업에서 김지훈 강사님과 함께 제안해주셔서 진행하기로 결정 - 패캠측에서도 김지훈 강사님으로 제안가능함으로 전달하였고, 이후 진행시에는 고려해서 제안드리겠다고 기업담당자에게 말씀드렸습니다."
+            }
+          ]
+        },
+        {
+          "id": "01953fd2-1b53-7773-ab91-8060236c208b",
+          "created_at": "2025-02-26T01:14:49.054Z",
+          "name": "한국타이어앤테크놀로지_엑셀데이터 초급과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "오진선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-28T01:15:55.718Z",
+          "expected_amount": 5200000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "OA/업무자동화",
+          "contract_date": "2025-03-27T15:00:00.000Z",
+          "amount": 4700000.0,
+          "start_date": "2025-04-07T15:00:00.000Z",
+          "end_date": "2025-04-10T15:00:00.000Z",
+          "net_percent": "63.0",
+          "people": {
+            "id": "64ebe44386c7fa32a28d4433",
+            "name": "주윤진",
+            "upper_org": "HR Division",
+            "team": "HR개발팀",
+            "title": "X",
+            "edu_area": "전사 교육 (데이터 분석, 시각화 등)"
+          },
+          "memos": [
+            {
+              "date": "2025-03-11",
+              "text": "- 과정명 : 실무 능력 향상을 위한 데이터 분석 초급 - 일정 : 4/8(화) 09:00 ~ 17:00 (판교)          : 4/11(금) 09:00 ~ 17:00 (대전)"
+            }
+          ]
+        },
+        {
+          "id": "0197edd9-4765-7000-88ca-9089a4c11c3c",
+          "created_at": "2025-07-09T06:22:00.000Z",
+          "name": "한국타이어앤테크놀로지_엑셀 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "서정연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-03T15:00:00.000Z",
+          "expected_amount": 6000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": "2025-08-03T15:00:00.000Z",
+          "amount": 4700000.0,
+          "start_date": "2025-08-24T15:00:00.000Z",
+          "end_date": "2025-09-28T15:00:00.000Z",
+          "net_percent": "63.0",
+          "people": {
+            "id": "64ebe44386c7fa32a28d4433",
+            "name": "주윤진",
+            "upper_org": "HR Division",
+            "team": "HR개발팀",
+            "title": "X",
+            "edu_area": "전사 교육 (데이터 분석, 시각화 등)"
+          },
+          "memos": [
+            {
+              "date": "2025-07-09",
+              "text": "7/9 수요일 유선 문의교육 주제 : 23년도 진행했던 태블로 과정 동일하게 진행 요청기 진행했던 이동규 강사님 X, 새로운 강사 제안 요청교육 일정 : 9~11월 중 2차수, 각각 7H교육 장소 : 판교/대전 1회씩담당자 : 주윤진 님"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64ebe44386c7fa32a28d4433",
+          "name": "주윤진",
+          "upper_org": "HR Division",
+          "team": "HR개발팀",
+          "title": "X",
+          "edu_area": "전사 교육 (데이터 분석, 시각화 등)",
+          "webforms": [
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "1-9. 백서 신청 (report_skilltrans)",
+            "3-82. 직무/수준 맞춤형 온라인 AI 교육 체계도",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)",
+            "5-26. 온라인 교육 사례집 (casebook_online)"
+          ],
+          "memos": [
+            {
+              "date": "2023-08-28",
+              "text": "[웹폼 제출 내용]- 고객 이름 : 주윤진- 고객 이메일 : 21602660@hankookn.com- 고객 전화 : 01035112391- 회사 이름 : 한국타이어앤테크놀로지- 고객 담당 업무 : HRD(인재육성/교육)- 고객 직급/직책 : 실무자- 회사 기업 규모 : 대기업- 회사 업종 : 제조생산/건설업- 고객 방문 경로 : (공백)- 고객 개인정보 수집 동의 : (공백)- 고객 마케팅 수신 동의 : 동의합니다."
+            },
+            {
+              "date": "2023-11-28",
+              "text": "콜: 차주 월 12/4 오전 11시 비대면 팀즈ㄲ"
+            },
+            {
+              "date": "2025-10-22",
+              "text": "- 고객 이름 : 주윤진\n- 고객 전화 : 01035112391\n- 고객 이메일 : 21602660@hankookn.com\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64dd762696e775eee7e3c15b",
+          "created_at": "2023-08-17T01:21:42.234Z",
+          "name": "한국타이어앤테크놀로지 - 태블로/엑셀 수준별 교육",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": null,
+          "amount": 23020800.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd762696e775eee7e3c12a",
+            "name": "이덕혜",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "651e7fa84d52a932e594f7df",
+          "created_at": "2023-10-05T09:19:37.406Z",
+          "name": "[부가세 별도] (B2B) 한국타이어앤테크놀로지 - 태블로 수준별 교육 (2023 하반기 추가 차수)",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-09-10T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-11-02T02:17:18.957Z",
+          "amount": 7269909.0,
+          "start_date": "2023-09-10T15:00:00.000Z",
+          "end_date": "2023-09-18T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd762696e775eee7e3c12a",
+            "name": "이덕혜",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "13391d93-158f-4785-8e61-626a3c34fbee",
+          "created_at": "2024-01-12T03:04:17.809Z",
+          "name": "[IB] 한국타이어앤테크놀로지_이덕혜",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김광년",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd762696e775eee7e3c12a",
+            "name": "이덕혜",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-01-12",
+              "text": "- 문의 교육 주제 : 생성형 AI (챗GPT 활용), DX 기초 (마인드셋, 데이터 리터러시)\n- 문의 서비스 : 온라인 콘텐츠 구독, 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 회사 이름 : 한국타이어앤테크놀로지\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 이덕혜\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 상담 문의 내용 : (공백)\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-01-15",
+              "text": "(01/15) 교육 문의 응대- 최소 97명 이상 온라인 구독 서비스 이용 문의- 패키지 플랜 아니면 싱글 플랜 희망하고 있음- 기간은 1개월 정도, 할인 적용 가능 여부 궁금- 교육 과정 리스트 및 견적 내용 전달 예정"
+            }
+          ]
+        },
+        {
+          "id": "8162fd4e-57c9-41bd-bea6-13c256cf8e68",
+          "created_at": "2024-06-18T07:26:59.977Z",
+          "name": "이덕혜 리드",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-08-02T07:01:32.795Z",
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "데이터분석/CDS",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd762696e775eee7e3c12a",
+            "name": "이덕혜",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-06-18",
+              "text": "- 딜 문의 주제 (최초) : 데이터 분석 및 AI 실무\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 500명 이하\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 회사 이름 : 한국타이어앤테크놀로지\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 이덕혜\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 상담 문의 내용 : 기존 담당자님 배영민님 퇴사하신 관계로 새로운 담당자님 배정 요청드립니다.\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-06-18",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        },
+        {
+          "id": "0191258e-9f3e-7002-9e19-e6f7f44eba48",
+          "created_at": "2024-08-06T02:39:49.577Z",
+          "name": "[부가세 별도] (B2B) 한국타이어앤테크놀로지 - 실무 능력 향상을 위한 데이터 분석 초급",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "오진선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-08-13T15:00:00.000Z",
+          "expected_amount": 5200000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": "2024-08-21T15:00:00.000Z",
+          "amount": 5200000.0,
+          "start_date": "2024-08-21T15:00:00.000Z",
+          "end_date": "2024-09-04T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd762696e775eee7e3c12a",
+            "name": "이덕혜",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-08-06",
+              "text": "4월 진행과정 리텐션"
+            }
+          ]
+        },
+        {
+          "id": "0196f078-3afb-766c-99c5-bf8307cd3728",
+          "created_at": "2025-05-20T15:00:00.000Z",
+          "name": "한국타이어앤테크놀로지_스킬매치",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "이수빈",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-07-31T04:45:22.274Z",
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-07-24T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "스킬진단인증",
+          "category": "Skill Match",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "5655c7ef-f584-4665-b62a-dbdf85a30e97",
+            "name": "문인준",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-05-21",
+              "text": "<2팀> \n1차 f/up (25/05/21)\n-기존 자가진단 진행했을 때 시중에 있는 콘텐츠들을 제공했었으나 구성원들의 만족도가 낮았음\n(현업과 콘텐츠 내용 간의 괴리 > 우리 회사에 딱 맞는 콘텐츠가 있었으면 좋겠다 > 본인도 안되는 건 알고 있음)-스킬매치의 로직이 인상깊었음 (기업 자체에서 진단하는 경우는 많은데 이를 시스템화해서 구현한 게 인상깊었음)\n-가장 궁금한 건 스킬매치의 기능 (커버 가능한 직무/스킬 범위) + 콘텐츠 범위(대부분 패캠 같은 기업들이 콘텐츠 자체 체작한다고 하지만 CP사 콘텐츠들도 많이 들여오는 걸로 아는데 CP사 콘텐츠는 리뉴얼이 느리고 최신화가 잘 안됨)-다양한 콘텐츠 : VOD 이외에도 기타 링크나 연관 도서 요약 자료 등 (기존의 e-learning이 아닌 다른 형태)\n-마케팅팀에서 나갔던 온라인 교육 로드맵과 스킬매치가 연결되는 거 아니냐고 해서 콘텐츠는 일치할 수 있으나 레벨이 다를 수는 있음)\n\nf/u\n-비대면 미팅 링크 전달\n-온라인 교육 로드맵 전달"
+            },
+            {
+              "date": "2025-07-25",
+              "text": "07/25연락 두절로 lost처리"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64dd762696e775eee7e3c12a",
+          "name": "이덕혜",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "3-18. 소개서 : 디지털 프로덕트 매니저 마인드셋 (po_mindset)",
+            "3-28. 소개서 : 일반 직무 대상 디지털 역량 교육 (main_digitaledu)",
+            "3-29. 소개서 : 재교육 리스킬링 (main_reskill)",
+            "3-34. 소개서 : 신입사원 온보딩 (main_newbie)",
+            "3-4. 소개서 : 데이터 사이언스 패키지 플랜 (ds_plan)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정",
+            "5-1. 템플릿 신청 (template_lndkpi)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-08",
+              "text": "- 고객 이름 : 이덕혜\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^231108\n- 고객 utm_content : lead-gen^hrda^edm-cta2\n"
+            },
+            {
+              "date": "2023-12-04",
+              "text": "- 고객 이름 : 이덕혜\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2023-12-19",
+              "text": "이미지"
+            },
+            {
+              "date": "2024-01-12",
+              "text": "- 고객 이름 : 이덕혜\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-01-12",
+              "text": "- 고객 이름 : 이덕혜\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-01-23",
+              "text": "- 고객 이름 : 이덕혜\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-01-23",
+              "text": "- 고객 이름 : 이덕혜\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-01-23",
+              "text": "- 고객 이름 : 이덕혜\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-03-21",
+              "text": "- 고객 이름 : 이덕혜\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240321\n- 고객 utm_content : lead-gen^cold-mail^cta\n"
+            },
+            {
+              "date": "2024-03-21",
+              "text": "- 고객 이름 : 이덕혜\n- 고객 이메일 : 21602360@hankookn.com\n- 고객 전화 : 01073442103\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240321\n- 고객 utm_content : lead-gen^cold-mail^cta\n"
+            }
+          ]
+        },
+        {
+          "id": "64e458785e7b90c8e848ea56",
+          "name": "박한형",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-4. 백서 신청 (report_workflowlearning)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-24",
+              "text": "교육담당자가 아니다. 기업문화팀이긴 한데, 교육과는 거리가 멀다. 교육 관련 담당자들에게도 공유하겠다. 제가 담당하고있는업무는 없어서. >>종종 좋은 자료 전달 드리겠다."
+            }
+          ]
+        },
+        {
+          "id": "64f975b1fb15689232a8a464",
+          "name": "이선민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64f975b2fb15689232a8a4ad",
+          "name": "이선민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64f975b2fb15689232a8a4f6",
+          "name": "이미라",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "6542f1b259c7b87d0abeacf1",
+          "name": "김성혜",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-3. 백서 신청 (report_cds)",
+            "1-5. 백서 신청 (report_cd)",
+            "1-6. 백서 신청 (report_itleaders)",
+            "1-7. 백서 신청 (report_hrdedu)",
+            "3-11. 소개서 : 백엔드 리스킬/업스킬 (dev_back)",
+            "3-28. 소개서 : 일반 직무 대상 디지털 역량 교육 (main_digitaledu)",
+            "3-30. 소개서 : DX 역량 강화 (main_dt)",
+            "3-31. 소개서 : 업종별 베스트 셀링 (main_bestselling)",
+            "3-33. 소개서 : 뉴노멀 리더십 (main_leadership)",
+            "3-8. 소개서 : SQL을 활용한 실무 데이터 분석 (ds_sql)",
+            "4-2-1. (자료)웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-07",
+              "text": "11/07 Call (1차 콜드콜)계획 수립단계이긴 한데 아직은 미팅 의사 없음. 필요시 연락주겠다."
+            }
+          ]
+        },
+        {
+          "id": "1537275b-8ffa-41d4-9ebc-53a8d9c0bae6",
+          "name": "담당자",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-12. 백서 신청 (report_leadership)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "5-23. 생성형AI 교육 설계 핵심 자료집 (package_genaicontents)",
+            "5-28. 2025 온라인 AI 교육 자료집 (package_aionline)",
+            "5-33. 온라인 교육 템플릿 3종 (package_onlineopstpl)",
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2023-12-13",
+              "text": "- 고객 이름 : 이현\n- 고객 이메일 : hwan@hankookn.com\n- 고객 전화 : 0100000000\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2023-12-18",
+              "text": "- 고객 이름 : 이현\n- 고객 이메일 : hwan@hankookn.com\n- 고객 전화 : 01000000000\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^231218\n- 고객 utm_content : lead-gen^hrda^edm-cta4\n"
+            },
+            {
+              "date": "2024-01-08",
+              "text": "(01/08) Cold call- 연락처 미기입으로 드랍 처리"
+            },
+            {
+              "date": "2025-02-06",
+              "text": "- 고객 이름 : 담당자\n- 고객 전화 : 01029814151\n- 고객 이메일 : hwan@hankookn.com\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250205\n- 고객 utm_content : lead-gen^khrd^genaicontents\n"
+            },
+            {
+              "date": "2025-06-15",
+              "text": "- 고객 이름 : 담당자\n- 고객 전화 : 01029814151\n- 고객 이메일 : hwan@hankookn.com\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250613\n- 고객 utm_content : lead-gen^khrd^cta1\n"
+            },
+            {
+              "date": "2025-07-04",
+              "text": "- 고객 이름 : 담당자\n- 고객 전화 : 01029814151\n- 고객 이메일 : hwan@hankookn.com\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250704\n- 고객 utm_content : lead-gen^khrd^cta3#salesmap-web-form\n"
+            },
+            {
+              "date": "2025-09-23",
+              "text": "- 고객 이름 : 담당자\n- 고객 전화 : 01000000000\n- 고객 이메일 : hwan@hankookn.com\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250916\n- 고객 utm_content : lead-gen^cold-hd^mql#salesmap-web-form\n"
+            }
+          ]
+        },
+        {
+          "id": "302918be-8d7e-4140-8390-59da6223e56b",
+          "name": "장형찬",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-12. 백서 신청 (report_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2023-12-18",
+              "text": "- 고객 이름 : 장형찬\n- 고객 이메일 : 21600201@hankookn.com\n- 고객 전화 : 01028823827\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^231218\n- 고객 utm_content : lead-gen^hrda^edm-cta2\n"
+            }
+          ]
+        },
+        {
+          "id": "5655c7ef-f584-4665-b62a-dbdf85a30e97",
+          "name": "문인준",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅",
+            "5-16. 내부 인재 관리 총정리 자료집 신청 (package_internaltalent)",
+            "5-3. 템플릿 신청 (template_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-19",
+              "text": "- 고객 이름 : 문인준\n- 고객 이메일 : ijmoon@hankookn.com\n- 고객 전화 : 01086123118\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : 없습니다.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240219\n- 고객 utm_content : lead-gen^dbr^edm-cta3#apply\n"
+            },
+            {
+              "date": "2024-02-19",
+              "text": "- 고객 이름 : 문인준\n- 고객 이메일 : ijmoon@hankookn.com\n- 고객 전화 : 01086123118\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240219\n- 고객 utm_content : lead-gen^dbr^edm-cta3#apply\n"
+            },
+            {
+              "date": "2024-02-19",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 지금 당장은 도움 필요한 부분 없음, 추후 연락 드리겠음2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            }
+          ]
+        },
+        {
+          "id": "210e0889-9999-4a76-b1f6-603679be6ced",
+          "name": "신진영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-22",
+              "text": "- 고객 이름 : 신진영\n- 고객 이메일 : 21100053@hankookn.com\n- 고객 전화 : 01052740310\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240222\n- 고객 utm_content : lead-gen^hrda^edm-cta3\n"
+            },
+            {
+              "date": "2024-02-22",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 본사에서 전체 교육 주관하고 있어서, 혹시 도움 필요하게 되면 연락드림2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            }
+          ]
+        },
+        {
+          "id": "85ce7f1a-6037-4814-a40c-5b2d4757a182",
+          "name": "장형찬",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-14. 백서 신청 (report_leadershipfw)"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-28",
+              "text": "- 고객 이름 : 장형찬\n- 고객 이메일 : ohglay@naver.com\n- 고객 전화 : 01028823827\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240228\n- 고객 utm_content : lead-gen^hrda^edm\n"
+            },
+            {
+              "date": "2024-02-29",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 퇴사했음2. 후속 액션- 드랍 처리"
+            }
+          ]
+        },
+        {
+          "id": "e0a96069-91bf-40f4-894a-3a1f666ca038",
+          "name": "유민선",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)",
+            "1-12. 백서 신청 (report_leadership)",
+            "3-48. 소개서 : ChatGPT 교육 로드맵 및 예시",
+            "5-3. 템플릿 신청 (template_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-19",
+              "text": "- 고객 이름 : 유민선\n- 고객 이메일 : 21603497@hankookn.com\n- 고객 전화 : 01087860422\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-19",
+              "text": "- 고객 이름 : 유민선\n- 고객 이메일 : 21603497@hankookn.com\n- 고객 전화 : 01087860422\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : pdf\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^231211\n- 고객 utm_content : lead-gen^ebook^leadership\n"
+            },
+            {
+              "date": "2024-05-20",
+              "text": "- 고객 이름 : 유민선\n- 고객 이메일 : 21603497@hankookn.com\n- 고객 전화 : 01087860422\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^231213\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-05-20",
+              "text": "- 고객 이름 : 유민선\n- 고객 이메일 : 21603497@hankookn.com\n- 고객 전화 : 01087860422\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : pdf\n- 고객 utm_medium : link\n- 고객 utm_campaign : all\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01917a8b-d924-7aa2-ba37-d0a405a2bf10",
+          "name": "주익현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-17. 백서 신청 (report_trainingroi)",
+            "3-77. 소개서 : 연구개발/생산 직무 AI 교육 커리큘럼 소개서",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-3. 템플릿 신청 (template_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2024-08-22",
+              "text": "- 고객 이름 : 주익현\n- 고객 이메일 : hyun777@hankookn.com\n- 고객 전화 : 01055128510\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240820\n- 고객 utm_content : lead-gen^khrd^edm\n"
+            },
+            {
+              "date": "2024-09-09",
+              "text": "- 고객 이름 : 주익현\n- 고객 이메일 : hyun777@hankookn.com\n- 고객 전화 : 01055128510\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고, 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240904\n- 고객 utm_content : nurturing^cold^salesmap-db\n"
+            },
+            {
+              "date": "2025-04-01",
+              "text": "- 고객 이름 : 주익현\n- 고객 전화 : 01055128510\n- 고객 이메일 : hyun777@hankookn.com\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250401\n- 고객 utm_content : nurturing^mktg-agreed^aiedu_rnd\n"
+            }
+          ]
+        },
+        {
+          "id": "01966557-815e-7111-a614-169609018223",
+          "name": "김기현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-77. 소개서 : 연구개발/생산 직무 AI 교육 커리큘럼 소개서"
+          ],
+          "memos": [
+            {
+              "date": "2025-04-24",
+              "text": "- 고객 이름 : 김기현\n- 고객 전화 : 01073578380\n- 고객 이메일 : ghkim7357@hankookn.com\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0199592a-7272-7ee4-b86c-de4b46c52006",
+          "name": "김응수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-35. 마케터를 위한 프롬프트 템플릿 15가지 (template_mktprompt)"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-17",
+              "text": "- 고객 이름 : 김응수\n- 고객 전화 : 01074451633\n- 고객 이메일 : keqi@hankooktech.com\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : sms\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250917\n- 고객 utm_content : lead-gen^b2c^mktgtemplate#salesmap-web-form\n"
+            }
+          ]
+        },
+        {
+          "id": "019ac32a-9d18-7222-a42c-6f5dbde7c912",
+          "name": "우정윤",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-29. 온라인 직무교육 자료집 (package_jobonline)"
+          ],
+          "memos": [
+            {
+              "date": "2025-11-27",
+              "text": "- 고객 이름 : 우정윤\n- 고객 전화 : 010-3377-2740\n- 고객 이메일 : 21603686@hankookn.com\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^251127\n- 고객 utm_content : lead-gen^khrd^cta1\n"
+            }
+          ]
+        },
+        {
+          "id": "019b0214-6044-766b-b8bb-a9123c85d57f",
+          "name": "정윤경",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2025-12-09",
+              "text": "- 고객 이름 : 정윤경\n- 고객 전화 : 01063993068\n- 고객 이메일 : yoonk@hankookn.com\n- 회사 이름 : 한국타이어앤테크놀로지\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

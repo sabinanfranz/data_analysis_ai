@@ -1,0 +1,687 @@
+{
+  "organization": {
+    "id": "64d328801750f5b1d531cd2f",
+    "name": "하나은행",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "HR지원그룹",
+      "team": "인재개발부",
+      "deals": [
+        {
+          "id": "17e20ab3-d5ae-475d-8d2e-1e90ecd3c60b",
+          "created_at": "2023-11-29T01:39:06.404Z",
+          "name": "[OB] 하나은행_민소영님",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김광년",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "de049f8b-acc8-4dc3-b867-67d701a79aef",
+            "name": "민소영",
+            "upper_org": "HR지원그룹",
+            "team": "인재개발부",
+            "title": "계장",
+            "edu_area": "온라인/정기/생성형AI"
+          },
+          "memos": [
+            {
+              "date": "2023-11-29",
+              "text": "📌미팅 사후 로그1. 참석자 (고객사에서 참석하는 이의 소속과 직급/직책 모두 파악해 적어주세요)- 고객사 : 민소영 계장 (인재개발부)- 팀 : 원희정, 2. 미팅 내용 상세 (고객사의 질문과 답 / 참여하지 않은 사람도 이해할 수 있게 상세히 적어주세요.)- 주은실 차장님과 같이 일해본적은 없다. 교육 담당한지 4개월되었다. 3~5년 주기마다 발령나고있어서 담당자 교체가 있는 편이다. - 본점은 엑셀, SQL 도 활용하고 있고, 개발단에서는 자바나 C언어 활용중이다. - 오프라인 교육하게 되면, 평일에 인력 빼서 진행하기는 어려움이 있어서 토요일에 주로 진행. - 외국어 교육은 제공하진 않고, 복지성으로 지원만해주는정도, - 콜로소 한 시간씩 교육 제공해주고있다. (최근 이요건이 바로 하나은행에서 요청주신 건이라고..)- 내년부터 태블로 도입예정이라, 관련 교육 과정에 대한 수요가 많을 것 같다. - AI과정에도 관심이 많아서 알아보고 있다. - 어느정도 티아이 DT유니버시티 통해서 하긴 한다... 보통은 그룹사에서 리스트업해서 주시는데, 관계사들 VOC 듣고 반영해주는 식이다. - 행원 과정으로 데이터 분석과 서비스 기획 분야 집합과정을 영업점 본점 직원 대상으로 열 수 있지 않을까 싶다. 하게 되면 금융에 특화된 과정으로 진행을 하고자 한다.-  평일에는 한군데 모이기 어렵다보니 비대면 스트리밍으로 진행하고, 집합과정은 토요일에 진행하는 식 희망. - 이용중인 교육 업체는 직무가 워낙 다양하다보니 여러 교육 업체들 이용중이다. - 온라인 구독서비스 이용경험: 수강 관리가 어려웠다. 복지로 접근하면 괜찮았겠지만, 수료관리가 어렵다보니 더 이상 진행  안하기로.. 근데 올플랜의 겨웅 비용이 어떻게 되는가? 직원들 중 제약없이 수강 희망하는 직원도 있었어서.. - 하나은행에만 만명 넘는 직원들이 있다. 관심있어할 부서 특화 과정을 디지털 특화 부서에만 열어봤는데, DT 통해 안 열리는 과정도 있다보니 수요가 있긴 하다. - 그런데 수료 여부를 체크하는 것도 아니다보니 어르신들을 설득하기 어려울 것같다. - 질문: K디지털 취준생 교육 개발/데이터 쪽 알파코랑 하고 있는데 패캠도 싸피 같은거 하는가? >> 카카오랑도 하고 브랜디, 야놀자랑도 하고있다고 설명드림. 관련 사업 추후라도 변경하게 될 시 문의 할 수 있을 것 같다심3. 세일즈 담당자의 Action Item (보낼 자료, 잡아야 할 미팅, 언제쯤 다시 연락할지 등 적어주세요) - 스킬 아카데미 소개서 포함 전반적인 소개 내용- 생성형 AI 소개서, 데이터 분석, CX 과정 소개서 "
+            }
+          ]
+        },
+        {
+          "id": "47cf427d-e7a5-4fb9-9039-993e36bc04ca",
+          "created_at": "2024-02-19T00:15:15.056Z",
+          "name": "하나은행 데이터분석 실무과정_기초",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "오진선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-04-10T15:00:00.000Z",
+          "expected_amount": 15880000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "OA/업무자동화",
+          "contract_date": "2024-04-11T00:13:18.606Z",
+          "amount": 15880000.0,
+          "start_date": "2024-04-14T15:00:00.000Z",
+          "end_date": "2024-12-22T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "a401e417-dd0d-4c43-a3dd-08833635ece1",
+            "name": "이진오",
+            "upper_org": "HR지원그룹",
+            "team": "인재개발부",
+            "title": "대리",
+            "edu_area": "출강/정기/데이터분석"
+          },
+          "memos": []
+        },
+        {
+          "id": "08b9826c-3599-4933-bb57-9a5e25e76903",
+          "created_at": "2024-07-08T23:55:04.244Z",
+          "name": "하나은행 전입직원 대상 온라인 구독 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "오진선",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2024-09-26T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": "2024-09-27T03:33:21.714Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "de049f8b-acc8-4dc3-b867-67d701a79aef",
+            "name": "민소영",
+            "upper_org": "HR지원그룹",
+            "team": "인재개발부",
+            "title": "계장",
+            "edu_area": "온라인/정기/생성형AI"
+          },
+          "memos": []
+        },
+        {
+          "id": "019a0442-a8a0-7003-ae9d-9ffed4a7c609",
+          "created_at": "2025-10-21T00:54:00.000Z",
+          "name": "하나은행_임원 대상 AI 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "서정연",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-11-20T15:00:00.000Z",
+          "expected_amount": 5500000.0,
+          "lost_confirmed_at": "2025-10-27T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "de049f8b-acc8-4dc3-b867-67d701a79aef",
+            "name": "민소영",
+            "upper_org": "HR지원그룹",
+            "team": "인재개발부",
+            "title": "계장",
+            "edu_area": "온라인/정기/생성형AI"
+          },
+          "memos": [
+            {
+              "date": "2025-10-28",
+              "text": "10/16 하나은행 인재개발부 민소영 대리님이 직접 교육문의 & 1차 fup교육 배경 : AI 교육에 대한 관심도 up, AI 관련 서비스 도입 예정 등교육 형태 및 시수 : 오프라인, 8H (이론-실습-데모 가능) / 일정상 8H이 어려울 경우에는 4H도 고려 가능성 有교육 대상 : 임원 대상교육 주제 : AI 리터러시, 윤리, 트렌드 등 (*세부 주제 및 방향은 피드백 예정)교육생 수준 및 환경AI 활용에 대해 기존에는 보수적인 편이라 활용도 측면에서는 낮은민소영 대리님은 1차 문의만 진행하고, 추후 해당 교육 실 담당할 AI혁신부서로 전달할 예정이라고 공유주심\n 10/22 AI혁신부서 윤원주 과장님&부장님과 미팅 진행제안서 내용에 대한 브리핑을 원한다고 하여 미팅 진행했음미팅 진행해보니, 전달 과정에서 교육 니즈에 대한 혼선이 있었던 것으로 보임실제로 원하는 내용은 \"재미/흥미단\"의 2H 교육 내용이었음미팅 종료 후, 새로운 제안서 2차 전달\n\n 이후 해당 교육은 26년도 논의로 결정되었다고 공유받아, 잠정 연기 (LOST처리)"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "de049f8b-acc8-4dc3-b867-67d701a79aef",
+          "name": "민소영",
+          "upper_org": "HR지원그룹",
+          "team": "인재개발부",
+          "title": "계장",
+          "edu_area": "온라인/정기/생성형AI",
+          "webforms": [
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-29",
+              "text": "온라인 구독 서비스 연장 안 한 기업 대상으로 콜드콜했다가 미팅 어레인지 11/29 오전9:30"
+            },
+            {
+              "date": "2024-11-14",
+              "text": "- 고객 이름 : 민소영\n- 고객 이메일 : dym7318@naver.com\n- 고객 전화 : 01093768981\n- 회사 이름 : 하나은행\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "a401e417-dd0d-4c43-a3dd-08833635ece1",
+          "name": "이진오",
+          "upper_org": "HR지원그룹",
+          "team": "인재개발부",
+          "title": "대리",
+          "edu_area": "출강/정기/데이터분석",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "IT시스템부",
+      "team": "아키텍처전략팀",
+      "deals": [
+        {
+          "id": "ded0b4ff-bb65-40d0-bac2-2ac95acb9eb4",
+          "created_at": "2024-03-08T00:10:36.260Z",
+          "name": "하나은행_퍼블릭 샌드박스 구축 및 시범 사업",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-08-01T15:00:00.000Z",
+          "expected_amount": 122870000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "빅데이터/AI",
+          "contract_date": "2024-08-08T15:00:00.000Z",
+          "amount": 122870000.0,
+          "start_date": "2024-08-08T15:00:00.000Z",
+          "end_date": "2024-10-31T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "c05cb3b8-4b0a-467c-90b8-e9b1252997bd",
+            "name": "정미선",
+            "upper_org": "IT시스템부",
+            "team": "아키텍처전략팀",
+            "title": "과장",
+            "edu_area": "출강/단기/AI개발"
+          },
+          "memos": [
+            {
+              "date": "2024-03-08",
+              "text": "- 딜 문의 주제 (최초) : 생성형 AI (챗GPT 활용), DX 기초 (마인드셋, 데이터 리터러시), 데이터 분석 및 AI 실무, 프로그래밍 (웹 개발, 앱 개발), PO/PM (프로젝트 관리, 제품 및 서비스 기획)\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 10명 이하\n- 회사 이름 : 하나은행\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 정미선\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 고객 이메일 : misun.jung@hanafn.com\n- 고객 전화 : 01045858001\n- 상담 문의 내용 : ICT 그룹원 대상 사내 신기술을 활용한 MVP 기획-구축-적용 프로그램을 하고자 합니다. 기획 단계로 제공 가능한 오프라인 교육에 대한 설명과 예산 관련하여 상담을 요청드립니다.\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-13",
+              "text": "담당자님 안녕하세요, 하나은행 정미선과장입니다.지난번에 유선으로 너무 짤막한 설명을 드린것 같아 오전에 조금 내용을 구체화 해 보았습니다.신기술 내재화 활동의 하나로 ICT그룹원을 대상으로 부트캠프/부트챌린지 스타일의 프로그램을 하나 진행하려 합니다.내부적으로 도입하고자 하는 신기술을 정한 후, 해당 신기술을 활용한 MVP를 실업무에 적용하는 것을 목표로 하고있습니다.MVP는 신기술을 활용한 ICT그룹 내부 업무 개선을 하는 것이 주요 골자입니다. 3~4월 주제공모, 조직구성 등을 하여 5월 첫주부터 3개월간 본 프로젝트활동을 진행하고자 합니다.매주 수, 금요일 오후는 챌린저팀 활동 시간으로 비워둘 예정입니다. 해당 시간에는 오프라인 지원(인천 청라)이 필요합니다. (96시간) 요청드리는 바는 다음과 같습니다.큰 골자는 챌린저 팀(일종의 TF)의 활동 지원입니다.1. 아이디어 실현 지원 - 해당 신기술의 성과지표와 목표치를 설정하고 실천 과제를 구체화하는 업무 지원2. 챌린저 활동 독려 - 실천 과제가 달성하려는 기술 목표에 부합할 수 있도록 참여원을 다양한 수단(단계 별 목표 및 백로그 수립, 필요 기술 교육, 산출물 작성 지원 등)으로 독려 아직 프로그램 기획 초기 단계로 내부적으로 진행에 대한 승인은 획득한 상황입니다. 품의 진행을 위해 예상 견적을 내어보고 조금 더 프로그램을 구체화 하는 작업이 필요합니다.본 내용을 바탕으로 수요일 11시에 뵙고자 합니다. 확인 부탁드립니다.보시며 궁금하신 점 있으시면 언제든지 연락 부탁 드립니다."
+            },
+            {
+              "date": "2024-03-13",
+              "text": "[ 미팅 사후 로그 ]1. 참석자- 고객사 : 정미선 과장- 팀 : 김광년, 김솔이2. 미팅 내용- 신기술을 활용 MVP 수립 주제로 챌린저 활동 진행 검토 중, 최종 결과물로 실무 적용이 목표- 아직 신기술이 정해진 상태는 아니며 5개 정도의 신기술 도출 후 1개 선정하여 공모 예정- 만약 패스트캠퍼스에서 교육 가능한 신기술이 있다면 커리큘럼 전달해주시면 반영 가능- 정해진 것은 아니지만 각 신기술 별로 매년 챌린저 활동 진행을 해보고 싶음- ICT 그룹원은 대략 1000명 정도이고 그 중 개발 인력은 400~500명(공모는 전체 대상)- 3~4월 중에 신기술 선정하여 공모를 받고, 3개 정도의 주제를 선정하고자 함- 이에 따라 챌린저 활동 대상은 20~30명 정도가 될 것으로 예상 중- 인원들이 선발된 이후에 아이디어를 구체화하는 단계를 거치고, 3개월 가량 본격적인 챌린저 활동 시작- 3개월 동안의 지원 활동에 대한 제안을 받아보고 싶고, 4월에 정식 RFP 나올 예정임- 1주일에 반나절(4H?) 정도의 챌린저 활동 예정이며, 기타 투입 리소스 고려했을 때 예상 비용 궁금함- 이번 활동에 대한 문의에 가장 빠르게 대응해주고 찾아와준 곳이 패스트캠퍼스임- 그래서 신기술과 공모 주제에 대한 가이드 잡아주시면 이를 기반으로 RFP 공고 내려고 함(고민 & 질문 사항)- 기획 / 개발 각 영역의 강사님을 별도로 섭외해야 하는 것인지? : 답변 완료, 코치만 따로 투입- 아이디어 구체화 단계에서 비즈니스 모델링에 대한 코칭도 받아볼지? : 결국 비용이 문제- 개발 단계에서 강사님이 어느 정도 템플릿을 주시고 이에 맞춰서 개발하는지? : 맞음- 개발 환경의 경우 자체 플랫폼에서 해결이 가능한지? : 불가능, 별도로 업체 섭외하여 제공 가능3. 미팅 안내 사항- SK 마이써니 사례 소개 완료4. 미팅 후속 액션- 신기술 종류와 커리큘럼 전달 (빠르면 빠를수록 좋음)- 전체 투입 리소스를 고려한 예상 비용 전달[ AE 인계 필수 확인 사항 ]1. 교육 배경 : Bottom up2. 교육 목표 : ICT 그룹원 역량 레벨업3. 교육 내용- 아이디에이션 단계 비지니스 모델링 코칭 : 고민 중인 요소, 비용이 문제- 신기술 활용한 MVP 기획 단계 코칭- 신기술 활용한 MVP 개발 단계 코칭 및 기술 지원4. 교육 대상 : 공모전 통해서 선발 / 20~30명 / IT 직군(기획, 개발 등)5. 교육 일정 : 6~9월 / 주 1회 4H6. 교육 시수 : 50H 예상7. 교육 형태 : 오프라인 출강 / 프로젝트 지원8. 교육 장소 : 청라 연수원9. 교육 예산 :  미정"
+            },
+            {
+              "date": "2024-03-19",
+              "text": "1차 fup 완 (3/15) - 패스트캠퍼스 신기술 주제/커리큘럼- 교육 전체 견적서내부적으로 신기술에 대한 방향성이 아직 모호해서, 아이디어 공모 먼저 진행 후교육 진행 여부 재검토 ( 3/25 월까지 아이디어 마감 후 재연락 주시기로 함! )"
+            },
+            {
+              "date": "2024-04-05",
+              "text": "교육 진행하는 것으로 내부 승인은 득! (4/4)차주중에 RFP 공고 일정 안내해주실 예정 (4/8)"
+            },
+            {
+              "date": "2024-05-21",
+              "text": "5/21 노트별도의 비딩 없이 패스트캠퍼스와 계약 진행하기로 내부 의사결정 결과 공유받음.과정은 8월 시작이지만, 사전에 개발 및 준비해야 할 사항이 많아 계약은 5월 말 혹은 6월초에 진행 예정 견적 금액은 내부 예산이 줄어든 관계로 일부 조정 될 여지 있음, 추가 협의 필요한 상황 ( 100,350,000 → 95,510,000 )    + 프로젝트 운영안으로 5/23(목) 오후1시에 기업 미팅 예정"
+            },
+            {
+              "date": "2024-05-23",
+              "text": "5/23 노트기업 내부 이슈로 성사 가능성 변경 ( 확정 → 낮음 ) 임원급에서 사업 검토가 다시 이루어져서 6월 중순에 RFP 나올 예정....RFP이니 여러 업체가 참여할 것을 고려하여 성사가능성 변경....활발하게 소통하는 실무진은 패캠과 가장 많은 소통을 했고, 사업에 대한 이해도가 높으니1순위로 긍정적으로 고려할테지만, 평가와 의사결정자는 실무진보다 윗 직급이니 제안서를 잘 써서 제출해주시기 요청주셨습니다.. 열심히 써보겠습니다...예상 주제 ) 퍼블릭 클라우드 샌드 박스 구축 사업- 내부의 샌드 박스를 구축 하는 사업이고 이를 위해 ICT직원들의 기술 교육이 필요함- 샌드 박스를 구축하면 이를 활용한 현업 문제 해결 프로젝트형 과정을 내년도부터 턴키로 오픈할 예정- 제안 포인트로 인프라, 개발 환경 구축시에 어떤 기술적인 도움을 줄 수 있는지가 잘 녹아져 있었으면 좋겠음"
+            }
+          ]
+        },
+        {
+          "id": "019683e9-e6ba-7ee9-8b41-e07cc8510323",
+          "created_at": "2025-04-29T23:37:46.479Z",
+          "name": "하나은행_2025 샌드박스 실효성 검증을 위한 시범사업",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-05T15:00:00.000Z",
+          "expected_amount": 166880000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-08-05T15:00:00.000Z",
+          "amount": 166880000.0,
+          "start_date": "2025-08-05T15:00:00.000Z",
+          "end_date": "2026-01-06T15:00:00.000Z",
+          "net_percent": "39.0",
+          "people": {
+            "id": "c05cb3b8-4b0a-467c-90b8-e9b1252997bd",
+            "name": "정미선",
+            "upper_org": "IT시스템부",
+            "team": "아키텍처전략팀",
+            "title": "과장",
+            "edu_area": "출강/단기/AI개발"
+          },
+          "memos": [
+            {
+              "date": "2025-04-29",
+              "text": "5월 중 RFP 나올 예정"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "c05cb3b8-4b0a-467c-90b8-e9b1252997bd",
+          "name": "정미선",
+          "upper_org": "IT시스템부",
+          "team": "아키텍처전략팀",
+          "title": "과장",
+          "edu_area": "출강/단기/AI개발",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64dd75ee96e775eee7e35051",
+          "created_at": "2023-08-17T01:20:46.691Z",
+          "name": "하나은행_싱글플랜(디지털 자격과정)_210426",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": 40338400.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75ee96e775eee7e35020",
+            "name": "최성환",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd75ee96e775eee7e350c2",
+          "created_at": "2023-08-17T01:20:46.926Z",
+          "name": "하나은행_싱글플랜(금융아카데미)_210503",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": 40338400.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75ee96e775eee7e35020",
+            "name": "최성환",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd75ef96e775eee7e3515c",
+          "created_at": "2023-08-17T01:20:47.232Z",
+          "name": "하나은행_패키지플랜_210216",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 10000000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75ef96e775eee7e3512b",
+            "name": "김건우",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd75ef96e775eee7e351f6",
+          "created_at": "2023-08-17T01:20:47.536Z",
+          "name": "하나은행_임원 DT세미나_2203",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": null,
+          "amount": 10556700.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75ef96e775eee7e351c5",
+            "name": "주은실",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd75ef96e775eee7e3526c",
+          "created_at": "2023-08-17T01:20:47.782Z",
+          "name": "하나은행_권오상 아카데미",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "재무회계",
+          "contract_date": null,
+          "amount": 18466000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75ee96e775eee7e35020",
+            "name": "최성환",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64e41a5ab43d35b5cae35b9f",
+          "created_at": "2023-08-22T02:15:54.113Z",
+          "name": "하나은행_금융 세일즈 교육",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": "2023-08-15T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": null,
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64e41a59b43d35b5cae35b55",
+            "name": "유예지",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2023-08-23",
+              "text": "로스트 사유 : 정보성 컨택- 하나은행은 우리랑 교육은 안하고 정보성 컨택만 매일 하는 곳 중 하나..- 금융세일즈 요청으로 로드맵 제안서 전달하였으나 이후 회신 없음 "
+            }
+          ]
+        },
+        {
+          "id": "01947274-7b5b-7551-a803-9bc3ba71a5da",
+          "created_at": "2025-01-17T04:10:23.989Z",
+          "name": "하나은행_OA/기획_온라인 문의",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-02-28T02:41:06.501Z",
+          "expected_amount": 3000000.0,
+          "lost_confirmed_at": "2025-02-16T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "OA/업무자동화",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "971ea520-ab7c-4d69-af72-2271056f644a",
+            "name": "조진경",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "01947275-08d5-7ccc-af50-c74f178ba4d9",
+          "created_at": "2025-01-17T04:11:00.200Z",
+          "name": "하나은행_온라인 문의",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-04-30T01:50:47.153Z",
+          "expected_amount": 2400000.0,
+          "lost_confirmed_at": "2025-04-06T15:00:00.000Z",
+          "lost_reason": "[\"정보성 컨택/타사 비교\"]",
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "01947275-07fd-7ccc-af50-b7d37f214d19",
+            "name": "이경미",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64d328801750f5b1d531cd66",
+          "name": "안수진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64dd75ee96e775eee7e35020",
+          "name": "최성환",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64dd75ef96e775eee7e3512b",
+          "name": "김건우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64dd75ef96e775eee7e351c5",
+          "name": "주은실",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64e41a59b43d35b5cae35b55",
+          "name": "유예지",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "6512a4e02b52de2cb1fa6c85",
+          "name": "주은실",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-4. 백서 신청 (report_workflowlearning)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-05",
+              "text": "교육 담당이었다가 영업점 발령이 났다. 관련해서 통화가 불필요할것 같다심.고객상태 관리X 로 변경"
+            }
+          ]
+        },
+        {
+          "id": "21dca21f-d802-4d4f-a0fa-671b1ade87dc",
+          "name": "손우철",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "ef623128-5c0a-4972-a779-66cf20934ad6",
+          "name": "이영은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "c515fecd-46c8-4c2d-ad3a-c22341498a1b",
+          "name": "김성진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "54f84ba6-b5ea-470a-a500-c0e71e27e57e",
+          "name": "이승환",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "971ea520-ab7c-4d69-af72-2271056f644a",
+          "name": "조진경",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "f8f4c55a-2426-4f69-8b3a-73aa3bcfa1e8",
+          "name": "하보배",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01919b2e-4392-7cc3-8b4d-207a03466841",
+          "name": "박재성",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-17. 백서 신청 (report_trainingroi)"
+          ],
+          "memos": [
+            {
+              "date": "2024-08-28",
+              "text": "- 고객 이름 : 박재성\n- 고객 이메일 : dhalia1816@hanafn.com\n- 고객 전화 : 01029874944\n- 회사 이름 : 하나은행\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01947275-07fd-7ccc-af50-b7d37f214d19",
+          "name": "이경미",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

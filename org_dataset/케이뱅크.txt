@@ -1,0 +1,412 @@
+{
+  "organization": {
+    "id": "64f975a1fb15689232a883ce",
+    "name": "케이뱅크",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": [
+      {
+        "date": "2023-11-15",
+        "text": "1차 부재"
+      },
+      {
+        "date": "2024-03-27",
+        "text": "- 고객 이름 : 신다혜\n- 고객 이메일 : dhshin0156@gmail.com\n- 고객 전화 : 01024940156\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 지인 추천\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240325\n- 고객 utm_content : lead-gen^cio^edm\n"
+      },
+      {
+        "date": "2024-04-15",
+        "text": "- 고객 이름 : 신다혜\n- 고객 이메일 : dhshin0156@gmail.com\n- 고객 전화 : 01024940156\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 지인 추천\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^video-seminar\n- 고객 utm_content : lead-gen^salesmap^mktg-agreed\n"
+      },
+      {
+        "date": "2024-05-03",
+        "text": "- 고객 이름 : 신다혜\n- 고객 이메일 : dhshin0156@gmail.com\n- 고객 전화 : 01024940156\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 케이뱅크\n- 회사 기업 규모 : 대기업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240325\n- 고객 utm_content : lead-gen^cio^edm\n"
+      }
+    ]
+  },
+  "groups": [
+    {
+      "upper_org": "People 팀",
+      "team": "People 팀",
+      "deals": [
+        {
+          "id": "f98ad530-5322-45f3-b0b4-24f938dddb20",
+          "created_at": "2024-02-01T05:40:46.365Z",
+          "name": "케이뱅크(신다혜)_올플랜_월별입과_2402",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2024-01-30T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-01-31T05:40:54.000Z",
+          "amount": 1800000.0,
+          "start_date": "2024-01-31T15:00:00.000Z",
+          "end_date": "2025-01-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6d0fedc5-3c4c-4306-9275-7e15fd9cc847",
+            "name": "신다혜",
+            "upper_org": "People 팀",
+            "team": "People 팀",
+            "title": "시니어 매니저",
+            "edu_area": "전사 공통"
+          },
+          "memos": []
+        },
+        {
+          "id": "cbea209f-f774-42dc-a7e1-25b90eb5a21d",
+          "created_at": "2024-04-17T09:46:11.431Z",
+          "name": "케이뱅크(신다혜)_올플랜_연간협약 비정기입과_2405_12개월",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-04-29T15:00:00.000Z",
+          "expected_amount": 1800000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-04-26T04:43:37.562Z",
+          "amount": 1440000.0,
+          "start_date": "2024-04-30T15:00:00.000Z",
+          "end_date": "2025-04-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6d0fedc5-3c4c-4306-9275-7e15fd9cc847",
+            "name": "신다혜",
+            "upper_org": "People 팀",
+            "team": "People 팀",
+            "title": "시니어 매니저",
+            "edu_area": "전사 공통"
+          },
+          "memos": [
+            {
+              "date": "2024-04-17",
+              "text": "- 딜 문의 주제 (최초) : 프로그래밍 (웹 개발, 앱 개발)\n- 딜 서비스 유형 (최초) : 온라인 콘텐츠 구독\n- 딜 예상 교육 인원 : 10명 이하\n- 딜 예상 교육 일정 : 2개월 이내\n- 회사 이름 : 케이뱅크\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 신다혜\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 이메일 : dahye.shin@kbanknow.com\n- 고객 전화 : 01024940156\n- 상담 문의 내용 : 올플랜과, 일부 카테고리 구독하는 서비스를 이용하고자 하는데, 견적이 궁금합니다 (1년)\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0194c9a8-638a-733e-b5df-aff41a68432f",
+          "created_at": "2025-02-03T02:34:03.539Z",
+          "name": "케이뱅크_올플랜_2502",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-02-17T07:41:33.786Z",
+          "expected_amount": 900000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "생성형AI",
+          "contract_date": "2025-02-16T15:00:00.000Z",
+          "amount": 900000.0,
+          "start_date": "2025-02-16T15:00:00.000Z",
+          "end_date": "2026-02-15T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6d0fedc5-3c4c-4306-9275-7e15fd9cc847",
+            "name": "신다혜",
+            "upper_org": "People 팀",
+            "team": "People 팀",
+            "title": "시니어 매니저",
+            "edu_area": "전사 공통"
+          },
+          "memos": [
+            {
+              "date": "2025-02-03",
+              "text": "- 딜 문의 주제 (최초) : 생성형 AI (챗GPT 활용)\n- 딜 예상 교육 일정 : 2개월 이내\n- 딜 서비스 유형 (최초) : 온라인 단체 교육\n- 딜 예상 교육 인원 : 10명 이하\n- 회사 이름 : 케이뱅크\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 신다혜\n- 고객 이메일 : dahye.shin@kbanknow.com\n- 고객 전화 : 01024940156\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 상담 문의 내용 : 연간 교육구독권 신청하고자 합니다. 전화 받기 어려울 때가 많아, 메일로 회신 주시면 감사하겠습니다 :)\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-02-03",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        },
+        {
+          "id": "01957dee-ca57-755d-a4cb-8d1230998a6b",
+          "created_at": "2025-03-10T02:42:36.254Z",
+          "name": "케이뱅크_싱글플랜_2503",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-26T01:42:19.421Z",
+          "expected_amount": 27339000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-03-17T15:00:00.000Z",
+          "amount": 27339000.0,
+          "start_date": "2025-03-25T15:00:00.000Z",
+          "end_date": "2026-03-24T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6d0fedc5-3c4c-4306-9275-7e15fd9cc847",
+            "name": "신다혜",
+            "upper_org": "People 팀",
+            "team": "People 팀",
+            "title": "시니어 매니저",
+            "edu_area": "전사 공통"
+          },
+          "memos": []
+        },
+        {
+          "id": "019582ae-8f3f-7aaf-9781-3e6d4bbf0056",
+          "created_at": "2025-03-11T00:50:32.963Z",
+          "name": "케이뱅크_올플랜_2503",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": 14850000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-03-10T15:00:00.000Z",
+          "amount": 14850000.0,
+          "start_date": "2025-03-13T15:00:00.000Z",
+          "end_date": "2026-03-12T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6d0fedc5-3c4c-4306-9275-7e15fd9cc847",
+            "name": "신다혜",
+            "upper_org": "People 팀",
+            "team": "People 팀",
+            "title": "시니어 매니저",
+            "edu_area": "전사 공통"
+          },
+          "memos": []
+        },
+        {
+          "id": "019638d1-96d8-7bb6-9d0d-46a88b3ea8dc",
+          "created_at": "2025-04-15T09:39:41.922Z",
+          "name": "케이뱅크_싱글플랜_2504",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-18T09:40:07.943Z",
+          "expected_amount": 111000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-04-17T15:00:00.000Z",
+          "amount": 111000.0,
+          "start_date": "2025-04-17T15:00:00.000Z",
+          "end_date": "2026-04-16T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6d0fedc5-3c4c-4306-9275-7e15fd9cc847",
+            "name": "신다혜",
+            "upper_org": "People 팀",
+            "team": "People 팀",
+            "title": "시니어 매니저",
+            "edu_area": "전사 공통"
+          },
+          "memos": []
+        },
+        {
+          "id": "0197e3f9-40fb-7448-b0a2-9a56b8ba744f",
+          "created_at": "2025-07-07T08:20:00.000Z",
+          "name": "케이뱅크_싱글플랜_2507",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-09T08:25:17.744Z",
+          "expected_amount": 93600.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-07-08T15:00:00.000Z",
+          "amount": 93600.0,
+          "start_date": "2025-07-08T15:00:00.000Z",
+          "end_date": "2026-07-07T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6d0fedc5-3c4c-4306-9275-7e15fd9cc847",
+            "name": "신다혜",
+            "upper_org": "People 팀",
+            "team": "People 팀",
+            "title": "시니어 매니저",
+            "edu_area": "전사 공통"
+          },
+          "memos": []
+        },
+        {
+          "id": "01987f20-1dce-7cca-a4ab-f327c784e03d",
+          "created_at": "2025-08-06T11:24:00.000Z",
+          "name": "케이뱅크_싱글플랜_2508",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-10T15:00:00.000Z",
+          "expected_amount": 4493400.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-08-10T15:00:00.000Z",
+          "amount": 4921200.0,
+          "start_date": "2025-08-10T15:00:00.000Z",
+          "end_date": "2026-08-09T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "cc583bb6-851b-4908-bd18-77726a9bd548",
+            "name": "박명진",
+            "upper_org": "People 팀",
+            "team": "People 팀",
+            "title": "매니저",
+            "edu_area": "전사 공통"
+          },
+          "memos": []
+        },
+        {
+          "id": "01991233-0c83-7dd0-9804-61bf5f94aeb2",
+          "created_at": "2025-09-04T00:49:00.000Z",
+          "name": "케이뱅크_싱글플랜_2509",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-09-29T15:00:00.000Z",
+          "expected_amount": 405200.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-09-25T15:00:00.000Z",
+          "amount": 405200.0,
+          "start_date": "2025-09-07T15:00:00.000Z",
+          "end_date": "2026-09-06T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6d0fedc5-3c4c-4306-9275-7e15fd9cc847",
+            "name": "신다혜",
+            "upper_org": "People 팀",
+            "team": "People 팀",
+            "title": "시니어 매니저",
+            "edu_area": "전사 공통"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "cc583bb6-851b-4908-bd18-77726a9bd548",
+          "name": "박명진",
+          "upper_org": "People 팀",
+          "team": "People 팀",
+          "title": "매니저",
+          "edu_area": "전사 공통",
+          "webforms": [
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "3-31. 소개서 : 업종별 베스트 셀링 (main_bestselling)",
+            "3-82. 직무/수준 맞춤형 온라인 AI 교육 체계도",
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)",
+            "7-5-3. AI로 완성하는 엑셀 업무 자동화 원데이 클래스 오픈 알림 신청"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-15",
+              "text": "- 고객 이름 : 박명진\n- 고객 이메일 : bmj@kbanknow.com\n- 고객 전화 : 01085598981\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 지인 추천\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^video-seminar\n- 고객 utm_content : lead-gen^salesmap^mktg-agreed#apply\n"
+            },
+            {
+              "date": "2024-04-15",
+              "text": "- 고객 이름 : 박명진\n- 고객 이메일 : bmj@kbanknow.com\n- 고객 전화 : 01085598981\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^onlinelearning-seminar\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-04-15",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- AI 교육 KT 그룹 차원에서 사내 강사가 교육 진행 중임- 이 때문에 아직 별다른 니즈 없음2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            },
+            {
+              "date": "2024-04-15",
+              "text": "- 고객 이름 : 박명진\n- 고객 이메일 : bmj@kbanknow.com\n- 고객 전화 : 01085598981\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^230728\n- 고객 utm_content : welcome^workflowlearning^after-subscribe\n"
+            },
+            {
+              "date": "2024-04-15",
+              "text": "- 고객 이름 : 박명진\n- 고객 이메일 : bmj@kbanknow.com\n- 고객 전화 : 01085598981\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n"
+            },
+            {
+              "date": "2024-09-02",
+              "text": "2일 오후 가능방문 하기로"
+            },
+            {
+              "date": "2024-10-16",
+              "text": "- 고객 이름 : 박명진\n- 고객 전화 : 01085598981\n- 고객 이메일 : bmj@kbanknow.com\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^241014\n- 고객 utm_content : nurturing^mktg-agreed^seminar_2025\n"
+            },
+            {
+              "date": "2025-09-03",
+              "text": "- 고객 이름 : 박명진\n- 고객 전화 : 01085598981\n- 고객 이메일 : bmj@kbanknow.com\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-10-13",
+              "text": "- 고객 이름 : 박명진\n- 고객 전화 : 01085598981\n- 고객 이메일 : bmj@kbanknow.com\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-17",
+              "text": "- 고객 이름 : 박명진\n- 고객 전화 : 01085598981\n- 고객 이메일 : bmj@kbanknow.com\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^251105\n- 고객 utm_content : nurturing^skillcasebook^cta2\n"
+            }
+          ]
+        },
+        {
+          "id": "6d0fedc5-3c4c-4306-9275-7e15fd9cc847",
+          "name": "신다혜",
+          "upper_org": "People 팀",
+          "team": "People 팀",
+          "title": "시니어 매니저",
+          "edu_area": "전사 공통",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "1-9. 백서 신청 (report_skilltrans)",
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "5-17. 템플릿 신청 (template_skillgapanalysis)",
+            "5-3. 템플릿 신청 (template_leadership)",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-05",
+              "text": "- 고객 이름 : 신다혜\n- 고객 이메일 : dhshin0156@gmail.com\n- 고객 전화 : 01024940156\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240904\n- 고객 utm_content : nurturing^cold^salesmap-db\n"
+            },
+            {
+              "date": "2024-10-21",
+              "text": "- 고객 이름 : 신다혜\n- 고객 전화 : 01024940156\n- 고객 이메일 : dhshin0156@gmail.com\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^241021\n- 고객 utm_content : lead-gen^hrbulletin^seminar_2025#REGISTRATION\n"
+            },
+            {
+              "date": "2025-01-08",
+              "text": "- 고객 이름 : 신다혜\n- 고객 이메일 : dahye.shin@kbanknow.com\n- 고객 전화 : 01024940156\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-01-08",
+              "text": "- 고객 이름 : 신다혜\n- 고객 전화 : 01024940156\n- 고객 이메일 : dahye.shin@kbanknow.com\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 해당 콘텐츠 신청 이유 : 향후 교육 설계에 참고하기 위해\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-09-11",
+              "text": "- 고객 이름 : 신다혜\n- 고객 전화 : 01024940156\n- 고객 이메일 : dhshin0156@gmail.com\n- 회사 이름 : 케이뱅크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250911\n- 고객 utm_content : lead-gen^cold-hd^finance-hrd\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

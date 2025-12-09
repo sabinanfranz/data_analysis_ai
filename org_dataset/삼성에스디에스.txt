@@ -1,0 +1,851 @@
+{
+  "organization": {
+    "id": "65278117069908689704561e",
+    "name": "삼성에스디에스",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "People Development 그룹",
+      "team": "People 팀",
+      "deals": [
+        {
+          "id": "0191b6bf-2719-7334-816d-2e1d3ef480ed",
+          "created_at": "2024-09-03T07:17:46.401Z",
+          "name": "삼성SDS_올플랜_24년 계약",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-29T15:00:00.000Z",
+          "expected_amount": 150000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-09-11T15:00:00.000Z",
+          "amount": 162000000.0,
+          "start_date": "2024-09-30T15:00:00.000Z",
+          "end_date": "2026-03-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01946c8b-ae93-7667-ac7a-9eacb562e847",
+            "name": "윤혜원",
+            "upper_org": "People Development 그룹",
+            "team": "People 팀",
+            "title": "프로",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        },
+        {
+          "id": "01994d52-aeeb-7bbc-a17f-16144747726a",
+          "created_at": "2025-09-15T12:21:00.000Z",
+          "name": "삼성SDS_올플랜_25년 계약",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-10-12T15:00:00.000Z",
+          "expected_amount": 162000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-10-12T15:00:00.000Z",
+          "amount": 162000000.0,
+          "start_date": "2025-10-12T15:00:00.000Z",
+          "end_date": "2027-04-05T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01946c8b-ae93-7667-ac7a-9eacb562e847",
+            "name": "윤혜원",
+            "upper_org": "People Development 그룹",
+            "team": "People 팀",
+            "title": "프로",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "01946c8b-ae93-7667-ac7a-9eacb562e847",
+          "name": "윤혜원",
+          "upper_org": "People Development 그룹",
+          "team": "People 팀",
+          "title": "프로",
+          "edu_area": "온라인",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64f95f57d91af8be654c5f1b",
+          "created_at": "2023-09-07T05:27:51.659Z",
+          "name": "삼성SDS_올플랜_23년 계약",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-09-28T15:00:00.000Z",
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-10-01T02:34:27.000Z",
+          "amount": 162000000.0,
+          "start_date": "2023-09-30T15:00:00.000Z",
+          "end_date": "2025-03-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f966f4f4188755f88f9500",
+            "name": "김형완",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64f96692f4188755f88f5105",
+          "created_at": "2023-09-07T05:58:42.987Z",
+          "name": "삼성SDS_올플랜_22년 계약",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-09-07T06:00:54.379Z",
+          "amount": 162000000.0,
+          "start_date": "2022-10-31T15:00:00.000Z",
+          "end_date": "2024-03-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f966f4f4188755f88f9500",
+            "name": "김형완",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "5363bca4-4323-452a-aa0f-10e11c588cb1",
+          "created_at": "2023-11-27T01:38:53.262Z",
+          "name": "[OB] 삼성에스디에스 딜",
+          "team": null,
+          "owner": "김정현",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "2422b645-0382-4d05-9aa9-cd5dd2fbcd94",
+            "name": "홍승원",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2023-11-27",
+              "text": "📌미팅 사후 로그1. 참석자     - 고객사 : 홍승원    - 팀 : 김정현2. 미팅 내용 상세      -  스킬 기반 교육 체계 수립방법에 대해  궁금하여 문의함.    - 온라인 구독서비스로만 패캠을 이용한 경험이 있음.    - 스킬컨설팅 소개.     - 스킬 갭 분석 템플릿 사용 방법 안내        . 스킬 리스트업을 하는 부분이 가장 중요하고 어려운 작업일 것 같다. 어떻게 진행을 하는지? -> 실무자인터뷰를 통해 실제 수행중인 업무 중심으로 스킬 컨설팅 진행.-> 우선 스킬 갭 분석 템플릿을 받아보고 싶고, 이후에 추가 검토가 필요하면, 미팅 요청을 주시겠다고 함.    #후속자료        . 스킬아카데미교육과정소개서        . 스킬 갭 템플릿3. AE인계를 위한 필수 확인 사항 - 교육 시작 일정: 미정-  교육 규모(시수): 미정 - 수강인원: 미정- 수강 대상 특징: 미정 - 예산:미정"
+            }
+          ]
+        },
+        {
+          "id": "01960ea3-39ab-7000-8453-ab4ce7dba9d8",
+          "created_at": "2025-04-07T05:05:00.335Z",
+          "name": "삼성SDS_생성형 AI 고급 과정",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-10-31T01:19:33.907Z",
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-06-29T15:00:00.000Z",
+          "lost_reason": "[\"정보성 컨택/타사 비교\"]",
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "01960ea3-3904-7000-8453-9ba99a2d2d6d",
+            "name": "고유경",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-04-07",
+              "text": "- 딜 문의 주제 (최초) : 생성형 AI (챗GPT 활용), 데이터 분석 및 AI 실무\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 회사 이름 : 삼성SDS\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 고유경\n- 고객 이메일 : yukyung.go@samsung.com\n- 고객 전화 : 01092787680\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 상담 문의 내용 : 생성형AI 관련 역량/경험을 갖춘 임직원 대상으로 전문가 과정을 기획하고자 합니다. 관련 상담 희망합니다.\n- 딜 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-04-09",
+              "text": "교육주제 : 생성형 AI 고급 과정 교육대상 : 내부 AI 교육 체계에서 중급 과정(자연어처리, RAG, Fine-tunig 등)수료 + 그 중 우수 인력 선발 / 20명교육형태 : 오프라인 / 10일 job-off교육목적/배경 : 프로젝트 기술 리더 양성 (내부 체계 상 최상위 교육)교육시작 일정 : 하반기 (9-10월 전에는 1차수 정도 운영)(중요)예산 : 일단 별도로 X 표준으로 제안 요청 (중요)기업 담당자의 현 상황 :  기획 단계"
+            },
+            {
+              "date": "2025-06-30",
+              "text": "[Lost-정보성컨택]자체적으로 강사님들과 컨택하여 미팅 및 강의 진행 예정"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64f966f4f4188755f88f9500",
+          "name": "김형완",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "6524a3699dd0c06e02704131",
+          "name": "황정미",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-9. 백서 신청 (report_skilltrans)",
+            "4-4. 2024 인재경영 포럼 / 패스트캠퍼스 발표자료 공유 요청"
+          ],
+          "memos": []
+        },
+        {
+          "id": "65278117069908689704566d",
+          "name": "박찬영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-23",
+              "text": "상담신청한적 없음.필요하면 연락 주시겠다고 함"
+            },
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 박찬영\n- 고객 이메일 : chan0park@samsung.com\n- 고객 전화 : 010-2555-6212\n- 회사 이름 : 삼성에스디에스\n- 고객 담당 업무 : 운영/총무/지원\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "2422b645-0382-4d05-9aa9-cd5dd2fbcd94",
+          "name": "홍승원",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "eac61a57-1034-4ef5-8bce-23e843bdd8e4",
+          "name": "이선희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "53b7d735-f540-4480-91d5-de5457fa5bde",
+          "name": "황정미",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "2803a141-1b56-4071-a4e8-7e744d4a584a",
+          "name": "이경우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-08",
+              "text": "- 고객 이름 : 이경우\n- 고객 이메일 : johnkw.lee@samsung.com\n- 고객 전화 : 01063958589\n- 회사 이름 : 삼성에스디에스\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고, 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240108\n- 고객 utm_content : lead-gen^cio^edm\n"
+            },
+            {
+              "date": "2024-01-26",
+              "text": "전화기록- 생성형ai에 대해 개인적인 관심이 있는 단계고,필요 시 연락주시겠다고 함."
+            },
+            {
+              "date": "2024-09-05",
+              "text": "- 고객 이름 : 이경우\n- 고객 전화 : 01063958589\n- 고객 이메일 : johnkw.lee@samsung.com\n- 회사 이름 : 삼성에스디에스\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고, 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240905\n- 고객 utm_content : nurturing^mktg-agreed^casebook_GenAI_job\n"
+            }
+          ]
+        },
+        {
+          "id": "5c8efa9d-e5cd-475e-9271-9c51a21f569d",
+          "name": "배정아",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-08",
+              "text": "- 고객 이름 : 배정아\n- 고객 이메일 : jungah.bae@samsung.com\n- 고객 전화 : +821032473205\n- 회사 이름 : 삼성에스디에스\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240108\n- 고객 utm_content : lead-gen^cio^edm\n"
+            },
+            {
+              "date": "2024-01-26",
+              "text": "전화기록- 현재 시간내기는 어려움."
+            }
+          ]
+        },
+        {
+          "id": "b247f03b-761e-4ba8-bc50-76f0e6594caf",
+          "name": "우수영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "f3e9b0d5-94cd-4977-ae41-c3602aa3aea1",
+          "name": "오동일",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-5. 백서 신청 (report_cd)"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-26",
+              "text": "전화기록- 소개 메일 요청"
+            }
+          ]
+        },
+        {
+          "id": "e76ed261-628a-4288-a1f4-fd31e0a830c7",
+          "name": "홍성민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-5. 백서 신청 (report_cd)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "bba60c59-5e74-44e5-b3be-2877c2cdd555",
+          "name": "정연태",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-07",
+              "text": "- 고객 이름 : 정연태\n- 고객 이메일 : synth.jung@samsung.com\n- 고객 전화 : 01052796512\n- 회사 이름 : 삼성에스디에스\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240206\n- 고객 utm_content : lead-gen^hrda^edm-cta3#apply\n"
+            }
+          ]
+        },
+        {
+          "id": "b0f0d82b-831c-43c6-a4e9-4d517052670c",
+          "name": "이경석",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-22",
+              "text": "전화기록- 3월에 세미나 이후에 가능하면 미팅하고 싶다고 함."
+            }
+          ]
+        },
+        {
+          "id": "817f802c-1a1b-48ab-aa41-f8ada094fba3",
+          "name": "이상식",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-08",
+              "text": "전화기록- 전화 거절 연락 하지말라고 함"
+            }
+          ]
+        },
+        {
+          "id": "a2f5aae7-56f3-4299-83c6-246fe7f39ef7",
+          "name": "이재욱",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-28",
+              "text": "- 고객 이름 : 이재욱\n- 고객 이메일 : jw3115.lee@samsung.com\n- 고객 전화 : 01091923115\n- 회사 이름 : 삼성에스디에스\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "4c469c24-50d4-4824-8897-8d892f08eaaa",
+          "name": "최성철",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-18",
+              "text": "- 고객 이름 : 최성철\n- 고객 이메일 : seonchoi@outlook.com\n- 고객 전화 : 01075318984\n- 회사 이름 : Samsung SDS\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 사내 프롬프트 개발 및 제작 관련해 궁금한 사항이 있으시다면 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240418\n- 고객 utm_content : lead-gen^cio-korea^edm\n"
+            },
+            {
+              "date": "2024-10-14",
+              "text": "- 고객 이름 : 최성철\n- 고객 전화 : 01075318984\n- 고객 이메일 : seonchoi@outlook.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고, 웨비나/오프라인 행사\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241011\n- 고객 utm_content : lead-gen^mktg-agreed^lms1#REGISTRATION\n"
+            }
+          ]
+        },
+        {
+          "id": "44d83091-3d03-4b0f-9eb9-12ae8172ccb7",
+          "name": "유상범",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-22",
+              "text": "- 고객 이름 : 유상범\n- 고객 이메일 : soft.yu@samsung.com\n- 고객 전화 : 01050305874\n- 회사 이름 : 삼성에스디에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : 직접 검색\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : 해외 임직원 대상 교육은 온라인 위주로 운영되는데 학습효과를 높이고 교육체계를 통합하는 방법을 고민중입니다.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-04-22",
+              "text": "- 고객 이름 : 유상범\n- 고객 이메일 : soft.yu@samsung.com\n- 고객 전화 : 01050305874\n- 회사 이름 : 삼성에스디에스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "78b6f60c-a11c-438f-a1ad-1856b7abe7d2",
+          "name": "김성하",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-22",
+              "text": "- 고객 이름 : 김성하\n- 고객 이메일 : sungha.kim@samsung.com\n- 고객 전화 : 01093232892\n- 회사 이름 : SDS\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-04-22",
+              "text": "전화 - 세미나 신청했고 관련해서 필요 시 연락주시겠다고 함."
+            }
+          ]
+        },
+        {
+          "id": "b56ed70b-b225-4167-8f13-2bf908245bc2",
+          "name": "이창수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-21",
+              "text": "- 고객 이름 : 이창수\n- 고객 이메일 : chsu.lee@samsung.com\n- 고객 전화 : 01090478743\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : 기타\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 사내 프롬프트 개발 및 제작 관련해 궁금한 사항이 있으시다면 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240521\n- 고객 utm_content : lead-gen^cio^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "8d5e493d-8c55-42b8-bb23-dd50826d33b3",
+          "name": "임수경",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-21",
+              "text": "- 고객 이름 : 임수경\n- 고객 이메일 : sk.im@samsung.com\n- 고객 전화 : 01037234285\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 사내 프롬프트 개발 및 제작 관련해 궁금한 사항이 있으시다면 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240521\n- 고객 utm_content : lead-gen^cio^edm\n"
+            },
+            {
+              "date": "2024-09-26",
+              "text": "- 고객 이름 : 임수경\n- 고객 전화 : 01037234285\n- 고객 이메일 : sk.im@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240926\n- 고객 utm_content : lead-gen^cio^genai_subject\n"
+            }
+          ]
+        },
+        {
+          "id": "29e98c31-ec49-44b4-b010-a03b543fd753",
+          "name": "정대식",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)",
+            "4-13.  인사이트 세미나 : 기업의 AI 이니셔티브 달성을 위한 Skill-based 인재 관리 전략",
+            "5-23. 생성형AI 교육 설계 핵심 자료집 (package_genaicontents)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-17",
+              "text": "- 고객 이름 : 정대식\n- 고객 이메일 : dully7@samsung.com\n- 고객 전화 : 01063101879\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- AX(인공지능 전환) 과제 및 Skill 기반 인재 전략에 관한 고민을 남겨주세요. : 조직에서 생성형AI를 어떻게 접목해서 업무에 활용하게 할지가 제일 고민이구요. 그러기 위해서는 각 구성원들이 어떻게 AI를 업무에 적용하고 응요해야하는지 잘 모르는데, 혹시 이러한 것들을 성공적으로 생성형 AI를 조직에 잘 접목해서 나름 성과로 이끌어 내고있는지 궁금합니다.\n- 개인정보 수집 동의 : 동의합니다.\n- SkyHive's Privacy Policy : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240717\n- 고객 utm_content : lead-gen^khrd^edm\n"
+            },
+            {
+              "date": "2025-02-05",
+              "text": "- 고객 이름 : 정대식\n- 고객 전화 : 01063101879\n- 고객 이메일 : dully7@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250205\n- 고객 utm_content : lead-gen^khrd^genaicontents\n"
+            }
+          ]
+        },
+        {
+          "id": "0190e811-f3e0-777b-83b6-a52dc6c79b53",
+          "name": "김경필",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-13.  인사이트 세미나 : 기업의 AI 이니셔티브 달성을 위한 Skill-based 인재 관리 전략"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-25",
+              "text": "- 고객 이름 : 김경필\n- 고객 이메일 : phillip.kim@samsung.net\n- 고객 전화 : 01099802087\n- 회사 이름 : 삼성에스디에스\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- AX(인공지능 전환) 과제 및 Skill 기반 인재 전략에 관한 고민을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- SkyHive's Privacy Policy : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240725\n- 고객 utm_content : lead-gen^dbr^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "0191a074-d018-799f-b79f-040dacaf9dee",
+          "name": "정대식",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-18. 백서 신청 (report_talentmanagement)",
+            "5-23. 생성형AI 교육 설계 핵심 자료집 (package_genaicontents)",
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2024-08-29",
+              "text": "- 고객 이름 : 정대식\n- 고객 전화 : 01063101879\n- 고객 이메일 : dsgoodnews@naver.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240829\n- 고객 utm_content : lead-gen^khrd^edm\n"
+            },
+            {
+              "date": "2025-02-05",
+              "text": "- 고객 이름 : 정대식\n- 고객 전화 : 01063101879\n- 고객 이메일 : dsgoodnews@naver.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250205\n- 고객 utm_content : lead-gen^khrd^genaicontents\n"
+            },
+            {
+              "date": "2025-09-16",
+              "text": "- 고객 이름 : 정대식\n- 고객 전화 : 01063101879\n- 고객 이메일 : dsgoodnews@naver.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250916\n- 고객 utm_content : lead-gen^cold-hd^mql#salesmap-web-form\n"
+            },
+            {
+              "date": "2025-09-16",
+              "text": "- 고객 이름 : 정대식\n- 고객 전화 : 01063101879\n- 고객 이메일 : dsgoodnews@naver.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250916\n- 고객 utm_content : lead-gen^cold-hd^mql#salesmap-web-form\n"
+            }
+          ]
+        },
+        {
+          "id": "0191d48c-29cb-7bb8-b59e-98c1812acec9",
+          "name": "김기빈",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서",
+            "5-40. 마케터 업무에 활용하는 생성형 AI 툴 리스트",
+            "5-43. 상품기획·MD·BM 실무자를 위한 AI 프롬프트 템플릿"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-09",
+              "text": "- 고객 이름 : 김기빈\n- 고객 이메일 : gibin.kim@samsung.com\n- 고객 전화 : 01022412528\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-10-27",
+              "text": "- 고객 이름 : 김기빈\n- 고객 전화 : 01022412528\n- 고객 이메일 : gibin.kim@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^251027\n- 고객 utm_content : lead-gen^mktgaitoollist^cta2#salesmap-web-form\n"
+            }
+          ]
+        },
+        {
+          "id": "01920dad-dce2-7119-9036-e000d9b78620",
+          "name": "강서영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-20",
+              "text": "- 고객 이름 : 강서영\n- 고객 이메일 : west0.kang@samsung.com\n- 고객 전화 : 01066904402\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01922bb8-6fc4-7995-ac35-a133d9e6d44a",
+          "name": "양종모",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-26",
+              "text": "- 고객 이름 : 양종모\n- 고객 전화 : 01041724818\n- 고객 이메일 : jongmo.yang@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240926\n- 고객 utm_content : lead-gen^cio^genai_job\n"
+            }
+          ]
+        },
+        {
+          "id": "01928b04-b76c-7336-b586-4bee05ebe522",
+          "name": "김희영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-14",
+              "text": "- 고객 이름 : 김희영\n- 고객 전화 : 01043041924\n- 고객 이메일 : Heeyoung77@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-14",
+              "text": "- 고객 이름 : 김희영\n- 고객 이메일 : Heeyoung77@samsung.com\n- 고객 전화 : 01043041924\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : pdf\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^240902\n- 고객 utm_content : nurturing^last-page^ai-reference\n"
+            },
+            {
+              "date": "2024-10-14",
+              "text": "- 고객 이름 : 김희영\n- 고객 전화 : 01043041924\n- 고객 이메일 : Heeyoung77@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-15",
+              "text": "- 고객 이름 : 김희영\n- 고객 전화 : 01043041924\n- 고객 이메일 : Heeyoung77@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : sms\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^fc2025\n- 고객 utm_content : lead-gen^mktg-agreed^content-download\n"
+            },
+            {
+              "date": "2024-10-19",
+              "text": "- 고객 이름 : 김희영\n- 고객 전화 : 01043041924\n- 고객 이메일 : Heeyoung77@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0194f237-22c7-755d-8441-4c512b784dd2",
+          "name": "황지호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-24. IT 직무를 위한 AX 교육 설계 핵심 자료집 (package_CIOgenaicontents)"
+          ],
+          "memos": [
+            {
+              "date": "2025-02-10",
+              "text": "- 고객 이름 : 황지호\n- 고객 전화 : 01091445369\n- 고객 이메일 : jeeho.hwang@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250211\n- 고객 utm_content : lead-gen^CIO^genaicontents\n"
+            }
+          ]
+        },
+        {
+          "id": "0195f63a-7382-7ee5-a9af-f88e8cc2d96e",
+          "name": "조원형",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-70. 소개서 : 패스트캠퍼스 기업교육 대표 콘텐츠북"
+          ],
+          "memos": [
+            {
+              "date": "2025-04-02",
+              "text": "- 고객 이름 : 조원형\n- 고객 전화 : 01056765255\n- 고객 이메일 : wonhyung.cho@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01960ea3-3904-7000-8453-9ba99a2d2d6d",
+          "name": "고유경",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "019647e6-1934-744a-b7df-c0c3b6db6ec7",
+          "name": "신혜림",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-32. 소개서 : 기존 직무 업스킬링 (main_upskill)"
+          ],
+          "memos": [
+            {
+              "date": "2025-04-18",
+              "text": "- 고객 이름 : 신혜림\n- 고객 이메일 : hyerim.shin@samsung.com\n- 고객 전화 : 01048736446\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : 기타\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n"
+            }
+          ]
+        },
+        {
+          "id": "0196ec11-1c5b-7993-8418-a0c031b185dd",
+          "name": "서준석",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01978ae0-2bd6-7cca-ac5c-6c64fb4578d2",
+          "name": "이규호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-20. 백서 신청 (report_skilltrend)"
+          ],
+          "memos": [
+            {
+              "date": "2025-06-20",
+              "text": "- 고객 이름 : 이규호\n- 고객 전화 : 01090185682\n- 고객 이메일 : k295lee@samsung.com\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서, 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01990d40-76ee-7337-9ecc-c1273c314035",
+          "name": "심예담",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-03",
+              "text": "- 고객 뉴스레터 : 비즈레터(HRD트렌드, 기업 사례 등), AX아카이브(맞춤형 AI 교육 사례)\n- 고객 이름 : 심예담\n- 고객 이메일 : shgskr2000@samsung.com\n- 고객 전화 : 01066312337\n- 회사 이름 : 삼성SDS\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0199172b-d8f7-7ddc-a63c-25b1258a0384",
+          "name": "남현종",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-19. 금융권 특화 AI 활용 아카데미"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-04",
+              "text": "- 고객 이름 : 남현종\n- 고객 전화 : 01037099428\n- 고객 이메일 : freehjn@naver.com\n- 회사 이름 : 삼성sds\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 웨비나/오프라인 행사\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

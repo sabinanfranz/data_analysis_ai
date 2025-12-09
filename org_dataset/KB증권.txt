@@ -1,0 +1,122 @@
+{
+  "organization": {
+    "id": "01989bc2-8806-700f-9b3c-efcacf7ffe68",
+    "name": "KB증권",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "AI디지털본부",
+      "deals": [
+        {
+          "id": "01989bc2-8b50-700f-9b3d-116ffd88cf0d",
+          "created_at": "2025-08-12T00:51:00.000Z",
+          "name": "KB증권_MS 365 & 자동화과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-28T15:00:00.000Z",
+          "expected_amount": 4200000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-08-28T15:00:00.000Z",
+          "amount": 4200000.0,
+          "start_date": "2025-08-28T15:00:00.000Z",
+          "end_date": "2025-08-28T15:00:00.000Z",
+          "net_percent": "50.0",
+          "people": {
+            "id": "01989bc2-88bb-700f-9b3d-000fe95ce7c8",
+            "name": "이준헌",
+            "upper_org": "미입력",
+            "team": "AI디지털본부",
+            "title": "과장",
+            "edu_area": "출강"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "01989bc2-88bb-700f-9b3d-000fe95ce7c8",
+          "name": "이준헌",
+          "upper_org": "미입력",
+          "team": "AI디지털본부",
+          "title": "과장",
+          "edu_area": "출강",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "01997050-bde3-700c-8d55-ffc482e8df32",
+          "created_at": "2025-09-22T07:26:00.000Z",
+          "name": "KB증권_권오상 금융아카데미 (온라인_단기)_25년 10월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-09-29T15:00:00.000Z",
+          "expected_amount": 7163800.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "재무회계",
+          "contract_date": "2025-09-29T15:00:00.000Z",
+          "amount": 7163800.0,
+          "start_date": "2025-09-30T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "01997050-bd34-700c-8d55-ea46da54b44e",
+            "name": "장원정",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "01997050-bd34-700c-8d55-ea46da54b44e",
+          "name": "장원정",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019974b5-2aea-799a-854d-fe9611c7e10f",
+          "name": "변민석",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-19. 금융권 특화 AI 활용 아카데미"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-23",
+              "text": "- 고객 이름 : 변민석\n- 고객 전화 : 01084485217\n- 고객 이메일 : ms.byun@kbfg.com\n- 회사 이름 : KB증권\n- 고객 담당 업무 : 기타\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 웨비나/오프라인 행사\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : jwpark\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

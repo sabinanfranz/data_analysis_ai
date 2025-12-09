@@ -1,0 +1,1045 @@
+{
+  "organization": {
+    "id": "64eed8758a014c50c928cca3",
+    "name": "삼성증권",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "0194edb0-58d4-744b-9733-44395ea1019c",
+          "created_at": "2025-02-10T02:29:04.861Z",
+          "name": "삼성증권 Java프로그래밍 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 50000000.0,
+          "lost_confirmed_at": "2025-02-23T15:00:00.000Z",
+          "lost_reason": "[\"가격 이슈\"]",
+          "course_format": "출강",
+          "category": "개발/CD",
+          "contract_date": null,
+          "amount": 50360000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": "52.0",
+          "people": {
+            "id": "0194edb0-584f-744b-9733-359566dbe61e",
+            "name": "신현민",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-02-10",
+              "text": "매니저님, 안녕하세요? 삼성증권 정보전략팀 신현민 선임입니다.저희는 삼성증권의 IT 조직인데 올해 오프라인 강의를 기획하려고 합니다.관련하여 상담을 받고 싶은데 혹시 연락처를 알수 있을까요?이메일 주소는 당사 인재개발팀으로부터 전달 받았습니다!- 교육 주제: Java 프로그래밍- 희망 차수: '25년 연간 5차수(3, 5, 7, 9, 11월 예정)- 교육 기간: 차수당 3~5일- 교육 장소: 삼성금융캠퍼스(PC는 노트북 외부 렌탈 예정)- 교육 인원: 차수당 20명 이하계획중인 내용을 간단하게 미리 적었습니다.같은 내용으로 5차수 반복할 예정입니다.현재 필요한 부분은 강사님과 커리큘럼입니다.이와 관련하여 유선으로 연락을 한번 드리고 싶습니다.1차수를 당장 다음달로 계획하고 있어 시간이 촉박하네요..ㅜ빠른 회신 주시면 감사드리겠습니다!신현민  Hyunmin Shin선임｜정보전략팀T 02-3278-4028   F 02-3775-2920   M 010-3009-5988hyun_min.shin@samsung.com"
+            },
+            {
+              "date": "2025-02-10",
+              "text": "안녕하세요?삼성증권 정보전략팀 신현민 선임입니다.유선으로 사전 안내드린 당사의 '25년 IT 역량개발교육 견적을 귀사에 요청드립니다.아래 사항에 따라 회신 부탁드립니다.1. 본 메일에 첨부된 ['25년 정보시스템담당 IT역량개발 계획안]을 확인하시고,   해당 교육 수행을 위한 제안서(견적 및 강사 프로필 포함)를 회신해 주시기 바랍니다.2. 제안서는 2/14(금) 16:00까지 회신해 주십시오.3. 별도의 제안 발표는 진행하지 않습니다.4. 교육장 사용료, 교육장비(PC)사용료, 중식비, 다과비는 당사에서 별도 준비하오니   견적에서 제외해 주십시오. (VAT 별도 및 VAT 포함 금액 모두 기재)5. 제안 가격 및 강사 프로필로 평가할 예정입니다.기타 문의가 있으신 경우 아래 담당자에게 연락주시기 바랍니다.- 삼성증권 담당자 : 정보전략팀 신현민 선임 (02-3278-4028, hyun_min.shin@samsung.com)감사합니다.-----------------제안서 작성에 도움이 되시도록 추가 설명 드립니다.1. 교육은 하루에 오전 + 오후 풀타임 8시간이 기준입니다.2. 차수 별 개설 일정은 월만 계획해 놓은 상태이며,   세부 일자는 강사님 가능 일정에 최대한 맞출 예정입니다.   현재 금융캠퍼스는 3월 이용까지만 예약을 받고있으며,   저희 계획된 규모 수준 수용 가능한 강의장이 3월 전체 일정 비어있는 것 확인했습니다."
+            },
+            {
+              "date": "2025-02-24",
+              "text": "비용이 가장 주요한 부분이어서 최대한 낮춰 제안한 비용이었으나 제안사 중 비용이 제일 높았다고 함"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64dd761996e775eee7e3a5a9",
+          "name": "권오균",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)",
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-21",
+              "text": "- 고객 이름 : 권오균\n- 고객 이메일 : ohkyun.kwon@samsung.com\n- 고객 전화 : 01051121520\n- 회사 이름 : 삼성증권\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240321\n- 고객 utm_content : lead-gen^cold-mail^cta\n"
+            }
+          ]
+        },
+        {
+          "id": "64f9758afb15689232a85169",
+          "name": "김범구",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2023-11-16",
+              "text": "필요한 내용 생기면 연락주신다고 함담당자가 아닌 것 같기도"
+            },
+            {
+              "date": "2023-12-11",
+              "text": "미팅 제안은 거절미래에셋 등 증권사 래퍼 안내"
+            }
+          ]
+        },
+        {
+          "id": "65272a8801eeeef94279681f",
+          "name": "최정연",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-12-19",
+              "text": "삼성생명,화재 및 금융연수원 사례 안내미팅은 거절"
+            }
+          ]
+        },
+        {
+          "id": "6535d6e0255efd5717443a0a",
+          "name": "김예슬",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-30",
+              "text": "10/30 Call (1차 콜드콜)부재중"
+            },
+            {
+              "date": "2023-10-31",
+              "text": "10/31 Call (2차 콜드콜)패캠과 따로 컨택하고 있는 담당자가 있어서 괜찮을 것 같다. 미팅 거절.참고 차 자료는 메일로 따로 보내드리기로 함."
+            }
+          ]
+        },
+        {
+          "id": "a53bc409-7760-418c-a819-093d66b2f044",
+          "name": "허정준",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2024-03-15",
+              "text": "드랍"
+            }
+          ]
+        },
+        {
+          "id": "5b0d6083-e99f-4f33-ad18-5458b184548c",
+          "name": "우성은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-18",
+              "text": "- 고객 이름 : 우성은\n- 고객 이메일 : seongeunn.woo@samsung.com\n- 고객 전화 : 01099034711\n- 회사 이름 : 삼성증권\n- 고객 담당 업무 : 기타\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 직접 검색\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : .\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0194edb0-584f-744b-9733-359566dbe61e",
+          "name": "신현민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인사지원담당",
+      "team": "인재개발팀",
+      "deals": [
+        {
+          "id": "057eb7af-3368-4737-aad1-1bb112822af4",
+          "created_at": "2024-02-21T15:02:32.424Z",
+          "name": "삼성증권(최지원)_싱글플랜_월별입과_2403",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2024-02-27T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-02-28T00:50:00.288Z",
+          "amount": 8888960.0,
+          "start_date": "2024-02-29T15:00:00.000Z",
+          "end_date": "2024-08-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "a98c2f67-ed8f-434c-9616-c8bec92cd425",
+          "created_at": "2024-03-07T00:54:25.819Z",
+          "name": "삼성증권(최지원)_싱글플랜_월별입과_2404",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2024-03-28T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-03-29T08:39:51.000Z",
+          "amount": 2556200.0,
+          "start_date": "2024-03-31T15:00:00.000Z",
+          "end_date": "2024-09-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "77b1badf-61ec-4ea0-8c6a-e930123deff7",
+          "created_at": "2024-04-04T00:38:01.882Z",
+          "name": "삼성증권(최지원)_싱글플랜_월별입과_2405_6개월",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2024-04-29T15:00:00.000Z",
+          "expected_amount": 2500000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-04-30T02:38:37.000Z",
+          "amount": 4219830.0,
+          "start_date": "2024-04-30T15:00:00.000Z",
+          "end_date": "2024-10-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "9ec24414-eede-4210-ab67-b818bd9cedca",
+          "created_at": "2024-06-24T00:53:02.023Z",
+          "name": "삼성증권_싱글플랜_월별입과_2407_6개월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-06-23T15:00:00.000Z",
+          "expected_amount": 5154120.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-06-27T15:00:00.000Z",
+          "amount": 5154120.0,
+          "start_date": "2024-06-30T15:00:00.000Z",
+          "end_date": "2024-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "cfa849de-d07a-43aa-81ce-0d9314003ae9",
+          "created_at": "2024-07-17T01:26:45.132Z",
+          "name": "삼성증권(최지원)_싱글플랜_월별입과_2406_6개월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": 4148010.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-05-30T15:00:00.000Z",
+          "amount": 4148010.0,
+          "start_date": "2024-05-31T15:00:00.000Z",
+          "end_date": "2024-11-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0190fbea-1f61-755f-9a9c-36372682875f",
+          "created_at": "2024-07-29T00:35:43.083Z",
+          "name": "삼성증권 월별입과_8월_6개월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-07-30T15:00:00.000Z",
+          "amount": 2559600.0,
+          "start_date": "2024-08-31T15:00:00.000Z",
+          "end_date": "2025-01-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01915a57-df11-7dd4-9c24-5d5fc9027495",
+          "created_at": "2024-08-16T08:39:53.880Z",
+          "name": "삼성증권 피그마 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-08-29T02:33:24.718Z",
+          "expected_amount": 7400000.0,
+          "lost_confirmed_at": "2025-10-22T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "출강",
+          "category": "UI/UX",
+          "contract_date": null,
+          "amount": 7400000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "206ad1bf-1967-4e06-ab11-763d7df48f9f",
+            "name": "조인수",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "오프라인교육(온라인도 지원)"
+          },
+          "memos": [
+            {
+              "date": "2024-08-19",
+              "text": "피그마 실습 교육 - 올해 10월 중 피그마 도입 예정으로 관련 실무자 대상 실무 기초반 개설 - 교육목표: 피그마 실무 기초 마스터 (추후 심화반 예정) - 학습자 직무: 서비스 기획, UI/UX, 웹개발자 - 인원: 협의 중  - 예산/교육일정: 논의 필요 (일반적인 수준)--> 1일 또는 2일 과정으로 제안 - 특이사항:    v 4월에 금융연수원에서 디지털 전문(디지털 기획) 과정 피그마 교육 평이 좋았습니다."
+            },
+            {
+              "date": "2024-08-19",
+              "text": "교육주제 : 피그마 활용교육대상 : UX 담당부서교육형태 : 오프라인/ 실습중심교육목적/배경 : 피그마 이전에는 PPT 활용/ 지라, 컨플루언스 협업툴은 사용중인데 피그마 기초부터 학습 필요교육시작 일정 : 1일 8시간 혹은 2일 16시간(중요)예산 : 예산은 따로 정해지지 않음(중요)기업 담당자의 현 상황 :  기획 단계라 내부보고 필요/ 피그마 제안서는 따로 송부-UX담당부서에서 검토필요고객사가 원하는 자료 : 제안서, 견적서"
+            },
+            {
+              "date": "2024-12-30",
+              "text": "241217 담당자 미팅: 내년 상반기에 담당팀에서 교육진행 희망해서 연기 필요.(진행 자체는 거의 확정)"
+            },
+            {
+              "date": "2025-08-05",
+              "text": "최초 문의 후 팀 내부 사정으로 기한 연기. 원하는 시기에 따로 연락주실 거라 하셔서 기다리는 중이었으나 다시 연락해보고 안되면 drop 예정"
+            },
+            {
+              "date": "2025-10-23",
+              "text": "이후 몇번 관련 문의드렸으나 픽업의지가 없으신 듯하고, 명확한 답변을 주시지 않음"
+            }
+          ]
+        },
+        {
+          "id": "01916811-4b5e-7116-a22c-c79dda217b56",
+          "created_at": "2024-08-19T00:37:29.575Z",
+          "name": "삼성증권 생성형AI 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2024-09-30T15:00:00.000Z",
+          "expected_amount": 8780000.0,
+          "lost_confirmed_at": "2024-12-16T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": 8780000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "206ad1bf-1967-4e06-ab11-763d7df48f9f",
+            "name": "조인수",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "오프라인교육(온라인도 지원)"
+          },
+          "memos": [
+            {
+              "date": "2024-08-19",
+              "text": "1. 생성형AI 업무 활용 특강 / 1일 과정반일/1일 집합 과정  - 일정: 10월 중 / 총 5차수 기획 (약 40명씩, 총 200명)  - 내용: 프롬프트 엔지니어링 및 업무 활용 --> 4시간 : 생성형AI 프롬프팅 및 기초실습(보고서작성 등)  특이사항 : 사내 생성형AI 차단으로 GPT포함 접속 불가           사내용 생성형AI가 있으나 핸드폰을 이용한 교육 구상 중           (현재 정보보호팀과 의논하여 교육용으로 일시사용 가능여부 확인 중)"
+            },
+            {
+              "date": "2024-08-19",
+              "text": "교육주제 : 생성형AI 업무 활용교육대상 : 차수별 40명씩 총 200명 교육형태 : 오프라인/ 실습-보고서작성(GPT포함 텍스트 기반) 노트북 사용 예정교육목적/배경 : 지점보다는 본사스텝위주/ 보안팀에서 제한이유에 대해 먼저 강의하고, 사외강사의 AI강의 후 보고서 초안요약하는 라마2 중심 사내GPT활용 강의와 연계하려함교육시작 일정 : 4시간씩 5차수 10월 중(중요)예산 :  예산이 많지 않음/ 400만원 언더 희망(중요)기업 담당자의 현 상황 : 업체 비교단계구체화에 필요한 기타 사항: 무료 버전 사용고객사가 원하는 자료 : 제안서, 견적서"
+            },
+            {
+              "date": "2024-12-30",
+              "text": "담당자 미팅: AI를 사내에서 활용할 수 없어 교육을 진행하는데 한계를 느낌. 트렌드는 따라가야하는데 어떻게 할지 고민중이신 상태. 우선 온라인 과정 구독으로 다른 과정 논의 진행중."
+            }
+          ]
+        },
+        {
+          "id": "01916811-9dcf-7997-b470-6da625f5af86",
+          "created_at": "2024-08-19T00:37:50.678Z",
+          "name": "[부가세별도] (B2B) 삼성증권_생성형AI 업무활용 특강",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-25T15:00:00.000Z",
+          "expected_amount": 1850000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-09-11T15:00:00.000Z",
+          "amount": 1850000.0,
+          "start_date": "2024-09-25T15:00:00.000Z",
+          "end_date": "2024-09-25T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "206ad1bf-1967-4e06-ab11-763d7df48f9f",
+            "name": "조인수",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "오프라인교육(온라인도 지원)"
+          },
+          "memos": [
+            {
+              "date": "2024-08-19",
+              "text": "1. 생성형AI 업무 활용 특강 / 1일 과정 □ 2시간 특강  - 일시: 9월 중 논의 중 / 오후 시간 (2시간 특강)   - 장소: 증권 본사 8층 교육장(서초 삼성전자빌딩)  - 내용: 생성형AI 업무 활용 트렌드 특강 --> 타사 실제 사례 위주로 구성 요  - 예산: 200만원대 이하  특이사항 : 대면 참여가 어려운 직원 및 복습을 위하여     녹화 후 사내 교육 플랫폼 공개 가능 여부와 추가 비용 확인 요청     (게시기한 협의/일주일~한달)"
+            },
+            {
+              "date": "2024-08-19",
+              "text": "교육주제 : 생성형AI 활용 트렌드(타사 활용 사례 중심)교육대상 : 7-80명 전직군 예상교육형태 : 오프라인/ 녹화 시 촬영은 삼성증권에서 진행 예정/ 사내 인원만 접근가능한 LMS에 1-4주 게시 가능+비용 확인필요교육목적/배경 : 사내에서 GPT 활용은 불가해서 이런 걸 업무에 활용할 수 있다 인사이트 제공 교육시작 일정 : 2시간, 9월 말 예상(중요)예산 : 200만원대 이하(중요)기업 담당자의 현 상황 :  업체 비교단계/ 현재 내부적으로 따로 대학 교수 섭외중이라 패캠과 진행 확정 아님!고객사가 원하는 자료 : 제안서, 견적서"
+            }
+          ]
+        },
+        {
+          "id": "01918cf2-83bc-7003-a76b-025fa1771b08",
+          "created_at": "2024-08-26T04:29:49.379Z",
+          "name": "삼성증권 월별입과_9월_6개월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-08-31T15:00:00.000Z",
+          "expected_amount": 1736800.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-08-25T15:00:00.000Z",
+          "amount": 1736800.0,
+          "start_date": "2024-08-31T15:00:00.000Z",
+          "end_date": "2025-02-27T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01924065-1550-744f-9f7f-b35e83b774ac",
+          "created_at": "2024-09-30T00:46:59.415Z",
+          "name": "삼성증권 싱글플랜_24년 10월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-30T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-09-29T15:00:00.000Z",
+          "amount": 2356100.0,
+          "start_date": "2024-09-30T15:00:00.000Z",
+          "end_date": "2025-03-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01924382-0533-7000-a279-7d0ff5ef0f71",
+          "created_at": "2024-09-30T15:17:27.482Z",
+          "name": "삼성증권 데이터이해 특강",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2024-10-29T15:00:00.000Z",
+          "expected_amount": 2500000.0,
+          "lost_confirmed_at": "2024-10-14T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "출강",
+          "category": "DX Essential",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2024-10-29T15:00:00.000Z",
+          "end_date": "2024-10-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "206ad1bf-1967-4e06-ab11-763d7df48f9f",
+            "name": "조인수",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "오프라인교육(온라인도 지원)"
+          },
+          "memos": [
+            {
+              "date": "2024-10-15",
+              "text": "이번 데이터 리터러시의 경우 다수의 신입사원을 대상으로 Soft skill위주로 진행되는 특강형 과정으로 기획하여 이번에 제안 주신 강사님들이 맞지 않아 다른 분을 찾게 되었습니다."
+            }
+          ]
+        },
+        {
+          "id": "0192c200-8bab-7aa5-ae86-b0a2a9e584ed",
+          "created_at": "2024-10-25T04:47:48.659Z",
+          "name": "삼성증권 싱글플랜 24년 11월",
+          "team": null,
+          "owner": "이혜미",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 884400.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": 916200.0,
+          "start_date": "2024-10-31T15:00:00.000Z",
+          "end_date": "2025-04-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "019416f9-1675-7447-a623-ddc2932e18e2",
+          "created_at": "2024-12-30T09:50:10.616Z",
+          "name": "삼성증권_싱글플랜_월별입과_25년 2월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-02-01T09:51:02.954Z",
+          "expected_amount": 12000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-01-31T15:00:00.000Z",
+          "amount": 12464144.0,
+          "start_date": "2025-01-31T15:00:00.000Z",
+          "end_date": "2025-07-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": [
+            {
+              "date": "2024-12-30",
+              "text": "B2C전환 예정이었다가 스킬플로 라이트 도입 논의중"
+            },
+            {
+              "date": "2025-02-03",
+              "text": "2/1: 15,225,780원 (129건)2/3: 354,400원 (3건)합계: 15,580,180원 (132건)인원 100명이상 할인 20% 적용 -> 최종비용: 12,464,144원수강률 80%/ 3개월 필수+3개월 복습"
+            }
+          ]
+        },
+        {
+          "id": "019541aa-f854-722b-8621-0c39fe4dceb8",
+          "created_at": "2025-02-26T09:51:18.625Z",
+          "name": "삼성증권_싱글플랜_월별입과_25년 3월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-01T09:52:15.386Z",
+          "expected_amount": 5816628.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-02-28T15:00:00.000Z",
+          "amount": 5816628.0,
+          "start_date": "2025-02-28T15:00:00.000Z",
+          "end_date": "2025-08-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "019582bd-5829-7665-a835-89ab4e3b3486",
+          "created_at": "2025-03-11T01:06:41.842Z",
+          "name": "삼성증권_싱글플랜_월별입과_25년 4월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-01T02:52:31.793Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-03-31T15:00:00.000Z",
+          "amount": 8447600.0,
+          "start_date": "2025-03-31T15:00:00.000Z",
+          "end_date": "2025-09-29T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0195d181-e14e-7007-86bd-f481f77b4b20",
+          "created_at": "2025-03-26T08:11:44.856Z",
+          "name": "삼성증권_생성형AI 아카데미 (오프라인)_4월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-30T02:26:09.677Z",
+          "expected_amount": 4350000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-04-29T15:00:00.000Z",
+          "amount": 4350000.0,
+          "start_date": "2025-05-08T15:00:00.000Z",
+          "end_date": "2025-05-15T15:00:00.000Z",
+          "net_percent": "61.0",
+          "people": {
+            "id": "206ad1bf-1967-4e06-ab11-763d7df48f9f",
+            "name": "조인수",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "오프라인교육(온라인도 지원)"
+          },
+          "memos": [
+            {
+              "date": "2025-05-20",
+              "text": "실습코치 진행 여부를 교육 중 확정하게 되어, 4월 매출에는 실습코치 금액이 포함되지 않은 금액으로 체결. ->1/2차수 모두 실습코치 포함하여 50만원의 추가 금액 발생. \n4,350,000원 -> 변경) 4,840,000원"
+            }
+          ]
+        },
+        {
+          "id": "0196857b-68a9-7ee9-9151-5bcd00786c91",
+          "created_at": "2025-04-30T06:56:19.634Z",
+          "name": "삼성증권_싱글플랜_월별입과_25년 5월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-05-01T06:58:08.086Z",
+          "expected_amount": 13481920.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-04-30T15:00:00.000Z",
+          "amount": 13481920.0,
+          "start_date": "2025-04-30T15:00:00.000Z",
+          "end_date": "2025-10-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01971f91-fc67-7ccc-b317-3c6d17c8087a",
+          "created_at": "2025-05-30T05:02:00.000Z",
+          "name": "삼성증권_생성형AI아카데미 (오프라인_단기)_25년 6월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-11T04:27:15.172Z",
+          "expected_amount": 4870000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-06-08T15:00:00.000Z",
+          "amount": 4870000.0,
+          "start_date": "2025-06-10T15:00:00.000Z",
+          "end_date": "2025-06-12T15:00:00.000Z",
+          "net_percent": "57.0",
+          "people": {
+            "id": "206ad1bf-1967-4e06-ab11-763d7df48f9f",
+            "name": "조인수",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "오프라인교육(온라인도 지원)"
+          },
+          "memos": [
+            {
+              "date": "2025-05-30",
+              "text": "총 6차수까지 일정 확정\n1/2차수: 5월3/4차수: 6월 11일, 13일5/6차수: 6월 20일, 7월 11일"
+            }
+          ]
+        },
+        {
+          "id": "01973930-0ab3-722e-a881-5f30d075aa6c",
+          "created_at": "2025-06-04T04:25:00.000Z",
+          "name": "삼성증권_생성형AI아카데미 (오프라인_단기)_25년 7월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-30T15:00:00.000Z",
+          "expected_amount": 4900000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-06-30T15:00:00.000Z",
+          "amount": 4900000.0,
+          "start_date": "2025-06-30T15:00:00.000Z",
+          "end_date": "2025-07-10T15:00:00.000Z",
+          "net_percent": "57.0",
+          "people": {
+            "id": "206ad1bf-1967-4e06-ab11-763d7df48f9f",
+            "name": "조인수",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "오프라인교육(온라인도 지원)"
+          },
+          "memos": [
+            {
+              "date": "2025-06-04",
+              "text": "5/6차수"
+            },
+            {
+              "date": "2025-07-10",
+              "text": "인원변동으로 금액 상이할 수 있음"
+            },
+            {
+              "date": "2025-08-29",
+              "text": "5차수: 6월 20일 6차수: 7월 11일-> 5-6차수에 대한 금액으로 딜 생성"
+            }
+          ]
+        },
+        {
+          "id": "0197396d-03e3-7445-8f2d-ededf88b6807",
+          "created_at": "2025-06-04T05:32:00.000Z",
+          "name": "삼성증권_싱글플랜_월별입과_25년 6월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-01T05:33:06.301Z",
+          "expected_amount": 7021094.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-05-31T15:00:00.000Z",
+          "amount": 7021094.0,
+          "start_date": "2025-05-31T15:00:00.000Z",
+          "end_date": "2025-11-29T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0197ed7c-d8f2-7cce-a578-1fd5a4a20b0e",
+          "created_at": "2025-07-09T04:41:00.000Z",
+          "name": "삼성증권_싱글플랜_월별입과_25년 7월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-01T04:41:42.326Z",
+          "expected_amount": 17483360.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-06-30T15:00:00.000Z",
+          "amount": 17483360.0,
+          "start_date": "2025-06-30T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01985eed-c868-7ff4-b425-7209d6167066",
+          "created_at": "2025-07-31T05:21:00.000Z",
+          "name": "삼성증권_싱글플랜_월별입과_25년 8월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-31T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-07-31T15:00:00.000Z",
+          "amount": 4915800.0,
+          "start_date": "2025-07-31T15:00:00.000Z",
+          "end_date": "2026-01-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": [
+            {
+              "date": "2025-07-31",
+              "text": "7/23 관리자 수강신청 건 : 24명 (2,289,600원) / 30명 미만으로 별도 할인 없음.7/31 임직원 수강신청 건 : 24명 (2,626,200원) / 30명 미만으로 별도 할인 없음."
+            }
+          ]
+        },
+        {
+          "id": "01991266-5bbe-700e-b492-a1c220413d8d",
+          "created_at": "2025-09-04T01:45:00.000Z",
+          "name": "삼성증권_싱글플랜_월별입과_25년 9월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-31T15:00:00.000Z",
+          "expected_amount": 2043800.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-08-31T15:00:00.000Z",
+          "amount": 2043800.0,
+          "start_date": "2025-08-31T15:00:00.000Z",
+          "end_date": "2026-02-27T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01999ed6-72f2-7332-9dd5-60850bcbc0b6",
+          "created_at": "2025-10-01T08:14:00.000Z",
+          "name": "삼성증권_싱글플랜_월별입과_25년 10월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-09-30T15:00:00.000Z",
+          "expected_amount": 381000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-09-30T15:00:00.000Z",
+          "amount": 381000.0,
+          "start_date": "2025-09-30T15:00:00.000Z",
+          "end_date": "2026-03-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+            "name": "최지원",
+            "upper_org": "인사지원담당",
+            "team": "인재개발팀",
+            "title": "수석",
+            "edu_area": "온라인교육"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "e9a6333c-1da1-4439-9ccd-0beb21dd252d",
+          "name": "최지원",
+          "upper_org": "인사지원담당",
+          "team": "인재개발팀",
+          "title": "수석",
+          "edu_area": "온라인교육",
+          "webforms": [
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-21",
+              "text": "- 고객 이름 : 최지원\n- 고객 이메일 : jiwon0131.choi@samsung.com\n- 고객 전화 : 01039397057\n- 회사 이름 : 삼성증권\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 사내 프롬프트 개발 및 제작 관련해 궁금한 사항이 있으시다면 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240521\n- 고객 utm_content : lead-gen^salesmap-nurture^eunjilee\n"
+            }
+          ]
+        },
+        {
+          "id": "206ad1bf-1967-4e06-ab11-763d7df48f9f",
+          "name": "조인수",
+          "upper_org": "인사지원담당",
+          "team": "인재개발팀",
+          "title": "수석",
+          "edu_area": "오프라인교육(온라인도 지원)",
+          "webforms": [
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정",
+            "고객사 전용 무료 초청권 - 2025 Gencon"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-26",
+              "text": "- 고객 이름 : 조인수\n- 고객 이메일 : is0210.cho@samsung.com\n- 고객 전화 : 01031445637\n- 회사 이름 : 삼성증권\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 지인 추천\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : 금융회사 망분리 정책으로 생성형AI 실제 사용이 어렵습니다. \n이런 상황에서 어떻게 트렌드를 놓치지 않게 교육을 진행해야할지 고민입니다.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-21",
+              "text": "- 고객 이름 : 조인수\n- 고객 전화 : 01031445637\n- 고객 이메일 : is0210.cho@samsung.com\n- 회사 이름 : 삼성증권\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : meta\n- 고객 utm_medium : social\n- 고객 utm_campaign : all^mktg^241016\n- 고객 utm_content : lead-gen^set1^ad3_meta\n"
+            },
+            {
+              "date": "2025-09-11",
+              "text": "- 고객 이름 : 조인수\n- 고객 전화 : 01031445637\n- 고객 이메일 : is0210.cho@samsung.com\n- 회사 이름 : 삼성증권\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 리포트/제안서\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250911\n- 고객 utm_content : lead-gen^cold-hd^finance-hrd#salesmap-web-form\n"
+            },
+            {
+              "date": "2025-10-17",
+              "text": "- 회사 이름 : 삼성증권\n- 컨퍼런스 참석 인원 수 : 15\n- 고객 이름 : 조인수\n- 고객 이메일 : is0210.cho@samsung.com\n- 고객 전화 : 010-3144-5637\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

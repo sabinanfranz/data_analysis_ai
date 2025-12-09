@@ -1,0 +1,1040 @@
+{
+  "organization": {
+    "id": "652dad8f3937628fdba346d3",
+    "name": "엔씨소프트",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "HR센터",
+      "team": "인재개발실",
+      "deals": [
+        {
+          "id": "0197815a-b20f-7dd0-b253-b5375dc76100",
+          "created_at": "2025-06-18T04:44:00.000Z",
+          "name": "엔씨소프트_올플랜_2025 추가매출",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-30T04:45:47.889Z",
+          "expected_amount": 36000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-06-29T15:00:00.000Z",
+          "amount": 36000000.0,
+          "start_date": "2025-05-31T15:00:00.000Z",
+          "end_date": "2026-03-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "dd77dcc7-08ba-4fae-b9c4-8a3854d8063f",
+            "name": "이중엽",
+            "upper_org": "HR센터",
+            "team": "인재개발실",
+            "title": "대리",
+            "edu_area": "전사교육"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "dd77dcc7-08ba-4fae-b9c4-8a3854d8063f",
+          "name": "이중엽",
+          "upper_org": "HR센터",
+          "team": "인재개발실",
+          "title": "대리",
+          "edu_area": "전사교육",
+          "webforms": [
+            "1-14. 백서 신청 (report_leadershipfw)",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-02",
+              "text": "- 고객 이름 : 이중엽\n- 고객 이메일 : yjl7@ncsoft.com\n- 고객 전화 : 01053677435\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 엔씨소프트\n- 회사 기업 규모 : 중견기업\n- 개인정보 수집 동의 : 동의합니다.\n- 개인정보 제3자 제공 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-17",
+              "text": "- 고객 이름 : 이중엽\n- 고객 전화 : 01053677435\n- 고객 이메일 : yjl7@ncsoft.com\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241017\n- 고객 utm_content : nurturing^cold^seminar_2025\n"
+            },
+            {
+              "date": "2024-10-17",
+              "text": "- 고객 이름 : 이중엽\n- 고객 이메일 : yjl7@ncsoft.com\n- 고객 전화 : 01053677435\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64dd761296e775eee7e395b3",
+          "created_at": "2023-08-17T01:21:22.076Z",
+          "name": "엔씨소프트_싱글플랜_5월",
+          "team": null,
+          "owner": "윤찬웅",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2022-04-29T15:00:00.000Z",
+          "expected_amount": 16236000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2022-04-29T15:00:00.000Z",
+          "amount": 16236000.0,
+          "start_date": "2022-04-30T15:00:00.000Z",
+          "end_date": "2022-05-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd761196e775eee7e39582",
+            "name": "최민아",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd761296e775eee7e3964d",
+          "created_at": "2023-08-17T01:21:22.396Z",
+          "name": "NC SOFT_올플랜_2302",
+          "team": null,
+          "owner": "윤찬웅",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2022-12-24T15:00:00.000Z",
+          "expected_amount": 48000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2022-12-24T15:00:00.000Z",
+          "amount": 48000000.0,
+          "start_date": "2023-01-31T15:00:00.000Z",
+          "end_date": "2024-02-27T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd761296e775eee7e3961c",
+            "name": "김다혜",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64f53898b2a5cac99819d752",
+          "created_at": "2023-09-04T01:53:29.159Z",
+          "name": "ncsoft_올플랜_추가150명_2309",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-08-30T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-10-04T22:48:48.787Z",
+          "amount": 36000000.0,
+          "start_date": "2023-08-31T15:00:00.000Z",
+          "end_date": "2023-11-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd761196e775eee7e39582",
+            "name": "최민아",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "654317238b99d960e3c78156",
+          "created_at": "2023-11-02T03:27:32.134Z",
+          "name": "엔씨소프트(최민아)_올플랜_2311(추가)",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-10-31T15:00:00.000Z",
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-11-01T03:27:47.000Z",
+          "amount": 20250000.0,
+          "start_date": "2023-10-31T15:00:00.000Z",
+          "end_date": "2024-01-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd761196e775eee7e39582",
+            "name": "최민아",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "442bd008-aa13-4319-bf0e-c3d34f864a4e",
+          "created_at": "2023-11-29T09:20:22.191Z",
+          "name": "엔씨소프트(최민아)_올플랜_추가입과_2312",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-12-28T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-12-29T02:22:08.000Z",
+          "amount": 3120000.0,
+          "start_date": "2023-11-30T15:00:00.000Z",
+          "end_date": "2024-02-28T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64dd761196e775eee7e39582",
+            "name": "최민아",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "01994b38-bfb6-799e-bb2b-3ffe3fbeb75f",
+          "created_at": "2025-09-15T02:33:00.000Z",
+          "name": "엔씨소프트_사무직군 생성형 AI 교육",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "이수빈",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-10-30T15:00:00.000Z",
+          "expected_amount": 20000000.0,
+          "lost_confirmed_at": "2025-10-19T15:00:00.000Z",
+          "lost_reason": "[\"내부 의사결정\"]",
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd761296e775eee7e3961c",
+            "name": "김다혜",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-09-15",
+              "text": "- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 딜 예상 교육 일정 : 2개월 이내\n- 회사 이름 : 엔씨소프트\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 김다혜\n- 고객 이메일 : dahye0119@ncsoft.com\n- 고객 담당 업무 : (공백)\n- 고객 전화 : 0220086892\n- 딜 상담 문의 내용 : 안녕하세요, 담당자님\n엔씨소프트 NC University에서 근무하고 있는 김다혜입니다.\n\n현재 전사 사업/마케팅 및 경영지원 직군을 대상으로 한 생성형 AI 활용 교육을 기획하고 있으며, 이에 관련해 아래 사항에 대해 문의드리고자 연락드립니다.\n\n아울러 교육프로그램 제안과 상세 내용 논의를 위해 사전 미팅을 요청드리고자 합니다.\n9/18(목), 9/22(월), 9/23(화) 중 대면 or 비대면 미팅 가능 여부를 회신 부탁드립니다.\n\n살펴보시고 궁금하신 점 있으시면 아래 네임텍 참조하시어 메일 or 전화 등으로 연락 부탁드립니다.\n\n[엔씨소프트 교육 계획]\n일정: 2025년 10월~ 2026년 2월 (약 4개월)\n-\t10월 오리엔테이션 1회(2~3H), 11~2월 강의/실습 3회(2H)로 검토 중\n장소: 엔씨소프트 사옥 (경기도 판교)\n대상: 엔씨소프트 사업/마케팅, 경영지원 부서 구성원 약 100~150명\n주제: 생성 AI 활용 실습 교육\n활용 툴: Chat GPT, MS Copilot\n\n[교육방식]\n- 교육은 주제/직무별 총 3~4개 트랙으로 구성을 검토하고 있으며 (예시. MS Copilot을 활용한 엑셀 VBA, 파이썬 데이터 분석 Track 등)\n- 각 트랙 참가자는 자신의 실제 업무와 연계해 생성형 AI를 활용할 수 있는 과제를 제출할 예정입니다.\n- 교육 기간(약 4개월) 동안 강연과 실습을 통해 해당 과제를 해결하고, 이를 통해 업무 효율화 및 고도화를 달성하는 것을 목표로 할 예정입니다.\n\n[문의사항]\n①\t게임/IT 업계 사례에 기반한 커리큘럼 제안 (사업/마케팅, 경영지원 직무 대상)\n②\t유사 기업교육 레퍼런스\n③\t교육 견적서 요청 (100명 기준, 3~4개 트랙 구성, 트랙별 총 3회 강연 및 실습 진행 계획 중)\n\n감사합니다. 김다혜 드림\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 딜 utm_source : email\n- 딜 utm_medium : crm\n- 딜 utm_campaign : all^mktg^welcome\n- 딜 utm_content : nurturing^deck^aicontents\n"
+            },
+            {
+              "date": "2025-09-15",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64dd761196e775eee7e39582",
+          "name": "최민아",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)",
+            "1-16. 백서 신청 (report_aileadership)",
+            "1-19. 백서 신청 (report_hraiguide)",
+            "1-6. 백서 신청 (report_itleaders)",
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "3-70. 소개서 : 패스트캠퍼스 기업교육 대표 콘텐츠북",
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅",
+            "6-4-1. ATD Korea Summit (기고객 전용 단체 결제 50% 할인)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-20",
+              "text": "미팅 불가담당자가 본인만이 아니라서 내부 공유 후 회신"
+            },
+            {
+              "date": "2023-12-05",
+              "text": "담당자 아님 드랍"
+            },
+            {
+              "date": "2024-02-19",
+              "text": "- 고객 이름 : 최민아\n- 고객 이메일 : ccccchoi3@ncsoft.com\n- 고객 전화 : 01047049876\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-19",
+              "text": "- 고객 이름 : 최민아\n- 고객 이메일 : ccccchoi3@ncsoft.com\n- 고객 전화 : 01047049876\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-19",
+              "text": "- 고객 이름 : 최민아\n- 고객 이메일 : ccccchoi3@ncsoft.com\n- 고객 전화 : 01047049876\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-20",
+              "text": "- 고객 이름 : 최민아\n- 고객 이메일 : ccccchoi3@ncsoft.com\n- 고객 전화 : 01047049876\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 최민아\n- 고객 이메일 : ccccchoi3@ncsoft.com\n- 고객 전화 : 01047049876\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 최민아\n- 고객 이메일 : ccccchoi3@ncsoft.com\n- 고객 전화 : 01047049876\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2025-02-12",
+              "text": "- 고객 이름 : 최민아\n- 고객 전화 : 01047049876\n- 고객 이메일 : ccccchoi3@ncsoft.com\n- 회사 이름 : 엔씨\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^250212\n- 고객 utm_content : lead-gen^bizletter^contentsbook\n"
+            }
+          ]
+        },
+        {
+          "id": "64dd761296e775eee7e3961c",
+          "name": "김다혜",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "1-9. 백서 신청 (report_skilltrans)",
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)",
+            "4-3. 세미나 다시보기: 생성형 AI를 활용한 업무효율화 실제 교육 사례 소개",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-27",
+              "text": "10/27 Call2차 콜드콜)DX 교육 커리큘럼 먼저 받아보고 싶음."
+            },
+            {
+              "date": "2023-11-22",
+              "text": "- 고객 이름 : 김다혜\n- 고객 이메일 : dahye0119@ncsoft.com\n- 고객 전화 : 01029968738\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-09",
+              "text": "- 고객 이름 : 김다혜\n- 고객 이메일 : dahye0119@ncsoft.com\n- 고객 전화 : 01029968738\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 엔씨소프트\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-17",
+              "text": "- 고객 이름 : 김다혜\n- 고객 전화 : 01029968738\n- 고객 이메일 : dahye0119@ncsoft.com\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241017\n- 고객 utm_content : nurturing^cold^seminar_2025\n"
+            },
+            {
+              "date": "2025-09-11",
+              "text": "- 고객 이름 : 김다혜\n- 고객 전화 : 0220086892\n- 고객 이메일 : dahye0119@ncsoft.com\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-09-11",
+              "text": "- 고객 이름 : 김다혜\n- 고객 전화 : 0220086892\n- 고객 이메일 : dahye0119@ncsoft.com\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^welcome\n- 고객 utm_content : nurturing^deck^aicontents\n"
+            }
+          ]
+        },
+        {
+          "id": "651e0714586a1fe796752bc7",
+          "name": "방성원",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-30",
+              "text": "10/30 Call (1차 콜드콜)HRD 담당자가 아니여서 미팅 희망하지 않음. "
+            }
+          ]
+        },
+        {
+          "id": "652dad903937628fdba34720",
+          "name": "김부영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-09",
+              "text": "11/9 Call (1차 콜드콜)필요 시 연락주시겠다고 함."
+            },
+            {
+              "date": "2024-03-08",
+              "text": "전화기록- 딱히 니즈는 없어보임. 메일로 스킬 컨설팅 소개서 보내보기"
+            }
+          ]
+        },
+        {
+          "id": "6535c4947331063db115fb06",
+          "name": "이지은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-14",
+              "text": "11/14 Call (1차 콜드콜)나중에 기존 소통하던 분이나 저한테 직접 연락주시겠다.지금은 시간내기가 부담스럽고어떤 교육진행할지 내년 계획 수립 전임."
+            },
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 이지은\n- 고객 이메일 : jieunlee@ncsoft.com\n- 고객 전화 : 01033062709\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-11",
+              "text": "- 고객 이름 : 이지은\n- 고객 이메일 : jieunlee@ncsoft.com\n- 고객 전화 : 01033062709\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^offline^booth\n"
+            }
+          ]
+        },
+        {
+          "id": "6535cae07331063db11614e2",
+          "name": "임동현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-30",
+              "text": "10/30 Call (1차 콜드콜)플랫폼 관련해서 논의할 사항이 있어서 교육 담당자 통해서 메일 전달주시기로 함. AE 미팅 지원 요청 필요할 듯."
+            }
+          ]
+        },
+        {
+          "id": "6535fd7f1b904e570270b57f",
+          "name": "문정아",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-17. 백서 신청 (report_trainingroi)",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)",
+            "4-3. 세미나 다시보기: 생성형 AI를 활용한 업무효율화 실제 교육 사례 소개"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-10",
+              "text": "11/10 Call (1차 콜드콜)임동현팀장님 통해서 미팅 요청 다시 확인필요"
+            },
+            {
+              "date": "2023-12-13",
+              "text": "연말이라 어려움. 연초에 연락 부탁"
+            }
+          ]
+        },
+        {
+          "id": "65da6ecc-1ccf-4c5e-9fca-d3f350b78b4b",
+          "name": "이혜정",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)",
+            "1-12. 백서 신청 (report_leadership)",
+            "1-15. 백서 신청 (report_talentmarketplace)",
+            "1-16. 백서 신청 (report_aileadership)",
+            "1-17. 백서 신청 (report_trainingroi)",
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-11",
+              "text": "- 고객 이름 : 이혜정\n- 고객 이메일 : hyejeonglee@ncsoft.com\n- 고객 전화 : 01040458079\n- 회사 이름 : NCSOFT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240411\n- 고객 utm_content : lead-gen^hrbulletin^edm\n"
+            },
+            {
+              "date": "2024-07-08",
+              "text": "- 고객 이름 : 이혜정\n- 고객 이메일 : hyejeonglee@ncsoft.com\n- 고객 전화 : 01040458079\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240708\n- 고객 utm_content : lead-gen^hrbulletin^edm\n"
+            },
+            {
+              "date": "2024-08-28",
+              "text": "- 고객 이름 : 이혜정\n- 고객 이메일 : hyejeonglee@ncsoft.com\n- 고객 전화 : 01040458079\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240827\n- 고객 utm_content : lead-gen^mktg-agreed^report-trainingroi\n"
+            }
+          ]
+        },
+        {
+          "id": "687b8c34-5e60-4c05-9648-b1d10bd3835b",
+          "name": "김서연",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)",
+            "1-19. 백서 신청 (report_hraiguide)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2025-03-12",
+              "text": "- 고객 이름 : 김서연\n- 고객 전화 : 01029933912\n- 고객 이메일 : duri0067@ncsoft.com\n- 회사 이름 : NCSOFT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241017\n- 고객 utm_content : nurturing^cold^seminar_2025#REGISTRATION\n"
+            }
+          ]
+        },
+        {
+          "id": "ea16185d-f488-4b9b-a414-0994d5068a59",
+          "name": "신보미",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "944633fa-93fc-400c-9262-5303721e2980",
+          "name": "김세진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-06",
+              "text": "- 고객 이름 : 김세진\n- 고객 이메일 : jinkim@ncsoft.com\n- 고객 전화 : 01057910143\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240206\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta3\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 김세진\n- 고객 이메일 : jinkim@ncsoft.com\n- 고객 전화 : 01057910143\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240206\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta3\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 김세진\n- 고객 이메일 : jinkim@ncsoft.com\n- 고객 전화 : 01057910143\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240221\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta3#apply\n"
+            },
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 김세진\n- 고객 이메일 : jinkim@ncsoft.com\n- 고객 전화 : 01057910143\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240221\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta3#apply\n"
+            },
+            {
+              "date": "2024-05-09",
+              "text": "- 고객 이름 : 김세진\n- 고객 이메일 : jinkim@ncsoft.com\n- 고객 전화 : 01057910143\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 엔씨소프트\n- 회사 기업 규모 : 중견기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240221\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta3#apply\n"
+            }
+          ]
+        },
+        {
+          "id": "ebe6fc7e-95ad-4bce-8f09-dcf15129194b",
+          "name": "이지영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-06",
+              "text": "- 고객 이름 : 이지영\n- 고객 이메일 : jiyounglee@ncsoft.com\n- 고객 전화 : 01053036218\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240206\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta3#apply\n"
+            },
+            {
+              "date": "2024-02-19",
+              "text": "- 고객 이름 : 이지영\n- 고객 이메일 : jiyounglee@ncsoft.com\n- 고객 전화 : 01053036218\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db\n"
+            }
+          ]
+        },
+        {
+          "id": "765b7f0d-4950-4e7f-9457-97945d1a22c8",
+          "name": "황은숙",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-20",
+              "text": "- 고객 이름 : 황은숙\n- 고객 이메일 : eunsookhwang@ncsoft.com\n- 고객 전화 : 01021282722\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240220\n- 고객 utm_content : lead-gen^cio^edm#apply\n"
+            },
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 황은숙\n- 고객 이메일 : eunsookhwang@ncsoft.com\n- 고객 전화 : 01021282722\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : 실시간으로 질문 올려 놓으면 진행자 분께서 마지막에 답변 주시는지 궁금합니다^^\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "203c5e7c-76ef-4d65-8d46-bca4a9134987",
+          "name": "윤성은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서",
+            "5-2. 템플릿 신청 (template_exonboarding)",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-06-18",
+              "text": "- 고객 이름 : 윤성은\n- 고객 이메일 : sungeuny@ncsoft.com\n- 고객 전화 : 01092169575\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 엔씨소프트\n- 회사 기업 규모 : 중견기업\n- 개인정보 수집 동의 : 동의합니다.\n- 개인정보 제3자 제공 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-11",
+              "text": "- 고객 이름 : 윤성은\n- 고객 이메일 : sungeuny@ncsoft.com\n- 고객 전화 : 01092169575\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : 기타\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^offline^booth\n"
+            },
+            {
+              "date": "2024-07-30",
+              "text": "- 고객 이름 : 윤성은\n- 고객 이메일 : sungeuny@ncsoft.com\n- 고객 전화 : 01092169575\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "7c2c2d1c-34d2-460a-8b63-a471d3f020e9",
+          "name": "노지원",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-06-19",
+              "text": "- 고객 이름 : 노지원\n- 고객 이메일 : jnoh@ncsoft.com\n- 고객 전화 : 01072822927\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 엔씨소프트\n- 회사 기업 규모 : 중견기업\n- 개인정보 수집 동의 : 동의합니다.\n- 개인정보 제3자 제공 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "b37ff71c-2f6e-4e4f-bb75-1123d032275c",
+          "name": "최고은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-06-27",
+              "text": "- 고객 이름 : 최고은\n- 고객 이메일 : goeun@ncsoft.com\n- 고객 전화 : 01040136642\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : ncsoft\n- 회사 기업 규모 : 중견기업\n- 개인정보 수집 동의 : 동의합니다.\n- 개인정보 제3자 제공 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "d65570dc-6e89-444b-8d40-1a777d72f7df",
+          "name": "허건희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-09",
+              "text": "- 고객 이름 : 허건희\n- 고객 이메일 : geoooni@ncsoft.com\n- 고객 전화 : 01057377494\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 엔씨소프트\n- 회사 기업 규모 : 중견기업\n- 개인정보 수집 동의 : 동의합니다.\n- 개인정보 제3자 제공 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-12",
+              "text": "- 고객 이름 : 허건희\n- 고객 이메일 : geoooni@ncsoft.com\n- 고객 전화 : 01057377494\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^offline^booth\n"
+            }
+          ]
+        },
+        {
+          "id": "0192ff2a-532a-7ffa-b9e9-93eb07414adb",
+          "name": "김단열",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-15. ATD Korea Summit 2024 하이라이트북 신청 (report_atdkorea2024)"
+          ],
+          "memos": [
+            {
+              "date": "2024-11-06",
+              "text": "- 고객 이름 : 김단열\n- 고객 전화 : 01048012828\n- 고객 이메일 : daniel7@ncsoft.com\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^241106\n- 고객 utm_content : lead-gen^hrbulletin^edm1\n"
+            }
+          ]
+        },
+        {
+          "id": "01932ef5-9c88-7882-a9f3-292f51328c08",
+          "name": "송지훈",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0196ec10-fa18-7993-8404-944de517775d",
+          "name": "장혁민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "알수없음",
+      "team": "알수없음",
+      "deals": [
+        {
+          "id": "81a1688c-de99-4fda-b872-eb5825213eee",
+          "created_at": "2024-04-23T08:29:27.369Z",
+          "name": "엔씨소프트(최민아)_올플랜_200명보장_24년",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 48000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-04-30T01:09:46.815Z",
+          "amount": 48000000.0,
+          "start_date": "2024-04-30T15:00:00.000Z",
+          "end_date": "2025-03-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "9d65cabc-c03d-4956-bffb-d848dadcbebf",
+            "name": "김태리",
+            "upper_org": "알수없음",
+            "team": "알수없음",
+            "title": "알수없음",
+            "edu_area": "해당없음"
+          },
+          "memos": [
+            {
+              "date": "2024-07-24",
+              "text": "5월 1일 119명 입과 (잔여슬롯 81명)"
+            }
+          ]
+        },
+        {
+          "id": "0190eedd-4044-733d-812c-e15f656302c3",
+          "created_at": "2024-07-26T11:46:35.730Z",
+          "name": "엔씨소프트_비정기입과_올플랜_2408",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-07-30T15:00:00.000Z",
+          "expected_amount": 3000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-07-31T01:09:46.000Z",
+          "amount": 9360000.0,
+          "start_date": "2024-07-31T15:00:00.000Z",
+          "end_date": "2024-10-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "9d65cabc-c03d-4956-bffb-d848dadcbebf",
+            "name": "김태리",
+            "upper_org": "알수없음",
+            "team": "알수없음",
+            "title": "알수없음",
+            "edu_area": "해당없음"
+          },
+          "memos": [
+            {
+              "date": "2024-09-12",
+              "text": "39명 추가매출건"
+            }
+          ]
+        },
+        {
+          "id": "0191e4e0-24d3-7000-8109-50cb8889e35c",
+          "created_at": "2024-09-12T06:16:20.443Z",
+          "name": "엔씨소프트_비정기입과_올플랜_2409(130명 보증)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-11T15:00:00.000Z",
+          "expected_amount": 31200000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-09-11T15:00:00.000Z",
+          "amount": 31200000.0,
+          "start_date": "2024-09-11T15:00:00.000Z",
+          "end_date": "2025-03-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "9d65cabc-c03d-4956-bffb-d848dadcbebf",
+            "name": "김태리",
+            "upper_org": "알수없음",
+            "team": "알수없음",
+            "title": "알수없음",
+            "edu_area": "해당없음"
+          },
+          "memos": [
+            {
+              "date": "2024-09-12",
+              "text": "130개 슬롯 추가 구매 - 추후 비정기입과건 발생 예정으로 발생시 비매출입과 딜카드 생성 예정!"
+            }
+          ]
+        },
+        {
+          "id": "0192d80b-15ab-7ff5-9a44-cd9b18d585ac",
+          "created_at": "2024-10-29T11:30:58.099Z",
+          "name": "엔씨소프트_비정기입과_올플랜_2411(96명 보증)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-10-28T15:00:00.000Z",
+          "expected_amount": 23040000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-10-29T15:00:00.000Z",
+          "amount": 23040000.0,
+          "start_date": "2024-10-29T15:00:00.000Z",
+          "end_date": "2025-03-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "9d65cabc-c03d-4956-bffb-d848dadcbebf",
+            "name": "김태리",
+            "upper_org": "알수없음",
+            "team": "알수없음",
+            "title": "알수없음",
+            "edu_area": "해당없음"
+          },
+          "memos": [
+            {
+              "date": "2024-10-29",
+              "text": "96개 슬롯 추가 구매https://salesmap.kr/64cb5beda5a78ae225d7815b/sales/deal/0191e4e0-24d3-7000-8109-50cb8889e35c위 딜카드와 함께 226개 슬롯 11/1 일괄 사용 예정"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "9d65cabc-c03d-4956-bffb-d848dadcbebf",
+          "name": "김태리",
+          "upper_org": "알수없음",
+          "team": "알수없음",
+          "title": "알수없음",
+          "edu_area": "해당없음",
+          "webforms": [
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "1-16. 백서 신청 (report_aileadership)",
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "1-6. 백서 신청 (report_itleaders)",
+            "1-7. 백서 신청 (report_hrdedu)",
+            "1-9. 백서 신청 (report_skilltrans)",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-06",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : +821057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240206\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta3#apply\n"
+            },
+            {
+              "date": "2024-02-06",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : 01057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-06",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : 01057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-06",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : 01057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-06",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : 01057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-16",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : +821057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-16",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : +821057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-16",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : +821057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-16",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : +821057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-19",
+              "text": "전화기록- 생성형 AI 교육, 언리얼엔진 5 교육 고려 중.개발자들 대상이다보니 뎁스있는 교육이 필요함.관련 자료 메일 요청"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : +821057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@ncsoft.com\n- 고객 전화 : +821057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db\n"
+            },
+            {
+              "date": "2024-07-11",
+              "text": "- 고객 이름 : 김태리\n- 고객 이메일 : soyoung0407@gmail.com\n- 고객 전화 : 01057950407\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^offline^booth\n"
+            },
+            {
+              "date": "2024-09-05",
+              "text": "ATD 세일즈 콜 / 메일 이후 회신- 내부에서 직무 별 스킬 수립 중- 현재 패캠에서 온라인 과정을 운영하고 있다보니 스킬 기반으로 교육 연결까지 의도하고 있음.- 패캠에서 스킬 관련해 잘 준비하고 있는 것 같아서 교육 로드맵을 참고할 수 있다면 확인하고자 함.-> 교육 로드맵 자료를 보내줄 수는 없고, 참고할 수 있게 일부만 메일로 보내드림"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "인재개발실",
+      "team": "NC University",
+      "deals": [
+        {
+          "id": "0194154a-c89a-7998-940d-5b0e1c6ece2d",
+          "created_at": "2024-12-30T02:00:10.149Z",
+          "name": "엔씨소프트_올플랜_2501",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-12-31T02:00:45.949Z",
+          "expected_amount": 1450000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-12-30T15:00:00.000Z",
+          "amount": 1450000.0,
+          "start_date": "2025-01-05T15:00:00.000Z",
+          "end_date": "2025-04-04T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0193f119-0458-755a-b70d-8e6e734df833",
+            "name": "윤상빈",
+            "upper_org": "인재개발실",
+            "team": "NC University",
+            "title": "확인 필요",
+            "edu_area": "온라인/올플랜"
+          },
+          "memos": []
+        },
+        {
+          "id": "01952701-bc32-7000-830a-2f066851e9b8",
+          "created_at": "2025-02-21T05:36:20.040Z",
+          "name": "엔씨소프트_올플랜_2025",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-31T05:36:52.205Z",
+          "expected_amount": 48000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-03-10T15:00:00.000Z",
+          "amount": 48000000.0,
+          "start_date": "2025-03-31T15:00:00.000Z",
+          "end_date": "2026-03-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0193f119-0458-755a-b70d-8e6e734df833",
+            "name": "윤상빈",
+            "upper_org": "인재개발실",
+            "team": "NC University",
+            "title": "확인 필요",
+            "edu_area": "온라인/올플랜"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "0193f119-0458-755a-b70d-8e6e734df833",
+          "name": "윤상빈",
+          "upper_org": "인재개발실",
+          "team": "NC University",
+          "title": "확인 필요",
+          "edu_area": "온라인/올플랜",
+          "webforms": [
+            "2-4. 레터 구독+HRD프롬프트 템플릿  (bizletter65_hrdprompt)"
+          ],
+          "memos": [
+            {
+              "date": "2025-08-22",
+              "text": "- 고객 이름 : 윤상빈\n- 고객 전화 : 01095611506\n- 고객 이메일 : tkdqls930@ncsoft.com\n- 회사 이름 : 엔씨소프트\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 월 1회 메일함으로 발송되는 HRD 인사이트 레터를 구독하시겠어요? : 구독하겠습니다.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250822\n- 고객 utm_content : nurturing^letter65-hrdprompt^promptcta1#salesmap-web-form\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

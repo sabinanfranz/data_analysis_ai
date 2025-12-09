@@ -1,0 +1,58 @@
+{
+  "organization": {
+    "id": "01957dc0-2a3f-766c-a57e-8ccffdfe7c47",
+    "name": "신세계백화점",
+    "size": "대기업",
+    "industry": "유통/공급업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "지원본부",
+      "team": "인재개발TF",
+      "deals": [
+        {
+          "id": "01957dc0-3274-766c-a57f-0f474f21fbf5",
+          "created_at": "2025-03-10T01:51:42.723Z",
+          "name": "신세계백화점_직급별 생성형 AI",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김민선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-18T01:14:14.742Z",
+          "expected_amount": 10310000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-04-09T15:00:00.000Z",
+          "amount": 9950000.0,
+          "start_date": "2025-03-24T15:00:00.000Z",
+          "end_date": "2025-05-15T15:00:00.000Z",
+          "net_percent": "64.0",
+          "people": {
+            "id": "01957dc0-3133-766c-a57e-e5eb1160b9cd",
+            "name": "박상욱",
+            "upper_org": "지원본부",
+            "team": "인재개발TF",
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "01957dc0-3133-766c-a57e-e5eb1160b9cd",
+          "name": "박상욱",
+          "upper_org": "지원본부",
+          "team": "인재개발TF",
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

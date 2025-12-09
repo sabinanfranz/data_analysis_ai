@@ -1,0 +1,126 @@
+{
+  "organization": {
+    "id": "64f975dbfb15689232a8fd2a",
+    "name": "에스케이텔링크",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "-",
+      "team": "기업문화팀",
+      "deals": [
+        {
+          "id": "0194fe5c-8535-7007-8bef-6b0516c74a98",
+          "created_at": "2025-02-13T08:11:03.945Z",
+          "name": "[부가세별도] (B2B) SK텔링크_2025년 생성형AI 업무 활용 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "하승민",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-30T02:20:09.832Z",
+          "expected_amount": 7600000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-04-20T15:00:00.000Z",
+          "amount": 7901000.0,
+          "start_date": "2025-04-14T15:00:00.000Z",
+          "end_date": "2025-04-29T15:00:00.000Z",
+          "net_percent": "62.0",
+          "people": {
+            "id": "d38bddd3-2c82-40c1-b840-7b5c0dabc915",
+            "name": "조하영",
+            "upper_org": "-",
+            "team": "기업문화팀",
+            "title": "대리",
+            "edu_area": "출강"
+          },
+          "memos": [
+            {
+              "date": "2025-03-04",
+              "text": "3/4 담당자 부재 > 메일 1차 리마인드 발송"
+            },
+            {
+              "date": "2025-03-04",
+              "text": "3/4 내부 검토로 인해 차주 중으로 정확한 진행여부 및 개강일자 전달 예정 (3/14까지 대기)"
+            },
+            {
+              "date": "2025-03-20",
+              "text": "3/20 강사진 일정 조율 등으로 연락 -> 내부적으로 재검토 중이라 하여 계약금액이 변경될 수도 있음..! (모듈 삭제 등)"
+            }
+          ]
+        },
+        {
+          "id": "019753b8-cd41-7ddd-9727-119a753df465",
+          "created_at": "2025-06-09T08:05:00.000Z",
+          "name": "[부가세별도] (B2B) SK텔링크_생성형 AI 프로젝트",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "하승민",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-20T15:00:00.000Z",
+          "expected_amount": 4800000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-08-20T15:00:00.000Z",
+          "amount": 4800000.0,
+          "start_date": "2025-09-18T15:00:00.000Z",
+          "end_date": "2025-10-13T15:00:00.000Z",
+          "net_percent": "70.0",
+          "people": {
+            "id": "d38bddd3-2c82-40c1-b840-7b5c0dabc915",
+            "name": "조하영",
+            "upper_org": "-",
+            "team": "기업문화팀",
+            "title": "대리",
+            "edu_area": "출강"
+          },
+          "memos": [
+            {
+              "date": "2025-08-05",
+              "text": "(현황) 계약서 전달, 강사 탭핑 완료 -> 8월 중 계약목표"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "d38bddd3-2c82-40c1-b840-7b5c0dabc915",
+          "name": "조하영",
+          "upper_org": "-",
+          "team": "기업문화팀",
+          "title": "대리",
+          "edu_area": "출강",
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-08",
+              "text": "- 고객 이름 : 조하영\n- 고객 이메일 : likey@sk.com\n- 고객 전화 : 01090372810\n- 회사 이름 : SK텔링크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240207\n- 고객 utm_content : lead-gen^hrinsight^edm-cta3\n"
+            },
+            {
+              "date": "2024-04-30",
+              "text": "패캠 전tm필요시 연락주기로"
+            },
+            {
+              "date": "2025-02-10",
+              "text": "- 고객 이름 : 조하영\n- 고객 전화 : 01090372810\n- 고객 이메일 : likey@sk.com\n- 회사 이름 : SK텔링크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all_mktg_250122\n- 고객 utm_content : lead-gen_monthly-review_genaijob\n"
+            },
+            {
+              "date": "2025-02-10",
+              "text": "- 고객 이름 : 조하영\n- 고객 이메일 : likey@sk.com\n- 고객 전화 : 01090372810\n- 회사 이름 : SK텔링크\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : pdf\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^240902\n- 고객 utm_content : nurturing^last-page^ai-reference\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

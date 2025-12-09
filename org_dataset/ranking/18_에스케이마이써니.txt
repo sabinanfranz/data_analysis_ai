@@ -1,0 +1,546 @@
+{
+  "organization": {
+    "id": "86c4d5bd-eb4d-451c-9745-87eb0c8629c2",
+    "name": "에스케이마이써니",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "AI변화추진",
+      "team": "AI변화추진",
+      "deals": [
+        {
+          "id": "01949735-520f-7bb3-87ec-0e9e64a21cf7",
+          "created_at": "2025-01-24T07:27:21.625Z",
+          "name": "[부가세별도] (B2B) mySUNI AI변화추진 AI mini Camp 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-31T02:44:44.971Z",
+          "expected_amount": 99800000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "생성형AI",
+          "contract_date": "2025-03-18T15:00:00.000Z",
+          "amount": 99800000.0,
+          "start_date": "2025-03-26T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": "42.0",
+          "people": {
+            "id": "01949735-517a-7bb3-87eb-f8de498d73d1",
+            "name": "양다은",
+            "upper_org": "AI변화추진",
+            "team": "AI변화추진",
+            "title": "Research Fellow",
+            "edu_area": "출강"
+          },
+          "memos": [
+            {
+              "date": "2025-01-24",
+              "text": "mySUNI에서는 올 해 주요과정으로 전 구성원을 위한 생성형 AI 업무 활용 강의를 진행할 계획입니다.1주일에 1회 간격으로 온라인 실시간 1Day 과정이 진행될 예정이며,내 업무에 생성형 AI 활용법을 배우고, 업무에 바로 적용할 수 있을만한 실습 예제 시나리오를 단계적으로 따라해보는 구성입니다. [AI for Everyone]l   개요 : 특정 업무 Task에 생성형 AI를 활용하는 실습 위주의 1 Day 과정l   대상 : 생성형 AI를 실제 업무 과정에 활용하고 싶은 모든 구성원l   형식 : 온라인 실시간l   차수 당 예상 수강 인원 : 50명l   진행 회차 및 시간 : 1주일에 1 강의, 3월~11월 (8개월) 진행 예정 / 과정 주제 및 실습 난이도에 따라 4~7시간으로 구성l   강사 수 : 실습이 진행되기 때문에 메인강사 1 + 보조강사 (실습 보조) 1명 또는 2명까지는 생각하고 있습니다.l   특징 :n   업무 적용 Case를 시나리오화한 예제 실습 위주 (ChatGPT 기초 설명은 생략 가능, 사전 학습으로 제공하여 컴팩트한 강의 시간)n   모든 참가자가 동일한 실습을 진행n   전 그룹사 대상 / 특정 멤버사 특화 Two -Track으로 진행 예정특정 멤버사 차수 진행 시, 사내 환경에서 활용 가능한 AI Tool로 한정하여 과정 기획 필요 (SKI, SKHy 등)l   과정 구성/커리큘럼n   업무 자동화, 데이터 분석 등 생성형 AI 적용 카테고리를 나누어 과정 주제와 상세 실습예제를 준비할 예정입니다.n   실습예제의 경우, 멤버사나 직무에 따라 커스터마이징이 필요할 수 있습니다.n   과정 주제 및 커리큘럼 예시 : 생성형 AI를 활용한 기획서 작성Part 1) ChatGPT로 기획하기-        사실정보에 입각한 ChatGPT 시장조사/아이디어 도출 전략-        시장조사를 기획으로 신사업 기획 및 시뮬레이션-        비즈니스 전략 분석-        [실습] BingChat의 특징을 활용하여 신사업 기획에 필요한 주요 질문 설정-        [실습] BingChat의 채팅과 작성가능을 통한 검색 및 자료 작성 수행-        [실습] ChatGPT를 활용한 비즈니스 전략 분석 수립Part 2) ChatGPT로 요약 및 보고하기-        복잡한 PDF 자료를 ChatGPT를 활용하여 요약하기-        고품질 보고서를 작성하는 ChatGPT 핵심기술-        보고서 제작 프로젝트-        [실습] 여러 Word파일을 정량적으로 요약 및 분석 보고서 컨텐츠 생성-        [실습] ChatGPT를 활용하여 더 다양한 분석포인트를 파악하고 해당 분석을 수행"
+            },
+            {
+              "date": "2025-01-24",
+              "text": "작년 SKT AI 리터러시 어드밴스드 공통과정(오프라인 과정) 디벨롭하여 8개 ~ 10개 과정으로 개설하고 온라인 실시간화 하여, SKT만이 아닌/ 전 계열사 대상 다 인원으로 다회차 돌리고 싶음"
+            },
+            {
+              "date": "2025-02-04",
+              "text": "1. 교육 개요대상: SK 전 그룹사 구성원교육 형태: 온라인 실시간 교육 (1DAY 과정)진행 일정: 2024년 3월 ~ 11월 (8개월)목표 인원: 총 2,000명 (40회, 상·하반기 각각 20회)참여 인원: 한 과정당 약 50명 (주강사 1명, 보조강사 1명)교육 시간: 과정 주제 및 실습 난이도에 따라 4~8시간2. 교육 목표 및 방향업무에서 즉시 활용할 수 있는 Generative AI 기능 학습모든 참가자가 동일한 실습을 진행하는 형태기초 개념 설명 최소화, 업무 적용 사례 중심의 실습 위주사내 AI 툴(SKI, SKHy 등) 활용 맞춤형 교육 기획 필요실습 중심 시나리오 교육 필요 (사내 데이터, 툴을 활용한 사례 개발)3. 교육 설계 논의 사항(1) 교육 과정 카테고리 및 구성(안)① 공통 업무 교육이메일, 엑셀, PPT, 문서작성 등 기본 업무 툴 활용Generative AI 기반 업무 자동화 적용 사례② 직무별 특화 교육직무별 AI 활용 사례 및 실습 중심 교육EX)마케팅: 트렌드 센싱, 챗봇 생성, AI 기반 광고 콘텐츠 제작영업/기획: 고객 피드백 분석, 영업 데이터 활용 전략R&D: 논문 데이터 분석, 신소재 관련 연구 데이터 정리생산: 제조 공정 최적화, AI 기반 예측 모델 활용③ 기타 응용 과정 취미/투자 등 개별 관심사 반영부동산, 주식, 예술(Art) 등 AI 활용 가능 분야(2) 주요 실습 시나리오 예시최신 데이터 분석 (업무 연관성 높은 데이터 활용)AI를 활용한 마케팅 트렌드 분석개인화된 AI 챗봇 개발특정 직무 과제 해결을 위한 AI 모델 적용 (예: 논문 초록 분석 후 요약 및 자동 메일링)AI를 활용한 사내 보고서 작성 및 자동화(3) 기술적 제약 사항SK 내부 AI 툴 활용 가능 여부 확인 필요실시간 웹 검색 및 외부 크롤링 불가RAG (Retrieval-Augmented Generation) 활용 불가파일 업로드 가능 여부 확인 필요외부 강사 계정 발급 가능 여부 확인 필요4. 운영 계획강사 배정: 다양한 주제에 특화된 강사 배정 (동일 강사로 진행할 경우 수요 조율 필요)교육 설계: 과정별 라이트 버전 vs. 심화 버전 고민 필요수강생 모집: ‘후킹 포인트’ (마케팅 요소) 중요 → 구성원들이 필요성을 느낄 주제 선정상반기/하반기 동일 과정 운영 가능성 검토각 과정별 구체적인 시나리오 및 실습 내용 개발 필수"
+            }
+          ]
+        },
+        {
+          "id": "0197a4e5-b048-733d-ae6b-a6d585f3cfa7",
+          "created_at": "2025-06-25T02:23:00.000Z",
+          "name": "[부가세별도] (B2B) mySUNI AI변화추진 AI mini Camp 과정 - 추가매출",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-01T02:24:37.316Z",
+          "expected_amount": 8550000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-08-28T15:00:00.000Z",
+          "amount": 8550000.0,
+          "start_date": "2025-08-28T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": "69.0",
+          "people": {
+            "id": "01949735-517a-7bb3-87eb-f8de498d73d1",
+            "name": "양다은",
+            "upper_org": "AI변화추진",
+            "team": "AI변화추진",
+            "title": "Research Fellow",
+            "edu_area": "출강"
+          },
+          "memos": []
+        },
+        {
+          "id": "0198ee1c-062e-7665-b8b4-f2c72d62fe7b",
+          "created_at": "2025-08-28T00:37:00.000Z",
+          "name": "[L-T] SK mySUNI - 에이닷비즈 활용 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2026-01-29T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": "2025-12-03T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": 5000000.0,
+          "start_date": "2025-12-31T15:00:00.000Z",
+          "end_date": "2026-12-30T15:00:00.000Z",
+          "net_percent": "70.0",
+          "people": {
+            "id": "01949735-517a-7bb3-87eb-f8de498d73d1",
+            "name": "양다은",
+            "upper_org": "AI변화추진",
+            "team": "AI변화추진",
+            "title": "Research Fellow",
+            "edu_area": "출강"
+          },
+          "memos": [
+            {
+              "date": "2025-08-28",
+              "text": "교육 일정 : 9월 말 ~교육 주제 : SK그룹 공통 AI 플랫폼 ‘A. Biz (에이닷비즈)’ 활용 실습 과정교육 대상 : SK그룹 멤버사 전체문의 내용 :현재 진행하고 있는 AI Mini Camp 주제들을 그대로 A. Biz TOOL로 대체하여 도입할 수 있을지대체가 어렵다면 어느 과정/범위까지 활용 가능할지그 외 진행해볼 수 있는 A. Biz 활용 실습 과정 주제/커리큘럼"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "01949735-517a-7bb3-87eb-f8de498d73d1",
+          "name": "양다은",
+          "upper_org": "AI변화추진",
+          "team": "AI변화추진",
+          "title": "Research Fellow",
+          "edu_area": "출강",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "Digital Tech.",
+      "team": "Digital Tech. College",
+      "deals": [
+        {
+          "id": "653b17fa2467aae56be43a2c",
+          "created_at": "2023-10-27T01:52:58.636Z",
+          "name": "SK mySUNI - ChatGPT 분석",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": "2023-12-21T04:25:10.692Z",
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "653b17f92467aae56be439ba",
+            "name": "기세영",
+            "upper_org": "Digital Tech.",
+            "team": "Digital Tech. College",
+            "title": "Research Fellow",
+            "edu_area": "온라인/출강(DXAI 복합)"
+          },
+          "memos": []
+        },
+        {
+          "id": "a20d06e9-0f7d-41af-8d32-1315b466a786",
+          "created_at": "2023-12-15T06:07:34.140Z",
+          "name": "SK mySUNI - 온라인 포팅",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-12-26T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": null,
+          "contract_date": "2023-12-28T02:37:34.000Z",
+          "amount": 265200000.0,
+          "start_date": "2023-12-27T15:00:00.000Z",
+          "end_date": "2024-12-26T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "653b17f92467aae56be439ba",
+            "name": "기세영",
+            "upper_org": "Digital Tech.",
+            "team": "Digital Tech. College",
+            "title": "Research Fellow",
+            "edu_area": "온라인/출강(DXAI 복합)"
+          },
+          "memos": []
+        },
+        {
+          "id": "01913038-17f9-7660-8dcd-5cb7eceaec48",
+          "created_at": "2024-08-08T04:21:08.226Z",
+          "name": "mySUNI DT College '24년 하반기 LLM 역량 육성 과정 운영",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-29T15:00:00.000Z",
+          "expected_amount": 51180000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-10-06T15:00:00.000Z",
+          "amount": 51180000.0,
+          "start_date": "2024-10-06T15:00:00.000Z",
+          "end_date": "2024-10-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "f0086513-9350-4be7-a534-345ec63bb40c",
+            "name": "성용모",
+            "upper_org": "Digital Tech.",
+            "team": "Digital Tech. College",
+            "title": "Research Fellow",
+            "edu_area": "출강/정기/생성형 AI"
+          },
+          "memos": []
+        },
+        {
+          "id": "0193bf3c-a331-7773-9e1b-776af23ecaa4",
+          "created_at": "2024-12-13T08:57:22.506Z",
+          "name": "에스케이마이써니_온라인 포팅 25년도",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-12-27T02:06:17.077Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2024-12-26T15:00:00.000Z",
+          "amount": 84780000.0,
+          "start_date": "2024-12-26T15:00:00.000Z",
+          "end_date": "2025-12-25T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "653b17f92467aae56be439ba",
+            "name": "기세영",
+            "upper_org": "Digital Tech.",
+            "team": "Digital Tech. College",
+            "title": "Research Fellow",
+            "edu_area": "온라인/출강(DXAI 복합)"
+          },
+          "memos": []
+        },
+        {
+          "id": "01975d29-5d38-7339-b99a-c2568bd85987",
+          "created_at": "2025-06-11T04:04:00.000Z",
+          "name": "에스케이마이써니_LLM Ops 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "서정연",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-10-31T00:56:14.028Z",
+          "expected_amount": 4000000.0,
+          "lost_confirmed_at": "2025-08-18T15:00:00.000Z",
+          "lost_reason": "[\"내부 의사결정\"]",
+          "course_format": "출강",
+          "category": "빅데이터/AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "653b17f92467aae56be439ba",
+            "name": "기세영",
+            "upper_org": "Digital Tech.",
+            "team": "Digital Tech. College",
+            "title": "Research Fellow",
+            "edu_area": "온라인/출강(DXAI 복합)"
+          },
+          "memos": [
+            {
+              "date": "2025-06-26",
+              "text": "기세영 RF님 (AI변화추진/SKI)강사 프로필 / 커리큘럼 전달드린 상태 LLM Ops 과정- 성격 : 서비스 운영을 위한 LLMOps- 목표 : LLM 모델을 배포, 서빙, 최적화할 수 있는 운영 인력 양성- 대상자 사전 수준 : 백엔드 또는 DevOps 개발 경력- 해당 과정에 적합한 강사를 페캠에서 소싱해 주시면, 전반적인 과정의 성격과 방향 검토를 포함해서 커리큘럼을 새롭게 설계해 보고 싶습니다.- 하반기 예정하고 있는 교육 형태는 2~3일 짜리 오프라인 과정입니다."
+            },
+            {
+              "date": "2025-08-19",
+              "text": "[LOST 사유 / 메일 본문]\n페캠에서 수준 높은 강사님들과 커리큘럼을 제공해 주셨는데,올해 LLMOps 과정은 기존 mySUNI 강사 Pool 을 활용하여 소규모 차수만 진행하려고 합니다. 페캠은 다른 BP사들보다 Trend를 빠르게 파악하고 선제 대응해 가는 곳이니 만큼,신규 과정 개발에 대한 고민이 생기면, 가장 먼저 협업 요청 드리도록 하겠습니다."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "653b17f92467aae56be439ba",
+          "name": "기세영",
+          "upper_org": "Digital Tech.",
+          "team": "Digital Tech. College",
+          "title": "Research Fellow",
+          "edu_area": "온라인/출강(DXAI 복합)",
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "f0086513-9350-4be7-a534-345ec63bb40c",
+          "name": "성용모",
+          "upper_org": "Digital Tech.",
+          "team": "Digital Tech. College",
+          "title": "Research Fellow",
+          "edu_area": "출강/정기/생성형 AI",
+          "webforms": [
+            "1-17. 백서 신청 (report_trainingroi)",
+            "4-3. 세미나 다시보기: 생성형 AI를 활용한 업무효율화 실제 교육 사례 소개",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "매니지먼트 컬리지",
+      "team": "성장지원",
+      "deals": [
+        {
+          "id": "019683ee-65a3-7ee9-8b4c-af4c174b8e53",
+          "created_at": "2025-04-29T23:42:41.066Z",
+          "name": "에스케이마이써니_성장지원 팀 온라인 포팅",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-05-19T01:16:40.228Z",
+          "expected_amount": 24300000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-05-25T15:00:00.000Z",
+          "amount": 24300000.0,
+          "start_date": "2025-05-25T15:00:00.000Z",
+          "end_date": "2026-05-24T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "019683ee-6517-7ee9-8b4c-9d9bcedf4dcb",
+            "name": "조한나",
+            "upper_org": "매니지먼트 컬리지",
+            "team": "성장지원",
+            "title": "Team Leader",
+            "edu_area": "온라인(포팅)"
+          },
+          "memos": [
+            {
+              "date": "2025-04-29",
+              "text": "성장지원팀에서 온라인 콘텐츠 포팅 문의(총 5개 과정)- 각 과정별 콘텐츠 리스트 1) 기업의 성공을 만들어내는 사업개발·기획·전략 전문가를 위한 AI 활용법2) 추가 4개 과정 문의- 각 과정별 포팅 견적: 전체 표로 보기1) 기업의 성공을 만들어내는 사업개발기획전략 전문가를 위한 AI 활용법 견적2) 추가 4개 과정 전체 리스트 견적** 특이사항- 파트 예산이 부족하다하여, 10분 미만 컨텐츠는 70% 할인으로 제안 (첫 도입 한정 할인)- 클립 별 포팅보다 본인들이 희망하는 구간별 포팅을 희망하여 포팅 진행하게 된다면 일부 클립 합치는 편집 필요 (1개 과정은 무상으로 서비스 제공으로 소통, 과정 수가 늘어나면 소정의 편집 비용 부과 필요)- 계약 진행 희망 시 SK엠앤서비스 이영실 매니저님과 소통 필요! (계약도 전자계약)"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "019683ee-6517-7ee9-8b4c-9d9bcedf4dcb",
+          "name": "조한나",
+          "upper_org": "매니지먼트 컬리지",
+          "team": "성장지원",
+          "title": "Team Leader",
+          "edu_area": "온라인(포팅)",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64d328851750f5b1d531d6f4",
+          "created_at": "2023-08-09T05:47:49.214Z",
+          "name": "SK mySUNI - GPT",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김별",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-08-08T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-08-08T22:46:46.000Z",
+          "amount": 27080000.0,
+          "start_date": "2023-08-08T15:00:00.000Z",
+          "end_date": "2023-08-28T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d328851750f5b1d531d6c3",
+            "name": "정성민",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "019619a0-4de1-7770-a20d-35cd0cfe1734",
+          "created_at": "2025-04-09T08:17:38.282Z",
+          "name": "SK 그룹사 - mySUNI AI 활용 교육 (일상/취미)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-05-07T08:17:43.729Z",
+          "expected_amount": 2350000.0,
+          "lost_confirmed_at": "2025-04-15T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2025-05-06T15:00:00.000Z",
+          "end_date": "2025-12-02T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "019619a0-4d7a-7770-a20d-226af32f9385",
+            "name": "이승훈",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-04-16",
+              "text": "제안드린 커리큘럼에 대해 전반적으로 짜임새 있고 잘 구성된 과정이라는 긍정적인 평가를 주셨으나,다만, 영상/음악 분야의 경우 해당 산업에 대한 전문성을 보유한 강사의 교육 효과가 높다고 판단이에 따라 mySUNI의 내부 구매 프로세스에 따라 복수의 교육 업체로부터 제안을 받은 뒤, 영상/음악 분야 전문 강사가 포함된 업체와 진행하기로 결정."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64d328851750f5b1d531d6c3",
+          "name": "정성민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "5151ad1c-42ba-4e79-b43c-5affb2e5b9d1",
+          "name": "김다예",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "6-1. ATD Korea Summit (Standard Only)",
+            "6-1. ATD Korea Summit (연사 지인 할인 30%)"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-17",
+              "text": "- 고객 이름 : 김다예\n- 고객 이메일 : k.dayea@sk.com\n- 고객 전화 : 01043614570\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 이름 : SK mySUNI\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "c83c272c-67e7-4b48-9100-7ceeb9f2e614",
+          "name": "염우선",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "30b44cdf-c7e4-4f88-84d4-85b185ac6feb",
+          "name": "홍종호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "ed48ae9f-d0fd-40a1-9f9d-e77937325c89",
+          "name": "유수연",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "48095fc1-ca9d-4f5b-8270-5061fcfc55bf",
+          "name": "한승훈",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "3bcc5e24-8fe1-4774-9bb8-e7d3841597de",
+          "name": "김보경",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-16. 내부 인재 관리 총정리 자료집 신청 (package_internaltalent)",
+            "6-1. ATD Korea Summit (연사 지인 할인 30%)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "497521e7-698b-44ac-84e4-44ebbfde1e43",
+          "name": "윤현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019619a0-4d7a-7770-a20d-226af32f9385",
+          "name": "이승훈",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

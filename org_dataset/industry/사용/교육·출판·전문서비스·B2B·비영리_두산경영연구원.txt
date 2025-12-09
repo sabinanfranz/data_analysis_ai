@@ -1,0 +1,197 @@
+{
+  "organization": {
+    "id": "64e41b36eda7ba3d8347baff",
+    "name": "두산경영연구원",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64e41b37eda7ba3d8347bb9e",
+          "created_at": "2023-08-22T02:19:35.368Z",
+          "name": "23년도 CDS 101",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-08-31T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-09-12T04:46:21.000Z",
+          "amount": 15600000.0,
+          "start_date": "2023-10-09T15:00:00.000Z",
+          "end_date": "2023-10-11T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64e41b37eda7ba3d8347bb4b",
+            "name": "우시혁",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "3c483367-95fb-4270-9ada-45c1c6fae9f2",
+          "created_at": "2024-02-19T04:59:49.569Z",
+          "name": "두산 DLI 2024 CDS 101",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2024-03-28T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": "2024-03-14T06:58:36.368Z",
+          "amount": 15600000.0,
+          "start_date": "2024-06-17T15:00:00.000Z",
+          "end_date": "2024-06-19T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64e41b37eda7ba3d8347bb4b",
+            "name": "우시혁",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64e41b37eda7ba3d8347bb4b",
+          "name": "우시혁",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기"
+          ],
+          "memos": []
+        },
+        {
+          "id": "64e54490f920a7b8b96f2eca",
+          "name": "정재덕",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-21. 백서 신청 (report_lmsguide)",
+            "1-4. 백서 신청 (report_workflowlearning)"
+          ],
+          "memos": [
+            {
+              "date": "2023-09-14",
+              "text": "자체적으로 집합교육 진행하고 있어서 미팅 요청 거절"
+            },
+            {
+              "date": "2025-02-20",
+              "text": "- 고객 이름 : 정재덕\n- 고객 전화 : 010-8663-5481\n- 고객 이메일 : jaeduk.jung@doosan.com\n- 회사 이름 : 두산경영연구원(주)\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250220\n- 고객 utm_content : lead-gen^khrd^lmsguide\n"
+            }
+          ]
+        },
+        {
+          "id": "8d4f72e7-0549-43f5-83da-3947014a1801",
+          "name": "김호정",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-22",
+              "text": "- 고객 이름 : 김호정\n- 고객 이메일 : hojeong.kim@doosan.com\n- 고객 전화 : 01025670577\n- 회사 이름 : 두산경영연구원\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 서비스업\n- 방문 경로 : (공백)\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240222\n- 고객 utm_content : lead-gen^hrda^edm-cta3\n"
+            },
+            {
+              "date": "2024-02-22",
+              "text": "전화기록- 개인관심이라 세미나 신청하게 되었음. - 업무와 연관이 있으면 그 다음에 - 온라인으로는 국내 재직 대상 필수교육을 제공하고 있고, 추가적인 온라인 교육을 제공하고 있지는 않음.- 턴키로 하다가 효용성이 떨어져서 진행 안함.- 2년 마다 재계약이라 올해 가을 쯤 다시 검토할 예정이고 지금은 니즈 없음."
+            }
+          ]
+        },
+        {
+          "id": "f7a5b5f2-34d2-4255-9fd9-fc926c359307",
+          "name": "성정은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-62. 소개서 :Skill Match 진단 평가 서비스 소개서 (skillmatch_proposal)"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-21",
+              "text": "전화기록- 내선번호는 교육담당자에게 연결되었는데 성함을 확인하지 못함.(성정은님 휴직중)- 종종 연락주고 받고 있어서 충분히 알고 있고 필요한 교육이 있을 떄 연락주시겠다고 함."
+            },
+            {
+              "date": "2025-01-16",
+              "text": "- 고객 이름 : 성정은\n- 고객 이메일 : jungeun.sung@doosan.com\n- 고객 전화 : 01093995463\n- 회사 이름 : 두산로보틱스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "8df08691-f102-41d1-ba58-adb488b16dcd",
+          "name": "이준호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-6. Skill-based HRD 총정리 자료집 신청 (package_skillbasedhrd)"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-28",
+              "text": "- 고객 이름 : 이준호\n- 고객 이메일 : llojj@doosan.com\n- 고객 전화 : 0233980860\n- 회사 이름 : 두산경영연구원\n- 고객 담당 업무 : 운영/총무/지원\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 기타\n- 회사 업종 : 서비스업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240328\n- 고객 utm_content : lead-gen^hrinsight^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "01928a08-153b-7557-b6ea-3022afbea886",
+          "name": "박소영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "(B2C) 서강대 AI MBA 소개서 신청",
+            "3-70. 소개서 : 패스트캠퍼스 기업교육 대표 콘텐츠북",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-14",
+              "text": "- 고객 이름 : 박소영\n- 고객 전화 : 01082729974\n- 고객 이메일 : soyoung7.park@doosan.com\n- 회사 이름 : 두산경영연구원(주) DLI\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천, 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^241014\n- 고객 utm_content : nurturing^mktg-agreed^seminar_2025\n"
+            },
+            {
+              "date": "2025-01-24",
+              "text": "- 고객 이름 : 박소영\n- 고객 전화 : 01082729974\n- 고객 이메일 : soyoung7.park@doosan.com\n- 회사 이름 : 두산경영연구원(주) DLI\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250123\n- 고객 utm_content : nurturing^cold-hd^contentsbook\n"
+            },
+            {
+              "date": "2025-02-18",
+              "text": "- 고객 이름 : 박소영\n- 고객 이메일 : soyoung7.park@doosan.com\n- 고객 전화 : 01082729974\n- 회사 이름 : 두산경영연구원(주) DLI\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250123\n- 고객 utm_content : nurturing^cold-hd^contentsbook\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

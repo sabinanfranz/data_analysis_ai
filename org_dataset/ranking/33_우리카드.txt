@@ -1,0 +1,163 @@
+{
+  "organization": {
+    "id": "64ee8e5fac40a76a5021d6ef",
+    "name": "우리카드",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "기업문화혁신팀",
+      "team": "기업문화혁신팀",
+      "deals": [
+        {
+          "id": "0191c652-b93a-7aa6-a202-a8d53c0ade96",
+          "created_at": "2024-09-06T07:53:15.949Z",
+          "name": "정영헌 리드",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-11-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "기타",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "0191c652-b8e1-7aa6-a202-7d272858dfb8",
+            "name": "정영헌",
+            "upper_org": "기업문화혁신팀",
+            "team": "기업문화혁신팀",
+            "title": "계장",
+            "edu_area": "온라인"
+          },
+          "memos": [
+            {
+              "date": "2024-09-06",
+              "text": "- 딜 문의 주제 (최초) : 영업/디지털 마케팅, DX 기초 (마인드셋, 데이터 리터러시), 데이터 분석 및 AI 실무, 프로그래밍 (웹 개발, 앱 개발), PO/PM (프로젝트 관리, 제품 및 서비스 기획), UX/UI 디자인, OA (사무자동화)\n- 딜 예상 교육 일정 : 7개월~1년 이내\n- 딜 서비스 유형 (최초) : 온라인 단체 교육, 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 1000명 이하\n- 회사 이름 : 우리카드\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 정영헌\n- 고객 이메일 : honey@wooricard.com\n- 고객 전화 : 01067980667\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 상담 문의 내용 : 25년 교육과정 문의\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-09-06",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        },
+        {
+          "id": "01949211-7b3b-7441-b254-33d225ea5787",
+          "created_at": "2025-01-23T07:30:06.787Z",
+          "name": "우리카드 커스텀 플랜 (구독)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-01T08:22:57.002Z",
+          "expected_amount": 72000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-03-31T15:00:00.000Z",
+          "amount": 72000000.0,
+          "start_date": "2025-03-31T15:00:00.000Z",
+          "end_date": "2026-03-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0191c652-b8e1-7aa6-a202-7d272858dfb8",
+            "name": "정영헌",
+            "upper_org": "기업문화혁신팀",
+            "team": "기업문화혁신팀",
+            "title": "계장",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        },
+        {
+          "id": "0197e902-3039-7ddd-92c5-330fc4f15704",
+          "created_at": "2025-07-08T07:48:00.000Z",
+          "name": "우리카드 AI 해커톤",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-11-27T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": "2025-08-24T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "0191c652-b8e1-7aa6-a202-7d272858dfb8",
+            "name": "정영헌",
+            "upper_org": "기업문화혁신팀",
+            "team": "기업문화혁신팀",
+            "title": "계장",
+            "edu_area": "온라인"
+          },
+          "memos": [
+            {
+              "date": "2025-08-25",
+              "text": "1. 내부 상황 및 배경7월: 우리카드 측에서 AI 해커톤 관련 문의를 진행.\n\n현재 상태: 내부 논의 후, AI 해커톤 추진은 시기상조라는 결론.MS Copilot 미도입 상태 → 내부에서 공식적으로 활용 불가.\n★ 도입 예정 시점: 2025년 2월.AI 자유 활용 요건 부족 → 망분리 환경으로 인해 제약 존재.현 임직원 수준: 기초 교육 수준. 본격적인 실습·프로젝트 진행은 어려움.\n\n상부 팀장 피드백:하반기에는 AI 보다는 기업 문화 정착(책정)이 우선.\n→ 조직 내 리소스 기업문화 쪽으로 투입되어야 한다는 의견.AI 해커톤은 아직 시기상조!\n\n2. AI 활용 현황 및 난점직원별 AI 이해·활용 수준이 편차가 큼.\n→ 교육 시 참가자 수준 맞추기가 어려움.현재는 A우리카드에서 AI 교육을 전사 공통 필수로 가져가진 않고, 개별 역량·수준에 따라 직원들이 스스로 신청해 내/외부 교육을 선택적으로 참여 하고 있음.내부망에서 교육 어떻게?\n→ 외부 환경에서 진행 시, 외부 강의장을 활용하여 하루 단위 실습 교육 진행하고 있음.\n변곡점 : 25년 2월 MS Copilot 도입 시점 이후에야 본격적인 교육·실습(해커톤 포함) 가능성 존재.교육 포인트: 당장은 그룹 차원 AI 교육 및 기초 단계 위주. 카드사 단독 교육 수요는 제한적이며, 외부 교육은 개별 참여 형태로 진행."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "0191c652-b8e1-7aa6-a202-7d272858dfb8",
+          "name": "정영헌",
+          "upper_org": "기업문화혁신팀",
+          "team": "기업문화혁신팀",
+          "title": "계장",
+          "edu_area": "온라인",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "1-21. 백서 신청 (report_lmsguide)",
+            "3-82. 직무/수준 맞춤형 온라인 AI 교육 체계도",
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "4-9.  세미나 다시보기 : 금융권 특화 AI 활용 세미나",
+            "5-34. 온라인 교육 템플릿 7종 (package_onlinehrdtpl)",
+            "7-11-3. AI로 만드는 나만의 비즈니스 전략 컨설턴트 원데이 클래스 사전 신청"
+          ],
+          "memos": [
+            {
+              "date": "2025-04-25",
+              "text": "- 고객 이름 : 정영헌\n- 고객 전화 : 01067980667\n- 고객 이메일 : honey@wooricard.com\n- 회사 이름 : 우리카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250425\n- 고객 utm_content : nurturing^salesmap^db\n"
+            },
+            {
+              "date": "2025-06-23",
+              "text": "- 고객 이름 : 정영헌\n- 고객 전화 : 01067980667\n- 고객 이메일 : honey@wooricard.com\n- 회사 이름 : 우리카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250623\n- 고객 utm_content : lead-gen^khrd^cta1\n"
+            },
+            {
+              "date": "2025-07-14",
+              "text": "- 고객 이름 : 정영헌\n- 고객 전화 : 01067980667\n- 고객 이메일 : honey@wooricard.com\n- 회사 이름 : 우리카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250711\n- 고객 utm_content : lead-gen^khrd^cta3\n"
+            },
+            {
+              "date": "2025-08-26",
+              "text": "- 고객 이름 : 정영헌\n- 고객 전화 : 01067980677\n- 고객 이메일 : honey@wooricard.com\n- 회사 이름 : 우리카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : kakaotalk\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^250826\n- 고객 utm_content : lead-gen^khrd^bd\n"
+            },
+            {
+              "date": "2025-09-12",
+              "text": "- 고객 이름 : 정영헌\n- 고객 전화 : 01067980667\n- 고객 이메일 : honey@wooricard.com\n- 회사 이름 : 우리카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 리포트/제안서\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250911\n- 고객 utm_content : lead-gen^cold-hd^finance-hrd#salesmap-web-form\n"
+            },
+            {
+              "date": "2025-10-01",
+              "text": "- 고객 이름 : 정영헌\n- 고객 전화 : 01067980667\n- 고객 이메일 : honey@wooricard.com\n- 회사 이름 : 우리카드\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

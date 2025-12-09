@@ -12,6 +12,7 @@
 - **루프 방지**: 커서 반복 감지 시 중단하고 에러 기록.
 - **작성 완료 후 교체**: temp DB(`salesmap_latest.db.tmp`)를 최종 DB로 교체. 잠금 시 리트라이 후, 여전히 실패하면 `salesmap_latest_<run_tag>.db`로 rename/copy하여 데이터는 보존합니다(로그에 경고).
 - **SQLite finalize**: 완료 직전 WAL 체크포인트/optimize/commit/close + GC + 짧은 대기 후 교체 시도(윈도우 핸들 해제 지연 대비). 교체 실패 시 psutil이 있으면 잠금 프로세스를 로그로 노출.
+- **체크포인트 저장 폴백**: 체크포인트 파일 rename 실패(WinError 5 등) 시 3회 재시도 후 tmp→본 파일 복사로 저장, 실패 시 예외와 로그를 남깁니다. 필요하면 `.tmp`를 수동으로 `.json`에 복사해 재개 가능합니다.
 
 ## 주요 옵션
 - `--db-path`: 최종 SQLite 경로(기본 `salesmap_latest.db`).
@@ -26,6 +27,7 @@
 - **네트워크/429/5xx**: 백오프 후 재시도. `max_retries_exceeded` 발생 시 해당 페이지에서 중단하고 에러가 manifest/히스토리에 기록.
 - **커서 루프**: 반복 커서 감지 시 중단, 에러로 기록.
 - **DB 잠금**: `salesmap_latest.db`가 잠겨 있으면 교체 실패 → rename/copy 폴백 파일이 생성되고 경고 로그 남김. 잠금 해제 후 폴백 파일을 수동 교체 가능.
+- **체크포인트 잠금/권한 문제**: 체크포인트 `.json.tmp` rename 실패 시 자동 복사 폴백. 그래도 막히면 tmp를 수동 복사(`Copy-Item checkpoint_xxx.json.tmp checkpoint_xxx.json -Force`) 후 `--resume --resume-run-tag xxx`로 재개.
 
 ## 테스트
 - `python3 -m unittest discover -s tests` 로 유닛 테스트 실행. TableWriter, 체크포인트, 백오프/폴백 로직을 커버합니다(로컬에 pandas 없을 때를 위한 스텁 포함).

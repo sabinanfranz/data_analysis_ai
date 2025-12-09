@@ -1,0 +1,121 @@
+{
+  "organization": {
+    "id": "64d328831750f5b1d531d418",
+    "name": "케이비국민카드",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "HR부 기업문화",
+      "team": "인재개발팀",
+      "deals": [
+        {
+          "id": "01933ce5-2d1a-700a-8956-74cf7f56e217",
+          "created_at": "2024-11-18T01:31:12.545Z",
+          "name": "KB국민카드_올플랜_2501",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-12-31T02:44:58.210Z",
+          "expected_amount": 45980000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-12-30T15:00:00.000Z",
+          "amount": 45980000.0,
+          "start_date": "2024-12-31T15:00:00.000Z",
+          "end_date": "2025-06-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01933ce0-848a-777f-8ff8-60cfa5cc4829",
+            "name": "윤인아",
+            "upper_org": "HR부 기업문화",
+            "team": "인재개발팀",
+            "title": "과장",
+            "edu_area": "온라인/올플랜(디지털/데이터)"
+          },
+          "memos": [
+            {
+              "date": "2024-12-24",
+              "text": "[신청폼] https://b2bonline.formstack.com/forms/kbcard_copy[수강 카테고리]프밍/데사/생성형 AI[수료 기준]① 학습 기간 내 전체 수강시간 30시간 이상② 최소 3개월 간 월별 3시간 이상 수강☞ 위 조건을 모두 충족시 수료로 인정**구간 수강 시간 기준으로 산정필요[입과 명단]- 총 2번 확정&세팅 진행1차 명단 : 12/23~12/25 신청, 1/1 시작2차 명단 : 12/26~12/31 신청, 1/8 시작 (종료일은 모두 6/30으로 통일)"
+            }
+          ]
+        },
+        {
+          "id": "019405c9-2ba7-7ddc-91f1-981d8cf8c669",
+          "created_at": "2024-12-27T01:44:17.585Z",
+          "name": "KB국민카드_올플랜_2507",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-01-31T01:44:41.641Z",
+          "expected_amount": 19000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-01-30T15:00:00.000Z",
+          "amount": 19000000.0,
+          "start_date": "2025-06-30T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01933ce0-848a-777f-8ff8-60cfa5cc4829",
+            "name": "윤인아",
+            "upper_org": "HR부 기업문화",
+            "team": "인재개발팀",
+            "title": "과장",
+            "edu_area": "온라인/올플랜(디지털/데이터)"
+          },
+          "memos": []
+        },
+        {
+          "id": "01987819-aa5c-700b-839d-3a0d372f373c",
+          "created_at": "2025-08-05T02:40:00.000Z",
+          "name": "케이비국민카드_온라인 올플랜 추가 입과",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김동찬",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-05T15:00:00.000Z",
+          "expected_amount": 5700000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-08-03T15:00:00.000Z",
+          "amount": 5700000.0,
+          "start_date": "2025-08-10T15:00:00.000Z",
+          "end_date": "2026-01-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "01933ce0-848a-777f-8ff8-60cfa5cc4829",
+            "name": "윤인아",
+            "upper_org": "HR부 기업문화",
+            "team": "인재개발팀",
+            "title": "과장",
+            "edu_area": "온라인/올플랜(디지털/데이터)"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "01933ce0-848a-777f-8ff8-60cfa5cc4829",
+          "name": "윤인아",
+          "upper_org": "HR부 기업문화",
+          "team": "인재개발팀",
+          "title": "과장",
+          "edu_area": "온라인/올플랜(디지털/데이터)",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

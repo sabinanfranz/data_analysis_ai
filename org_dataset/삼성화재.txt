@@ -1,0 +1,743 @@
+{
+  "organization": {
+    "id": "64d3287c1750f5b1d531c66d",
+    "name": "삼성화재",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "경영지원실",
+      "team": "인재개발파트",
+      "deals": [
+        {
+          "id": "64f467864b78c7af0a6f70bc",
+          "created_at": "2023-09-03T11:01:26.760Z",
+          "name": "삼성화재_AI 생성형 특강",
+          "team": "[{\"id\": \"e5f9cbbe-6e48-4a25-8c48-453537e0df74\", \"name\": \"공공교육팀\"}]",
+          "owner": "나루디아",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-08-02T15:00:00.000Z",
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-08-03T11:03:40.000Z",
+          "amount": 2450000.0,
+          "start_date": "2023-08-20T15:00:00.000Z",
+          "end_date": "2023-08-20T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": []
+        },
+        {
+          "id": "64f5399ab2a5cac99819f5a2",
+          "created_at": "2023-09-04T01:57:46.118Z",
+          "name": "삼성화재_디지털Intensive(데이터)과정",
+          "team": "[{\"id\": \"e5f9cbbe-6e48-4a25-8c48-453537e0df74\", \"name\": \"공공교육팀\"}]",
+          "owner": "나루디아",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-08-02T15:00:00.000Z",
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-08-03T01:57:51.000Z",
+          "amount": 15540000.0,
+          "start_date": "2023-08-02T15:00:00.000Z",
+          "end_date": "2023-09-07T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": []
+        },
+        {
+          "id": "652cd4f55515d712311fc937",
+          "created_at": "2023-10-16T06:15:17.672Z",
+          "name": "삼성화재_싱글플랜_2개월",
+          "team": "[{\"id\": \"e5f9cbbe-6e48-4a25-8c48-453537e0df74\", \"name\": \"공공교육팀\"}]",
+          "owner": "나루디아",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-10-18T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-10-19T01:00:20.000Z",
+          "amount": 2509000.0,
+          "start_date": "2023-10-18T15:00:00.000Z",
+          "end_date": "2023-12-17T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": []
+        },
+        {
+          "id": "652cd5dd5505a3505e290734",
+          "created_at": "2023-10-16T06:19:10.349Z",
+          "name": "삼성화재_디지털컨텐츠제작 특강",
+          "team": "[{\"id\": \"e5f9cbbe-6e48-4a25-8c48-453537e0df74\", \"name\": \"공공교육팀\"}]",
+          "owner": "나루디아",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-11-13T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-11-14T05:32:44.000Z",
+          "amount": 2950000.0,
+          "start_date": "2023-11-13T15:00:00.000Z",
+          "end_date": "2023-11-13T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": []
+        },
+        {
+          "id": "7c8936d8-a211-4681-a1fa-32d7abb75223",
+          "created_at": "2024-01-03T08:21:24.171Z",
+          "name": "삼성화재_24년도 디지털 Basic 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 15020000.0,
+          "lost_confirmed_at": "2024-07-31T12:50:41.974Z",
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "DX Essential",
+          "contract_date": "2024-02-01T04:08:35.324Z",
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": [
+            {
+              "date": "2024-01-26",
+              "text": "내부 이슈로 제안 결과 일정 변동( 1/26(금) → 1/31(수) )"
+            },
+            {
+              "date": "2024-04-08",
+              "text": "제안 미선정 사유- 교육비용이 타사에 비해 비쌈- 강사 세부 정보가 부족함 → 화재는 강사의 역량을 굉장히 중요하게 생각- 일부 심사위원 의견 중 주제 별 커리큘럼이 최신 트렌드와는 맞지 않다는 의견이 있었음Powered by Froala Editor"
+            }
+          ]
+        },
+        {
+          "id": "0c592e3c-b064-40f4-b167-4db6af018b80",
+          "created_at": "2024-01-10T03:58:50.340Z",
+          "name": "삼성화재_24년도 상반기 특강(ChatGPT)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": 21850000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-02-14T11:51:22.779Z",
+          "amount": 21850000.0,
+          "start_date": "2024-02-13T15:00:00.000Z",
+          "end_date": "2024-02-19T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": []
+        },
+        {
+          "id": "2f0f0de4-47cf-4f42-ade6-fb697f94381d",
+          "created_at": "2024-02-14T11:57:54.074Z",
+          "name": "삼성화재_24년도 상반기 특강(피그마)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-02-20T15:00:00.000Z",
+          "expected_amount": 3120000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "UI/UX",
+          "contract_date": "2024-02-21T03:01:52.257Z",
+          "amount": 3120000.0,
+          "start_date": "2024-02-20T15:00:00.000Z",
+          "end_date": "2024-02-20T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": []
+        },
+        {
+          "id": "ef20b9af-6d38-4223-8be1-91347a827f53",
+          "created_at": "2024-06-18T00:02:02.435Z",
+          "name": "삼성화재_피그마 활용 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 12250000.0,
+          "lost_confirmed_at": "2024-06-30T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "UI/UX",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2024-07-23T15:00:00.000Z",
+          "end_date": "2024-07-25T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": [
+            {
+              "date": "2024-07-01",
+              "text": "교육 진행 상 사내 이슈로 과정 진행 계획이 무산되어 drop 처리"
+            }
+          ]
+        },
+        {
+          "id": "108b01ab-6cdf-41b1-b6e8-7b300b75cd4e",
+          "created_at": "2024-06-25T13:42:44.659Z",
+          "name": "삼성화재_생성형 AI를 활용한 콘텐츠 제작 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-07-21T15:00:00.000Z",
+          "expected_amount": 3200000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-07-21T15:00:00.000Z",
+          "amount": 3450000.0,
+          "start_date": "2024-07-21T15:00:00.000Z",
+          "end_date": "2024-07-21T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": []
+        },
+        {
+          "id": "0190f2e9-a638-7992-95e3-d109634fc09d",
+          "created_at": "2024-07-27T06:38:37.120Z",
+          "name": "삼성화재_디지털 해커톤 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 10190000.0,
+          "lost_confirmed_at": "2024-08-13T08:49:55.578Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "UI/UX",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": [
+            {
+              "date": "2024-07-27",
+              "text": "□ 디지털 해커톤 과정 개요 - 일 정 : 8~9월 중 2~3개 차수(차수당 30~40명 수준, 2박3일) - 장 소 : 당사 연수원(글로벌/금융 캠퍼스 중 결정예정) - 과정 목적 : 디자인씽킹 방법론 이해 및 실습(적용)을 통한 프로토타입 개발 - 과정 세부 내용  > 협업툴을 활용한 디자인 씽킹 과정 개발  > 디자인 씽킹을 통한 '문제정의/아이데이션/프로토타입 개발(발표가능한 수준)' 과정 포함  > 1일차 : 팀빌딩/디자인씽킹 방법론 학습    2일차 : 메인 디자인씽킹 과정 진행    3일차 ; 디자인씽킹 + 프로토타입 개발 + 발표 진행 - 위탁 운영 일정 > 1일차: 13:00 ~ 17:30 > 2일차: 09:00 ~ 17:30(11:30~13:00) > 3일차: 09:00 ~ 16:00(11:30~13:00) - 제안서 제출 기한 : 8월 2일 17시"
+            },
+            {
+              "date": "2024-08-13",
+              "text": "Lost 사유내부 의사결정 지연으로 교육 진행 여부 불확실하여진행하게 되면 추후 연락주신다고 합니다.."
+            }
+          ]
+        },
+        {
+          "id": "01914426-233c-755e-967f-1b62bcb61cab",
+          "created_at": "2024-08-12T01:13:55.777Z",
+          "name": "삼성화재_생성형 AI를 활용한 마케팅 콘텐츠 제작",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2024-10-06T15:00:00.000Z",
+          "expected_amount": 4500000.0,
+          "lost_confirmed_at": "2024-09-26T15:00:00.000Z",
+          "lost_reason": "[\"내부 의사결정\"]",
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2024-10-06T15:00:00.000Z",
+          "end_date": "2024-10-06T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": [
+            {
+              "date": "2024-08-15",
+              "text": "생성형 AI를 활용한 콘텐츠 마케팅but, 유료 계정 활용 어려움실습은 소셜미디어 콘텐츠 제작 or 마케팅 데이터 분석을 통한 인사이트도출/전략교육 대상 : 신청자 모집 기반 (전 임직원 대상)교육 일정 : 9월 12-13 고려 중교육 시수 : 1day 구성"
+            },
+            {
+              "date": "2024-08-21",
+              "text": "기업 내부 사정으로 교육 일정 연기, 10월 진행 검토 중( 교육 진행 여부 모호해서 진행하게되면 연락주신다고 함 )"
+            },
+            {
+              "date": "2024-09-24",
+              "text": "10월 원데이 진행으로 재연락 주심!- 교육 주제 : 생성형 AI로 마케팅 콘텐츠 제작ㄴ 여러 콘텐츠보다는 하나의 주제를 명확히 설정해서 실습해보기 희망ex) 인스타그램에 올릴 마케팅 게시물 제작- 교육 특징 : 실습 위주, 흥미 높은 주제 / 생성형 AI 유료 tool 사용 불가..- 교육 대상 : 전 임직원 신청 대상- 교육 비용 : 시간당 60만원대로 안내 나감"
+            },
+            {
+              "date": "2024-10-02",
+              "text": "09/29 drop 사유- 컨텐츠 이슈는 아니고, 내부 일정 불가로 최종 의사결정 남- 11월에 재 논의 가능성은 있는 상황이지만 확실치는 X"
+            }
+          ]
+        },
+        {
+          "id": "01921eb2-279b-7779-b9bd-053592d7f0e8",
+          "created_at": "2024-09-23T11:44:05.029Z",
+          "name": "삼성화재_엑셀 VBA 업무자동화 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-10-20T15:00:00.000Z",
+          "expected_amount": 13200000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "OA/업무자동화",
+          "contract_date": "2024-10-13T15:00:00.000Z",
+          "amount": 12050000.0,
+          "start_date": "2024-10-20T15:00:00.000Z",
+          "end_date": "2024-10-22T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": [
+            {
+              "date": "2024-10-14",
+              "text": "24/10/14강의 준비중에 있고, 계약서 기업측 검토 중!"
+            }
+          ]
+        },
+        {
+          "id": "01948659-41c5-7ff4-a1a3-fed058d4f09e",
+          "created_at": "2025-01-21T00:53:04.078Z",
+          "name": "삼성화재_디지털basic과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "오진선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-12T05:20:53.433Z",
+          "expected_amount": 7420000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "DX Essential",
+          "contract_date": "2025-03-11T15:00:00.000Z",
+          "amount": 7420000.0,
+          "start_date": "2025-03-11T15:00:00.000Z",
+          "end_date": "2025-03-13T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": [
+            {
+              "date": "2025-02-06",
+              "text": "25.02.04 미팅 및 RFP 전달 > 2/14 제출 예정"
+            }
+          ]
+        },
+        {
+          "id": "01964794-36f5-7331-8892-91f02c65c953",
+          "created_at": "2025-04-18T06:26:57.922Z",
+          "name": "삼성화재_AI BIZ 전문가(AI+PM/PO) 양성과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-31T01:26:24.642Z",
+          "expected_amount": 216150000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-07-06T15:00:00.000Z",
+          "amount": 215220000.0,
+          "start_date": "2025-07-06T15:00:00.000Z",
+          "end_date": "2025-10-24T15:00:00.000Z",
+          "net_percent": "49.0",
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": [
+            {
+              "date": "2025-04-18",
+              "text": "[유선 논의 내용] 애초 하반기 기획에서 > 6월 정도 진행으로 변경되었고 거의 확정이라고 봐도 된다.AI 관련 과정으로 AI특화 학교에서 강사진 섭외가 가능한지? 문의 ( 예시 : 카이스트 / 포항공대)20일 정도의 과정 생각하고 있으며, 3-4명 정도 교수진 + 그 외 강사진(타강사 가능)으로 복합형으로 진행해도 무관 최대한 한 학교에서 교수진이 왔으면 좋곘고, 프로젝트 피드백까지  끌어내고자 함.예산은 1.5 억 정도 생각>> 위 내용으로 강사진 섭외 및 진행 가능한지 문의주셨고 내부 확인하고 차주 말씀드리겠다하였습니다! 더불어, 관련하여 가능하다면 4월 중 미팅도 요청주셔 공유드립니다!"
+            }
+          ]
+        },
+        {
+          "id": "0197f215-d6a1-7000-90d5-bf01c99b6dca",
+          "created_at": "2025-07-10T02:06:00.000Z",
+          "name": "삼성화재_AI Agent 업무자동화 부트캠프",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김동찬",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-14T00:30:57.025Z",
+          "expected_amount": 23850000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-08-28T15:00:00.000Z",
+          "amount": 23850000.0,
+          "start_date": "2025-09-15T15:00:00.000Z",
+          "end_date": "2025-10-16T15:00:00.000Z",
+          "net_percent": "49.0",
+          "people": {
+            "id": "64d3287c1750f5b1d531c6a4",
+            "name": "송종찬",
+            "upper_org": "경영지원실",
+            "team": "인재개발파트",
+            "title": "프로",
+            "edu_area": "출강/단기/실무"
+          },
+          "memos": [
+            {
+              "date": "2025-07-22",
+              "text": "제안서 작성 완료, 내부 의사결정 지연으로 금일 (22일) 중 결정 예정"
+            },
+            {
+              "date": "2025-07-29",
+              "text": "수주 완료. 현재 3회차 진행이 확정된 상황이며, 3회차 이후 추가 회차 진행 가능성 있음."
+            },
+            {
+              "date": "2025-09-12",
+              "text": "코스2 시작일 에러 수정에 따른 수강 시작일 17일 변경"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64d3287c1750f5b1d531c6a4",
+          "name": "송종찬",
+          "upper_org": "경영지원실",
+          "team": "인재개발파트",
+          "title": "프로",
+          "edu_area": "출강/단기/실무",
+          "webforms": [
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-24",
+              "text": "온라인구독 서비스 신년할인 메일 발송 완료"
+            },
+            {
+              "date": "2024-03-13",
+              "text": "- 고객 이름 : 송종찬\n- 고객 이메일 : sjczzang123@naver.com\n- 고객 전화 : 01020563642\n- 회사 이름 : 삼성화재\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240313\n- 고객 utm_content : lead-gen^hrda^edm-cta3\n"
+            },
+            {
+              "date": "2025-01-22",
+              "text": "2차 이메일: sjczzang123@naver.com"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "b04e173e-e6d8-44cb-8c32-1fe4feb143c0",
+          "created_at": "2024-06-27T04:29:32.260Z",
+          "name": "이채연 리드",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-08-02T07:01:32.704Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "1e6fae49-176b-418d-9463-2b06849736bd",
+            "name": "이채연",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-06-27",
+              "text": "- 딜 문의 주제 (최초) : 데이터 분석 및 AI 실무, 생성형 AI (챗GPT 활용)\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 딜 예상 교육 일정 : 2개월 이내\n- 회사 이름 : 삼성화재재해상보험\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 이채연\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 이메일 : chaeyeony.lee@samsung.com\n- 고객 전화 : 01035009621\n- 상담 문의 내용 : - 파이썬 기초 과정\n- 챗GPT를 통한 파이썬 학습\n- 간단 실습\n\n을 당일 교육으로 가능할 지 문의드리고 싶습니다.\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-06-27",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "65261b5ad1b5dd2b9b297136",
+          "name": "진연민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)",
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-24",
+              "text": "온라인 구독 신년할인 메일 발송 완료"
+            },
+            {
+              "date": "2024-01-26",
+              "text": "전화기록- 이용 계획 없음."
+            },
+            {
+              "date": "2024-03-13",
+              "text": "- 고객 이름 : 진연민\n- 고객 이메일 : ymym.jin@samsung.com\n- 고객 전화 : 010-2960-6585\n- 회사 이름 : 삼성화재\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240313\n- 고객 utm_content : lead-gen^hrda^edm-cta3\n"
+            }
+          ]
+        },
+        {
+          "id": "b2379150-ddeb-49b7-b1d9-3fd9c0df702b",
+          "name": "김경중",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2024-01-24",
+              "text": "온라인구독 서비스 신년할인 메일 발송 완료"
+            },
+            {
+              "date": "2024-01-25",
+              "text": "전화기록- 내부적으로 온라인 교육 검토 중에 있음.- 올플랜이 아니여도 다양한 형태로 제안가능하니, 내부적으로 이용방법에 대해 구체화되시면 연락 요청드렸음. - 번들패키지 안내."
+            }
+          ]
+        },
+        {
+          "id": "850cdd1c-ef42-443d-a8d3-feca1f926033",
+          "name": "김종현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-20",
+              "text": "- 고객 이름 : 김종현\n- 고객 이메일 : chong-hyun.kim@samsung.com\n- 고객 전화 : 01089089859\n- 회사 이름 : 삼성화재해상보험\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240219\n- 고객 utm_content : lead-gen^dbr^edm-cta3\n"
+            }
+          ]
+        },
+        {
+          "id": "e2d243ad-a742-4aa9-b1dc-0815e92a040c",
+          "name": "양영광",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-13",
+              "text": "- 고객 이름 : 양영광\n- 고객 이메일 : youngkwang.yang@samsung.com\n- 고객 전화 : 01073767737\n- 회사 이름 : 삼성화재\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 이메일/광고\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240313\n- 고객 utm_content : lead-gen^hrda^edm-cta3\n"
+            }
+          ]
+        },
+        {
+          "id": "00701475-f2ee-4624-b608-8f955fd368eb",
+          "name": "박세호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-13",
+              "text": "- 고객 이름 : 박세호\n- 고객 이메일 : s-h.park@samsung.com\n- 고객 전화 : 01035215355\n- 회사 이름 : 삼성화재\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 지인 추천\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : .\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240313\n- 고객 utm_content : lead-gen^hrda^edm-cta2\n"
+            }
+          ]
+        },
+        {
+          "id": "1e6fae49-176b-418d-9463-2b06849736bd",
+          "name": "이채연",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "01932ef5-ab47-7882-a9fc-5ee1db6e364f",
+          "name": "이규찬",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01932ef5-cce4-7882-aa0c-246cdc413064",
+          "name": "강지상",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019a71b4-5cc6-7000-82fc-31987d76c7fb",
+          "name": "엄채린",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-62. 소개서 :Skill Match 진단 평가 서비스 소개서 (skillmatch_proposal)",
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)"
+          ],
+          "memos": [
+            {
+              "date": "2025-11-11",
+              "text": "- 고객 이름 : 엄채린\n- 고객 전화 : 01064240417\n- 고객 이메일 : 4cm17cm@naver.com\n- 회사 이름 : 삼성화재\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-11",
+              "text": "- 고객 이름 : 엄채린\n- 고객 이메일 : 4cm17cm@naver.com\n- 고객 전화 : 01064240417\n- 회사 이름 : 삼성화재\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 금융/보험업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

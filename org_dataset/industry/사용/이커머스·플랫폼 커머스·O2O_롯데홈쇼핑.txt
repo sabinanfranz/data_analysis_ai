@@ -1,0 +1,227 @@
+{
+  "organization": {
+    "id": "64f9757ffb15689232a83c9f",
+    "name": "롯데홈쇼핑",
+    "size": "대기업",
+    "industry": "유통/공급업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "기업문화팀",
+      "team": "기업문화팀",
+      "deals": [
+        {
+          "id": "adba744e-993b-4c26-b440-1253fd2d1425",
+          "created_at": "2024-07-17T00:12:32.240Z",
+          "name": "롯데홈쇼핑_미드저니 비즈니스 활용 과정 (출강)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김정은",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-08-29T15:00:00.000Z",
+          "expected_amount": 2800000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-10-13T15:00:00.000Z",
+          "amount": 2300000.0,
+          "start_date": "2024-10-27T15:00:00.000Z",
+          "end_date": "2024-10-27T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "6a223a5b-0eda-43ac-aaf9-98b65c0d8d46",
+            "name": "류승현",
+            "upper_org": "기업문화팀",
+            "team": "기업문화팀",
+            "title": "알 수 없음",
+            "edu_area": "출강"
+          },
+          "memos": []
+        },
+        {
+          "id": "019319e6-5fe3-7447-b6c0-11fbd3e784c7",
+          "created_at": "2024-11-11T06:25:48.525Z",
+          "name": "롯데홈쇼핑_올 플랜 (구독)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김정은",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2024-12-30T15:00:00.000Z",
+          "expected_amount": 3500000.0,
+          "lost_confirmed_at": "2025-01-07T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2024-12-30T15:00:00.000Z",
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "6a223a5b-0eda-43ac-aaf9-98b65c0d8d46",
+            "name": "류승현",
+            "upper_org": "기업문화팀",
+            "team": "기업문화팀",
+            "title": "알 수 없음",
+            "edu_area": "출강"
+          },
+          "memos": [
+            {
+              "date": "2024-11-11",
+              "text": "- 딜 문의 주제 (최초) : 영업/디지털 마케팅\n- 딜 예상 교육 일정 : 2개월 이내\n- 딜 서비스 유형 (최초) : 온라인 단체 교육\n- 딜 예상 교육 인원 : 10명 이하\n- 회사 이름 : 롯데홈쇼핑\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 류승현\n- 고객 이메일 : seunghyeon.ryu@lotte.net\n- 고객 전화 : 010-7503-3035\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 상담 문의 내용 : 온라인 연수원 상시수강 신청 가능문의\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-11-11",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            },
+            {
+              "date": "2024-11-19",
+              "text": "11/20**유선 통화올플랜에서 퀴즈 탑재 가능한지 문의 -> 올플랜 상에서 퀴즈 탑재는 어렵고, 각 과정 퀴즈에 대한 추가 개발비 필요할 수 있음 공유"
+            },
+            {
+              "date": "2025-01-13",
+              "text": "별도 수강률을 확인할 수 있는 퀴즈가 없음. 기업의 방향성과 맞지 않음"
+            }
+          ]
+        },
+        {
+          "id": "0195eafb-71c5-7228-accc-fea2835a9d88",
+          "created_at": "2025-03-31T06:55:02.124Z",
+          "name": "롯데홈쇼핑_생성형AI 활용 콘텐츠 제작 과정 (출강)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김정은",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-30T06:55:44.362Z",
+          "expected_amount": 2300000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-04-23T15:00:00.000Z",
+          "amount": 2020000.0,
+          "start_date": "2025-04-29T15:00:00.000Z",
+          "end_date": "2025-04-29T15:00:00.000Z",
+          "net_percent": "65.0",
+          "people": {
+            "id": "6a223a5b-0eda-43ac-aaf9-98b65c0d8d46",
+            "name": "류승현",
+            "upper_org": "기업문화팀",
+            "team": "기업문화팀",
+            "title": "알 수 없음",
+            "edu_area": "출강"
+          },
+          "memos": []
+        },
+        {
+          "id": "0196c860-7654-7cc8-b22e-7d196603536b",
+          "created_at": "2025-05-13T06:41:27.254Z",
+          "name": "롯데홈쇼핑_생성형AI를 활용한 콘텐츠 제작 실무 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김정은",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-30T00:41:49.518Z",
+          "expected_amount": 2200000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-06-12T15:00:00.000Z",
+          "amount": 2200000.0,
+          "start_date": "2025-06-12T15:00:00.000Z",
+          "end_date": "2025-06-12T15:00:00.000Z",
+          "net_percent": "62.0",
+          "people": {
+            "id": "6a223a5b-0eda-43ac-aaf9-98b65c0d8d46",
+            "name": "류승현",
+            "upper_org": "기업문화팀",
+            "team": "기업문화팀",
+            "title": "알 수 없음",
+            "edu_area": "출강"
+          },
+          "memos": []
+        },
+        {
+          "id": "01991815-5b25-7229-b695-e89b780e144f",
+          "created_at": "2025-09-05T04:14:00.000Z",
+          "name": "롯데홈쇼핑_GA4 활용 데이터 분석",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김정은",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-11-03T15:00:00.000Z",
+          "expected_amount": 2000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "마케팅",
+          "contract_date": "2025-11-03T15:00:00.000Z",
+          "amount": 2000000.0,
+          "start_date": "2025-11-25T15:00:00.000Z",
+          "end_date": "2025-11-25T15:00:00.000Z",
+          "net_percent": "70.0",
+          "people": {
+            "id": "6a223a5b-0eda-43ac-aaf9-98b65c0d8d46",
+            "name": "류승현",
+            "upper_org": "기업문화팀",
+            "team": "기업문화팀",
+            "title": "알 수 없음",
+            "edu_area": "출강"
+          },
+          "memos": []
+        },
+        {
+          "id": "0199db3a-a66d-7000-83db-f6dd24d6315c",
+          "created_at": "2025-10-13T01:41:00.000Z",
+          "name": "롯데홈쇼핑_프롬프트 엔지니어링",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김정은",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-10-26T15:00:00.000Z",
+          "expected_amount": 20000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-10-26T15:00:00.000Z",
+          "amount": 20000000.0,
+          "start_date": "2025-10-26T15:00:00.000Z",
+          "end_date": "2025-12-28T15:00:00.000Z",
+          "net_percent": "58.0",
+          "people": {
+            "id": "6a223a5b-0eda-43ac-aaf9-98b65c0d8d46",
+            "name": "류승현",
+            "upper_org": "기업문화팀",
+            "team": "기업문화팀",
+            "title": "알 수 없음",
+            "edu_area": "출강"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "6a223a5b-0eda-43ac-aaf9-98b65c0d8d46",
+          "name": "류승현",
+          "upper_org": "기업문화팀",
+          "team": "기업문화팀",
+          "title": "알 수 없음",
+          "edu_area": "출강",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-09",
+              "text": "미팅 사후 로그1. 참석자 (고객사에서 참석하는 이의 소속과 직급/직책 모두 파악해 적어주세요)- 고객사 : 류승현 담당자    - 팀 : 성규화 매니저2. 미팅내용- 사내 디자인팀 대상으로 생성형AI 디자인 교육 구상 중교육대상 : 디자인팀교육인원 : 10명 내외교육내용 : 미드저니, 달리 등을 활용한 이미지 생성법 교육시간 : 4~6시간(패캠에서 임의 수정 가능)예산 : 별도 없음 교육일정 : 7월 말~8월 초 (빠를수록 좋음)* 선호강사(중요) : 유통업 혹은 유통업이 아니더라도 다른 회사에서 현업 디자이너로 업무를 하고 계신분 혹은 근무했던 이력"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

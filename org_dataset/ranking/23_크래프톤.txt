@@ -1,0 +1,103 @@
+{
+  "organization": {
+    "id": "01f10a8a-a9ab-4daa-a607-f1c2fa22ad82",
+    "name": "크래프톤",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "HR Department",
+      "team": "Learning&Value Team",
+      "deals": [
+        {
+          "id": "01990ede-82cc-7000-8c23-c05f239736f3",
+          "created_at": "2025-09-03T09:18:00.000Z",
+          "name": "크래프톤_AI 온라인 교육_2510",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-11-02T15:00:00.000Z",
+          "expected_amount": 27000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "생성형AI",
+          "contract_date": "2025-11-02T15:00:00.000Z",
+          "amount": 57510000.0,
+          "start_date": "2025-09-30T15:00:00.000Z",
+          "end_date": "2026-09-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "8fe8719a-41bb-48cf-a81e-f405e288c329",
+            "name": "윤귀화",
+            "upper_org": "HR Department",
+            "team": "Learning&Value Team",
+            "title": "님",
+            "edu_area": "AI 교육"
+          },
+          "memos": [
+            {
+              "date": "2025-09-03",
+              "text": "- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 1000명 이상\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 회사 이름 : 크래프톤\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 김지현\n- 고객 이메일 : jihyun@krafton.com\n- 고객 담당 업무 : (공백)\n- 고객 전화 : 010-9815-1311\n- 딜 상담 문의 내용 : AI 역량 향상을 위한 교육 관련하여 사례집이 있다면 받아보고 싶습니다.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 딜 utm_source : (공백)\n- 딜 utm_medium : (공백)\n- 딜 utm_campaign : (공백)\n- 딜 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-09-03",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        },
+        {
+          "id": "019ad7d0-1d07-7dd2-9fc4-68c851881951",
+          "created_at": "2025-12-01T02:48:00.000Z",
+          "name": "크래프톤_AI 온라인 교육_2511",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "이수빈",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-11-30T15:00:00.000Z",
+          "expected_amount": 39150000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "생성형AI",
+          "contract_date": "2025-11-30T15:00:00.000Z",
+          "amount": 39150000.0,
+          "start_date": "2025-10-31T15:00:00.000Z",
+          "end_date": "2026-10-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "8fe8719a-41bb-48cf-a81e-f405e288c329",
+            "name": "윤귀화",
+            "upper_org": "HR Department",
+            "team": "Learning&Value Team",
+            "title": "님",
+            "edu_area": "AI 교육"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "8fe8719a-41bb-48cf-a81e-f405e288c329",
+          "name": "윤귀화",
+          "upper_org": "HR Department",
+          "team": "Learning&Value Team",
+          "title": "님",
+          "edu_area": "AI 교육",
+          "webforms": [
+            "6-6. ATD Korea Summit (Certificate Program - Brochure)"
+          ],
+          "memos": [
+            {
+              "date": "2024-06-19",
+              "text": "- 고객 이름 : 윤귀화\n- 고객 이메일 : gwihwa.yun@krafton.com\n- 고객 전화 : 01055760521\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 크래프톤\n- 회사 기업 규모 : 중견기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "organization": {
+    "id": "c494ba59-0e39-49d9-860c-f2d918961d82",
+    "name": "하나증권",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "인재개발실",
+      "team": "인재개발실",
+      "deals": [
+        {
+          "id": "01953ae5-23c8-7882-bafc-32e9a5cf1518",
+          "created_at": "2025-02-25T02:17:30.321Z",
+          "name": "하나증권_올플랜,권오상_2502(1,2차)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "이수빈",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-02-28T07:21:55.125Z",
+          "expected_amount": 22891500.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-02-18T15:00:00.000Z",
+          "amount": 22891500.0,
+          "start_date": "2025-02-27T15:00:00.000Z",
+          "end_date": "2025-04-05T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "01953ae3-6bca-7882-baf5-bdbda91f0cad",
+            "name": "정수민",
+            "upper_org": "인재개발실",
+            "team": "인재개발실",
+            "title": "차장",
+            "edu_area": "전사교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0195d143-c260-7007-859f-4519b72bbcfa",
+          "created_at": "2025-03-26T07:03:53.776Z",
+          "name": "하나증권_올플랜,권오상_2504(3차)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "이수빈",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-01T07:05:08.645Z",
+          "expected_amount": 27384000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-02-18T15:00:00.000Z",
+          "amount": 27384000.0,
+          "start_date": "2025-03-31T15:00:00.000Z",
+          "end_date": "2025-05-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "01953ae3-6bca-7882-baf5-bdbda91f0cad",
+            "name": "정수민",
+            "upper_org": "인재개발실",
+            "team": "인재개발실",
+            "title": "차장",
+            "edu_area": "전사교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0197389f-78a6-7332-9d7f-5b0410474eda",
+          "created_at": "2025-06-04T01:47:00.000Z",
+          "name": "하나증권_웨비나",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "방신우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-28T15:00:00.000Z",
+          "expected_amount": 6400000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "재무회계",
+          "contract_date": "2025-07-15T15:00:00.000Z",
+          "amount": 6400000.0,
+          "start_date": "2025-07-16T15:00:00.000Z",
+          "end_date": "2025-07-21T15:00:00.000Z",
+          "net_percent": "39.0",
+          "people": {
+            "id": "01953ae3-6bca-7882-baf5-bdbda91f0cad",
+            "name": "정수민",
+            "upper_org": "인재개발실",
+            "team": "인재개발실",
+            "title": "차장",
+            "edu_area": "전사교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0197a4c3-9153-7ff4-97e4-bda258a6d761",
+          "created_at": "2025-06-25T01:46:00.000Z",
+          "name": "하나증권_올플랜,권오상_2507(4차)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "이수빈",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-29T23:49:20.215Z",
+          "expected_amount": 34902000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-06-29T15:00:00.000Z",
+          "amount": 34902000.0,
+          "start_date": "2025-06-30T15:00:00.000Z",
+          "end_date": "2025-08-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "01953ae3-6bca-7882-baf5-bdbda91f0cad",
+            "name": "정수민",
+            "upper_org": "인재개발실",
+            "team": "인재개발실",
+            "title": "차장",
+            "edu_area": "전사교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01990297-3270-7dd9-a64b-1f30b176a7d8",
+          "created_at": "2025-09-01T00:04:00.000Z",
+          "name": "하나증권_올플랜,권오상_2509(5차)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "이수빈",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-30T15:00:00.000Z",
+          "expected_amount": 31308250.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-08-30T15:00:00.000Z",
+          "amount": 31308250.0,
+          "start_date": "2025-08-31T15:00:00.000Z",
+          "end_date": "2025-10-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "01953ae3-6bca-7882-baf5-bdbda91f0cad",
+            "name": "정수민",
+            "upper_org": "인재개발실",
+            "team": "인재개발실",
+            "title": "차장",
+            "edu_area": "전사교육"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "01953ae3-6bca-7882-baf5-bdbda91f0cad",
+          "name": "정수민",
+          "upper_org": "인재개발실",
+          "team": "인재개발실",
+          "title": "차장",
+          "edu_area": "전사교육",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

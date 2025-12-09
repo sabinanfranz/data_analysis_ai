@@ -1,0 +1,376 @@
+{
+  "organization": {
+    "id": "652f3e340e9ffac13efc4e9f",
+    "name": "한국능률협회",
+    "size": "대기업",
+    "industry": "서비스업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "0194da23-fdeb-7000-8577-47aa667bc6ee",
+          "created_at": "2025-02-06T07:22:59.443Z",
+          "name": "한국능률협회_서울 매력일자리 온라인 올플랜(6개월, 200명)",
+          "team": "[{\"id\": \"e5f9cbbe-6e48-4a25-8c48-453537e0df74\", \"name\": \"공공교육팀\"}]",
+          "owner": "이준석",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-05-30T03:48:27.848Z",
+          "expected_amount": 16000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2025-05-11T15:00:00.000Z",
+          "amount": 16000000.0,
+          "start_date": "2025-05-18T15:00:00.000Z",
+          "end_date": "2025-12-14T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "0194da23-fd5d-7000-8577-36746f75a9a0",
+            "name": "김의준",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-04-30",
+              "text": "코스ID, 계약일자 등은 계약협의시점(2개월 이내) 작성 예정"
+            }
+          ]
+        },
+        {
+          "id": "019501f8-e71c-7229-ae2f-27c04424b002",
+          "created_at": "2025-02-14T01:00:44.210Z",
+          "name": "한국능률협회_서울 매력일자리 경영기획 온라인 교육 (선행)",
+          "team": null,
+          "owner": "한성은",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-03-31T07:25:08.404Z",
+          "expected_amount": 3000000.0,
+          "lost_confirmed_at": "2025-02-16T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "복합형(연간계획 등)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2025-02-19T15:00:00.000Z",
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "0194da23-fd5d-7000-8577-36746f75a9a0",
+            "name": "김의준",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-03-17",
+              "text": "패캠 시스템 외 기능 요규로 인한 lost(개런티 內 임시계정발급, 당일 교육생 아이디 발급 등)"
+            }
+          ]
+        },
+        {
+          "id": "01975796-bc44-7550-8fdf-389dd3107736",
+          "created_at": "2025-06-10T02:06:00.000Z",
+          "name": "한국능률협회_경기도일자리재단 뿌리산업 실시간온라인 특강(취준생)",
+          "team": "[{\"id\": \"e5f9cbbe-6e48-4a25-8c48-453537e0df74\", \"name\": \"공공교육팀\"}]",
+          "owner": "조우진",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-06-30T02:08:03.077Z",
+          "expected_amount": 4500000.0,
+          "lost_confirmed_at": "2025-07-01T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "기타",
+          "contract_date": null,
+          "amount": null,
+          "start_date": "2025-07-06T15:00:00.000Z",
+          "end_date": "2025-07-30T15:00:00.000Z",
+          "net_percent": "50.0",
+          "people": {
+            "id": "01975796-bbb2-7550-8fdf-2af62047ae42",
+            "name": "구본경",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-07-02",
+              "text": "연사진까지 모두 섭외완료되었으나, 자체적으로 진행하기로 결정되었다는 연락받음."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "652f3e350e9ffac13efc4ef7",
+          "name": "이아현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10-1. 이벤트/백서 신청 (report_gptguide)",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 이아현\n- 고객 전화 : 010-3927-5446\n- 고객 이메일 : ahlee@kma.or.kr\n- 회사 이름 : 능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 기타\n- 방문 경로 : (공백)\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "6536fd0f7aa728ad9551bc4b",
+          "name": "남은주",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "fad67e4e-91e5-437c-b8c9-86ad57e2bc19",
+          "name": "오윤석",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅",
+            "5-10. 템플릿 신청 (template_skillmatrix)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "b86ae68c-0058-412b-994e-80dcbf904348",
+          "name": "김혜정",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-8. 백서 신청 (report_dt2022)",
+            "1-9. 백서 신청 (report_skilltrans)"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-29",
+              "text": "- 고객 이름 : 김혜정\n- 고객 이메일 : hazel@kma.or.kr\n- 고객 전화 : 01091433249\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 기타\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-04-29",
+              "text": "- 고객 이름 : 김혜정\n- 고객 이메일 : hazel@kma.or.kr\n- 고객 전화 : 01091433249\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 기타\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-04-29",
+              "text": "- 고객 이름 : 김혜정\n- 고객 이메일 : hazel@kma.or.kr\n- 고객 전화 : 01091433249\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 기타\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "fb0c2761-d915-4546-8eea-08899a4d1700",
+          "name": "조혜연",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "3-30. 소개서 : DX 역량 강화 (main_dt)",
+            "3-50. 스킬플로 소개서",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서",
+            "3-68. 소개서 : 스킬플로 라이트 소개서 신청 (online_skillflolite)",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-10. 템플릿 신청 (template_skillmatrix)",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)",
+            "5-15. ATD Korea Summit 2024 하이라이트북 신청 (report_atdkorea2024)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-03",
+              "text": "- 고객 이름 : 조혜연\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 고객 전화 : 01067089108\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 서비스업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-03",
+              "text": "- 고객 이름 : 조혜연\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 고객 전화 : 01067089108\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 서비스업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-08-16",
+              "text": "- 고객 이름 : 조혜연\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 고객 전화 : 01067089108\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 기타\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-08-18",
+              "text": "- 고객 이름 : 조혜연\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 고객 전화 : 01067089108\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 기타\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-08-18",
+              "text": "- 고객 이름 : 조혜연\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 고객 전화 : 01067089108\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 기타\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-08-18",
+              "text": "- 고객 이름 : 조혜연\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 고객 전화 : 01067089108\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n"
+            },
+            {
+              "date": "2024-08-18",
+              "text": "- 고객 이름 : 조혜연\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 고객 전화 : 01067089108\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 서비스업\n- 해당 콘텐츠 신청 이유 : 금년도 교육 진행에 참고하기 위해\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-20",
+              "text": "- 고객 이름 : 조혜연\n- 고객 전화 : 01067089108\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 기타\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-23",
+              "text": "- 고객 이름 : 조혜연\n- 고객 전화 : 01067089108\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 기타\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-23",
+              "text": "- 고객 이름 : 조혜연\n- 고객 전화 : 01067089108\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 기타\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-23",
+              "text": "- 고객 이름 : 조혜연\n- 고객 전화 : 01067089108\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 기타\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240911\n- 고객 utm_content : lead-gen^bizletter^casestudy\n"
+            },
+            {
+              "date": "2024-10-23",
+              "text": "- 고객 이름 : 조혜연\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 고객 전화 : 01067089108\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 기타\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-06-12",
+              "text": "- 고객 이름 : 조혜연\n- 고객 전화 : 01067089108\n- 고객 이메일 : chohaeyeon@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01913459-e8b7-7778-8adb-4ab5dc464b73",
+          "name": "김나영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)"
+          ],
+          "memos": [
+            {
+              "date": "2024-08-08",
+              "text": "- 고객 이름 : 김나영\n- 고객 이메일 : nykim@kma.or.kr\n- 고객 전화 : 010-9566-3535\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 서비스업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240806\n- 고객 utm_content : lead-gen^khrd^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "0192d714-9aeb-7bb2-b13f-53067134687a",
+          "name": "오성민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-18. 백서 신청 (report_talentmanagement)",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 오성민\n- 고객 전화 : 01046538464\n- 고객 이메일 : sumoh@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 서비스업\n- 방문 경로 : 지인 추천\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 오성민\n- 고객 전화 : 01046538464\n- 고객 이메일 : sumoh@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 서비스업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^fc2025\n- 고객 utm_content : nurturing^welcome^cta_genaijob\n"
+            },
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 오성민\n- 고객 전화 : 01046538464\n- 고객 이메일 : sumoh@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 서비스업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^fc2025\n- 고객 utm_content : nurturing^welcome^cta_talentmanagement\n"
+            },
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 오성민\n- 고객 전화 : 01046538464\n- 고객 이메일 : sumoh@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 서비스업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^fc2025\n- 고객 utm_content : nurturing^welcome^cta_talentmanagement\n"
+            }
+          ]
+        },
+        {
+          "id": "0194da23-fd5d-7000-8577-36746f75a9a0",
+          "name": "김의준",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01958cc8-05e5-7442-aa7a-bb4564bdae21",
+          "name": "김찬영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-70. 소개서 : 패스트캠퍼스 기업교육 대표 콘텐츠북"
+          ],
+          "memos": [
+            {
+              "date": "2025-03-12",
+              "text": "- 고객 이름 : 김찬영\n- 고객 전화 : 01093232322\n- 고객 이메일 : tripler@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-04-22",
+              "text": "- 고객 이름 : 김찬영\n- 고객 전화 : 01093232322\n- 고객 이메일 : tripler@kma.or.kr\n- 회사 이름 : 한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 중견기업\n- 회사 업종 : 서비스업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01975796-bbb2-7550-8fdf-2af62047ae42",
+          "name": "구본경",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019a78b6-dfd5-7883-9c45-fa5ffbf23d97",
+          "name": "김동인",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-70. 소개서 : 패스트캠퍼스 기업교육 대표 콘텐츠북",
+            "3-72. 소개서 : 패스트캠퍼스 공공분야 특화 서비스 소개서"
+          ],
+          "memos": [
+            {
+              "date": "2025-11-12",
+              "text": "- 고객 이름 : 김동인\n- 고객 전화 : 01026691572\n- 고객 이메일 : kimdi@kma.or.kr\n- 회사 이름 : (사)한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 기타\n- 회사 업종 : 서비스업\n- 방문 경로 : 지인 추천, 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-12",
+              "text": "- 고객 이름 : 김동인\n- 고객 전화 : 01026691572\n- 고객 이메일 : kimdi@kma.or.kr\n- 회사 이름 : (사)한국능률협회\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 공공기관\n- 회사 업종 : 서비스업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

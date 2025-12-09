@@ -1,0 +1,2218 @@
+{
+  "organization": {
+    "id": "64d3287b1750f5b1d531c3c1",
+    "name": "기아",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "경영지원본부",
+      "team": "HRD솔루션팀",
+      "deals": [
+        {
+          "id": "64d3287b1750f5b1d531c429",
+          "created_at": "2023-08-09T05:47:39.269Z",
+          "name": "기아_Biz. Skill 아카데미",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-11-14T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-11-15T08:06:14.000Z",
+          "amount": 12960000.0,
+          "start_date": "2023-11-14T15:00:00.000Z",
+          "end_date": "2023-11-16T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287b1750f5b1d531c3f8",
+            "name": "홍철민",
+            "upper_org": "경영지원본부",
+            "team": "HRD솔루션팀",
+            "title": "매니저",
+            "edu_area": "글로벌 리더십 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "07483ad0-06a1-491d-89ca-9d9b793768c8",
+          "created_at": "2023-11-23T00:30:01.850Z",
+          "name": "기아 온라인 구독(올플랜)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-12-03T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": "2024-04-29T00:08:48.956Z",
+          "amount": 35400000.0,
+          "start_date": "2023-12-10T15:00:00.000Z",
+          "end_date": "2024-12-02T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "f86efa1b-7c2c-4077-94b3-951ce4353087",
+            "name": "황태성",
+            "upper_org": "경영지원본부",
+            "team": "HRD솔루션팀",
+            "title": "책임",
+            "edu_area": "온라인"
+          },
+          "memos": [
+            {
+              "date": "2023-12-04",
+              "text": "231204기업교육계약서 기아 측 법무검토 중"
+            }
+          ]
+        },
+        {
+          "id": "5e04c87b-5e4d-4eac-9c7f-0851cfa4876d",
+          "created_at": "2024-03-05T01:19:23.825Z",
+          "name": "기아_웹앱 마케팅",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-02-28T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "마케팅",
+          "contract_date": "2024-04-30T02:21:43.416Z",
+          "amount": 9850000.0,
+          "start_date": "2024-07-21T15:00:00.000Z",
+          "end_date": "2024-07-22T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64d3287b1750f5b1d531c3f8",
+            "name": "홍철민",
+            "upper_org": "경영지원본부",
+            "team": "HRD솔루션팀",
+            "title": "매니저",
+            "edu_area": "글로벌 리더십 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01911190-c731-7bb7-a201-ae7acbd18ad3",
+          "created_at": "2024-08-02T05:29:46.681Z",
+          "name": "기아 올플랜 구독",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-01T15:00:00.000Z",
+          "expected_amount": 8160000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2024-09-01T15:00:00.000Z",
+          "amount": 8640000.0,
+          "start_date": "2024-08-31T15:00:00.000Z",
+          "end_date": "2025-08-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01911190-c67c-7bb7-a201-5ba0a3d05bbc",
+            "name": "이우석",
+            "upper_org": "경영지원본부",
+            "team": "HRD솔루션팀",
+            "title": "매니저",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        },
+        {
+          "id": "0192d5d3-edee-7bb7-a2f0-fa55579f4eb1",
+          "created_at": "2024-10-29T01:11:29.024Z",
+          "name": "기아 올플랜 구독(2411)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-10-31T15:00:00.000Z",
+          "expected_amount": 2160000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-10-31T15:00:00.000Z",
+          "amount": 2880000.0,
+          "start_date": "2024-10-31T15:00:00.000Z",
+          "end_date": "2025-10-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01911190-c67c-7bb7-a201-5ba0a3d05bbc",
+            "name": "이우석",
+            "upper_org": "경영지원본부",
+            "team": "HRD솔루션팀",
+            "title": "매니저",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        },
+        {
+          "id": "019370db-1c17-7887-9656-8833dd962ea3",
+          "created_at": "2024-11-28T03:40:28.066Z",
+          "name": "기아 올플랜 월별 입과",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-11-30T15:00:00.000Z",
+          "expected_amount": 4320000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-11-30T15:00:00.000Z",
+          "amount": 4320000.0,
+          "start_date": "2024-11-30T15:00:00.000Z",
+          "end_date": "2025-11-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01911190-c67c-7bb7-a201-5ba0a3d05bbc",
+            "name": "이우석",
+            "upper_org": "경영지원본부",
+            "team": "HRD솔루션팀",
+            "title": "매니저",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        },
+        {
+          "id": "01941545-8f60-7551-b0c4-89b88e22ec9d",
+          "created_at": "2024-12-30T01:54:27.816Z",
+          "name": "기아 올플랜(25년1월)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-01-01T01:57:59.567Z",
+          "expected_amount": 480000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-12-31T15:00:00.000Z",
+          "amount": 480000.0,
+          "start_date": "2024-12-31T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "01911190-c67c-7bb7-a201-5ba0a3d05bbc",
+            "name": "이우석",
+            "upper_org": "경영지원본부",
+            "team": "HRD솔루션팀",
+            "title": "매니저",
+            "edu_area": "온라인"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64d3287b1750f5b1d531c3f8",
+          "name": "홍철민",
+          "upper_org": "경영지원본부",
+          "team": "HRD솔루션팀",
+          "title": "매니저",
+          "edu_area": "글로벌 리더십 교육",
+          "webforms": [
+            "5-3. 템플릿 신청 (template_leadership)",
+            "5-30. 온라인 교육 템플릿 4종 (package_onlinetpl)"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-05",
+              "text": "- 고객 이름 : 홍철민\n- 고객 이메일 : ghdcjf96@kia.com\n- 고객 전화 : 01041927103\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240904\n- 고객 utm_content : nurturing^cold^salesmap-db\n"
+            },
+            {
+              "date": "2025-06-20",
+              "text": "- 고객 이름 : 홍철민\n- 고객 전화 : 01041927103\n- 고객 이메일 : ghdcjf96@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250620\n- 고객 utm_content : lead-gen^khrd^cta1\n"
+            }
+          ]
+        },
+        {
+          "id": "f86efa1b-7c2c-4077-94b3-951ce4353087",
+          "name": "황태성",
+          "upper_org": "경영지원본부",
+          "team": "HRD솔루션팀",
+          "title": "책임",
+          "edu_area": "온라인",
+          "webforms": [
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-19",
+              "text": "- 고객 이름 : 황태성\n- 고객 이메일 : bigsy@kia.com\n- 고객 전화 : 010-4916-5810\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240219\n- 고객 utm_content : lead-gen^dbr^edm-cta3#apply\n"
+            },
+            {
+              "date": "2024-02-20",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 세미나 들어보고 도움 필요하면 연락 드리겠음2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            }
+          ]
+        },
+        {
+          "id": "01911190-c67c-7bb7-a201-5ba0a3d05bbc",
+          "name": "이우석",
+          "upper_org": "경영지원본부",
+          "team": "HRD솔루션팀",
+          "title": "매니저",
+          "edu_area": "온라인",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "경영지원본부",
+      "team": "역량개발팀",
+      "deals": [
+        {
+          "id": "65431d2d516cf8c1b5a8b583",
+          "created_at": "2023-11-02T03:53:18.168Z",
+          "name": "기아_재경 에센셜",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김별",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-10-15T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-10-16T03:54:01.000Z",
+          "amount": 10527500.0,
+          "start_date": "2023-10-15T15:00:00.000Z",
+          "end_date": "2023-10-17T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "65431d2d516cf8c1b5a8b50f",
+            "name": "이민영",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "매니저",
+            "edu_area": "전사 공통/직무 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "2bba0629-3211-403a-af5d-c28ab168ea56",
+          "created_at": "2023-12-06T02:05:46.431Z",
+          "name": "기아 24년 DT/AI 아카데미",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-02-26T15:00:00.000Z",
+          "expected_amount": 59614000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2024-04-29T00:08:42.554Z",
+          "amount": 59614000.0,
+          "start_date": "2024-03-12T15:00:00.000Z",
+          "end_date": "2024-11-13T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "65431d2d516cf8c1b5a8b50f",
+            "name": "이민영",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "매니저",
+            "edu_area": "전사 공통/직무 교육"
+          },
+          "memos": [
+            {
+              "date": "2023-12-21",
+              "text": "2023-12-21기아 24년 DT/AI 아카데미 과정선정 관련 논의1. 참석자 - 고객사 : 김지환 책임, 변수진 매니저- 팀 : 강지선, 김별2. 미팅내용 상세 현업적용도를 높일수있는 실습 추가 필요현업에 쓰고 있는 상황에서 강사님과의 질의응답이나 만나는 자리가 있으면 좋을 것 같음(필요하신 분들 한꺼번에 모여서 현업 적용 에로사항 등을 나누는 자리, 플랫폼하나 만들어서 질의응답, 현업 적용 튜터링 등)> 써봤는데 이랬더라~ChatGPT 활용이 내부적으로 사용이 어려운 환경이라, 이론적인 측면(개념이나 원리 위주)로 진행 희망- 난이도가 낮았으면 좋겠다. 좀 더 친밀해지는 것을 목표로 하는 과정- 커리큘럼 수정 후 재전달 필요- ChatGPT활용해서 간단한 실습을 진행해보는 것은 좋은 것 같음INSPIRING은 가볍게 체험해보고 배워보는 과정CODING은 how-to를 배워서 현업에서 활용하는 것 까지리더 대상 과정(팀장급)리더 대상은 보통 특강형태로 진행하다보니, 집합교육을 어떻게 해야할지에 대한 고민 중- 트렌드 센싱 차원에서 끝나면 안될 것 같음.(애자일한 소통, 보고서 피드백 등 리더급에서 필요한 것, 코칭해주는 것도 하나의 아이디어) (Inspiring에서 별도 과정으로 고려)- 1박2일 정도의 프로그램으로 진행 희망(오프라인)- 팀장경험 있으신 시니어급 강사님 희망다시 제안드릴 때 강사진 프로필도 필요비즈니스 엑셀 기초강사진 프로필후속조치나 Q&A세션 진행별도 비용이 드는지? > 서면정도의 Q&A면 추가비용 x, 일정기간을 두고 Q&A 대면진행경우 추가비용o)"
+            }
+          ]
+        },
+        {
+          "id": "14b3bf45-27bf-4d19-a57b-23b0d92a4e25",
+          "created_at": "2024-01-24T06:00:42.814Z",
+          "name": "기아_서비스 기획 PM과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-07-14T15:00:00.000Z",
+          "expected_amount": 13950000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "PM/PO",
+          "contract_date": "2024-09-01T15:00:00.000Z",
+          "amount": 13950000.0,
+          "start_date": "2024-09-01T15:00:00.000Z",
+          "end_date": "2024-09-03T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "5e5a5d52-b2d5-4ad3-92e0-7ec0f60c1271",
+            "name": "황은석",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "책임",
+            "edu_area": "전사 공통/직무 교육/기타"
+          },
+          "memos": []
+        },
+        {
+          "id": "d2492372-1926-4aa9-bd2b-9cf08cec6144",
+          "created_at": "2024-02-07T10:23:02.642Z",
+          "name": "기아 재경아카데미",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-02-28T15:00:00.000Z",
+          "expected_amount": 30390000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "재무회계",
+          "contract_date": "2024-02-27T15:00:00.000Z",
+          "amount": 30390000.0,
+          "start_date": "2024-05-12T15:00:00.000Z",
+          "end_date": "2024-10-21T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "65431d2d516cf8c1b5a8b50f",
+            "name": "이민영",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "매니저",
+            "edu_area": "전사 공통/직무 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01916969-bd0a-7117-9e32-4628a1d16df6",
+          "created_at": "2024-08-19T06:53:43.060Z",
+          "name": "기아 Skill-up 아카데미 교육체계 수립",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-15T15:00:00.000Z",
+          "expected_amount": 23650000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "스킬컨설팅",
+          "category": "Skill-based HRD",
+          "contract_date": "2024-09-04T15:00:00.000Z",
+          "amount": 23650000.0,
+          "start_date": "2024-09-15T15:00:00.000Z",
+          "end_date": "2025-02-27T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "54ff33e1-0257-4bd2-a394-116f4f40bf5d",
+            "name": "변수진",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "매니저",
+            "edu_area": "교육 체계 수립 및 출강"
+          },
+          "memos": []
+        },
+        {
+          "id": "01916a9a-2db6-777b-b2be-7d4c38338890",
+          "created_at": "2024-08-19T12:26:14.871Z",
+          "name": "기아_모빌리티 아카데미",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "권노을",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-05T15:00:00.000Z",
+          "expected_amount": 22320000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2024-09-19T15:00:00.000Z",
+          "amount": 22320000.0,
+          "start_date": "2024-09-08T15:00:00.000Z",
+          "end_date": "2024-12-11T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "65431d2d516cf8c1b5a8b50f",
+            "name": "이민영",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "매니저",
+            "edu_area": "전사 공통/직무 교육"
+          },
+          "memos": [
+            {
+              "date": "2024-09-03",
+              "text": "제안시 견적 33,750,000 -> 역량개발팀 팀장 제시 예산 20,000,000. 프로젝트 스콥 줄여서 예산 맞출 듯"
+            },
+            {
+              "date": "2024-09-04",
+              "text": "2024.09.04 미팅노트 (원본)참석자: 기아 역량개발팀, FC 기업교육 1/2팀개편 배경- 직무 체계 개편 시작- 과정 개발에 조금 더 집중해야 한다고 말했는데 이 관점 때문이라고 생각하면 된다(체계 개편에 대한 부분은 리더와의 컨센서스를 이뤄놓은 상황이라고 봐주시면 됩니다)23년도에 아카데미를 많이 확대했었다직무 아카데미를 꾸려야 한다는 리더의 챌린지도 있었고상반기 분석을 해보았는데, 총 5개 아카데미가 운영되고 있었다모수가 적어서 신청률도 적고, \"지속가능성\"도 낮았다 -> 덜어낼 것이 필요하겠구나라고 생각하게 됨현업에 적용가능한 스킬이 필요하다비전과 중장기 전략이 필요하다직무 전문성 확장 필요하다고객중심, 사람중심PBV 같은 것들이 시장에 나오게 되면B2C -> B2B 로 사업 전환이 되어야 하는데 익숙하지 않다- 영역이 바뀌지는 않더라도 영역에 대한 정의는 필요하다★프로젝트에 대한 기대사항(팀장님)- 처음 RFP는 체계개발 중심이었는데,작년에 5개 아카데미를 쉽했음. 올해 운영하면서 체계개발과 과정 개발이 분리가 되면 작업을 2번 하게 되더라.체계 개발할 때 코스 프로파일 만들면 대략적으로만 만들다보니과정 개발할 때 다시 반복되다보니, 요구분석부터 하다보면 다시 만들었던 코스프로파일이 아예 달라지더라. (성은님 질문)기본 체계도가 있는데, 그 체계도 자체는 다시 설계할 필요가 없는게 맞는지?-> 그건 아니다. 과정 개발하더라도 체계는 필요하긴 하다. 퀵하게 해야한다..?-> 스킬업 아카데미 있잖아요. 이렇게 보고를 하긴 했지만 이게 문제가 있다고 생각한다.툴을 가르치는 느낌이 강하다. 툴이 먼저가 아니라 일하는 방식을 어떻게 해야하는지, 학습이 필요하면모빌리티아카데미는 체계라기보다는 영역을 구분하는 것에 가까워서영역 안에 어떤 모듈이 들어가는지에 대한 정의를 하는 게 중요하다고 생각한다그래서 뜯어보면 컨텐츠 개발이 중요하다고 생각하는 것구체적인 실행단에 대한 이야기는 실무자 간 통신이 필요하다. 큰 그림 등(재진님 질문)1. 글로벌 2.0을 전략적으로 보고 있다고 하는데 이것과 어떻게 연계되는지-> hrd가 2개 팀 (글로벌은 솔루션팀 담당영역) / 본사와 글로벌 간 구분이 없는 컨셉. 현지화. 현지 법인에 힘을 실어주고. 관리하는 것들이 이분화 되어 있었다. 이것은 기본적으로 국내 임직원 대상으로 진행하게 되는 것.2. 아웃풋을 컨텐츠 개발이라고 보면 되는건가요? -> 그렇게 봐도 무방할 것 같다.왜 이런 컨텐츠가 나왔냐고 하면 그 근거나 명분이 필요한 것.3. 스킬 기반으로 진행되는 현황(상황)이 있는지. 직원들의 역량 개발이나 프로그램 제공 시 객관적인 분석이 되어있는지 -> 없음.4. 인식, 필요성, 데이터 있나요? -> 현재 데이터 없음. 일한느 방식 5가지를 제안해주셨는데 그렇게 하면 좋을 것 같다.일하는 방식(현대/기아는 거의 같은 걸 공유함) -> 조직문화적 성격이 강하다. 감성적 접근이 많았다. 직무로 연결된다는 게 의미있게 다가왔다.JD기반으로 분석을 해주셨는데, 그게 의미있게 다가왔다.JD 작성 시 현업에서 받아서 쓰는 걸로 알고 있다. 현업에서 필요한 능력의 정의인데, 이걸 기반으로 duty -> 교육과정으로 만들어내는 것이 의미있어 보였다.다만, 유의해야 할 점은 회사가 엄청 크잖아요. 잘못하면 직무 특화로 연결되어 버린다.★더 필요한 것들이 있을텐데. 기아 전사 관점이라는 기준점이 필요하다. 기준점: 기아에서 일하려면 이 정도는. 최소 조건. 공통 직무.스킬업 아카데미 같은 경우, 가설을 검증하는 단계라고 보면 될 것 같다.체계 개편인데, 수립 과정이 프로세스를 따라가지는 않았다. 먼저 던져놓고 맞춰가는 과정이었는데, 이번에도 비슷한 관점일 것 같다.우려 포인트RFP할 때는 앞단인데, 막상 시작하니 뒷단인데요?가 됐는데, 이걸 설명하기가 너무 어려워서 전반적으로 요청드렸던 것- 모빌리티: 주제는 정해져있고, 이거에 대한 정의를 명확하게 하고, 이러면 이 과정이 뭐가 나올지.모빌리티 아카데미는 그 스콥보다 과정이 더 중요하다. 신선한 접근, 신선한 교육, 이 때까지 볼 수 없었던. 새로운 스콥이라서가 아니라, 새로운 과정이라서 모빌리티 아카데미가 신선했던 것이라, 이것이 중요한 포인트일 것 같다.모빌리티 아카데미에서 가장 중요하게 생각하는 것(전반적으로는 높은데, 정성의견을 뜯어보면 21년도에는 새로운 시도라는 걸 느꼈는데, 과정이 이수생들이 많아지면서 새로움이 없어졌다. 21년도 버전의 과정이다보니, 25년에 오픈한다 했을 때 새로운 내용이 없다. 새로운 제품이 계쏙 나오는데, PBV 과정이 1개. 고객의 여정지도를 그려보고 어떻게 할지.)ESG관련해서는 전사에 스프레드 된 게 하나도 없거든요. 과정이 반드시 필요한 과정이라고 명시를 해드린거고. 정성의견, 로데이터를 다 넘겨드릴텐데. 그걸 기반으로 도출하면 좋겠다.전사 차원에서 걸고 있는게 PBV 라고 중요하게 생각하는데, 전세계 업체에서 OEM없이 자체적으로 하고 있음. 니즈는 많은데 일러줄 수 있는 사람이 없다. 우리 내부 전문가가 하는 경우가 있어서. 이런 사람들을 압도할 수 있는 콘텐츠나 방식이 무엇일까가 고민이기도 합니다.- 문제가 있어서라기 보다는 변화 시점이라 본 프로젝트가 진행된다파이오니어 과정- 이틀차에 필드에 나감 (EV6) -> 아웃데이트 되었다는 느낌- 전기차 탑승을 해보는 것 자체가 경험이 좋았던지라결국 구성원들은 어떤 아카데미인지가 중요한게 아니라 본인이 어떤 경험을 했는지가 중요함대표 과정을 센세이셔널하게 해보는 게 중요함교수방법론적으로 새로운 과정이 필요한 것그렇다 하더라도 과정이 중요하긴 하지만 모빌리티 아카데미 같은 경우에는 체계도를 가지고 가겠다 했는데,서스테이너블~ 의미는 뭐고 뭘 해야 하고, 어떤 스토리고, 어떤 로직이고, 이런 것 작업이 필요하다그러면 어떤 컨텐츠가 필요하냐 (★명분, 스토리라인, 로직)연극, 뮤지컬, 부모님 부르기도 하고. 세상의 획기적인 것들을 많이 해보고 싶다.생각해보지 못했던 파괴적인 방식으로 제안해주시면 좋겠다.직원들의 니즈를 분석적 관점으로 접근할 수 있을까, 가 고민이다.DT아카데미도 되게 인기 좋아요그래서 이것도 꼭 해야돼? 이런 상황. 실장님은 설득을 시켜서 이제 해야 한다는 건 아는데경영진도 이걸 해야 되는구나 하고 납득시켜야 하는 게 과제적으로 접근해야 할 것 같다.현재 내부에 분석할 수 있는 사람은 없다.리더 보고 시 같이 묶어서 보고드리려고 함보고서 양식이나, 일자, 시기 동일하게 조율해야 할 필요가 있음캐쥬얼하게 소통할 수 있는 툴을 쓸 수 있는 툴 논의 필요9/5 목 / 오전 10시 ~ 이민영 매니저님 방문하기로 함"
+            }
+          ]
+        },
+        {
+          "id": "019303d6-bb2a-7aae-97bf-86a060102cf2",
+          "created_at": "2024-11-06T23:37:04.564Z",
+          "name": "기아 리더 대상 생성형AI 세미나",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-11-26T15:00:00.000Z",
+          "expected_amount": 6740000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-11-26T15:00:00.000Z",
+          "amount": 6740000.0,
+          "start_date": "2024-11-26T15:00:00.000Z",
+          "end_date": "2024-11-26T15:00:00.000Z",
+          "net_percent": "58.0",
+          "people": {
+            "id": "5e5a5d52-b2d5-4ad3-92e0-7ec0f60c1271",
+            "name": "황은석",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "책임",
+            "edu_area": "전사 공통/직무 교육/기타"
+          },
+          "memos": []
+        },
+        {
+          "id": "019329a7-1fd1-7224-bd6c-b27c5e342b22",
+          "created_at": "2024-11-14T07:50:38.808Z",
+          "name": "기아_Skill up 아카데미 파일럿 운영",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-11-21T01:38:07.681Z",
+          "expected_amount": 19475000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "교육체계 수립",
+          "category": "기타",
+          "contract_date": "2024-11-20T15:00:00.000Z",
+          "amount": 19475000.0,
+          "start_date": "2024-12-04T15:00:00.000Z",
+          "end_date": "2024-12-19T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "2f2dc0e9-4bc0-487f-9216-24af576a856f",
+            "name": "천보미",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "책임",
+            "edu_area": "전사 공통/직무 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "019390c7-62ba-7aad-98d1-636cf47713e6",
+          "created_at": "2024-12-04T08:26:46.338Z",
+          "name": "기아 보고서 작성 특강",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-12-11T08:27:21.632Z",
+          "expected_amount": 1320000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "비즈니스/문제해결력",
+          "contract_date": "2024-12-10T15:00:00.000Z",
+          "amount": 1320000.0,
+          "start_date": "2024-12-10T15:00:00.000Z",
+          "end_date": "2024-12-10T15:00:00.000Z",
+          "net_percent": "54.0",
+          "people": {
+            "id": "019390c7-623d-7aad-98d1-50f056c8ff89",
+            "name": "진준용",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "책임",
+            "edu_area": "전사 공통/직무 교육/기타"
+          },
+          "memos": []
+        },
+        {
+          "id": "0194ce86-9f32-799e-8ae6-d05631252535",
+          "created_at": "2025-02-04T01:15:16.666Z",
+          "name": "기아 skill-up아카데미 정규 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-24T01:39:36.492Z",
+          "expected_amount": 78350000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2025-03-25T15:00:00.000Z",
+          "amount": 78350000.0,
+          "start_date": "2025-04-02T15:00:00.000Z",
+          "end_date": "2025-09-25T15:00:00.000Z",
+          "net_percent": "60.0",
+          "people": {
+            "id": "2f2dc0e9-4bc0-487f-9216-24af576a856f",
+            "name": "천보미",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "책임",
+            "edu_area": "전사 공통/직무 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01963d51-b13a-7eef-a227-f8b6f8653cdf",
+          "created_at": "2025-04-16T06:38:06.151Z",
+          "name": "기아 리더 대상 생성형AI",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-05-29T04:34:46.017Z",
+          "expected_amount": 15750000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-05-28T15:00:00.000Z",
+          "amount": 15700000.0,
+          "start_date": "2025-06-29T15:00:00.000Z",
+          "end_date": "2025-07-06T15:00:00.000Z",
+          "net_percent": "59.0",
+          "people": {
+            "id": "5e5a5d52-b2d5-4ad3-92e0-7ec0f60c1271",
+            "name": "황은석",
+            "upper_org": "경영지원본부",
+            "team": "역량개발팀",
+            "title": "책임",
+            "edu_area": "전사 공통/직무 교육/기타"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "65431d2d516cf8c1b5a8b50f",
+          "name": "이민영",
+          "upper_org": "경영지원본부",
+          "team": "역량개발팀",
+          "title": "매니저",
+          "edu_area": "전사 공통/직무 교육",
+          "webforms": [
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-16",
+              "text": "- 고객 이름 : 이민영\n- 고객 전화 : 01029256275\n- 고객 이메일 : mere0606@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250916\n- 고객 utm_content : lead-gen^cold-hd^mql\n"
+            }
+          ]
+        },
+        {
+          "id": "54ff33e1-0257-4bd2-a394-116f4f40bf5d",
+          "name": "변수진",
+          "upper_org": "경영지원본부",
+          "team": "역량개발팀",
+          "title": "매니저",
+          "edu_area": "교육 체계 수립 및 출강",
+          "webforms": [
+            "4-13.  인사이트 세미나 : 기업의 AI 이니셔티브 달성을 위한 Skill-based 인재 관리 전략"
+          ],
+          "memos": [
+            {
+              "date": "2024-06-27",
+              "text": "지금 필요하진 않아서 나중에 연락주시기로 함."
+            },
+            {
+              "date": "2024-07-23",
+              "text": "- 고객 이름 : 변수진\n- 고객 이메일 : sujinbyun@kia.com\n- 고객 전화 : 01048210128\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- AX(인공지능 전환) 과제 및 Skill 기반 인재 전략에 관한 고민을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- SkyHive's Privacy Policy : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240723\n- 고객 utm_content : lead-gen^cold-mail^cta\n"
+            }
+          ]
+        },
+        {
+          "id": "5e5a5d52-b2d5-4ad3-92e0-7ec0f60c1271",
+          "name": "황은석",
+          "upper_org": "경영지원본부",
+          "team": "역량개발팀",
+          "title": "책임",
+          "edu_area": "전사 공통/직무 교육/기타",
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "3-74. 소개서 : 공통 직무 AI 교육 커리큘럼 소개서"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-13",
+              "text": "- 고객 이름 : 기아\n- 고객 이메일 : yesyouknow@kia.com\n- 고객 전화 : 01071692435\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-15",
+              "text": "- 고객 이름 : 황은석\n- 고객 이메일 : yesyouknow@kia.com\n- 고객 전화 : 01071692435\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-04-24",
+              "text": "- 고객 이름 : 황은석\n- 고객 전화 : 01071692435\n- 고객 이메일 : yesyouknow@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "2f2dc0e9-4bc0-487f-9216-24af576a856f",
+          "name": "천보미",
+          "upper_org": "경영지원본부",
+          "team": "역량개발팀",
+          "title": "책임",
+          "edu_area": "전사 공통/직무 교육",
+          "webforms": [
+            "6-1. ATD Korea Summit (Standard Only)",
+            "6-5. ATD Korea Summit (Certificate Program)"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-22",
+              "text": "- 고객 이름 : 천보미\n- 고객 이메일 : bomi1000@kia.com\n- 고객 전화 : 01045674286\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-22",
+              "text": "- 고객 이름 : 천보미\n- 고객 이메일 : bomi1000@kia.com\n- 고객 전화 : 01045674286\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "019390c7-623d-7aad-98d1-50f056c8ff89",
+          "name": "진준용",
+          "upper_org": "경영지원본부",
+          "team": "역량개발팀",
+          "title": "책임",
+          "edu_area": "전사 공통/직무 교육/기타",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "국내사업지원사업부",
+      "team": "국내사업인재교육팀",
+      "deals": [
+        {
+          "id": "fb6c05dd-18fe-47aa-969b-e4367f503bc5",
+          "created_at": "2023-11-13T05:47:08.778Z",
+          "name": "[OB] 기아_유정윤님",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김광년",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "651133974553996a3344fdd3",
+            "name": "유정윤",
+            "upper_org": "국내사업지원사업부",
+            "team": "국내사업인재교육팀",
+            "title": "매니저",
+            "edu_area": "온라인/출강"
+          },
+          "memos": [
+            {
+              "date": "2023-11-28",
+              "text": "이미지"
+            },
+            {
+              "date": "2023-11-28",
+              "text": "📌미팅 사후 로그1. 참석자 (고객사에서 참석하는 이의 소속과 직급/직책 모두 파악해 적어주세요)- 고객사 : 유정윤 (국내사업인재교육팀 - 매니저)- 팀 : 원희정, 2. 미팅 내용 상세 (고객사의 질문과 답 / 참여하지 않은 사람도 이해할 수 있게 상세히 적어주세요.)- 홍철민(책임) ,변수진, 이민영님은 HRD 솔루션팀으로, 솔루션팀은 기획하는 헤드쿼터고, 국내사업팀은 실행하는 팀이라고 생각해주시면 된다.  별도로 글로벌교육사업팀(공장은 국내에 3개있음) 있고, 공장쪽 교육팀이 또 따로 있다.  DT쪽은 아마 변수진님이 담당하실거다. 근데 본부 단위로 DT 교육 진행하고 있다. 그래서 우리도 DT 교육 관심있다. - 현재 변동이 많을거라, 내년 1,2월되어야 구체적인 방향성 나올 것 같다. - 국내사업인재교육팀의 경우 지점, 대리점, CS, 등 영업쪽 인려과 여기 본사에 있는 스탭조직 교육 담당. - 지점당 3-4명 있는 사무직 직원들. 여기 본사 헤드쿼터 대상 집체교육도 하고있다. - DT 혁신팀 은 따로 없다. -DEI 과정 문의도 주심 (> ESG 경영과정 하나 말고 없다고 말씀드림)>> 데이터 분석 교육 과정 엑셀 기반으로 추천드렸고, 신규 과정 데이터분석과 생성형 AI 교육 소개서 전달드리기로함.3. AE인계를 위한 필수 확인 사항    교육 시작 일정: 24년도 교육 규모(시수) / 플랜& 기간: 미정수강인원: 미정수강대상 특징: 미정예산: 미정4. 세일즈 담당자의 Action Item (보낼 자료, 잡아야 할 미팅, 언제쯤 다시 연락할지 등 적어주세요) - 각종 소개서 자료 - 엑셀 데이터 분석 커리큘럼 전달. "
+            }
+          ]
+        },
+        {
+          "id": "57f3a7d7-50cb-4d96-874c-4d36657ea742",
+          "created_at": "2024-07-09T07:25:56.980Z",
+          "name": "기아_생성형 AI를 활용한 엑셀 데이터분석",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 8100000.0,
+          "lost_confirmed_at": "2024-08-20T00:16:53.208Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "651133974553996a3344fdd3",
+            "name": "유정윤",
+            "upper_org": "국내사업지원사업부",
+            "team": "국내사업인재교육팀",
+            "title": "매니저",
+            "edu_area": "온라인/출강"
+          },
+          "memos": [
+            {
+              "date": "2024-07-09",
+              "text": "- 딜 문의 주제 (최초) : 생성형 AI (챗GPT 활용)\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 30명 이하\n- 딜 예상 교육 일정 : 2개월 이내\n- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 유정윤\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 상담 문의 내용 : (공백)\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-09",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            },
+            {
+              "date": "2024-08-20",
+              "text": "내부적으로 생성형AI에 대한 교육 진행을 하지않기로 결정됨"
+            }
+          ]
+        },
+        {
+          "id": "0191d4b4-ba27-7ffe-a2cc-e4c5c98de495",
+          "created_at": "2024-09-09T02:54:59.629Z",
+          "name": "기아 온라인구독 문의",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-10-13T15:00:00.000Z",
+          "lost_reason": "[\"내부 의사결정\"]",
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "651133974553996a3344fdd3",
+            "name": "유정윤",
+            "upper_org": "국내사업지원사업부",
+            "team": "국내사업인재교육팀",
+            "title": "매니저",
+            "edu_area": "온라인/출강"
+          },
+          "memos": [
+            {
+              "date": "2024-10-14",
+              "text": "교육 진행 x"
+            }
+          ]
+        },
+        {
+          "id": "019318f3-7a37-7447-b2ec-6ce9893dc9ee",
+          "created_at": "2024-11-11T02:00:30.021Z",
+          "name": "기아_국내사업인재교육팀_올플랜",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김동찬",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-11-10T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-11-10T15:00:00.000Z",
+          "amount": 10752760.0,
+          "start_date": "2024-11-14T15:00:00.000Z",
+          "end_date": "2025-05-13T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "651133974553996a3344fdd3",
+            "name": "유정윤",
+            "upper_org": "국내사업지원사업부",
+            "team": "국내사업인재교육팀",
+            "title": "매니저",
+            "edu_area": "온라인/출강"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "651133974553996a3344fdd3",
+          "name": "유정윤",
+          "upper_org": "국내사업지원사업부",
+          "team": "국내사업인재교육팀",
+          "title": "매니저",
+          "edu_area": "온라인/출강",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "1-1. 백서 신청 (report_po)",
+            "1-16. 백서 신청 (report_aileadership)",
+            "1-3. 백서 신청 (report_cds)",
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "1-6. 백서 신청 (report_itleaders)",
+            "1-8. 백서 신청 (report_dt2022)",
+            "3-1. 소개서 : 빅데이터 이해 및 해석 트레이닝 (dt_big)",
+            "3-28. 소개서 : 일반 직무 대상 디지털 역량 교육 (main_digitaledu)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "3-53. 소개서 : 데이터 기반 의사결정 (content_dataanalysis_roadmap)",
+            "3-61. 소개서 : ChatGPT for Biz 소개서 (gptforbiz_proposal)",
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서",
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정",
+            "5-1. 템플릿 신청 (template_lndkpi)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-24",
+              "text": "부재"
+            },
+            {
+              "date": "2023-11-13",
+              "text": "목요일 오전10시 ㅇㅋ일정 변경가능성이 있어서 비대면이 좋을 것 같다. 팀즈 링크는 정윤님이 전달주시기로.VIP 참여하시는 분들은아래 3분임. 참고!김지환변수진이민영"
+            },
+            {
+              "date": "2023-11-16",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 01027741636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^231116\n- 고객 utm_content : lead-gen^hrinsight^edm-cta1\n"
+            },
+            {
+              "date": "2023-12-06",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 01027741636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^231004\n- 고객 utm_content : nurturing^salesmap^mktg-agreed\n"
+            },
+            {
+              "date": "2023-12-10",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 01027741636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-12",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 01027741636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-22",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 01027741636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : kakaotalk\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240222\n- 고객 utm_content : lead-gen^hrda^openchat\n"
+            },
+            {
+              "date": "2024-02-27",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 지금 통화 어려워서, 추후 연락드리겠음2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            },
+            {
+              "date": "2024-03-14",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240314\n- 고객 utm_content : lead-gen^hrinsight^edm-cta4\n"
+            },
+            {
+              "date": "2024-03-19",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 메일 남겨주시면 살펴보고 내일 연락 드리겠음2. 후속 액션- 3월 프로모션 시퀀스 등록"
+            },
+            {
+              "date": "2024-03-21",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240321\n- 고객 utm_content : lead-gen^hrinsight^edm\n"
+            },
+            {
+              "date": "2024-03-24",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@naver.com\n- 고객 전화 : 01027741636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240320\n- 고객 utm_content : lead-gen^salesmap-nurturing^mktg-agreed\n"
+            },
+            {
+              "date": "2024-03-25",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240325\n- 고객 utm_content : lead-gen^hrda^edm\n"
+            },
+            {
+              "date": "2024-03-29",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 자료 보내주시면 살펴보고 연락드리겠음2. 후속 액션- 2일 단과 과정 소개서 전달"
+            },
+            {
+              "date": "2024-04-15",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240415\n- 고객 utm_content : lead-gen^hrinsight^edm\n"
+            },
+            {
+              "date": "2024-05-07",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240415\n- 고객 utm_content : lead-gen^hrinsight^edm\n"
+            },
+            {
+              "date": "2024-05-07",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240415\n- 고객 utm_content : lead-gen^hrinsight^edm\n"
+            },
+            {
+              "date": "2024-06-19",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240619\n- 고객 utm_content : nurturing^contents-mail^edm-cta1\n"
+            },
+            {
+              "date": "2024-07-02",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240702\n- 고객 utm_content : lead-gen^hrinsight^edm\n"
+            },
+            {
+              "date": "2024-08-07",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-08-07",
+              "text": "- 고객 이름 : 유정윤\n- 고객 이메일 : jungyoun06@kia.com\n- 고객 전화 : 010-2774-1636\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-19",
+              "text": "- 고객 이름 : 유정윤\n- 고객 전화 : 01027741636\n- 고객 이메일 : xindyyou@gmail.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^241014\n- 고객 utm_content : nurturing^mktg-agreed^seminar_2025#REGISTRATION\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "Autoland 교육팀",
+      "deals": [
+        {
+          "id": "019a76f2-58e7-7335-968b-185e255e71ba",
+          "created_at": "2025-11-12T07:23:00.000Z",
+          "name": "기아_26년도 제조 신기술 교육(비전 AI)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "서정연",
+          "status": "SQL",
+          "probability": "[\"낮음\"]",
+          "expected_date": "2026-01-15T15:00:00.000Z",
+          "expected_amount": 4200000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "019a76f2-5773-7335-968b-0ee7ad1ec1c7",
+            "name": "전지나",
+            "upper_org": "미입력",
+            "team": "Autoland 교육팀",
+            "title": "매니저",
+            "edu_area": "출강 (AI/제조 기술)"
+          },
+          "memos": [
+            {
+              "date": "2025-11-12",
+              "text": "- 딜 서비스 유형 (최초) : 오프라인 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 전지나\n- 고객 이메일 : gena@kia.com\n- 고객 담당 업무 : (공백)\n- 고객 전화 : 010-5443-8921\n- 딜 상담 문의 내용 : 1. 교육 대상자 특성\n- 대상 : AutoLand(자동차 생산공장) 소속 일반직(사무직) 구성원\n- 역할 : 생산 공정과 현장의 생산직 구성원을 관리하며, 머신비전 장치를 직접 설치·프로그래밍하지는 않지만 비전검사가 활용되는 제조 공정의 원활한 운영을 관리하는 역할\n\n2. 교육목적\n- 제조현장에서 컴퓨터 비전이 아닌, '머신 비전'에 비전 AI 기술이 접목되는 제조신기술에 대한 이해를 높이고 관련 실습을 진행하고자 함\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 딜 utm_source : (공백)\n- 딜 utm_medium : (공백)\n- 딜 utm_campaign : (공백)\n- 딜 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-12",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            },
+            {
+              "date": "2025-11-17",
+              "text": "전지나 매니저님 (Autoland교육팀)교육 대상자    - autoland 소속 사무직 구성원    - 이들은 R&D 인력과 오퍼레이터의 사이에 있다보니 역할이 애매한 측면이 있음    - 기술 개발 <-> 현장직 사이에서의 커뮤니케이션 역할이 가장 중요- 비전AI가 적용된 부서 대상 구성원만 대상으로 할지, 아직인 구성원으로 할지, Mix할지는 미정        교육 배경- <제조 신기술> 교육을 진행을 하고자 하는데, 이미 로봇은 autoland 전 자리인에 적용되어 있다보니 신기술이라고 하기엔, wow point가 없어 보임    - 1) 내부적으로 비전 AI가 일부 도입/적용된 부분도 있고, 앞으로도 확산될 추세라는 점- 2) 이러한 추세에 따라 사무직의 역할은 기술 적용에 대한 설득, 관계자들의 역할 변화에 대한 설명 등이 중요해진다는 점- 위 두 가지를 고려하여 일반 구성원 대상 '머신 비전 + 비전 AI' 이라는 구체적인 컨셉을 잡게 됨            - 비전 AI에 대한 거부감도 일부 있음    - 전통적인 머신 비전의 경우, 개인이 빠르게 수정하고 고칠 수 있는 반면, 비전 AI가 적용될 경우, 데이터가 쌓이는 것 자체에 대한 거부감이 있는 사람들도 있음- 이에 따라 기술 변화에 대한 오해나 마인드셋, 변화관리에 대한 내용도 들어가면 좋음.    \n교육 희망 일정 및 시수- 내년 2월 마지막주 ~ 3월 첫째주 내 오픈되어 있음- 1day~최대 2days까지 생각 중- 장소는 비전스퀘어 or 외부 강의장 (미정)예산- 인원/장소/시수 등에 따라 정해지기 때문에 현재는 미정\nfup 및 참고사항 (다음주중)- 정식 제안서가 아닌 RFI / 컨셉안 (어떤 게 가능한지) 수준의 자료- 견적은 특수하게 필요한 환경이나 비용 등이 있다면 대략적으로 주면 Ok (없다면 꼭 필요한 것은 아님)- RFP는 12월 중에 나올 것으로 예상\n\n=======기존에는 머신 비전을 주제로 굉장히 정통적인 느낌의 교육을 늘 하던 업체와만 했었는데,AI까지 확장하여 조금 더 '신기술'에 맞는 트렌디한 교육을 희망하여 저희한테 연락주셨다고 합니다."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "019a76f2-5773-7335-968b-0ee7ad1ec1c7",
+          "name": "전지나",
+          "upper_org": "미입력",
+          "team": "Autoland 교육팀",
+          "title": "매니저",
+          "edu_area": "출강 (AI/제조 기술)",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64dd75c196e775eee7e2fb16",
+          "created_at": "2023-08-17T01:20:01.921Z",
+          "name": "기아자동차_올플랜_12개월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 3000000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75c196e775eee7e2fae5",
+            "name": "정지윤",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd75c296e775eee7e2fbb5",
+          "created_at": "2023-08-17T01:20:02.292Z",
+          "name": "(IB)기아_올 플랜_2208",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 169229290.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75c296e775eee7e2fb84",
+            "name": "김지환",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd75c296e775eee7e2fc50",
+          "created_at": "2023-08-17T01:20:02.670Z",
+          "name": "기아 주식회사_올플랜_2209",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 29640000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75c296e775eee7e2fc1f",
+            "name": "김부찬",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd761596e775eee7e39db6",
+          "created_at": "2023-08-17T01:21:25.940Z",
+          "name": "기아_재경 아카데미 교육체계수립",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2023-03-02T15:00:00.000Z",
+          "expected_amount": 15510000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "기타",
+          "category": null,
+          "contract_date": "2023-03-02T15:00:00.000Z",
+          "amount": 169229290.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd75c296e775eee7e2fb84",
+            "name": "김지환",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "c7edd7f8-3711-4efb-a1bf-ea68a52c5276",
+          "created_at": "2024-04-11T01:41:19.091Z",
+          "name": "기아_리더 대상 DEI 교육 (출강)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "심예본",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 10000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "기타",
+          "contract_date": "2024-05-02T12:53:25.556Z",
+          "amount": 0.0,
+          "start_date": "2024-05-31T15:00:00.000Z",
+          "end_date": "2024-07-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "d8b8ecaf-5560-4be6-9b6f-55e689e86fc9",
+            "name": "나수영",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "0191bfef-4c33-7ff2-b3f7-dbcabc3c0e93",
+          "created_at": "2024-09-05T02:06:56.570Z",
+          "name": "이주희 리드",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-06T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "0191bfed-b029-7aa7-b899-4b760474a2eb",
+            "name": "이주희",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-09-05",
+              "text": "- 딜 문의 주제 (최초) : DX 기초 (마인드셋, 데이터 리터러시), 데이터 분석 및 AI 실무, 영업/디지털 마케팅, PO/PM (프로젝트 관리, 제품 및 서비스 기획)\n- 딜 예상 교육 일정 : 2개월 이내\n- 딜 서비스 유형 (최초) : 온라인 단체 교육\n- 딜 예상 교육 인원 : 10명 이하\n- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 이주희\n- 고객 이메일 : juheeanna@kia.com\n- 고객 전화 : 01041091246\n- 고객 담당 업무 : DX유관/신사업\n- 상담 문의 내용 : (공백)\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-09-05",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            },
+            {
+              "date": "2024-09-09",
+              "text": "- 딜 문의 주제 (최초) : 데이터 분석 및 AI 실무, DX 기초 (마인드셋, 데이터 리터러시), PO/PM (프로젝트 관리, 제품 및 서비스 기획), 리더십 역량 강화 (하이퍼 리더십)\n- 딜 예상 교육 일정 : 2개월 이내\n- 딜 서비스 유형 (최초) : 온라인 단체 교육\n- 딜 예상 교육 인원 : 10명 이하\n- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 이주희\n- 고객 이메일 : juheeanna@kia.com\n- 고객 전화 : 01041091246\n- 고객 담당 업무 : DX유관/신사업\n- 상담 문의 내용 : 안녕하세요, 저희 팀 차원에서 1년 이용권 (총 인원 10명) 사용하고자 견적 문의 드립니다. 작년에 저희 팀에서 활용 했을 때 만족도가 높아 올해도 이어 사용하고자 합니다. 일전에 유선을 주셨는데 연속된 회의로 받지 못했었는데, 비용 관련해서 제 메일(juheeanna@kia.com)로 보내주시면 회신 드리겠습니다. 예상 결제일은 10월 중으로 예상하고 있습니다.\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-09-09",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        },
+        {
+          "id": "019491ff-f9f9-7ee3-a4d8-721e20462fb5",
+          "created_at": "2025-01-23T07:10:59.585Z",
+          "name": "기아_동영상 제작 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 3360000.0,
+          "lost_confirmed_at": "2025-03-05T15:00:00.000Z",
+          "lost_reason": "[\"가격 이슈\"]",
+          "course_format": "출강",
+          "category": "기타",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": "64.0",
+          "people": {
+            "id": "019491ff-f8fc-7ee3-a4d8-6793c88f1a23",
+            "name": "조재만",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-01-23",
+              "text": "동영상 제작 교육내부 구성원들이 조직문화 등 내부에 배포하는 영상 구성하는 수준으로 하고있는데 좀 더 전문적으로 배우고싶음3월 말 , 원데이-2일로 예상현재는 무료툴로 가볍게 만드는 수준으로 만들고 있음"
+            },
+            {
+              "date": "2025-02-24",
+              "text": "내부 담당자 출장으로 내부 검토 지연되고 있음차주 중 재연락 예정!(3월3일주)"
+            },
+            {
+              "date": "2025-03-04",
+              "text": "견적 조정 요청 (하향 조정)견적 하향 조정하여 견적 재제안"
+            },
+            {
+              "date": "2025-03-06",
+              "text": "Lost 사유 - 견적 이슈 교육비가 저렴한 타 업체랑 진행 확정사업장이라 교육 예산이 아주 타이트한 편 (초기에는 별도 예산안이 없으니 자유로이 제안달라고 하셨음..)확인해보니 시간당 30만원이 평균, 최대도 시간당 40만원 선이라 (특수주제나 정말 니즈가 높다면) 추후 사업장 교육 제안에는 예산안 참고 필요할 듯!"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64dd75c196e775eee7e2fae5",
+          "name": "정지윤",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정"
+          ],
+          "memos": []
+        },
+        {
+          "id": "64dd75c296e775eee7e2fb84",
+          "name": "김지환",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64dd75c296e775eee7e2fc1f",
+          "name": "김부찬",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64e6bdfa4fae09f0429b3f94",
+          "name": "차민철",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)",
+            "1-16. 백서 신청 (report_aileadership)",
+            "3-48. 소개서 : ChatGPT 교육 로드맵 및 예시",
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기"
+          ],
+          "memos": [
+            {
+              "date": "2023-09-15",
+              "text": "콜드 콜 1차 컨택 내용: 개인적인 관심으로 메일 받아보았는데 내년 교육 계획은 없음. "
+            },
+            {
+              "date": "2024-05-09",
+              "text": "- 고객 이름 : 차민철\n- 고객 이메일 : chamic@kia.com\n- 고객 전화 : 01033854663\n- 회사 이름 : 기아\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 사내 프롬프트 개발 및 제작 관련해 궁금한 사항이 있으시다면 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240509\n- 고객 utm_content : lead-gen^hrbulletin^edm\n"
+            },
+            {
+              "date": "2024-05-09",
+              "text": "- 고객 이름 : 차민철\n- 고객 이메일 : chamic@kia.com\n- 고객 전화 : 01033854663\n- 회사 이름 : 기아\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240509\n- 고객 utm_content : lead-gen^hrbulletin^edm\n"
+            },
+            {
+              "date": "2024-07-08",
+              "text": "- 고객 이름 : 차민철\n- 고객 이메일 : chamic@kia.com\n- 고객 전화 : 01033854663\n- 회사 이름 : 기아\n- 고객 담당 업무 : 기타\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고, 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240708\n- 고객 utm_content : lead-gen^hrbulletin^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "64f7fe7fd81428a9c2e8ce37",
+          "name": "김태화",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64f92f0f606d573c099e549d",
+          "name": "윤기웅",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-4. 백서 신청 (report_workflowlearning)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-05",
+              "text": "콜드콜: 해외로밍중.. 나중에 다시.."
+            },
+            {
+              "date": "2023-10-11",
+              "text": "부재..(해외로밍중.. 주재원에 계신가..)"
+            },
+            {
+              "date": "2023-11-03",
+              "text": "죄송하지만 해외에 있다.. 나중에 연락달라.."
+            }
+          ]
+        },
+        {
+          "id": "6513a12e9f6e226f484426ae",
+          "name": "박희섭",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)",
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "1-16. 백서 신청 (report_aileadership)",
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "1-21. 백서 신청 (report_lmsguide)",
+            "3-48. 소개서 : ChatGPT 교육 로드맵 및 예시",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)",
+            "5-16. 내부 인재 관리 총정리 자료집 신청 (package_internaltalent)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-16",
+              "text": "1차 부재중"
+            },
+            {
+              "date": "2023-10-16",
+              "text": "2차통화: 미팅 좋은데, 전사차원이라기보다는 생산 담당. 생산직무, 설비기술, 자동차 설비, 스마트팩토리 교육, 데이터 관련 비전검사, 데이터 어떻게 해석하고 개선하는지,산업에 되는EV PV 같은 모빌리티리더십 교육퇴직 지원 온보딩, 경기도 광명시 미팅 .. 거의 다잡았는데, 우선 자료 먼저 보내달라심.  "
+            },
+            {
+              "date": "2023-11-13",
+              "text": "- 고객 이름 : 박희섭\n- 고객 이메일 : heeseoppark@kia.com\n- 고객 전화 : 01032960126\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^2321012\n- 고객 utm_content : traffic^hrbulletin^edm\n"
+            },
+            {
+              "date": "2023-11-13",
+              "text": "- 고객 이름 : 박희섭\n- 고객 이메일 : heeseoppark@kia.com\n- 고객 전화 : 01032960126\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : pdf\n- 고객 utm_medium : link\n- 고객 utm_campaign : all\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2023-12-20",
+              "text": "< 콜드 콜 히스토리 >예전에 보내준 소개서들의 경우 이미 대부분 진행하고 있어서, 아직 딱히 교육 니즈 없음 최신 교육 과정 소개서 계속 보내주면 확인 해보고 필요시 연락 주겠음"
+            },
+            {
+              "date": "2024-01-04",
+              "text": "- 고객 이름 : 박희섭\n- 고객 이메일 : Heeseoppark@kia.com\n- 고객 전화 : 010-3296-0126\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240104\n- 고객 utm_content : lead-gen^hrda^edm\n"
+            },
+            {
+              "date": "2024-01-19",
+              "text": "1/19 콜드콜 : 메일 주신거는 봤는데, 아직 읽어보지는 못했음 다음 주에 연락 하겠음"
+            },
+            {
+              "date": "2024-01-30",
+              "text": "[ 콜드콜 로그 ]1. 어떤 명분으로 미팅을 제안 할 것인가?- 연간 교육 계획 수립에 대한 도움 제안2. 고객사 반응- 힘들게 방문하실 필요 없음, 자료 보내주시면 검토 해보겠음- 일반 직군 대상 AI 교육 진행 검토 중3. 후속 액션- 생성형 AI 교육 과정 소개서 & 레퍼런스 전달"
+            },
+            {
+              "date": "2024-10-28",
+              "text": "- 고객 이름 : 박희섭\n- 고객 전화 : 01032960126\n- 고객 이메일 : heeseoppark@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^241022\n- 고객 utm_content : lead-gen^khrd^edm\n"
+            },
+            {
+              "date": "2024-12-12",
+              "text": "- 고객 이름 : 박희섭\n- 고객 이메일 : heeseoppark@kia.com\n- 고객 전화 : 01032960126\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^241211\n- 고객 utm_content : lead-gen^bizletter^report-aileadership\n"
+            },
+            {
+              "date": "2024-12-12",
+              "text": "- 고객 이름 : 박희섭\n- 고객 전화 : 01032960126\n- 고객 이메일 : heeseoppark@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240417\n- 고객 utm_content : lead-gen^bizletter^genai_subject\n"
+            },
+            {
+              "date": "2025-02-20",
+              "text": "- 고객 이름 : 박희섭\n- 고객 전화 : 01032960126\n- 고객 이메일 : heeseoppark@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250220\n- 고객 utm_content : lead-gen^khrd^lmsguide\n"
+            }
+          ]
+        },
+        {
+          "id": "6527ba4d01eeeef9427ea234",
+          "name": "김종구",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "6535c67e7331063db1160661",
+          "name": "김태우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-30",
+              "text": "10/30 Call (1차 콜드콜)줌 연결이 원활하지 못해서 기아에서 신청했던 측근들 모두 시청하지 못했음.다시보기 영상 전달드리기로 함."
+            }
+          ]
+        },
+        {
+          "id": "6535cf0c7331063db1164874",
+          "name": "조인성",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-06",
+              "text": "번호 오류"
+            }
+          ]
+        },
+        {
+          "id": "65361525255efd571747a679",
+          "name": "이승연",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-30",
+              "text": "10/30 Call (1차 콜드콜)미팅 희망하지 않음. 이미 온라인구독 등 경험이 있는 고객사라 필요한 부분이 있으면 연락달라 요청"
+            },
+            {
+              "date": "2024-03-30",
+              "text": "- 고객 이름 : 이승연\n- 고객 이메일 : hrdism@kia.com\n- 고객 전화 : 010-4740-7316\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240327\n- 고객 utm_content : lead-gen^hrda^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "19d61bd2-1fea-4a6a-84b9-a40bb4534a96",
+          "name": "이주호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2-1. (자료)웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-06",
+              "text": "- 고객 이름 : 이주호\n- 고객 이메일 : leejuho@kia.com\n- 고객 전화 : 01092538393\n- 회사 이름 : 기아\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고, 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2023-11-22",
+              "text": "요즘 너무 바빠서 미팅 안될것 같다. "
+            }
+          ]
+        },
+        {
+          "id": "142f3a86-7780-4ef7-bf13-19ec6429fd4d",
+          "name": "박하진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-2. 백서 신청 (report_reskilupskill)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-15",
+              "text": "- 고객 이름 : 박하진\n- 고객 이메일 : hajin.park@kia.com\n- 고객 전화 : 0234645121\n- 회사 이름 : 기아\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^231115\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta1\n"
+            },
+            {
+              "date": "2023-11-22",
+              "text": "부재"
+            },
+            {
+              "date": "2023-11-29",
+              "text": "2차부재"
+            }
+          ]
+        },
+        {
+          "id": "5cda825a-e416-40ba-a0ea-fb28189b7ddb",
+          "name": "박제준",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-3. 세미나 다시보기: 생성형 AI를 활용한 업무효율화 실제 교육 사례 소개"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-23",
+              "text": "- 고객 이름 : 박제준\n- 고객 이메일 : ifiowner@gmail.com\n- 고객 전화 : 01027625671\n- 회사 이름 : 기아\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^231123\n- 고객 utm_content : lead-gen^hrinsight^edm-cta1#apply\n"
+            },
+            {
+              "date": "2024-01-30",
+              "text": "[ 콜드콜 로그 ]1. 어떤 명분으로 미팅을 제안 할 것인가?- 연간 교육 계획 수립에 대한 도움 제안2. 고객사 반응- 당장 필요한 것은 없음, 추후 연락 드리겠음3. 후속 액션- 콜드콜 시퀀스 등록"
+            }
+          ]
+        },
+        {
+          "id": "ba2923f1-aa62-4000-904d-e1845e71038c",
+          "name": "장다희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-5. 송년 특별 HRD 포럼 - Chat GPT 무료 강의 응모"
+          ],
+          "memos": [
+            {
+              "date": "2023-12-20",
+              "text": "- 고객 이름 : 장다희\n- 고객 이메일 : dhjang@kia.com\n- 고객 전화 : 01095439638\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 고객 AI 교육 니즈 : 생성형 AI 교육에 대한 니즈가 없어요.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "fe474020-b73b-42a8-9de2-e81dbb7f6bec",
+          "name": "은지호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "63078c79-9b5a-4651-9d9b-f04957f565b6",
+          "name": "최종혁",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-5. 백서 신청 (report_cd)",
+            "1-6. 백서 신청 (report_itleaders)",
+            "1-7. 백서 신청 (report_hrdedu)",
+            "3-48. 소개서 : ChatGPT 교육 로드맵 및 예시"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-23",
+              "text": "[ 콜드콜 로그 ]1. 어떤 명분으로 미팅을 제안 할 것인가?- 연간 교육 계획 수립에 대한 도움 제공2. 고객사 반응- 현재 교육 검토 중인 부분 없음3. 후속 액션- 콜드콜 재진행 예정"
+            }
+          ]
+        },
+        {
+          "id": "d8b8ecaf-5560-4be6-9b6f-55e689e86fc9",
+          "name": "나수영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-22",
+              "text": "- 고객 이름 : 나수영\n- 고객 이메일 : swim_me@naver.com\n- 고객 전화 : 01036581258\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240222\n- 고객 utm_content : lead-gen^hrda^edm-cta3#apply\n"
+            },
+            {
+              "date": "2024-02-22",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 이미 패스트캠퍼스랑 많이 진행하고 있음2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            }
+          ]
+        },
+        {
+          "id": "d1652395-fa5d-4228-b8b0-e4c3946be134",
+          "name": "이유림",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정",
+            "5-35. 마케터를 위한 프롬프트 템플릿 15가지 (template_mktprompt)",
+            "5-40. 마케터 업무에 활용하는 생성형 AI 툴 리스트"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-21",
+              "text": "- 고객 이름 : 이유림\n- 고객 이메일 : yl.lee@kia.com\n- 고객 전화 : 01020747639\n- 회사 이름 : 기아\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-07-30",
+              "text": "- 고객 이름 : 이유림\n- 고객 전화 : 01020747639\n- 고객 이메일 : yl.lee@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250730\n- 고객 utm_content : lead-gen^mkt-prompt^cta2#salesmap-web-form\n"
+            },
+            {
+              "date": "2025-10-27",
+              "text": "- 고객 이름 : 이유림\n- 고객 전화 : 01020747639\n- 고객 이메일 : yl.lee@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^251027\n- 고객 utm_content : lead-gen^mktgaitoollist^cta2\n"
+            }
+          ]
+        },
+        {
+          "id": "976b6f38-2d62-4f3c-92e7-a6448fcbfd7c",
+          "name": "이호령",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정"
+          ],
+          "memos": []
+        },
+        {
+          "id": "cfeb0033-50f7-47c5-8fed-82a5616e60a5",
+          "name": "조종현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-27",
+              "text": "- 고객 이름 : 조종현\n- 고객 이메일 : impeterc@kia.com\n- 고객 전화 : 01040795009\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240327\n- 고객 utm_content : lead-gen^hrda^edm\n"
+            },
+            {
+              "date": "2024-03-27",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 향후에 스킬 관련 체계가 어떻게 나아갈지 궁금해서 신청- 실제 검토 중인 부분은 없음, 궁금한 점 있으면 연락드림2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            }
+          ]
+        },
+        {
+          "id": "0a186b65-53df-44a5-85bb-cdebe783d9db",
+          "name": "김민지",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)",
+            "1-9. 백서 신청 (report_skilltrans)",
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기",
+            "4-13.  인사이트 세미나 : 기업의 AI 이니셔티브 달성을 위한 Skill-based 인재 관리 전략",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-16. 내부 인재 관리 총정리 자료집 신청 (package_internaltalent)",
+            "5-3. 템플릿 신청 (template_leadership)",
+            "5-30. 온라인 교육 템플릿 4종 (package_onlinetpl)"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-23",
+              "text": "- 고객 이름 : 김민지\n- 고객 이메일 : minji@kia.com\n- 고객 전화 : 01055263247\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^skillmatch-cold\n- 고객 utm_content : nurturing^cold-mail^cta\n"
+            },
+            {
+              "date": "2024-04-29",
+              "text": "- 고객 이름 : 김민지\n- 고객 이메일 : minji@kia.com\n- 고객 전화 : 01055263247\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240429\n- 고객 utm_content : lead-gen^cold-mail^cta\n"
+            },
+            {
+              "date": "2024-04-29",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 지금은 바빠서 통화가 어려움2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            },
+            {
+              "date": "2024-07-15",
+              "text": "- 고객 이름 : 김민지\n- 고객 이메일 : minji@kia.com\n- 고객 전화 : 01055263247\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- AX(인공지능 전환) 과제 및 Skill 기반 인재 전략에 관한 고민을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- SkyHive's Privacy Policy : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240715\n- 고객 utm_content : lead-gen^nurturing^mktg-agreed\n"
+            },
+            {
+              "date": "2024-07-15",
+              "text": "- 고객 이름 : 김민지\n- 고객 이메일 : minji@kia.com\n- 고객 전화 : 01055263247\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-08-06",
+              "text": "- 고객 이름 : 김민지\n- 고객 이메일 : minji@kia.com\n- 고객 전화 : 01055263247\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240806\n- 고객 utm_content : lead-gen^khrd^edm\n"
+            },
+            {
+              "date": "2024-09-05",
+              "text": "- 고객 이름 : 김민지\n- 고객 이메일 : minji@kia.com\n- 고객 전화 : 01055263247\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240904\n- 고객 utm_content : nurturing^cold^salesmap-db\n"
+            },
+            {
+              "date": "2024-10-25",
+              "text": "- 고객 이름 : 김민지\n- 고객 전화 : 01055263247\n- 고객 이메일 : minji@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241025\n- 고객 utm_content : lead-gen^mktg-agreed^lms2\n"
+            },
+            {
+              "date": "2024-10-28",
+              "text": "- 고객 이름 : 김민지\n- 고객 전화 : 01055263247\n- 고객 이메일 : minji@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^241024\n- 고객 utm_content : lead-gen^mktg-agreed^seminar_2025\n"
+            },
+            {
+              "date": "2025-06-20",
+              "text": "- 고객 이름 : 김민지\n- 고객 전화 : 01055263247\n- 고객 이메일 : minji@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250620\n- 고객 utm_content : lead-gen^khrd^cta3#salesmap-web-form\n"
+            }
+          ]
+        },
+        {
+          "id": "91ad411a-d9fd-4b48-9ce5-b0bf599ad869",
+          "name": "변수진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-29",
+              "text": "- 고객 이름 : 변수진\n- 고객 이메일 : byunsujin97@gmail.com\n- 고객 전화 : 01048210128\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : 사내 보안상 줌 접속이 어려운 경우가 있습니다.\n타 링크로도 접속 가능한지 여쭙니다.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240429\n- 고객 utm_content : lead-gen^cold-mail^cta\n"
+            },
+            {
+              "date": "2024-05-07",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 현재 신규 과정 검토 중인 부분은 없음2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            }
+          ]
+        },
+        {
+          "id": "97108866-9220-4628-bf54-c9a465a7106b",
+          "name": "은지호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "98106894-c7a6-44eb-a91c-2a269205a2b7",
+          "name": "손예란",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "b1cf50bf-e8ba-41c8-9cec-ed054f3e3919",
+          "name": "김태화",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-01",
+              "text": "- 고객 이름 : 김태화\n- 고객 이메일 : kthwa@kia.com\n- 고객 전화 : 01096526977\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 이름 : (주)기아\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- 개인정보 제3자 제공 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-11",
+              "text": "- 고객 이름 : 김태화\n- 고객 이메일 : kthwa@kia.com\n- 고객 전화 : 01096526977\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천, 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^offline^booth\n"
+            },
+            {
+              "date": "2025-01-03",
+              "text": "- 고객 이름 : 김태화\n- 고객 이메일 : kthwa@kia.com\n- 고객 전화 : 01096526977\n- 회사 이름 : 기아(주)\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241230\n- 고객 utm_content : nurturing^salesmap-db^2024-content\n"
+            }
+          ]
+        },
+        {
+          "id": "686979a1-0359-4b59-8f7f-4a47ac09b903",
+          "name": "김성수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)",
+            "6-1. ATD Korea Summit (연사 지인 할인 30%)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-08",
+              "text": "- 추천인 : 정진욱\n- 고객 이름 : 김성수\n- 고객 이메일 : sungsoo.kim@kia.com\n- 고객 전화 : 01085851101\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- 개인정보 제3자 제공 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-08",
+              "text": "- 추천인 : 정진욱\n- 고객 이름 : 김성수\n- 고객 이메일 : sungsoo.kim@kia.com\n- 고객 전화 : 01085851101\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- 개인정보 제3자 제공 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-11",
+              "text": "- 고객 이름 : 김성수\n- 고객 이메일 : sungsoo.kim@kia.com\n- 고객 전화 : 01085851101\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^offline^booth\n"
+            }
+          ]
+        },
+        {
+          "id": "6d34e016-8d35-469d-b0f8-b369b92406bd",
+          "name": "최동헌",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "4e6854ef-0a8b-413a-9d60-52ed70b11d22",
+          "name": "박종현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "adeaa74e-5d1c-4be6-b416-ff2196dad6d1",
+          "name": "조지흠",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "8a1d91f9-45b9-49cf-b2e3-ee9bc0775efc",
+          "name": "정진욱",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "1-9. 백서 신청 (report_skilltrans)",
+            "3-32. 소개서 : 기존 직무 업스킬링 (main_upskill)",
+            "3-70. 소개서 : 패스트캠퍼스 기업교육 대표 콘텐츠북",
+            "4-13.  인사이트 세미나 : 기업의 AI 이니셔티브 달성을 위한 Skill-based 인재 관리 전략",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-24",
+              "text": "- 고객 이름 : 정진욱\n- 고객 이메일 : jinugi@kia.com\n- 고객 전화 : 010-5471-8620\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- AX(인공지능 전환) 과제 및 Skill 기반 인재 전략에 관한 고민을 남겨주세요. : 기존의 직무중심/역량중심 인재육성과 차별화 되는 부분이 어떤 것인지 궁금합니다.\n직무/역량중심의 육성에서도 KSA를 도출하고 육성으로 연결시키는데, skill에 치우칠 경우 다른 영역의 육성이 취약해질 우려가 있지 않을까요?\n- 개인정보 수집 동의 : 동의합니다.\n- SkyHive's Privacy Policy : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-24",
+              "text": "- 고객 이름 : 정진욱\n- 고객 이메일 : jinugi@kia.com\n- 고객 전화 : 010-5471-8620\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-24",
+              "text": "- 고객 이름 : 정진욱\n- 고객 이메일 : jinugi@kia.com\n- 고객 전화 : 010-5471-8620\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 웨비나/오프라인 행사, 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^231004\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-10-11",
+              "text": "- 고객 이름 : 정진욱\n- 고객 전화 : 010-5471-8620\n- 고객 이메일 : jinugi@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241011\n- 고객 utm_content : lead-gen^mktg-agreed^lms1\n"
+            },
+            {
+              "date": "2025-07-15",
+              "text": "- 고객 이름 : 정진욱\n- 고객 전화 : 01054718620\n- 고객 이메일 : jinugi@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-07-15",
+              "text": "- 고객 이름 : 정진욱\n- 고객 이메일 : jinugi@kia.com\n- 고객 전화 : 01054718620\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            }
+          ]
+        },
+        {
+          "id": "0191bfed-b029-7aa7-b899-4b760474a2eb",
+          "name": "이주희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-05",
+              "text": "- 고객 이름 : 이주희\n- 고객 이메일 : juheeanna@kia.com\n- 고객 전화 : 01041091246\n- 회사 이름 : 기아\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "019230e3-f727-733b-9298-0a507f7c710e",
+          "name": "최진수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-27",
+              "text": "- 고객 이름 : 최진수\n- 고객 전화 : 01048000292\n- 고객 이메일 : jc@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240926\n- 고객 utm_content : lead-gen^cio^genai_job\n"
+            }
+          ]
+        },
+        {
+          "id": "0192bd8b-02d6-7559-9f9e-1531aba742cb",
+          "name": "최병곤",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-24",
+              "text": "- 고객 이름 : 최병곤\n- 고객 전화 : 01044455519\n- 고객 이메일 : bg.choi@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-24",
+              "text": "- 고객 이름 : 최병곤\n- 고객 전화 : 01044455519\n- 고객 이메일 : bg.choi@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^fc2025\n- 고객 utm_content : nurturing^welcome^cta_genaijob\n"
+            }
+          ]
+        },
+        {
+          "id": "019465d4-c21e-7669-8fc8-c2dc5a5b8d69",
+          "name": "최민아",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-33. 온라인 교육 템플릿 3종 (package_onlineopstpl)"
+          ],
+          "memos": [
+            {
+              "date": "2025-07-04",
+              "text": "- 고객 이름 : 최민아\n- 고객 전화 : 01094481385\n- 고객 이메일 : ma@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250704\n- 고객 utm_content : lead-gen^khrd^cta2\n"
+            }
+          ]
+        },
+        {
+          "id": "019465d6-d2bb-7669-91a4-dc3cf25eef7d",
+          "name": "박희섭",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)"
+          ],
+          "memos": [
+            {
+              "date": "2025-07-02",
+              "text": "- 고객 뉴스레터 : 비즈레터(HRD트렌드, 기업 사례 등)\n- 고객 이름 : 박희섭\n- 고객 이메일 : outshines@naver.com\n- 고객 전화 : 01032960126\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "019491ff-f8fc-7ee3-a4d8-6793c88f1a23",
+          "name": "조재만",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0194ddab-0b30-733d-93c5-243808ab43f7",
+          "name": "송명석",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)",
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "3-81. 온라인 로드맵 전체 다운로드",
+            "7-3-2. 마케터를 위한 생성형 AI 공개 교육 개별 수강 신청"
+          ],
+          "memos": [
+            {
+              "date": "2025-02-06",
+              "text": "- 고객 이름 : 송명석\n- 고객 이메일 : brilli@kia.com\n- 고객 전화 : 01030819150\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-04-01",
+              "text": "- 고객 이름 : 송명석\n- 고객 전화 : 01030819150\n- 고객 이메일 : brilli@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250401\n- 고객 utm_content : nurturing^mktg-agreed^aiedu#salesmap-web-form\n"
+            },
+            {
+              "date": "2025-04-28",
+              "text": "- 고객 이름 : 송명석\n- 고객 전화 : 01030819150\n- 고객 이메일 : brilli@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250428\n- 고객 utm_content : lead-gen^hrbulletin^cta2#salesmap-web-form\n"
+            },
+            {
+              "date": "2025-06-11",
+              "text": "- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 송명석\n- 고객 이메일 : brilli@kia.com\n- 고객 전화 : 01030819150\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 수강 희망 일자 : 1회차) 2025.06.17 (화)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01960e20-19c3-7000-825b-bd1fede1bd07",
+          "name": "윤성수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-17. 백서 신청 (report_trainingroi)",
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)",
+            "3-86. 2026년 AX 교육 체계도 사전 신청",
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2025-04-07",
+              "text": "- 고객 이름 : 윤성수\n- 고객 이메일 : ssyun@kia.com\n- 고객 전화 : 010-5607-2130\n- 회사 이름 : (주)기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01975da9-7ab6-766c-bce6-119ac473d2e7",
+          "name": "문진희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "7-3-2. 마케터를 위한 생성형 AI 공개 교육 개별 수강 신청"
+          ],
+          "memos": [
+            {
+              "date": "2025-06-11",
+              "text": "- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 문진희\n- 고객 이메일 : jh.moon@kia.com\n- 고객 전화 : 01048793691\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 수강 희망 일자 : 2회차) 2025.06.19 (목)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01975daf-fa33-7222-9476-20e522fd9f3f",
+          "name": "김형신",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "7-3-2. 마케터를 위한 생성형 AI 공개 교육 개별 수강 신청"
+          ],
+          "memos": [
+            {
+              "date": "2025-06-11",
+              "text": "- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 김형신\n- 고객 이메일 : hs@kia.com\n- 고객 전화 : 01055882605\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 수강 희망 일자 : 2회차) 2025.06.19 (목)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01975dc7-14d5-766c-bd8d-cbfaf643cc4f",
+          "name": "박세리",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "7-3-2. 마케터를 위한 생성형 AI 공개 교육 개별 수강 신청"
+          ],
+          "memos": [
+            {
+              "date": "2025-06-11",
+              "text": "- 회사 이름 : 기아\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 박세리\n- 고객 이메일 : psr1211@kia.com\n- 고객 전화 : 01031109255\n- 고객 담당 업무 : 기타\n- 고객 직급/직책 : 실무자\n- 수강 희망 일자 : 2회차) 2025.06.19 (목)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0198cbfa-df8a-7116-a06c-a949c9f5e215",
+          "name": "한진규",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-37. 이러닝 GPT프롬프트 템플릿  (template_elearningprompt)"
+          ],
+          "memos": [
+            {
+              "date": "2025-08-21",
+              "text": "- 고객 이름 : 한진규\n- 고객 전화 : 01062395672\n- 고객 이메일 : jghan@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250821\n- 고객 utm_content : lead-gen^hrinsight^cta2#salesmap-web-form\n"
+            }
+          ]
+        },
+        {
+          "id": "0198e4f4-f376-7774-b768-250b393bd386",
+          "name": "김태현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-62. 소개서 :Skill Match 진단 평가 서비스 소개서 (skillmatch_proposal)",
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)"
+          ],
+          "memos": [
+            {
+              "date": "2025-08-26",
+              "text": "- 고객 이름 : 김태현\n- 고객 이메일 : sungarden@kia.com\n- 고객 전화 : 01099844924\n- 회사 이름 : 기아주식회사\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "019a2839-2da3-7444-9551-b2e034e225a4",
+          "name": "김정두",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2025-10-28",
+              "text": "- 고객 이름 : 김정두\n- 고객 전화 : 01048603926\n- 고객 이메일 : kimjeongdu@kia.com\n- 회사 이름 : 기아\n- 고객 담당 업무 : HR(인사관리)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^251027\n- 고객 utm_content : lead-gen^hrInsight^cta2#salesmap-web-form\n"
+            }
+          ]
+        },
+        {
+          "id": "019a9ce5-f520-7224-b869-7a351112a8db",
+          "name": "이상훈",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

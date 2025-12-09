@@ -1,0 +1,453 @@
+{
+  "organization": {
+    "id": "64f97577fb15689232a82af1",
+    "name": "네이버",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "HR LEADER CLASS",
+      "team": "Leadership Experience",
+      "deals": [
+        {
+          "id": "01973f1b-f307-7bb8-9eeb-bf4b93b30233",
+          "created_at": "2025-06-05T08:01:00.000Z",
+          "name": "네이버_보고/기획 프로젝트 수행 계획 수립",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-30T15:00:00.000Z",
+          "expected_amount": 11300000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "기타",
+          "contract_date": "2025-07-30T15:00:00.000Z",
+          "amount": 8300000.0,
+          "start_date": "2025-08-03T15:00:00.000Z",
+          "end_date": "2025-08-06T15:00:00.000Z",
+          "net_percent": "56.0",
+          "people": {
+            "id": "01973f1b-f27c-7bb8-9eeb-a98f3a1d4b05",
+            "name": "김경호",
+            "upper_org": "HR LEADER CLASS",
+            "team": "Leadership Experience",
+            "title": "-",
+            "edu_area": "리더십/직무"
+          },
+          "memos": [
+            {
+              "date": "2025-06-11",
+              "text": "[고객사 확인사항]day1~4까지 패캠에서 진행 (day5는 네이버 자체 진행)교육목적은 [기획력 향샹] AI는 도구적으로 사용하는 정도      기술 직군이 논리적 글쓰기 및 보고서 작성에 어려움을 느끼는 문제를 해결하고자 함글쓰기, 문제정의 ,논리 전개 중심 커리큘럼 희망제안서 형식은 약식으로 제출 (커리큘럼, 강사진, 견적 정보만 필요)"
+            },
+            {
+              "date": "2025-06-11",
+              "text": "최초 통화 시 수요일까지 제출하는 것으로 협의했으나, 상부에서 아주 간단하게 작성해도 좋으니 표준안으로 커리큘럼, 비용, 강사진만 포함해서 기존 요청일자인 6월 9일(월)까지 요청예산은 강사료 시간당 77만원, 코칭비 시간당 40만원 정도로 예상하고 있고 이 금액에 무조건 맞춰야 하는 것은 아님"
+            },
+            {
+              "date": "2025-06-11",
+              "text": "이미지"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "01973f1b-f27c-7bb8-9eeb-a98f3a1d4b05",
+          "name": "김경호",
+          "upper_org": "HR LEADER CLASS",
+          "team": "Leadership Experience",
+          "title": "-",
+          "edu_area": "리더십/직무",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "4baad32c-9193-4b27-81d7-fe43f7c03ea2",
+          "created_at": "2024-06-07T07:05:27.119Z",
+          "name": "[부가세별도] (B2B) 네이버 재무회계교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-07-29T15:00:00.000Z",
+          "expected_amount": 9220000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "재무회계",
+          "contract_date": "2024-08-18T15:00:00.000Z",
+          "amount": 8820000.0,
+          "start_date": "2024-08-18T15:00:00.000Z",
+          "end_date": "2024-08-28T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "8af0e764-6e8a-4ef2-9656-038338d44d5c",
+            "name": "신현우",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "01912047-c35b-7996-9293-7092b473addf",
+          "created_at": "2024-08-05T02:04:19.724Z",
+          "name": "네이버_생성형 AI 구독제_2408",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김세연",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-08-29T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "생성형AI",
+          "contract_date": "2024-08-25T15:00:00.000Z",
+          "amount": 5000000.0,
+          "start_date": "2024-08-31T15:00:00.000Z",
+          "end_date": "2025-01-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01912047-c2d5-7996-9293-077c6bda813b",
+            "name": "차덕준",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "0198c682-ee32-799a-bc76-c6a50acf43e5",
+          "created_at": "2025-08-20T08:05:00.000Z",
+          "name": "[L-T]네이버 온라인 구독",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "SQL",
+          "probability": "[\"낮음\"]",
+          "expected_date": "2025-12-31T15:00:00.000Z",
+          "expected_amount": 5000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "0198c682-db26-7449-ad8a-f154d9729485",
+            "name": "임지연",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-10-20",
+              "text": "지난 번 문의 이후, 다른 급한 사안들로 일단 홀딩 중에 있음.\n추가 논의가 필요할 때 다시 연락주시겠다고 함."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64f97577fb15689232a82b7e",
+          "name": "이지은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64ff36e44a3da9949b9ceaa5",
+          "name": "김영복",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-12. 백서 신청 (report_leadership)",
+            "1-9. 백서 신청 (report_skilltrans)",
+            "5-3. 템플릿 신청 (template_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2023-09-13",
+              "text": "세일즈메이트 상의 기업은 NHN으로 되어 있음."
+            },
+            {
+              "date": "2023-09-18",
+              "text": "콜드콜:시간이 없다. 죄송하다. "
+            },
+            {
+              "date": "2024-03-04",
+              "text": "전화기록- 통화 아예 거절함."
+            }
+          ]
+        },
+        {
+          "id": "6528119501eeeef9427f7e0b",
+          "name": "이지은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-04",
+              "text": "전화기록- 스킬 컨설팅에 대해 간략히 소개드리고 관심있으신지 물어봤으나 따로 내부 논의 중인 게 없다고 함"
+            }
+          ]
+        },
+        {
+          "id": "653726d77aa728ad9552e0bd",
+          "name": "오영은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-01",
+              "text": "11/1 Call (1차 콜드콜)개인적인 관심이 있어서 참여했고 도움은 많이 되었음. hrd교육팀은 따로 있고, 오영은님은 교육센터소속 사용자대상 교육 또는 내부직원 교육도 있는 센터임.`완전 hr팀은 아니고 분리되어있는 상태필요할 때 제안요청하겠다."
+            },
+            {
+              "date": "2024-03-04",
+              "text": "전화기록- 현재 따로 니즈가 있는 건 아니여서 미팅 거절함."
+            }
+          ]
+        },
+        {
+          "id": "b664a5eb-6176-416a-904e-03dbc81ad01d",
+          "name": "주정임",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)",
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-03",
+              "text": "- 고객 이름 : 주정임\n- 고객 이메일 : 2drizzle@naver.com\n- 고객 전화 : 01096240226\n- 회사 이름 : 네이버\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240403\n- 고객 utm_content : nurturing^salesmap-nurturing^mktg-agreed\n"
+            }
+          ]
+        },
+        {
+          "id": "e64d7a67-d1a4-439e-9982-f03cfb46a716",
+          "name": "박아람",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": [
+            {
+              "date": "2023-12-14",
+              "text": "- 회사명 : 네이버 라인"
+            }
+          ]
+        },
+        {
+          "id": "21d8b2b4-6ffc-4a44-88e0-1d11e7277de5",
+          "name": "이여진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 이여진\n- 고객 이메일 : yeojin.lee@navercorp.com\n- 고객 전화 : 01032021970\n- 회사 이름 : 네이버\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고, 리포트/제안서\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-27",
+              "text": "전화기록- 생성형AI 세미나 안내, 세미나 이후 필요한 부분있으면 연락주겠다고 함,"
+            }
+          ]
+        },
+        {
+          "id": "bf9e275e-cff4-4354-bd8b-f94a102a1699",
+          "name": "김동옥",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기",
+            "5-24. IT 직무를 위한 AX 교육 설계 핵심 자료집 (package_CIOgenaicontents)"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-21",
+              "text": "- 고객 이름 : 김동옥\n- 고객 이메일 : dongock.kim@navercorp.com\n- 고객 전화 : 01094846052\n- 회사 이름 : 네이버\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 사내 프롬프트 개발 및 제작 관련해 궁금한 사항이 있으시다면 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240521\n- 고객 utm_content : lead-gen^cio^edm\n"
+            },
+            {
+              "date": "2025-02-11",
+              "text": "- 고객 이름 : 김동옥\n- 고객 전화 : 01094846052\n- 고객 이메일 : dongock.kim@navercorp.com\n- 회사 이름 : naver\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250211\n- 고객 utm_content : lead-gen^CIO^genaicontents\n"
+            }
+          ]
+        },
+        {
+          "id": "d11368bc-0eba-4604-93e7-792dabdda36a",
+          "name": "김경수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "8af0e764-6e8a-4ef2-9656-038338d44d5c",
+          "name": "신현우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-09",
+              "text": "https://day1c.slack.com/archives/CSM9D7SQP/p1717743950116659"
+            }
+          ]
+        },
+        {
+          "id": "81a51bdc-56eb-4133-a2cd-7045d33a3923",
+          "name": "이명규",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-15. ATD Korea Summit 2024 하이라이트북 신청 (report_atdkorea2024)",
+            "6-1. ATD Korea Summit (Standard Only)",
+            "6-6. ATD Korea Summit (Certificate Program - Brochure)"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-03",
+              "text": "- 고객 이름 : 이명규\n- 고객 이메일 : lee.mk@navercorp.com\n- 고객 전화 : 01034445662\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 이름 : 네이버\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- 개인정보 제3자 제공 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-03",
+              "text": "- 고객 이름 : 이명규\n- 고객 이메일 : lee.mk@navercorp.com\n- 고객 전화 : 01034445662\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 이름 : 네이버\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-12-12",
+              "text": "- 고객 이름 : 이명규\n- 고객 전화 : 01034445662\n- 고객 이메일 : lee.mk@navercorp.com\n- 회사 이름 : 네이버\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서, 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240417\n- 고객 utm_content : lead-gen^bizletter^atd_report\n"
+            }
+          ]
+        },
+        {
+          "id": "01912047-c2d5-7996-9293-077c6bda813b",
+          "name": "차덕준",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (생성형 AI 올인원 구독제)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "01932ef5-86a7-7882-a9e8-35e51a4edc3f",
+          "name": "정다은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0196ec11-02bd-7993-840b-87d9407db279",
+          "name": "김성민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0197672c-6b16-7ddd-9073-bfeb7a340a24",
+          "name": "제수빈",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-78. 소개서 : 경영지원 직무 AI 교육 커리큘럼 소개서",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)"
+          ],
+          "memos": [
+            {
+              "date": "2025-06-13",
+              "text": "- 고객 이름 : 제수빈\n- 고객 전화 : 01099508961\n- 고객 이메일 : subin.je@navercorp.com\n- 회사 이름 : 네이버\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-06-13",
+              "text": "- 고객 이름 : 제수빈\n- 고객 전화 : 01099508961\n- 고객 이메일 : subin.je@navercorp.com\n- 회사 이름 : 네이버\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^welcome\n- 고객 utm_content : nurturing^deck^aicurriculum-support\n"
+            }
+          ]
+        },
+        {
+          "id": "0198c682-db26-7449-ad8a-f154d9729485",
+          "name": "임지연",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": [
+            {
+              "date": "2025-08-20",
+              "text": "- 리드 서비스 유형 (최초) : 온라인 단체 교육\n- 리드 예상 교육 인원 : 500명 이하\n- 리드 예상 교육 일정 : 7개월~1년 이내\n- 회사 이름 : 네이버\n- 회사 기업 규모 : 대기업\n- 리드 문의 주제 (최초) : (공백)\n- 고객 이름 : 임지연\n- 고객 이메일 : jiyeon.lim@navercorp.com\n- 고객 담당 업무 : (공백)\n- 고객 전화 : 010-4703-3749\n- 상담 문의 내용 : 안녕하세요,\n기업대상으로 진행하고 계신 구독서비스가 있는지 문의드립니다.\n대상 인원이나 구체적인 시점, 내용이 정해진 상황은 아니며, 리워드제도를 검토하는 시점에서 패캠의 구독서비스가 궁금하여 문의드립니다.\n- 리드 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-08-20",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

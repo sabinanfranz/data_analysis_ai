@@ -1,0 +1,768 @@
+{
+  "organization": {
+    "id": "64dd760b96e775eee7e38823",
+    "name": "엘지에너지솔루션",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "AI/빅데이터그룹",
+      "team": "기획팀",
+      "deals": [
+        {
+          "id": "9d6820a4-1c35-45e7-968d-074a1d90f56a",
+          "created_at": "2024-05-24T03:53:33.949Z",
+          "name": "(B2B) LG에너지솔루션 DX 전문가 교육 (2025)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-02-27T05:48:18.801Z",
+          "expected_amount": 54760000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "데이터분석/CDS",
+          "contract_date": "2025-02-26T15:00:00.000Z",
+          "amount": 54760000.0,
+          "start_date": "2025-03-31T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": "82.0",
+          "people": {
+            "id": "0193d236-099b-766d-8a00-a06492a09a57",
+            "name": "백승연",
+            "upper_org": "AI/빅데이터그룹",
+            "team": "기획팀",
+            "title": "사원",
+            "edu_area": "복합/정기/DX"
+          },
+          "memos": [
+            {
+              "date": "2024-05-24",
+              "text": "1. '22년도~'24년도 오프라인 교육 과정 DX과정 - 오프라인 과정은 인원이 한정되어 있고, 교육 기간이 길어 부담스러워 함. - 기조가 작년이랑 달라짐. 대표가 바뀌면서 장기 교육 건 참여에 긍정적이진 않음.>> CEO 변경으로 중장기 오프라인 교육 참여가 어려운 상황>> 내년 교육 온라인 or 온+오프라인교육(1-2일:프로젝트)  생각하고 있음. 하지만 1-2일 오프라인도 부담스러워하는 사람이 있다.2. '25년도 교육 개요(예정)- 인원 : 과목 당 100명 정도로 가정- 내용 : 온라인(실시간)으로 진행하던 수준과 동일한 내용의 커리큘럼 필요- 기간 : 무관(복습 가능하도록 진행 필요)- VOD 자료 수집 : VOD 자료로 제공 가능할지 확인 필요- 오프라인 교육 포함 여부 : 해당 과정 중 모델링 및 평가하는 과정의 경우 필요하다면 온라인(실시간)으로 0.5`1일 정도 진행 고려- 제안서/ 견적서 전달 필요(ASAP) ※비용은 1차수 기준으로 산출 요청3. LG전자 사례 소개해드림.- 입문 : 파이썬 기초 (12H), 모듈퀴즈 2회, 미니 프로젝트 수행을 통해 평가하여 사내 인증 수료증 발급- 기본 : 머신러닝, 과제 수행, Live강의(온라인 강의에 대한 갈증 해소), 인증평가- 중급 : 머신러닝 프로젝트, --> 온라인 학습을 4주 하되, 사전테스트를 통해 통과한 학생들만 오프라인 강의 5일 (프로젝트) 진행- (LGEX)수강률이 80%이상?을 넘지 못하면 오프라인 강의를 듣지 못 하는 건지? - (FC) 그건 아님. 사전테스트를 보고 통과되면 수강 가능함.- (LGEX) 보통 몇 퍼센트정도만 테스트를 통과하고 오프라인 강의로 가는지? - (FC) 100%. 지금껏 LG전자가 4년째 교육이 이루어질 수 있었던 이유는 과정 수료율이 굉장히 높기 때문임. 학습장치들을 중간에 계속 껴서 진행하면 될 듯함. Ex. 주에 Q&A를 무조건 2개 씩 올려야한다던지, 퀴즈/과제를 제출해야하다던지. - (FC) 과정이 시작하기에 앞서 오리엔테이션도 중요한 역할. 이는 수강생&운영진과의 라포형성도 하고, 비대면이지만 Q&A도 적극적으로 하며 잘 따라오실 수 있도록 진행하고 있음.- (LGEX) LG전자에서 수료증 발급은 사내 수료증인지? 프로젝트 일수는 어떻게 조정되는지?- (FC) LG전자도 내년도에는 프로젝트 5일>3일로 축소해서 진행할 예정. 인증평가는 모든 수강생 대상이 아닌, 인증서를 발급받고 싶다고 하는 수강생 대상으로 진행 가능. 평가 문항은 LG전자와 같이 개발하여 진행. 수료 후에는 사내 수료증 발급- (FC) LG에너지솔루션 커리큘럼을 온라인화 하는 것은 문제 없을 것 같고. 퀴즈/과제/Live특강을 블렌디드 하고 싶으신건지?- (LGEX) 아직 구체적으로 생각해보진 않았는데, 패캠이 여러 교육 경험이 많으니 어떻게 하는게 좋을지 제시?- (FC) 중간장치가 들어가야, 현업 적용성을 파악한다라는 목적성이 있다면 Q&A 실습코치가 붙어서, 평가를 통해 정량적 평가도 진행할 수 있음.- (FC) 또한 LG에너지솔루션 프로젝트를 기획하고 구현하는 과정에서는 짧게라도 오프라인으로 모여서 진행하는 것이 좋을 듯.머신러닝 수준의 프로젝트가 진행된다면 하루 정도의 밋업미티이 들어가면 좋지 않을까?- (LGEX) LG전자도 그렇게 하고 있는지? 수강생 전부 다 과제를 제출하는지?- (FC) LG전자는 전부 과제 제출하고 피드백 평가 진행하고 있음.- (LGEX) 전자 ML실무 커리큘럼은 평이한데, 엔솔 커리큘럼 커버가 가능할지?- (FC) 가능함 .패캠 보유 온라인 컨텐츠 커리큘럼에서는 엔솔 커리큘럼보다 더 깊고 심화된 학습도 다루기 때문에 가능함.<정리하면>- BA중급과정 / ML실무 / DL 실무 --> 온라인화 가능함. 과제/퀴즈 수행을 붙여서 진행하고 시픔. - 1-2일정도는 프로젝트 오프라인 과정이 들어가면 좋을 듯- 4주에 12시간정도 충분할지? -> 기본 과정은 충분하지만, 실제로 학습하는 시간은 2배로 보면 됨. 중급/심화 과정은 필수 범위만 지정해두고, 학습 범위는 열어둠. 필요한 사람들은 같이 수강해서 진행할 수 있도록.- 온라인 강의로 전환하게 되면 임직원들이 몇시간정도 주에 수강할 수 있는지?? -> LG전자는 주에 4시간 넘어가지 X -> LG엔솔은 하루에 1시간 정도, 주 5시간? 정도로 생각하고 있음. - 온라인 강의 학습 수강율이 모듈을 진행할수도록 떨어짐ㅠ -> 길게 가져갈 수록 점점 안 듣는 문제가 발생.- PYthon데이터분석, R분석-> 엘리스 컨텐츠 활용하고 있음- DX Expert과정(구체적인 알고리즘 학습, ML과정보다 Deep한 과정) --> 패캠과의 진행여부 낮음)"
+            }
+          ]
+        },
+        {
+          "id": "01966b52-98a5-7cc9-a039-3898b55e1147",
+          "created_at": "2025-04-25T05:01:37.327Z",
+          "name": "(B2B) LG에너지솔루션_26년도 AX 진급필수교육 콘텐츠 제작",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-10-30T15:00:00.000Z",
+          "expected_amount": 50000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "DX Essential",
+          "contract_date": "2025-10-30T15:00:00.000Z",
+          "amount": 50000000.0,
+          "start_date": "2025-12-31T15:00:00.000Z",
+          "end_date": "2026-12-30T15:00:00.000Z",
+          "net_percent": "78.0",
+          "people": {
+            "id": "0193d236-099b-766d-8a00-a06492a09a57",
+            "name": "백승연",
+            "upper_org": "AI/빅데이터그룹",
+            "team": "기획팀",
+            "title": "사원",
+            "edu_area": "복합/정기/DX"
+          },
+          "memos": [
+            {
+              "date": "2025-04-25",
+              "text": "1. 교육 배경 - 기존 DX 인증제도는 금년을 마지막으로 운영 종료 예정- 차년도부터 인증 없이도 전사 공통으로 수강 가능한 통합교육과정 운영이 필요2. 교육 방향성- 기존처럼 억지로 진급을 위한 수강이 아니라 실질적 역량 향상을 위한 기초 중심 과정 필요- 특별한 니즈/학습 동가 없어도 전사원이 기본적으로 수강 가능한 구조3. 교육 대상- 전사 임직원 중 진급 대상자 (약 1,000명 규모 수요 예상)4. 교육 상세- 필수 교육 + 선택 교육 구조 제안- 필수 교육: 전사원이 공통으로 수강 가능한 기초 수준 과정, DX 과제 수행에 필요한 기본 개념 중심 - 선택 교육: 심화·직무 맞춤형 과정으로 구성 가능- 역량 확보 중심의 기초 교육 커리큘럼 필요- 교육 이수 기반으로 역량 확보 → DX 프로젝트와 연계 가능성 고려"
+            },
+            {
+              "date": "2025-07-01",
+              "text": "6/27 백승연 사원 콜 로그.- 현재 내부적으로 기획 단계라 내부적으로 정리되면 미팅 요청 드리겠다고 하심.(아직 필요한 자료 X 거의 논의 끝나가고 있으니, 연락 주시겠다고 함.)"
+            },
+            {
+              "date": "2025-09-03",
+              "text": "[과정 정보]과정1) AX 리터러시 - 데이터 및 AI 리터러시\n과정2) 생성형 AI 활용 방법 - AI(EXAONE)를 활용한 업무생산성 향상방법과정3) 통계 및 AI 기초개념 - 전직군 인원 대상의 기초통계 및 AI알고리즘 소개\n[논의 내용]각 과정을 모듈분리 없이 과정당 2/2/4시간정도, 시뮬레이션형 제작엔솔맞춤제작을 위한 배터리 제조업 관련 대외오픈사례 활용(강사님), 내부자료 공유가능여부 검토(엔솔)엑사원이 아닌 GPT 활용 검토, 외부엑사원과 엔솔내부엑사원의 동일여부 확인과정 말미에 퀴즈 삽입, 출제문항 수는 TBD"
+            }
+          ]
+        },
+        {
+          "id": "0199ff67-db2b-7cc5-8d9a-b106881a347d",
+          "created_at": "2025-10-20T02:17:00.000Z",
+          "name": "26년 AX교육 운영(DX문제해결, ML실무)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-12-04T15:00:00.000Z",
+          "expected_amount": 60808000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "데이터분석/CDS",
+          "contract_date": "2025-12-04T15:00:00.000Z",
+          "amount": 60808000.0,
+          "start_date": "2025-12-31T15:00:00.000Z",
+          "end_date": "2026-12-30T15:00:00.000Z",
+          "net_percent": "87.0",
+          "people": {
+            "id": "0193d236-099b-766d-8a00-a06492a09a57",
+            "name": "백승연",
+            "upper_org": "AI/빅데이터그룹",
+            "team": "기획팀",
+            "title": "사원",
+            "edu_area": "복합/정기/DX"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "0193d236-099b-766d-8a00-a06492a09a57",
+          "name": "백승연",
+          "upper_org": "AI/빅데이터그룹",
+          "team": "기획팀",
+          "title": "사원",
+          "edu_area": "복합/정기/DX",
+          "webforms": [
+            "3-74. 소개서 : 공통 직무 AI 교육 커리큘럼 소개서"
+          ],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64dd760b96e775eee7e38888",
+          "created_at": "2023-08-17T01:21:15.530Z",
+          "name": "(주)엘지에너지솔루션_패키지플랜_2203",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 152900000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760b96e775eee7e38857",
+            "name": "한인범",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd760c96e775eee7e38aa8",
+          "created_at": "2023-08-17T01:21:16.642Z",
+          "name": "LG에너지솔루션_패키지플랜_2303",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": null,
+          "amount": 468390000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760c96e775eee7e38a77",
+            "name": "병훈강",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd760c96e775eee7e38b42",
+          "created_at": "2023-08-17T01:21:16.945Z",
+          "name": "LG에너지솔루션_싱글플랜_2306",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": 6560000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760c96e775eee7e38b11",
+            "name": "박지희",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64dd762b96e775eee7e3cc6f",
+          "created_at": "2023-08-17T01:21:47.742Z",
+          "name": "LG에너지솔루션 DX문제해결 for BA 과정",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": null,
+          "amount": 152900000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd760b96e775eee7e38857",
+            "name": "한인범",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "64f960be5ebd218c65f7c949",
+          "created_at": "2023-09-07T05:33:50.170Z",
+          "name": "LG에너지솔루션 (DX팀)_패키지플랜_2304",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": null,
+          "contract_date": "2023-09-07T05:43:48.915Z",
+          "amount": 75000000.0,
+          "start_date": "2023-03-14T15:00:00.000Z",
+          "end_date": "2024-03-13T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f963fd5ebd218c65fbb1da",
+            "name": "강병훈",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "0d773ef7-e82d-45a5-ba98-8190ba6dd9cb",
+          "created_at": "2023-11-29T12:36:33.185Z",
+          "name": "(B2B) LG에너지솔루션 - 2024 DX전문가교육 & BA중급과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-02-15T15:00:00.000Z",
+          "expected_amount": 177125100.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "빅데이터/AI",
+          "contract_date": "2024-02-01T04:22:14.802Z",
+          "amount": 177125100.0,
+          "start_date": "2024-06-09T15:00:00.000Z",
+          "end_date": "2024-09-12T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0192db51-8c18-766b-bf3c-c511119cd1cc",
+            "name": "전영호",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2023-12-11",
+              "text": "2023. 12. 11 대면 미팅 (@LG에너지솔루션 파크원 본사)참석자: LG엔솔 강병훈, 전영호 책임 / 패캠 배영민, 김세연[24년도 방향성]DX 문제해결 for BA 실무 강화, 코딩 실습 비중 多 실무데이터 제공 및 사례화를 통해 카테고리별로 (예측분석 등 실무 사례)제공 가능할지데이터 제공의 경우 매우 민감한 문제이므로 제공이 불가능할듯희망할 경우 강사님이 직접 보면서 강의하는 형태는 어떠한지 ML/DL의 경우 현재 너무 난이도가 쉬움심화과정으로 구성 필요ML은 ML을 배우러왔는데 DL을 가르치는 경우가 있었음 → 따라서 ML과 DL에 맞게 각각의 심화과정으로 재구성 필요(5일로 줄인 일정은 이견 없음)데이터 빌더 과정 제외하고 DXP로 함께 진행하는 형식BA 과정은 오프라인 과정으로 진행 희망전체 오프라인으로 진행도 고려해볼 필요 있음(*강사님께 LG 파트너 계정을 생성 후 진행하는 방식도 가능)[특이사항]어디 과정이 어떻게 변했는지 견적이 얼마인지 요약한 제안서 전달 희망온라인 구독제의 경우 저번과 동일한 금액으로 진행이 가능한지 회신 필요교육명도 변경이 가능할지? 다른 과정 교육 진행과 네이밍이 겹치는 경우가 있음커리큘럼 조정 후 교안 제작이 완료될 시 강병훈 책임님께 공유 필요LG 엔솔측에서 사용하고자하는 강의장 일정 전달시 선 예약 진행제안서 12/14(목) 까지 전달 희망전체 예산 30%  삭감한 형태A/B안으로 제공A : 원하는 방향성으로 진행되는 제안서(DX 9일)B : 모든 과정 5일로 축약한 형태제안서 변경 사항DX practice(1) 과정  중에서 웹크롤링 항목의 경우 흥미로우나 현업과 맞지 않음사내 데이터 실습(1일 마이크로 매니징)으로 변경 희망파이썬 복습과정의 경우 전처리까지 합하여 2일 과정으로 구성 희망대부분 실습으로 구성 Data builder 과정해당 과정 없애고 DX로 합한 후에 9일 과정으로 재구성 예정파이썬 기초 과정의 경우 온라인 과정으로 변경하여 진행pandas numpy까지 온라인 학습 후에 진행"
+            },
+            {
+              "date": "2024-01-30",
+              "text": "기업 예산 축소로 교육과정/견적 축소되어, 기존에 DX전문가교육 & BA중급과정 딜카드 각각 1개씩 2개였으나, 1개로 통일하였음"
+            }
+          ]
+        },
+        {
+          "id": "12cf4d60-a8ac-4696-aba8-f3baa5f59b57",
+          "created_at": "2024-01-12T08:47:13.259Z",
+          "name": "LG에너지솔루션 - 24년도 온라인 구독 패키지플랜",
+          "team": null,
+          "owner": "배영민",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": "2024-01-30T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-01-30T05:13:20.964Z",
+          "amount": 77760000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64f963fd5ebd218c65fbb1da",
+            "name": "강병훈",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-01-30",
+              "text": "기업 재정악화로 교육 예산 축소되어 온라인 구독 비용 24년도에는 진행 X."
+            }
+          ]
+        },
+        {
+          "id": "f0170448-3555-482c-b2da-b8748559356b",
+          "created_at": "2024-02-16T16:55:55.149Z",
+          "name": "(B2B) LG에너지솔루션 DX 전문가 교육 (2023)",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": null,
+          "amount": 236980000.0,
+          "start_date": "2023-04-02T15:00:00.000Z",
+          "end_date": "2023-11-15T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f963fd5ebd218c65fbb1da",
+            "name": "강병훈",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "1f95df5f-0a84-422f-99e9-95e3444172e4",
+          "created_at": "2024-02-16T16:59:02.425Z",
+          "name": "(B2B) LG에너지솔루션 - DX문제해결 for BA 중급과정 (2023)",
+          "team": null,
+          "owner": "배영민",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": null,
+          "amount": 156410000.0,
+          "start_date": "2023-05-07T15:00:00.000Z",
+          "end_date": "2023-09-21T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64f963fd5ebd218c65fbb1da",
+            "name": "강병훈",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "3ace115f-08c2-4899-bad1-bb424ef0cc7f",
+          "created_at": "2024-05-08T00:50:40.797Z",
+          "name": "엘지에너지솔루션 딜",
+          "team": null,
+          "owner": "김정현",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "빅데이터/AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "cd79a94b-9302-4997-92bd-13c022ee80b4",
+            "name": "이새롬",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-05-08",
+              "text": "📌미팅 사후 로그1. 참석자 (고객사에서 참석하는 이의 소속과 직급/직책 모두 파악해 적어주세요)고객사 : 이새롬팀 : 김정현2. 미팅 내용 상세 [스킬컨설팅 소개]R&D직군 스킬 컨설팅도 가능한지?    -> 가능함. 오히려 알앤디 직군에 대한 문의가 더러 있는 편.이미 분류가 되어있으시다면 정리하고 다듬는 역할을 지원할 수도 있다.[직무 공통교육]재무교육과 같은 기본 소양교육에 대한 관심 또한 있음.교육 로드뱁 도출 ~ 코스프로파일 기획까지 제공할 수 있다."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64dd760b96e775eee7e38857",
+          "name": "한인범",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64dd760c96e775eee7e38a77",
+          "name": "병훈강",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2024-04-29",
+              "text": "전화- 교육 담당자분께 전달해주신다고 함."
+            }
+          ]
+        },
+        {
+          "id": "64dd760c96e775eee7e38b11",
+          "name": "박지희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64e45d6a2880d6d67f1770c7",
+          "name": "김중호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "64f963fd5ebd218c65fbb1da",
+          "name": "강병훈",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2024-04-26",
+              "text": "전화- 메일로 전달 요청 주셨음."
+            }
+          ]
+        },
+        {
+          "id": "cd79a94b-9302-4997-92bd-13c022ee80b4",
+          "name": "이새롬",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-9. 백서 신청 (report_skilltrans)",
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2023-12-12",
+              "text": "- 고객 이름 : 이새롬\n- 고객 이메일 : saeromi@lgensol.com\n- 고객 전화 : 01057365519\n- 회사 이름 : LG에너지솔루션\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-28",
+              "text": "- 고객 이름 : 이새롬\n- 고객 이메일 : saeromi@lgensol.com\n- 고객 전화 : 010-5736-5519\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 이름 : LG에너지솔루션\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-31",
+              "text": "- 고객 이름 : 이새롬\n- 고객 이메일 : saeromi@lgensol.com\n- 고객 전화 : 010-5736-5519\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 이름 : LG에너지솔루션\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-31",
+              "text": "- 고객 이름 : 이새롬\n- 고객 이메일 : saeromi@lgensol.com\n- 고객 전화 : 010-5736-5519\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 이름 : LG에너지솔루션\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-04-01",
+              "text": "- 고객 이름 : 이새롬\n- 고객 전화 : 01057365519\n- 고객 이메일 : saeromi@lgensol.com\n- 회사 이름 : 에너지솔루션\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250401\n- 고객 utm_content : nurturing^mktg-agreed^aiedu\n"
+            }
+          ]
+        },
+        {
+          "id": "16bb7f04-f7a1-4f16-8c7e-216c4b1a5a8c",
+          "name": "임현희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-11",
+              "text": "스킬컨설팅 지금은 계획 없음"
+            }
+          ]
+        },
+        {
+          "id": "c41640c2-f424-437e-8db9-a939cfd88496",
+          "name": "홍석민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-6. 소개서 : 파이썬을 활용한 빅데이터 분석 기초 (ds_big)"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-21",
+              "text": "- 고객 이름 : 홍석민\n- 고객 이메일 : sukmin.hong@lgensol.com\n- 고객 전화 : 01041120325\n- 회사 이름 : LG에너지솔루션\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "4c44c2f8-1203-4f2b-a6fc-a5f90d55d3f2",
+          "name": "김유찬",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-21",
+              "text": "- 고객 이름 : 김유찬\n- 고객 이메일 : skysoulsky@lgensol.com\n- 고객 전화 : 01073500735\n- 회사 이름 : 엘지에너지솔루션\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : 기업 보안사항에 따라 ChatGPT와 같은 생성형 AI활용이 제한되었거나, 이러한 상황으로 사용할 엄두를 내지 못하는 경우가 많습니다. ①이러한 상황에서도 생성형 AI를 활용하여 성과를 낼 수 있는 방법들과 ②리더 혹은 IT담당자들에게 이러한 이슈를 회피해서 사용하기 위해 설득할 수 있는 방법들이 궁금합니다.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240321\n- 고객 utm_content : lead-gen^cold-mail^cta\n"
+            },
+            {
+              "date": "2024-03-22",
+              "text": "설명회 먼저 들어보겠음"
+            },
+            {
+              "date": "2024-05-29",
+              "text": "- 고객 이름 : 김유찬\n- 고객 이메일 : skysoulsky@lgensol.com\n- 고객 전화 : 01073500735\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 엘지에너지솔루션\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-29",
+              "text": "- 고객 이름 : 김유찬\n- 고객 이메일 : skysoulsky@lgensol.com\n- 고객 전화 : 01073500735\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 엘지에너지솔루션\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-29",
+              "text": "- 고객 이름 : 김유찬\n- 고객 이메일 : skysoulsky@lgensol.com\n- 고객 전화 : 01073500735\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : 엘지에너지솔루션\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "d7b4df6b-0197-4b1a-a42e-56f32c3dd15a",
+          "name": "조병준",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-02",
+              "text": "- 고객 이름 : 조병준\n- 고객 이메일 : uninut@lgensol.com\n- 고객 전화 : 01084595858\n- 회사 이름 : LG에너지솔루션\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "7cef129a-b906-49cb-90dc-85022f6c6877",
+          "name": "조유민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)",
+            "3-62. 소개서 :Skill Match 진단 평가 서비스 소개서 (skillmatch_proposal)",
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서",
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "3-86. 2026년 AX 교육 체계도 사전 신청",
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기",
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-29",
+              "text": "- 고객 이름 : 조유민\n- 고객 이메일 : yumincho@lgensol.com\n- 고객 전화 : 01094303933\n- 회사 이름 : LG에너지솔루션\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240429\n- 고객 utm_content : lead-gen^cold-mail^cta\n"
+            },
+            {
+              "date": "2024-05-28",
+              "text": "- 고객 이름 : 조유민\n- 고객 이메일 : yumincho@lgensol.com\n- 고객 전화 : 01094303933\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : LG에너지솔루션\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-29",
+              "text": "- 고객 이름 : 조유민\n- 고객 이메일 : yumincho@lgensol.com\n- 고객 전화 : 01094303933\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : LG에너지솔루션\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-29",
+              "text": "- 고객 이름 : 조유민\n- 고객 이메일 : yumincho@lgensol.com\n- 고객 전화 : 01094303933\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : LG에너지솔루션\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-07-12",
+              "text": "- 고객 이름 : 조유민\n- 고객 이메일 : yumincho@lgensol.com\n- 고객 전화 : 01094303933\n- 회사 이름 : Lg에너지솔루션\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : qrcode\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^2024atdkoreasummit\n- 고객 utm_content : traffic^paper^qrmap\n"
+            },
+            {
+              "date": "2025-03-06",
+              "text": "- 고객 이름 : 조유민\n- 고객 이메일 : yumincho@lgensol.com\n- 고객 전화 : 01094303933\n- 회사 이름 : LG에너지솔루션\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-03-18",
+              "text": "- 고객 이름 : 조유민\n- 고객 이메일 : yumincho@lgensol.com\n- 고객 전화 : 01094303933\n- 회사 이름 : LG에너지솔루션\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-04-01",
+              "text": "- 고객 이름 : 조유민\n- 고객 전화 : 01094303933\n- 고객 이메일 : yumincho@lgensol.com\n- 회사 이름 : LG에너지솔루션\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250401\n- 고객 utm_content : nurturing^mktg-agreed^aiedu\n"
+            }
+          ]
+        },
+        {
+          "id": "4dfccfe9-d32d-41fb-9286-6d0d65ee2772",
+          "name": "남은지",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "6-1. ATD Korea Summit (Standard Only)"
+          ],
+          "memos": [
+            {
+              "date": "2024-06-03",
+              "text": "- 고객 이름 : 남은지\n- 고객 이메일 : eunergy1112@lgensol.com\n- 고객 전화 : 01064048467\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 이름 : LG에너지솔루션\n- 회사 기업 규모 : 대기업\n- 개인정보 수집 동의 : 동의합니다.\n- ATD's Privacy Notice : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0fbdcc8f-7bf2-4bdd-97fe-c3acd8b0e195",
+          "name": "시진우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "46273d98-c0ec-4485-9795-559a35e547eb",
+          "name": "김성현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-13.  인사이트 세미나 : 기업의 AI 이니셔티브 달성을 위한 Skill-based 인재 관리 전략"
+          ],
+          "memos": [
+            {
+              "date": "2024-07-23",
+              "text": "- 고객 이름 : 김성현\n- 고객 이메일 : denykim@lgensol.com\n- 고객 전화 : 01052212227\n- 회사 이름 : LG에너지솔루션\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- AX(인공지능 전환) 과제 및 Skill 기반 인재 전략에 관한 고민을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- SkyHive's Privacy Policy : I agree. (동의합니다.)\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0191b097-7e5a-7dd6-a4de-e6b55642fb56",
+          "name": "안수연",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-02",
+              "text": "- 고객 이름 : 안수연\n- 고객 이메일 : sooyoun@lgensol.com\n- 고객 전화 : 01052211652\n- 회사 이름 : LG에너지솔루션\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "0192db51-8c18-766b-bf3c-c511119cd1cc",
+          "name": "전영호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01932ef5-7900-7882-a9e1-0a54ed4af4fb",
+          "name": "최재영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

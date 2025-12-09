@@ -1,0 +1,195 @@
+{
+  "organization": {
+    "id": "64f975b4fb15689232a8aad0",
+    "name": "한화비전",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "-",
+      "team": "인사기획팀",
+      "deals": [
+        {
+          "id": "019540f8-64a4-7dd5-bec8-2252420653ca",
+          "created_at": "2025-02-26T06:36:15.406Z",
+          "name": "한화비전_올플랜 구독 문의",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-03-20T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "8de64404-1388-47d3-a243-c92dbc18bbbf",
+            "name": "길한샘",
+            "upper_org": "-",
+            "team": "인사기획팀",
+            "title": "과장",
+            "edu_area": "직무교육"
+          },
+          "memos": [
+            {
+              "date": "2025-02-26",
+              "text": "대표전화 인입 문의기업명: 한화비전예상인원 : 32명성함: 길한샘연락처: 010-2740-4910문의내용: 일부 임직원들 대상으로 무제한 구독권 관련 상세한 내용 유선상담 희망하십니다.** 금일중으로 연락 부탁하셨습니다."
+            },
+            {
+              "date": "2025-02-26",
+              "text": "통화 완료.올플랜 구독 안내 메일 발송 후 추가 논의하기로 함. (메일 발송 완료)"
+            },
+            {
+              "date": "2025-03-05",
+              "text": "통화 시도 실패"
+            }
+          ]
+        },
+        {
+          "id": "0195ad0c-071f-7ff0-8c4e-48df9f92e7db",
+          "created_at": "2025-03-19T06:16:41.512Z",
+          "name": "한화비전_직급별 오프라인 교육",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-05-30T04:06:06.055Z",
+          "expected_amount": 8700000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "기타",
+          "contract_date": "2025-04-30T15:00:00.000Z",
+          "amount": 8700000.0,
+          "start_date": "2025-05-20T15:00:00.000Z",
+          "end_date": "2025-05-28T15:00:00.000Z",
+          "net_percent": "55.0",
+          "people": {
+            "id": "8de64404-1388-47d3-a243-c92dbc18bbbf",
+            "name": "길한샘",
+            "upper_org": "-",
+            "team": "인사기획팀",
+            "title": "과장",
+            "edu_area": "직무교육"
+          },
+          "memos": [
+            {
+              "date": "2025-03-19",
+              "text": "- 딜 문의 주제 (최초) : 영업/디지털 마케팅, OA (사무자동화), DX 기초 (마인드셋, 데이터 리터러시)\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 300명 이하\n- 회사 이름 : 한화비전\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 길한샘\n- 고객 이메일 : hs.gil@hanwha.com\n- 고객 전화 : 01027404910\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 상담 문의 내용 : 한화비전은 IT/제조 기업입니다.  비개발자 대상(인사, 재무, 기획, 전략, 영업, 마케팅, PM 등)으로 직급 별 직무교육을 오프라인으로 운영하고자 합니다. 사원 - 대리 - 과장, 차장 - 부장 의 직급 별 추천 직무교육 리스트를 요청드려도 될까요? 감사합니다.\n- 딜 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250220\n- 고객 utm_content : lead-gen^khrd^lmsguide\n"
+            },
+            {
+              "date": "2025-03-19",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            },
+            {
+              "date": "2025-03-19",
+              "text": "이메일 후속 https://day1c.slack.com/archives/C060MSG5YUS/p1740013628395459"
+            },
+            {
+              "date": "2025-03-20",
+              "text": "25.03.20 오전 통화시도 실패"
+            },
+            {
+              "date": "2025-03-20",
+              "text": "25.03.20 오후 통화시도 실패"
+            },
+            {
+              "date": "2025-03-20",
+              "text": "사원 / 대리 / 과차장 / 부장 - 4분류로 오프라인 교육 희망사원 : 데이터 분석 활용대리 : 보고서, 데이터 마이닝, 통계기법과/차장 : 프로젝트 관리, 기획부장 : 프로젝트 관리, 기획 (차~부장 부터는 어려워서 명확하게 교육주제 선정을 아직 못하신 상태라고 합니다)교육시간은 3~4시간 정도 구성.강사 협의가 된다면 5월 중으로 오프라인 교육 희망ChatGPT 사용이 불가하여 AI 가 아니라 직무역량 개발 쪽으로 강사 섭외 필요강의장 : 판교예산 : 시간당 4~50 예상3/31 오전 중으로 전달 예정"
+            },
+            {
+              "date": "2025-03-28",
+              "text": "25.03.28커리큘럼 수정하고 싶은 부분 메일로 회신 하기로 함교육은 5월 부터 한 달에 1개 씩 진행."
+            }
+          ]
+        },
+        {
+          "id": "0197aef6-c8a9-7223-8e3f-f35d61f2b11f",
+          "created_at": "2025-06-27T01:18:00.000Z",
+          "name": "한화비전_생성형AI 특강",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": 3000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-08-18T15:00:00.000Z",
+          "amount": 3000000.0,
+          "start_date": "2025-08-18T15:00:00.000Z",
+          "end_date": "2025-08-18T15:00:00.000Z",
+          "net_percent": "75.0",
+          "people": {
+            "id": "8de64404-1388-47d3-a243-c92dbc18bbbf",
+            "name": "길한샘",
+            "upper_org": "-",
+            "team": "인사기획팀",
+            "title": "과장",
+            "edu_area": "직무교육"
+          },
+          "memos": [
+            {
+              "date": "2025-06-27",
+              "text": "[고객사 문의]\n8월에 한화비전 핵심인재 대상으로 생성형 AI관련 특강을 진행하고자 합니다.해당 교육은 외부 명사 특강 + 대표이사 간담회 형식으로 진행할 계획입니다. 일정 : 8월 내대상 : 한화비전 핵심인재 31명(대리~과장급으로 선발된 실무 A-player, 개발자 및 비개발자 포함)특강 소요시간 : 2시간~3시간요청 내용 : 생성형 AI 활용한(저희는 보안상 챗지피티 사용이 안됩니다. 대신에 Gemini와 클로드, perplexity는 사용이 가능합니다.)            데이터 분석 등에 대한 특강, 짧은 시간 특강으로 운영하고 핵심인재 대상 로열티 증진 목적의 과정으로            저명한 명사가 있다면 추천 부탁드립니다."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "8de64404-1388-47d3-a243-c92dbc18bbbf",
+          "name": "길한샘",
+          "upper_org": "-",
+          "team": "인사기획팀",
+          "title": "과장",
+          "edu_area": "직무교육",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "1-20. 백서 신청 (report_skilltrend)",
+            "1-21. 백서 신청 (report_lmsguide)",
+            "3-78. 소개서 : 경영지원 직무 AI 교육 커리큘럼 소개서",
+            "5-25. 발표자료 신청 (presentation_onlinelearning)"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-08",
+              "text": "- 고객 이름 : 길한샘\n- 고객 이메일 : hs.gil@hanwha.com\n- 고객 전화 : 01027404910\n- 회사 이름 : 한화비전\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240108\n- 고객 utm_content : lead-gen^hrinsight^edm\n"
+            },
+            {
+              "date": "2024-01-26",
+              "text": "전화기록- 메일로 소개서 먼저 요청. 확인 후 회신 주시기로 함."
+            },
+            {
+              "date": "2025-01-31",
+              "text": "- 고객 이름 : 길한샘\n- 고객 전화 : 01027404910\n- 고객 이메일 : hs.gil@hanwha.com\n- 회사 이름 : 한화비전\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : kakaotalk\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^250124\n- 고객 utm_content : lead-gen^hrda^openchat\n"
+            },
+            {
+              "date": "2025-02-20",
+              "text": "- 고객 이름 : 길한샘\n- 고객 전화 : 01027404910\n- 고객 이메일 : hs.gil@hanwha.com\n- 회사 이름 : 한화비전\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250220\n- 고객 utm_content : lead-gen^khrd^lmsguide\n"
+            },
+            {
+              "date": "2025-03-24",
+              "text": "- 고객 이름 : 길한샘\n- 고객 전화 : 01027404910\n- 고객 이메일 : hs.gil@hanwha.com\n- 회사 이름 : 한화비전\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250324\n- 고객 utm_content : lead-gen^hrinsight^aiedu_support\n"
+            },
+            {
+              "date": "2025-04-02",
+              "text": "- 고객 이름 : 길한샘\n- 고객 전화 : 01027404910\n- 고객 이메일 : hs.gil@hanwha.com\n- 회사 이름 : 한화비전\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250402\n- 고객 utm_content : lead-gen^khrd^cta2\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

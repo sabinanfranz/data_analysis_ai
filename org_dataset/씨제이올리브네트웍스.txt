@@ -1,0 +1,921 @@
+{
+  "organization": {
+    "id": "64ec00405d2f14d1a85010fb",
+    "name": "씨제이올리브네트웍스",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "DT Academy",
+      "team": "-",
+      "deals": [
+        {
+          "id": "01949099-7fd2-7ee3-9f12-cd39986b38d5",
+          "created_at": "2025-01-23T00:39:26.425Z",
+          "name": "CJONS_콘텐츠 임차(25년 1월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-01-01T08:20:28.867Z",
+          "expected_amount": 1370182.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2024-12-31T15:00:00.000Z",
+          "amount": 1370182.0,
+          "start_date": "2025-02-28T15:00:00.000Z",
+          "end_date": "2025-02-28T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": [
+            {
+              "date": "2025-01-23",
+              "text": "2025.01.22 미팅로그[CJ 교육제공 현황 및 개선 요구사항]올해 신규도입과정은 패캠 과정이 제일 많은 편CJ LMS 특성 상 과정 콘텐츠가 잘 노출되지 않아 홍보에 아쉬움이 있음. (과정 소개 페이지에 이미지나 HTML 게시 불가)소개 영상은 노출이 되는데 현재는 OT나 그냥 1강이 들어가기 때문에 강의만 봐서는 학습자 신청까지 끌어내기에는 매력이 떨어짐 > B2C에서 사용하는 홍보영상 등을 샘플 영상으로 활용하면 좋을 것 같음.매월 1회 프로모션이 있으며 도서 제공(교육비에 도서비 반영)이나 콘텐츠 큐레이션 등의 프로모션 아이디어를 주면 패캠 콘텐츠 노출을 높일 수 있음.기본적으로 콘텐츠 시간이 너무 길어 학습자들이 신청에 부담을 느끼는 경우가 많음. 난이도나 파트별로 쪼개서 구성하면 좋을 것 같음프로모션 > 로드맵 제공 (ex. 데이터 분석 전문가되기) 후 인증 배지 증정 등의 학습 모델 제시 / 도서 증정(꼭 교육 교안이 아니더라도 유명 강사면 강사의 베스트셀러 저서 등) / 유명 강사의 경우 특강 이벤츠 등[콘텐츠 제작 협업]CJ 임직원 대상 콘텐츠 제작 경험은 많지만 외부 세일즈 목적의 콘텐츠 제작 경험이 없어 주제 선정에 어려움이 있고 유통채널이 없음.기획/제작/유통 전 과정을 패캠이 리드하거나 협력하여 CJ x 패캠 브랜딩 콘텐츠 제작 가능 (CJ 내부, 패캠 B2C/B2B 모두 오픈하여 활용하고 수익쉐어 - 제작 콘텐츠 유통에 대해서는 CJ에서 내부 규정이 아직 없기 때문에 보다 유연하게 협의 가능)[계열사 교육]올리브영, 제일제당 등 계열사에서 교육을 CJONS로 먼저 요청하며 CJONS 에서 제공이 어려운 경우 외부로 돌림.패캠에서 진행했던 CJ 계열사 교육 사례들과 같은 교육을 주제별로 먼저 패캠이 CJ ONS 에 제안하여 계열사에 제안하고 협업하여 교육 진행할 수 있음.요즘 계열사들 가장 관심도 높은 교육은 AI 분야.[추가 공유 자료]DT / AI 소개서, 교육 레퍼런스 자료 메일 발송"
+            }
+          ]
+        },
+        {
+          "id": "0194da13-668b-7000-85f2-b75fdc7ec21d",
+          "created_at": "2025-02-06T07:04:52.123Z",
+          "name": "CJONS_콘텐츠 임차(25년 2월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-02-01T04:23:14.785Z",
+          "expected_amount": 1370182.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-01-31T15:00:00.000Z",
+          "amount": 1512727.0,
+          "start_date": "2025-01-31T15:00:00.000Z",
+          "end_date": "2025-02-27T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0195ad3c-ed70-7661-998d-67e02c410d88",
+          "created_at": "2025-03-19T07:10:06.201Z",
+          "name": "CJONS_콘텐츠 임차(25년 3월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-01T02:49:50.140Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-02-28T15:00:00.000Z",
+          "amount": 1818182.0,
+          "start_date": "2025-02-28T15:00:00.000Z",
+          "end_date": "2025-03-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01963758-2a8f-7663-8d62-0851b0c27216",
+          "created_at": "2025-04-15T02:47:27.125Z",
+          "name": "CJONS_콘텐츠 임차(25년 4월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-01T02:50:22.736Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-03-31T15:00:00.000Z",
+          "amount": 15465564.0,
+          "start_date": "2025-03-31T15:00:00.000Z",
+          "end_date": "2025-04-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0196d68a-2296-7ee3-bbf6-471a0a0e9fd2",
+          "created_at": "2025-05-15T15:00:00.000Z",
+          "name": "CJONS_콘텐츠 임차(25년 5월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-05-01T00:41:59.319Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-04-30T15:00:00.000Z",
+          "amount": 3675818.0,
+          "start_date": "2025-04-30T15:00:00.000Z",
+          "end_date": "2025-05-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "019780c5-d90f-7dd4-b9ae-ca00cb2ac6ec",
+          "created_at": "2025-06-18T02:02:00.000Z",
+          "name": "CJONS_콘텐츠 임차(25년 6월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-01T02:02:38.391Z",
+          "expected_amount": 2402109.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-05-31T15:00:00.000Z",
+          "amount": 2402109.0,
+          "start_date": "2025-05-31T15:00:00.000Z",
+          "end_date": "2025-06-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "019811eb-8646-7aaa-a51a-2fc49957955e",
+          "created_at": "2025-07-16T06:28:00.000Z",
+          "name": "CJONS_콘텐츠 임차(25년 7월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-01T02:02:00.000Z",
+          "expected_amount": 2357163.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-06-30T15:00:00.000Z",
+          "amount": 2357163.0,
+          "start_date": "2025-06-30T15:00:00.000Z",
+          "end_date": "2025-07-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0198a26f-feb2-7884-97ba-7b33763371f4",
+          "created_at": "2025-08-13T07:58:00.000Z",
+          "name": "CJONS_콘텐츠 임차(25년 8월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-30T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-07-31T15:00:00.000Z",
+          "amount": 2870327.0,
+          "start_date": "2025-07-31T15:00:00.000Z",
+          "end_date": "2025-08-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01996fc3-163b-7889-bd12-f8aaeac385db",
+          "created_at": "2025-09-22T04:51:00.000Z",
+          "name": "CJONS_콘텐츠 임차(25년 9월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-31T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-08-31T15:00:00.000Z",
+          "amount": 1778036.0,
+          "start_date": "2025-08-31T15:00:00.000Z",
+          "end_date": "2025-09-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0199ea89-5ace-7118-8451-627185cc1680",
+          "created_at": "2025-10-16T01:01:00.000Z",
+          "name": "CJONS_콘텐츠 임차(25년 10월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-31T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-09-30T15:00:00.000Z",
+          "amount": 2925600.0,
+          "start_date": "2025-09-30T15:00:00.000Z",
+          "end_date": "2025-10-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "019a6d14-b44c-7aac-8d9a-e0a19979a8b9",
+          "created_at": "2025-11-10T09:24:00.000Z",
+          "name": "CJONS_콘텐츠 임차(25년 11월)",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "김윤지",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-09-30T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "기타",
+          "contract_date": "2025-10-31T15:00:00.000Z",
+          "amount": 3262981.0,
+          "start_date": "2025-10-31T15:00:00.000Z",
+          "end_date": "2025-11-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+            "name": "장유진",
+            "upper_org": "DT Academy",
+            "team": "-",
+            "title": "대리",
+            "edu_area": "계열사 교육"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "01949099-7f4b-7ee3-9f12-b935d0dd0f9a",
+          "name": "장유진",
+          "upper_org": "DT Academy",
+          "team": "-",
+          "title": "대리",
+          "edu_area": "계열사 교육",
+          "webforms": [
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "3-85. 공개교육 프로그램북"
+          ],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "DT Academy",
+      "team": "인재육성팀",
+      "deals": [
+        {
+          "id": "013feae6-5c8b-4685-857a-8dfbc8689193",
+          "created_at": "2023-11-08T05:54:49.367Z",
+          "name": "CJ올리브네트웍스 스킬컨설팅",
+          "team": null,
+          "owner": "한성은",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "스킬컨설팅",
+          "category": null,
+          "contract_date": "2023-11-08T05:55:06.513Z",
+          "amount": 10000000.0,
+          "start_date": "2023-11-30T15:00:00.000Z",
+          "end_date": "2023-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "64ec00405d2f14d1a850116c",
+            "name": "류상진",
+            "upper_org": "DT Academy",
+            "team": "인재육성팀",
+            "title": "부장",
+            "edu_area": "스킬 기반 교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "0191b599-bf12-7770-ae2c-241fe737f847",
+          "created_at": "2024-09-03T01:57:17.722Z",
+          "name": "[부가세별도] (B2B) CJ올리브네트웍스_2024년도 DT아카데미 ChatGPT 추가 제안 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "하승민",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2024-10-30T15:00:00.000Z",
+          "expected_amount": 8850000.0,
+          "lost_confirmed_at": "2024-10-13T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "0191c09b-eab8-7335-a9bf-556463c9c27b",
+            "name": "고다움",
+            "upper_org": "DT Academy",
+            "team": "인재육성팀",
+            "title": "사원",
+            "edu_area": "출강/단기/AI"
+          },
+          "memos": [
+            {
+              "date": "2024-09-03",
+              "text": "미팅 사후 로그1. 참석자 (고객사에서 참석하는 이의 소속과 직급/직책 모두 파악해 적어주세요)- 고객사 : 김휘령  고다움 과장- 팀 : 성규화 매니저* 10월부터 고다움과장이 담당자(김휘령 과장 출산)2. 미팅내용1) CJONS - DT아카데미란?- 인재개발원, CJ아카데미와 별개로 전 그룹사 교육을 담당하는 조직- 물론 예산은 인재개발원 통해 활용- CJ아카데미에 수강을 홍보하고 신청받아 운영하는 중- 집체교육을 하더라도 운영은 DT아카데미가 전부 담당- 연간 계획을 세워 연초에 계약함2) 교육 현황- 생성형AI 교육을 24년도에 N차수 진행했음- 특성상 인원을 선발할 수 없어서 같은 수업에 사전 이해도가 다른 수강생이 모이는 중--> 커리큘럼으로 이를 해소 할 수 있을지 하여 미팅 요청--> 입문/심화로 분반을 하여도 수강생들이 자기객관화가 안되어 있음- 10월 말 ~ 11월 초 생성형AI 교육 추가차수 계획 중--> 마케팅 OR 전직군 대상--> 제안 주시기로- 운영을 DT아카데미가 진행하기 때문에 교육업체는 커리큘럼 ~ 강사섭외까지만 필요함- 교육전까지 3자대면을 통한 교안 수정 필수3) 스킬매치25년도 교육문의- 교육개발도 하고 있지만 앞으로 스킬진단을 통해 교육을 구상하고 있음 안내- 스킬매치 간단 소개3. 제안 팁- 교안에 CJ사례를 반드시 넣을 것--> 경쟁사 사례도 좋지만 CJ사례가 필수- 예산에 맞춤형으로 제안 요청- 각 수강생들의 실력차를 극복할 수 있는 제안 필요"
+            },
+            {
+              "date": "2024-09-05",
+              "text": "1. 생성형 AI 영업/마케팅 과정생성형 AI교육과정 소개서 중에서 16, 23페이지 내용을 기반으로생성형 AI를 활용한 영업/마케팅 과정 제안 부탁드립니다.(1day, 8시간)실습 위주의 형태였으면 좋겠고, 교육 말미에는 개인별 산출물이 있으면 좋을 것 같습니다.2. 챗GPT 업무자동화 과정현재 해당 과정을 진행하고 있으며, 교육생 만족도도 괜찮은 편입니다.관련 과정의 다양화와 내년도 과정 기획을 위해서 커리큘럼 제안 부탁드립니다.(1day, 8시간)이 과정은 강사님들도 같이 추천해주시면 좋을 것 같습니다.(강사별 커리큘럼 제안도 가능합니다)"
+            },
+            {
+              "date": "2024-09-08",
+              "text": "@성규화 SQL 전환일(슬랙 채널 참고) 기입해두었습니다. (*앞으로는 배정되면 바로 기입 부탁 드려요)"
+            },
+            {
+              "date": "2024-09-23",
+              "text": "9/23 리마인드 메일 발송"
+            },
+            {
+              "date": "2024-10-04",
+              "text": "10/4 2차 리마인드 메일 발송"
+            },
+            {
+              "date": "2024-10-14",
+              "text": "10/14 리마인드 메일 1주 이상 회신 x => 상담 잠정 종료"
+            }
+          ]
+        },
+        {
+          "id": "01925532-2620-7aa1-aa6d-9d486168cbb6",
+          "created_at": "2024-10-04T01:43:22.920Z",
+          "name": "씨제이올리브네트웍스_생성형AI",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "이수빈",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-11-14T15:00:00.000Z",
+          "expected_amount": 6850000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "OA/업무자동화",
+          "contract_date": "2024-11-25T15:00:00.000Z",
+          "amount": 6850000.0,
+          "start_date": "2024-11-14T15:00:00.000Z",
+          "end_date": "2024-12-12T15:00:00.000Z",
+          "net_percent": "63.0",
+          "people": {
+            "id": "01925532-2572-7aa1-aa6c-e0d512caa32c",
+            "name": "서예진",
+            "upper_org": "DT Academy",
+            "team": "인재육성팀",
+            "title": "대리",
+            "edu_area": "DX/IT 교육"
+          },
+          "memos": [
+            {
+              "date": "2024-10-04",
+              "text": "생성형 AI 교육 사례집 전달 후 교육 문의-메일 히스토리대상은 내부의 핵심인재(팀장 후보자, 대리~차장급)을 대상으로 경영자역량과 변화주도에 대한 키워드를 가지고 교육을 진행하려고 합니다.이 중, 변화주도 항목을 업무 혁신 차원에서 Copilot에 대한 과정으로 기획중이며,Copilot에 대한 필수 개념 및 오피스 프로그램 실무 내용으로구성원들이 조별로 공동 과제를 수행하고 학습하고, 강사님의 피드백을 받을 수 있도록 2-3회에 걸쳐 강의/실습/과제피드백이 이루어지는 구성으로 제안해주시면 좋을 것 같습니다!학습 대상은 총 24명이며, 오프라인으로 CJ올리브네트웍스 본사에서 진행예정입니다."
+            },
+            {
+              "date": "2024-10-10",
+              "text": "1010 제안서 송부 완료"
+            },
+            {
+              "date": "2024-10-22",
+              "text": "1022 강사님 일정 확인 및 상세 커리큘럼 추가 요청"
+            }
+          ]
+        },
+        {
+          "id": "0192b462-bc66-7887-94ff-e171fd71f21e",
+          "created_at": "2024-10-22T13:20:22.639Z",
+          "name": "씨제이올리브네트웍스_스킬매치",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "이수빈",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2024-11-30T02:47:51.397Z",
+          "expected_amount": 18000000.0,
+          "lost_confirmed_at": "2024-12-04T15:00:00.000Z",
+          "lost_reason": "[\"내부 의사결정\"]",
+          "course_format": "스킬진단인증",
+          "category": "Skill Match",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64ec00405d2f14d1a850116c",
+            "name": "류상진",
+            "upper_org": "DT Academy",
+            "team": "인재육성팀",
+            "title": "부장",
+            "edu_area": "스킬 기반 교육"
+          },
+          "memos": [
+            {
+              "date": "2024-10-22",
+              "text": "[진단 개요]1. 진단 일시 : 12월 초2. 진단 인원 : 약 1700여명[평가 로직]1. 현재 저희가 구현한 스킬매치 v1의 경우, 총 5개의 레벨로 구성되어 있으며 각 레벨별로 5개의 문항이 세팅되어 있습니다. 다음 레벨의 문항을 풀기 위해서는 전 레벨에서 과반수 이상의 문항, 즉 3개 문항을 맞추어야 다음 레벨로 넘어갈 수 있습니다. 3개 미만의 문항을 맞추었을 시 바로 평가가 종료됩니다.2. 평가 문항의 경우, 말씀주신 것처럼 3배수 정도로 전달주시면 그 안에서 랜덤 출제가 가능합니다.3. 표준 레벨의 경우 미팅에서 lv.3 정도로 생각하신다고 말씀주셨었는데요, 전사 구성원 전체를 모두 lv.3을 요구수준으로 설정하는 것도 가능하며 원하신다면 직무별/직급별로도 상이하게 요구수준 설정이 가능하니 편하게 말씀 부탁드립니다."
+            },
+            {
+              "date": "2024-10-22",
+              "text": "1. 유저테스트 대상자교재 배포 및 온라인 교육 입과가 완료된 상황이라 교육입과자 중 진단시점 재직자는 전원 대상자로 보시면 되고,올리브네트웍스 및 자회사 인원 포함하여 최대 약 1,700명 정도 예상하고 있습니다.파일럿 유저 테스트도 진행 가능하며, 테스트 인원이 대략 몇 명 규모로 진행해야하는지 알려주시면 준비해 보겠습니다.2. 진단 결과지 포함 내용각 과목별 본인 점수, 전사 평균(가능하다면 전사,조직 둘다 확인 가능하면 좋겠습니다.)문항별 정오표라면 전체 응시 문항 및 정답 여부, 정답에 대한 설명을 포함해서 전달하는 것인지요?현재 논의중인 사항은 연간 최대 2차수 응시를 하여 특정 레벨을 기준으로 Pass / Fail 여부를 포함할지 입니다.올해는 이 부분은 반드시 적용되지 않아도 되지만 내년에는 적용될 가능성이 높아보입니다.3. 영역별 구성항목 구성은 6개 이내로 정리해보겠습니다.또한 스킬(과목)명 또한 시스템에서 요구하는 사항에 맞도록 정의하겠습니다.문항 출제는 집필진 및 외부 전문가를 통해서 검토 중에 있습니다.레벨 5로 문제 수준을 나누는게 어렵지 않을지 의견이 있는데요,지난 번 의견 주신대로 각 레벨별 문제 유형을 정의하고 (객관식 택1, 객관식 모두선택, 주관식 등)레벨 상, 중, 하 3가지로 문제를 출제한 후 이를 1~5레벨로 분배해서 진행하는 것도 좋을 것 같습니다."
+            },
+            {
+              "date": "2024-10-23",
+              "text": "[1023 미팅로그]skillflo CI를 CJ ONS 로고로 변경1개 기술영역 = 1개의 스킬8개 기술영역을 모두 tech, work, dx 중 1개의 영역에 몰아 넣어야 함 > 이렇게 진행했을 때 비워지게 되는 나머지 2개의 영역이 어떻게 보일지 확인이 필요함1차 응시 11월, 2차 응시 11월에 진행하면 가장 좋을 것 같음결과 페이지 pdf로 변환 필요 + 진단이 끝나면 진단 종료 버튼 등에서 결과 레포트를 바로 다운받을 수 있도록 구현되면 좋겠음 (건호님과 리소스 확인 필요)응시자별 ID 및 비번은 패캠 측에서 일괄 세팅진단시간은 시간 내에 페이지를 나갔다 들어왔다 자유롭게 할 수 있지만 설정된 시간이 지나면 아예 응시불가"
+            },
+            {
+              "date": "2024-12-05",
+              "text": "1205최종 보고 과정에서 본 평가 방식에 대한 경영진의 이견이 있었음"
+            }
+          ]
+        },
+        {
+          "id": "0193d7e9-11d3-7ff6-b7f1-e49548aedf4d",
+          "created_at": "2024-12-18T03:56:36.189Z",
+          "name": "씨제이올리브네트웍스_25년 교육 선금",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "권노을",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-12-31T03:56:40.294Z",
+          "expected_amount": 100000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2024-12-25T15:00:00.000Z",
+          "amount": 100000000.0,
+          "start_date": "2025-03-02T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0192b466-e751-755c-a23e-db266ec4c260",
+            "name": "강경구",
+            "upper_org": "DT Academy",
+            "team": "인재육성팀",
+            "title": "부장",
+            "edu_area": "DX/IT 교육"
+          },
+          "memos": [
+            {
+              "date": "2024-10-22",
+              "text": "1022 유선문의문의 교육 주제 : IT분야 스킬DB 기반 1) 교육, 2) 인증 프로그램 설계 및 진행예상 교육 시작 일정 : 25년 교육을 위한 본 프로젝트 '24 11~12월부터 진행1차 콜 내용:기존에 패캠과 구축한 스킬DB 기반으로 본격적으로 교육 & 인증 프로그램 설계하고자 함DB를 구축한 기술 분야가 여러 개라 단단위로 이야기하기보다 전반적인 사항에 대해 미팅 요청CJONS에서 우선순위로 생각하는 분야 기반, 패캠에서 진행/제공 가능한 것 확인금주 목요일 오후 or 금요일 오전 중 미팅 일정 확인 필요 (미팅 전에 1차 요구사항 전달 예정)"
+            },
+            {
+              "date": "2024-10-24",
+              "text": "[CJ ONS 측 니즈]기술 분야별 교육프로그램 및 인증체계 수립- 기술 분야 : AI/Data, SW(Front-end,Back-end), QA(품질), Security, Technical Architect, Application Architect, Data Architect/DBA- 기술 분야별로 스킬 및 레벨별로 교육프로그램 구성 필요, ex)SW(Front-end) Lv.1~3, SW(Back-end) Lv.1~3- 스킬별 레벨별 인증방안인증방안으로 외부자격증도 가능하나, 자격증 매핑이 힘든 경우 교육프로그램 후 테스트 형태의 인증도 생각하고 있습니다.(ex,바이트디그리) 올해 구성이 되는 교육부터 파일럿으로 진행하고, 내년도 부터는 전 교육 및 인증테스트를 스케쥴을 지정하여 진행할 예정입니다.------------------------------------------* 바이트디그리 레퍼런스: https://docs.google.com/spreadsheets/d/17y6_nx2NiEnqgEmfn21CghMX_rKIa7oaURvmBf9_rJk/edit?gid=0#gid=0* 직무역량평가(HD한국조선해양): https://docs.google.com/document/d/1wFxoFIcrUpsSYX1MnnPqnunJkStJj9uhZOkvHwaxAHs/edit로드맵* 프론트엔드/백엔드 (엔씨): https://docs.google.com/presentation/d/106FrGvsY0tkx-eB7GcqHeWbE1mCc6RzE/edit#slide=id.p1* 데이터(기획자) 분석: https://docs.google.com/presentation/d/1gmdshp4cmJCiTJ7oGB24ua4uFMZKXQ7_/edit#slide=id.p33* 25년 DX_LG에너지솔루션: https://docs.google.com/presentation/d/1oRlOBizb5vnHSdaUJBedNhqkkwhp567u/edit#slide=id.p7* 데이터분석_삼성전자(Citizen Developer 과정_ 커리큘럼): https://docs.google.com/presentation/d/18jhQi1GNV26gzRZ6ihkXAx7jHgB8X0w3/edit#slide=id.p1"
+            },
+            {
+              "date": "2024-10-25",
+              "text": "meeting log1) 요즘 다른 회사 요구사항- 예전에는 스킬을 어떻게 세팅할까에 머물러 이썼다면 이제는 효과성까지 고민2) 진행중이었던 과제 및 하고싶은 방향- 기술인증제 ('21~)- 데이터사이언스, 샙, 클라우드, 데브옵스, 피엠- 4가지 레벨 (기초, 어드밴스, 프로, 마스터)- 각 인증제의 응시기준, 인증방법까지 정리되어 있음이 5가지 모두 어드밴스까지만 만들어진 상태 (프로, 마스터는 아직 없음)- 전년도 경영진 변경되면서- 현재 대표님은 역량을 중요시하는 분, 이걸 기반으로 모든 걸 개편하고 싶어함.- 아이디에이션 시작하는 단계- 11개 정도의 인증제를 만들려고 함. (자료 공유해주시기로 함)- 노란색의 의미가 패캠에 요청하는 영역- 하얀색은 기존 인증제가 있어서 협업중인 내/외부 강사님들과 디벨롭 하면 가능할 것 같아서AI/Data(있긴한데 3년 전에 만든거라 리뉴얼 필요할 것 같다), SW, AA, TA, DA/DBA- 스킬 단위의 레벨 조합- 다양한 요소들을 조합한 형태의 인증제(2가지 인증 트랙: 스킬레벨, 기술 분야 레벨)직무에서 중요한 스킬셋이지만, 레벨로 측정하기는 어려운 것들은 예외로 둬도 되지 않을까 (소프트웨어 아키텍처 설계)개념이나 교육(콘텐츠 많으니까)은 어느정도 정리가 됐는데사실 진단 방법이 제일 어렵고 고민되는 사항이다 -> 테스트 방식 다양--------------------------성은님질문- 기술자체에 대한 것만 보는 형태인지? - 넵-------------------------- 최종 희망사항- 스킬셋 도출- 스킬셋 별로 교육 프로그램 (이러닝+집합)- 스킬셋 별 역량진단 방안 (하나의 테스트 or 각각의 테스트 및 진단 방식이 필요하면 나눠도 되고 e.g.바이트디그리)------------------------------기존 하고 있떤 것들은 신기술 영역의 전략사항 확보해야 하는 형태로 이걸 할 수 있구나 였따면내년 2분기까지 해서 각자 보유하고 있는 기술까지 DB 차원에서 관리하려고 함CDP 에 더 가깝게 보일 것 같다유효기간을 2년 정도 주기로 갱신할 수 있도록 하려고 함내가 보유하고 있는 기술들을 데이터베이스로 관리하면서 스킬 조합을 했을 때는 레벨인증이 되니, 이건 CDP 개념으로내가 어떤 업무에 도전하고 싶다면 부족한 것을 채울 수 있도록블렌디드: 온라인 콘텐츠 + 오프라인 실습 과정 형태스킬 단위 DB를 어떻게 관리할지가 중요한 것 같은데객관적인 테스트 점수별로 레벨링도 있고, 쓸 수 있냐 하는 툴 단위도 있을 것 같고이런 것들로 묶어볼 수 있지 않을까.SW도 어느정도는 있지만기술 안에서 역할 별로도 나눠야 되지 않을까 하는 생각 (4덩어리 정도는 나뉠 듯 / 운영, 프로젝트 단위 등)모든 하드스킬 인증은 쉽지 않을 것 같고올해 최대한 객관화 해보고, 내년 파일럿 도입해보고, 매년 디벨롭 해나가는 형태를 보고 있기 때문에기술별로 최소 하나씩은 측정방안이 있으면 좋겠다.AA 같은 것은 바이트디그리처럼 만들어볼 수 있지 않을까, 싶긴한데. 아키텍처가 제일 고민되긴한다. 데브옵스는 사내에서 하고 있음. 환경구축을 할 수 있는 형태로 진단하고 있음소프트웨어는 객관적인 툴이 많은데, 아키텍처는 그런 게 없다보니 고민임정착된 형태로 매년 진행이 될거라서인증제들이 교육과 함께 오픈합니다, 라고 진행될 예정-----------------------스킬DB 만들었을 때는 테크, 워크 등이 있었는데이건 테크에만 집중하면 됨이걸 통해서 하고 싶은건역량평가 하는데 있어서 카테고리는 나눠져 있는데, 평가가 명확하지 않음그 중에서 전문성 영역은 점수가 박혀 있으면 평가에 있어서 매니저의 주관성 비중을 줄이고2년 단위로 계쏙 역량개발하는 사람들이 역량 평가를 잘 받을 수 있도록내년 6월까지는 DB로 갈거니까, 개인들의 정보가 다 박혀있고그걸 조합해서  외부 채용, 잡 호스팅 등에도 사용할 것이고 (HRM 확대)----------------------1) 각 기술을 3단계로 구분했는데, 확정한건가요? -> 네ㄴ 직급 통합이 3단계 될 예정 (역량 단위로 직급 통합, 이해:사원/활용:대리/리딩:과장)ㄴ현재 스킬 단계에서는 5단계로 만들어져 있는데, 이렇게까지 세분화해서 교육 과정 만드는 게 어려울 것 같다.* 스킬매치에서 문항도 하다보니 유사한 맥락2) 우리는 왼쪽에 있는 내용 기반으로 (기술/메인스킬/기술에 대한 측정방법)평가를 받더라도 본인 커리어를 가져가고, 외부에서 쓸 수 있으면 좋겠다그래서 처음 생각한 건 자격증이었는데, 너무 뭉뚱그려지니까. 예를 들면, 모든 기술을 lv3 가 되면 마스터의 인터뷰 대상이 된다는 개념이나, 이건 내부 정책으로 풀어갈 수 있으니,패캠에서 해야 하는건 기술적인 레벨링에 대한 기준 마련to doCJ ONS- 스킬DB에 추가로 정리해놓은 자료는 더 주시기로 함- 컨셉자료"
+            },
+            {
+              "date": "2024-12-20",
+              "text": "스킬-교육 맵핑 리스트 송부"
+            },
+            {
+              "date": "2025-10-10",
+              "text": "씨제이올리브네트웍스_IT직군 역량 강화 교육 견적서70,400,000원 사용(vat 포함X)"
+            },
+            {
+              "date": "2025-12-04",
+              "text": "패스트캠퍼스_교육견적서_CJONS_AI Champion(AI 아이디어 도출 워크숍) 견적서5,300,000 사용(VAT 포함X)본 선금에서 정산하기로하여 별도의 계약하지 않는 것으로 협의\n현재까지 총 사용금액 70,400,000+5,300,000=75,700,000원"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64ec00405d2f14d1a850116c",
+          "name": "류상진",
+          "upper_org": "DT Academy",
+          "team": "인재육성팀",
+          "title": "부장",
+          "edu_area": "스킬 기반 교육",
+          "webforms": [
+            "1-14. 백서 신청 (report_leadershipfw)",
+            "1-21. 백서 신청 (report_lmsguide)",
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "1-6. 백서 신청 (report_itleaders)",
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기",
+            "4-13.  인사이트 세미나 : 기업의 AI 이니셔티브 달성을 위한 Skill-based 인재 관리 전략",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "5-11. 지디넷 코리아 발표 자료 신청 (presentation_skillmatch)",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)",
+            "5-15. ATD Korea Summit 2024 하이라이트북 신청 (report_atdkorea2024)",
+            "5-3. 템플릿 신청 (template_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2023-08-28",
+              "text": "[웹폼 제출 내용]- 고객 이름 : 류상진- 고객 이메일 : sangjin.ryu@cj.net- 고객 전화 : 01046628239- 회사 이름 : CJ올리브네트웍스- 고객 담당 업무 : HRD(인재육성/교육)- 고객 직급/직책 : 팀장- 회사 기업 규모 : 대기업- 회사 업종 : IT/정보통신업- 고객 방문 경로 : (공백)- 고객 개인정보 수집 동의 : (공백)- 고객 마케팅 수신 동의 : 동의합니다."
+            },
+            {
+              "date": "2024-03-04",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 아직 검토 중인 부분은 없음, 추후에 연락드리겠음2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            },
+            {
+              "date": "2024-03-19",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 현재 해외에 있어서 메일로 남겨주세요2. 후속 액션- 3월 프로모션 시퀀스 등록"
+            },
+            {
+              "date": "2024-04-17",
+              "text": "- 고객 이름 : 류상진\n- 고객 이메일 : sangjin.ryu@cj.net\n- 고객 전화 : 010-4662-8239\n- 회사 이름 : CJ올리브네트웍스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고, 직접 검색\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240417\n- 고객 utm_content : lead-gen^bizletter^seminar-genaiforall\n"
+            },
+            {
+              "date": "2024-04-17",
+              "text": "- 고객 이름 : 류상진\n- 고객 이메일 : sangjin.ryu@cj.net\n- 고객 전화 : 010-4662-8239\n- 회사 이름 : CJ올리브네트웍스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240411\n- 고객 utm_content : nurturing^salesmap-nurturing^mktg-agreed\n"
+            },
+            {
+              "date": "2025-01-16",
+              "text": "- 고객 이름 : 류상진\n- 고객 전화 : 01046628239\n- 고객 이메일 : sangjin.ryu@cj.net\n- 회사 이름 : CJ올리브네트웍스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : kakaotalk\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^250115\n- 고객 utm_content : lead-gen^hrda^openchat\n"
+            },
+            {
+              "date": "2025-02-20",
+              "text": "- 고객 이름 : 류상진\n- 고객 전화 : 01046628239\n- 고객 이메일 : sangjin.ryu@cj.net\n- 회사 이름 : 씨제이올리브네트웍스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고, 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250220\n- 고객 utm_content : lead-gen^khrd^lmsguide\n"
+            }
+          ]
+        },
+        {
+          "id": "0191c09b-eab8-7335-a9bf-556463c9c27b",
+          "name": "고다움",
+          "upper_org": "DT Academy",
+          "team": "인재육성팀",
+          "title": "사원",
+          "edu_area": "출강/단기/AI",
+          "webforms": [
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "1-9. 백서 신청 (report_skilltrans)"
+          ],
+          "memos": [
+            {
+              "date": "2025-01-08",
+              "text": "- 고객 이름 : 고다움\n- 고객 이메일 : daum.go@cj.net\n- 고객 전화 : 01087589260\n- 회사 이름 : CJ올리브네트웍스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-01-08",
+              "text": "- 고객 이름 : 고다움\n- 고객 이메일 : daum.go@cj.net\n- 고객 전화 : 01087589260\n- 회사 이름 : CJ올리브네트웍스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-01-08",
+              "text": "- 고객 이름 : 고다움\n- 고객 이메일 : daum.go@cj.net\n- 고객 전화 : 01087589260\n- 회사 이름 : CJ올리브네트웍스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01925532-2572-7aa1-aa6c-e0d512caa32c",
+          "name": "서예진",
+          "upper_org": "DT Academy",
+          "team": "인재육성팀",
+          "title": "대리",
+          "edu_area": "DX/IT 교육",
+          "webforms": [
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "0192b466-e751-755c-a23e-db266ec4c260",
+          "name": "강경구",
+          "upper_org": "DT Academy",
+          "team": "인재육성팀",
+          "title": "부장",
+          "edu_area": "DX/IT 교육",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인사조직",
+      "team": "DT Academy",
+      "deals": [
+        {
+          "id": "01983b98-2c41-7ff5-9976-2c9ffe20ef17",
+          "created_at": "2025-07-24T08:41:00.000Z",
+          "name": "씨제이올리브네트웍스_기획 분야 생성형 AI 워크숍",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-10-30T15:00:00.000Z",
+          "expected_amount": 5040000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-10-30T15:00:00.000Z",
+          "amount": 5050000.0,
+          "start_date": "2025-11-11T15:00:00.000Z",
+          "end_date": "2025-11-11T15:00:00.000Z",
+          "net_percent": "84.0",
+          "people": {
+            "id": "b63ca21f-3cf1-44db-80f9-040bfbab78f0",
+            "name": "최현우",
+            "upper_org": "인사조직",
+            "team": "DT Academy",
+            "title": "실무자",
+            "edu_area": "출강(생성형 AI, 직무별 AX Workshop)"
+          },
+          "memos": [
+            {
+              "date": "2025-07-24",
+              "text": "1차 콜 완료차주 화 수 중 미팅 가능(7월 29일, 30일)비개발자 대상, 전략 기획을 대상군으로 주긴 했으나 전략 업무보다는 기획 업무를 수행하는 대상이 더 많을 것으로 예상함.\n커리큘럼공개교육 커리큘럼을 보고 문의를 주었고, 해당 Flow로 진행되었으면 하나, CJONS 내부 니즈에 부합하여 커스터마이즈 되면 좋을 것 같음.\nAI Agent 관련GPTs 교육을 진행하는 과정은 많아서, Make나 N8N 등의 AI Automation Tool 활용을 'AI Agent'라고 표현한 것.비개발자 대상이라면, N8N보다는 Make가 교육 효과 상 긍정적일 것으로 안내함.\n실습 중심의 워크숍형시행착오 없이 진행할 수 있도록 Make 시나리오 등을 미리 구축해 줄 수 있는지에 대한 의견이 있음.\n정백님 희망정백님 Make 가능하신지는 확인 필요함.AI Agent 관련해서 어떤 내용을 원하는지는 더 면밀히 파악 필요할 것으로 보임."
+            }
+          ]
+        },
+        {
+          "id": "019a707f-a106-733b-b1f4-77ee9e9abdb6",
+          "created_at": "2025-11-11T01:20:00.000Z",
+          "name": "씨제이 그룹사 교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "황초롱",
+          "status": "SQL",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "b63ca21f-3cf1-44db-80f9-040bfbab78f0",
+            "name": "최현우",
+            "upper_org": "인사조직",
+            "team": "DT Academy",
+            "title": "실무자",
+            "edu_area": "출강(생성형 AI, 직무별 AX Workshop)"
+          },
+          "memos": [
+            {
+              "date": "2025-11-12",
+              "text": "저희가 매년 CJ그룹 임직원분들을 대상으로 매년 초에 신청형 집합교육 과정들을 기획/오픈하고 있는데요,\n26년도 CJ그룹 집합교육 진행 관련하여 과정 제안 요청드리고자 연락드렸습니다.추후 하기 건으로 미팅 시, 해당 집합교육 포맷에 대해 보다 상세히 안내드리겠습니다. \n\n대상: CJ그룹 임직원 30명 내외  (선착순 모집)분야: AI, 업무스킬(OA, 문서작성, 트렌드 센싱, 기획력, 마케팅 등)  \n일정: 26년도 3월~10월 중 강사님과 일정 협의 예정\n\n이에, 패스트캠퍼스에서 주력으로 진행하고 계시거나, \nCJ그룹 임직원분들께 추천하고 싶으신 과정이 있으시다면 어떤 과정이든 편히 제안주시고,\n관련하여 문의사항이 있으시다면 언제든지 편히 연락주십시오.\n[251112통화]DT아카데미 소속. -님 호칭\n현재 내년 교육 60차수 정도 생각중. 여러 업체들 컨택중이며 가장 적절할 과정들을 업체별로 골라서 소싱예정.12월 내 기획 구체화 해서 방향성 정해지면 추가 미팅 요청예정."
+            }
+          ]
+        },
+        {
+          "id": "019ac963-8084-7000-92d9-a97bafe1a370",
+          "created_at": "2025-11-28T07:35:00.000Z",
+          "name": "씨제이올리브네트웍스_신입사원 대상 생성형 AI 특강",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "SQL",
+          "probability": null,
+          "expected_date": "2026-01-29T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "b63ca21f-3cf1-44db-80f9-040bfbab78f0",
+            "name": "최현우",
+            "upper_org": "인사조직",
+            "team": "DT Academy",
+            "title": "실무자",
+            "edu_area": "출강(생성형 AI, 직무별 AX Workshop)"
+          },
+          "memos": []
+        },
+        {
+          "id": "019ac964-207c-7000-92b6-f391f23f484f",
+          "created_at": "2025-11-28T07:36:00.000Z",
+          "name": "씨제이올리브네트웍스_마케팅 직무 AI 워크숍",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "SQL",
+          "probability": null,
+          "expected_date": "2026-01-29T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "b63ca21f-3cf1-44db-80f9-040bfbab78f0",
+            "name": "최현우",
+            "upper_org": "인사조직",
+            "team": "DT Academy",
+            "title": "실무자",
+            "edu_area": "출강(생성형 AI, 직무별 AX Workshop)"
+          },
+          "memos": []
+        },
+        {
+          "id": "019ac964-7323-7bbc-b688-2a57fab112cc",
+          "created_at": "2025-11-28T07:36:00.000Z",
+          "name": "씨제이올리브네트웍스_재무회계 AI 워크숍",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "SQL",
+          "probability": null,
+          "expected_date": "2026-01-29T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "b63ca21f-3cf1-44db-80f9-040bfbab78f0",
+            "name": "최현우",
+            "upper_org": "인사조직",
+            "team": "DT Academy",
+            "title": "실무자",
+            "edu_area": "출강(생성형 AI, 직무별 AX Workshop)"
+          },
+          "memos": []
+        },
+        {
+          "id": "019ac964-cb20-7000-92fd-f08a8a78ea1a",
+          "created_at": "2025-11-28T07:36:00.000Z",
+          "name": "씨제이올리브네트웍스_기획직무 AI 워크숍_추가",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "SQL",
+          "probability": null,
+          "expected_date": "2026-01-29T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "b63ca21f-3cf1-44db-80f9-040bfbab78f0",
+            "name": "최현우",
+            "upper_org": "인사조직",
+            "team": "DT Academy",
+            "title": "실무자",
+            "edu_area": "출강(생성형 AI, 직무별 AX Workshop)"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "b63ca21f-3cf1-44db-80f9-040bfbab78f0",
+          "name": "최현우",
+          "upper_org": "인사조직",
+          "team": "DT Academy",
+          "title": "실무자",
+          "edu_area": "출강(생성형 AI, 직무별 AX Workshop)",
+          "webforms": [
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "3-28. 소개서 : 일반 직무 대상 디지털 역량 교육 (main_digitaledu)",
+            "3-53. 소개서 : 데이터 기반 의사결정 (content_dataanalysis_roadmap)",
+            "3-70. 소개서 : 패스트캠퍼스 기업교육 대표 콘텐츠북",
+            "3-81. 온라인 로드맵 전체 다운로드",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-17",
+              "text": "- 고객 이름 : 최현우\n- 고객 이메일 : hyeonwoo.choi1@cj.net\n- 고객 전화 : 010-2899-2362\n- 회사 이름 : CJ올리브네트웍스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240417\n- 고객 utm_content : lead-gen^bizletter^seminar-genaiforall\n"
+            },
+            {
+              "date": "2024-05-22",
+              "text": "- 고객 이름 : 최현우\n- 고객 이메일 : hyeonwoo.choi1@cj.net\n- 고객 전화 : 010-2899-2362\n- 회사 이름 : CJ올리브네트웍스\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-06-29",
+              "text": "- 고객 이름 : 최현우\n- 고객 전화 : 01028992362\n- 고객 이메일 : hyeonwoo.choi1@cj.net\n- 회사 이름 : 씨제이올리브네트웍스\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-07-09",
+              "text": "- 고객 이름 : 최현우\n- 고객 전화 : 01028992362\n- 고객 이메일 : hyeonwoo.choi1@cj.net\n- 회사 이름 : 씨제이올리브네트웍스\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-12",
+              "text": "- 고객 이름 : 최현우\n- 고객 전화 : 01028992362\n- 고객 이메일 : hyeonwoo.choi1@cj.net\n- 회사 이름 : 씨제이올리브네트웍스\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

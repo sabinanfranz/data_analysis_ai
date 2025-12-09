@@ -1,3 +1,14 @@
+# 2025-12-09 작업 기록
+
+- org_tables_v2 상위 조직 JSON UX 보완
+  - 회사 전환/로딩/에러 시 Won JSON 상태 초기화 + 복사 버튼 비활성화, 정상 로드 시만 활성화.
+  - CSS 파서 오류를 유발하던 JS 위치를 수정해 진단 경고 해소.
+- 문서 업데이트
+  - `docs/org_tables_v2.md`에 JSON 카드 최신 동작(버튼 비활성/상태 초기화)과 venv+PYTHONPATH 테스트 방법 추가.
+- 테스트
+  - `.venv` 생성 후 `PYTHONPATH=. .venv/bin/pytest -q` (14/14 통과).
+  - pytest가 없던 환경에서 venv로 설치하여 실행.
+
 # 2025-01-07 작업 기록
 
 - `build_org_tables.py` UI/로직 대규모 개편
@@ -22,3 +33,13 @@
   - 회사 메모 카드 높이 자동 조절(has-memos), 회사 선택 없을 때 힌트 노출.
   - CLI/env 옵션 추가: `--api-base-url`, `--api-token`(`API_BASE_URL`, `API_TOKEN`).
   - 유닛 테스트 추가: API config HTML 임베드 검증.
+
+# 2025-12-10 작업 기록
+
+- Salesmap 스냅샷 복원력 개선
+  - 체크포인트 저장 시 Windows 권한/잠금으로 rename 실패하면 최대 3회 재시도 후 tmp→본 파일 복사 폴백을 추가하여 크래시 방지(`CheckpointManager.save_table`).
+  - 수동 복구 절차: 최신 `.tmp`를 `.json`으로 덮어쓰는 백업+교체 명령을 수행.
+- 실행 가이드 보강
+  - `docs/user_guide.md`에 PowerShell 한 줄 실행/재개 예시(`--resume`, `--resume-run-tag`) 추가.
+- 재개 시도 메모
+  - venv를 생성해 의존성 설치 후 재개 실행; Windows Python 경로에서는 venv 스크립트 인식 문제가 있어 WSL bash 경유 실행/토큰 설정 안내.

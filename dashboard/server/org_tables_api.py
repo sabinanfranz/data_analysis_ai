@@ -75,9 +75,11 @@ def get_deal_memos(deal_id: str, limit: int = Query(200, ge=1, le=500)) -> dict:
 
 
 @router.get("/rank/2025-deals")
-def get_rank_2025_deals() -> dict:
+def get_rank_2025_deals(
+    size: str = Query("전체", description='조직 규모 필터 (예: "대기업", "전체")')
+) -> dict:
     try:
-        return {"items": db.get_rank_2025_deals()}
+        return {"items": db.get_rank_2025_deals(size=size)}
     except FileNotFoundError as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 
@@ -86,6 +88,13 @@ def get_rank_2025_deals() -> dict:
 def get_won_summary(org_id: str) -> dict:
     try:
         return {"items": db.get_won_summary_by_upper_org(org_id=org_id)}
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+@router.get("/orgs/{org_id}/won-groups-json")
+def get_won_groups_json(org_id: str) -> dict:
+    try:
+        return db.get_won_groups_json(org_id=org_id)
     except FileNotFoundError as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

@@ -1,0 +1,182 @@
+{
+  "organization": {
+    "id": "64dd761996e775eee7e3a63d",
+    "name": "삼성디스플레이",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "People그룹",
+      "team": "생산기술연구소",
+      "deals": [
+        {
+          "id": "019545a6-b9aa-7221-b89d-3e97d63e8628",
+          "created_at": "2025-02-27T04:25:09.298Z",
+          "name": "삼성디스플레이_25년 AI 전문가 양성 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김동찬",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-08T02:34:35.616Z",
+          "expected_amount": 44250000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "빅데이터/AI",
+          "contract_date": "2025-04-07T15:00:00.000Z",
+          "amount": 44250000.0,
+          "start_date": "2025-05-11T15:00:00.000Z",
+          "end_date": "2025-05-29T15:00:00.000Z",
+          "net_percent": "64.0",
+          "people": {
+            "id": "019545a6-b91a-7221-b89d-2cc19293a498",
+            "name": "서인석",
+            "upper_org": "People그룹",
+            "team": "생산기술연구소",
+            "title": "프로",
+            "edu_area": "AI/DL/ML"
+          },
+          "memos": [
+            {
+              "date": "2025-03-07",
+              "text": "3/7 서인석 프로 연락건 - 현재 내부 구매 프로세스상 제안과 견적 검토가 들어갈 경우 2~3주가 소요됨 - 그런데, 낮춘 견적이 아닌 기존의 견적으로 검토가 먼저 들어감.- 만약 견적에서도 통과가 되면 그대로 진행하고 싶음. 다른 업체와 금액적인 부분은 차이가 있으나, 그 이외의 다른면에서 패캠이 앞서는게 커서, 해당 견적으로 통과가 될 경우 그대로 진행할 예정.- 다음주중에 중간 상황 공유드리겠음3/13 - 현재 내부 구매 프로세스상에 검토중 (금액은 아직 이전 견적인 높은건) - 솔직히 금액차이는 있으나, 강사진, 운영 퀄리티 등의 차이가 너무 많고, 이미 삼성과 진행해본 경험이 많은 패캠쪽으로 논의 이끄는중 - 금액은 견적 두개 드려서 더 낮은쪽으로 진행해도 괜찮다 말씀드림 - 차주에 공유 드리거나, 연락주시면 진행상황 말씀드리겠음."
+            },
+            {
+              "date": "2025-03-20",
+              "text": "4월 초 계약 예상. 프로세스상 견적 등록 절차 등을 거쳐야 하는 부분이 많아서,  시간이 걸릴듯."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "019545a6-b91a-7221-b89d-2cc19293a498",
+          "name": "서인석",
+          "upper_org": "People그룹",
+          "team": "생산기술연구소",
+          "title": "프로",
+          "edu_area": "AI/DL/ML",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "생산기술연구소",
+      "team": "생산기술아카데미",
+      "deals": [
+        {
+          "id": "d734ed57-6eb2-481d-9efd-cbe5581f540b",
+          "created_at": "2024-02-14T11:47:43.235Z",
+          "name": "삼성디스플레이_2024 AI 전문가 양성 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-04-28T15:00:00.000Z",
+          "expected_amount": 34620000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "빅데이터/AI",
+          "contract_date": "2024-04-30T12:45:44.000Z",
+          "amount": 26860000.0,
+          "start_date": "2024-05-19T15:00:00.000Z",
+          "end_date": "2024-05-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "f68d3e38-4c3d-4297-ad4a-7ae7ca580bc4",
+            "name": "이세호",
+            "upper_org": "생산기술연구소",
+            "team": "생산기술아카데미",
+            "title": "프로",
+            "edu_area": "출강/AI,빅데이터"
+          },
+          "memos": []
+        },
+        {
+          "id": "af10b458-18cc-4e58-a7c7-4084bc237bc8",
+          "created_at": "2024-02-14T11:49:06.049Z",
+          "name": "삼성디스플레이_오픈CV 이미지,영상분석",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 8300000.0,
+          "lost_confirmed_at": "2024-03-03T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "데이터분석/CDS",
+          "contract_date": "2024-03-07T00:35:56.908Z",
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "f68d3e38-4c3d-4297-ad4a-7ae7ca580bc4",
+            "name": "이세호",
+            "upper_org": "생산기술연구소",
+            "team": "생산기술아카데미",
+            "title": "프로",
+            "edu_area": "출강/AI,빅데이터"
+          },
+          "memos": [
+            {
+              "date": "2024-05-19",
+              "text": "3/4(월)올해 AI 전문가 양성과정만 진행하는 걸로 내부 협의되었다고 함 ( 교육예산이 기존보다 줄어들었음 )"
+            }
+          ]
+        },
+        {
+          "id": "cd93ec54-b24b-4901-8bea-166dd92dad6f",
+          "created_at": "2024-02-14T11:49:28.666Z",
+          "name": "삼성디스플레이_파이썬 머신러닝 데이터분석",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 8300000.0,
+          "lost_confirmed_at": "2024-03-03T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "빅데이터/AI",
+          "contract_date": "2024-03-07T00:35:52.374Z",
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "f68d3e38-4c3d-4297-ad4a-7ae7ca580bc4",
+            "name": "이세호",
+            "upper_org": "생산기술연구소",
+            "team": "생산기술아카데미",
+            "title": "프로",
+            "edu_area": "출강/AI,빅데이터"
+          },
+          "memos": [
+            {
+              "date": "2024-05-19",
+              "text": "3/4(월)올 해 AI 전문가 양성 과정만 진행하는 것으로 내부 협의 되었다고 함(교육 예산이 줄어들었음)"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "f68d3e38-4c3d-4297-ad4a-7ae7ca580bc4",
+          "name": "이세호",
+          "upper_org": "생산기술연구소",
+          "team": "생산기술아카데미",
+          "title": "프로",
+          "edu_area": "출강/AI,빅데이터",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

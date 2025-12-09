@@ -1,0 +1,156 @@
+{
+  "organization": {
+    "id": "6538ccdeec0324feb39cef71",
+    "name": "케이티디에스",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "경영기획총괄 변화추진담당",
+      "team": "역량강화팀",
+      "deals": [
+        {
+          "id": "3a6fad6a-940f-425e-be96-4aa9c5edaf3e",
+          "created_at": "2023-11-27T02:08:15.002Z",
+          "name": "케이티디에스(kt ds, 이홍은)_온라인_2024년 교육",
+          "team": null,
+          "owner": "이지현",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-12-28T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2023-12-29T06:20:16.709Z",
+          "amount": 242250000.0,
+          "start_date": "2024-02-29T15:00:00.000Z",
+          "end_date": "2025-02-27T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "7afd8094-93b2-4f29-b643-da2904a199c5",
+            "name": "권재현",
+            "upper_org": "경영기획총괄 변화추진담당",
+            "team": "역량강화팀",
+            "title": "과장",
+            "edu_area": "온라인/연간/올플랜"
+          },
+          "memos": []
+        },
+        {
+          "id": "0192dc39-d386-7000-84ae-b862bbfffb32",
+          "created_at": "2024-10-30T07:00:31.298Z",
+          "name": "KTDS_(오프라인)_24년 11월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-11-18T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "cea04aa6-4bb4-4ca5-837b-c857307db2e4",
+            "name": "정유재",
+            "upper_org": "경영기획총괄 변화추진담당",
+            "team": "역량강화팀",
+            "title": "차장",
+            "edu_area": "출강/단기/생성형 AI"
+          },
+          "memos": [
+            {
+              "date": "2024-10-30",
+              "text": "- 교육주제 : MS Azure AI 서비스 개발역량강화 (코파일럿,애저 AI 스튜디오 활용)- 교육대상에 대한 파악 : 인원 미정/ 직무 미정/ 현재수준 미정- 교육형태 : 오프라인 (2-3DAY)- 교육목적/배경 : KT와 MS파트너십 체결로 인해 전사 애저 서비스개발역량강화필요- 교육시작 일정 : ASAP, 빠르면 12월 초- (중요) 예산 : 예산 혹은 고려하시는 단가 확인 : 정확히 X원하는 강사가 있었는데, 해당 강사 단가로는 불가하다고 말씀주셨습니다. (주한나 강사 (B2C기준: 고정급 1000만원))- (중요) 기업 담당자의 현 상황 : 내부 보고단계- 구체화에 필요한 기타 사항강사와의 커리큘럼 논의 미팅- 고객사가 원하는 자료 : 강사프로필"
+            },
+            {
+              "date": "2024-11-19",
+              "text": "강사 프로필 전달 후, 2차  f-up 드렸으나 강사진과 교육방향성이 맞지 않아 추후에 재연락주신다고 회신 옴"
+            }
+          ]
+        },
+        {
+          "id": "01949705-683a-7888-bdc7-296a4ea1745d",
+          "created_at": "2025-01-24T06:35:01.572Z",
+          "name": "KT ds 온라인 (구독)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정하영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-01T02:43:12.287Z",
+          "expected_amount": 237600000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-02-28T15:00:00.000Z",
+          "amount": 237600000.0,
+          "start_date": "2025-02-28T15:00:00.000Z",
+          "end_date": "2026-02-27T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "7afd8094-93b2-4f29-b643-da2904a199c5",
+            "name": "권재현",
+            "upper_org": "경영기획총괄 변화추진담당",
+            "team": "역량강화팀",
+            "title": "과장",
+            "edu_area": "온라인/연간/올플랜"
+          },
+          "memos": [
+            {
+              "date": "2025-01-24",
+              "text": "올플랜 1,800명 재도입필요견적서24년도 현황 분석 레포트(~2/7)2월 초 중 미팅예정[유선 내용 참고]25년에는 B2C 신규콘텐츠 제공 시점을 ASAP 당기면 좋겠다올해는 집합교육을 최소화하고 자기주도 온라인 학습 권장으로 감 (패캠과 유데미)Azure/AWS/클라우드 <자격대비> 콘텐츠 필요함"
+            },
+            {
+              "date": "2025-02-24",
+              "text": "구독서비스 종류/과정명: 올 플랜구독서비스 이용 기간: 2025년 03월 01일 ~ 2026년 02월 28일 구독서비스 수강 인원: 1,850명"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "cea04aa6-4bb4-4ca5-837b-c857307db2e4",
+          "name": "정유재",
+          "upper_org": "경영기획총괄 변화추진담당",
+          "team": "역량강화팀",
+          "title": "차장",
+          "edu_area": "출강/단기/생성형 AI",
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "7afd8094-93b2-4f29-b643-da2904a199c5",
+          "name": "권재현",
+          "upper_org": "경영기획총괄 변화추진담당",
+          "team": "역량강화팀",
+          "title": "과장",
+          "edu_area": "온라인/연간/올플랜",
+          "webforms": [
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "5-3. 템플릿 신청 (template_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-24",
+              "text": "- 고객 이름 : 권재현\n- 고객 이메일 : jei.Kwon@kt.com\n- 고객 전화 : 01093710398\n- 회사 이름 : ktds\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 웨비나/오프라인 행사\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : kakaotalk\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240222\n- 고객 utm_content : lead-gen^hrda^openchat\n"
+            },
+            {
+              "date": "2024-09-05",
+              "text": "- 고객 이름 : 권재현\n- 고객 이메일 : Jei.kwon@kt.com\n- 고객 전화 : 01093710398\n- 회사 이름 : kt ds\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240904\n- 고객 utm_content : nurturing^cold^salesmap-db\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

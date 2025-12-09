@@ -1,0 +1,422 @@
+{
+  "organization": {
+    "id": "f3a32c00-ece9-45ee-889b-1ef13e45ba3f",
+    "name": "에이치엘인재개발원",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "에이치엘그룹 HR혁신실",
+      "team": "Talent Growth",
+      "deals": [
+        {
+          "id": "0196668e-4f52-7ee3-87b8-39dd4ad97fbf",
+          "created_at": "2025-04-24T06:48:44.652Z",
+          "name": "에이치엘인재개발원_신입사원 생성형 AI를 활용한 업무자동화",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-30T08:30:28.950Z",
+          "expected_amount": 2950000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-06-23T15:00:00.000Z",
+          "amount": 2950000.0,
+          "start_date": "2025-06-23T15:00:00.000Z",
+          "end_date": "2025-06-24T15:00:00.000Z",
+          "net_percent": "57.0",
+          "people": {
+            "id": "0196668e-4e2b-7ee3-87b6-738840830726",
+            "name": "민선희",
+            "upper_org": "에이치엘그룹 HR혁신실",
+            "team": "Talent Growth",
+            "title": "책임매니저",
+            "edu_area": "출강(신입사원 교육, 핵심인재 교육 등)"
+          },
+          "memos": []
+        },
+        {
+          "id": "0196c240-b946-7dde-aeb2-4dc4ec985931",
+          "created_at": "2025-05-12T02:09:03.824Z",
+          "name": "에이치엘인재개발원_신입사원 재무제표 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-06-30T08:28:23.622Z",
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-05-12T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "출강",
+          "category": "재무회계",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "0196668e-4e2b-7ee3-87b6-738840830726",
+            "name": "민선희",
+            "upper_org": "에이치엘그룹 HR혁신실",
+            "team": "Talent Growth",
+            "title": "책임매니저",
+            "edu_area": "출강(신입사원 교육, 핵심인재 교육 등)"
+          },
+          "memos": [
+            {
+              "date": "2025-05-13",
+              "text": "HL 워크스마트 강사료 견적 단가로 생각하고 문의 주심.\n1일 단건 판매가 55만 원으로 안내하였고, 30만 원 선으로 생각하고 문의주신 사항으로,그동안 HL 자체적으로 진행한 강사와 진행하고자 한다며 문의 취소.\n말씀주신 강사료 상한 선은 40만 원.\n워크스마트의 경우 동일 강사 다회차 반복 차수로 인해 강사료 판매가 30만 원으로 견적 나간 히스토리 있음.다만, 재무제표 김진성 회계사 일정 불가로 지병흔 회계사 컨택하여 진행하고자 했음."
+            }
+          ]
+        },
+        {
+          "id": "019ac9c1-6bc8-7000-830f-a5e63c7d6df1",
+          "created_at": "2025-11-28T09:18:00.000Z",
+          "name": "에이치엘인재개발원_신입사원 입문교육",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "SQL",
+          "probability": null,
+          "expected_date": "2025-12-30T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "0196668e-4e2b-7ee3-87b6-738840830726",
+            "name": "민선희",
+            "upper_org": "에이치엘그룹 HR혁신실",
+            "team": "Talent Growth",
+            "title": "책임매니저",
+            "edu_area": "출강(신입사원 교육, 핵심인재 교육 등)"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "0196668e-4e2b-7ee3-87b6-738840830726",
+          "name": "민선희",
+          "upper_org": "에이치엘그룹 HR혁신실",
+          "team": "Talent Growth",
+          "title": "책임매니저",
+          "edu_area": "출강(신입사원 교육, 핵심인재 교육 등)",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인재개발원",
+      "team": "Learing eXperience Team",
+      "deals": [
+        {
+          "id": "01956fb9-2365-799e-95af-3d18a9be0f83",
+          "created_at": "2025-03-07T08:29:19.088Z",
+          "name": "에이치엘 인재개발원_2025 팀장 AI 리더십 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-30T02:34:37.383Z",
+          "expected_amount": 8043300.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "생성형AI",
+          "contract_date": "2025-04-01T15:00:00.000Z",
+          "amount": 8043300.0,
+          "start_date": "2025-04-28T15:00:00.000Z",
+          "end_date": "2025-04-29T15:00:00.000Z",
+          "net_percent": "58.0",
+          "people": {
+            "id": "0191930b-12af-7228-ad15-26b188cb836b",
+            "name": "장형찬",
+            "upper_org": "인재개발원",
+            "team": "Learing eXperience Team",
+            "title": "Team Leader",
+            "edu_area": "출강/전사 교육"
+          },
+          "memos": [
+            {
+              "date": "2025-03-24",
+              "text": "파일럿 과정 먼저 진행으로 논의중..파일럿 이후 정규과정 진행 예정이라 일단 매출은 파일럿으로만!"
+            },
+            {
+              "date": "2025-04-04",
+              "text": "파일럿 교육비 7,820,000원ChatGPT 계정 실비 청구 예정(30인)"
+            },
+            {
+              "date": "2025-04-29",
+              "text": "ChatGPT 계정 실비 추가 되어 최종 매출 8,043,300원으로 수정!"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "0191930b-12af-7228-ad15-26b188cb836b",
+          "name": "장형찬",
+          "upper_org": "인재개발원",
+          "team": "Learing eXperience Team",
+          "title": "Team Leader",
+          "edu_area": "출강/전사 교육",
+          "webforms": [
+            "1-18. 백서 신청 (report_talentmanagement)",
+            "1-19. 백서 신청 (report_hraiguide)",
+            "1-21. 백서 신청 (report_lmsguide)",
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서",
+            "5-12. 발표자료 신청 (presentation_axandskill)",
+            "5-16. 내부 인재 관리 총정리 자료집 신청 (package_internaltalent)",
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)"
+          ],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인재개발원",
+      "team": "Talent Growth",
+      "deals": [
+        {
+          "id": "01971b04-fde3-7444-bb57-1b91a12c2819",
+          "created_at": "2025-05-29T07:50:00.000Z",
+          "name": "에이치엘인재개발원_25년도 팀장 AI 리더십 정규과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-13T15:00:00.000Z",
+          "expected_amount": 85360000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-07-13T15:00:00.000Z",
+          "amount": 85360000.0,
+          "start_date": "2025-07-23T15:00:00.000Z",
+          "end_date": "2025-10-16T15:00:00.000Z",
+          "net_percent": "52.0",
+          "people": {
+            "id": "019a045c-1f83-7aac-91ee-9fcc309e54e9",
+            "name": "김수현",
+            "upper_org": "인재개발원",
+            "team": "Talent Growth",
+            "title": "책임매니저",
+            "edu_area": "출강"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "019a045c-1f83-7aac-91ee-9fcc309e54e9",
+          "name": "김수현",
+          "upper_org": "인재개발원",
+          "team": "Talent Growth",
+          "title": "책임매니저",
+          "edu_area": "출강",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인재개발원",
+      "team": "인재육성팀",
+      "deals": [
+        {
+          "id": "8ba6e4c6-82d1-4a2c-915e-3e74cb9efc1f",
+          "created_at": "2024-01-25T06:19:53.847Z",
+          "name": "[IB] HL인재개발원_핵심인재 대상 \"HL YOUTH Pgm\" - 생산성툴Track",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-04-29T15:00:00.000Z",
+          "expected_amount": 65050000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-04-25T01:33:16.000Z",
+          "amount": 27360000.0,
+          "start_date": "2024-04-24T15:00:00.000Z",
+          "end_date": "2024-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "ba5c1504-c02c-4ea4-aec7-a86952b2dd5d",
+            "name": "한남영",
+            "upper_org": "인재개발원",
+            "team": "인재육성팀",
+            "title": "책임",
+            "edu_area": "특정 X (대상자 맞춤 교육)"
+          },
+          "memos": [
+            {
+              "date": "2024-01-25",
+              "text": "- 문의 교육 주제 : 생성형 AI (챗GPT 활용), DX 기초 (마인드셋, 데이터 리터러시), 데이터 분석 및 AI 실무\n- 문의 서비스 : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 회사 이름 : HL인재개발원\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 한남영\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 고객 이메일 : ny.han@hlcompany.com\n- 고객 전화 : 82-10-9607-9675\n- 상담 문의 내용 : -데이터 리터러시\n-회계, 재무 관련하여\nFast Campus 온라인 강의 및 오프라인 강의 병행하여 교육희망\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "249afcd3-3f10-47a1-8271-4088cd74e73a",
+          "created_at": "2024-07-01T05:24:09.290Z",
+          "name": "HL YOUTH_데이터분석 Track",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-09-26T15:00:00.000Z",
+          "expected_amount": 32620000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": "2024-09-29T15:00:00.000Z",
+          "amount": 32620000.0,
+          "start_date": "2024-10-20T15:00:00.000Z",
+          "end_date": "2025-02-11T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "ba5c1504-c02c-4ea4-aec7-a86952b2dd5d",
+            "name": "한남영",
+            "upper_org": "인재개발원",
+            "team": "인재육성팀",
+            "title": "책임",
+            "edu_area": "특정 X (대상자 맞춤 교육)"
+          },
+          "memos": []
+        },
+        {
+          "id": "0193612e-9cb3-7ddd-b76e-e4f512d2f5e6",
+          "created_at": "2024-11-25T02:37:45.031Z",
+          "name": "에이치엘인재개발원_2025년 Work Smart",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-01-31T13:21:10.042Z",
+          "expected_amount": 260000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "교육체계 수립",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2025-01-30T15:00:00.000Z",
+          "amount": 218460000.0,
+          "start_date": "2025-03-16T15:00:00.000Z",
+          "end_date": "2025-09-02T15:00:00.000Z",
+          "net_percent": "50.0",
+          "people": {
+            "id": "64e54ac3a8dcd3ac3920900a",
+            "name": "황영훈",
+            "upper_org": "인재개발원",
+            "team": "인재육성팀",
+            "title": "책임매니저",
+            "edu_area": "교육체계 수립"
+          },
+          "memos": [
+            {
+              "date": "2024-11-26",
+              "text": "교육 제안 관련 미팅 요청12월 2일 월요일 오후 3시, HL 인재개발원 방문 예정"
+            },
+            {
+              "date": "2024-12-17",
+              "text": "12월 9일 제안서, 견적서 제출12월 13일 입찰 제안 PT, 교육생 규모 기존 1000명 에서 3000명으로 증가 통보(기업 내부 의사결정)12월 18일 오전까지 증가한 교육생 규모 고려하여 추가 견적 제안 요청"
+            },
+            {
+              "date": "2025-09-22",
+              "text": "실비 금액 처리로 인한 금액변경기존총매출목표 ₩200,940,000마케팅예산 ₩221,034,000=====변경총매출목표 ₩218,460,000마케팅예산 ₩240,306,000\n17,520,000원 추가"
+            }
+          ]
+        },
+        {
+          "id": "01950049-a1f1-7444-a394-fa059d54500d",
+          "created_at": "2025-02-13T17:09:40.485Z",
+          "name": "에이치엘 유스_2025",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "정태윤",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-03-31T05:27:47.861Z",
+          "expected_amount": 58300000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "데이터분석/CDS",
+          "contract_date": "2025-03-30T15:00:00.000Z",
+          "amount": 58300000.0,
+          "start_date": "2025-04-16T15:00:00.000Z",
+          "end_date": "2025-11-27T15:00:00.000Z",
+          "net_percent": "61.0",
+          "people": {
+            "id": "ba5c1504-c02c-4ea4-aec7-a86952b2dd5d",
+            "name": "한남영",
+            "upper_org": "인재개발원",
+            "team": "인재육성팀",
+            "title": "책임",
+            "edu_area": "특정 X (대상자 맞춤 교육)"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "64e54ac3a8dcd3ac3920900a",
+          "name": "황영훈",
+          "upper_org": "인재개발원",
+          "team": "인재육성팀",
+          "title": "책임매니저",
+          "edu_area": "교육체계 수립",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "5-5. ChatGPT 총정리 자료집 신청 (package_gptforbiz)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "ba5c1504-c02c-4ea4-aec7-a86952b2dd5d",
+          "name": "한남영",
+          "upper_org": "인재개발원",
+          "team": "인재육성팀",
+          "title": "책임",
+          "edu_area": "특정 X (대상자 맞춤 교육)",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-25",
+              "text": "HL인재개발원 소속"
+            },
+            {
+              "date": "2024-02-05",
+              "text": "전화기록- 미팅 이후 자료 검토 중 문의사항이 생겨 연락 주셨음.     . 강사님 프로필 확인 가능할지? -> 참고용으로 김용담강사님 프로필 전달함. 실제 교육 진행 시에는 변경될 수 있음을 안내.    . 여러 과정을 진행할 때 강사님이 변동될 수도 있는지? -> 여러과정을 진행할 경우 해당 과정에 적합한 강사님을 섭외해야해서 과정 당 강사님이 변경될 수는 있지만, 하나의 과정에서는 한 분의 강사님으로 진행하려고 하고 있음."
+            },
+            {
+              "date": "2024-03-05",
+              "text": "전화기록- 결정된 내용이 없어서 다시 연락주시기로 함."
+            },
+            {
+              "date": "2024-03-14",
+              "text": "[ 미팅 후 고객사에 전달한 자료 ]패스트캠퍼스_CDS 양성 과정 커리큘럼 소개서_패스트캠퍼스 _ 데이터_기반_의사결정_과정패스트캠퍼스_DT 교육 제조업 레퍼런스.pdf"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

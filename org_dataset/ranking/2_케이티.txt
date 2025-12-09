@@ -1,0 +1,2635 @@
+{
+  "organization": {
+    "id": "64dd762a96e775eee7e3cab7",
+    "name": "케이티",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "KT",
+      "team": "KT",
+      "deals": [
+        {
+          "id": "01979b1b-2bb7-733d-b130-70a4eacf977c",
+          "created_at": "2025-06-23T04:45:00.000Z",
+          "name": "(비매출)케이티 딜_콘텐츠임대_202505",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "손승완",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-05-30T05:03:23.278Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "재무회계",
+          "contract_date": "2025-05-29T15:00:00.000Z",
+          "amount": 0.0,
+          "start_date": "2025-05-29T15:00:00.000Z",
+          "end_date": "2026-05-28T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0192d5f5-4b42-7002-a772-b4658a9e8c76",
+            "name": "나현진",
+            "upper_org": "KT",
+            "team": "KT",
+            "title": "KT 사내교수",
+            "edu_area": "재무회계"
+          },
+          "memos": [
+            {
+              "date": "2025-05-21",
+              "text": "다혜님께 인계받아 나현진 차장님께 2개 과정 견적서 전달 완료.대상 강의 : '[R&D 아카이브] 연구개발핵심과 기술로드맵'런칭일자 : 2024년 12월콘텐츠 기본 단가 : 클립 당 80만원 -> 10분 당 50만원타기업의 경우, 80만원으로 제안드리고 있으나 많은 협업 건으로 먼저 할인하여 제안드립니다.제안 단가는 10분 당 50만원의 금액으로 할인하여 다시 제안드립니다.타 기업 제안금액 : 19,200,000원 / KT 제안 금액 : 12,000,000원콘텐츠 포팅 기간 : 1년"
+            },
+            {
+              "date": "2025-05-29",
+              "text": "콘텐츠 임대와 관련하여 견적서 공유완료.과정명 : 직장인 회계 첫걸음세부 클립 : 5개 챕터, 35개 클립 구성총 견적 비용 : 17,160,000원(천칠백십육만원 정, 부가세 포함)**첨부파일로 견적서와 세부 클립명이 담긴 파일 공유드렸습니다. 참고 부탁드리겠습니다."
+            },
+            {
+              "date": "2025-05-30",
+              "text": "5월 30일 기준으로 1년간 직장인 회계 첫걸음 온라인 콘텐츠 임대 과정 진행"
+            },
+            {
+              "date": "2025-06-23",
+              "text": "전체 잔액 33,000,000콘텐츠 임대 1건 15,600,000원(부가세 미포함/공급가액 기준) 차감\n현재 잔액 17,400,000원 남았습니다"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "0192d5f5-4b42-7002-a772-b4658a9e8c76",
+          "name": "나현진",
+          "upper_org": "KT",
+          "team": "KT",
+          "title": "KT 사내교수",
+          "edu_area": "재무회계",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "공공사업본부",
+      "team": "공공교육사업팀",
+      "deals": [
+        {
+          "id": "01953fe0-c684-7775-b464-0bb71acbf006",
+          "created_at": "2025-02-26T01:30:50.381Z",
+          "name": "(B2B) KT_서울시 학력격차 없는 맞춤형 온라인 콘텐츠 및 멘토링 지원 용역 내 온라인 과정 제공",
+          "team": "[{\"id\": \"e5f9cbbe-6e48-4a25-8c48-453537e0df74\", \"name\": \"공공교육팀\"}]",
+          "owner": "채선영",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-30T01:37:42.064Z",
+          "expected_amount": 50000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2025-05-08T15:00:00.000Z",
+          "amount": 50000000.0,
+          "start_date": "2025-06-30T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": "100.0",
+          "people": {
+            "id": "01953fe0-c5dc-7775-b463-fec351332202",
+            "name": "서성윤",
+            "upper_org": "공공사업본부",
+            "team": "공공교육사업팀",
+            "title": "과장",
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-04-21",
+              "text": "서울시에서 진행하는 \"서울런\" 포탈 운영사업-KT와 능률협회 컨소가 수주함-패캠은 KT의 CP형태로 참여함: 월 평균 이용자수 300명 기준 / 1개 과정당 3만 - 단가비용은 서울시 단가 기준으로 고정됨 > 반응이 좋으면 내년도 단가상승 가능성있음-'비교과' 부분에 대한 콘텐츠를 제공하기로 함. SSO연동 형태. / 다른 비교과 CP사: 에듀윌, 메가스터디-'교과' 부분의 참여사: EBS 등패캠 홈페이지에서도 서울런 홍보해서 서울런에 유입되도록 홍보 필요.-서울런 사업의 지원대상인지 확인이 필요하기에, 패캠 홈페이지에서도 무조건 '서울런' 사이트로 이동해서 대상적합여부 확인해야 함.비교과 예산소진율이 낮아, 금년도 패캠에서 많은 수강인원이 유입되길 희망하고 있음."
+            },
+            {
+              "date": "2025-04-30",
+              "text": "월별 정산으로 진행됩니다"
+            },
+            {
+              "date": "2025-05-16",
+              "text": "[진행현황] 1. 서울시 담당 주무관 (유현진, hjinyoo55@seoul.go.kr)에게 온 요청사항 반영 진행 중 (~05.20 전 회신 예정)  - 서울런에 노출될 패스트캠퍼스 BI, 콘텐츠 소개문구  - 사이트 바로가기 연결될 URL, 고객센터 전화번호/운영시간  - 이용약관, 개인정보 처리지침"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "01953fe0-c5dc-7775-b463-fec351332202",
+          "name": "서성윤",
+          "upper_org": "공공사업본부",
+          "team": "공공교육사업팀",
+          "title": "과장",
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "64dd762a96e775eee7e3cb1c",
+          "created_at": "2023-08-17T01:21:46.996Z",
+          "name": "KT_바이트 디그리_2022",
+          "team": "[{\"id\": \"55affe17-4092-4619-96b5-3ffc808417a3\", \"name\": \"마케팅팀\"}]",
+          "owner": "이은지 패스트캠퍼스",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "바이트디그리",
+          "category": null,
+          "contract_date": null,
+          "amount": 309376600.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "64dd762a96e775eee7e3caeb",
+            "name": "최상우",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "83d5cbe9-c82d-4a5f-a1e3-f9405438d3b8",
+          "created_at": "2023-11-06T07:13:46.938Z",
+          "name": "[OB] 케이티_이윤섭님_스킬갭분석",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김광년",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": null,
+          "category": null,
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "ebc60377-8e60-4fc8-a2ec-908ca38614be",
+            "name": "이윤섭",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2023-11-06",
+              "text": "미팅 사후 로그 이윤섭 과장님- 정호달 상무님으로부터, 스킬 중심 조직 관련해서 공부하라고 미션을 받아서 신청하게 됐다. - 이다영님 초창기 계약부터 같이했던 원년?멤버라 패캠에 애정이 있다. (이다영님, 그 뒤로 쭉쭉 승승장구하시다가, 이직 하셨다고 하시더라, 아쉽)- 되게 도전적인 영역을 하고있는 것 같아 존경스럽다. - 이윤섭님은 신입사원교육 담당, 기본교육팀, 가치교육 담당하고있는 팀 소속.  신입과 인턴쪽 교육 담당. - 팀장과 리더쪽 교육을 팀 차원에서 같이 하고있다. 리더십 교육 코칭교육. 서브로 하고있다. - 예전에 패캠이랑 AI관련 전일제 6개월 과정 했었는데, 한창 하다가, 어느정도 풀이 확보되었다고 생각하셨는지 더이상 안 하고계시고, 당분간 계획도 없는 것 같다. - 역량 모델링이 되어있긴 하지만, 실제로 진단을 2~3년은 안 했다. 이번에 대표 바뀌면서 내년부터 진단하고 평가하는 시스템을 다시 세우려고 하는 중이다. - 기존처럼 직무 기반이 아니라, 스킬 기반으로 하고 싶은데, 직무나 직종이나 과업이 세분화되어있고 많다보니, 스킬베이스로 할 수 있을지 의문이 든다.  과업 200개. 직무 60몇가지 있음.  - 스킬 기반으로 관리한다고 하면, 글로트처럼은 안되겠지만,  자격증 취득이나 사내외 교육 이력이라든가 그런것들위주로, 볼 수 있지 않을까 싶다. - 직무 역량 진단부터 평가까지 고민하고있다. 진단하고 평가 한 후 그래서 어떻게 교육 할건가? 라는 질문이 떴을 때, 어떻게 대비하고 마련을 해놔야할지 준비가 필요한 상황이다. - KT 내부에도 디지코 디그리가 있는데, 러닝 저니 형식으로, 최소 3개월~6개월 단계별로 교육 과정 밟아 나가고, 자격증을 취득하는 것까지 코스가 준비되어있다. - (자격취득 목표의식을 주기 위해서) KT 내에서 내부 타이틀을 주는 거다. 재무쪽도 재무디그리, 디지코 디그리라고 해서 프로그래밍이나 AI도 있다. 점점 프라미드 형태로 난이도가 어려워지는 중장기 인증 프로그램임. -----------------이렇다할 교육에 대한 니즈는 없으신 상황. 학습차원에서 문의."
+            }
+          ]
+        },
+        {
+          "id": "20ecba43-fd43-4d55-b519-508e03b4db98",
+          "created_at": "2024-01-12T00:56:14.528Z",
+          "name": "[IB] 케이티_정우진",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김광년",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "기타",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "611408c7-c313-44f5-9b56-8bf62139a0f6",
+            "name": "정우진",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-01-17",
+              "text": "교육 문의 응대- 기본적인 소개 자료 먼저 전달 요청(온/오프라인)- 온라인 교육의 경우 인원/기간 별 할인율 확인 요청"
+            }
+          ]
+        },
+        {
+          "id": "3786748a-d963-462e-a373-b2211d377dce",
+          "created_at": "2024-02-01T12:22:09.442Z",
+          "name": "[IB] 케이티_양기훈",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김광년",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "368e7249-17a0-44d1-adab-ef3f5339830b",
+            "name": "양기훈",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-02-01",
+              "text": "- 문의 교육 주제 : 프로그래밍 (웹 개발, 앱 개발), 데이터 분석 및 AI 실무, PO/PM (프로젝트 관리, 제품 및 서비스 기획)\n- 문의 서비스 : 온라인 콘텐츠 구독\n- 딜 예상 교육 인원 : 30명 이하\n- 회사 이름 : 케이티\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 양기훈\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 고객 이메일 : kihoon.yang@kt.com\n- 고객 전화 : 01026673721\n- 상담 문의 내용 : 구독형 서비스 비용문의\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-07",
+              "text": "[ 문의 응대 로그 ]1. 고객사 문의 내용- 온라인 콘텐츠 구독 서비스 문의2. SDR 안내 사항- 관련 소개 자료 메일로 보내드리겠음3. 후속 액션- 온라인 서비스 소개 자료 전달"
+            }
+          ]
+        },
+        {
+          "id": "3d2f02ef-7cdd-4266-b8e7-82b3a733b5f3",
+          "created_at": "2024-03-29T04:16:33.220Z",
+          "name": "[OB] 케이티_김호현_온라인",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김광년",
+          "status": "Won",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-04-01T08:15:39.010Z",
+          "amount": 2902400.0,
+          "start_date": "2024-04-07T15:00:00.000Z",
+          "end_date": "2025-04-07T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "b2b704dc-be6f-4db2-bd15-d61477f0e6c6",
+            "name": "김호현",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "17d7206a-05bf-4ebc-8c69-14dd6d7f4282",
+          "created_at": "2024-04-01T02:07:39.516Z",
+          "name": "[OB] 케이티_송하림_온라인",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김광년",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "d55cd31c-7776-4ae7-8f75-93208706283e",
+            "name": "송하림",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "a92c1c23-6943-403a-966a-ff8e0ae4f186",
+          "created_at": "2024-06-03T08:08:31.142Z",
+          "name": "전덕영 리드",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김광년",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "빅데이터/AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "622ee544-4b40-4179-bd19-8c2109c1d77f",
+            "name": "전덕영",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-06-03",
+              "text": "- 딜 문의 주제 (최초) : 데이터 분석 및 AI 실무\n- 딜 서비스 유형 (최초) : 온라인 콘텐츠 구독\n- 딜 예상 교육 인원 : 30명 이하\n- 딜 예상 교육 일정 : 2개월 이내\n- 회사 이름 : 케이티\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 전덕영\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 이메일 : deokyoung.jeon@kt.com\n- 고객 전화 : 01095549058\n- 상담 문의 내용 : 온라인 강의 기업용 가격 정책 문의\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-06-03",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        },
+        {
+          "id": "ed2fd7c3-709b-4eff-a5fe-3619c32f8e0a",
+          "created_at": "2024-06-04T00:18:00.229Z",
+          "name": "최재희 리드",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-08-02T06:59:38.711Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "데이터분석/CDS",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "549623b1-7fb9-431d-83aa-2fb01f132eff",
+            "name": "최재희",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "d224dcd6-505d-4f0b-9a9b-2e23eea11810",
+          "created_at": "2024-06-11T03:00:38.771Z",
+          "name": "전희수 리드",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": null,
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-06-11T05:12:31.059Z",
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "2216af8f-2d92-4f25-8d2d-15e4fb60ca70",
+            "name": "전희수",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        },
+        {
+          "id": "01920eb2-c3d5-7006-a6d8-4aad1330e9fb",
+          "created_at": "2024-09-20T09:10:49.568Z",
+          "name": "양정영 리드",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-09-22T15:00:00.000Z",
+          "lost_reason": "[\"가격 이슈\"]",
+          "course_format": "구독제(온라인)",
+          "category": "빅데이터/AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "01920eae-b97f-7dd5-8801-970ed35aab41",
+            "name": "양정영",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-09-20",
+              "text": "- 딜 문의 주제 (최초) : 데이터 분석 및 AI 실무, 생성형 AI (챗GPT 활용)\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 10명 이하\n- 회사 이름 : KT\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 양정영\n- 고객 이메일 : jung-young.yang@kt.com\n- 고객 전화 : 010-3191-5575\n- 고객 담당 업무 : DX유관/신사업\n- 상담 문의 내용 : AICC 사업개발팀 업무를 담당하고 있습니다.\n\n생성형 + AICC 관련 강의를 팀원들과 같이 공동 구매 형식으로 구매하고 싶습니다.\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-09-20",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            },
+            {
+              "date": "2024-09-23",
+              "text": "팀 예산으로 수강 원했으나 에산이 맞지 않아 드랍"
+            }
+          ]
+        },
+        {
+          "id": "0193209d-acbd-7000-98f6-69084b678ef4",
+          "created_at": "2024-11-12T13:43:44.579Z",
+          "name": "(B2B)KT x 플랜웍스엔터프라이즈_온라인 구독",
+          "team": "[{\"id\": \"e5f9cbbe-6e48-4a25-8c48-453537e0df74\", \"name\": \"공공교육팀\"}]",
+          "owner": "김다인",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-11-28T15:00:00.000Z",
+          "expected_amount": 2250000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-12-01T15:00:00.000Z",
+          "amount": 2250000.0,
+          "start_date": "2024-12-01T15:00:00.000Z",
+          "end_date": "2025-05-31T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0193209c-0d35-7000-98f4-417b1fc641d4",
+            "name": "이기명",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-11-13",
+              "text": "그룹장님 통하여 들어온 문의수강 대상 : 제주대 학생 20-30명플랜 : 번들플랜  - 기존 B2C홈페이지 단가 통하여 문의 주셨으나, 번들플랜(2+1)으로 안내수강 기간 : 6개월 (인당 20만원 희망)견적서 송부교육 소개자료 전달"
+            },
+            {
+              "date": "2024-11-13",
+              "text": "11/13자료 확인하셨으나, 현재 출장으로 인해 나중에 연락주실 예정"
+            },
+            {
+              "date": "2024-11-18",
+              "text": "수강 명단 확정- 입과 명단 양식- 계약서 초안 - 수강 안내문 발송 예정"
+            },
+            {
+              "date": "2024-11-22",
+              "text": "부재중"
+            },
+            {
+              "date": "2024-11-25",
+              "text": "ㅇ 교육인원 : 18명ㅇ 학습기간 : 2024.12.2(월) ~ 2025.6.1 6개월-  12.2(월)에 패스트캠퍼스에서 개별 교육안내 요청 ㅇ 교육과정1) AI 시대, PM/PO 를 위한 한 번에 끝내는 AI 서비스 기획 실무2) 초격차 패키지 : 한 번에 끝내는 서비스 기획의 모든 것ㅇ 교육비용 : 인당 10만원ㅇ 경진대회 위탁 운영사인 ㈜플랜웍스에서 지급"
+            },
+            {
+              "date": "2024-12-11",
+              "text": "ai경진대회 제공 목적으로 제공된 상품대회는 KT가 주관, 실제 계산이나 비용은 플랜웍스엔터프라이즈에서 진행"
+            },
+            {
+              "date": "2025-04-16",
+              "text": "실제 교육 관련 모든 논의는 플랜웍스 배의향 대리님과 소통 필요배의향 대리님buh@pwe.co.kr010-6700-454302-422-6296"
+            }
+          ]
+        },
+        {
+          "id": "01954ae4-3ddf-7226-b802-6ae047ba4ab5",
+          "created_at": "2025-02-28T04:50:26.920Z",
+          "name": "(B2B) KOICA_시민사회협력 프로그램 관련  콘텐츠 제작 용역 사업",
+          "team": "[{\"id\": \"e5f9cbbe-6e48-4a25-8c48-453537e0df74\", \"name\": \"공공교육팀\"}]",
+          "owner": "황인후",
+          "status": "SQL",
+          "probability": "[\"낮음\"]",
+          "expected_date": "2025-08-24T15:00:00.000Z",
+          "expected_amount": 90000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "기타",
+          "category": "빅데이터/AI",
+          "contract_date": null,
+          "amount": 90000000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": "45.0",
+          "people": {
+            "id": "01954ae4-3d57-7226-b802-5db1913e1dbf",
+            "name": "한현석",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-04-17",
+              "text": "25년~26년, 온라인 콘텐츠 개발: 총 4개25년: 우선 MS애저 개발 / 26년 3개 과정 개발"
+            },
+            {
+              "date": "2025-04-29",
+              "text": "사업명: 시민사회협력 프로젝트- 진입형(2개년 사업)주관: KOICA수행기관: 한라대 컨소시엄(W. KT, 패캠)\n우즈베키스탄 내 대학생들의 DX역량 향상을 위한 온라인 교육과정 개발 및 제공-LMS를 통한 과정 수강지원총 4개 과정 개발: 25년도 1개과정 개발(MS애저), 26년 3개 과정개발(IT시스템관리, 데이터분석, AICE) / 영어 제작필요\n\"패캠의 스킬플로 내 개발한 온라인 콘텐츠 포팅\"하여 우즈벡 현지 학생들의 수강지원 : 2년 160명"
+            }
+          ]
+        },
+        {
+          "id": "01956916-66a2-7773-8665-c2c4d26965ba",
+          "created_at": "2025-03-06T01:33:50.634Z",
+          "name": "KT(기술역량팀)_'25년 네트워크 AX 교육",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-03-25T05:04:12.073Z",
+          "expected_amount": 82420000.0,
+          "lost_confirmed_at": "2025-03-25T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "개발/CD",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": "31.0",
+          "people": {
+            "id": "01956916-6602-7773-8665-b39211c3c025",
+            "name": "서정민",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2025-03-06",
+              "text": "- 딜 문의 주제 (최초) : 생성형 AI (챗GPT 활용)\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 100명 이하\n- 회사 이름 : KT\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 서정민\n- 고객 이메일 : jeong7251@nate.com\n- 고객 전화 : 010-7300-7251\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 상담 문의 내용 : 안녕하세요 kt 기술역량팀 서정민입니다.\n네트워크 분야 직원대상으로 llm, ml/dl 집합교육을 계획하고 있습니다.\n교육과정 커리큘럼을 받아 보고 싶고, 해당 내용으로 입찰 참가가 가능한지 문의드립니다.\n- 딜 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-03-06",
+              "text": "교육주제 : 교육대상 : 인원, 직무/직급, 현재수준 등교육형태 : 교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 예산 혹은 고려하시는 단가 확인(중요)기업 담당자의 현 상황 :  기획 단계인지 / 내부 보고단계인지 / 업체 비교단계인지구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 단순 소개서, 레퍼런스 등(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "64dd762a96e775eee7e3caeb",
+          "name": "최상우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64f96233d91af8be654ea49a",
+          "name": "류현주",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-12. 백서 신청 (report_leadership)",
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "1-14. 백서 신청 (report_leadershipfw)",
+            "1-16. 백서 신청 (report_aileadership)",
+            "1-17. 백서 신청 (report_trainingroi)",
+            "1-19. 백서 신청 (report_hraiguide)",
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)",
+            "4-6. 세미나 다시보기: 고성과자 발굴 프레임워크를 활용한 기업 맞춤 리더십 교육 설계",
+            "5-12. 발표자료 신청 (presentation_axandskill)",
+            "5-3. 템플릿 신청 (template_leadership)",
+            "5-4. 총정리 자료집 신청 (package_leadership)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-05",
+              "text": "콜드콜: 부재중"
+            },
+            {
+              "date": "2023-10-16",
+              "text": "2차콜드콜: 스킬중심조직에 관련해서 '역량'관련 부서에서 관심이 많으셔서, 나 혼자 미팅 하는 것보다는 다른 관심있을만한 부서에도 확인해보고 진행했으면 좋겠다. >> ㅇㅋ 우리 퓨처 컨퍼런스 웨비나도 참고 부탁드린다. "
+            },
+            {
+              "date": "2023-12-20",
+              "text": "(12/20) Cold call : 연간 계획 수립 중인 것은 맞음, 지금 바쁘니 나중에 연락 달라"
+            },
+            {
+              "date": "2024-02-01",
+              "text": "- 고객 이름 : 류현주\n- 고객 이메일 : hyunjoo.ryu@kt.com\n- 고객 전화 : 01073000395\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240201\n- 고객 utm_content : lead-gen^hrinsight^edm-cta4\n"
+            },
+            {
+              "date": "2024-07-08",
+              "text": "- 고객 이름 : 류현주\n- 고객 이메일 : hyunjoo.ryu@kt.com\n- 고객 전화 : 01073000395\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240708\n- 고객 utm_content : lead-gen^hrbulletin^edm\n"
+            },
+            {
+              "date": "2024-08-07",
+              "text": "- 고객 이름 : 류현주\n- 고객 이메일 : hyunjoo.ryu@kt.com\n- 고객 전화 : 01073000395\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240807\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta3\n"
+            },
+            {
+              "date": "2024-08-07",
+              "text": "- 고객 이름 : 류현주\n- 고객 이메일 : hyunjoo.ryu@kt.com\n- 고객 전화 : 01073000395\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240807\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta1\n"
+            },
+            {
+              "date": "2024-08-07",
+              "text": "- 고객 이름 : 류현주\n- 고객 이메일 : hyunjoo.ryu@kt.com\n- 고객 전화 : 01073000395\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240807\n- 고객 utm_content : lead-gen^hrbulletin^edm-cta2\n"
+            },
+            {
+              "date": "2024-09-12",
+              "text": "- 고객 이름 : 류현주\n- 고객 이메일 : hyunjoo.ryu@kt.com\n- 고객 전화 : 01073000395\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240827\n- 고객 utm_content : lead-gen^mktg-agreed^report-trainingroi\n"
+            },
+            {
+              "date": "2024-11-14",
+              "text": "- 고객 이름 : 류현주\n- 고객 전화 : 01073000395\n- 고객 이메일 : hyunjoo.ryu@kt.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^241113\n- 고객 utm_content : lead-gen^bizletter^report_hraiguide\n"
+            },
+            {
+              "date": "2025-03-18",
+              "text": "- 고객 이름 : 류현주\n- 고객 전화 : 01073000395\n- 고객 이메일 : hyunjoo.ryu@kt.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250318\n- 고객 utm_content : nurturing^mktg-agreed^cta1\n"
+            },
+            {
+              "date": "2025-09-25",
+              "text": "- 고객 이름 : 류현주\n- 고객 전화 : 01073000395\n- 고객 이메일 : hyunjoo.ryu@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "64f975ccfb15689232a8db72",
+          "name": "최하늘",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64f975ccfb15689232a8dbbc",
+          "name": "현미",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64f975ccfb15689232a8dc05",
+          "name": "김연태",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64f975ccfb15689232a8dc4e",
+          "name": "고희선",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-02",
+              "text": "3차부재"
+            },
+            {
+              "date": "2023-11-22",
+              "text": "4차부재.(모르는번호 아예 안받으시나봄)"
+            },
+            {
+              "date": "2024-06-25",
+              "text": "6/25 전화받지 않고 문자 요청하여 메세지 남김"
+            }
+          ]
+        },
+        {
+          "id": "64f975ccfb15689232a8dc97",
+          "name": "조연아",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64f975cdfb15689232a8dcf4",
+          "name": "정경수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "64f975cdfb15689232a8dd3d",
+          "name": "장정효",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 장정효\n- 고객 전화 : 01075096565\n- 고객 이메일 : donna.jang@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : 직무에 특화된 Ax활용교육\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "651e0f14a3758c990872e06e",
+          "name": "황지욱",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)",
+            "4-13.  인사이트 세미나 : 기업의 AI 이니셔티브 달성을 위한 Skill-based 인재 관리 전략",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-16",
+              "text": "1차 콜드콜: 미팅,,? 글쎼.. 지금 전략 수립때문에 일정이 바쁘다. > 11월 이후에 다시 연락 드리겠다. "
+            },
+            {
+              "date": "2023-11-13",
+              "text": "패캠 너무 잘 알고있다. 웨비나도 잘 봤다. 워낙 잘하시지 않냐.ㅎ"
+            },
+            {
+              "date": "2024-07-31",
+              "text": "240731 세미나 실시간 질문Q. 스킬셋을 구성할 때 각각의 스킬 간 계위(수준)을 맞추는게 어렵습니다. 너무 자세히 구분하면 스킬셋이 너무 거대해지고, 너무 덩어리로 구분하면 세세한 스킬 관리나 육성활동을 전개하기가 어려워지더라구요. 스킬셋의 각각에 스킬 수준을 정하는 좋은 방법이 있을까요?A. (수빈님) 패스트캠퍼스는 스킬을 '전문지식을 가지고 특정 직무가 수행하고 있는 업무를 더 잘하기 위한 행위'라고 정의하고 있습니다. 따라서 단순한 반복행위는 스킬이 아니라고 보고 있기 때문에 이 점 참고하시어 스킬셋을 세팅해보시면 많은 도움이 되실 것 같습니다:)"
+            }
+          ]
+        },
+        {
+          "id": "651e1312b91c41329f688df8",
+          "name": "정호욱",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-01",
+              "text": "일정이 안될 것 같다. >>언제죠? 라고 하며.. 거의 다 잡혔는데!! 다시.. 다음에 필요할때 연락하겠다. "
+            }
+          ]
+        },
+        {
+          "id": "651e1a20b91c41329f6953e3",
+          "name": "권해웅",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-01",
+              "text": "통화가 어렵다.. 메일 달라. "
+            }
+          ]
+        },
+        {
+          "id": "651e1e9ba3758c990875522c",
+          "name": "김중교",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "651e208ba3758c9908758511",
+          "name": "이태성",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-27",
+              "text": "비대면이면 차주 가능할것 같은데.. 좀 바빠서.. 일단 문자 남겨달라. >> 문자 답변: 조직개편때문에 시간이 마땅치 않다. 나중에 연락하겠다. "
+            },
+            {
+              "date": "2024-04-01",
+              "text": "- 고객 이름 : 이태성\n- 고객 이메일 : ts-lee@kt.com\n- 고객 전화 : 01030100353\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "651e3f4ea3758c990876e511",
+          "name": "정은혜",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-01",
+              "text": "회의중이라 통화가 어렵다. "
+            },
+            {
+              "date": "2023-11-20",
+              "text": "보내준 자료는 다 봤다. 일단 어떤 내용이 있는지 알고 미팅을하면 좋을 것 같다. >> 메일 드리겠다. 정은혜, 이태성, 김중교, 남윤미, 권해웅 모두 같은 팀? 이라고 하셔서 메일 드리기로 함."
+            }
+          ]
+        },
+        {
+          "id": "65264a9e3799c7dffc265dac",
+          "name": "정호달",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-06",
+              "text": "상무님, 스킬중심,조직 관리에 관심 있으심 (이윤섭님 통해 확인한 사항) "
+            }
+          ]
+        },
+        {
+          "id": "652f77550e9ffac13efcf63f",
+          "name": "최혜민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10-1. 이벤트/백서 신청 (report_gptguide)"
+          ],
+          "memos": [
+            {
+              "date": "2023-10-23",
+              "text": "내년에 GPT교육 하려고 함미팅 제안 했으나 거절GPT교육 관련 메일 요청"
+            }
+          ]
+        },
+        {
+          "id": "6535a94a255efd5717438431",
+          "name": "홍상기",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-08",
+              "text": "업무가 HRD가 아니라, 제휴나 파트너십을 하는 회사라. 저희랑 HR랑 얘기는 했는데, 크게 관심은 없어하는 것 같더라. "
+            }
+          ]
+        },
+        {
+          "id": "ebc60377-8e60-4fc8-a2ec-908ca38614be",
+          "name": "이윤섭",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2023-11-06",
+              "text": "이미지"
+            }
+          ]
+        },
+        {
+          "id": "a72f2df1-c9f9-4e1d-a4e0-8134809e64f7",
+          "name": "김원우",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-51. 소개서 : Emerging Leadership 교육"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-09",
+              "text": "- 고객 이름 : 김원우\n- 고객 이메일 : wonwoo.kim@kt.com\n- 고객 전화 : 01098377899\n- 회사 이름 : 케이티\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2023-11-09",
+              "text": "- 고객 이름 : 김원우\n- 고객 이메일 : wonwoo.kim@kt.com\n- 고객 전화 : 01098377899\n- 회사 이름 : 케이티\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "5bfa03c0-a37b-48e7-979a-42c670a3cb95",
+          "name": "곽시은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-1. 템플릿 신청 (template_lndkpi)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-11",
+              "text": "- 고객 이름 : 곽시은\n- 고객 이메일 : sieun2166@gmail.com\n- 고객 전화 : 01073002851\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^231108\n- 고객 utm_content : lead-gen^hrda^edm-cta1\n"
+            }
+          ]
+        },
+        {
+          "id": "4f7b203b-d90a-417f-8587-fa48235d5ec2",
+          "name": "정화숙",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-9. 백서 신청 (report_skilltrans)",
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)",
+            "3-4. 소개서 : 데이터 사이언스 패키지 플랜 (ds_plan)",
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-25",
+              "text": "- 고객 이름 : 정화욱\n- 고객 전화 : 01067444664\n- 고객 이메일 : jhs4293@gmail.com\n- 회사 이름 : Kt\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241025\n- 고객 utm_content : lead-gen^mktg-agreed^lms2#REGISTRATION\n"
+            }
+          ]
+        },
+        {
+          "id": "00c4ce6b-67d9-4355-8e13-849e6ca53d8a",
+          "name": "황성철",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기",
+            "4-13.  인사이트 세미나 : 기업의 AI 이니셔티브 달성을 위한 Skill-based 인재 관리 전략"
+          ],
+          "memos": []
+        },
+        {
+          "id": "03527d91-cebc-4ff7-b1ca-dfe7aa5e6ec3",
+          "name": "이귀범",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2024-01-16",
+              "text": "현재 담당자 아니라 다른 사람에게 전달했다고 회신 받음(이은지 패스트캠퍼스로 보낸 최근 리포트 안내 메일)"
+            }
+          ]
+        },
+        {
+          "id": "611408c7-c313-44f5-9b56-8bf62139a0f6",
+          "name": "정우진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "3-39. 인증 교육 :  디지털 PM 스킬업 (byte_pm)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "6274aa2d-5442-4975-bca5-306277bdebe9",
+          "name": "성문관",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "1-5. 백서 신청 (report_cd)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-08",
+              "text": "- 고객 이름 : 성문관\n- 고객 이메일 : mkseong@naver.com\n- 고객 전화 : 01067373623\n- 회사 이름 : 케이티\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240108\n- 고객 utm_content : lead-gen^cio^edm\n"
+            },
+            {
+              "date": "2024-01-22",
+              "text": "- 고객 이름 : 성문관\n- 고객 이메일 : arnold.sung@kt.com\n- 고객 전화 : 01067373623\n- 회사 이름 : 케이티\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240122\n- 고객 utm_content : lead-gen^cio^edm\n"
+            },
+            {
+              "date": "2024-01-30",
+              "text": "[ 콜드콜 로그 ]1. 어떤 명분으로 미팅을 제안 할 것인가?- 연간 교육 계획 수립에 대한 도움 제안2. 고객사 반응- 교육 진행 검토 중인 부분은 없음- 그러나 소개서랑 레퍼런스 전달해주면 검토 해보겠음3. 후속 액션- 생성형 AI 교육 과정 소개서 & 레퍼런스 전달 예정"
+            },
+            {
+              "date": "2024-02-20",
+              "text": "- 고객 이름 : 성문관\n- 고객 이메일 : arnold.sung@kt.com\n- 고객 전화 : 01067373623\n- 회사 이름 : 케이티\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240219\n- 고객 utm_content : lead-gen^dbr^edm-cta3#apply\n"
+            },
+            {
+              "date": "2024-02-21",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 교육 체계 이미 잡혀있어서, 큰 도움 필요 없을 것 같음2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            },
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 성문관\n- 고객 이메일 : arnold.sung@kt.com\n- 고객 전화 : 01067373623\n- 회사 이름 : 케이티\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240227\n- 고객 utm_content : lead-gen^cio^edm#apply\n"
+            },
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 성문관\n- 고객 이메일 : arnold.sung@kt.com\n- 고객 전화 : 01067373623\n- 회사 이름 : 케이티\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240227\n- 고객 utm_content : lead-gen^cio^edm#apply\n"
+            },
+            {
+              "date": "2024-05-21",
+              "text": "- 고객 이름 : 성문관\n- 고객 이메일 : arnold.sung@kt.com\n- 고객 전화 : 01067373623\n- 회사 이름 : 케이티\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 사내 프롬프트 개발 및 제작 관련해 궁금한 사항이 있으시다면 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240521\n- 고객 utm_content : lead-gen^cio^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "368e7249-17a0-44d1-adab-ef3f5339830b",
+          "name": "양기훈",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "0a9f584b-7e9d-48ac-add8-80f86a443e46",
+          "name": "김지민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "3-55. 소개서 : 가벼운학습지 스피킹탭",
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-02",
+              "text": "- 고객 이름 : 김지민\n- 고객 이메일 : jeemin.kim@kt.com\n- 고객 전화 : 010-7333-1332\n- 회사 이름 : KT\n- 고객 담당 업무 : 운영/총무/지원\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-29",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 현재 휴가 중, 검토를 해보고 있는 중이라 다음 주에 연락 드리겠음2. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            }
+          ]
+        },
+        {
+          "id": "38488154-f181-447b-acfe-238c0a0489cf",
+          "name": "한희정",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)",
+            "1-17. 백서 신청 (report_trainingroi)",
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "3-31. 소개서 : 업종별 베스트 셀링 (main_bestselling)",
+            "3-32. 소개서 : 기존 직무 업스킬링 (main_upskill)",
+            "5-1. 템플릿 신청 (template_lndkpi)"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-13",
+              "text": "[ 콜드콜 로그 ]1. 어떤 명분으로 미팅을 제안 할 것인가?- 교육 계획 수립에 대한 도움 제공2. 고객사 반응- 저성과자 대상 교육 프로그램 기획 중- 아직 주제도 정해지지 않아서, 추후 연락 드리겠음 3. 후속 액션- 신규 콜드콜 시퀀스 등록"
+            },
+            {
+              "date": "2025-01-05",
+              "text": "- 고객 이름 : 한희정\n- 고객 이메일 : heej_129@naver.com\n- 고객 전화 : 01099986078\n- 회사 이름 : KTis\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : 이메일 광고, 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241230\n- 고객 utm_content : nurturing^salesmap-db^2024-content\n"
+            },
+            {
+              "date": "2025-01-05",
+              "text": "- 고객 이름 : 한희정\n- 고객 이메일 : heej_129@naver.com\n- 고객 전화 : 01099986078\n- 회사 이름 : KTis\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : 이메일 광고, 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240827\n- 고객 utm_content : lead-gen^mktg-agreed^report-trainingroi\n"
+            },
+            {
+              "date": "2025-01-05",
+              "text": "- 고객 이름 : 한희정\n- 고객 이메일 : heej_129@naver.com\n- 고객 전화 : 01099986078\n- 회사 이름 : KTis\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 유통/공급업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240619\n- 고객 utm_content : nurturing^contents-mail^edm-cta2\n"
+            }
+          ]
+        },
+        {
+          "id": "01c71fbc-205b-4d62-9d6f-dd4e3c172e19",
+          "name": "이대만",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": []
+        },
+        {
+          "id": "7d8b27f4-9ece-420c-b7bd-21ddc6a31da7",
+          "name": "황태선",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": []
+        },
+        {
+          "id": "b2b704dc-be6f-4db2-bd15-d61477f0e6c6",
+          "name": "김호현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2024-03-04",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 온라인 교육 관련 안내 요청2. 후속 액션- 안내 메일 발송 예정"
+            },
+            {
+              "date": "2024-03-28",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- B2C 단체 구매하려고 했는데, 온도가 너무 미적지근함- B2B 번들 플랜으로 그냥 진행하고 싶음 다만 빠르게 진행 필요2. 후속 액션- 온라인 구독 계약 체결"
+            },
+            {
+              "date": "2025-09-16",
+              "text": "- 고객 이름 : 김호현\n- 고객 전화 : 01037268027\n- 고객 이메일 : smileman.kim@kt.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250916\n- 고객 utm_content : lead-gen^cold-hd^mql\n"
+            }
+          ]
+        },
+        {
+          "id": "d55cd31c-7776-4ae7-8f75-93208706283e",
+          "name": "송하림",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": [
+            {
+              "date": "2024-03-27",
+              "text": "[ 콜드콜 로그 ]1. 고객사 반응- 온라인 구독 서비스 상세 안내 받아보고 싶음(생성형 AI 올인원 포함) 2. 후속 액션- 온라인 구독 서비스 소개"
+            }
+          ]
+        },
+        {
+          "id": "3efa58fa-ca36-4b3d-8288-dde9e10e78c0",
+          "name": "송태경",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-17. 백서 신청 (report_trainingroi)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-13.  인사이트 세미나 : 기업의 AI 이니셔티브 달성을 위한 Skill-based 인재 관리 전략",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-01",
+              "text": "- 고객 이름 : 송태경\n- 고객 이메일 : tk.song@kt.com\n- 고객 전화 : 01073000455\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-08-28",
+              "text": "- 고객 이름 : 송태경\n- 고객 이메일 : tk.song@kt.com\n- 고객 전화 : 01073000455\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240827\n- 고객 utm_content : lead-gen^mktg-agreed^report-trainingroi\n"
+            },
+            {
+              "date": "2024-09-23",
+              "text": "- 고객 이름 : 송태경\n- 고객 전화 : 01073000455\n- 고객 이메일 : tk.song@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240923\n- 고객 utm_content : nurturing^mktg-agreed^casebook_genai_subject\n"
+            },
+            {
+              "date": "2024-09-23",
+              "text": "- 고객 이름 : 송태경\n- 고객 전화 : 01073000455\n- 고객 이메일 : tk.song@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-09-23",
+              "text": "- 고객 이름 : 송태경\n- 고객 이메일 : tk.song@kt.com\n- 고객 전화 : 01073000455\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : pdf\n- 고객 utm_medium : link\n- 고객 utm_campaign : all^mktg^240902\n- 고객 utm_content : nurturing^last-page^ai-reference\n"
+            },
+            {
+              "date": "2024-10-11",
+              "text": "- 고객 이름 : 송태경\n- 고객 전화 : 01073000455\n- 고객 이메일 : tk.song@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241011\n- 고객 utm_content : lead-gen^mktg-agreed^lms1\n"
+            }
+          ]
+        },
+        {
+          "id": "08cb5f35-a69d-4c0a-9046-c5583ad9c5c4",
+          "name": "박은원",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-02",
+              "text": "- 고객 이름 : 박은원\n- 고객 이메일 : ew.park@kt.com\n- 고객 전화 : 01082140225\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : Skill 진단/평가로 인사 업무의 ROI를 높이는 한국 내 실제 사례가 궁금합니다.\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "cf9528fe-49de-4ee4-9f33-e6e435fdd5f9",
+          "name": "오성태",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-20. 백서 신청 (report_skilltrend)",
+            "3-62. 소개서 :Skill Match 진단 평가 서비스 소개서 (skillmatch_proposal)",
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-02",
+              "text": "- 고객 이름 : 오성태\n- 고객 이메일 : sungtae.oh@kt.com\n- 고객 전화 : 01073000622\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-09",
+              "text": "- 고객 이름 : 오성태\n- 고객 이메일 : sungtae.oh@kt.com\n- 고객 전화 : 01073000622\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-03-10",
+              "text": "- 고객 이름 : 오성태\n- 고객 전화 : 01073000622\n- 고객 이메일 : sungtae.oh@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250310\n- 고객 utm_content : nurturing^skillletter^skilltrendreport\n"
+            },
+            {
+              "date": "2025-11-17",
+              "text": "- 고객 이름 : 오성태\n- 고객 전화 : 01073000622\n- 고객 이메일 : sungtae.oh@kt.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "4cc8e3bb-3237-4baf-8657-75b1eb29d832",
+          "name": "신건희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-3. 세미나 다시보기: 생성형 AI를 활용한 업무효율화 실제 교육 사례 소개",
+            "7-1-2. 사업개발/영업 ChatGPT 공개 교육 개별 수강 신청"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-19",
+              "text": "- 고객 이름 : 신건희\n- 고객 이메일 : connie.synn@kt.com\n- 고객 전화 : 01068595205\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-05-21",
+              "text": "- 회사 이름 : 케이티\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 신건희\n- 고객 이메일 : connie.synn@kt.com\n- 고객 전화 : 01068595205\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 수강 희망 일자 : 3회차) 2025.06.13 (금)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-06-13",
+              "text": "- 회사 이름 : 케이티\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 신건희\n- 고객 이메일 : connie.synn@kt.com\n- 고객 전화 : 01068595205\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 수강 희망 일자 : 5회차) 2025.06.27 (금)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "b853b14c-94d4-4a22-8df6-112d5236c4cf",
+          "name": "박정진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-21",
+              "text": "- 고객 이름 : 박정진\n- 고객 이메일 : jungjin.park@kt.com\n- 고객 전화 : 01072906522\n- 회사 이름 : (주) KT\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 웨비나/오프라인 행사, 이메일/광고\n- 사내 프롬프트 개발 및 제작 관련해 궁금한 사항이 있으시다면 남겨주세요. : f\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240521\n- 고객 utm_content : lead-gen^cio^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "5694ff06-037c-48f3-ae91-b10b61e6e8bf",
+          "name": "허태성",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-05-21",
+              "text": "- 고객 이름 : 허태성\n- 고객 이메일 : saturn@twinfish.kr\n- 고객 전화 : 01026865870\n- 회사 이름 : 케이티\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 사내 프롬프트 개발 및 제작 관련해 궁금한 사항이 있으시다면 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240521\n- 고객 utm_content : lead-gen^cio^edm\n"
+            }
+          ]
+        },
+        {
+          "id": "e60f5814-519d-4948-a43b-c508d05fe9dc",
+          "name": "이영관",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "945b654b-399c-4fee-aa66-28b8e1aa42df",
+          "name": "곽재혁",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "135e0d48-a381-40e2-95d6-9a3fe6d37bfb",
+          "name": "신영운",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "622ee544-4b40-4179-bd19-8c2109c1d77f",
+          "name": "전덕영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "549623b1-7fb9-431d-83aa-2fb01f132eff",
+          "name": "최재희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "2216af8f-2d92-4f25-8d2d-15e4fb60ca70",
+          "name": "전희수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "088ef077-8360-480e-9b9d-2932317239a6",
+          "name": "신건희",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-52. 소개서 : 생성형 AI 교육 로드맵"
+          ],
+          "memos": [
+            {
+              "date": "2024-06-14",
+              "text": "- 고객 이름 : 신건희\n- 고객 이메일 : connie.synn@gmail.com\n- 고객 전화 : 01068595205\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "ae00b2e3-16ad-4bc9-8fa1-a44038bb7477",
+          "name": "현우진",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "4-19. 금융권 특화 AI 활용 아카데미"
+          ],
+          "memos": []
+        },
+        {
+          "id": "01920eae-b97f-7dd5-8801-970ed35aab41",
+          "name": "양정영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "3-59. 소개서 : AI 구독제 서비스(aisubs_proposal)",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-20",
+              "text": "- 고객 이름 : 양정영\n- 고객 이메일 : jung-young.yang@kt.com\n- 고객 전화 : 01031915575\n- 회사 이름 : KT\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-09-23",
+              "text": "- 고객 이름 : 양정영\n- 고객 전화 : 01031915575\n- 고객 이메일 : jung-young.yang@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240923\n- 고객 utm_content : nurturing^mktg-agreed^casebook_genai_subject\n"
+            }
+          ]
+        },
+        {
+          "id": "01922bc8-f954-7ee8-8581-303c4becaa1a",
+          "name": "정우철",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-26",
+              "text": "- 고객 이름 : 정우철\n- 고객 전화 : 01028390786\n- 고객 이메일 : wuchul.chung@kt.com\n- 회사 이름 : kt\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천, 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240926\n- 고객 utm_content : lead-gen^cio^genai_subject\n"
+            }
+          ]
+        },
+        {
+          "id": "01922cfc-68fa-7ff0-b1d0-e37a9a65eb4d",
+          "name": "성문관",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-20. 백서 신청 (report_skilltrend)",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)",
+            "5-24. IT 직무를 위한 AX 교육 설계 핵심 자료집 (package_CIOgenaicontents)"
+          ],
+          "memos": [
+            {
+              "date": "2024-09-26",
+              "text": "- 고객 이름 : 성문관\n- 고객 전화 : 01067373623\n- 고객 이메일 : mkseong@naver.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240926\n- 고객 utm_content : lead-gen^cio^genai_subject\n"
+            },
+            {
+              "date": "2024-10-23",
+              "text": "- 고객 이름 : 성문관\n- 고객 전화 : 01067373623\n- 고객 이메일 : mkseong@naver.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^241023\n- 고객 utm_content : lead-gen^cio^seminar_2025\n"
+            },
+            {
+              "date": "2025-01-23",
+              "text": "- 고객 이름 : 성문관\n- 고객 전화 : 01067373623\n- 고객 이메일 : mkseong@naver.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250122\n- 고객 utm_content : lead-gen^CIO^skilltrendreport\n"
+            },
+            {
+              "date": "2025-02-11",
+              "text": "- 고객 이름 : 성문관\n- 고객 전화 : 01067373623\n- 고객 이메일 : mkseong@naver.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250211\n- 고객 utm_content : lead-gen^CIO^genaicontents\n"
+            }
+          ]
+        },
+        {
+          "id": "0193209c-0d35-7000-98f4-417b1fc641d4",
+          "name": "이기명",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0193f128-761b-7dd7-95b1-164c5efbec1f",
+          "name": "유영애",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0193f128-7aef-7dd7-95b4-2ac88729361a",
+          "name": "안창현",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "0194f236-424c-7ff8-b479-e65b5fa60c4a",
+          "name": "김태윤",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)",
+            "5-24. IT 직무를 위한 AX 교육 설계 핵심 자료집 (package_CIOgenaicontents)"
+          ],
+          "memos": [
+            {
+              "date": "2025-02-10",
+              "text": "- 고객 이름 : 김태윤\n- 고객 전화 : 01073003204\n- 고객 이메일 : ty82.kim@Kt.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250211\n- 고객 utm_content : lead-gen^CIO^genaicontents\n"
+            },
+            {
+              "date": "2025-02-10",
+              "text": "- 고객 이름 : 김태윤\n- 고객 전화 : 01073003204\n- 고객 이메일 : ty82.kim@Kt.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250211\n- 고객 utm_content : lead-gen^CIO^genaicontents\n"
+            }
+          ]
+        },
+        {
+          "id": "0194f2ce-f120-7bb7-aef6-84119b619ce3",
+          "name": "송민관",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-24. IT 직무를 위한 AX 교육 설계 핵심 자료집 (package_CIOgenaicontents)"
+          ],
+          "memos": [
+            {
+              "date": "2025-02-11",
+              "text": "- 고객 이름 : 송민관\n- 고객 전화 : 01030103818\n- 고객 이메일 : mk.song@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : 영업/마케팅\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^250211\n- 고객 utm_content : lead-gen^CIO^genaicontents\n"
+            }
+          ]
+        },
+        {
+          "id": "019501da-8505-7000-8706-7de166fb5819",
+          "name": "임하나",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-17. 백서 신청 (report_trainingroi)",
+            "1-19. 백서 신청 (report_hraiguide)",
+            "1-3. 백서 신청 (report_cds)",
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)",
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)",
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)"
+          ],
+          "memos": [
+            {
+              "date": "2025-02-14",
+              "text": "- 고객 이름 : 임하나\n- 고객 이메일 : linaa.25@kt.com\n- 고객 전화 : 01030102861\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-02-14",
+              "text": "- 고객 이름 : 임하나\n- 고객 전화 : 01030102861\n- 고객 이메일 : linaa.25@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-02-14",
+              "text": "- 고객 이름 : 임하나\n- 고객 이메일 : linaa.25@kt.com\n- 고객 전화 : 01030102861\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-07-02",
+              "text": "- 고객 뉴스레터 : 비즈레터(HRD트렌드, 기업 사례 등), AX아카이브(맞춤형 AI 교육 사례)\n- 고객 이름 : 임하나\n- 고객 이메일 : linaa.25@kt.com\n- 고객 전화 : 01030102861\n- 회사 이름 : 주식회사 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250702\n- 고객 utm_content : nurturing^letter^subscribe\n"
+            },
+            {
+              "date": "2025-09-10",
+              "text": "- 고객 이름 : 임하나\n- 고객 전화 : 01030102861\n- 고객 이메일 : linaa.25@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일/광고\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^250910\n- 고객 utm_content : lead-gen^bizletter^cta2\n"
+            },
+            {
+              "date": "2025-11-13",
+              "text": "- 고객 이름 : 임하나\n- 고객 전화 : 01030102861\n- 고객 이메일 : linaa.25@kt.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^251112\n- 고객 utm_content : lead-gen^bizletter^cta1\n"
+            },
+            {
+              "date": "2025-11-13",
+              "text": "- 고객 이름 : 임하나\n- 고객 전화 : 01030102861\n- 고객 이메일 : linaa.25@kt.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01954ae4-3d57-7226-b802-5db1913e1dbf",
+          "name": "한현석",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01956916-6602-7773-8665-b39211c3c025",
+          "name": "서정민",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "01980bb0-2578-7776-9017-8cb82c02d0d4",
+          "name": "황보원규",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-76. 소개서 : IT 직무 AI 교육 커리큘럼 소개서"
+          ],
+          "memos": [
+            {
+              "date": "2025-07-15",
+              "text": "- 고객 이름 : 황보원규\n- 고객 전화 : 01082047407\n- 고객 이메일 : wongyu.hwangbo@kt.com\n- 회사 이름 : 케이티\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "019937d9-15e3-7442-a08c-4301069fc74b",
+          "name": "이정란",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019937d9-f689-7eee-b390-e7a73131edc3",
+          "name": "박소연",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019937dd-9eae-7442-a0a7-d3e19853d783",
+          "name": "이충환",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019954f5-c573-755e-97d3-a70b21295b94",
+          "name": "황지욱",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-16",
+              "text": "- 고객 이름 : 황지욱\n- 고객 전화 : 01030102798\n- 고객 이메일 : nemindhunter@gmail.com\n- 회사 이름 : KT\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250916\n- 고객 utm_content : lead-gen^cold-hd^mql#salesmap-web-form\n"
+            }
+          ]
+        },
+        {
+          "id": "019974b8-3f42-799a-8577-84bd19f735fb",
+          "name": "이지수",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-19. 금융권 특화 AI 활용 아카데미"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-23",
+              "text": "- 고객 이름 : 이지수\n- 고객 전화 : 01097775097\n- 고객 이메일 : lee.jisu@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "01997a0b-fc34-777c-9c65-9830d1952b8b",
+          "name": "강민지",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북"
+          ],
+          "memos": [
+            {
+              "date": "2025-09-24",
+              "text": "- 고객 이름 : 강민지\n- 고객 전화 : 01097777301\n- 고객 이메일 : minji.kang@kt.com\n- 회사 이름 : KT\n- 고객 담당 업무 : 전략/비즈니스개발/경영\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색, 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "인재실",
+      "team": "AX교육팀",
+      "deals": [
+        {
+          "id": "0192d5f5-4be9-7002-a773-4e9ccdfa67dd",
+          "created_at": "2024-10-29T01:47:55.832Z",
+          "name": "KT(AX교육팀)_AX디그리교육",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": 30000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "복합형(연간계획 등)",
+          "contract_date": "2024-11-26T15:00:00.000Z",
+          "amount": 30000000.0,
+          "start_date": "2024-12-31T15:00:00.000Z",
+          "end_date": "2025-01-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0193629f-5657-7005-8061-f3ed616df6cc",
+            "name": "김영한",
+            "upper_org": "인재실",
+            "team": "AX교육팀",
+            "title": "과장",
+            "edu_area": "AX교육"
+          },
+          "memos": [
+            {
+              "date": "2024-11-07",
+              "text": "11/07KT 역량개발팀내에 두 담당자에게 유사한 내용의 문의가 인입된 건 콘텐츠 수급 담당자 : 종협님과 소통중AX교육 담당자 : 솔이 소통두 부서 모두 콘텐츠 수급쪽 교육 문의라,콘텐츠 수급을 총괄하는 담당자와 종협님이 공통 소통키를 가져가기로 협의!다만, AX교육팀에서 콘텐츠 수급 외에 기획이 필요한 온/오프라인 교육의 운영건이 있다면그 건 실무는 이어서 담당하기로!"
+            },
+            {
+              "date": "2024-11-12",
+              "text": "[금일 콜 내용 공유]- MS Tool 활용 사례 기본 교육은 결국 MS와 진행해야 하지 않을까 생각중- 패캠이 가지고 있는 온라인 교육을 기반으로 진행을 원하는 상황- 24년 KMA와 진행했고, 영업과 별개로 실무진에서 운영에 대한 만족도가 낮은 상황- 25년은 가능하면 패캠과 진행을 원하고 과정 검토중(운영자 지원 희망) ㄴ 유스케이스 AICT는 진행을 많이 해왔지만, 패캠이 함께 할 수 있으면 좋을 것 같다고 함 ㄴ 상권 데이터 에저 업무 적용에 대한 컨설팅 영역도 Fit한 기관이 없어서 패캠이 가능한지 정도 확인 필요 ㄴ 전체적으로 패캠이 가능한 부분을 총괄하면 좋겠지만, 그럴 필요까지는 없고 가능한 선에서 제안 예정- 금주 금요일(11/14, 금 14) 미팅 예정(참석자: 박종협, 김솔이, 정다혜) ㄴ 미팅 준비: MS, AICT 교육 레퍼런스 및 강사 리스트업 요청"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "0193629f-5657-7005-8061-f3ed616df6cc",
+          "name": "김영한",
+          "upper_org": "인재실",
+          "team": "AX교육팀",
+          "title": "과장",
+          "edu_area": "AX교육",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인재실",
+      "team": "B2B영업컨설팅교육팀",
+      "deals": [
+        {
+          "id": "4deb079f-3380-4f44-9dee-c5dd144b08ae",
+          "created_at": "2024-05-20T01:00:34.221Z",
+          "name": "KT_B2B영업직군을 위한 AICT 기초 소양 과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 4630000.0,
+          "lost_confirmed_at": "2024-06-06T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "비대면 실시간",
+          "category": "빅데이터/AI",
+          "contract_date": "2024-06-07T07:28:08.692Z",
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "7c6cc915-c547-4aa5-bff0-02004ddcad5f",
+            "name": "원재희",
+            "upper_org": "인재실",
+            "team": "B2B영업컨설팅교육팀",
+            "title": "과장",
+            "edu_area": "영업/컨설팅"
+          },
+          "memos": [
+            {
+              "date": "2024-05-20",
+              "text": "- 딜 문의 주제 (최초) : DX 기초 (마인드셋, 데이터 리터러시)\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 1000명 이하\n- 딜 예상 교육 일정 : 2개월 이내\n- 회사 이름 : kt\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 원재희\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 이메일 : erika.won@kt.com\n- 고객 전화 : 01073000788\n- 상담 문의 내용 : kt B2B영업 직군 대상으로 AICT 기초 소양 과정을 기획 중입니다.\n영업직군들이 AICT 에 대한 기본적인 이해와 영업에 도움이되는 실질적인 정보/지식 습득하고 고객과 관련 소통을 하는데 어려움이 없도록 하고자 합니다.\n7/3부터 매주 수요일 1시간씩 6차시 정도 고려하고 있고 1차시 AI 트렌드(기술 동향, 트렌드 및 전망, kt가 나아가야할 방향) / 2~4차시 AI 개념, 용어, 주요 구조 및 원리, 적용 비지니스 사례 (ml, dl, lmm 등) / 5차~6차시 AI 비지니스(자사/타사의 상품/서비스 전략, 제안사례, 성공적인 영업을 위한 포인트 정도로 생각하고 있습니다. \n강사 추천과 상세 강의내용 관련 안내를 받고자 하며 전반적인 커리큘럼에 대한 의견도 주시면 감사하겠습니다.\n감사합니다.\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-20",
+              "text": "[기업명] KT[담당자] 원재희 과장 / erika.won@kt.com / 010-7300-0788 [교육 주제] AI 리터러시 및 B2B영업 직무에 특화한 실질적인 교육 구성 ( 고객과의 원활한 소통 + 자사 상품에 대한 세일즈 역량 강화  )* 기존 정보통신기술(ICT) 역량 + 인공지능(AI) = AICT[교육 배경] B2B영업직군이 AI에 대한 기초 소양을 쌓고 고객들과 원활한 소통을 하고궁극적으로는 자사 상품에 대해 세일즈를 잘 할 수 있도록 도움을 줄 수 있는 교육 구성 희망[수강 대상]B2B영업 직군 대상 약 1000명 대상[교육 일정]24년도 7월 3일(매주 수) 부터 매주 1시간씩, 6회차 9시~10시 희망 (교육에 할애할 수 있는 최대 시간 1회 당 1시간 / 필요하다면 회차를 늘리는 것은 가능 )[교육 형태]비대면 실시간 스트리밍 + 교육 녹화 본 KT 사이트에 업로드 필요[교육 장소]KT 광화문 EAST 사옥에 있는 비대면 교육장에서 강의 진행 희망[교육 제안 포인트]본 교육 대상이 기술영업 직군이라, 직군 특화가 가장 중요함영업 직무에 특화해서 쉽게, 본업에 실질적인 도움이 될 수 있도록 적한한 내용 구성 되었으면 함- 일반적으로 유튜브나 이러닝에서 쉽게 접할 수 있는 브로드한 내용 X- AI트렌드는 업게 유명인사께서 오시는 것도 고려하고 중,  다만 내용이 너무 일반적인 것은 지양합니다.(1~2차시 정도는 kt 부서에서 자사 AI 상품/서비스 이해 시간으로 구성하고자 함.)[교육 예산]교육 비용 + 녹화 비용 + 과정 수료 평가 문제 출제 비용 모두 포함해서 제안 필요이전 히스토리 ) 1.5H * 4회차 = 6시간, 교육/녹화/문제출제 포함하여 700만원에 진행"
+            },
+            {
+              "date": "2024-06-07",
+              "text": "* Lost 사유 - 타 업체와 비교 중 KT가 원하는 조건을 모두 수용할 수 있는 업체와 진행하기로 의사결정..!1) 7월 매주 수요일 9-10시 1시간씩 실시간 스트리밍 ( 장소는 KT 사내 강의장 )2) 실시간 강의 녹화하여 KT 자사 교육 플랫폼 내에 업로드3) 교육대상인 영업직군의 역량 향상 진단을 위한 진단 문항 pool 개발 ( 80문항 )4) 교재 개발 (실시간 강의 시간이 짧아, 별도로 참고하여 학습할 수 있는 학습 자료의 목적 )5) AI 트렌드 및 사례를 KT 내부 현황이나 전망에 핏하게 설명해주었으면 좋겠음 ( ICT나 클라우드에도 지식이 깊은 강사 희망 )6) 비전공자가 이해할 수 있도록 아주 쉽고 재미있게 강의 진행 희망7) 사전에 강의력을 보장할 수 있는 근거자료 요청 ( ex_강의 영상 )+ 교육 비용은 이전 히스토리 상 위 조건으로 6시간 강의 700만원에 진행한 히스토리 있음ㄴ 해당 견적 수준으로 진행 희망 (시간당 116만원 수준)→ 강의 시작일자까지 시간이 넉넉치 않아, 패스트캠퍼스와 경험이 있는 딥러닝 커버 가능한 강사님들과 여러 컨택 시도했으나 일정이 맞지 않거나 강사료/시수/장소 등의 이슈로 거절하는 분들이 많아 협의가 필요한 상황이었습니다.협의하고 진행하기에 시간이 촉박하여 모든 조건 수용이 가능하다는 타업체와 진행하시기로 하셨다고합니다.."
+            }
+          ]
+        },
+        {
+          "id": "019424ca-17f4-7334-8adb-2a20f25394eb",
+          "created_at": "2025-01-02T02:13:31.771Z",
+          "name": "KT_B2B 세일즈 교육",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "손지훈",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-02-28T00:50:13.467Z",
+          "expected_amount": 70000000.0,
+          "lost_confirmed_at": "2025-03-04T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "소프트스킬",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "019424ca-1786-7334-8adb-1935621580ea",
+            "name": "장하나",
+            "upper_org": "인재실",
+            "team": "B2B영업컨설팅교육팀",
+            "title": "차장",
+            "edu_area": "영업/컨설팅"
+          },
+          "memos": [
+            {
+              "date": "2025-01-09",
+              "text": "특강부터 이론(롤플레잉 실습)까지 진행되는 IT 영업 전략 관련한 내용으로 커리큘럼 구성 후 장하나 차장님께 메일 전달(종협님)해당 내용으로 피드백 받으면 수정 후 계속해서 f-up 진행김성미 매니저, 배준현, 홍종혁, 이보원 강사님께 강의 진행 가능여부 확인 메일 송부 완료"
+            },
+            {
+              "date": "2025-01-22",
+              "text": "IT기술영업 관련 커리큘럼 수정하여 재송부2025.01.24일(금) 오전 10시 KT송파사옥에서 팀장 미팅종협님, 다혜님과 함께 방문하여 제안 드리기로 함"
+            },
+            {
+              "date": "2025-01-24",
+              "text": "미팅로그- 영업교육 체계에 대한 정례화를 하고자 함- 실제로 현장에서 써먹을 수 있는 교육 내용으로 구성하였으면 좋겠음- 예시) 고객사에 클라우드 도입 시 보안에 대한 문제가 있을 경우 어떤식으로 접근해야할 지 아예 감이 안잡히는 상황이라 해당 교육에서는 IT에 대한 전반적인 내용을 위주로 교육(컨설턴트 영역)하고 그 내용을 토대로 고객사에 어떤식으로 접근하면 좋을지에 대한 실무적인 강의 위주가 되었으면 좋겠음- 5천만원 미만으로 진행할 경우 입찰은 진행하지 않아도 됨 / 5천만원 이상일 경우 무조건 입찰 진행이 필요- IT에 대한 내용을 아예 모르는 상태에서 교육이 이뤄진다고 생각하면 되는지?  ㄴ 내가 IT컨설턴트 만큼 역량이 올라 세일즈 할 때 도움이 될 수 있을 정도가 필요- 특강의 경우 비대면으로 진행이 가능한지  ㄴ 특강 강사님과 협의 후 진행 가능여부 확인이 필요특이사항- 상무에 경우 기존 교육 진행 방식이 너무 불필요하게 진행 한 경우가 많아 이번에는 실무적인 교육이 필요- 정화숙 팀장의 경우 교육쪽에 10년이 있어 애매하게 커리큘럼을 구성하지 말고 정말 와꾸가 맞도록 구성하는게 필요- 교육은 강의 만족도에 대한 필요성이 없고, 강사진들이 실무적인 내용으로 구성을 잘했는지가 중요! ㄴ 실무적인 교육위주, 강의력, 전달력보다는 실제 사례, 실제 스킬을 활용하는 방식이 필요- 기존 통신쪽은 영업을 원할하게 수행할 수 있지만, IT쪽은 접근하기 어려움 ㄴ 예시) 데이터는 어떻게 전송이 되는지, 보안 이슈는 어떤식으로 접근을 해야하는지, 클라우드는 어떻게 도입해야하는지"
+            },
+            {
+              "date": "2025-02-04",
+              "text": "입찰 기준이 5천만원인줄 알았는데 3천만원으로 확인했다.회차별로 끊어서 교육을 하면 좋으나 내부 모니터링에 걸릴 위험이 있어 운영비 인력까지 포함해서 견적 다시 달라고 함.3월에는 운영해야해서 긴급 입찰로 진행한다고 함휴넷과 멀티캠퍼스에도 컨택중이라고 함커리큘럼에 대한 퀄리티는 현재 가장 좋았다고 함운영인력은 상주하여 강사 피드백, 만족도조사, 수강생 소통, 수강생 태도 관리도 해달라고 함"
+            },
+            {
+              "date": "2025-02-14",
+              "text": "교육 제안 개요1. 교육 개요- 예상가격: 8,095만 원 (VAT 별도)- 교육 일정: 2박 3일 과정- 교육 횟수: 총 4회 (회당 50명)- 교육 시간: 09:00 ~ 18:00 (집중 과정)2. 교육 프로그램 구성- 1일차: IT 기술 이론 교육(저명인사 강연 포함)- 2일차: IT 기술 실습 (2개 반으로 분반, 보조 강사 2명 투입)- 3일차: 조직 소속감 및 성취감 강화 액티비티 (컵 제작 프로그램)3. 운영 및 지원 사항- 운영 방식: 프로그램은 KT 자체 운영, 단, 운영 보조 지원 필요- 운영 인력: 2박 3일 기준으로 운영인력 비용 포함- 기타 사항: 기념품 (맨투맨 티셔츠), 배너, 명찰, 현수막 등4. 교육 자료 및 교재- KT 맞춤형 교재 개발- 내용: IT 기술 관련 핵심 내용 포함5. 기타 고려 사항- 제안 대상: 휴넷, 멀티캠퍼스, 패스트캠퍼스 동일 내용 전달- 가격 책정: 퀄리티 중심으로 견적 제시 (과도한 가격 절감 지양) / 90퍼센트도 너무 많이 가격 절감한거다라고 표현- 진행 일정: 1) 제안서 마감: 2월 27일 예상 2) PT 발표: 2월 28일 3) 최종 결재 진행 중 (월요일 결과 예정)★교육 현실성이 핵심 기준! 현업에서 실제 적용 가능 여부를 최우선으로 고려."
+            },
+            {
+              "date": "2025-03-06",
+              "text": "IT BIZ BOOT CAMP 입찰 탈락 사유 제언 KT 목표 중심 설명: KT 자체 목표에 중점을 둔 설명이 교육 과정의 방향과 목표 설정에 적합하지 않음교육 목표 및 방향성 부각 부족: 교육의 구체적인 목표와 방향성에 대한 명확한 설명 부족, KT 전반적인 목표 중심의 설명으로 대체운영 방안 및 레퍼런스 부족: KT IT BIZ BOOT CAMP 과정의 요구사항에 맞춘 실제적인 운영 방안과 레퍼런스 부족강사진 소개 부족: 교육의 목표와 방향성에 맞는 강사진의 전문성과 경험에 대한 소개 부족감점 요인: 교육의 운영 방안과 목표, 강사진에 대한 부족한 설명이 평가에서 감점 요소로 작용교담자 개인적 견해: 발표자가 KT B2B 영업 교육의 니즈와 방향성에 대한 이해가 많이 부족하였던게 부작용이였던 것 같음"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "7c6cc915-c547-4aa5-bff0-02004ddcad5f",
+          "name": "원재희",
+          "upper_org": "인재실",
+          "team": "B2B영업컨설팅교육팀",
+          "title": "과장",
+          "edu_area": "영업/컨설팅",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": []
+        },
+        {
+          "id": "019424ca-1786-7334-8adb-1935621580ea",
+          "name": "장하나",
+          "upper_org": "인재실",
+          "team": "B2B영업컨설팅교육팀",
+          "title": "차장",
+          "edu_area": "영업/컨설팅",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인재실",
+      "team": "Biz 컨설팅 교육팀",
+      "deals": [
+        {
+          "id": "01912bb7-b835-755e-bed8-424354c9797c",
+          "created_at": "2024-08-07T07:22:26.238Z",
+          "name": "케이티_예치금_싱글",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-08-06T15:00:00.000Z",
+          "expected_amount": 10000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "선택구매(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-08-07T15:00:00.000Z",
+          "amount": 10000000.0,
+          "start_date": "2024-08-07T15:00:00.000Z",
+          "end_date": "2025-08-06T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "1e629484-983e-49d7-84e8-ae2a7b819e00",
+            "name": "송미현",
+            "upper_org": "인재실",
+            "team": "Biz 컨설팅 교육팀",
+            "title": "과장",
+            "edu_area": "비즈니스, 컨설팅 교육"
+          },
+          "memos": [
+            {
+              "date": "2024-08-09",
+              "text": "7월 12일 선입금계약서 작성 중"
+            }
+          ]
+        },
+        {
+          "id": "0192407b-ef0a-7110-b619-88d1e49b15fb",
+          "created_at": "2024-09-30T01:11:56.943Z",
+          "name": "케이티 예치금_추가",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "성규화",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-11-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": 2000000.0,
+          "start_date": "2024-09-30T15:00:00.000Z",
+          "end_date": "2026-09-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "1e629484-983e-49d7-84e8-ae2a7b819e00",
+            "name": "송미현",
+            "upper_org": "인재실",
+            "team": "Biz 컨설팅 교육팀",
+            "title": "과장",
+            "edu_area": "비즈니스, 컨설팅 교육"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "1e629484-983e-49d7-84e8-ae2a7b819e00",
+          "name": "송미현",
+          "upper_org": "인재실",
+          "team": "Biz 컨설팅 교육팀",
+          "title": "과장",
+          "edu_area": "비즈니스, 컨설팅 교육",
+          "webforms": [
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "1-4. 백서 신청 (report_workflowlearning)"
+          ],
+          "memos": [
+            {
+              "date": "2024-04-02",
+              "text": "- 고객 이름 : 송미현\n- 고객 이메일 : mh.song@kt.com\n- 고객 전화 : 01092831201\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-04-02",
+              "text": "- 고객 이름 : 송미현\n- 고객 이메일 : mh.song@kt.com\n- 고객 전화 : 01092831201\n- 회사 이름 : 케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "인재실",
+      "team": "교육플랫폼팀",
+      "deals": [
+        {
+          "id": "84ffcfc3-1315-41eb-83cc-7ca4f6f19ebf",
+          "created_at": "2024-02-08T01:27:18.579Z",
+          "name": "케이티(유영애)_kt 그룹사 PM 교육_2404",
+          "team": null,
+          "owner": "이지현",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": "2024-03-28T15:00:00.000Z",
+          "expected_amount": 0.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "바이트디그리",
+          "category": "PM/PO",
+          "contract_date": "2024-03-14T01:08:40.201Z",
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "ce80f6f5-d995-41aa-b823-5ab2f95e6a06",
+            "name": "유영애",
+            "upper_org": "인재실",
+            "team": "교육플랫폼팀",
+            "title": "차장",
+            "edu_area": "바이트디그리/PMPO"
+          },
+          "memos": [
+            {
+              "date": "2024-03-14",
+              "text": "드롭 사유 유선 확인) PDU 인증 이슈 & 영상 편집 등 이슈 등으로 진행 불가(타 기관 협업 제시했으나 해당 방식으로 상부 설득까지는 어려움) 대신 하반기에 PDU 인증 필요하지 않은 교육으로 재 문의 예정."
+            }
+          ]
+        },
+        {
+          "id": "35a2e332-fbff-4bb9-9c0c-bc4cbd2ca0ab",
+          "created_at": "2024-07-10T02:52:19.414Z",
+          "name": "KT_마케팅 AI 바이트디그리(2407)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김별",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-07-30T15:00:00.000Z",
+          "expected_amount": 30000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "생성형AI",
+          "contract_date": "2024-07-30T15:00:00.000Z",
+          "amount": 42120000.0,
+          "start_date": "2024-07-30T15:00:00.000Z",
+          "end_date": "2024-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "ce0c928a-299e-47d9-bdd2-659309501f64",
+            "name": "유지영",
+            "upper_org": "인재실",
+            "team": "교육플랫폼팀",
+            "title": "차장",
+            "edu_area": "AX교육"
+          },
+          "memos": []
+        },
+        {
+          "id": "01931f60-5a1d-7bba-8491-6b257a5526f4",
+          "created_at": "2024-11-12T07:57:08.518Z",
+          "name": "KT(교육플랫폼팀)_직무별 AI 디그리 과정",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2024-12-23T15:00:00.000Z",
+          "lost_reason": "[\"기타 (노트에 적기)\"]",
+          "course_format": "바이트디그리",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "ce0c928a-299e-47d9-bdd2-659309501f64",
+            "name": "유지영",
+            "upper_org": "인재실",
+            "team": "교육플랫폼팀",
+            "title": "차장",
+            "edu_area": "AX교육"
+          },
+          "memos": [
+            {
+              "date": "2024-11-25",
+              "text": "유지영차장님 수욜(11/27) 비대면 미팅 예정 - 제안 내용 설명, 실무진 협의"
+            },
+            {
+              "date": "2024-11-27",
+              "text": "내부 조직개편 - 담당자 변경 가능성 있음 기본적으로 다 된다고 말씀드렸어용4개 직무 외 추가 직무 고려 예정 (과정 추가 가능한지? - 가능으로 답변) 필요 시 온라인 콘텐츠 제작, 비대면 스트리밍 추가 강의 진행 직무별 문제해결 가이드, 사전 설문 기반으로 한 업무 해결 시나리오 템플릿 제공 필요 내부 조직 셋팅 완료 이후,분야 확정 (4개직무+@) -> 직무 컨텐츠 수강 -> 코파일럿 활용 콘텐츠 코파일럿 관련 콘텐츠 없는 분야는 제작하고 다른 분야 먼저 수강 하는 동안 제작하기 최종 결정 / 세부 협의까지 시간 좀 걸릴 수 있음~"
+            },
+            {
+              "date": "2025-01-10",
+              "text": "LOST - '25년 AX 교육 운영으로 통합"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "ce0c928a-299e-47d9-bdd2-659309501f64",
+          "name": "유지영",
+          "upper_org": "인재실",
+          "team": "교육플랫폼팀",
+          "title": "차장",
+          "edu_area": "AX교육",
+          "webforms": [
+            "1-16. 백서 신청 (report_aileadership)"
+          ],
+          "memos": [
+            {
+              "date": "2024-12-30",
+              "text": "- 고객 이름 : 유지영\n- 고객 이메일 : jiyoung.yu@kt.com\n- 고객 전화 : 01023373779\n- 회사 이름 : 주식회사케이티\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "ce80f6f5-d995-41aa-b823-5ab2f95e6a06",
+          "name": "유영애",
+          "upper_org": "인재실",
+          "team": "교육플랫폼팀",
+          "title": "차장",
+          "edu_area": "바이트디그리/PMPO",
+          "webforms": [
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 유영애\n- 고객 전화 : 01030102633\n- 고객 이메일 : yeongae.yu@kt.com\n- 회사 이름 : kt\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 지인 추천, 직접 검색\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : 내년도 사업계획을 고민하고 있는\n\nHR담당자들에게 유용한 인사이트가 있기를 기대합니다.\n\n내일 뵐께요\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "인재실",
+      "team": "기술교육팀",
+      "deals": [
+        {
+          "id": "0195b35e-71df-7000-821a-f94c12cd87da",
+          "created_at": "2025-03-20T11:44:26.089Z",
+          "name": "KT(기술교육팀)_AI Academy",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": 300000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-04-10T15:00:00.000Z",
+          "amount": 264800000.0,
+          "start_date": "2025-05-18T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": "40.0",
+          "people": {
+            "id": "0195b35e-7128-7000-821a-eaeaf31f16b6",
+            "name": "김건태",
+            "upper_org": "인재실",
+            "team": "기술교육팀",
+            "title": "과장",
+            "edu_area": "AI 기술교육"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "0195b35e-7128-7000-821a-eaeaf31f16b6",
+          "name": "김건태",
+          "upper_org": "인재실",
+          "team": "기술교육팀",
+          "title": "과장",
+          "edu_area": "AI 기술교육",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인재실",
+      "team": "대외교육협력팀",
+      "deals": [
+        {
+          "id": "019638c5-268a-799b-ab24-530f84d0c0b0",
+          "created_at": "2025-04-15T09:26:06.750Z",
+          "name": "KT(대외교육협력팀)_AI 역량향상 교육",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": 120000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-04-15T15:00:00.000Z",
+          "amount": 112600000.0,
+          "start_date": "2025-04-27T15:00:00.000Z",
+          "end_date": "2025-10-30T15:00:00.000Z",
+          "net_percent": "50.0",
+          "people": {
+            "id": "019638c5-25ed-799b-ab24-400d2d0c4d5b",
+            "name": "정상훈",
+            "upper_org": "인재실",
+            "team": "대외교육협력팀",
+            "title": "과장",
+            "edu_area": "KT 내외부 교육 모두"
+          },
+          "memos": []
+        },
+        {
+          "id": "019758cf-22dd-7ee2-bf83-b6b6c695bee9",
+          "created_at": "2025-06-10T07:47:00.000Z",
+          "name": "KT(대외교육협력팀)_AI 활용역량 향상 교육",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-26T05:25:23.453Z",
+          "expected_amount": 475000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-06-25T15:00:00.000Z",
+          "amount": 475000000.0,
+          "start_date": "2025-06-30T15:00:00.000Z",
+          "end_date": "2026-06-29T15:00:00.000Z",
+          "net_percent": "55.0",
+          "people": {
+            "id": "019758cf-224e-7ee2-bf83-a03f9513766a",
+            "name": "김나영",
+            "upper_org": "인재실",
+            "team": "대외교육협력팀",
+            "title": "과장",
+            "edu_area": "MS 교육 TF"
+          },
+          "memos": []
+        },
+        {
+          "id": "01999443-8fd0-7eee-9a88-2016ac57f2af",
+          "created_at": "2025-09-29T06:57:00.000Z",
+          "name": "KT (에이블스쿨)_Office 365의 advanced 코파일럿 기능 활용",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-09-28T15:00:00.000Z",
+          "expected_amount": 2500000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-09-28T15:00:00.000Z",
+          "amount": 2500000.0,
+          "start_date": "2025-10-29T15:00:00.000Z",
+          "end_date": "2025-10-29T15:00:00.000Z",
+          "net_percent": "64.0",
+          "people": {
+            "id": "01999443-8ed8-7eee-9a88-1392a32d2a55",
+            "name": "정영세",
+            "upper_org": "인재실",
+            "team": "대외교육협력팀",
+            "title": "대리",
+            "edu_area": "MS 교육 TF"
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "019638c5-25ed-799b-ab24-400d2d0c4d5b",
+          "name": "정상훈",
+          "upper_org": "인재실",
+          "team": "대외교육협력팀",
+          "title": "과장",
+          "edu_area": "KT 내외부 교육 모두",
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "019758cf-224e-7ee2-bf83-a03f9513766a",
+          "name": "김나영",
+          "upper_org": "인재실",
+          "team": "대외교육협력팀",
+          "title": "과장",
+          "edu_area": "MS 교육 TF",
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "01999443-8ed8-7eee-9a88-1392a32d2a55",
+          "name": "정영세",
+          "upper_org": "인재실",
+          "team": "대외교육협력팀",
+          "title": "대리",
+          "edu_area": "MS 교육 TF",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "인재실",
+      "team": "인재육성담당 교육플랫폼팀",
+      "deals": [
+        {
+          "id": "0194cef9-111b-799e-8c99-1ced83926dd5",
+          "created_at": "2025-02-04T03:20:16.930Z",
+          "name": "KT_AX온라인콘텐츠 포팅_이지희 차장",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "손승완",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-06-29T15:00:00.000Z",
+          "expected_amount": 23700000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "포팅",
+          "category": "DX Essential",
+          "contract_date": "2025-06-29T15:00:00.000Z",
+          "amount": 23700000.0,
+          "start_date": "2025-07-30T15:00:00.000Z",
+          "end_date": "2026-07-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "0194cef9-109a-799e-8c99-082991f793e3",
+            "name": "이지희",
+            "upper_org": "인재실",
+            "team": "인재육성담당 교육플랫폼팀",
+            "title": "차장",
+            "edu_area": "전사 AX 기본 역량 온라인 콘텐츠"
+          },
+          "memos": [
+            {
+              "date": "2025-05-30",
+              "text": "이지희 차장님께 온라인 과정 리스트와 강수진 박사님 과정 견적서 작성하여 메일로 전달"
+            },
+            {
+              "date": "2025-06-04",
+              "text": "kt 메일로는 확인이 되시지 않아 개인메일로도 다시 재발송"
+            },
+            {
+              "date": "2025-06-11",
+              "text": "테스트 계정 전달 완료"
+            },
+            {
+              "date": "2025-06-19",
+              "text": "전체 견적서 전달 완료했고, 이후로 종협님 통해 현재 다시 견적 및 세부 과정 확인 중"
+            },
+            {
+              "date": "2025-06-23",
+              "text": "차장님과 유선 전화 로그- 견적 금액이 예상 금액과 상이하실 것으로 판단하여 각 과정에 대한 선별 자료를 제작해서 드리겠다는 말씀을 드렸음- 현재 각 공통 과정별로 부서에서 선택 중이고, 아마 명일~모레 사이 계약 부서에서 연락주시는 것으로 말씀해주심."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "0194cef9-109a-799e-8c99-082991f793e3",
+          "name": "이지희",
+          "upper_org": "인재실",
+          "team": "인재육성담당 교육플랫폼팀",
+          "title": "차장",
+          "edu_area": "전사 AX 기본 역량 온라인 콘텐츠",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    },
+    {
+      "upper_org": "커스터머부문",
+      "team": "영업본부 - 유통교육팀",
+      "deals": [
+        {
+          "id": "795550a3-da4d-4ba9-99e0-adacc1f11d5f",
+          "created_at": "2024-05-21T07:42:42.764Z",
+          "name": "KT 대리점 대상 SNS마케팅 교육 파일럿 과정 (출강)",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}, {\"id\": \"55affe17-4092-4619-96b5-3ffc808417a3\", \"name\": \"마케팅팀\"}]",
+          "owner": "최예인",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-06-04T15:00:00.000Z",
+          "expected_amount": 2750000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-06-05T02:31:02.399Z",
+          "amount": 2750000.0,
+          "start_date": "2024-06-04T15:00:00.000Z",
+          "end_date": "2024-06-04T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "651e1c70b91c41329f696ee5",
+            "name": "남윤미",
+            "upper_org": "커스터머부문",
+            "team": "영업본부 - 유통교육팀",
+            "title": "과장",
+            "edu_area": "유통 대리점 대상 교육"
+          },
+          "memos": [
+            {
+              "date": "2024-05-21",
+              "text": "- 딜 문의 주제 (최초) : 영업/디지털 마케팅, 생성형 AI (챗GPT 활용)\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 300명 이하\n- 딜 예상 교육 일정 : 2개월 이내\n- 회사 이름 : KT\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 남윤미\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 이메일 : yunmi.nam@kt.com\n- 고객 전화 : 010-7300-1131\n- 상담 문의 내용 : kt대리점(오프라인) 매장 대상 SNS마케팅 교육을 진행하고 싶습니다. \n\nㅇ성과(매출증대)로 연결되는 SNS 마케팅 \n - 교육목적: 네이버 스마트플레이스, 블로그, 인스타그램, 당근마켓 등 플랫폼 활용한 내방고객 & 실적증대 \n - 교육내용: 상위 노출 및 고객을 유인하는 글쓰기 방법 / 생성형 AI활용 콘텐츠 제작 방법 등 \n - 교육방식: 7~8차수 예정 (각 지역본부 교육장) / 차수별 20명 예상\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-05-21",
+              "text": "교육주제 : SNS 마케팅교육대상 : 오프라인 대리점교육형태 : 오프라인 (각 지역본부에 가서 진행)교육목적/배경 : 해당 교육을 왜 진행하는지, 기존에 유사 교육진행 이력이 있는지 등교육시작 일정 :(중요)예산 : 외부기관과 했을 때 시간당 3-40만원으로 한 이력이 있음 (다만 비용에 대한 협의 여지 있음)(중요)기업 담당자의 현 상황 :  타 기업과 진행하려고 하던 중 회신이 너무 늦고 진도가 안나가서 타 업체 컨택 중구체화에 필요한 기타 사항고객사가 원하는 자료 : 제안서, 견적서, 강사 프로필(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)*"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "651e1c70b91c41329f696ee5",
+          "name": "남윤미",
+          "upper_org": "커스터머부문",
+          "team": "영업본부 - 유통교육팀",
+          "title": "과장",
+          "edu_area": "유통 대리점 대상 교육",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "1-17. 백서 신청 (report_trainingroi)",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)"
+          ],
+          "memos": [
+            {
+              "date": "2024-11-15",
+              "text": "- 고객 이름 : 남윤미\n- 고객 이메일 : yunmi.nam@kt.com\n- 고객 전화 : 010-7300-1131\n- 회사 이름 : kt\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240827\n- 고객 utm_content : lead-gen^mktg-agreed^report-trainingroi\n"
+            },
+            {
+              "date": "2024-11-15",
+              "text": "- 고객 이름 : 남윤미\n- 고객 이메일 : yunmi.nam@kt.com\n- 고객 전화 : 010-7300-1131\n- 회사 이름 : kt\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240827\n- 고객 utm_content : lead-gen^mktg-agreed^report-trainingroi\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "컨설팅그룹",
+      "team": "Tech Learning&Development팀",
+      "deals": [
+        {
+          "id": "01936d57-14d7-7887-90d5-bb7c42635e0f",
+          "created_at": "2024-11-27T11:17:23.812Z",
+          "name": "케이티_싱글플랜_2025",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "강진우",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2024-11-29T15:00:00.000Z",
+          "expected_amount": 50000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2024-11-29T15:00:00.000Z",
+          "amount": 50000000.0,
+          "start_date": "2024-12-31T15:00:00.000Z",
+          "end_date": "2025-12-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01936d57-142a-7887-90d5-acb117d65148",
+            "name": "김주연",
+            "upper_org": "컨설팅그룹",
+            "team": "Tech Learning&Development팀",
+            "title": "대리",
+            "edu_area": "기술혁신"
+          },
+          "memos": [
+            {
+              "date": "2024-12-09",
+              "text": "25년에 사용할 예산 선결제!!!"
+            },
+            {
+              "date": "2025-08-05",
+              "text": "5,500만원에서 할인하여 5,000만원으로 진행한 건.\n8월 5일 기준으로 36명 입과 진행했으며, 아직 예치금 차감은 진행하지 않음. \n최종 입과 시 예치금 차감 진행 예정입니다.\n**기존 딜 카드는 삭제했습니다."
+            }
+          ]
+        },
+        {
+          "id": "0197a135-48f2-7000-91ce-b50cd12da726",
+          "created_at": "2025-06-24T09:11:00.000Z",
+          "name": "KT_커스텀플랜_김주연님",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "손승완",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-13T15:00:00.000Z",
+          "expected_amount": 190000000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "구독제(온라인)",
+          "category": "자유입과(온라인)",
+          "contract_date": "2025-06-29T15:00:00.000Z",
+          "amount": 190000000.0,
+          "start_date": "2025-07-31T15:00:00.000Z",
+          "end_date": "2026-07-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "01936d57-142a-7887-90d5-acb117d65148",
+            "name": "김주연",
+            "upper_org": "컨설팅그룹",
+            "team": "Tech Learning&Development팀",
+            "title": "대리",
+            "edu_area": "기술혁신"
+          },
+          "memos": [
+            {
+              "date": "2025-06-23",
+              "text": "이지희 차장님에게 연결 받아서 김주연 담당자 연락처 전달 받았고, KT 내부 직원 대상 약 2000명 커스텀플랜 문의를 받았습니다."
+            },
+            {
+              "date": "2025-06-24",
+              "text": "현재까지 아래 내용으로 제안드렸고, 긍정 검토 중에 있습니다.진행 플랜 : 커스텀 플랜제공 과정수 : 50개인원 범위 : 1,500-1,800(1,800명 기준)포팅 기간 : 1년견적 총 단가1인당 160,000원 → 95,000원(약 41% 할인)(KT 한정 할인)1,800명 기준 171,000,000원(일억칠천백만원 정)\n(1) 2,000명 기준 견적(추가 인원 발생 시, 계약 방식 확인) 앞서 전달드렸던 할인 퍼센트가 저희 내부에서는 KT한정으로 드리는 최대 할인폭이다보니 좀 더 많은 %p를 드리기는 어려울 것 같습니다;) 계약 시 추가된 인원만큼 교육비를 산정하는 방식으로 계약을 진행하면 될 것 같습니다. (2) 계약기간 내 커스텀 플랜으로 제공되는 과정 리뉴얼위 할인 퍼센트는 어려우나 반기 1회 일부 강의 변경에 있어서는 가능합니다.KT 내부에서 수강이 되지 않거나 만족도가 낮은 과정 제외 패스트캠퍼스 신규 과정 제공 등(3) 계약인원 스킬플로 세팅 소요기간학습자 명단 및 과정 확정 후 영업일 기준으로 약 3-7일 사이로 가능합니다"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "01936d57-142a-7887-90d5-acb117d65148",
+          "name": "김주연",
+          "upper_org": "컨설팅그룹",
+          "team": "Tech Learning&Development팀",
+          "title": "대리",
+          "edu_area": "기술혁신",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

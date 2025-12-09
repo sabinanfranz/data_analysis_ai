@@ -1,0 +1,709 @@
+{
+  "organization": {
+    "id": "65262cc1d226f1b7e6ad8d38",
+    "name": "대우건설",
+    "size": "대기업",
+    "industry": "제조생산/건설업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "미입력",
+      "team": "미입력",
+      "deals": [
+        {
+          "id": "9f4f67fb-93ed-4244-8bca-51abc6a65bd5",
+          "created_at": "2024-01-22T11:05:20.926Z",
+          "name": "[OB] 대우건설 딜_2024년 기본역량과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "강지선",
+          "status": "Lost",
+          "probability": null,
+          "expected_date": "2024-04-29T15:00:00.000Z",
+          "expected_amount": 25360000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2024-04-14T23:39:06.956Z",
+          "amount": 0.0,
+          "start_date": "2024-05-09T15:00:00.000Z",
+          "end_date": "2024-09-29T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "f59d2f88-b141-46ef-925f-b300716ceaeb",
+            "name": "송정훈",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-01-22",
+              "text": "📌미팅 사후 로그1. 참석자 (고객사에서 참석하는 이의 소속과 직급/직책 모두 파악해 적어주세요)고객사 : 송정훈 차장팀 : 김정현, 김광년2. 미팅 내용 상세 - 2023년 DT마인드셋 교육은 멀티캠퍼스랑 진행하였음.    인사이트 세미나: 경영진 대상 특강진행.(디자인씽킹, 마인드셋)        온라인 콘텐츠 멀캠에서 직접 제작해줬음    전직원 대상 이러닝 교육         DT콘텐츠 3개 정도 저렴하게 수강하는 형태로 진행함.        5,500명 대상        자율 수강이였고 1/2정도 수강하였음.- 올 해 계획은 어느정도 나와서 컨셉은 임원보고 진행되었음.    교육이 얼마나 직원들에게 도움이 될 것인지, 실제 어떤 수요가 있는지 사전조사하는 단계임.    파이썬 업무 자동화 교육이 생각해둔 교육의 주 내용이고 RPA까지 진행하는 건 아님.    교육 대상은 관심있는 직원 대상으로 30명정도 지원받을 예정.     MS 365도입 검토 중이여서 나중에 POWER BI도 교육 해보고자하는 생각은 있음.    2월 말까지 교육업체 조사 후 3월 비딩 예정. -> 실제 교육은 5월 시작으로 보고 있음.    교육 형태는 블렌디드 -> 온라인 강의를 1~2달 정도 수강하고 실습을 8시간 진행        이후에는 교육생 대상으로 1달에 한 번씩 특강 진행(4시간) -> AI트렌드        온라인 교육을 사전학습으로 진행하고자 하는 이유는 집체교육이 어려운 직무가 존재하기 때문(현장의 공무직, 해외근무, 국내 현장직 등)        사전학습을 굉장히 중요하게 보고있음. -> 수강 이후 퀴즈 기능 제공 가능 안내.        실습에서는 과제를 수행함. 우수자에게 상금 등 보상 수여.         우수사례를 사내에 적극적으로 공유하려고 함.    이렇게 진행해보고 반응이 좋으면 1년에 2기수로 연속성을 가지고 진행하려고 함.    강사님 혼자 30명을 케어하지 못할 것이므로 실습코치 필수.     온라인 강사와 오프라인 강사가 동일할 필요는 없음.->우리회사에 어떻게든 DT교육을 도입하고 싶어서 물꼬를 틔울 수 있을만한 일부직원 대상 교육을 시행하고자 함.    - 온라인 교육은 올해 휴넷과 계약함.    계약한 이유는 산업관련 콘텐츠가 많아서.    2년 계약되었고, 패캠도 현재 콘텐츠를 다양하게 제공하기 위해 콘텐츠 수급 중에 있음 안내.    보통 2년 단위로 플랫폼 변경하기 때문에 당장은 아니지만, 구독형이 아니여도 출강교육과 묶어서 제안해볼 수 있음.- AI교육은 어떤내용을 제공해야할지에 대한 고민이 있음.    AI보안이슈는 아직 없다.    인트라넷 챗봇을 Chat GPT로 활용하고 있음.- 패캠이 DT 교육만 하고 있는 줄 알았음. 리더십 진단 관심.    하이퍼리더십의 컨셉에 대해 관심.    사내 퍼실리레이터 양성, 우리회사 맞춤형 리더십 교육 체계 수립 가능.    웨비나 안내함."
+            },
+            {
+              "date": "2024-02-15",
+              "text": "📌미팅 사후 로그2/15 생성형 AI 교육 견적 요청을 위한 대우건설의 미팅요청으로 진행됨.1. 참석자 (고객사에서 참석하는 이의 소속과 직급/직책 모두 파악해 적어주세요)고객사 :송정훈차장팀 : 김정현, 신무진2. 미팅 내용 상세 1. 엑셀 OA 교육: 이론 교육 진행(MS에서 진행) 예정 -> 무상제공 교육2. Chat GPT를 통한 문서 작업 업무 효율화     - 교육 대상이 초급(이론은 알고 있음)    - 하루 8시간동안 60명,  신청받는 형태        오전 - 프롬프트 및 Chat GPT 개념 특강 60명          오후 - 30명 2클래스로 나누어 교육 진행(실습위주)            . 1클래스 : 엑셀(VBA), 데이터 관련 Chat GPT 활용             . 2클래스 : 미드저니, 보고서 Chat GPT 활용    - 해외 근무 중인 직원 대상 라이브 송출 가능한지?        . 송출 플랫폼은 줌 또는 유튜브 이용 -> 수강 데이터 활용이 불가         . 인원 수는 매번 다름 많으면 20명, 적으면 1, 2명            휴가기간맞춰서 듣게끔하도록  가능한 진행할 예정.     - 온라인 교육도 가능한지 문의        수강 관리, 퀴즈를 통한 평가, 과제 진행 가능한지 문의*1차 견적의 경우 총 8시간씨 3차수 교육 기준으로 요청* 이후 3월 비딩 예정  - 제안서 견적서 전달    - 상반기 진행 예정(사원 / 대리 급) 실제 진행하는 교육 일정 4~5월 : 약 200명정도 있음.         이후 전직원 확대하는 방향-> 전 직원(과장 / 차장 포함) : 400명    - 수강생 평가 지표 유/무 -> 역량에 대한 평가 지표 유/무(진단 -> 사후 평가)    - 견적 전달 시 레퍼런스 추가적으로 안내 필요    - 생성형 AI에 대한 사전진단과 사후 평가가 필요할 수 있음 -> 전사 대상     - 입찰 제안 시 비용도 중요하지만, 온라인 콘텐츠 제공이 가산점을 얻을 수 있을 듯 함."
+            },
+            {
+              "date": "2024-03-21",
+              "text": "RFP수신 완료"
+            }
+          ]
+        },
+        {
+          "id": "461a7447-fcef-4f30-85c1-660025947948",
+          "created_at": "2024-03-14T07:59:39.949Z",
+          "name": "[OB] 대우건설 딜_이명호",
+          "team": null,
+          "owner": "김정현",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-01-12T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "스킬진단인증",
+          "category": "Skill-based HRD",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "3051bf86-614c-4676-b78f-9da8d74e0cec",
+            "name": "이명호",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": [
+            {
+              "date": "2024-03-14",
+              "text": "📌미팅 사후 로그1. 참석자 (고객사에서 참석하는 이의 소속과 직급/직책 모두 파악해 적어주세요)고객사 : 이명호팀 : 김정현2. 미팅 내용 상세     - 대우건설 송정훈차장님과 같은 소속이고, 합류한지 얼마되지 않았음.    - 커피챗을 위해 미팅 요청하였고, 관심있는 주제가 있었던 것은 아님.    - 교육 종료 후 현업에 어떻게 잘 적용할 수 있을지 고민    - 스킬 DB를 구축하고 갭 진단분석을 하는 것에 대해 관심은 있지만, 지금 당장 할 수 있는 것들은 아니라고 생각함.    - 유사 업계(건설업)에서는 어떤 교육을 하는지 궁금하다 -> 레퍼런스 요청함.    - 아직 어떤 교육을 해야할지 알아보는 단계.    -> 별개로 생성형AI 교육 RFP는 송정훈 차장님통해 받을 예정.3. SDR 안내 사항     -  4. 후속 액션    - 유사업계 레퍼런스 보내기"
+            }
+          ]
+        },
+        {
+          "id": "0193b9e2-9600-7331-8e90-38d986cb5f0a",
+          "created_at": "2024-12-12T08:00:54.798Z",
+          "name": "대우건설_DX 온오프라인 교육",
+          "team": null,
+          "owner": "한성은",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": "2025-01-31T08:02:43.628Z",
+          "expected_amount": 3000000.0,
+          "lost_confirmed_at": "2025-01-21T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "DX Essential",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "c9f1e534-1eb5-45e5-9d4b-05bc2b20f52d",
+            "name": "전민제",
+            "upper_org": "미입력",
+            "team": null,
+            "title": null,
+            "edu_area": null
+          },
+          "memos": []
+        }
+      ],
+      "people": [
+        {
+          "id": "65262cc2d226f1b7e6ad8d8c",
+          "name": "이은영",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-10. 백서 신청 (report_gptguide)",
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "1-18. 백서 신청 (report_talentmanagement)",
+            "1-20. 백서 신청 (report_skilltrend)",
+            "1-21. 백서 신청 (report_lmsguide)",
+            "1-4. 백서 신청 (report_workflowlearning)",
+            "3-48. 소개서 : ChatGPT 교육 로드맵 및 예시",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "3-73. 소개서 : AI 카테고리 교육 커리큘럼 북",
+            "3-74. 소개서 : 공통 직무 AI 교육 커리큘럼 소개서",
+            "3-81. 온라인 로드맵 전체 다운로드",
+            "3-82. 직무/수준 맞춤형 온라인 AI 교육 체계도",
+            "4-11.  교육 사례 세미나 : 수료율 100%를 위한 온라인 러닝 저니 설계하기",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "4-2. 웨비나 : Future Conference for HRD (23/10/26)",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅",
+            "5-13. 생성형AI 교육 직무별 사례집 신청 (report_genaijob)",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)",
+            "5-41. 업종별 스킬 진단 도입 성공 사례집(casebook_skillmatch)"
+          ],
+          "memos": [
+            {
+              "date": "2023-11-16",
+              "text": "1차 Call필요 시 연락주겠다. 아직은 계획 없음"
+            },
+            {
+              "date": "2024-01-04",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 010-3297-2276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : sales\n- 고객 utm_campaign : all^mktg^240104\n- 고객 utm_content : lead-gen^hrda^edm\n"
+            },
+            {
+              "date": "2024-01-23",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 01032972276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-01-23",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 01032972276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고, 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-01-23",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 01032972276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : pdf\n- 고객 utm_medium : link\n- 고객 utm_campaign : all\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-08",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 010-3297-2276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-12",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 01032972276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : pdf\n- 고객 utm_medium : link\n- 고객 utm_campaign : all\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-12",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 01032972276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : pdf\n- 고객 utm_medium : link\n- 고객 utm_campaign : all\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-12",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 01032972276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240208\n- 고객 utm_content : lead-gen^nurturing^edm-cta3#apply\n"
+            },
+            {
+              "date": "2024-02-15",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 01032972276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db\n"
+            },
+            {
+              "date": "2024-04-25",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 01032972276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 임직원 온라인 교육과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240425\n- 고객 utm_content : nurturing^onlinelearning-seminar^cta\n"
+            },
+            {
+              "date": "2024-04-26",
+              "text": "- 고객 이름 : 이은영\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 고객 전화 : 01032972276\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^onlinelearning-seminar\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-10-21",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^240417\n- 고객 utm_content : lead-gen^bizletter^genai_subject\n"
+            },
+            {
+              "date": "2024-10-21",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^fc2025\n- 고객 utm_content : lead-gen^mktg-agreed^content-download#REGISTRATION\n"
+            },
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^fc2025\n- 고객 utm_content : nurturing^welcome^cta_talentmanagement\n"
+            },
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^fc2025\n- 고객 utm_content : nurturing^welcome^cta_talentmanagement\n"
+            },
+            {
+              "date": "2024-10-29",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^fc2025\n- 고객 utm_content : nurturing^welcome^cta_genaijob\n"
+            },
+            {
+              "date": "2025-02-27",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250227\n- 고객 utm_content : lead-gen^nurturing^skilltrendreport\n"
+            },
+            {
+              "date": "2025-03-13",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^250312\n- 고객 utm_content : lead-gen^bizletter^lmsguide\n"
+            },
+            {
+              "date": "2025-04-01",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250401\n- 고객 utm_content : nurturing^mktg-agreed^aiedu\n"
+            },
+            {
+              "date": "2025-05-08",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250509\n- 고객 utm_content : lead-gen^mktg-agreed^cta1\n"
+            },
+            {
+              "date": "2025-06-24",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250624\n- 고객 utm_content : lead-gen^cold-hd^salesmap-mql\n"
+            },
+            {
+              "date": "2025-07-23",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : viral\n- 고객 utm_campaign : all^mktg^250723\n- 고객 utm_content : lead-gen^monthly-review^curriculum_all\n"
+            },
+            {
+              "date": "2025-09-10",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-11-17",
+              "text": "- 고객 이름 : 이은영\n- 고객 전화 : 01032972276\n- 고객 이메일 : eunyoung.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "47158b6c-94bc-475a-a440-99196c260a1c",
+          "name": "전병인",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "f59d2f88-b141-46ef-925f-b300716ceaeb",
+          "name": "송정훈",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-13. 백서 신청 (report_skillbasedcerti)",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-15",
+              "text": "- 고객 이름 : 송정훈\n- 고객 이메일 : junghoon.song@daewooenc.com\n- 고객 전화 : 01038906356\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240111\n- 고객 utm_content : nurturing^salesmap^ebook\n"
+            },
+            {
+              "date": "2024-01-16",
+              "text": "작년에 미팅 진행 몇 번 했었음.(지선님과 진행) 제안받았던 내용 히스토리 파악 필요!"
+            },
+            {
+              "date": "2024-02-16",
+              "text": "- 고객 이름 : 송정훈\n- 고객 이메일 : junghoon.song@daewooenc.com\n- 고객 전화 : 01038906356\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 송정훈\n- 고객 이메일 : junghoon.song@daewooenc.com\n- 고객 전화 : 01038906356\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db#apply\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "- 고객 이름 : 송정훈\n- 고객 이메일 : junghoon.song@daewooenc.com\n- 고객 전화 : 01038906356\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-14",
+              "text": "전화기록 - 생성형AI 온라인 교육 콘텐츠 문의 - 바이트디그리와 함께 안내"
+            }
+          ]
+        },
+        {
+          "id": "5485a442-b911-4e70-816d-75989dfd0c10",
+          "name": "조가은",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-12. 백서 신청 (report_leadership)",
+            "4-12.  온라인 설명회 : 현업 맞춤 프롬프트 엔지니어링으로 AX 시대 대비하기",
+            "4-6. 세미나 다시보기: 고성과자 발굴 프레임워크를 활용한 기업 맞춤 리더십 교육 설계"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-15",
+              "text": "- 고객 이름 : 조가은\n- 고객 이메일 : kaeun.cho@daewooenc.com\n- 고객 전화 : 01000\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 기타\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240111\n- 고객 utm_content : nurturing^salesmap^ebook\n"
+            },
+            {
+              "date": "2024-01-25",
+              "text": "- 고객 이름 : 조가은\n- 고객 이메일 : kaeun.cho@daewooenc.com\n- 고객 전화 : 01000\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240111\n- 고객 utm_content : nurturing^salesmap^ebook\n"
+            },
+            {
+              "date": "2024-01-26",
+              "text": "송정훈 차장님과 미팅 이후 리더십 웨비나 소개드리고 유입된 분.송정훈 차장님과 메인으로 커뮤니케이션 하고 리더십 웨비나 끝나고 별도로 연락할 예정,"
+            },
+            {
+              "date": "2024-05-21",
+              "text": "- 고객 이름 : 조가은\n- 고객 이메일 : kaeun.cho@daewooenc.com\n- 고객 전화 : 01055537303\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 사내 프롬프트 개발 및 제작 관련해 궁금한 사항이 있으시다면 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240521\n- 고객 utm_content : lead-gen^salesmap-nurture^eunjilee\n"
+            }
+          ]
+        },
+        {
+          "id": "a31bd72c-5da1-4d22-99c8-c3f0b73439ee",
+          "name": "최윤서",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [],
+          "memos": []
+        },
+        {
+          "id": "f6abefc8-c5db-4c92-a5cc-f0dbd9c62e5a",
+          "name": "김다례",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "0. 교육 도입 문의 (contact)"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-25",
+              "text": "- 문의 교육 주제 : 생성형 AI (챗GPT 활용)\n- 문의 서비스 : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 30명 이하\n- 회사 이름 : 대우건설\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 김다례\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 고객 이메일 : darye.kim@daewooenc.com\n- 고객 전화 : 010-8859-1458\n- 상담 문의 내용 : 안녕하세요. 대우건설 인재육성팀 김다례 과장이라고 합니다. \n\n당사는 사원/대리급 대상 \"공통직무역량과정\"을 직급 내 필수 과정으로 운영하고 있습니다. 직종/본부/업무와 무관하게 대우건설 Junior 급 직원으로서 갖춰야할 공통적인 기본 역량을 향상시키는 과정으로, 주로 기획력/보고/협상/OA(Excel, PPT) 과정을 2023년까지 운영했습니다. (여러 과정을 오픈하고, 희망하는 과정을 선택해서 수강하게끔 하는 식) \n\n2024년 부터는 DT 트렌드에 맞춰 신규 업무 툴을 과정에 포함하고자 합니다. 이에 Chat GPT, Notion, Google Tools(스프레드시트/닥스/프레젠테이션/드라이브 등) 과정을 각각 4시간~8시간 짜리 과정으로 만들어보고자 구상중에 있습니다. \n\n귀사의 Chat GPT 관련 커리큘럼 및 안내서를 보고 당사에 적용 가능한 부분이 있을지 검토 코자 연락드리며, 시간 되실 때 만나서 이야기 나눌 수 있을지 문의드립니다.\n- 방문 경로 : 리포트/제안서\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "3acd769c-2b9a-4c6a-a708-0a9bd794433c",
+          "name": "라정주",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-6. 세미나 다시보기: 고성과자 발굴 프레임워크를 활용한 기업 맞춤 리더십 교육 설계",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-19",
+              "text": "전화기록- 컨셉 보고 전이여서 아직 확정된 건 없음.교육 기관 변경을 검토하고 있으나 아직 미팅할 정도는 아니여서 구체화되면 연락주시겠다고 함."
+            }
+          ]
+        },
+        {
+          "id": "c9f1e534-1eb5-45e5-9d4b-05bc2b20f52d",
+          "name": "전민제",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-13",
+              "text": "- 고객 이름 : 전민제\n- 고객 이메일 : minje.jeon@daewooenc.com\n- 고객 전화 : 01035789141\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-15",
+              "text": "- 고객 이름 : 전민제\n- 고객 이메일 : minje.jeon@daewooenc.com\n- 고객 전화 : 01035789141\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240216\n- 고객 utm_content : lead-gen^nurturing^salesmap-db\n"
+            },
+            {
+              "date": "2024-10-11",
+              "text": "- 고객 이름 : 전민제\n- 고객 전화 : 01035789141\n- 고객 이메일 : minje.jeon@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^241011\n- 고객 utm_content : lead-gen^mktg-agreed^lms1\n"
+            }
+          ]
+        },
+        {
+          "id": "38117d77-46ae-4972-8aed-aeddc32bd523",
+          "name": "김연미",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-16",
+              "text": "- 고객 이름 : 김연미\n- 고객 이메일 : yeonmi.kim@daewooenc.com\n- 고객 전화 : 01099739657\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-28",
+              "text": "- 고객 이름 : 김연미\n- 고객 이메일 : yeonmi.kim@daewooenc.com\n- 고객 전화 : 01099739657\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-28",
+              "text": "- 고객 이름 : 김연미\n- 고객 이메일 : yeonmi.kim@daewooenc.com\n- 고객 전화 : 01099739657\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-28",
+              "text": "- 고객 이름 : 김연미\n- 고객 이메일 : yeonmi.kim@daewooenc.com\n- 고객 전화 : 01099739657\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        },
+        {
+          "id": "3051bf86-614c-4676-b78f-9da8d74e0cec",
+          "name": "이명호",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "1-1. 백서 신청 (report_po)",
+            "1-10. 백서 신청 (report_gptguide)",
+            "1-14. 백서 신청 (report_leadershipfw)",
+            "1-2. 백서 신청 (report_reskilupskill)",
+            "1-3. 백서 신청 (report_cds)",
+            "1-5. 백서 신청 (report_cd)",
+            "1-6. 백서 신청 (report_itleaders)",
+            "1-7. 백서 신청 (report_hrdedu)",
+            "1-8. 백서 신청 (report_dt2022)",
+            "3-28. 소개서 : 일반 직무 대상 디지털 역량 교육 (main_digitaledu)",
+            "3-30. 소개서 : DX 역량 강화 (main_dt)",
+            "3-35. 소개서 : 승진자 직급별 스킬업 (main_promo)",
+            "3-4. 소개서 : 데이터 사이언스 패키지 플랜 (ds_plan)",
+            "3-48. 소개서 : ChatGPT 교육 로드맵 및 예시",
+            "3-52. 소개서 : 생성형 AI 교육 로드맵",
+            "3-6. 소개서 : 파이썬을 활용한 빅데이터 분석 기초 (ds_big)",
+            "3-8. 소개서 : SQL을 활용한 실무 데이터 분석 (ds_sql)",
+            "4-10. 세미나 다시보기 : Skill 진단/평가로  인사 업무의 ROI 높이기",
+            "4-7. 세미나 다시보기 : 전사 임직원 대상 생성형 AI 활용 교육 설계하기",
+            "4-8. 무료 세미나: 퀄리티와 가성비 모두 잡는 Skill-based HRD 컨설팅",
+            "4-9.  세미나 다시보기 : ChatGPT 활용 능력 인증 교육과정",
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 웨비나/오프라인 행사\n- 이번 웨비나 관련 고민이나 궁금한 점 : .\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-27",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 웨비나/오프라인 행사\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 기반 HRD 컨설팅과 관련해 평소 고민이나 궁금한 점을 남겨주세요. : .\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 이번 웨비나 관련 고민이나 궁금한 점 : .\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-05",
+              "text": "전화기록- 금주 방문하여 미팅 예정"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^230303\n- 고객 utm_content : welcome^cds^after-subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^230303\n- 고객 utm_content : welcome^cds^after-subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^230303\n- 고객 utm_content : welcome^cds^after-subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^230303\n- 고객 utm_content : welcome^cds^after-subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^230303\n- 고객 utm_content : welcome^cds^after-subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^230303\n- 고객 utm_content : welcome^cds^after-subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^remind-seminar\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^remind-seminar\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^remind-seminar\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^remind-seminar\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^remind-seminar\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-03-07",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 개인정보 수집 동의 : 동의합니다\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^remind-seminar\n- 고객 utm_content : nurturing^after^subscribe\n"
+            },
+            {
+              "date": "2024-03-20",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- 생성형 AI 활용 능력 인증 및 평가와 관련해 평소 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240320\n- 고객 utm_content : lead-gen^salesmap-nurturing^mktg-agreed\n"
+            },
+            {
+              "date": "2024-03-20",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240320\n- 고객 utm_content : lead-gen^salesmap-nurturing^mktg-agreed\n"
+            },
+            {
+              "date": "2024-03-20",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : pdf\n- 고객 utm_medium : link\n- 고객 utm_campaign : all\n- 고객 utm_content : lead-gen^salesmap-nurturing^mktg-agreed\n"
+            },
+            {
+              "date": "2024-04-03",
+              "text": "- 고객 이름 : 이명호\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 고객 전화 : 01030434603\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일/광고\n- Skill 진단/평가로  인사 업무의 ROI 높이기 세미나 관련하여 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^240403\n- 고객 utm_content : nurturing^salesmap-nurturing^mktg-agreed\n"
+            },
+            {
+              "date": "2025-09-18",
+              "text": "- 고객 이름 : 이명호\n- 고객 전화 : 01030434603\n- 고객 이메일 : myungho1.lee@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : DX유관/신사업\n- 고객 직급/직책 : 팀장/차부장\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250916\n- 고객 utm_content : lead-gen^cold-hd^mql#salesmap-web-form\n"
+            }
+          ]
+        },
+        {
+          "id": "4031722f-b2c1-407d-a5f2-ebd091ffd74d",
+          "name": "김마리나",
+          "upper_org": "미입력",
+          "team": null,
+          "title": null,
+          "edu_area": null,
+          "webforms": [
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다"
+          ],
+          "memos": [
+            {
+              "date": "2024-10-20",
+              "text": "- 고객 이름 : 김마리나\n- 고객 전화 : 01023831334\n- 고객 이메일 : marina.kim@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천, 웨비나/오프라인 행사\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "upper_org": "미입력",
+      "team": "인재육성팀",
+      "deals": [
+        {
+          "id": "01987771-2d9a-777e-bc7f-c5be965514ab",
+          "created_at": "2025-08-04T23:36:00.000Z",
+          "name": "대우건설_AI 리터러시 1차수(단기_오프라인)_25년 10월",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "이은서",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-08-13T15:00:00.000Z",
+          "expected_amount": 13900000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-08-18T15:00:00.000Z",
+          "amount": 13900000.0,
+          "start_date": "2025-10-15T15:00:00.000Z",
+          "end_date": "2025-12-10T15:00:00.000Z",
+          "net_percent": "52.0",
+          "people": {
+            "id": "dd0a5e83-ac36-476f-94e4-5d76877fdb85",
+            "name": "김지현",
+            "upper_org": "미입력",
+            "team": "인재육성팀",
+            "title": "선임",
+            "edu_area": "출강"
+          },
+          "memos": [
+            {
+              "date": "2025-08-04",
+              "text": "총 4차수 예정 \n1차수: 10월 16일 (목)2차수: 10월 30일 (목)3차수: 11월 13일 (목)4차수: 12월 11일 (목)"
+            },
+            {
+              "date": "2025-08-28",
+              "text": "전체 견적 13,900,000원-> 차수별로 실습코치 추가되어 차수별로 월별 딜 생성"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "dd0a5e83-ac36-476f-94e4-5d76877fdb85",
+          "name": "김지현",
+          "upper_org": "미입력",
+          "team": "인재육성팀",
+          "title": "선임",
+          "edu_area": "출강",
+          "webforms": [
+            "2-1. HRD레터 신청 (비즈레터/AX아카이브레터)",
+            "4-15. Future Conference for HRD : 내부에서 답을 찾다",
+            "4-19. 금융권 특화 AI 활용 아카데미",
+            "4-6. 세미나 다시보기: 고성과자 발굴 프레임워크를 활용한 기업 맞춤 리더십 교육 설계",
+            "5-14. 생성형AI 교육 주제별 사례집 신청 (report_genaisubject)",
+            "5-39. 현업 적용도를 높인 AI 교육 사례집 (casebook_genai2025)"
+          ],
+          "memos": [
+            {
+              "date": "2024-01-25",
+              "text": "- 고객 이름 : 김지현\n- 고객 이메일 : jihyun.kim1@daewooenc.com\n- 고객 전화 : 010-9160-2888\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 이번 웨비나 관련 고민이나 궁금한 점 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-02-19",
+              "text": "전화기록- 아직 미팅할 단계는 아님. 논의 후 연락주시겠다고 함."
+            },
+            {
+              "date": "2024-10-18",
+              "text": "- 고객 이름 : 김지현\n- 고객 전화 : 01091602888\n- 고객 이메일 : jihyun.kim1@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 이번 컨퍼런스 세션과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의하지 않습니다.\n- 고객 utm_source : email\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-07-02",
+              "text": "- 고객 뉴스레터 : AX아카이브(맞춤형 AI 교육 사례)\n- 고객 이름 : 김지현\n- 고객 이메일 : jihyun.kim1@daewooenc.com\n- 고객 전화 : 01091602888\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250702\n- 고객 utm_content : nurturing^letter^subscribe\n"
+            },
+            {
+              "date": "2025-07-14",
+              "text": "- 고객 이름 : 김지현\n- 고객 전화 : 01091602888\n- 고객 이메일 : jihyun.kim1@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-09-10",
+              "text": "- 고객 이름 : 김지현\n- 고객 전화 : 01091602888\n- 고객 이메일 : jihyun.kim1@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 지인 추천\n- 이번 워크숍과 관련해 고민이나 궁금한 점을 남겨주세요. : (공백)\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2025-09-16",
+              "text": "- 고객 이름 : 김지현\n- 고객 전화 : 01091602888\n- 고객 이메일 : jihyun.kim1@daewooenc.com\n- 회사 이름 : 대우건설\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : 제조생산/건설업\n- 방문 경로 : 이메일 광고\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : email\n- 고객 utm_medium : crm\n- 고객 utm_campaign : all^mktg^250916\n- 고객 utm_content : lead-gen^cold-hd^mql\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "organization": {
+    "id": "41781b59-d6e6-42d1-b222-82cad2b2905f",
+    "name": "미래로시스템",
+    "size": "대기업",
+    "industry": "IT/정보통신업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "-",
+      "team": "R&D팀",
+      "deals": [
+        {
+          "id": "3c8ea9be-7363-4bc8-94da-f2e8dbd84ac3",
+          "created_at": "2024-05-08T07:34:00.172Z",
+          "name": "미래로시스템_쿠버네티스",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "정다혜",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": 9800000.0,
+          "lost_confirmed_at": "2024-07-25T01:53:40.117Z",
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "개발/CD",
+          "contract_date": null,
+          "amount": 0.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "d3366c26-fcdc-41a8-a9c1-04638636e3ee",
+            "name": "박용희",
+            "upper_org": "-",
+            "team": "R&D팀",
+            "title": "이사",
+            "edu_area": "개발"
+          },
+          "memos": [
+            {
+              "date": "2024-05-08",
+              "text": "- 딜 문의 주제 (최초) : 프로그래밍 (웹 개발, 앱 개발)\n- 딜 서비스 유형 (최초) : 맞춤형 온/오프라인 교육\n- 딜 예상 교육 인원 : 30명 이하\n- 딜 예상 교육 일정 : 3~6개월 이내\n- 회사 이름 : 미래로시스템\n- 회사 기업 규모 : 대기업\n- 고객 이름 : 박용희\n- 고객 담당 업무 : IT/개발/엔지니어링\n- 고객 이메일 : yonghee.park@mirero.co.kr\n- 고객 전화 : 01050056656\n- 상담 문의 내용 : 안녕하세요?\nKubernetes 관련 기술에 대한 맞춤형 (온라인보다는) 오프라인 교육에 대해서 문의 드립니다.\n교육 목적은 SW 제품 개발에 관련 기술을 도입/운영하려고 합니다.\n수강 대상은 대부분 SW Backend 엔지니어 들이며, 일부 운영에 관련된 엔지니어도 참여할 수 있습니다.\n아직 전체 참여 인원 확정은 되지 않았는데, 최소한 10명은 넘을 것으로 생각됩니다.\n추가적인 정보가 필요하시면 연락처나 메일로 말씀해 주십시오.\n프로그램 구성과 대략적인 시행 일정, 그리고 비용 부분 등의 정보를 알려주시면 감사하겠습니다.\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            },
+            {
+              "date": "2024-06-18",
+              "text": "내부적으로 도커 교육 자체 실시, 쿠버네티스 추후 재검토 예정"
+            }
+          ]
+        },
+        {
+          "id": "01940151-b0fb-7ccb-b128-71f505659152",
+          "created_at": "2024-12-26T04:55:18.596Z",
+          "name": "미래로시스템_MSA교육 및 온라인 구독_커스텀",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "손지훈",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-04-22T08:57:28.847Z",
+          "expected_amount": 15950000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "개발/CD",
+          "contract_date": "2025-04-24T15:00:00.000Z",
+          "amount": 15950000.0,
+          "start_date": "2025-04-29T15:00:00.000Z",
+          "end_date": "2026-05-10T15:00:00.000Z",
+          "net_percent": "54.0",
+          "people": {
+            "id": "d3366c26-fcdc-41a8-a9c1-04638636e3ee",
+            "name": "박용희",
+            "upper_org": "-",
+            "team": "R&D팀",
+            "title": "이사",
+            "edu_area": "개발"
+          },
+          "memos": [
+            {
+              "date": "2025-01-02",
+              "text": "1차 제안서 송부드린 건으로 아젠다는 제시한 제안대로 가면 좋을것 같다고 하셨음.추가로 개발팀과 협의 후 진행의사를 정해야 할것 같다고 함.기존 수강인원 20명으로 견적을 진행했는데 수강인원이 늘어나면 어느정도에 예산이 추가 되는지 문의하심.해당사항에 대해서는 내부적으로 확인 후 답변드릴 수 있다고 안내드림.추후 내용 확인 후 전달 예정"
+            },
+            {
+              "date": "2025-01-10",
+              "text": "기존 교육과정에서 Ansible과정을 추가하고 시수는 동일하게 된 커리큘럼 하나와기존 교육과정+Microservice 분석과 설계(서비스 분해 전략), 마이크로 프론트엔드 아키텍처 설계 및 통합 기술(BFF, Monorepo 등), Inter-Microservice 통합 기술(Request-Response, Event-Driven, CQRS/GraphQL 등)이 담긴 교육과정으로 동일 시간 또는 추가로 하여 제안 받고 싶다고 함,추가로 온라인 교육과정 4가지 정도를 들을 수 있는 방안을 문의주셔 싱글플랜과 번들플랜, 커스텀플랜을 추천함"
+            },
+            {
+              "date": "2025-01-16",
+              "text": "커스텀 플랜으로 45명 기준 제안했으나 금액적인 부담이 있어, 희망하는 교육 16가지 과정을 추려서 재제안 요청됨.추가로 20명 기준으로 재견적을 요청받아, 20명 기준 25만원(총 500만원)으로 재견적 작성 후 송부.B2C 과정 중 희망하는 과정이 있어 협의 후 진행 가능함을 안내.기존 MSA 오프라인 과정 제안에 대해서는 진행 상황을 고려할 때 미팅이 이르다고 판단됨.추후 진행 여부에 따라 미팅을 제안할 것임."
+            },
+            {
+              "date": "2025-03-04",
+              "text": "MSA 실무자 과정 변경 사항 정리1. 참석 대상미래로시스템 개발팀 전체(최대 91명)2. 교육 아젠다MSA Inner/Outer Architecture 중심의 이론 교육 (기존 아젠다 참고)추가 아젠다캐시(메모리 DB) 부문Container 또는 Database Patch 자동화변경 사항기존 아젠다에서 실습 과정은 제외다만, MSA 이론을 설명하는 과정에서 실 사례 시연 포함예: Kafka 설명 시, 세부 기능이 아닌 MSA에서의 사용 의도 중심의 시연AWS 등 퍼블릭 클라우드 환경 제외 (당사 운영환경과 무관)3. 교육 기간총 2~3일 교육가능하면 주 1회 간격으로 진행3월 중 교육 시작 일정으로 제시 예정변경 배경향후 개발 업무에서 MSA 설계 및 개발 적용을 원활히 하기 위해우선 전사 개발 조직의 MSA 기술 역량 Baseline 확보1차 교육 이후, 당사 MSA 기술 스택이 결정되면 해당 아이템 중심으로 심화 교육 진행"
+            }
+          ]
+        },
+        {
+          "id": "019a4c34-2120-700a-ba25-1ec6a2b06188",
+          "created_at": "2025-11-04T00:11:00.000Z",
+          "name": "미래로시스템_개발자를 위한 MCP 활용법",
+          "team": "[{\"id\": \"0d89963a-2366-4cc7-bff6-6ca918dd9b15\", \"name\": \"교육 2팀\"}]",
+          "owner": "손지훈",
+          "status": "Lost",
+          "probability": "[\"LOST\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": "2025-11-19T15:00:00.000Z",
+          "lost_reason": null,
+          "course_format": "복합(출강+온라인)",
+          "category": "생성형AI",
+          "contract_date": null,
+          "amount": null,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "d3366c26-fcdc-41a8-a9c1-04638636e3ee",
+            "name": "박용희",
+            "upper_org": "-",
+            "team": "R&D팀",
+            "title": "이사",
+            "edu_area": "개발"
+          },
+          "memos": [
+            {
+              "date": "2025-11-20",
+              "text": "차년도 예상 교육 수요 파악중으로 대기상태라고 함 / 차년도 초에 다시 연락주시기로 하였음."
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "d3366c26-fcdc-41a8-a9c1-04638636e3ee",
+          "name": "박용희",
+          "upper_org": "-",
+          "team": "R&D팀",
+          "title": "이사",
+          "edu_area": "개발",
+          "webforms": [
+            "0. 교육 도입 문의 (contact)",
+            "3-63. 소개서 : 온라인 교육 과정 전체 리스트 & 스킬플로 소개서"
+          ],
+          "memos": [
+            {
+              "date": "2024-12-20",
+              "text": "- 고객 이름 : 박용희\n- 고객 이메일 : yonghee.park@mirero.co.kr\n- 고객 전화 : 0312152905\n- 회사 이름 : 미래로시스템\n- 고객 담당 업무 : HRD(인재육성/교육)\n- 고객 직급/직책 : 실무자\n- 회사 기업 규모 : 대기업\n- 회사 업종 : IT/정보통신업\n- 방문 경로 : 직접 검색\n- 개인정보 수집 동의 : 동의합니다.\n- 고객 마케팅 수신 동의 : 동의합니다.\n- 고객 utm_source : (공백)\n- 고객 utm_medium : (공백)\n- 고객 utm_campaign : (공백)\n- 고객 utm_content : (공백)\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

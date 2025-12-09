@@ -1,0 +1,137 @@
+{
+  "organization": {
+    "id": "64dd761c96e775eee7e3ac89",
+    "name": "신한금융지주",
+    "size": "대기업",
+    "industry": "금융/보험업",
+    "memos": []
+  },
+  "groups": [
+    {
+      "upper_org": "디지털파트",
+      "team": "디지털전략팀",
+      "deals": [
+        {
+          "id": "64dd761c96e775eee7e3acee",
+          "created_at": "2023-08-17T01:21:32.761Z",
+          "name": "신한금융그룹 프로덕트 오너 양성과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": null,
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "PM/PO",
+          "contract_date": "2023-03-30T15:00:00.000Z",
+          "amount": 172500000.0,
+          "start_date": null,
+          "end_date": null,
+          "net_percent": null,
+          "people": {
+            "id": "653b48ed2467aae56be4c202",
+            "name": "정현주",
+            "upper_org": "디지털파트",
+            "team": "디지털전략팀",
+            "title": "프로",
+            "edu_area": "AI/DT"
+          },
+          "memos": []
+        },
+        {
+          "id": "653b48ee2467aae56be4c274",
+          "created_at": "2023-10-27T05:21:50.476Z",
+          "name": "신한금융그룹_디지털 프로덕트 오너 3,4기 후속세션",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김솔이",
+          "status": "Won",
+          "probability": null,
+          "expected_date": "2023-11-30T15:00:00.000Z",
+          "expected_amount": null,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": null,
+          "contract_date": "2023-12-04T05:32:03.865Z",
+          "amount": 3090000.0,
+          "start_date": "2023-11-30T15:00:00.000Z",
+          "end_date": "2023-11-30T15:00:00.000Z",
+          "net_percent": null,
+          "people": {
+            "id": "653b48ed2467aae56be4c202",
+            "name": "정현주",
+            "upper_org": "디지털파트",
+            "team": "디지털전략팀",
+            "title": "프로",
+            "edu_area": "AI/DT"
+          },
+          "memos": []
+        },
+        {
+          "id": "019637cc-d4fd-7446-b40b-26f5b639a4e3",
+          "created_at": "2025-04-15T04:54:52.933Z",
+          "name": "신한금융지주_AI Agent 실전역량 강화과정",
+          "team": "[{\"id\": \"8ba39317-9ec9-48b7-a707-346bf6890953\", \"name\": \"교육 1팀\"}]",
+          "owner": "김동찬",
+          "status": "Won",
+          "probability": "[\"확정\"]",
+          "expected_date": "2025-07-11T02:49:31.627Z",
+          "expected_amount": 50400000.0,
+          "lost_confirmed_at": null,
+          "lost_reason": null,
+          "course_format": "출강",
+          "category": "생성형AI",
+          "contract_date": "2025-07-10T15:00:00.000Z",
+          "amount": 53200000.0,
+          "start_date": "2025-07-31T15:00:00.000Z",
+          "end_date": "2025-09-04T15:00:00.000Z",
+          "net_percent": "58.0",
+          "people": {
+            "id": "653b48ed2467aae56be4c202",
+            "name": "정현주",
+            "upper_org": "디지털파트",
+            "team": "디지털전략팀",
+            "title": "프로",
+            "edu_area": "AI/DT"
+          },
+          "memos": [
+            {
+              "date": "2025-04-18",
+              "text": "차주 수요일 (23일 ) 오전 미팅 예정, AI agent 과정 관련미팅, 사전 미팅 기획문서 준비 및 AI Agent 과정 관련 스터디 필요."
+            },
+            {
+              "date": "2025-04-21",
+              "text": "내부에서 쓸수 있는 툴의 한계로 인해, 아무래도 파이썬이 일부 필요할 듯 함. 파이썬을 사용하는 과정으로 변경하여 재제안 해주길 바람.파이썬 과정으로 변경하여 재제안 완료. 해당 내용으로 여러 그룹사의 협조가 필요해서 내부 논의중."
+            },
+            {
+              "date": "2025-04-29",
+              "text": "5월 중에 RFP로 나올 예정, 기존에 전달한 커리큘럼이 개발자가 들어도 되는지 문의 해서, 가능하다고 말씀드림"
+            },
+            {
+              "date": "2025-05-19",
+              "text": "제출완료"
+            },
+            {
+              "date": "2025-05-28",
+              "text": "계약서 검토 문제로 인한 계약일 지연 (6월로) => 계약 검토 시, 거쳐야하는 부서장이 많아서 계약은 7월 초에 진행 될 예정"
+            }
+          ]
+        }
+      ],
+      "people": [
+        {
+          "id": "653b48ed2467aae56be4c202",
+          "name": "정현주",
+          "upper_org": "디지털파트",
+          "team": "디지털전략팀",
+          "title": "프로",
+          "edu_area": "AI/DT",
+          "webforms": [],
+          "memos": []
+        }
+      ]
+    }
+  ]
+}

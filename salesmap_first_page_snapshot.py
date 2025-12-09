@@ -339,6 +339,57 @@ def capture_paginated(
     return {"table": table, "rows": writer.row_count, "columns": writer.columns, "errors": entry["errors"]}
 
 
+def capture_single_list(
+    client: SalesmapClient,
+    table_state: Dict[str, Dict[str, Any]],
+    path: str,
+    list_key: str,
+    writer: TableWriter,
+    table_name: Optional[str] = None,
+    endpoint_label: Optional[str] = None,
+    log: Optional[logging.Logger] = None,
+    checkpoint: Optional[CheckpointManager] = None,
+    resume_info: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """Fetch a non-paginated list endpoint, probe columns, and write to SQLite."""
+    log = log or logger
+    label = endpoint_label or path
+    table = table_name or sanitize_table_name(label)
+    entry = table_state.setdefault(table, {"endpoint": label, "errors": []})
+    payload, error = client.get_json(path)
+    batch: List[Dict[str, Any]] = []
+    if payload:
+        data = payload.get("data", {})
+        lst = data.get(list_key, [])
+        if isinstance(lst, list):
+            batch = [item for item in lst if isinstance(item, dict)]
+    probe_columns = collect_columns(batch)
+    if probe_columns and not writer.columns:
+        writer.columns = probe_columns
+    if writer.columns and not writer.created:
+        writer._ensure_table_created()
+    if batch:
+        writer.write_batch(batch)
+    if error:
+        entry["errors"].append(f"fetch:{error}")
+    col_count = len(writer.columns)
+    completed = not error
+    if checkpoint:
+        checkpoint.save_table(
+            table,
+            {
+                "next_cursor": None,
+                "page": 1,
+                "rows": writer.row_count,
+                "columns": writer.columns,
+                "completed": completed,
+                "errors": entry["errors"],
+            },
+        )
+    log.info("%s -> rows=%s, cols=%s", label, writer.row_count, col_count)
+    return {"table": table, "rows": writer.row_count, "columns": writer.columns, "errors": entry["errors"]}
+
+
 def write_outputs(
     tables: Dict[str, Dict[str, Any]],
     manifest: List[Dict[str, Any]],
@@ -646,19 +697,24 @@ def main() -> None:
     client = SalesmapClient(base_url=args.base_url, token=token)
     table_state: Dict[str, Dict[str, Any]] = {}
     writers: Dict[str, TableWriter] = {}
-    endpoints = [
+    paginated_endpoints = [
         ("/organization", "organizationList", "organization"),
         ("/people", "peopleList", "people"),
         ("/deal", "dealList", "deal"),
         ("/lead", "leadList", "lead"),
         ("/memo", "memoList", "memo"),
     ]
+    single_endpoints = [
+        ("/user", "userList", "user"),
+        ("/team", "teamList", "team"),
+    ]
+    all_endpoints = [p for p, _, _ in paginated_endpoints + single_endpoints]
 
     run_info: Dict[str, Any] = {
         "run_tag": run_tag,
         "captured_at_utc": run_ts.isoformat().replace("+00:00", "Z"),
         "base_url": client.base_url,
-        "endpoints": json.dumps([p for p, _, _ in endpoints], ensure_ascii=False),
+        "endpoints": json.dumps(all_endpoints, ensure_ascii=False),
         "note": "",
         "checkpoint_path": str(checkpoint_mgr.path),
     }
@@ -666,7 +722,7 @@ def main() -> None:
     manifest: List[Dict[str, Any]] = []
     conn = sqlite3.connect(tmp_path)
     try:
-        for path, list_key, table in endpoints:
+        for path, list_key, table in paginated_endpoints:
             writer = TableWriter(conn, table)
             writer.load_existing()
             if resume_state:
@@ -695,6 +751,37 @@ def main() -> None:
                 log=logger,
                 checkpoint=checkpoint_mgr,
                 checkpoint_interval=max(1, args.checkpoint_interval),
+                resume_info=resume_info,
+            )
+
+        for path, list_key, table in single_endpoints:
+            writer = TableWriter(conn, table)
+            writer.load_existing()
+            if resume_state:
+                cp_entry = resume_state.get("tables", {}).get(table)
+                if cp_entry and not writer.columns and cp_entry.get("columns"):
+                    writer.columns = cp_entry.get("columns", [])
+                    writer._ensure_table_created()
+                    writer.row_count = int(cp_entry.get("rows", 0) or 0)
+                    writer.created = bool(writer.columns)
+                elif cp_entry and writer.row_count != int(cp_entry.get("rows", 0) or 0):
+                    logger.warning(
+                        "Checkpoint row count (%s) for %s differs from existing table rows (%s)",
+                        cp_entry.get("rows"),
+                        table,
+                        writer.row_count,
+                    )
+            writers[table] = writer
+            resume_info = checkpoint_mgr.get_table(table) if resume_state else None
+            capture_single_list(
+                client,
+                table_state,
+                path,
+                list_key=list_key,
+                writer=writer,
+                table_name=table,
+                log=logger,
+                checkpoint=checkpoint_mgr,
                 resume_info=resume_info,
             )
 

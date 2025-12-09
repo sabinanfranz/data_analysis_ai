@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>조직/People/Deal 빠른 뷰어 (FastAPI)</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #0f172a;
+      --panel-2: #0c1424;
+      --border: #1f2937;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #38bdf8;
+      --accent-2: #f97316;
+      --success: #22c55e;
+      --error: #f87171;
+      --shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Pretendard', 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(56, 189, 248, 0.08), transparent 28%),
+        radial-gradient(circle at 84% 8%, rgba(249, 115, 22, 0.07), transparent 26%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    header {
+      background: linear-gradient(145deg, var(--panel), var(--panel-2));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .sidebar {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 200px;
+    }
+
+    .menu-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .menu-title {
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: 0.01em;
+    }
+
+    .menu-item {
+      width: 100%;
+      text-align: left;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0f1d30;
+      color: var(--text);
+      padding: 10px;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .menu-item:hover {
+      border-color: var(--accent);
+    }
+
+    .menu-item.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0.01em;
+    }
+
+    .control-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    select,
+    button,
+    input {
+      background: #0c182c;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 11px;
+      font-size: 14px;
+    }
+
+    input[type="text"] {
+      min-width: 220px;
+    }
+
+    button {
+      background: linear-gradient(120deg, #0f213a, #122a49);
+      cursor: pointer;
+      transition: border-color 0.15s ease, transform 0.1s ease;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .main-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 220px;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: 15px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .quad-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 10px;
+      align-items: stretch;
+      min-height: 320px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      padding: 8px 9px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      text-align: left;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    tr:hover {
+      background: rgba(56, 189, 248, 0.08);
+    }
+
+    tr.active {
+      background: rgba(56, 189, 248, 0.14);
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 320px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      height: 100%;
+    }
+
+    .table-wrap.full {
+      max-height: none;
+    }
+
+    .table-wrap.half {
+      max-height: none;
+    }
+
+    .breadcrumb {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #0c182c;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      font-size: 11px;
+      letter-spacing: 0.02em;
+    }
+
+    .status {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status.good {
+      color: var(--success);
+    }
+
+    .status.bad {
+      color: var(--error);
+    }
+    .memo-text {
+      white-space: pre-wrap;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      background: #111827;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      box-shadow: var(--shadow);
+      min-width: 220px;
+      max-width: 340px;
+      font-size: 13px;
+      color: var(--text);
+      display: none;
+    }
+
+    .toast.error {
+      border-color: rgba(248, 113, 113, 0.4);
+      color: var(--error);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 16px;
+    }
+
+    .modal {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      max-width: 520px;
+      width: 100%;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .modal header {
+      background: none;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal h3 {
+      margin: 0;
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .modal .meta {
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .modal .body {
+      background: #0c182c;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      white-space: pre-wrap;
+      line-height: 1.45;
+      max-height: 360px;
+      overflow: auto;
+    }
+
+    .close-btn {
+      background: #1f2937;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .menu-item {
+        flex: 1;
+        min-width: 140px;
+        text-align: center;
+      }
+      .quad-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .table-wrap {
+        max-height: 260px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="menu-title">메뉴</div>
+      <ul id="menuList" class="menu-list"></ul>
+    </aside>
+
+    <div class="content">
+      <div id="contentRoot"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-backdrop" id="memoModalBackdrop">
+    <div class="modal">
+      <header>
+        <h3>메모 상세</h3>
+        <button class="close-btn" id="memoModalClose" type="button">닫기</button>
+      </header>
+      <div class="meta">
+        <span id="memoModalDate">-</span>
+        <span id="memoModalAuthor">-</span>
+      </div>
+      <div class="body" id="memoModalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = (() => {
+      const origin = window.location.origin;
+      if (origin && origin !== "null" && origin.startsWith("http")) {
+        return origin.replace(/\/$/, "") + "/api";
+      }
+      return "http://localhost:8000/api";
+    })();
+    const ORG_LIMIT = 200;
+
+    const menuConfig = [
+      { id: "rank-2025", label: "2025년 체결액 순위", render: renderRank2025Screen },
+      { id: "org-view", label: "조직/People/Deal 뷰어", render: renderOrgScreen },
+    ];
+
+    const state = {
+      activeMenuId: "org-view",
+      size: "대기업",
+      orgs: [],
+      orgSearch: "",
+      selectedOrg: null,
+      personWith: null,
+      personWithout: null,
+      dealWith: null,
+      dealWithout: null,
+      peopleWith: [],
+      peopleWithout: [],
+      dealsWith: [],
+      dealsWithout: [],
+      orgMemos: [],
+      personMemoWith: [],
+      personMemoWithout: [],
+      dealMemoWith: [],
+      dealMemoWithout: [],
+      wonSummary: [],
+      modal: {
+        backdrop: null,
+        close: null,
+        date: null,
+        author: null,
+        body: null,
+        bound: false,
+      },
+      pendingOrgId: null,
+      pendingOrgFallback: null,
+    };
+
+    const cache = {
+      orgMemos: new Map(),
+      peopleWith: new Map(),
+      peopleWithout: new Map(),
+      deals: new Map(),
+      personMemos: new Map(),
+      dealMemos: new Map(),
+      rank2025: null,
+      orgLookup: new Map(),
+      wonSummary: new Map(),
+    };
+
+    function showToast(message, tone = "info") {
+      const el = document.getElementById("toast");
+      el.textContent = message;
+      el.className = `toast ${tone === "error" ? "error" : ""}`;
+      el.style.display = "block";
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => {
+        el.style.display = "none";
+      }, 3200);
+    }
+
+    function openMemoModal({ createdAt, ownerName, ownerId, text }) {
+      if (!state.modal.backdrop) return;
+      state.modal.date.textContent = `작성일: ${formatDate(createdAt)}`;
+      state.modal.author.textContent = `작성자: ${ownerName || ownerId || "-"}`;
+      state.modal.body.textContent = text || "(내용 없음)";
+      state.modal.backdrop.style.display = "flex";
+    }
+
+    function closeMemoModal() {
+      if (!state.modal.backdrop) return;
+      state.modal.backdrop.style.display = "none";
+    }
+
+    function attachMemoRowClicks(tableId, memoList) {
+      const table = document.getElementById(tableId);
+      if (!table) return;
+      table.querySelectorAll("tbody tr").forEach((tr, idx) => {
+        const memo = memoList[idx];
+        if (!memo) return;
+        tr.style.cursor = "pointer";
+        tr.addEventListener("click", () => openMemoModal(memo));
+      });
+    }
+
+    function renderSidebar() {
+      const list = document.getElementById("menuList");
+      if (!list) return;
+      list.innerHTML = "";
+      menuConfig.forEach((item) => {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "menu-item";
+        if (state.activeMenuId === item.id) btn.classList.add("active");
+        btn.textContent = item.label;
+        btn.addEventListener("click", () => {
+          if (state.activeMenuId === item.id) return;
+          state.activeMenuId = item.id;
+          renderSidebar();
+          renderContent();
+        });
+        li.appendChild(btn);
+        list.appendChild(li);
+      });
+    }
+
+    async function renderContent() {
+      const contentRoot = document.getElementById("contentRoot");
+      if (!contentRoot) return;
+      const menu = menuConfig.find((m) => m.id === state.activeMenuId);
+      if (!menu) {
+        contentRoot.innerHTML = "<div class='muted'>선택한 메뉴를 찾을 수 없습니다.</div>";
+        return;
+      }
+      const result = menu.render(contentRoot);
+      if (result && typeof result.then === "function") {
+        await result;
+      }
+    }
+
+    async function fetchJson(path) {
+      const resp = await fetch(`${API_BASE}${path}`);
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new Error(txt || resp.statusText);
+      }
+      return resp.json();
+    }
+
+    async function fetchOrgById(orgId) {
+      const cached = cache.orgLookup.get(orgId);
+      if (cached) return cached;
+      const data = await fetchJson(`/orgs/${orgId}`);
+      if (data && data.item) {
+        cache.orgLookup.set(orgId, data.item);
+        return data.item;
+      }
+      return null;
+    }
+
+    async function navigateToOrg(orgId) {
+      if (!orgId) return;
+      state.activeMenuId = "org-view";
+      state.pendingOrgId = orgId;
+      state.orgSearch = orgId; // search by id to narrow list
+      try {
+        state.pendingOrgFallback = await fetchOrgById(orgId);
+      } catch (_) {
+        state.pendingOrgFallback = null;
+      }
+      state.size = "전체";
+      renderSidebar();
+      await renderContent(); // org screen will init and load
+    }
+
+    function formatDate(val) {
+      if (!val) return "-";
+      const clean = String(val).split("T")[0].split(" ")[0];
+      return clean || val;
+    }
+
+    function formatAmount(num) {
+      if (num === null || num === undefined || Number.isNaN(num)) return "-";
+      const value = Number(num);
+      if (!Number.isFinite(value)) return "-";
+      return (value / 1e8).toFixed(2) + "억";
+    }
+
+    function setBreadcrumb() {
+      const orgName = state.orgs.find((o) => o.id === state.selectedOrg)?.name || "-";
+      const personName =
+        state.personWith && state.peopleWith.find((p) => p.id === state.personWith)?.name ||
+        state.personWithout && state.peopleWithout.find((p) => p.id === state.personWithout)?.name ||
+        "-";
+      const dealName =
+        state.dealWith && state.dealsWith.find((d) => d.id === state.dealWith)?.name ||
+        state.dealWithout && state.dealsWithout.find((d) => d.id === state.dealWithout)?.name ||
+        "-";
+      document.getElementById("crumb-org").textContent = orgName;
+      document.getElementById("crumb-person").textContent = personName;
+      document.getElementById("crumb-deal").textContent = dealName;
+    }
+
+    function renderOrgSelect() {
+      const sel = document.getElementById("orgSelect");
+      if (!state.orgs.length) {
+        sel.innerHTML = '<option value="">해당 조건의 회사가 없습니다.</option>';
+        return;
+      }
+      const options = ['<option value="">회사를 선택하세요</option>'];
+      options.push(
+        ...state.orgs.map(
+          (o) =>
+            `<option value="${o.id}" ${o.id === state.selectedOrg ? "selected" : ""}>${o.name}${o.size ? " (" + o.size + ")" : ""
+            }</option>`
+        )
+      );
+      sel.innerHTML = options.join("");
+      sel.value = state.selectedOrg || "";
+      state.orgs.forEach((o) => {
+        if (o.id) cache.orgLookup.set(o.id, o);
+      });
+    }
+
+    async function loadSizes() {
+      try {
+        const data = await fetchJson("/sizes");
+        const sizes = Array.from(new Set(["전체", ...(data.sizes || [])]));
+        const sel = document.getElementById("sizeSelect");
+        sel.innerHTML = sizes.map((s) => `<option value="${s}">${s}</option>`).join("");
+        if (!sizes.includes(state.size)) {
+          state.size = sizes[0] || "전체";
+        }
+        sel.value = state.size;
+      } catch (err) {
+        showToast(`규모 목록을 불러오지 못했습니다: ${err.message}`, "error");
+      }
+    }
+
+    async function loadOrgs(offset = 0, preselectOrgId = null, fallbackOrg = null) {
+      const search = document.getElementById("orgSearch").value.trim();
+      state.orgSearch = search;
+      const params = new URLSearchParams({
+        size: state.size,
+        limit: ORG_LIMIT.toString(),
+        offset: offset.toString(),
+      });
+      if (search) params.set("search", search);
+      document.getElementById("orgMemoHint").textContent = "회사 목록 불러오는 중...";
+      try {
+        const data = await fetchJson(`/orgs?${params.toString()}`);
+        state.orgs = data.items || [];
+        const prev = preselectOrgId || state.selectedOrg;
+        const stillExists = state.orgs.find((o) => o.id === prev);
+        state.selectedOrg = stillExists ? prev : null;
+        renderOrgSelect();
+        if (state.selectedOrg) {
+          await loadOrgDetail(state.selectedOrg);
+          showToast("선택한 회사를 불러왔습니다.", "success");
+        } else if (preselectOrgId && fallbackOrg) {
+          // insert fallback org to list and select
+          state.orgs = [fallbackOrg];
+          renderOrgSelect();
+          state.selectedOrg = fallbackOrg.id;
+          document.getElementById("orgSelect").value = fallbackOrg.id;
+          await loadOrgDetail(fallbackOrg.id);
+          showToast("선택한 회사를 불러왔습니다.", "success");
+        } else {
+          clearOrgViews();
+          if (preselectOrgId) {
+            showToast("해당 회사를 찾을 수 없습니다.", "error");
+          }
+        }
+      } catch (err) {
+        showToast(`회사 목록 오류: ${err.message}`, "error");
+        clearOrgViews();
+      }
+      setBreadcrumb();
+    }
+
+    function clearOrgViews() {
+      state.personWith = null;
+      state.personWithout = null;
+      state.dealWith = null;
+      state.dealWithout = null;
+      state.peopleWith = [];
+      state.peopleWithout = [];
+      state.dealsWith = [];
+      state.dealsWithout = [];
+      state.orgMemos = [];
+      state.personMemoWith = [];
+      state.personMemoWithout = [];
+      state.dealMemoWith = [];
+      state.dealMemoWithout = [];
+      state.wonSummary = [];
+      renderOrgMemos([]);
+      renderWonSummary([]);
+      renderPeople("with", []);
+      renderPeople("without", []);
+      renderDeals("with", []);
+      renderDeals("without", []);
+      renderMemoTable("personMemoWithTable", "personMemoWith");
+      renderMemoTable("personMemoWithoutTable", "personMemoWithout");
+      renderMemoTable("dealMemoWithTable", "dealMemoWith");
+      renderMemoTable("dealMemoWithoutTable", "dealMemoWithout");
+    }
+
+    async function loadOrgDetail(orgId) {
+      state.selectedOrg = orgId;
+      state.personWith = null;
+      state.personWithout = null;
+      state.dealWith = null;
+      state.dealWithout = null;
+      setBreadcrumb();
+
+      const memoPromise = cache.orgMemos.get(orgId)
+        ? Promise.resolve(cache.orgMemos.get(orgId))
+        : fetchJson(`/orgs/${orgId}/memos`).then((d) => d.items || []);
+
+      const peopleWithPromise = cache.peopleWith.get(orgId)
+        ? Promise.resolve(cache.peopleWith.get(orgId))
+        : fetchJson(`/orgs/${orgId}/people?hasDeal=true`).then((d) => d.items || []);
+
+      const peopleWithoutPromise = cache.peopleWithout.get(orgId)
+        ? Promise.resolve(cache.peopleWithout.get(orgId))
+        : fetchJson(`/orgs/${orgId}/people?hasDeal=false`).then((d) => d.items || []);
+
+      const wonSummaryPromise = cache.wonSummary.get(orgId)
+        ? Promise.resolve(cache.wonSummary.get(orgId))
+        : fetchJson(`/orgs/${orgId}/won-summary`).then((d) => d.items || []);
+
+      try {
+        const [memos, withList, withoutList, wonSummary] = await Promise.all([
+          memoPromise,
+          peopleWithPromise,
+          peopleWithoutPromise,
+          wonSummaryPromise,
+        ]);
+        cache.orgMemos.set(orgId, memos);
+        cache.peopleWith.set(orgId, withList);
+        cache.peopleWithout.set(orgId, withoutList);
+        cache.wonSummary.set(orgId, wonSummary || []);
+
+        state.orgMemos = memos;
+        state.peopleWith = withList;
+        state.peopleWithout = withoutList;
+        state.wonSummary = wonSummary || [];
+
+        renderOrgMemos(memos);
+        renderWonSummary(state.wonSummary);
+        renderPeople("with", withList);
+        renderPeople("without", withoutList);
+        setBreadcrumb();
+      } catch (err) {
+        showToast(`회사 데이터 로드 오류: ${err.message}`, "error");
+        clearOrgViews();
+      }
+    }
+
+    function renderWonSummary(summary) {
+      const card = document.getElementById("wonSummaryCard");
+      const table = document.getElementById("wonSummaryTable");
+      const hint = document.getElementById("wonSummaryHint");
+      if (!card || !table || !hint) return;
+
+      if (!state.selectedOrg) {
+        card.style.display = "none";
+        table.innerHTML = "";
+        hint.textContent = "";
+        return;
+      }
+
+      if (!summary || !summary.length) {
+        card.style.display = "";
+        hint.textContent = "Won 딜이 없습니다.";
+        table.innerHTML = "";
+        return;
+      }
+
+      card.style.display = "";
+      hint.textContent = "";
+
+      const rowsHtml = summary
+        .map((row) => {
+          const contacts = (row.contacts || []).length ? row.contacts.join("<br>") : "-";
+          const owners = (row.owners || []).length ? row.owners.join("<br>") : "-";
+          const fmt = (val) => formatAmount(val);
+          return `
+            <tr>
+              <td>${row.upper_org || "미입력"}</td>
+              <td>${fmt(row.won2023)}</td>
+              <td>${fmt(row.won2024)}</td>
+              <td>${fmt(row.won2025)}</td>
+              <td>${contacts}</td>
+              <td>${owners}</td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>소속 상위 조직</th>
+            <th>2023 Won(억)</th>
+            <th>2024 Won(억)</th>
+            <th>2025 Won(억)</th>
+            <th>고객사 담당자 (팀/이름/직급/교육)</th>
+            <th>데이원 담당자</th>
+          </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+      `;
+    }
+
+    function renderOrgMemos(memos) {
+      const hint = document.getElementById("orgMemoHint");
+      const table = document.getElementById("orgMemoTable");
+      const card = document.getElementById("orgMemoCard");
+      const status = document.getElementById("orgMemoStatus");
+      if (!card || !table || !hint || !status) return; // DOM이 없으면 아무 것도 하지 않는다.
+      status.textContent = memos.length ? `${memos.length}건` : "";
+      if (!state.selectedOrg) {
+        card.style.display = "none";
+        hint.textContent = "";
+        table.innerHTML = "";
+        return;
+      }
+      if (!memos.length) {
+        card.style.display = "none";
+        hint.textContent = "";
+        table.innerHTML = "";
+        return;
+      }
+      card.style.display = "";
+      hint.textContent = "";
+      table.innerHTML = `
+        <thead><tr><th>작성일</th><th>작성자</th><th>본문</th></tr></thead>
+        <tbody>
+          ${memos
+          .map(
+            (m) =>
+              `<tr><td>${formatDate(m.createdAt)}</td><td>${m.ownerName || m.ownerId || "-"}</td><td class="memo-text" title="${m.text || ""}">${(m.text || "").slice(0, 140)}${(m.text || "").length > 140 ? "…" : ""
+              }</td></tr>`
+          )
+          .join("")}
+        </tbody>
+      `;
+      attachMemoRowClicks("orgMemoTable", memos);
+    }
+
+    function renderPeople(kind, list) {
+      const tableId = kind === "with" ? "peopleWithTable" : "peopleWithoutTable";
+      const hintId = kind === "with" ? "peopleWithHint" : "peopleWithoutHint";
+      const countId = kind === "with" ? "peopleWithCount" : "peopleWithoutCount";
+      const selected = kind === "with" ? state.personWith : state.personWithout;
+
+      document.getElementById(countId).textContent = list.length;
+      const table = document.getElementById(tableId);
+      const hint = document.getElementById(hintId);
+
+      if (!state.selectedOrg) {
+        table.innerHTML = "";
+        hint.textContent = "회사를 선택하세요.";
+        return;
+      }
+      if (!list.length) {
+        table.innerHTML = "";
+        hint.textContent = kind === "with" ? "딜이 있는 사람이 없습니다." : "딜 없는 사람이 없습니다.";
+        return;
+      }
+      hint.textContent = "";
+      table.innerHTML = `<thead><tr>
+        <th>이름</th>
+        <th>소속 상위 조직</th>
+        <th>팀(명함/메일서명)</th>
+        <th>직급(명함/메일서명)</th>
+        <th>담당 교육 영역</th>
+      </tr></thead>`;
+      const tbody = document.createElement("tbody");
+      list.forEach((p) => {
+        const tr = document.createElement("tr");
+        if (selected === p.id) tr.classList.add("active");
+        tr.innerHTML = `
+          <td>${p.name || "-"}</td>
+          <td>${p.upper_org || "-"}</td>
+          <td>${p.team_signature || "-"}</td>
+          <td>${p.title_signature || "-"}</td>
+          <td>${p.edu_area || "-"}</td>
+        `;
+        tr.addEventListener("click", () => {
+          if (kind === "with") {
+            state.personWith = p.id;
+            state.dealWith = null;
+            loadDealsForPerson("with", p.id);
+            loadPersonMemos("with", p.id);
+          } else {
+            state.personWithout = p.id;
+            state.dealWithout = null;
+            loadDealsForPerson("without", p.id);
+            loadPersonMemos("without", p.id);
+          }
+          renderPeople(kind, list);
+          setBreadcrumb();
+        });
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+    }
+
+    async function loadDealsForPerson(kind, personId) {
+      const cacheHit = cache.deals.get(personId);
+      const promise = cacheHit ? Promise.resolve(cacheHit) : fetchJson(`/people/${personId}/deals`).then((d) => d.items || []);
+      try {
+        const deals = await promise;
+        cache.deals.set(personId, deals);
+        if (kind === "with") {
+          state.dealsWith = deals;
+          state.dealWith = deals[0]?.id || null;
+          renderDeals("with", deals);
+          if (state.dealWith) {
+            await loadDealMemos("with", state.dealWith);
+          } else {
+            renderMemoTable("dealMemoWithTable", "dealMemoWith");
+          }
+        } else {
+          state.dealsWithout = deals;
+          state.dealWithout = deals[0]?.id || null;
+          renderDeals("without", deals);
+          if (state.dealWithout) {
+            await loadDealMemos("without", state.dealWithout);
+          } else {
+            renderMemoTable("dealMemoWithoutTable", "dealMemoWithout");
+          }
+        }
+      } catch (err) {
+        showToast(`딜 조회 오류: ${err.message}`, "error");
+      }
+      setBreadcrumb();
+    }
+
+    function renderDeals(kind, list) {
+      const tableId = kind === "with" ? "dealWithTable" : "dealWithoutTable";
+      const hintId = kind === "with" ? "dealWithHint" : "dealWithoutHint";
+      const selected = kind === "with" ? state.dealWith : state.dealWithout;
+      const table = document.getElementById(tableId);
+      const hint = document.getElementById(hintId);
+
+      if (!(kind === "with" ? state.personWith : state.personWithout)) {
+        table.innerHTML = "";
+        hint.textContent = "사람을 선택하세요.";
+        return;
+      }
+      if (!list.length) {
+        table.innerHTML = "";
+        hint.textContent = "딜이 없습니다.";
+        return;
+      }
+      hint.textContent = "";
+      table.innerHTML = `<thead><tr><th>생성일</th><th>이름</th><th>상태</th><th>금액(억)</th><th>예상 체결액(억)</th><th>계약 체결일</th><th>담당자</th></tr></thead>`;
+      const tbody = document.createElement("tbody");
+      list.forEach((d) => {
+        const tr = document.createElement("tr");
+        if (selected === d.id) tr.classList.add("active");
+        tr.innerHTML = `
+          <td>${formatDate(d.created_at)}</td>
+          <td>${d.name || "-"}</td>
+          <td>${d.status || "-"}</td>
+          <td>${formatAmount(d.amount)}</td>
+          <td>${formatAmount(d.expected_amount)}</td>
+          <td>${formatDate(d.contract_date)}</td>
+          <td>${d.ownerName || "-"}</td>
+        `;
+        tr.addEventListener("click", async () => {
+          if (kind === "with") {
+            state.dealWith = d.id;
+            await loadDealMemos("with", d.id);
+          } else {
+            state.dealWithout = d.id;
+            await loadDealMemos("without", d.id);
+          }
+          renderDeals(kind, list);
+          setBreadcrumb();
+        });
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+    }
+
+    async function loadPersonMemos(kind, personId) {
+      const cacheHit = cache.personMemos.get(personId);
+      const promise = cacheHit
+        ? Promise.resolve(cacheHit)
+        : fetchJson(`/people/${personId}/memos`).then((d) => d.items || []);
+      try {
+        const memos = await promise;
+        cache.personMemos.set(personId, memos);
+        if (kind === "with") {
+          state.personMemoWith = memos;
+          renderMemoTable("personMemoWithTable", "personMemoWith");
+        } else {
+          state.personMemoWithout = memos;
+          renderMemoTable("personMemoWithoutTable", "personMemoWithout");
+        }
+      } catch (err) {
+        showToast(`People 메모 오류: ${err.message}`, "error");
+      }
+    }
+
+    async function loadDealMemos(kind, dealId) {
+      const cacheHit = cache.dealMemos.get(dealId);
+      const promise = cacheHit ? Promise.resolve(cacheHit) : fetchJson(`/deals/${dealId}/memos`).then((d) => d.items || []);
+      try {
+        const memos = await promise;
+        cache.dealMemos.set(dealId, memos);
+        if (kind === "with") {
+          state.dealMemoWith = memos;
+          renderMemoTable("dealMemoWithTable", "dealMemoWith");
+        } else {
+          state.dealMemoWithout = memos;
+          renderMemoTable("dealMemoWithoutTable", "dealMemoWithout");
+        }
+      } catch (err) {
+        showToast(`Deal 메모 오류: ${err.message}`, "error");
+      }
+    }
+
+    function renderMemoTable(tableId, memoKey) {
+      const table = document.getElementById(tableId);
+      const memoList = state[memoKey] || [];
+      const hasParentSelection =
+        memoKey.includes("person")
+          ? (memoKey === "personMemoWith" ? state.personWith : state.personWithout)
+          : (memoKey === "dealMemoWith" ? state.dealWith : state.dealWithout);
+
+      if (!hasParentSelection) {
+        table.innerHTML = "";
+        return;
+      }
+      if (!memoList.length) {
+        table.innerHTML = `<tbody><tr><td class="muted">메모가 없습니다.</td></tr></tbody>`;
+        return;
+      }
+      table.innerHTML = `
+        <thead><tr><th>작성일</th><th>작성자</th><th>본문</th></tr></thead>
+        <tbody>
+          ${memoList
+          .map(
+            (m) =>
+              `<tr><td>${formatDate(m.createdAt)}</td><td>${m.ownerName || m.ownerId || "-"}</td><td class="memo-text" title="${m.text || ""}">${(m.text || "").slice(0, 120)}${(m.text || "").length > 120 ? "…" : ""
+              }</td></tr>`
+          )
+          .join("")}
+        </tbody>
+      `;
+      attachMemoRowClicks(tableId, memoList);
+    }
+
+    function resetSelection() {
+      state.personWith = null;
+      state.personWithout = null;
+      state.dealWith = null;
+      state.dealWithout = null;
+      state.dealsWith = [];
+      state.dealsWithout = [];
+      state.personMemoWith = [];
+      state.personMemoWithout = [];
+      state.dealMemoWith = [];
+      state.dealMemoWithout = [];
+      renderPeople("with", state.peopleWith);
+      renderPeople("without", state.peopleWithout);
+      renderDeals("with", []);
+      renderDeals("without", []);
+      renderMemoTable("personMemoWithTable", "personMemoWith");
+      renderMemoTable("personMemoWithoutTable", "personMemoWithout");
+      renderMemoTable("dealMemoWithTable", "dealMemoWith");
+      renderMemoTable("dealMemoWithoutTable", "dealMemoWithout");
+      setBreadcrumb();
+    }
+
+    async function initOrgScreen() {
+      document.getElementById("apiBaseLabel").textContent = API_BASE;
+      document.getElementById("sizeSelect").addEventListener("change", async (e) => {
+        state.size = e.target.value;
+        await loadOrgs(0);
+      });
+      document.getElementById("orgSearchBtn").addEventListener("click", () => loadOrgs(0));
+      document.getElementById("orgSearch").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") loadOrgs(0);
+      });
+      document.getElementById("orgSelect").addEventListener("change", (e) => {
+        const val = e.target.value;
+        if (!val) {
+          state.selectedOrg = null;
+          clearOrgViews();
+          setBreadcrumb();
+          return;
+        }
+        loadOrgDetail(val);
+      });
+      document.getElementById("resetBtn").addEventListener("click", resetSelection);
+
+      state.modal.backdrop = document.getElementById("memoModalBackdrop");
+      state.modal.close = document.getElementById("memoModalClose");
+      state.modal.date = document.getElementById("memoModalDate");
+      state.modal.author = document.getElementById("memoModalAuthor");
+      state.modal.body = document.getElementById("memoModalBody");
+      state.modal.backdrop.addEventListener("click", (e) => {
+        if (e.target === state.modal.backdrop) closeMemoModal();
+      });
+      state.modal.close.addEventListener("click", closeMemoModal);
+      if (!state.modal.bound) {
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeMemoModal();
+        });
+        state.modal.bound = true;
+      }
+
+      await loadSizes();
+      const sizeSelect = document.getElementById("sizeSelect");
+      if (sizeSelect) sizeSelect.value = state.size;
+      const searchInput = document.getElementById("orgSearch");
+      if (searchInput) searchInput.value = state.orgSearch || "";
+
+      if (state.pendingOrgId) {
+        await loadOrgs(0, state.pendingOrgId, state.pendingOrgFallback || undefined);
+        state.pendingOrgId = null;
+        state.pendingOrgFallback = null;
+      } else {
+        await loadOrgs(0);
+      }
+      setBreadcrumb();
+    }
+
+    async function renderOrgScreen(contentRoot) {
+      contentRoot.innerHTML = `
+        <header>
+          <div class="control-row">
+            <h1>조직/People/Deal 빠른 뷰어 (FastAPI)</h1>
+            <div class="spacer"></div>
+            <span class="pill">API: <span id="apiBaseLabel"></span></span>
+          </div>
+          <div class="control-row">
+            <label class="muted">기업 규모</label>
+            <select id="sizeSelect"></select>
+            <label class="muted">회사 검색</label>
+            <input id="orgSearch" type="text" placeholder="이름 또는 ID 검색 (상위 200건)" />
+            <button id="orgSearchBtn" type="button">검색/새로고침</button>
+            <label class="muted">회사</label>
+            <select id="orgSelect"></select>
+            <button id="resetBtn" type="button">선택 초기화</button>
+          </div>
+        </header>
+
+        <div class="breadcrumb" id="breadcrumb">
+          <span>경로:</span>
+          <span id="crumb-org">-</span>
+          <span>›</span>
+          <span id="crumb-person">-</span>
+          <span>›</span>
+          <span id="crumb-deal">-</span>
+        </div>
+
+        <section class="card" id="wonSummaryCard" style="display:none;">
+          <h2>상위 조직별 Won 합계 (23/24/25)</h2>
+          <div class="muted" id="wonSummaryHint">회사를 선택하세요.</div>
+          <div class="table-wrap full">
+            <table id="wonSummaryTable"></table>
+          </div>
+        </section>
+
+        <section class="card" id="orgMemoCard">
+          <h2>회사 메모 <span class="muted" id="orgMemoStatus"></span></h2>
+          <div class="muted" id="orgMemoHint">회사를 선택하세요.</div>
+          <div class="table-wrap full">
+            <table id="orgMemoTable"></table>
+          </div>
+        </section>
+
+        <main class="main-vertical">
+          <section class="card">
+            <h2>People (딜 있음) <span class="badge" id="peopleWithCount">0</span></h2>
+            <div class="muted" id="peopleWithHint">회사를 선택하세요.</div>
+            <div class="quad-grid">
+              <div class="table-wrap">
+                <table id="peopleWithTable"></table>
+              </div>
+              <div class="table-wrap">
+                <table id="personMemoWithTable"></table>
+              </div>
+              <div>
+                <div class="muted" id="dealWithHint">사람을 선택하세요.</div>
+                <div class="table-wrap">
+                  <table id="dealWithTable"></table>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table id="dealMemoWithTable"></table>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <h2>People (딜 없음) <span class="badge" id="peopleWithoutCount">0</span></h2>
+            <div class="muted" id="peopleWithoutHint">회사를 선택하세요.</div>
+            <div class="quad-grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="table-wrap">
+                <table id="peopleWithoutTable"></table>
+              </div>
+              <div class="table-wrap">
+                <table id="personMemoWithoutTable"></table>
+              </div>
+            </div>
+          </section>
+        </main>
+      `;
+
+      await initOrgScreen();
+    }
+
+    function renderRankTable(items) {
+      if (!items || !items.length) {
+        return `<div class="muted">데이터가 없습니다.</div>`;
+      }
+      return `
+        <div class="table-wrap full">
+          <table>
+            <thead>
+              <tr>
+                <th>순위</th>
+                <th>회사</th>
+                <th>총액(억)</th>
+                <th>과정포맷</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items
+                .map(
+                  (row, idx) =>
+                    `<tr>
+                      <td>${idx + 1}</td>
+                      <td><span class="org-link" data-idx="${idx}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.orgName || row.orgId || "-"}</span></td>
+                      <td>${formatAmount(row.totalAmount)}</td>
+                      <td class="format-cell" data-idx="${idx}" style="cursor:pointer; color: var(--accent);">자세히</td>
+                    </tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    async function renderRank2025Screen(contentRoot) {
+      contentRoot.innerHTML = `
+        <section class="card">
+          <h2>2025년 체결액 순위 (Won 상태)</h2>
+          <div id="rankBody" class="muted">불러오는 중...</div>
+        </section>
+      `;
+      const target = document.getElementById("rankBody");
+      try {
+        if (!cache.rank2025) {
+          const data = await fetchJson("/rank/2025-deals");
+          cache.rank2025 = data.items || [];
+        }
+        target.innerHTML = renderRankTable(cache.rank2025);
+        // attach popup for course formats
+        target.querySelectorAll(".format-cell").forEach((cell) => {
+          cell.addEventListener("click", () => {
+            const idx = Number(cell.getAttribute("data-idx"));
+            const row = cache.rank2025[idx];
+            if (!row) return;
+            const lines = (row.formats || []).map((f) => `${f.courseFormat || "-"}: ${formatAmount(f.totalAmount)}`).join("\n");
+            openMemoModal({
+              createdAt: "",
+              ownerName: row.orgName || row.orgId || "-",
+              ownerId: "",
+              text: lines || "(데이터 없음)",
+            });
+          });
+        });
+        // attach navigation on org name click
+        target.querySelectorAll(".org-link").forEach((cell) => {
+          cell.addEventListener("click", async () => {
+            const idx = Number(cell.getAttribute("data-idx"));
+            const row = cache.rank2025[idx];
+            if (!row) return;
+            await navigateToOrg(row.orgId);
+          });
+        });
+      } catch (err) {
+        target.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+      }
+    }
+
+    function initApp() {
+      renderSidebar();
+      renderContent();
+    }
+
+    document.addEventListener("DOMContentLoaded", initApp);
+  </script>
+</body>
+
+</html>

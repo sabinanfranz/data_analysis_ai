@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import argparse
 import json
-import os
 import sqlite3
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -20,6 +19,8 @@ def load_data(
 ) -> Dict[str, Any]:
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
+    # Force temp storage to memory to avoid OS temp dir write restrictions during ORDER BY.
+    conn.execute("PRAGMA temp_store=MEMORY;")
 
     org_where: List[str] = []
     org_params: List[Any] = []
@@ -167,7 +168,6 @@ def render_html(
     data: Dict[str, Any],
     default_org: str,
     output_path: Path,
-    api_config: Optional[Dict[str, str]] = None,
 ) -> None:
     org_options = [
         {
@@ -186,7 +186,6 @@ def render_html(
         "memosByDeal": data["memos_by_deal"],
         "memosByPerson": data["memos_by_person"],
         "memosByOrg": data["memos_by_org"],
-        "apiConfig": api_config or {"baseUrl": "", "token": ""},
     }
     html = f"""<!DOCTYPE html>
 <html lang="ko">
@@ -219,7 +218,7 @@ def render_html(
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding: 14px;
+      padding: 16px;
       gap: 12px;
     }}
     header {{
@@ -228,19 +227,20 @@ def render_html(
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 12px 16px;
+      padding: 14px 16px;
       box-shadow: var(--shadow);
       gap: 10px;
     }}
     .control-row {{
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
       align-items: center;
       width: 100%;
+      justify-content: space-between;
     }}
     h1 {{ margin: 0; font-size: 18px; }}
-    select, button, input {{
+    select, button {{
       background: #0f182a;
       color: var(--text);
       border: 1px solid var(--border);
@@ -248,14 +248,22 @@ def render_html(
       padding: 10px 12px;
       font-size: 14px;
     }}
-    input[type="text"], input[type="password"] {{
-      min-width: 200px;
-    }}
-    button:hover, select:focus, input:focus {{ border-color: var(--accent); outline: none; }}
-    main {{
+    button:hover, select:focus {{ border-color: var(--accent); outline: none; }}
+    .breadcrumb {{ display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); }}
+    .org-grid {{
+      flex: 1;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-      gap: 12px;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 10px;
+      min-height: 0;
+      height: calc(100vh - 170px);
+    }}
+    .col {{
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 10px;
+      min-height: 0;
     }}
     .card {{
       background: var(--panel);
@@ -263,60 +271,17 @@ def render_html(
       border-radius: 14px;
       padding: 12px;
       box-shadow: var(--shadow);
-      min-height: 260px;
       display: flex;
       flex-direction: column;
-    }}
-    .stack {{
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }}
-    .subgrid {{
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      align-items: stretch;
-    }}
-    .memos {{
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-      gap: 8px;
-      height: 100%;
-    }}
-    .memo-block {{
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }}
-    .table-wrap {{
-      overflow: auto;
-      max-height: 320px;
-    }}
-    .table-wrap.half {{
-      height: 100%;
-    }}
-    .top-memo {{
-      min-height: 80px;
-      transition: height 0.3s ease;
-      overflow: hidden;
-    }}
-    .top-memo.has-memos {{
-      min-height: 220px;
-    }}
-    .double-row {{
-      display: grid;
-      grid-template-rows: 1fr 1fr;
-      gap: 8px;
-      height: 100%;
+      min-height: 0;
     }}
     .card h2 {{
       margin: 0 0 10px 0;
       font-size: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }}
     h3 {{ margin: 0 0 6px 0; color: var(--muted); font-size: 14px; }}
     table {{
@@ -336,29 +301,40 @@ def render_html(
     }}
     tr:hover {{ background: rgba(56, 189, 248, 0.08); }}
     tr.active {{ background: rgba(56, 189, 248, 0.15); }}
-    .muted {{ color: var(--muted); }}
-    .breadcrumb {{ display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); }}
-    .badge {{ display: inline-block; padding: 2px 8px; border-radius: 999px; background: rgba(56, 189, 248, 0.15); color: var(--accent); }}
-    .api-controls {{
-      display: flex;
+    .table-wrap {{
+      flex: 1;
+      overflow: auto;
+      min-height: 0;
+    }}
+    .memo-split {{
+      display: grid;
+      grid-template-rows: 1fr 1fr;
       gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-      width: 100%;
+      min-height: 0;
     }}
-    .status-badge {{
-      padding: 6px 10px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      font-size: 12px;
+    .memo-block {{
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
     }}
-    .status-badge.success {{ color: var(--accent-3); background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.3); }}
-    .status-badge.error {{ color: var(--error); background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.35); }}
-    .status-badge.info {{ color: var(--accent); background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.35); }}
+    .muted {{ color: var(--muted); }}
+    .badge {{ display: inline-block; padding: 2px 8px; border-radius: 999px; background: rgba(56, 189, 248, 0.15); color: var(--accent); }}
+    @media (max-width: 1024px) {{
+      .org-grid {{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        height: auto;
+      }}
+      #orgMemoCard {{
+        grid-column: 1 / 2;
+        grid-row: auto;
+      }}
+      .col {{
+        grid-template-rows: repeat(3, minmax(240px, auto));
+      }}
+    }}
     @media (max-width: 768px) {{
       th, td {{ padding: 6px; font-size: 12px; }}
-      .subgrid {{ grid-template-columns: 1fr; }}
-      .api-controls {{ flex-direction: column; align-items: flex-start; }}
     }}
   </style>
 </head>
@@ -374,117 +350,95 @@ def render_html(
         <button id="resetBtn" type="button">선택 초기화</button>
       </div>
     </div>
-    <div class="api-controls">
-      <input id="apiBaseInput" type="text" placeholder="API Base URL (예: https://api.example.com)" />
-      <input id="apiTokenInput" type="password" placeholder="Bearer 토큰" />
-      <button id="refreshApiBtn" type="button">유저/팀 새로고침</button>
-      <span id="apiStatus" class="status-badge muted">준비</span>
-    </div>
   </header>
   <div class="breadcrumb" id="breadcrumb">
     <span>경로:</span> <span id="crumb-org">-</span> <span>›</span> <span id="crumb-person">-</span> <span>›</span> <span id="crumb-deal">-</span>
   </div>
-  <section class="card top-memo" id="orgMemoCard" style="width:100%;">
-    <h2>회사 메모 (organizationId만 연결)</h2>
-    <div class="muted" id="orgMemoHint">회사를 선택하세요.</div>
-    <div style="overflow:auto;">
-      <table id="orgMemoTable"></table>
-    </div>
-  </section>
-  <section class="card stack" id="apiCard" style="width:100%;">
-    <h2>유저/팀 (API)</h2>
-    <div class="muted" id="apiHint">Base URL과 토큰을 입력하고 새로고침을 누르세요.</div>
-    <div class="subgrid">
-      <div>
-        <h3>유저 목록</h3>
-        <div class="muted" id="userHint">데이터가 없습니다.</div>
-        <div class="table-wrap">
-          <table id="userTable"></table>
-        </div>
-      </div>
-      <div>
-        <h3>팀 목록</h3>
-        <div class="muted" id="teamHint">데이터가 없습니다.</div>
-        <div class="table-wrap">
-          <table id="teamTable"></table>
-        </div>
-      </div>
-    </div>
-  </section>
-  <main class="grid">
-    <section class="card stack">
-      <h2>People (딜 있음)</h2>
-      <div class="muted" id="peopleWithHint">회사를 선택하세요.</div>
+  <div id="org-tables-root" class="org-grid">
+    <section class="card memo-card" id="orgMemoCard" style="grid-column: 1 / 2; grid-row: 1 / 4;">
+      <h2>회사 메모</h2>
+      <div class="muted" id="orgMemoHint">회사를 선택하세요.</div>
       <div class="table-wrap">
-        <table id="peopleWithTable"></table>
+        <table id="orgMemoTable"></table>
       </div>
-      <div class="subgrid">
-        <div>
-          <h3>Deal</h3>
-          <div class="muted" id="dealWithHint">사람을 선택하세요.</div>
-          <div class="table-wrap">
-            <table id="dealWithTable"></table>
-          </div>
+    </section>
+
+    <div class="col col-with" style="grid-column: 2 / 3; grid-row: 1 / 4;">
+      <section class="card cell">
+        <h2>People (딜 있음)</h2>
+        <div class="muted" id="peopleWithHint">회사를 선택하세요.</div>
+        <div class="table-wrap">
+          <table id="peopleWithTable"></table>
         </div>
-        <div class="memos">
+      </section>
+      <section class="card cell">
+        <h2>Deals</h2>
+        <div class="muted" id="dealWithHint">사람을 선택하세요.</div>
+        <div class="table-wrap">
+          <table id="dealWithTable"></table>
+        </div>
+      </section>
+      <section class="card cell">
+        <div class="memo-split">
           <div class="memo-block">
             <h3>People 메모</h3>
             <div class="muted" id="personMemoWithHint">사람을 선택하세요.</div>
-            <div class="table-wrap half">
+            <div class="table-wrap">
               <table id="personMemoWithTable"></table>
             </div>
           </div>
           <div class="memo-block">
             <h3>Deal 메모</h3>
             <div class="muted" id="dealMemoWithHint">딜을 선택하세요.</div>
-            <div class="table-wrap half">
+            <div class="table-wrap">
               <table id="dealMemoWithTable"></table>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-    <section class="card stack">
-      <h2>People (딜 없음)</h2>
-      <div class="muted" id="peopleWithoutHint">회사를 선택하세요.</div>
-      <div class="table-wrap">
-        <table id="peopleWithoutTable"></table>
-      </div>
-      <div class="subgrid">
-        <div>
-          <h3>Deal</h3>
-          <div class="muted" id="dealWithoutHint">사람을 선택하세요.</div>
-          <div class="table-wrap">
-            <table id="dealWithoutTable"></table>
-          </div>
+      </section>
+    </div>
+
+    <div class="col col-without" style="grid-column: 3 / 4; grid-row: 1 / 4;">
+      <section class="card cell">
+        <h2>People (딜 없음)</h2>
+        <div class="muted" id="peopleWithoutHint">회사를 선택하세요.</div>
+        <div class="table-wrap">
+          <table id="peopleWithoutTable"></table>
         </div>
-        <div class="memos">
+      </section>
+      <section class="card cell">
+        <h2>Deals</h2>
+        <div class="muted" id="dealWithoutHint">사람을 선택하세요.</div>
+        <div class="table-wrap">
+          <table id="dealWithoutTable"></table>
+        </div>
+      </section>
+      <section class="card cell">
+        <div class="memo-split">
           <div class="memo-block">
             <h3>People 메모</h3>
             <div class="muted" id="personMemoWithoutHint">사람을 선택하세요.</div>
-            <div class="table-wrap half">
+            <div class="table-wrap">
               <table id="personMemoWithoutTable"></table>
             </div>
           </div>
           <div class="memo-block">
             <h3>Deal 메모</h3>
             <div class="muted" id="dealMemoWithoutHint">딜을 선택하세요.</div>
-            <div class="table-wrap half">
+            <div class="table-wrap">
               <table id="dealMemoWithoutTable"></table>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
+    </div>
+  </div>
   <script id="data" type="application/json">{json.dumps(payload, ensure_ascii=False)}</script>
   <script>
     const DATA = JSON.parse(document.getElementById('data').textContent);
-    const API_CONFIG = DATA.apiConfig || {{ baseUrl: '', token: '' }};
     let sizeFilter = '대기업';
     let stateWith = {{ orgId: "{default_org}", personId: null, dealId: null }};
     let stateWithout = {{ orgId: "{default_org}", personId: null, dealId: null }};
-    const apiState = {{ users: [], teams: [], userById: {{}}, userTeams: {{}}, loading: false, error: '' }};
 
     function setBreadcrumb() {{
       const org = stateWith.orgId || stateWithout.orgId;
@@ -875,157 +829,6 @@ def render_html(
       table.appendChild(tbody);
     }}
 
-    function setApiStatus(msg, tone = 'muted') {{
-      const el = document.getElementById('apiStatus');
-      el.textContent = msg;
-      el.className = `status-badge ${{tone}}`;
-    }}
-
-    function hydrateApiInputs() {{
-      const baseInput = document.getElementById('apiBaseInput');
-      const tokenInput = document.getElementById('apiTokenInput');
-      baseInput.value = API_CONFIG.baseUrl || '';
-      tokenInput.value = API_CONFIG.token || '';
-    }}
-
-    async function fetchJson(path, config) {{
-      const base = (config.baseUrl || '').replace(/\\/+$/, '');
-      if (!base) throw new Error('API base URL이 필요합니다.');
-      if (!config.token) throw new Error('API 토큰이 필요합니다.');
-      const headers = {{
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${{config.token}}`,
-      }};
-      const resp = await fetch(`${{base}}${{path}}`, {{ headers }});
-      let data = null;
-      try {{
-        data = await resp.json();
-      }} catch (e) {{
-        // swallow parse errors
-      }}
-      if (!resp.ok) {{
-        throw new Error((data && data.message) || `HTTP ${{resp.status}}`);
-      }}
-      if (data && data.success === false) {{
-        throw new Error(data.message || 'API success=false');
-      }}
-      return data ? data.data : null;
-    }}
-
-    async function fetchWithBackoff(fn, retries = 2, baseDelay = 500) {{
-      let lastErr;
-      for (let attempt = 0; attempt <= retries; attempt++) {{
-        try {{
-          return await fn();
-        }} catch (err) {{
-          lastErr = err;
-          if (attempt === retries) break;
-          const delay = baseDelay * Math.pow(2, attempt);
-          await new Promise(res => setTimeout(res, delay));
-        }}
-      }}
-      throw lastErr || new Error('API 호출 실패');
-    }}
-
-    async function fetchUsers(config) {{
-      const data = await fetchJson('/v2/user', config);
-      return (data && data.userList) || [];
-    }}
-
-    async function fetchTeams(config) {{
-      const data = await fetchJson('/v2/team', config);
-      return (data && data.teamList) || [];
-    }}
-
-    function renderUserTable() {{
-      const table = document.getElementById('userTable');
-      const hint = document.getElementById('userHint');
-      const users = apiState.users || [];
-      if (!users.length) {{
-        table.innerHTML = '';
-        hint.textContent = apiState.loading ? '불러오는 중...' : '유저 데이터가 없습니다.';
-        return;
-      }}
-      hint.textContent = '';
-      table.innerHTML = `<thead><tr><th>이름</th><th>상태</th><th>이메일</th><th>역할</th><th>업데이트</th></tr></thead>`;
-      const tbody = document.createElement('tbody');
-      users.forEach(u => {{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${{u.name || '-'}}</td>
-          <td>${{u.status || '-'}}</td>
-          <td>${{u.email || '-'}}</td>
-          <td>${{u.role || '-'}}</td>
-          <td>${{formatDate(u.updatedAt)}}</td>
-        `;
-        tbody.appendChild(tr);
-      }});
-      table.appendChild(tbody);
-    }}
-
-    function renderTeamTable() {{
-      const table = document.getElementById('teamTable');
-      const hint = document.getElementById('teamHint');
-      const teams = apiState.teams || [];
-      if (!teams.length) {{
-        table.innerHTML = '';
-        hint.textContent = apiState.loading ? '불러오는 중...' : '팀 데이터가 없습니다.';
-        return;
-      }}
-      hint.textContent = '';
-      table.innerHTML = `<thead><tr><th>팀 이름</th><th>설명</th><th>구성원</th></tr></thead>`;
-      const tbody = document.createElement('tbody');
-      teams.forEach(t => {{
-        const names = (t.teammateList || []).map(tm => apiState.userById[tm.id]?.name || tm.name || tm.id).join(', ') || '-';
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${{t.name || '-'}}</td>
-          <td>${{t.description || '-'}} </td>
-          <td>${{names}}</td>
-        `;
-        tbody.appendChild(tr);
-      }});
-      table.appendChild(tbody);
-    }}
-
-    async function refreshApiData() {{
-      const baseInput = document.getElementById('apiBaseInput');
-      const tokenInput = document.getElementById('apiTokenInput');
-      const config = {{ baseUrl: baseInput.value.trim(), token: tokenInput.value.trim() }};
-      if (!config.baseUrl || !config.token) {{
-        setApiStatus('Base URL/토큰을 입력하세요.', 'error');
-        return;
-      }}
-      apiState.loading = true;
-      apiState.error = '';
-      setApiStatus('유저/팀 불러오는 중...', 'info');
-      try {{
-        const [users, teams] = await Promise.all([
-          fetchWithBackoff(() => fetchUsers(config)),
-          fetchWithBackoff(() => fetchTeams(config)),
-        ]);
-        apiState.users = users;
-        apiState.teams = teams;
-        apiState.userById = Object.fromEntries(users.map(u => [u.id, u]));
-        apiState.userTeams = {{}};
-        teams.forEach(team => {{
-          (team.teammateList || []).forEach(tm => {{
-            const list = apiState.userTeams[tm.id] || (apiState.userTeams[tm.id] = []);
-            list.push(team.name || team.id);
-          }});
-        }});
-        renderUserTable();
-        renderTeamTable();
-        document.getElementById('apiHint').textContent = '';
-        setApiStatus('동기화 완료', 'success');
-      }} catch (err) {{
-        apiState.error = err.message || String(err);
-        setApiStatus(apiState.error, 'error');
-      }} finally {{
-        apiState.loading = false;
-      }}
-    }}
-
     document.getElementById('resetBtn').addEventListener('click', () => {{
       stateWith.personId = null;
       stateWith.dealId = null;
@@ -1042,18 +845,9 @@ def render_html(
       setBreadcrumb();
     }});
 
-    document.getElementById('refreshApiBtn').addEventListener('click', refreshApiData);
-
     renderSizeSelect();
     renderOrgSelect();
     applyOrgSelection(stateWith.orgId);
-    hydrateApiInputs();
-    if ((API_CONFIG.baseUrl || '') && (API_CONFIG.token || '')) {{
-      setApiStatus('사전 설정된 API로 불러오는 중...', 'info');
-      refreshApiData();
-    }} else {{
-      setApiStatus('Base URL/토큰을 입력하세요.', 'muted');
-    }}
     setBreadcrumb();
   </script>
 </body>
@@ -1070,8 +864,6 @@ def main() -> None:
     parser.add_argument("--org-id", default=None, help="Filter to a specific organization id.")
     parser.add_argument("--org-name", default=None, help="Filter organizations by name (LIKE match, case-insensitive).")
     parser.add_argument("--limit-orgs", type=int, default=None, help="Limit number of organizations (after filter).")
-    parser.add_argument("--api-base-url", default=None, help="Base URL for user/team API calls (ex: https://api.example.com)")
-    parser.add_argument("--api-token", default=None, help="Bearer token for user/team API calls (optional, also reads API_TOKEN env).")
     args = parser.parse_args()
 
     db_path = Path(args.db_path or "salesmap_latest.db")
@@ -1081,11 +873,7 @@ def main() -> None:
     raw = load_data(db_path, args.org_id, args.org_name, args.limit_orgs)
     maps = build_maps(raw)
     default_org = maps["organizations"][0]["id"]
-    api_config = {
-        "baseUrl": args.api_base_url or os.environ.get("API_BASE_URL", ""),
-        "token": args.api_token or os.environ.get("API_TOKEN", ""),
-    }
-    render_html(maps, default_org, Path(args.output), api_config=api_config)
+    render_html(maps, default_org, Path(args.output))
 
 
 if __name__ == "__main__":

@@ -71,20 +71,6 @@ class OrgTablesTest(TestCase):
         self.assertIn("사람 메모", text)
         self.assertIn("조직 메모", text)
 
-    def test_render_html_embeds_api_config(self) -> None:
-        raw = load_data(self.db_path, org_id=None, org_name=None, limit_orgs=None)
-        maps = build_maps(raw)
-        out_path = Path(self.tmpdir.name) / "org_tables_api.html"
-        render_html(
-            maps,
-            default_org="org1",
-            output_path=out_path,
-            api_config={"baseUrl": "https://api.test", "token": "secret-token"},
-        )
-        text = out_path.read_text(encoding="utf-8")
-        self.assertIn("https://api.test", text)
-        self.assertIn("secret-token", text)
-
     def test_filter_out_org_without_people_or_deal(self) -> None:
         # Insert an org with no people and no deals -> should be filtered out
         self.conn.execute('INSERT INTO organization (id, "이름") VALUES (?, ?)', ("org2", "빈조직"))

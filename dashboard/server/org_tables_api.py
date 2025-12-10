@@ -84,6 +84,24 @@ def get_rank_2025_deals(
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/rank/won-yearly-totals")
+def get_rank_won_yearly_totals() -> dict:
+    try:
+        return {"items": db.get_won_totals_by_size()}
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/rank/won-industry-summary")
+def get_rank_won_industry_summary(
+    size: str = Query("전체", description='조직 규모 필터 (예: "대기업", "중견기업", "전체")')
+) -> dict:
+    try:
+        return {"items": db.get_won_industry_summary(size=size)}
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/orgs/{org_id}/won-summary")
 def get_won_summary(org_id: str) -> dict:
     try:

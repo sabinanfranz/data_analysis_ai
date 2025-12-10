@@ -451,12 +451,14 @@ def get_rank_2025_deals(size: str = "전체", db_path: Path = DB_PATH) -> List[D
             'SELECT '
             '  d.organizationId AS orgId, '
             '  COALESCE(o."이름", d.organizationId) AS orgName, '
+            '  o."업종 구분(대)" AS industry_major, '
+            '  o."업종 구분(중)" AS industry_mid, '
             '  d."과정포맷" AS courseFormat, '
             '  SUM(CAST(d."금액" AS REAL)) AS totalAmount '
             "FROM deal d "
             "LEFT JOIN organization o ON o.id = d.organizationId "
             f"WHERE {' AND '.join(conditions)} "
-            'GROUP BY d.organizationId, orgName, d."과정포맷"',
+            'GROUP BY d.organizationId, orgName, industry_major, industry_mid, d."과정포맷"',
             params,
         )
 
@@ -465,12 +467,27 @@ def get_rank_2025_deals(size: str = "전체", db_path: Path = DB_PATH) -> List[D
     for row in rows:
         org_id = row["orgId"]
         org_name = row["orgName"]
+        industry_major = row["industry_major"]
+        industry_mid = row["industry_mid"]
         course = row["courseFormat"]
         amount = _to_number(row["totalAmount"]) or 0.0
         org_entry = orgs.setdefault(
             org_id,
-            {"orgId": org_id, "orgName": org_name, "totalAmount": 0.0, "formats": []},
+            {
+                "orgId": org_id,
+                "orgName": org_name,
+                "industryMajor": industry_major,
+                "industryMid": industry_mid,
+                "totalAmount": 0.0,
+                "formats": [],
+            },
         )
+        if not org_entry.get("orgName") and org_name:
+            org_entry["orgName"] = org_name
+        if not org_entry.get("industryMajor") and industry_major:
+            org_entry["industryMajor"] = industry_major
+        if not org_entry.get("industryMid") and industry_mid:
+            org_entry["industryMid"] = industry_mid
         org_entry["totalAmount"] += amount
         org_entry["formats"].append({"courseFormat": course, "totalAmount": amount})
 
@@ -481,6 +498,75 @@ def get_rank_2025_deals(size: str = "전체", db_path: Path = DB_PATH) -> List[D
     # Return orgs sorted by totalAmount desc
     ranked = sorted(orgs.values(), key=lambda x: x["totalAmount"] or 0, reverse=True)
     return ranked
+
+
+def get_won_industry_summary(
+    size: str = "전체",
+    years: Sequence[str] = ("2023", "2024", "2025"),
+    db_path: Path = DB_PATH,
+) -> List[Dict[str, Any]]:
+    """
+    Aggregate Won deals by industry_major per year and count organizations.
+    Returns list sorted by 2025 amount desc.
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    years_set: Set[str] = set(str(y) for y in years)
+    conditions = ['d."상태" = ?']
+    params: List[Any] = ["Won"]
+    if size and size != "전체":
+        conditions.append('o."기업 규모" = ?')
+        params.append(size)
+    with _connect(db_path) as conn:
+        rows = _fetch_all(
+            conn,
+            'SELECT '
+            '  COALESCE(o."업종 구분(대)", "미입력") AS industry_major, '
+            '  COALESCE(o.id, d.organizationId) AS org_id, '
+            '  SUBSTR(d."계약 체결일", 1, 4) AS year, '
+            '  SUM(CAST(d."금액" AS REAL)) AS totalAmount '
+            "FROM deal d "
+            "LEFT JOIN organization o ON o.id = d.organizationId "
+            f"WHERE {' AND '.join(conditions)} "
+            '  AND d."계약 체결일" IS NOT NULL '
+            "GROUP BY industry_major, org_id, year",
+            params,
+        )
+
+    industry_map: Dict[str, Dict[str, Any]] = {}
+    org_seen: Dict[str, Set[str]] = {}
+
+    for row in rows:
+        year = str(row["year"])
+        if year not in years_set:
+            continue
+        industry = (row["industry_major"] or "미입력").strip() or "미입력"
+        amount = _to_number(row["totalAmount"]) or 0.0
+        entry = industry_map.setdefault(
+            industry,
+            {
+                "industry": industry,
+                "won2023": 0.0,
+                "won2024": 0.0,
+                "won2025": 0.0,
+                "orgCount": 0,
+            },
+        )
+        entry[f"won{year}"] += amount
+
+        # count unique orgs per industry
+        org_id = row["org_id"]
+        if org_id:
+            seen = org_seen.setdefault(industry, set())
+            if org_id not in seen:
+                seen.add(org_id)
+                entry["orgCount"] += 1
+
+    result = list(industry_map.values())
+    # sort by 2025 amount desc
+    result.sort(key=lambda x: x["won2025"], reverse=True)
+    return result
 
 
 def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
@@ -796,3 +882,48 @@ def get_initial_dashboard_data(db_path: Path = DB_PATH) -> Dict[str, Any]:
         "peopleMemosById": people_memos_by_id,
         "dealMemosById": deal_memos_by_id,
     }
+
+
+def get_won_totals_by_size(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
+    """
+    Aggregate Won deals by organization size and contract year (2023/2024/2025).
+    Missing years default to 0 for simpler rendering.
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    with _connect(db_path) as conn:
+        rows = _fetch_all(
+            conn,
+            'SELECT '
+            '  COALESCE(o."기업 규모", "미입력") AS size, '
+            '  SUBSTR(d."계약 체결일", 1, 4) AS year, '
+            '  SUM(CAST(d."금액" AS REAL)) AS totalAmount '
+            "FROM deal d "
+            "LEFT JOIN organization o ON o.id = d.organizationId "
+            'WHERE d."상태" = \'Won\' '
+            '  AND d."계약 체결일" IS NOT NULL '
+            '  AND SUBSTR(d."계약 체결일", 1, 4) IN ("2023", "2024", "2025") '
+            "GROUP BY size, year",
+        )
+
+    by_size: Dict[str, Dict[str, Any]] = {}
+    for row in rows:
+        size = (row["size"] or "미입력").strip() or "미입력"
+        year = str(row["year"])
+        total = _to_number(row["totalAmount"]) or 0.0
+        entry = by_size.setdefault(
+            size,
+            {
+                "size": size,
+                "won2023": 0.0,
+                "won2024": 0.0,
+                "won2025": 0.0,
+            },
+        )
+        if year in YEARS_FOR_WON:
+            entry[f"won{year}"] += total
+
+    result = list(by_size.values())
+    result.sort(key=lambda x: (x["won2023"] + x["won2024"] + x["won2025"]), reverse=True)
+    return result

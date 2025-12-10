@@ -451,6 +451,7 @@
 
     const menuConfig = [
       { id: "rank-2025", label: "2025년 체결액 순위", render: renderRank2025Screen },
+      { id: "industry-2025", label: "업종별 매출", render: renderIndustryMenu },
       { id: "org-view", label: "조직/People/Deal 뷰어", render: renderOrgScreen },
     ];
 
@@ -462,19 +463,15 @@
       orgSearch: "",
       selectedOrg: null,
       wonGroupJson: null,
-      personWith: null,
-      personWithout: null,
-      dealWith: null,
-      dealWithout: null,
-      peopleWith: [],
-      peopleWithout: [],
-      dealsWith: [],
-      dealsWithout: [],
+      filteredWonGroupJson: null,
+      selectedUpperOrg: null,
+      people: [],
+      selectedPerson: null,
+      deals: [],
+      selectedDeal: null,
       orgMemos: [],
-      personMemoWith: [],
-      personMemoWithout: [],
-      dealMemoWith: [],
-      dealMemoWithout: [],
+      personMemos: [],
+      dealMemos: [],
       wonSummary: [],
       modal: {
         backdrop: null,
@@ -492,14 +489,14 @@
       sizes: null,
       wonGroupJsonByOrg: new Map(),
       orgMemos: new Map(),
-      peopleWith: new Map(),
-      peopleWithout: new Map(),
+      peopleByOrg: new Map(),
       deals: new Map(),
       personMemos: new Map(),
       dealMemos: new Map(),
       rank2025BySize: new Map(),
       orgLookup: new Map(),
       wonSummary: new Map(),
+      yearlyTotals: null,
     };
 
     function showToast(message, tone = "info") {
@@ -513,19 +510,17 @@
       }, 3200);
     }
 
-    function setWonGroupCopyEnabled(enabled) {
-      const btn = document.getElementById("copyWonGroupJsonBtn");
-      if (!btn) return;
-      btn.disabled = !enabled;
-      btn.title = enabled ? "" : "불러온 JSON이 없습니다.";
-    }
-
-    async function copyWonGroupJson() {
-      if (!state.wonGroupJson) {
+    async function copyJsonFromElement(bodyId) {
+      const body = document.getElementById(bodyId);
+      if (!body) {
         showToast("복사할 JSON이 없습니다.", "error");
         return;
       }
-      const text = JSON.stringify(state.wonGroupJson, null, 2);
+      const text = body.textContent || "";
+      if (!text.trim()) {
+        showToast("복사할 JSON이 없습니다.", "error");
+        return;
+      }
       try {
         await navigator.clipboard.writeText(text);
         showToast("JSON을 복사했습니다.", "success");
@@ -544,7 +539,8 @@
       if (!state.modal.backdrop) return;
       state.modal.date.textContent = `작성일: ${formatDate(createdAt)}`;
       state.modal.author.textContent = `작성자: ${ownerName || ownerId || "-"}`;
-      state.modal.body.textContent = text || "(내용 없음)";
+      const normalized = normalizeMemoText(text);
+      state.modal.body.textContent = normalized || "(내용 없음)";
       state.modal.backdrop.style.display = "flex";
     }
 
@@ -648,16 +644,23 @@
       return (value / 1e8).toFixed(2) + "억";
     }
 
+    function normalizeUpperOrg(val) {
+      const text = (val || "").trim();
+      return text || "미입력";
+    }
+
+    function normalizeMemoText(text) {
+      if (!text) return "";
+      return String(text || "")
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/\r\n?/g, "\n")
+        .trim();
+    }
+
     function setBreadcrumb() {
       const orgName = state.orgs.find((o) => o.id === state.selectedOrg)?.name || "-";
-      const personName =
-        state.personWith && state.peopleWith.find((p) => p.id === state.personWith)?.name ||
-        state.personWithout && state.peopleWithout.find((p) => p.id === state.personWithout)?.name ||
-        "-";
-      const dealName =
-        state.dealWith && state.dealsWith.find((d) => d.id === state.dealWith)?.name ||
-        state.dealWithout && state.dealsWithout.find((d) => d.id === state.dealWithout)?.name ||
-        "-";
+      const personName = state.selectedPerson && state.people.find((p) => p.id === state.selectedPerson)?.name || "-";
+      const dealName = state.selectedDeal && state.deals.find((d) => d.id === state.selectedDeal)?.name || "-";
       document.getElementById("crumb-org").textContent = orgName;
       document.getElementById("crumb-person").textContent = personName;
       document.getElementById("crumb-deal").textContent = dealName;
@@ -749,81 +752,68 @@
     }
 
     function clearOrgViews() {
-      state.personWith = null;
-      state.personWithout = null;
-      state.dealWith = null;
-      state.dealWithout = null;
-      state.peopleWith = [];
-      state.peopleWithout = [];
-      state.dealsWith = [];
-      state.dealsWithout = [];
+      state.selectedUpperOrg = null;
+      state.selectedPerson = null;
+      state.selectedDeal = null;
+      state.people = [];
+      state.deals = [];
       state.orgMemos = [];
-      state.personMemoWith = [];
-      state.personMemoWithout = [];
-      state.dealMemoWith = [];
-      state.dealMemoWithout = [];
+      state.personMemos = [];
+      state.dealMemos = [];
       state.wonSummary = [];
       state.wonGroupJson = null;
+      state.filteredWonGroupJson = null;
       renderOrgMemos([]);
       renderWonSummary([]);
-      renderWonGroupJson(null);
-      renderPeople("with", []);
-      renderPeople("without", []);
-      renderDeals("with", []);
-      renderDeals("without", []);
-      renderMemoTable("personMemoWithTable", "personMemoWith");
-      renderMemoTable("personMemoWithoutTable", "personMemoWithout");
-      renderMemoTable("dealMemoWithTable", "dealMemoWith");
-      renderMemoTable("dealMemoWithoutTable", "dealMemoWithout");
+      renderWonGroupJsonAll(null);
+      renderWonGroupJsonFiltered(null);
+      renderUpperOrgSection();
     }
 
     async function loadOrgDetail(orgId) {
       state.selectedOrg = orgId;
-      state.personWith = null;
-      state.personWithout = null;
-      state.dealWith = null;
-      state.dealWithout = null;
+      state.selectedUpperOrg = null;
+      state.selectedPerson = null;
+      state.selectedDeal = null;
+      state.deals = [];
+      state.personMemos = [];
+      state.dealMemos = [];
       state.wonGroupJson = null;
+      state.filteredWonGroupJson = null;
       setBreadcrumb();
-      renderWonGroupJson(null);
+      renderWonGroupJsonAll(null);
+      renderWonGroupJsonFiltered(null);
 
       const memoPromise = cache.orgMemos.get(orgId)
         ? Promise.resolve(cache.orgMemos.get(orgId))
         : fetchJson(`/orgs/${orgId}/memos`).then((d) => d.items || []);
 
-      const peopleWithPromise = cache.peopleWith.get(orgId)
-        ? Promise.resolve(cache.peopleWith.get(orgId))
-        : fetchJson(`/orgs/${orgId}/people?hasDeal=true`).then((d) => d.items || []);
-
-      const peopleWithoutPromise = cache.peopleWithout.get(orgId)
-        ? Promise.resolve(cache.peopleWithout.get(orgId))
-        : fetchJson(`/orgs/${orgId}/people?hasDeal=false`).then((d) => d.items || []);
+      const peoplePromise = cache.peopleByOrg.get(orgId)
+        ? Promise.resolve(cache.peopleByOrg.get(orgId))
+        : fetchJson(`/orgs/${orgId}/people`).then((d) => d.items || []);
 
       const wonSummaryPromise = cache.wonSummary.get(orgId)
         ? Promise.resolve(cache.wonSummary.get(orgId))
         : fetchJson(`/orgs/${orgId}/won-summary`).then((d) => d.items || []);
 
       try {
-        const [memos, withList, withoutList, wonSummary] = await Promise.all([
+        // 메모/People/Won 요약을 모두 병렬로 가져와 상위 조직 테이블과 People/Deal 섹션을 채운다.
+        const [memos, peopleList, wonSummary] = await Promise.all([
           memoPromise,
-          peopleWithPromise,
-          peopleWithoutPromise,
+          peoplePromise,
           wonSummaryPromise,
         ]);
         cache.orgMemos.set(orgId, memos);
-        cache.peopleWith.set(orgId, withList);
-        cache.peopleWithout.set(orgId, withoutList);
+        cache.peopleByOrg.set(orgId, peopleList);
         cache.wonSummary.set(orgId, wonSummary || []);
 
         state.orgMemos = memos;
-        state.peopleWith = withList;
-        state.peopleWithout = withoutList;
+        state.people = peopleList || [];
         state.wonSummary = wonSummary || [];
 
         renderOrgMemos(memos);
         renderWonSummary(state.wonSummary);
-        renderPeople("with", withList);
-        renderPeople("without", withoutList);
+        renderUpperOrgSection();
         setBreadcrumb();
         await loadWonGroupJson(orgId);
       } catch (err) {
@@ -860,9 +850,10 @@
           const contacts = (row.contacts || []).length ? row.contacts.join("<br>") : "-";
           const owners = (row.owners || []).length ? row.owners.join("<br>") : "-";
           const fmt = (val) => formatAmount(val);
+          const upper = row.upper_org || "미입력";
           return `
-            <tr>
-              <td>${row.upper_org || "미입력"}</td>
+            <tr data-upper="${upper}">
+              <td>${upper}</td>
               <td>${fmt(row.won2023)}</td>
               <td>${fmt(row.won2024)}</td>
               <td>${fmt(row.won2025)}</td>
@@ -886,22 +877,83 @@
         </thead>
         <tbody>${rowsHtml}</tbody>
       `;
+      table.querySelectorAll("tbody tr").forEach((tr) => {
+        const upper = tr.getAttribute("data-upper");
+        if (upper && state.selectedUpperOrg === upper) {
+          tr.classList.add("active");
+        }
+        tr.addEventListener("click", () => {
+          state.selectedUpperOrg = upper;
+          state.selectedPerson = null;
+          state.selectedDeal = null;
+          state.deals = [];
+          state.personMemos = [];
+          state.dealMemos = [];
+          state.filteredWonGroupJson = filterWonGroupByUpper(state.wonGroupJson, upper);
+          renderWonSummary(summary);
+          renderWonGroupJsonFiltered(state.filteredWonGroupJson);
+          autoSelectFirstPersonForUpperOrg();
+        });
+      });
     }
 
-    function renderWonGroupJson(data) {
-      const hint = document.getElementById("wonGroupJsonHint");
-      const body = document.getElementById("wonGroupJsonBody");
-      if (!hint || !body) return;
+    async function autoSelectFirstPersonForUpperOrg() {
+      const peopleList = filterPeopleByUpperOrg();
+      if (!peopleList.length) {
+        state.selectedPerson = null;
+        state.selectedDeal = null;
+        state.deals = [];
+        state.personMemos = [];
+        state.dealMemos = [];
+        renderUpperOrgSection();
+        setBreadcrumb();
+        return;
+      }
+      const first = peopleList[0];
+      const personChanged = state.selectedPerson !== first.id;
+      state.selectedPerson = first.id;
+      state.selectedDeal = null;
+      state.deals = [];
+      state.personMemos = [];
+      state.dealMemos = [];
+      renderUpperOrgSection();
+      setBreadcrumb();
+      if (personChanged) {
+        // Load person memos and deals (which will auto-select first deal and load its memos).
+        await Promise.all([
+          loadPersonMemos(first.id),
+          loadDealsForPerson(first.id),
+        ]);
+      } else if (state.selectedDeal) {
+        await loadDealMemos(state.selectedDeal);
+      }
+    }
+
+    function filterWonGroupByUpper(data, upper) {
+      if (!data || !upper) return null;
+      const filtered = (data.groups || []).filter((g) => g.upper_org === upper);
+      return {
+        ...data,
+        groups: filtered,
+      };
+    }
+
+    function renderWonGroupJsonAll(data) {
+      const hint = document.getElementById("wonGroupJsonHintAll");
+      const body = document.getElementById("wonGroupJsonBodyAll");
+      const copyBtn = document.getElementById("copyWonGroupJsonBtnAll");
+      if (!hint || !body || !copyBtn) return;
+
       if (!state.selectedOrg) {
         hint.textContent = "회사를 선택하세요.";
         body.textContent = "";
-        setWonGroupCopyEnabled(false);
+        copyBtn.disabled = true;
         return;
       }
       if (!data) {
         hint.textContent = "불러오는 중...";
         body.textContent = "";
-        setWonGroupCopyEnabled(false);
+        copyBtn.disabled = true;
         return;
       }
       const groups = data.groups || [];
@@ -911,40 +963,88 @@
         hint.textContent = "";
       }
       body.textContent = JSON.stringify(data, null, 2);
-      setWonGroupCopyEnabled(true);
+      copyBtn.disabled = false;
+    }
+
+    function renderWonGroupJsonFiltered(data) {
+      const hint = document.getElementById("wonGroupJsonHintFiltered");
+      const body = document.getElementById("wonGroupJsonBodyFiltered");
+      const copyBtn = document.getElementById("copyWonGroupJsonBtnFiltered");
+      if (!hint || !body || !copyBtn) return;
+
+      if (!state.selectedOrg) {
+        hint.textContent = "회사를 선택하세요.";
+        body.textContent = "";
+        copyBtn.disabled = true;
+        return;
+      }
+      if (!state.selectedUpperOrg) {
+        hint.textContent = "상위 조직을 선택하세요.";
+        body.textContent = "";
+        copyBtn.disabled = true;
+        return;
+      }
+      if (!data) {
+        hint.textContent = "불러오는 중...";
+        body.textContent = "";
+        copyBtn.disabled = true;
+        return;
+      }
+      const groups = data.groups || [];
+      if (!groups.length) {
+        hint.textContent = "선택한 상위 조직의 Won 딜이 없습니다.";
+      } else {
+        hint.textContent = "";
+      }
+      body.textContent = JSON.stringify(data, null, 2);
+      copyBtn.disabled = false;
     }
 
     async function loadWonGroupJson(orgId) {
-      const card = document.getElementById("wonGroupJsonCard");
-      if (!card) return;
+      const cardAll = document.getElementById("wonGroupJsonCardAll");
+      if (!cardAll) return;
       if (!orgId) {
         state.wonGroupJson = null;
-        renderWonGroupJson(null);
+        state.filteredWonGroupJson = null;
+        renderWonGroupJsonAll(null);
+        renderWonGroupJsonFiltered(null);
         return;
       }
       const cached = cache.wonGroupJsonByOrg.get(orgId);
       if (cached) {
         state.wonGroupJson = cached;
-        renderWonGroupJson(cached);
+        state.filteredWonGroupJson = filterWonGroupByUpper(cached, state.selectedUpperOrg);
+        renderWonGroupJsonAll(cached);
+        renderWonGroupJsonFiltered(state.filteredWonGroupJson);
         return;
       }
       state.wonGroupJson = null;
-      renderWonGroupJson(null);
+      state.filteredWonGroupJson = null;
+      renderWonGroupJsonAll(null);
+      renderWonGroupJsonFiltered(null);
       try {
         const data = await fetchJson(`/orgs/${orgId}/won-groups-json`);
         cache.wonGroupJsonByOrg.set(orgId, data);
         state.wonGroupJson = data;
-        renderWonGroupJson(data);
+        state.filteredWonGroupJson = filterWonGroupByUpper(data, state.selectedUpperOrg);
+        renderWonGroupJsonAll(data);
+        renderWonGroupJsonFiltered(state.filteredWonGroupJson);
       } catch (err) {
         showToast(`상위 조직 JSON 오류: ${err.message}`, "error");
         state.wonGroupJson = null;
-        const hint = document.getElementById("wonGroupJsonHint");
-        const body = document.getElementById("wonGroupJsonBody");
-        if (hint && body) {
-          hint.textContent = "오류가 발생했습니다.";
-          body.textContent = "";
+        state.filteredWonGroupJson = null;
+        const hintAll = document.getElementById("wonGroupJsonHintAll");
+        const bodyAll = document.getElementById("wonGroupJsonBodyAll");
+        const hintFiltered = document.getElementById("wonGroupJsonHintFiltered");
+        const bodyFiltered = document.getElementById("wonGroupJsonBodyFiltered");
+        if (hintAll && bodyAll) {
+          hintAll.textContent = "오류가 발생했습니다.";
+          bodyAll.textContent = "";
         }
-        setWonGroupCopyEnabled(false);
+        if (hintFiltered && bodyFiltered) {
+          hintFiltered.textContent = "오류가 발생했습니다.";
+          bodyFiltered.textContent = "";
+        }
       }
     }
 
@@ -973,35 +1073,59 @@
         <thead><tr><th>작성일</th><th>작성자</th><th>본문</th></tr></thead>
         <tbody>
           ${memos
-          .map(
-            (m) =>
-              `<tr><td>${formatDate(m.createdAt)}</td><td>${m.ownerName || m.ownerId || "-"}</td><td class="memo-text" title="${m.text || ""}">${(m.text || "").slice(0, 140)}${(m.text || "").length > 140 ? "…" : ""
-              }</td></tr>`
-          )
-          .join("")}
+            .map((m) => {
+              const body = normalizeMemoText(m.text);
+              const preview = body.slice(0, 140);
+              return `<tr><td>${formatDate(m.createdAt)}</td><td>${m.ownerName || m.ownerId || "-"}</td><td class="memo-text" title="${body}">${preview}${body.length > 140 ? "…" : ""
+                }</td></tr>`;
+            })
+            .join("")}
         </tbody>
       `;
       attachMemoRowClicks("orgMemoTable", memos);
     }
 
-    function renderPeople(kind, list) {
-      const tableId = kind === "with" ? "peopleWithTable" : "peopleWithoutTable";
-      const hintId = kind === "with" ? "peopleWithHint" : "peopleWithoutHint";
-      const countId = kind === "with" ? "peopleWithCount" : "peopleWithoutCount";
-      const selected = kind === "with" ? state.personWith : state.personWithout;
+    function filterPeopleByUpperOrg() {
+      if (!state.selectedUpperOrg) return [];
+      return (state.people || []).filter(
+        (p) => normalizeUpperOrg(p.upper_org) === state.selectedUpperOrg
+      );
+    }
 
-      document.getElementById(countId).textContent = list.length;
-      const table = document.getElementById(tableId);
-      const hint = document.getElementById(hintId);
+    function renderUpperOrgSection() {
+      const label = document.getElementById("upperOrgLabel");
+      if (label) {
+        label.textContent = state.selectedUpperOrg
+          ? `소속 상위 조직: ${state.selectedUpperOrg}`
+          : "상위 조직을 선택하세요.";
+      }
+      const peopleList = filterPeopleByUpperOrg();
+      renderPeople(peopleList);
+      renderDeals(state.deals);
+      renderMemoTable("personMemoTable", "personMemos", Boolean(state.selectedPerson));
+      renderMemoTable("dealMemoTable", "dealMemos", Boolean(state.selectedDeal));
+    }
 
+    function renderPeople(list) {
+      const table = document.getElementById("peopleTable");
+      const hint = document.getElementById("peopleHint");
+      const countBadge = document.getElementById("peopleCount");
+      if (!table || !hint || !countBadge) return;
+
+      countBadge.textContent = list.length;
       if (!state.selectedOrg) {
         table.innerHTML = "";
         hint.textContent = "회사를 선택하세요.";
         return;
       }
+      if (!state.selectedUpperOrg) {
+        table.innerHTML = "";
+        hint.textContent = "상위 조직을 선택하세요.";
+        return;
+      }
       if (!list.length) {
         table.innerHTML = "";
-        hint.textContent = kind === "with" ? "딜이 있는 사람이 없습니다." : "딜 없는 사람이 없습니다.";
+        hint.textContent = "사람이 없습니다.";
         return;
       }
       hint.textContent = "";
@@ -1015,7 +1139,7 @@
       const tbody = document.createElement("tbody");
       list.forEach((p) => {
         const tr = document.createElement("tr");
-        if (selected === p.id) tr.classList.add("active");
+        if (state.selectedPerson === p.id) tr.classList.add("active");
         tr.innerHTML = `
           <td>${p.name || "-"}</td>
           <td>${p.upper_org || "-"}</td>
@@ -1024,18 +1148,17 @@
           <td>${p.edu_area || "-"}</td>
         `;
         tr.addEventListener("click", () => {
-          if (kind === "with") {
-            state.personWith = p.id;
-            state.dealWith = null;
-            loadDealsForPerson("with", p.id);
-            loadPersonMemos("with", p.id);
-          } else {
-            state.personWithout = p.id;
-            state.dealWithout = null;
-            loadDealsForPerson("without", p.id);
-            loadPersonMemos("without", p.id);
-          }
-          renderPeople(kind, list);
+          state.selectedPerson = p.id;
+          state.selectedDeal = null;
+          state.deals = [];
+          state.personMemos = [];
+          state.dealMemos = [];
+          renderPeople(list);
+          renderDeals([]);
+          renderMemoTable("personMemoTable", "personMemos", true);
+          renderMemoTable("dealMemoTable", "dealMemos", false);
+          loadDealsForPerson(p.id);
+          loadPersonMemos(p.id);
           setBreadcrumb();
         });
         tbody.appendChild(tr);
@@ -1043,45 +1166,48 @@
       table.appendChild(tbody);
     }
 
-    async function loadDealsForPerson(kind, personId) {
+    async function loadDealsForPerson(personId) {
       const cacheHit = cache.deals.get(personId);
-      const promise = cacheHit ? Promise.resolve(cacheHit) : fetchJson(`/people/${personId}/deals`).then((d) => d.items || []);
+      const promise = cacheHit
+        ? Promise.resolve(cacheHit)
+        : fetchJson(`/people/${personId}/deals`).then((d) => d.items || []);
       try {
         const deals = await promise;
         cache.deals.set(personId, deals);
-        if (kind === "with") {
-          state.dealsWith = deals;
-          state.dealWith = deals[0]?.id || null;
-          renderDeals("with", deals);
-          if (state.dealWith) {
-            await loadDealMemos("with", state.dealWith);
-          } else {
-            renderMemoTable("dealMemoWithTable", "dealMemoWith");
-          }
+        state.deals = deals;
+        state.selectedDeal = deals[0]?.id || null;
+        renderDeals(deals);
+        if (state.selectedDeal) {
+          await loadDealMemos(state.selectedDeal);
         } else {
-          state.dealsWithout = deals;
-          state.dealWithout = deals[0]?.id || null;
-          renderDeals("without", deals);
-          if (state.dealWithout) {
-            await loadDealMemos("without", state.dealWithout);
-          } else {
-            renderMemoTable("dealMemoWithoutTable", "dealMemoWithout");
-          }
+          renderMemoTable("dealMemoTable", "dealMemos", false);
         }
       } catch (err) {
         showToast(`딜 조회 오류: ${err.message}`, "error");
+        state.deals = [];
+        state.selectedDeal = null;
+        renderDeals([]);
+        renderMemoTable("dealMemoTable", "dealMemos", false);
       }
       setBreadcrumb();
     }
 
-    function renderDeals(kind, list) {
-      const tableId = kind === "with" ? "dealWithTable" : "dealWithoutTable";
-      const hintId = kind === "with" ? "dealWithHint" : "dealWithoutHint";
-      const selected = kind === "with" ? state.dealWith : state.dealWithout;
-      const table = document.getElementById(tableId);
-      const hint = document.getElementById(hintId);
+    function renderDeals(list) {
+      const table = document.getElementById("dealTable");
+      const hint = document.getElementById("dealHint");
+      if (!table || !hint) return;
 
-      if (!(kind === "with" ? state.personWith : state.personWithout)) {
+      if (!state.selectedOrg) {
+        table.innerHTML = "";
+        hint.textContent = "회사를 선택하세요.";
+        return;
+      }
+      if (!state.selectedUpperOrg) {
+        table.innerHTML = "";
+        hint.textContent = "상위 조직을 선택하세요.";
+        return;
+      }
+      if (!state.selectedPerson) {
         table.innerHTML = "";
         hint.textContent = "사람을 선택하세요.";
         return;
@@ -1096,7 +1222,7 @@
       const tbody = document.createElement("tbody");
       list.forEach((d) => {
         const tr = document.createElement("tr");
-        if (selected === d.id) tr.classList.add("active");
+        if (state.selectedDeal === d.id) tr.classList.add("active");
         tr.innerHTML = `
           <td>${formatDate(d.created_at)}</td>
           <td>${d.name || "-"}</td>
@@ -1107,14 +1233,9 @@
           <td>${d.ownerName || "-"}</td>
         `;
         tr.addEventListener("click", async () => {
-          if (kind === "with") {
-            state.dealWith = d.id;
-            await loadDealMemos("with", d.id);
-          } else {
-            state.dealWithout = d.id;
-            await loadDealMemos("without", d.id);
-          }
-          renderDeals(kind, list);
+          state.selectedDeal = d.id;
+          renderDeals(list);
+          await loadDealMemos(d.id);
           setBreadcrumb();
         });
         tbody.appendChild(tr);
@@ -1122,7 +1243,7 @@
       table.appendChild(tbody);
     }
 
-    async function loadPersonMemos(kind, personId) {
+    async function loadPersonMemos(personId) {
       const cacheHit = cache.personMemos.get(personId);
       const promise = cacheHit
         ? Promise.resolve(cacheHit)
@@ -1130,45 +1251,31 @@
       try {
         const memos = await promise;
         cache.personMemos.set(personId, memos);
-        if (kind === "with") {
-          state.personMemoWith = memos;
-          renderMemoTable("personMemoWithTable", "personMemoWith");
-        } else {
-          state.personMemoWithout = memos;
-          renderMemoTable("personMemoWithoutTable", "personMemoWithout");
-        }
+        state.personMemos = memos;
+        renderMemoTable("personMemoTable", "personMemos", true);
       } catch (err) {
         showToast(`People 메모 오류: ${err.message}`, "error");
       }
     }
 
-    async function loadDealMemos(kind, dealId) {
+    async function loadDealMemos(dealId) {
       const cacheHit = cache.dealMemos.get(dealId);
       const promise = cacheHit ? Promise.resolve(cacheHit) : fetchJson(`/deals/${dealId}/memos`).then((d) => d.items || []);
       try {
         const memos = await promise;
         cache.dealMemos.set(dealId, memos);
-        if (kind === "with") {
-          state.dealMemoWith = memos;
-          renderMemoTable("dealMemoWithTable", "dealMemoWith");
-        } else {
-          state.dealMemoWithout = memos;
-          renderMemoTable("dealMemoWithoutTable", "dealMemoWithout");
-        }
+        state.dealMemos = memos;
+        renderMemoTable("dealMemoTable", "dealMemos", true);
       } catch (err) {
         showToast(`Deal 메모 오류: ${err.message}`, "error");
       }
     }
 
-    function renderMemoTable(tableId, memoKey) {
+    function renderMemoTable(tableId, memoKey, hasSelection) {
       const table = document.getElementById(tableId);
       const memoList = state[memoKey] || [];
-      const hasParentSelection =
-        memoKey.includes("person")
-          ? (memoKey === "personMemoWith" ? state.personWith : state.personWithout)
-          : (memoKey === "dealMemoWith" ? state.dealWith : state.dealWithout);
-
-      if (!hasParentSelection) {
+      if (!table) return;
+      if (!hasSelection) {
         table.innerHTML = "";
         return;
       }
@@ -1180,36 +1287,28 @@
         <thead><tr><th>작성일</th><th>작성자</th><th>본문</th></tr></thead>
         <tbody>
           ${memoList
-          .map(
-            (m) =>
-              `<tr><td>${formatDate(m.createdAt)}</td><td>${m.ownerName || m.ownerId || "-"}</td><td class="memo-text" title="${m.text || ""}">${(m.text || "").slice(0, 120)}${(m.text || "").length > 120 ? "…" : ""
-              }</td></tr>`
-          )
-          .join("")}
+            .map(
+              (m) => {
+                const body = normalizeMemoText(m.text);
+                const preview = body.slice(0, 120);
+                return `<tr><td>${formatDate(m.createdAt)}</td><td>${m.ownerName || m.ownerId || "-"}</td><td class="memo-text" title="${body}">${preview}${body.length > 120 ? "…" : ""
+                  }</td></tr>`;
+              }
+            )
+            .join("")}
         </tbody>
       `;
       attachMemoRowClicks(tableId, memoList);
     }
 
     function resetSelection() {
-      state.personWith = null;
-      state.personWithout = null;
-      state.dealWith = null;
-      state.dealWithout = null;
-      state.dealsWith = [];
-      state.dealsWithout = [];
-      state.personMemoWith = [];
-      state.personMemoWithout = [];
-      state.dealMemoWith = [];
-      state.dealMemoWithout = [];
-      renderPeople("with", state.peopleWith);
-      renderPeople("without", state.peopleWithout);
-      renderDeals("with", []);
-      renderDeals("without", []);
-      renderMemoTable("personMemoWithTable", "personMemoWith");
-      renderMemoTable("personMemoWithoutTable", "personMemoWithout");
-      renderMemoTable("dealMemoWithTable", "dealMemoWith");
-      renderMemoTable("dealMemoWithoutTable", "dealMemoWithout");
+      state.selectedUpperOrg = null;
+      state.selectedPerson = null;
+      state.selectedDeal = null;
+      state.deals = [];
+      state.personMemos = [];
+      state.dealMemos = [];
+      renderUpperOrgSection();
       setBreadcrumb();
     }
 
@@ -1234,7 +1333,10 @@
         loadOrgDetail(val);
       });
       document.getElementById("resetBtn").addEventListener("click", resetSelection);
-      document.getElementById("copyWonGroupJsonBtn").addEventListener("click", copyWonGroupJson);
+      const copyAll = document.getElementById("copyWonGroupJsonBtnAll");
+      const copyFiltered = document.getElementById("copyWonGroupJsonBtnFiltered");
+      if (copyAll) copyAll.addEventListener("click", () => copyJsonFromElement("wonGroupJsonBodyAll"));
+      if (copyFiltered) copyFiltered.addEventListener("click", () => copyJsonFromElement("wonGroupJsonBodyFiltered"));
 
       state.modal.backdrop = document.getElementById("memoModalBackdrop");
       state.modal.close = document.getElementById("memoModalClose");
@@ -1288,14 +1390,24 @@
           </div>
         </header>
 
-        <section class="card" id="wonGroupJsonCard">
+        <section class="card" id="wonGroupJsonCardAll">
           <div class="control-row">
-            <h2>상위 조직별 JSON (23/24/25 Won 기준)</h2>
+            <h2>상위 조직별 JSON (전체)</h2>
             <div class="spacer"></div>
-            <button id="copyWonGroupJsonBtn" type="button">JSON 복사</button>
+            <button id="copyWonGroupJsonBtnAll" type="button">JSON 복사</button>
           </div>
-          <div class="muted" id="wonGroupJsonHint">회사를 선택하세요.</div>
-          <pre class="code-block" id="wonGroupJsonBody"></pre>
+          <div class="muted" id="wonGroupJsonHintAll">회사를 선택하세요.</div>
+          <pre class="code-block" id="wonGroupJsonBodyAll"></pre>
+        </section>
+
+        <section class="card" id="wonGroupJsonCardFiltered">
+          <div class="control-row">
+            <h2>선택 상위 조직 JSON</h2>
+            <div class="spacer"></div>
+            <button id="copyWonGroupJsonBtnFiltered" type="button">JSON 복사</button>
+          </div>
+          <div class="muted" id="wonGroupJsonHintFiltered">상위 조직을 선택하세요.</div>
+          <pre class="code-block" id="wonGroupJsonBodyFiltered"></pre>
         </section>
 
         <div class="breadcrumb" id="breadcrumb">
@@ -1325,45 +1437,26 @@
 
         <main class="main-vertical">
           <section class="card">
-            <h2>People (딜 있음) <span class="badge" id="peopleWithCount">0</span></h2>
-            <div class="muted" id="peopleWithHint">회사를 선택하세요.</div>
-            <div class="quad-grid">
-              <div class="table-wrap">
-                <table id="peopleWithTable"></table>
-              </div>
-              <div class="table-wrap">
-                <table id="personMemoWithTable"></table>
-              </div>
-              <div>
-                <div class="muted" id="dealWithHint">사람을 선택하세요.</div>
-                <div class="table-wrap">
-                  <table id="dealWithTable"></table>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table id="dealMemoWithTable"></table>
-              </div>
+            <div class="control-row">
+              <h2>상위 조직 People/Deal</h2>
+              <div class="spacer"></div>
+              <span class="badge" id="peopleCount">0</span>
+              <span class="muted" id="upperOrgLabel">상위 조직을 선택하세요.</span>
             </div>
-          </section>
-
-          <section class="card">
-            <h2>People (딜 없음) <span class="badge" id="peopleWithoutCount">0</span></h2>
-            <div class="muted" id="peopleWithoutHint">회사를 선택하세요.</div>
             <div class="quad-grid">
               <div class="table-wrap">
-                <table id="peopleWithoutTable"></table>
+                <div class="muted" id="peopleHint">회사를 선택하세요.</div>
+                <table id="peopleTable"></table>
               </div>
               <div class="table-wrap">
-                <table id="personMemoWithoutTable"></table>
-              </div>
-              <div>
-                <div class="muted" id="dealWithoutHint">사람을 선택하세요.</div>
-                <div class="table-wrap">
-                  <table id="dealWithoutTable"></table>
-                </div>
+                <div class="muted" id="dealHint">사람을 선택하세요.</div>
+                <table id="dealTable"></table>
               </div>
               <div class="table-wrap">
-                <table id="dealMemoWithoutTable"></table>
+                <table id="personMemoTable"></table>
+              </div>
+              <div class="table-wrap">
+                <table id="dealMemoTable"></table>
               </div>
             </div>
           </section>
@@ -1386,6 +1479,13 @@
       return items;
     }
 
+    async function loadYearlyTotals() {
+      if (cache.yearlyTotals) return cache.yearlyTotals;
+      const data = await fetchJson("/rank/won-yearly-totals");
+      cache.yearlyTotals = data.items || [];
+      return cache.yearlyTotals;
+    }
+
     function renderRankTable(items) {
       if (!items || !items.length) {
         return `<div class="muted">데이터가 없습니다.</div>`;
@@ -1397,6 +1497,8 @@
               <tr>
                 <th>순위</th>
                 <th>회사</th>
+                <th>업종 구분(대)</th>
+                <th>업종 구분(중)</th>
                 <th>총액(억)</th>
                 <th>과정포맷</th>
               </tr>
@@ -1408,8 +1510,89 @@
                     `<tr>
                       <td>${idx + 1}</td>
                       <td><span class="org-link" data-idx="${idx}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.orgName || row.orgId || "-"}</span></td>
+                      <td>${row.industryMajor || "-"}</td>
+                      <td>${row.industryMid || "-"}</td>
                       <td>${formatAmount(row.totalAmount)}</td>
                       <td class="format-cell" data-idx="${idx}" style="cursor:pointer; color: var(--accent);">자세히</td>
+                    </tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function computeIndustrySummary(items) {
+      const summaryMap = new Map();
+      items.forEach((row) => {
+        const key = (row.industryMajor || "미입력").trim() || "미입력";
+        const entry = summaryMap.get(key) || { industry: key, total: 0, orgCount: 0 };
+        const val = Number(row.totalAmount) || 0;
+        entry.total += val;
+        entry.orgCount += 1;
+        summaryMap.set(key, entry);
+      });
+      return Array.from(summaryMap.values()).sort((a, b) => b.total - a.total);
+    }
+
+    function renderIndustryTable(container, summary) {
+      if (!container) return;
+      if (!summary || !summary.length) {
+        container.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+        return;
+      }
+      container.innerHTML = `
+        <div class="table-wrap full">
+          <table>
+            <thead>
+              <tr>
+                <th>업종 구분(대)</th>
+                <th>총액(억)</th>
+                <th>회사 수</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${summary
+                .map(
+                  (row) =>
+                    `<tr>
+                      <td>${row.industry}</td>
+                      <td>${formatAmount(row.total)}</td>
+                      <td>${row.orgCount}</td>
+                    </tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderSizeTotalsTable(totals) {
+      if (!totals || !totals.length) {
+        return `<div class="muted">데이터가 없습니다.</div>`;
+      }
+      return `
+        <div class="table-wrap full">
+          <table>
+            <thead>
+              <tr>
+                <th>기업 규모</th>
+                <th>2023 Won(억)</th>
+                <th>2024 Won(억)</th>
+                <th>2025 Won(억)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${totals
+                .map(
+                  (row) =>
+                    `<tr>
+                      <td>${row.size}</td>
+                      <td>${formatAmount(row.won2023)}</td>
+                      <td>${formatAmount(row.won2024)}</td>
+                      <td>${formatAmount(row.won2025)}</td>
                     </tr>`
                 )
                 .join("")}
@@ -1483,6 +1666,80 @@
         await refresh();
       });
       await refresh();
+    }
+
+    async function renderIndustryMenu(contentRoot) {
+      contentRoot.innerHTML = `
+        <section class="card">
+          <div class="control-row">
+            <h2>업종별 매출 (23/24/25 Won)</h2>
+            <div class="spacer"></div>
+            <span class="muted">업종 구분(대)별 연도별 Won 합계</span>
+          </div>
+          <div class="quad-grid">
+            <div>
+              <h3 class="muted">대기업</h3>
+              <div id="industryLargeBody"></div>
+            </div>
+            <div>
+              <h3 class="muted">중견기업</h3>
+              <div id="industryMidBody"></div>
+            </div>
+          </div>
+        </section>
+      `;
+      const largeBody = document.getElementById("industryLargeBody");
+      const midBody = document.getElementById("industryMidBody");
+
+      const renderSummary = (container, items) => {
+        if (!container) return;
+        if (!items || !items.length) {
+          container.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+          return;
+        }
+        container.innerHTML = `
+          <div class="table-wrap full">
+            <table>
+              <thead>
+                <tr>
+                  <th>업종 구분(대)</th>
+                  <th>2023 Won(억)</th>
+                  <th>2024 Won(억)</th>
+                  <th>2025 Won(억)</th>
+                  <th>회사 수</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${items
+                  .map(
+                    (row) =>
+                      `<tr>
+                        <td>${row.industry}</td>
+                        <td>${formatAmount(row.won2023)}</td>
+                        <td>${formatAmount(row.won2024)}</td>
+                        <td>${formatAmount(row.won2025)}</td>
+                        <td>${row.orgCount || 0}</td>
+                      </tr>`
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+      };
+
+      try {
+        const [largeItems, midItems] = await Promise.all([
+          fetchJson("/rank/won-industry-summary?size=대기업").then((d) => d.items || []),
+          fetchJson("/rank/won-industry-summary?size=중견기업").then((d) => d.items || []),
+        ]);
+        renderSummary(largeBody, largeItems);
+        renderSummary(midBody, midItems);
+      } catch (err) {
+        renderSummary(largeBody, []);
+        renderSummary(midBody, []);
+        showToast(`업종별 매출 조회 오류: ${err.message}`, "error");
+      }
     }
 
     function initApp() {

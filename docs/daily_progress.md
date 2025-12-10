@@ -43,3 +43,16 @@
   - `docs/user_guide.md`에 PowerShell 한 줄 실행/재개 예시(`--resume`, `--resume-run-tag`) 추가.
 - 재개 시도 메모
   - venv를 생성해 의존성 설치 후 재개 실행; Windows Python 경로에서는 venv 스크립트 인식 문제가 있어 WSL bash 경유 실행/토큰 설정 안내.
+
+# 2025-12-11 작업 기록
+
+- org_tables_v2 메뉴 확장/UX 개선
+  - 상위 조직 JSON 카드를 단일 카드 좌/우 영역으로 통합, 모달 기반 보기/복사 버튼 2종으로 변경. 선택 초기화 시 규모/검색/회사까지 기본값으로 리셋하고 목록 재조회.
+  - Salesmap 워크스페이스 링크 정규식 오류 수정으로 파싱 실패(파란 화면) 해결.
+  - People 그룹 2025 뷰: 필터(규모/회사/상위 조직) + 딜 보기 모달 + 미입력 상위 조직/팀 행 제외 반영.
+  - 고객사 불일치 뷰 추가: 딜 orgId ≠ People.organizationId 탐지, 규모별 캐시, 조직 이동/외부 링크 지원.
+- 백엔드/스크립트
+  - `/api/rank/2025-deals-people` 집계(2025 Won 조직의 People 그룹 + 모든 딜)와 `/api/rank/mismatched-deals` 추가.
+  - People 웹폼 ID 유니크 카운트 도구 추가(`analyze_sequence_ids.py`), salesmap_latest.db 기준 고유 ID 199개.
+- 문서/테스트
+  - `docs/org_tables_v2.md` 최신 메뉴/UX/API 반영. 프런트 테스트 업데이트(`org_tables_v2_frontend.test.js`), node --test 통과 확인.

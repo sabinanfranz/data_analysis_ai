@@ -500,6 +500,66 @@ def get_rank_2025_deals(size: str = "전체", db_path: Path = DB_PATH) -> List[D
     return ranked
 
 
+def get_mismatched_deals(size: str = "대기업", db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
+    """
+    Return deals where the deal organization differs from the person's organization.
+    Filters by organization size (deal organization) when provided.
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    conditions = [
+        "d.organizationId IS NOT NULL",
+        "p.organizationId IS NOT NULL",
+        "d.organizationId <> p.organizationId",
+    ]
+    params: List[Any] = []
+    if size and size != "전체":
+        conditions.append('o_deal."기업 규모" = ?')
+        params.append(size)
+
+    with _connect(db_path) as conn:
+        rows = _fetch_all(
+            conn,
+            'SELECT '
+            '  d.id AS dealId, '
+            '  COALESCE(d."이름", d.id) AS dealName, '
+            '  d.organizationId AS dealOrgId, '
+            '  COALESCE(o_deal."이름", d.organizationId) AS dealOrgName, '
+            '  p.id AS personId, '
+            '  COALESCE(p."이름", p.id) AS personName, '
+            '  p.organizationId AS personOrgId, '
+            '  COALESCE(o_person."이름", p.organizationId) AS personOrgName, '
+            '  d."계약 체결일" AS contract_date, '
+            '  d."금액" AS amount '
+            "FROM deal d "
+            "JOIN people p ON p.id = d.peopleId "
+            "LEFT JOIN organization o_deal ON o_deal.id = d.organizationId "
+            "LEFT JOIN organization o_person ON o_person.id = p.organizationId "
+            f"WHERE {' AND '.join(conditions)} "
+            'ORDER BY d."계약 체결일" IS NULL, d."계약 체결일" DESC, d.id',
+            params,
+        )
+
+    result: List[Dict[str, Any]] = []
+    for row in rows:
+        result.append(
+            {
+                "dealId": row["dealId"],
+                "dealName": row["dealName"],
+                "dealOrgId": row["dealOrgId"],
+                "dealOrgName": row["dealOrgName"],
+                "personId": row["personId"],
+                "personName": row["personName"],
+                "personOrgId": row["personOrgId"],
+                "personOrgName": row["personOrgName"],
+                "contract_date": row["contract_date"],
+                "amount": _to_number(row["amount"]),
+            }
+        )
+    return result
+
+
 def get_won_industry_summary(
     size: str = "전체",
     years: Sequence[str] = ("2023", "2024", "2025"),
@@ -566,6 +626,111 @@ def get_won_industry_summary(
     result = list(industry_map.values())
     # sort by 2025 amount desc
     result.sort(key=lambda x: x["won2025"], reverse=True)
+    return result
+
+
+def get_rank_2025_deals_people(size: str = "대기업", db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
+    """
+    For organizations (by size) that have Won deals in 2025, return people with all their deals (any status).
+    Grouped by person to support People-centric rendering.
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    # 단계 A: 2025 Won 보유 조직 집합
+    org_conditions = ['d."상태" = ?', 'd."계약 체결일" LIKE ?']
+    org_params: List[Any] = ["Won", "2025%"]
+    if size and size != "전체":
+        org_conditions.append('o."기업 규모" = ?')
+        org_params.append(size)
+
+    with _connect(db_path) as conn:
+        org_rows = _fetch_all(
+            conn,
+            'SELECT d.organizationId AS orgId, COALESCE(o."이름", d.organizationId) AS orgName, '
+            'SUM(CAST(d."금액" AS REAL)) AS totalAmount '
+            "FROM deal d "
+            "LEFT JOIN organization o ON o.id = d.organizationId "
+            f"WHERE {' AND '.join(org_conditions)} "
+            "GROUP BY d.organizationId, orgName",
+            org_params,
+        )
+        if not org_rows:
+            return []
+
+        org_map = {row["orgId"]: row["orgName"] for row in org_rows}
+        org_totals = {row["orgId"]: _to_number(row["totalAmount"]) or 0.0 for row in org_rows}
+        org_ids = list(org_map.keys())
+
+        def placeholders(seq: Sequence[Any]) -> str:
+            return ",".join("?" for _ in seq)
+
+        # 단계 B: 대상 조직의 모든 딜(상태 무관) + 연결 People 조회
+        deal_rows = _fetch_all(
+            conn,
+            'SELECT '
+            '  d.organizationId AS orgId, '
+            '  d.id AS dealId, '
+            '  COALESCE(d."이름", d.id) AS dealName, '
+            '  d."상태" AS status, '
+            '  d."금액" AS amount, '
+            '  d."계약 체결일" AS contract_date, '
+            '  d."생성 날짜" AS created_at, '
+            '  d."과정포맷" AS course_format, '
+            '  d.peopleId AS personId, '
+            '  COALESCE(p."이름", p.id) AS personName, '
+            '  p."소속 상위 조직" AS upper_org, '
+            '  p."팀(명함/메일서명)" AS team_signature, '
+            '  p."직급(명함/메일서명)" AS title_signature, '
+            '  p."담당 교육 영역" AS edu_area '
+            "FROM deal d "
+            "LEFT JOIN people p ON p.id = d.peopleId "
+            f'WHERE d.organizationId IN ({placeholders(org_ids)}) '
+            "ORDER BY orgId, personName, d.\"생성 날짜\" IS NULL, d.\"생성 날짜\" DESC",
+            tuple(org_ids),
+        )
+
+    # 그룹핑: (orgId, personId) 단위
+    grouped: Dict[tuple[str | None, str | None], Dict[str, Any]] = {}
+    for row in deal_rows:
+        key = (row["orgId"], row["personId"])
+        entry = grouped.get(key)
+        if not entry:
+            entry = {
+                "orgId": row["orgId"],
+                "orgName": org_map.get(row["orgId"], row["orgId"]),
+                "orgTotal2025": org_totals.get(row["orgId"], 0.0),
+                "personId": row["personId"],
+                "personName": row["personName"],
+                "upper_org": row["upper_org"],
+                "team_signature": row["team_signature"],
+                "title_signature": row["title_signature"],
+                "edu_area": row["edu_area"],
+                "deals": [],
+            }
+            grouped[key] = entry
+        entry["deals"].append(
+            {
+                "dealId": row["dealId"],
+                "dealName": row["dealName"],
+                "status": row["status"],
+                "amount": _to_number(row["amount"]),
+                "contract_date": row["contract_date"],
+                "created_at": row["created_at"],
+                "course_format": row["course_format"],
+            }
+        )
+
+    # 정렬: 회사명, 사람 이름
+    result = list(grouped.values())
+    result.sort(
+        key=lambda x: (
+            -(x.get("orgTotal2025") or 0),
+            (x.get("upper_org") or ""),
+            (x.get("team_signature") or ""),
+            (x.get("personName") or ""),
+        )
+    )
     return result
 
 

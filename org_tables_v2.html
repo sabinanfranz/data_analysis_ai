@@ -212,6 +212,24 @@
       overflow: auto;
     }
 
+    .json-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .json-box {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0c182c;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 120px;
+    }
+
     th,
     td {
       padding: 8px 9px;
@@ -377,6 +395,21 @@
       overflow: auto;
     }
 
+    .modal .code-body {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+      word-break: break-all;
+    }
+
+    .json-modal {
+      max-width: 1040px;
+      width: 100%;
+    }
+
+    .json-modal .body {
+      max-height: 720px;
+    }
+
     .close-btn {
       background: #1f2937;
       color: var(--text);
@@ -405,6 +438,9 @@
       }
       .table-wrap {
         max-height: 260px;
+      }
+      .json-grid {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -439,6 +475,26 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="jsonModalBackdrop">
+    <div class="modal json-modal">
+      <header>
+        <h3 id="jsonModalTitle">JSON 보기</h3>
+        <button class="close-btn" id="jsonModalClose" type="button">닫기</button>
+      </header>
+      <div class="body code-body" id="jsonModalBody"></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="dealsModalBackdrop">
+    <div class="modal json-modal">
+      <header>
+        <h3 id="dealsModalTitle">딜 목록</h3>
+        <button class="close-btn" id="dealsModalClose" type="button">닫기</button>
+      </header>
+      <div class="body code-body" id="dealsModalBody"></div>
+    </div>
+  </div>
+
   <script>
     const API_BASE = (() => {
       const origin = window.location.origin;
@@ -447,10 +503,13 @@
       }
       return "http://localhost:8000/api";
     })();
+    const SALESMAP_WORKSPACE_PATH = "64cb5beda5a78ae225d7815b"; // update if workspace path changes
     const ORG_LIMIT = 200;
 
     const menuConfig = [
       { id: "rank-2025", label: "2025년 체결액 순위", render: renderRank2025Screen },
+      { id: "rank-2025-people", label: "2025 대기업 딜·People", render: renderRank2025PeopleScreen },
+      { id: "mismatch-2025", label: "고객사 불일치", render: renderMismatch2025Screen },
       { id: "industry-2025", label: "업종별 매출", render: renderIndustryMenu },
       { id: "org-view", label: "조직/People/Deal 뷰어", render: renderOrgScreen },
     ];
@@ -459,6 +518,17 @@
       activeMenuId: "org-view",
       size: "대기업",
       rankSize: "전체",
+      rankPeopleSize: "대기업",
+      rankPeopleOrgFilter: "",
+      rankPeopleUpperFilter: "",
+      mismatchSize: "대기업",
+      rankPeopleModal: {
+        backdrop: null,
+        close: null,
+        title: null,
+        body: null,
+        bound: false,
+      },
       orgs: [],
       orgSearch: "",
       selectedOrg: null,
@@ -481,8 +551,23 @@
         body: null,
         bound: false,
       },
+      jsonModal: {
+        backdrop: null,
+        close: null,
+        title: null,
+        body: null,
+        bound: false,
+      },
+      rankPeopleModal: {
+        backdrop: null,
+        close: null,
+        title: null,
+        body: null,
+        bound: false,
+      },
       pendingOrgId: null,
       pendingOrgFallback: null,
+      wonSummaryCleared: false,
     };
 
     const cache = {
@@ -494,6 +579,8 @@
       personMemos: new Map(),
       dealMemos: new Map(),
       rank2025BySize: new Map(),
+      rank2025PeopleBySize: new Map(),
+      mismatch2025BySize: new Map(),
       orgLookup: new Map(),
       wonSummary: new Map(),
       yearlyTotals: null,
@@ -510,13 +597,17 @@
       }, 3200);
     }
 
-    async function copyJsonFromElement(bodyId) {
-      const body = document.getElementById(bodyId);
-      if (!body) {
-        showToast("복사할 JSON이 없습니다.", "error");
-        return;
+    function toJsonText(data) {
+      if (data === null || data === undefined) return "";
+      try {
+        return JSON.stringify(data, null, 2);
+      } catch (_) {
+        return "";
       }
-      const text = body.textContent || "";
+    }
+
+    async function copyJsonData(data) {
+      const text = toJsonText(data);
       if (!text.trim()) {
         showToast("복사할 JSON이 없습니다.", "error");
         return;
@@ -533,6 +624,72 @@
         document.body.removeChild(textarea);
         showToast("JSON을 복사했습니다.", "success");
       }
+    }
+
+    function openJsonModal(title, data) {
+      if (!state.jsonModal.backdrop || !state.jsonModal.body || !state.jsonModal.title) return;
+      const text = toJsonText(data);
+      if (!text.trim()) {
+        showToast("표시할 JSON이 없습니다.", "error");
+        return;
+      }
+      state.jsonModal.title.textContent = title || "JSON 보기";
+      state.jsonModal.body.textContent = text;
+      state.jsonModal.backdrop.style.display = "flex";
+    }
+
+    function openDealsModal(personLabel, deals) {
+      if (!state.rankPeopleModal.backdrop || !state.rankPeopleModal.title || !state.rankPeopleModal.body) return;
+      const list = Array.isArray(deals) ? deals : [];
+      const body = state.rankPeopleModal.body;
+      if (!list.length) {
+        body.innerHTML = `<div class="muted">딜이 없습니다.</div>`;
+      } else {
+        body.innerHTML = `
+          <div class="table-wrap full">
+            <table>
+              <thead>
+                <tr>
+                  <th>생성일</th>
+                  <th>딜 이름</th>
+                  <th>상태</th>
+                  <th>금액(억)</th>
+                  <th>계약 체결일</th>
+                  <th>과정포맷</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${list
+                  .map(
+                    (d) => `
+                      <tr>
+                        <td>${formatDate(d.created_at)}</td>
+                        <td>${d.dealName || "-"}</td>
+                        <td>${d.status || "-"}</td>
+                        <td>${formatAmount(d.amount)}</td>
+                        <td>${formatDate(d.contract_date)}</td>
+                        <td>${d.course_format || "-"}</td>
+                      </tr>
+                    `
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      state.rankPeopleModal.title.textContent = personLabel || "딜 목록";
+      state.rankPeopleModal.backdrop.style.display = "flex";
+    }
+
+    function closeDealsModal() {
+      if (!state.rankPeopleModal.backdrop) return;
+      state.rankPeopleModal.backdrop.style.display = "none";
+    }
+
+    function closeJsonModal() {
+      if (!state.jsonModal.backdrop) return;
+      state.jsonModal.backdrop.style.display = "none";
     }
 
     function openMemoModal({ createdAt, ownerName, ownerId, text }) {
@@ -647,6 +804,19 @@
     function normalizeUpperOrg(val) {
       const text = (val || "").trim();
       return text || "미입력";
+    }
+
+    function normalizeUpperForDisplay(val) {
+      const text = normalizeUpperOrg(val);
+      return text === "미입력" ? "" : text;
+    }
+
+    function buildSalesmapLink(type, id) {
+      if (!id || !SALESMAP_WORKSPACE_PATH) return null;
+      const base = `https://salesmap.kr/${SALESMAP_WORKSPACE_PATH.replace(/^\/+/, "").replace(/\/+$/, "")}`;
+      if (type === "deal") return `${base}/deal/${encodeURIComponent(id)}`;
+      if (type === "person") return `${base}/contact/people/${encodeURIComponent(id)}`;
+      return null;
     }
 
     function normalizeMemoText(text) {
@@ -835,6 +1005,14 @@
         return;
       }
 
+       if (state.wonSummaryCleared) {
+        card.style.display = "";
+        table.innerHTML = "";
+        hint.textContent = "상위 조직을 선택하세요.";
+        state.wonSummaryCleared = false;
+        return;
+      }
+
       if (!summary || !summary.length) {
         card.style.display = "";
         hint.textContent = "Won 딜이 없습니다.";
@@ -940,69 +1118,61 @@
 
     function renderWonGroupJsonAll(data) {
       const hint = document.getElementById("wonGroupJsonHintAll");
-      const body = document.getElementById("wonGroupJsonBodyAll");
-      const copyBtn = document.getElementById("copyWonGroupJsonBtnAll");
-      if (!hint || !body || !copyBtn) return;
+      const viewBtn = document.getElementById("viewWonGroupJsonAllBtn");
+      const copyBtn = document.getElementById("copyWonGroupJsonAllBtn");
+      if (!hint || !viewBtn || !copyBtn) return;
 
       if (!state.selectedOrg) {
         hint.textContent = "회사를 선택하세요.";
-        body.textContent = "";
+        viewBtn.disabled = true;
         copyBtn.disabled = true;
         return;
       }
       if (!data) {
         hint.textContent = "불러오는 중...";
-        body.textContent = "";
+        viewBtn.disabled = true;
         copyBtn.disabled = true;
         return;
       }
       const groups = data.groups || [];
-      if (!groups.length) {
-        hint.textContent = "23/24/25 Won 딜이 있는 상위 조직이 없습니다.";
-      } else {
-        hint.textContent = "";
-      }
-      body.textContent = JSON.stringify(data, null, 2);
+      hint.textContent = groups.length ? "" : "23/24/25 Won 딜이 있는 상위 조직이 없습니다.";
+      viewBtn.disabled = false;
       copyBtn.disabled = false;
     }
 
     function renderWonGroupJsonFiltered(data) {
       const hint = document.getElementById("wonGroupJsonHintFiltered");
-      const body = document.getElementById("wonGroupJsonBodyFiltered");
-      const copyBtn = document.getElementById("copyWonGroupJsonBtnFiltered");
-      if (!hint || !body || !copyBtn) return;
+      const viewBtn = document.getElementById("viewWonGroupJsonFilteredBtn");
+      const copyBtn = document.getElementById("copyWonGroupJsonFilteredBtn");
+      if (!hint || !viewBtn || !copyBtn) return;
 
       if (!state.selectedOrg) {
         hint.textContent = "회사를 선택하세요.";
-        body.textContent = "";
+        viewBtn.disabled = true;
         copyBtn.disabled = true;
         return;
       }
       if (!state.selectedUpperOrg) {
         hint.textContent = "상위 조직을 선택하세요.";
-        body.textContent = "";
+        viewBtn.disabled = true;
         copyBtn.disabled = true;
         return;
       }
       if (!data) {
         hint.textContent = "불러오는 중...";
-        body.textContent = "";
+        viewBtn.disabled = true;
         copyBtn.disabled = true;
         return;
       }
       const groups = data.groups || [];
-      if (!groups.length) {
-        hint.textContent = "선택한 상위 조직의 Won 딜이 없습니다.";
-      } else {
-        hint.textContent = "";
-      }
-      body.textContent = JSON.stringify(data, null, 2);
+      hint.textContent = groups.length ? "" : "선택한 상위 조직의 Won 딜이 없습니다.";
+      viewBtn.disabled = false;
       copyBtn.disabled = false;
     }
 
     async function loadWonGroupJson(orgId) {
-      const cardAll = document.getElementById("wonGroupJsonCardAll");
-      if (!cardAll) return;
+      const card = document.getElementById("wonGroupJsonCardCombined");
+      if (!card) return;
       if (!orgId) {
         state.wonGroupJson = null;
         state.filteredWonGroupJson = null;
@@ -1034,17 +1204,18 @@
         state.wonGroupJson = null;
         state.filteredWonGroupJson = null;
         const hintAll = document.getElementById("wonGroupJsonHintAll");
-        const bodyAll = document.getElementById("wonGroupJsonBodyAll");
         const hintFiltered = document.getElementById("wonGroupJsonHintFiltered");
-        const bodyFiltered = document.getElementById("wonGroupJsonBodyFiltered");
-        if (hintAll && bodyAll) {
-          hintAll.textContent = "오류가 발생했습니다.";
-          bodyAll.textContent = "";
-        }
-        if (hintFiltered && bodyFiltered) {
-          hintFiltered.textContent = "오류가 발생했습니다.";
-          bodyFiltered.textContent = "";
-        }
+        const buttons = [
+          document.getElementById("viewWonGroupJsonAllBtn"),
+          document.getElementById("copyWonGroupJsonAllBtn"),
+          document.getElementById("viewWonGroupJsonFilteredBtn"),
+          document.getElementById("copyWonGroupJsonFilteredBtn"),
+        ];
+        if (hintAll) hintAll.textContent = "오류가 발생했습니다.";
+        if (hintFiltered) hintFiltered.textContent = "오류가 발생했습니다.";
+        buttons.forEach((btn) => {
+          if (btn) btn.disabled = true;
+        });
       }
     }
 
@@ -1140,8 +1311,12 @@
       list.forEach((p) => {
         const tr = document.createElement("tr");
         if (state.selectedPerson === p.id) tr.classList.add("active");
+        const personLink = buildSalesmapLink("person", p.id);
+        const nameCell = personLink
+          ? `<a href="${personLink}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: underline;">${p.name || "-"}</a>`
+          : `${p.name || "-"}`;
         tr.innerHTML = `
-          <td>${p.name || "-"}</td>
+          <td>${nameCell}</td>
           <td>${p.upper_org || "-"}</td>
           <td>${p.team_signature || "-"}</td>
           <td>${p.title_signature || "-"}</td>
@@ -1301,15 +1476,44 @@
       attachMemoRowClicks(tableId, memoList);
     }
 
-    function resetSelection() {
+    function getDefaultSize() {
+      if (cache.sizes && cache.sizes.length) {
+        if (cache.sizes.includes("대기업")) return "대기업";
+        return cache.sizes[0];
+      }
+      return "대기업";
+    }
+
+    async function resetSelection() {
+      state.orgSearch = "";
+      const defaultSize = getDefaultSize();
+      state.size = defaultSize;
+      state.selectedOrg = null;
       state.selectedUpperOrg = null;
       state.selectedPerson = null;
       state.selectedDeal = null;
+      state.orgs = [];
+      state.orgMemos = [];
+      state.people = [];
       state.deals = [];
       state.personMemos = [];
       state.dealMemos = [];
-      renderUpperOrgSection();
+      state.wonSummary = [];
+      state.filteredWonGroupJson = null;
+      state.wonGroupJson = null;
+      state.wonSummaryCleared = true;
+
+      const searchInput = document.getElementById("orgSearch");
+      if (searchInput) searchInput.value = "";
+      const sizeSelect = document.getElementById("sizeSelect");
+      if (sizeSelect) sizeSelect.value = defaultSize;
+      const orgSelect = document.getElementById("orgSelect");
+      if (orgSelect) orgSelect.value = "";
+
+      clearOrgViews();
       setBreadcrumb();
+      await loadOrgs(0);
+      state.wonSummaryCleared = false;
     }
 
     async function initOrgScreen() {
@@ -1332,11 +1536,15 @@
         }
         loadOrgDetail(val);
       });
-      document.getElementById("resetBtn").addEventListener("click", resetSelection);
-      const copyAll = document.getElementById("copyWonGroupJsonBtnAll");
-      const copyFiltered = document.getElementById("copyWonGroupJsonBtnFiltered");
-      if (copyAll) copyAll.addEventListener("click", () => copyJsonFromElement("wonGroupJsonBodyAll"));
-      if (copyFiltered) copyFiltered.addEventListener("click", () => copyJsonFromElement("wonGroupJsonBodyFiltered"));
+      document.getElementById("resetBtn").addEventListener("click", () => resetSelection());
+      const viewAll = document.getElementById("viewWonGroupJsonAllBtn");
+      const copyAll = document.getElementById("copyWonGroupJsonAllBtn");
+      const viewFiltered = document.getElementById("viewWonGroupJsonFilteredBtn");
+      const copyFiltered = document.getElementById("copyWonGroupJsonFilteredBtn");
+      if (viewAll) viewAll.addEventListener("click", () => openJsonModal("상위 조직별 JSON (전체)", state.wonGroupJson));
+      if (copyAll) copyAll.addEventListener("click", () => copyJsonData(state.wonGroupJson));
+      if (viewFiltered) viewFiltered.addEventListener("click", () => openJsonModal("선택 상위 조직 JSON", state.filteredWonGroupJson));
+      if (copyFiltered) copyFiltered.addEventListener("click", () => copyJsonData(state.filteredWonGroupJson));
 
       state.modal.backdrop = document.getElementById("memoModalBackdrop");
       state.modal.close = document.getElementById("memoModalClose");
@@ -1347,9 +1555,33 @@
         if (e.target === state.modal.backdrop) closeMemoModal();
       });
       state.modal.close.addEventListener("click", closeMemoModal);
+      state.jsonModal.backdrop = document.getElementById("jsonModalBackdrop");
+      state.jsonModal.close = document.getElementById("jsonModalClose");
+      state.jsonModal.title = document.getElementById("jsonModalTitle");
+      state.jsonModal.body = document.getElementById("jsonModalBody");
+      if (state.jsonModal.backdrop) {
+        state.jsonModal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.jsonModal.backdrop) closeJsonModal();
+        });
+      }
+      if (state.jsonModal.close) state.jsonModal.close.addEventListener("click", closeJsonModal);
+      state.rankPeopleModal.backdrop = document.getElementById("dealsModalBackdrop");
+      state.rankPeopleModal.close = document.getElementById("dealsModalClose");
+      state.rankPeopleModal.title = document.getElementById("dealsModalTitle");
+      state.rankPeopleModal.body = document.getElementById("dealsModalBody");
+      if (state.rankPeopleModal.backdrop) {
+        state.rankPeopleModal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.rankPeopleModal.backdrop) closeDealsModal();
+        });
+      }
+      if (state.rankPeopleModal.close) state.rankPeopleModal.close.addEventListener("click", closeDealsModal);
       if (!state.modal.bound) {
         document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") closeMemoModal();
+          if (e.key === "Escape") {
+            closeMemoModal();
+            closeJsonModal();
+            closeDealsModal();
+          }
         });
         state.modal.bound = true;
       }
@@ -1390,24 +1622,32 @@
           </div>
         </header>
 
-        <section class="card" id="wonGroupJsonCardAll">
+        <section class="card" id="wonGroupJsonCardCombined">
           <div class="control-row">
-            <h2>상위 조직별 JSON (전체)</h2>
+            <h2>상위 조직별 JSON</h2>
             <div class="spacer"></div>
-            <button id="copyWonGroupJsonBtnAll" type="button">JSON 복사</button>
+            <span class="muted">좌: 전체 / 우: 선택 상위 조직</span>
           </div>
-          <div class="muted" id="wonGroupJsonHintAll">회사를 선택하세요.</div>
-          <pre class="code-block" id="wonGroupJsonBodyAll"></pre>
-        </section>
-
-        <section class="card" id="wonGroupJsonCardFiltered">
-          <div class="control-row">
-            <h2>선택 상위 조직 JSON</h2>
-            <div class="spacer"></div>
-            <button id="copyWonGroupJsonBtnFiltered" type="button">JSON 복사</button>
+          <div class="json-grid">
+            <div class="json-box">
+              <div class="control-row">
+                <h3 class="muted">전체</h3>
+                <div class="spacer"></div>
+                <button id="viewWonGroupJsonAllBtn" type="button">JSON 확인</button>
+                <button id="copyWonGroupJsonAllBtn" type="button">JSON 복사</button>
+              </div>
+              <div class="muted" id="wonGroupJsonHintAll">회사를 선택하세요.</div>
+            </div>
+            <div class="json-box">
+              <div class="control-row">
+                <h3 class="muted">선택 상위 조직</h3>
+                <div class="spacer"></div>
+                <button id="viewWonGroupJsonFilteredBtn" type="button">JSON 확인</button>
+                <button id="copyWonGroupJsonFilteredBtn" type="button">JSON 복사</button>
+              </div>
+              <div class="muted" id="wonGroupJsonHintFiltered">상위 조직을 선택하세요.</div>
+            </div>
           </div>
-          <div class="muted" id="wonGroupJsonHintFiltered">상위 조직을 선택하세요.</div>
-          <pre class="code-block" id="wonGroupJsonBodyFiltered"></pre>
         </section>
 
         <div class="breadcrumb" id="breadcrumb">
@@ -1479,6 +1719,32 @@
       return items;
     }
 
+    async function loadRankPeopleData(size) {
+      const key = size && size !== "전체" ? size : "전체";
+      const cached = cache.rank2025PeopleBySize.get(key);
+      if (cached) return cached;
+      const params = new URLSearchParams();
+      if (size && size !== "전체") params.set("size", size);
+      const query = params.toString();
+      const data = await fetchJson(`/rank/2025-deals-people${query ? `?${query}` : ""}`);
+      const items = data.items || [];
+      cache.rank2025PeopleBySize.set(key, items);
+      return items;
+    }
+
+    async function loadMismatchData(size) {
+      const key = size && size !== "전체" ? size : "전체";
+      const cached = cache.mismatch2025BySize.get(key);
+      if (cached) return cached;
+      const params = new URLSearchParams();
+      if (size && size !== "전체") params.set("size", size);
+      const query = params.toString();
+      const data = await fetchJson(`/rank/mismatched-deals${query ? `?${query}` : ""}`);
+      const items = data.items || [];
+      cache.mismatch2025BySize.set(key, items);
+      return items;
+    }
+
     async function loadYearlyTotals() {
       if (cache.yearlyTotals) return cache.yearlyTotals;
       const data = await fetchJson("/rank/won-yearly-totals");
@@ -1515,6 +1781,58 @@
                       <td>${formatAmount(row.totalAmount)}</td>
                       <td class="format-cell" data-idx="${idx}" style="cursor:pointer; color: var(--accent);">자세히</td>
                     </tr>`
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderMismatchTable(items) {
+      if (!items || !items.length) {
+        return `<div class="muted">딜 회사와 People 회사가 다른 데이터가 없습니다.</div>`;
+      }
+      return `
+        <div class="table-wrap full">
+          <table>
+            <thead>
+              <tr>
+                <th>딜 회사(랭킹)</th>
+                <th>고객 회사(People)</th>
+                <th>딜</th>
+                <th>고객</th>
+                <th>계약일</th>
+                <th>금액(억)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items
+                .map(
+                  (row, idx) => `
+                    <tr>
+                      <td><span class="org-link" data-idx="${idx}" data-org-id="${row.dealOrgId || ""}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.dealOrgName || row.dealOrgId || "-"}</span></td>
+                      <td><span class="org-link alt" data-idx="${idx}" data-org-id="${row.personOrgId || ""}" style="cursor:pointer; color: var(--accent-2); text-decoration: underline;">${row.personOrgName || row.personOrgId || "-"}</span></td>
+                      <td>
+                        <div>${
+                          buildSalesmapLink("deal", row.dealId)
+                            ? `<a href="${buildSalesmapLink("deal", row.dealId)}" target="_blank" rel="noopener">${row.dealName || "-"}</a>`
+                            : (row.dealName || "-")
+                        }</div>
+                        <div class="muted" style="font-size:11px;">${row.dealId || ""}</div>
+                      </td>
+                      <td>
+                        <div>${
+                          buildSalesmapLink("person", row.personId)
+                            ? `<a href="${buildSalesmapLink("person", row.personId)}" target="_blank" rel="noopener">${row.personName || "-"}</a>`
+                            : (row.personName || "-")
+                        }</div>
+                        <div class="muted" style="font-size:11px;">${row.personId || ""}</div>
+                      </td>
+                      <td>${formatDate(row.contract_date)}</td>
+                      <td>${formatAmount(row.amount)}</td>
+                    </tr>
+                  `
                 )
                 .join("")}
             </tbody>
@@ -1602,6 +1920,54 @@
       `;
     }
 
+    function renderRankPeopleTable(items) {
+      if (!items || !items.length) {
+        return `<div class="muted">데이터가 없습니다.</div>`;
+      }
+      return `
+        <div class="table-wrap full">
+          <table>
+            <thead>
+              <tr>
+                <th>회사</th>
+                <th>소속 상위 조직</th>
+                <th>팀</th>
+                <th>이름</th>
+                <th>직급</th>
+                <th>담당 교육 영역</th>
+                <th>딜 목록</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${items
+                .map(
+                  (row, idx) => `
+                    <tr>
+                      <td><span class="org-link" data-idx="${idx}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.orgName || row.orgId || "-"}</span></td>
+                      <td>${normalizeUpperForDisplay(row.upper_org) || "-"}</td>
+                      <td>${row.team_signature === "미입력" ? "-" : (row.team_signature || "-")}</td>
+                      <td>${(() => {
+                        const link = buildSalesmapLink("person", row.personId);
+                        const name = row.personName || "(연결 안 됨)";
+                        return link
+                          ? `<a href="${link}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: underline;">${name}</a>`
+                          : name;
+                      })()}</td>
+                      <td>${row.title_signature || "-"}</td>
+                      <td>${row.edu_area || "-"}</td>
+                      <td>
+                        <button class="secondary" data-idx="${idx}" data-action="deals">딜 보기</button>
+                      </td>
+                    </tr>
+                  `
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
     async function renderRank2025Screen(contentRoot) {
       contentRoot.innerHTML = `
         <section class="card">
@@ -1667,6 +2033,218 @@
       });
       await refresh();
     }
+
+    async function renderMismatch2025Screen(contentRoot) {
+      contentRoot.innerHTML = `
+        <section class="card">
+          <div class="control-row">
+            <h2>고객사 불일치 (Deal vs People)</h2>
+            <div class="spacer"></div>
+            <label class="muted">기업 규모</label>
+            <select id="mismatchSizeSelect"></select>
+          </div>
+          <div class="muted">딜이 연결된 회사와 People이 연결된 회사가 다른 모든 딜을 보여줍니다. 딜/고객명을 클릭하면 Salesmap 원본으로 이동합니다.</div>
+          <div id="mismatchBody" class="muted">불러오는 중...</div>
+        </section>
+      `;
+
+      const sizeSelect = document.getElementById("mismatchSizeSelect");
+      const body = document.getElementById("mismatchBody");
+
+      try {
+        const sizes = await getSizes();
+        sizeSelect.innerHTML = sizes.map((s) => `<option value="${s}">${s}</option>`).join("");
+        if (!sizes.includes(state.mismatchSize)) {
+          state.mismatchSize = sizes.find((s) => s === "대기업") || sizes[0] || "전체";
+        }
+        sizeSelect.value = state.mismatchSize;
+      } catch (err) {
+        body.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        showToast(`규모 목록을 불러오지 못했습니다: ${err.message}`, "error");
+        return;
+      }
+
+      const refresh = async () => {
+        body.textContent = "불러오는 중...";
+        try {
+          const items = await loadMismatchData(state.mismatchSize);
+          body.innerHTML = renderMismatchTable(items);
+          body.querySelectorAll(".org-link").forEach((cell) => {
+            const orgId = cell.getAttribute("data-org-id");
+            if (!orgId) return;
+            cell.addEventListener("click", async () => {
+              await navigateToOrg(orgId);
+            });
+          });
+        } catch (err) {
+          body.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+          showToast(`불일치 목록을 불러오지 못했습니다: ${err.message}`, "error");
+        }
+      };
+
+      sizeSelect.addEventListener("change", async (e) => {
+        state.mismatchSize = e.target.value;
+        await refresh();
+      });
+
+      await refresh();
+    }
+
+    async function renderRank2025PeopleScreen(contentRoot) {
+      contentRoot.innerHTML = `
+        <section class="card">
+          <div class="control-row">
+            <h2>2025 대기업 딜·People 매핑</h2>
+            <div class="spacer"></div>
+            <label class="muted">기업 규모</label>
+            <select id="rankPeopleSizeSelect"></select>
+            <label class="muted">회사</label>
+            <select id="rankPeopleOrgSelect"></select>
+            <label class="muted">상위 조직</label>
+            <select id="rankPeopleUpperSelect"></select>
+            <button id="rankPeopleReset" type="button">필터 리셋</button>
+          </div>
+          <div class="muted" id="rankPeopleHint">불러오는 중...</div>
+          <div id="rankPeopleBody" class="muted">불러오는 중...</div>
+        </section>
+      `;
+
+      const sizeSelect = document.getElementById("rankPeopleSizeSelect");
+      const orgSelect = document.getElementById("rankPeopleOrgSelect");
+      const upperSelect = document.getElementById("rankPeopleUpperSelect");
+      const resetBtn = document.getElementById("rankPeopleReset");
+      const hint = document.getElementById("rankPeopleHint");
+      const body = document.getElementById("rankPeopleBody");
+      let currentItems = [];
+
+      const applyFilters = () => {
+        const eligible = currentItems.filter((row) => {
+          const upper = normalizeUpperOrg(row.upper_org);
+          const team = (row.team_signature || "").trim();
+          // 상위 조직과 팀이 모두 미입력일 때만 제외
+          return !(upper === "미입력" && (!team || team === "미입력"));
+        });
+        const orgOptions = currentItems.reduce((acc, row) => {
+          if (row.orgId) {
+            const label = row.orgName || row.orgId || "미입력";
+            acc.set(row.orgId, label);
+          }
+          return acc;
+        }, new Map());
+        const upperOptions = Array.from(
+          new Set(
+            eligible
+              .map((row) => normalizeUpperForDisplay(row.upper_org))
+              .filter((u) => u && u !== "미입력")
+          )
+        );
+
+        const orgOptionsHtml = ['<option value="">전체</option>'];
+        Array.from(orgOptions.entries())
+          .sort((a, b) => String(a[1] || "").localeCompare(String(b[1] || "")))
+          .forEach(([id, name]) => orgOptionsHtml.push(`<option value="${id}">${name || "미입력"}</option>`));
+        orgSelect.innerHTML = orgOptionsHtml.join("");
+        if (state.rankPeopleOrgFilter && !orgOptions.has(state.rankPeopleOrgFilter)) {
+          state.rankPeopleOrgFilter = "";
+        }
+        orgSelect.value = state.rankPeopleOrgFilter;
+
+        const upperOptionsHtml = ['<option value="">전체</option>'];
+        upperOptions.sort().forEach((u) => upperOptionsHtml.push(`<option value="${u}">${u}</option>`));
+        upperSelect.innerHTML = upperOptionsHtml.join("");
+        if (state.rankPeopleUpperFilter && !upperOptions.includes(state.rankPeopleUpperFilter)) {
+          state.rankPeopleUpperFilter = "";
+        }
+        upperSelect.value = state.rankPeopleUpperFilter;
+
+        const filtered = eligible.filter((row) => {
+          if (state.rankPeopleOrgFilter && row.orgId !== state.rankPeopleOrgFilter) return false;
+          if (
+            state.rankPeopleUpperFilter &&
+            normalizeUpperForDisplay(row.upper_org) !== state.rankPeopleUpperFilter
+          )
+            return false;
+          return true;
+        });
+
+        hint.textContent = `총 ${filtered.length}명 · 회사 ${orgOptions.size}곳`;
+        body.innerHTML = renderRankPeopleTable(filtered);
+        body.querySelectorAll(".org-link").forEach((cell) => {
+          cell.addEventListener("click", async () => {
+            const idx = Number(cell.getAttribute("data-idx"));
+            const row = filtered[idx];
+            if (!row) return;
+            await navigateToOrg(row.orgId);
+          });
+        });
+        body.querySelectorAll('button[data-action="deals"]').forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const idx = Number(btn.getAttribute("data-idx"));
+            const row = filtered[idx];
+            if (!row) return;
+            const label = `${row.personName || "(연결 안 됨)"} @ ${row.orgName || row.orgId || "-"}`;
+            openDealsModal(label, row.deals || []);
+          });
+        });
+        resetBtn.disabled =
+          !state.rankPeopleOrgFilter && !state.rankPeopleUpperFilter && state.rankPeopleSize === (sizeSelect.value || "");
+      };
+
+      const refreshSize = async () => {
+        body.textContent = "불러오는 중...";
+        hint.textContent = "불러오는 중...";
+        try {
+          currentItems = await loadRankPeopleData(state.rankPeopleSize);
+          applyFilters();
+        } catch (err) {
+          body.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+          hint.textContent = "데이터를 불러오지 못했습니다.";
+          showToast(`2025 딜·People 조회 오류: ${err.message}`, "error");
+        }
+      };
+
+      try {
+        const sizes = await getSizes();
+        sizeSelect.innerHTML = sizes.map((s) => `<option value="${s}">${s}</option>`).join("");
+        if (!sizes.includes(state.rankPeopleSize)) {
+          state.rankPeopleSize = sizes.find((s) => s === "대기업") || sizes[0] || "전체";
+        }
+        sizeSelect.value = state.rankPeopleSize;
+      } catch (err) {
+        body.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        hint.textContent = "규모 목록을 불러오지 못했습니다.";
+        showToast(`규모 목록 오류: ${err.message}`, "error");
+        return;
+      }
+
+      sizeSelect.addEventListener("change", async (e) => {
+        state.rankPeopleSize = e.target.value;
+        state.rankPeopleOrgFilter = "";
+        state.rankPeopleUpperFilter = "";
+        await refreshSize();
+      });
+
+      orgSelect.addEventListener("change", () => {
+        state.rankPeopleOrgFilter = orgSelect.value;
+        applyFilters();
+      });
+
+      upperSelect.addEventListener("change", () => {
+        state.rankPeopleUpperFilter = upperSelect.value;
+        applyFilters();
+      });
+
+      resetBtn.addEventListener("click", () => {
+        state.rankPeopleOrgFilter = "";
+        state.rankPeopleUpperFilter = "";
+        orgSelect.value = "";
+        upperSelect.value = "";
+        applyFilters();
+      });
+
+      await refreshSize();
+    }
+
 
     async function renderIndustryMenu(contentRoot) {
       contentRoot.innerHTML = `

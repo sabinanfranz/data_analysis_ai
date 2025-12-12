@@ -5,6 +5,7 @@
   - JSON 응답은 FastAPI 라우터(`/dashboard/server/org_tables_api.py`)를 통해 제공된다.
 
 - `/api/orgs/{org_id}/won-groups-json`
+  - 조직 메타: `id/name/size/industry`에 더해 `industry_major`(`업종 구분(대)`), `industry_mid`(`업종 구분(중)`)을 포함한다.
   - 웹폼: People 레코드의 `"제출된 웹폼 목록"`을 `{name, date}`로 변환한다. 동일 webFormId의 제출일이 여러 개인 경우 `date`는 리스트가 될 수 있으며, 제출 내역이 없으면 `"날짜 확인 불가"`를 반환한다. webform id는 노출하지 않는다.
   - 메모 정제:
     - 폼 스타일(`키: 값` 줄) + `utm_source`가 있을 때만 전처리.
@@ -14,6 +15,7 @@
     - 특수 문구 `(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)`이 있으면 해당 메모를 결과에서 제외한다.
 
 - 기타 주요 엔드포인트
+  - `/api/orgs`: People 또는 Deal이 한 건 이상 연결된 조직만 반환하며, 2025년 Won 금액 합계 내림차순으로 정렬(동률 시 이름 순). limit 기본 200.
   - `/api/orgs/{org_id}/won-summary`: 상위 조직별 Won 합계(23/24/25)와 담당자/owner 목록을 반환.
   - `/api/orgs/{org_id}/people?hasDeal=true|false|null`: 조직의 People 리스트(딜 여부 필터).
   - `/api/people/{person_id}/deals`, `/api/people/{person_id}/memos`, `/api/deals/{deal_id}/memos`: 사람/딜 단위 데이터와 메모.

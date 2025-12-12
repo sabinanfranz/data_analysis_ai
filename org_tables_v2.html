@@ -410,6 +410,17 @@
       max-height: 720px;
     }
 
+    .webform-modal {
+      max-width: 1040px;
+      width: 100%;
+    }
+
+    .webform-modal .body {
+      max-height: 540px;
+      white-space: normal;
+      overflow: auto;
+    }
+
     .close-btn {
       background: #1f2937;
       color: var(--text);
@@ -485,6 +496,16 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="webformModalBackdrop">
+    <div class="modal webform-modal">
+      <header>
+        <h3 id="webformModalTitle">웹폼 내역</h3>
+        <button class="close-btn" id="webformModalClose" type="button">닫기</button>
+      </header>
+      <div class="body" id="webformModalBody"></div>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="dealsModalBackdrop">
     <div class="modal json-modal">
       <header>
@@ -505,6 +526,12 @@
     })();
     const SALESMAP_WORKSPACE_PATH = "64cb5beda5a78ae225d7815b"; // update if workspace path changes
     const ORG_LIMIT = 200;
+    let DEBUG_ORG_SELECT = Boolean(window.DEBUG_ORG_SELECT);
+    window.setOrgSelectDebug = (flag) => {
+      DEBUG_ORG_SELECT = Boolean(flag);
+      window.DEBUG_ORG_SELECT = DEBUG_ORG_SELECT;
+      console.log("[orgSelect] debug mode:", DEBUG_ORG_SELECT);
+    };
 
     const menuConfig = [
       { id: "rank-2025", label: "2025년 체결액 순위", render: renderRank2025Screen },
@@ -550,6 +577,12 @@
         author: null,
         body: null,
         bound: false,
+      },
+      webformModal: {
+        backdrop: null,
+        close: null,
+        title: null,
+        body: null,
       },
       jsonModal: {
         backdrop: null,
@@ -706,6 +739,73 @@
       state.modal.backdrop.style.display = "none";
     }
 
+    function formatWebformDateLabel(val) {
+      if (Array.isArray(val)) {
+        const uniq = Array.from(new Set(val)).sort();
+        return uniq.join(", ");
+      }
+      return val || "날짜 확인 불가";
+    }
+
+    function getWebformsForPerson(personId) {
+      const source = state.filteredWonGroupJson?.groups?.length
+        ? state.filteredWonGroupJson
+        : state.wonGroupJson;
+      if (!source || !source.groups) return [];
+      for (const group of source.groups) {
+        const match = (group.people || []).find((p) => p.id === personId);
+        if (match && Array.isArray(match.webforms)) {
+          return match.webforms;
+        }
+      }
+      return [];
+    }
+
+    function flattenWebformRows(webforms) {
+      const rows = [];
+      (webforms || []).forEach((wf) => {
+        const name = wf?.name || "-";
+        const date = wf?.date;
+        if (Array.isArray(date)) {
+          const uniq = Array.from(new Set(date)).sort();
+          uniq.forEach((d) => rows.push({ date: d || "날짜 확인 불가", name }));
+        } else {
+          rows.push({ date: date || "날짜 확인 불가", name });
+        }
+      });
+      return rows;
+    }
+
+    function openWebformModal(personName, webforms) {
+      if (!state.webformModal.backdrop) return;
+      const rows = flattenWebformRows(webforms);
+      state.webformModal.title.textContent = `웹폼 내역 - ${personName || "-"}`;
+      if (!rows.length) {
+        state.webformModal.body.innerHTML = `<div class="muted">웹폼 내역이 없습니다.</div>`;
+        state.webformModal.backdrop.style.display = "flex";
+        return;
+      }
+      const bodyRows = rows
+        .map(
+          (r) => `<tr><td>${formatWebformDateLabel(r.date)}</td><td>${r.name}</td></tr>`
+        )
+        .join("");
+      state.webformModal.body.innerHTML = `
+        <div class="table-wrap full">
+          <table>
+            <thead><tr><th style="width: 160px;">날짜</th><th>웹폼 제목</th></tr></thead>
+            <tbody>${bodyRows}</tbody>
+          </table>
+        </div>
+      `;
+      state.webformModal.backdrop.style.display = "flex";
+    }
+
+    function closeWebformModal() {
+      if (!state.webformModal.backdrop) return;
+      state.webformModal.backdrop.style.display = "none";
+    }
+
     function attachMemoRowClicks(tableId, memoList) {
       const table = document.getElementById(tableId);
       if (!table) return;
@@ -838,6 +938,7 @@
 
     function renderOrgSelect() {
       const sel = document.getElementById("orgSelect");
+      if (!sel) return;
       if (!state.orgs.length) {
         sel.innerHTML = '<option value="">해당 조건의 회사가 없습니다.</option>';
         return;
@@ -846,8 +947,7 @@
       options.push(
         ...state.orgs.map(
           (o) =>
-            `<option value="${o.id}" ${o.id === state.selectedOrg ? "selected" : ""}>${o.name}${o.size ? " (" + o.size + ")" : ""
-            }</option>`
+            `<option value="${o.id}" ${o.id === state.selectedOrg ? "selected" : ""}>${o.name || o.id}</option>`
         )
       );
       sel.innerHTML = options.join("");
@@ -855,6 +955,13 @@
       state.orgs.forEach((o) => {
         if (o.id) cache.orgLookup.set(o.id, o);
       });
+      if (DEBUG_ORG_SELECT) {
+        console.debug("[orgSelect] renderOrgSelect", {
+          optionCount: state.orgs.length,
+          selectedOrg: state.selectedOrg,
+          selectValue: sel.value,
+        });
+      }
     }
 
     async function getSizes() {
@@ -880,7 +987,7 @@
       }
     }
 
-    async function loadOrgs(offset = 0, preselectOrgId = null, fallbackOrg = null) {
+    async function loadOrgs(offset = 0, preselectOrgId = null, fallbackOrg = null, allowFallback = true) {
       const search = document.getElementById("orgSearch").value.trim();
       state.orgSearch = search;
       const params = new URLSearchParams({
@@ -893,9 +1000,25 @@
       try {
         const data = await fetchJson(`/orgs?${params.toString()}`);
         state.orgs = data.items || [];
+        if (!state.orgs.length && allowFallback && state.size !== "전체" && !search) {
+          // If no orgs for this size and no search, fall back to 전체 once
+          state.size = "전체";
+          const sizeSelectEl = document.getElementById("sizeSelect");
+          if (sizeSelectEl) sizeSelectEl.value = state.size;
+          showToast("해당 규모에 회사가 없습니다. 전체로 전환합니다.", "info");
+          return await loadOrgs(offset, preselectOrgId, fallbackOrg, false);
+        }
         const prev = preselectOrgId || state.selectedOrg;
         const stillExists = state.orgs.find((o) => o.id === prev);
         state.selectedOrg = stillExists ? prev : null;
+        if (DEBUG_ORG_SELECT) {
+          console.debug("[orgSelect] loadOrgs done", {
+            count: state.orgs.length,
+            prev,
+            stillExists: Boolean(stillExists),
+            selectedOrg: state.selectedOrg,
+          });
+        }
         renderOrgSelect();
         if (state.selectedOrg) {
           await loadOrgDetail(state.selectedOrg);
@@ -917,6 +1040,9 @@
       } catch (err) {
         showToast(`회사 목록 오류: ${err.message}`, "error");
         clearOrgViews();
+        if (DEBUG_ORG_SELECT) {
+          console.debug("[orgSelect] loadOrgs error", err);
+        }
       }
       setBreadcrumb();
     }
@@ -941,6 +1067,7 @@
     }
 
     async function loadOrgDetail(orgId) {
+      if (DEBUG_ORG_SELECT) console.debug("[orgSelect] loadOrgDetail start", orgId);
       state.selectedOrg = orgId;
       state.selectedUpperOrg = null;
       state.selectedPerson = null;
@@ -989,6 +1116,7 @@
       } catch (err) {
         showToast(`회사 데이터 로드 오류: ${err.message}`, "error");
         clearOrgViews();
+        if (DEBUG_ORG_SELECT) console.debug("[orgSelect] loadOrgDetail error", err);
       }
     }
 
@@ -1191,6 +1319,7 @@
         state.filteredWonGroupJson = filterWonGroupByUpper(cached, state.selectedUpperOrg);
         renderWonGroupJsonAll(cached);
         renderWonGroupJsonFiltered(state.filteredWonGroupJson);
+        renderUpperOrgSection();
         return;
       }
       state.wonGroupJson = null;
@@ -1204,6 +1333,7 @@
         state.filteredWonGroupJson = filterWonGroupByUpper(data, state.selectedUpperOrg);
         renderWonGroupJsonAll(data);
         renderWonGroupJsonFiltered(state.filteredWonGroupJson);
+        renderUpperOrgSection();
       } catch (err) {
         showToast(`상위 조직 JSON 오류: ${err.message}`, "error");
         state.wonGroupJson = null;
@@ -1311,6 +1441,7 @@
         <th>팀(명함/메일서명)</th>
         <th>직급(명함/메일서명)</th>
         <th>담당 교육 영역</th>
+        <th>웹폼 내역</th>
       </tr></thead>`;
       const tbody = document.createElement("tbody");
       list.forEach((p) => {
@@ -1320,12 +1451,15 @@
         const nameCell = personLink
           ? `<a href="${personLink}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: underline;">${p.name || "-"}</a>`
           : `${p.name || "-"}`;
+        const webforms = getWebformsForPerson(p.id);
+        const hasWebforms = Array.isArray(webforms) && webforms.length > 0;
         tr.innerHTML = `
           <td>${nameCell}</td>
           <td>${p.upper_org || "-"}</td>
           <td>${p.team_signature || "-"}</td>
           <td>${p.title_signature || "-"}</td>
           <td>${p.edu_area || "-"}</td>
+          <td><button type="button" class="webform-btn" ${hasWebforms ? "" : "disabled"}>${hasWebforms ? "내역 확인" : "없음"}</button></td>
         `;
         tr.addEventListener("click", () => {
           state.selectedPerson = p.id;
@@ -1341,6 +1475,17 @@
           loadPersonMemos(p.id);
           setBreadcrumb();
         });
+        const wfBtn = tr.querySelector(".webform-btn");
+        if (wfBtn) {
+          wfBtn.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            if (!hasWebforms) {
+              showToast("웹폼 내역이 없습니다.", "info");
+              return;
+            }
+            openWebformModal(p.name || "-", webforms);
+          });
+        }
         tbody.appendChild(tr);
       });
       table.appendChild(tbody);
@@ -1403,9 +1548,13 @@
       list.forEach((d) => {
         const tr = document.createElement("tr");
         if (state.selectedDeal === d.id) tr.classList.add("active");
+        const dealLink = buildSalesmapLink("deal", d.id);
+        const dealNameCell = dealLink
+          ? `<a href="${dealLink}" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: underline;">${d.name || "-"}</a>`
+          : `${d.name || "-"}`;
         tr.innerHTML = `
           <td>${formatDate(d.created_at)}</td>
-          <td>${d.name || "-"}</td>
+          <td>${dealNameCell}</td>
           <td>${d.status || "-"}</td>
           <td>${formatAmount(d.amount)}</td>
           <td>${formatAmount(d.expected_amount)}</td>
@@ -1531,15 +1680,27 @@
       document.getElementById("orgSearch").addEventListener("keypress", (e) => {
         if (e.key === "Enter") loadOrgs(0);
       });
-      document.getElementById("orgSelect").addEventListener("change", (e) => {
+      document.getElementById("orgSelect").addEventListener("change", async (e) => {
         const val = e.target.value;
+        if (DEBUG_ORG_SELECT) console.debug("[orgSelect] change", { val });
         if (!val) {
           state.selectedOrg = null;
           clearOrgViews();
           setBreadcrumb();
           return;
         }
-        loadOrgDetail(val);
+        try {
+          await loadOrgDetail(val);
+        } catch (err) {
+          showToast(`회사 로드 오류: ${err.message}`, "error");
+          if (DEBUG_ORG_SELECT) console.debug("[orgSelect] change error", err);
+        }
+      });
+      document.getElementById("orgSelect").addEventListener("click", (e) => {
+        if (DEBUG_ORG_SELECT) {
+          const val = e.target.value;
+          console.debug("[orgSelect] click", { val, optionCount: state.orgs.length });
+        }
       });
       document.getElementById("resetBtn").addEventListener("click", () => resetSelection());
       const viewAll = document.getElementById("viewWonGroupJsonAllBtn");
@@ -1570,6 +1731,16 @@
         });
       }
       if (state.jsonModal.close) state.jsonModal.close.addEventListener("click", closeJsonModal);
+      state.webformModal.backdrop = document.getElementById("webformModalBackdrop");
+      state.webformModal.close = document.getElementById("webformModalClose");
+      state.webformModal.title = document.getElementById("webformModalTitle");
+      state.webformModal.body = document.getElementById("webformModalBody");
+      if (state.webformModal.backdrop) {
+        state.webformModal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.webformModal.backdrop) closeWebformModal();
+        });
+      }
+      if (state.webformModal.close) state.webformModal.close.addEventListener("click", closeWebformModal);
       state.rankPeopleModal.backdrop = document.getElementById("dealsModalBackdrop");
       state.rankPeopleModal.close = document.getElementById("dealsModalClose");
       state.rankPeopleModal.title = document.getElementById("dealsModalTitle");
@@ -1586,6 +1757,7 @@
             closeMemoModal();
             closeJsonModal();
             closeDealsModal();
+            closeWebformModal();
           }
         });
         state.modal.bound = true;

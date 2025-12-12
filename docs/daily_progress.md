@@ -3,8 +3,10 @@
 - org_tables_v2 상위 조직 JSON UX 보완
   - 회사 전환/로딩/에러 시 Won JSON 상태 초기화 + 복사 버튼 비활성화, 정상 로드 시만 활성화.
   - CSS 파서 오류를 유발하던 JS 위치를 수정해 진단 경고 해소.
+  - 조직 목록: People 또는 Deal이 있는 조직만 반환, 2025 Won 금액 내림차순 정렬. 자동 선택 제거, 0건이면 규모를 전체로 재조회.
 - 문서 업데이트
   - `docs/org_tables_v2.md`에 JSON 카드 최신 동작(버튼 비활성/상태 초기화)과 venv+PYTHONPATH 테스트 방법 추가.
+  - 상위 조직 JSON 로직 개요를 `docs/json_logic.md`로 별도 정리.
 - 테스트
   - `.venv` 생성 후 `PYTHONPATH=. .venv/bin/pytest -q` (14/14 통과).
   - pytest가 없던 환경에서 venv로 설치하여 실행.
@@ -68,3 +70,6 @@
 - 문서
   - `docs/api_behavior.md` 신설: `/orgs/{id}/won-groups-json`의 웹폼·메모 정제 및 주요 API 행동 정리.
   - `docs/org_tables_v2.md` 상위 조직 JSON UX 갱신.
+  - `won-groups-json`의 organization 메타에 업종 구분(대/중) 추가 후 문서/테스트 반영.
+  - 상위 조직 People 표에 웹폼 내역 버튼/타임라인 모달 추가 내용 반영.
+  - 웹폼 모달을 테이블/확대 레이아웃으로 개선(날짜 복수 시 행 분리).

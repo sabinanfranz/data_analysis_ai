@@ -194,9 +194,19 @@ def list_organizations(
     offset = max(0, offset)
 
     query = (
-        'SELECT id, COALESCE("이름", id) AS name, "기업 규모" AS size, '
-        '"팀" AS team_json, "담당자" AS owner_json '
-        "FROM organization "
+        'SELECT o.id, COALESCE(o."이름", o.id) AS name, o."기업 규모" AS size, '
+        'o."팀" AS team_json, o."담당자" AS owner_json, '
+        "COALESCE(w.won2025, 0) AS won2025 "
+        "FROM organization o "
+        "LEFT JOIN (SELECT organizationId, COUNT(*) AS people_count FROM people WHERE organizationId IS NOT NULL GROUP BY organizationId) pc "
+        "  ON pc.organizationId = o.id "
+        "LEFT JOIN (SELECT organizationId, COUNT(*) AS deal_count FROM deal WHERE organizationId IS NOT NULL GROUP BY organizationId) dc "
+        "  ON dc.organizationId = o.id "
+        "LEFT JOIN ("
+        '  SELECT organizationId, SUM(CAST("금액" AS REAL)) AS won2025 '
+        '  FROM deal WHERE "상태" = \'Won\' AND "계약 체결일" LIKE \'2025%\' AND organizationId IS NOT NULL '
+        "  GROUP BY organizationId"
+        ") w ON w.organizationId = o.id "
         "WHERE 1=1 "
     )
     params: List[Any] = []
@@ -209,7 +219,8 @@ def list_organizations(
         like = f"%{search}%"
         params.extend([like, like])
 
-    query += "ORDER BY name LIMIT ? OFFSET ?"
+    query += "AND (COALESCE(pc.people_count, 0) > 0 OR COALESCE(dc.deal_count, 0) > 0) "
+    query += "ORDER BY won2025 DESC, name LIMIT ? OFFSET ?"
     params.extend([limit, offset])
 
     with _connect(db_path) as conn:
@@ -899,7 +910,8 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
     with _connect(db_path) as conn:
         org_rows = _fetch_all(
             conn,
-            'SELECT id, COALESCE("이름", id) AS name, "기업 규모" AS size, "업종" AS industry '
+            'SELECT id, COALESCE("이름", id) AS name, "기업 규모" AS size, "업종" AS industry, '
+            '  "업종 구분(대)" AS industry_major, "업종 구분(중)" AS industry_mid '
             "FROM organization WHERE id = ? LIMIT 1",
             (org_id,),
         )
@@ -911,6 +923,8 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
             "name": org_row["name"],
             "size": org_row["size"],
             "industry": org_row["industry"],
+            "industry_major": org_row["industry_major"],
+            "industry_mid": org_row["industry_mid"],
         }
 
         people_rows = _fetch_all(

@@ -10,8 +10,11 @@ from dashboard.server.database import _clean_form_memo
 
 def build_sample_db(db_path: Path) -> None:
     conn = sqlite3.connect(db_path)
-    conn.execute('CREATE TABLE organization (id TEXT, "이름" TEXT, "기업 규모" TEXT, "업종" TEXT)')
-    conn.execute('INSERT INTO organization VALUES ("org1","조직1","대기업","테스트")')
+    conn.execute(
+        'CREATE TABLE organization (id TEXT, "이름" TEXT, "기업 규모" TEXT, "업종" TEXT, '
+        '"업종 구분(대)" TEXT, "업종 구분(중)" TEXT)'
+    )
+    conn.execute('INSERT INTO organization VALUES ("org1","조직1","대기업","테스트","금융","보험")')
 
     conn.execute(
         'CREATE TABLE people (id TEXT, organizationId TEXT, "이름" TEXT, "소속 상위 조직" TEXT, '
@@ -110,6 +113,9 @@ class WonGroupsWebformDateTest(TestCase):
             build_sample_db(db_path)
 
             result = db.get_won_groups_json("org1", db_path=db_path)
+            org_meta = result["organization"]
+            self.assertEqual(org_meta["industry_major"], "금융")
+            self.assertEqual(org_meta["industry_mid"], "보험")
             groups = result["groups"]
             self.assertEqual(len(groups), 1)
             people = groups[0]["people"]
@@ -124,14 +130,14 @@ class WonGroupsWebformDateTest(TestCase):
 
             memos = people[0]["memos"]
             clean_list = [m["cleanText"] for m in memos if "cleanText" in m]
-            self.assertEqual(len(clean_list), 2)
+            self.assertEqual(len(clean_list), 1)
             # First memo keeps non-dropped keys
             self.assertIn("고객이름", clean_list[0])
             self.assertIn("고객이메일", clean_list[0])
             self.assertNotIn("고객전화", clean_list[0])
             self.assertNotIn("utm_source", clean_list[0])
-            # Special phrase -> empty string
-            self.assertEqual(clean_list[1], "")
+            # Special phrase memo is dropped entirely
+            self.assertEqual(len(memos), 1)
 
     def test_clean_form_memo_preprocessing(self) -> None:
         # utm required -> no cleanText
@@ -139,7 +145,7 @@ class WonGroupsWebformDateTest(TestCase):
         self.assertIsNone(_clean_form_memo(no_utm))
 
         # drop keys removed, lines merged, utm present
-        merged = "- 고객 이름 : 홍길동\n- 고객 이메일 : a@b.com\n- 고객 전화 : 01012345678\n- 회사 업종 : IT/정보통신업\n- 고객 utm_source : email\n추가 줄\n"
+        merged = "- 고객 이름 : 홍길동\n추가 줄\n- 고객 이메일 : a@b.com\n- 고객 전화 : 01012345678\n- 회사 업종 : IT/정보통신업\n- 고객 utm_source : email\n"
         parsed = _clean_form_memo(merged)
         self.assertIsNotNone(parsed)
         if parsed is not None:
@@ -148,7 +154,7 @@ class WonGroupsWebformDateTest(TestCase):
             self.assertNotIn("고객전화", parsed)
             self.assertNotIn("회사업종", parsed)
             self.assertNotIn("utm_source", parsed)
-            self.assertIn("추가 줄" in " ".join(parsed.values()), True)
+            self.assertIn("추가 줄", parsed["고객이름"])
 
         # special phrase forces empty string
         special = "(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)\n- 고객 utm_source : email\n"

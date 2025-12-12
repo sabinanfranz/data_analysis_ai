@@ -228,3 +228,50 @@ class CheckpointManagerTest(TestCase):
             loaded = snap.load_checkpoint_file(cp_dir, "tag1")
             self.assertIsNotNone(loaded)
             self.assertIn("memo", loaded["tables"])
+
+
+class WebformFilterTest(TestCase):
+    def test_filter_submissions_by_people_keeps_allowed_and_counts_drops(self) -> None:
+        submissions = [
+            {"peopleId": "p1", "x": 1},
+            {"personId": "p2", "x": 2},
+            {"person": {"id": "p1"}, "x": 3},
+            {"peopleId": "p3", "x": 4},  # not allowed
+            {"x": 5},  # missing person id
+            "invalid",  # missing person id
+        ]
+        filtered, missing, not_allowed = snap.filter_submissions_by_people(submissions, {"p1", "p2"}, quiet_logger())
+        self.assertEqual(len(filtered), 3)
+        ids = {item.get("peopleId") or item.get("personId") or item.get("person", {}).get("id") for item in filtered}
+        self.assertSetEqual(ids, {"p1", "p2"})
+        self.assertEqual(missing, 2)
+        self.assertEqual(not_allowed, 1)
+
+    def test_update_webform_history_filters_before_writing(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            db_path = Path(tmpdir) / "db.sqlite"
+            with snap.sqlite3.connect(db_path) as conn:
+                conn.execute('CREATE TABLE deal (peopleId TEXT)')
+                conn.execute('INSERT INTO deal (peopleId) VALUES (?)', ("p-1",))
+                conn.execute('CREATE TABLE people (id TEXT, "제출된 웹폼 목록" TEXT)')
+                conn.execute('INSERT INTO people (id, "제출된 웹폼 목록") VALUES (?, ?)', ("p-1", json.dumps([{"id": "wf-1"}])))
+
+            filtered_calls = []
+            with patch("salesmap_first_page_snapshot.fetch_webform_submissions") as fetch_mock, patch(
+                "salesmap_first_page_snapshot.TableWriter"
+            ) as writer_mock:
+                fetch_mock.side_effect = [
+                    [
+                        {"peopleId": "p-1", "payload": 1},
+                        {"peopleId": "p-x", "payload": 2},
+                        {"payload": 3},
+                    ]
+                ]
+                writer_instance = writer_mock.return_value
+                writer_instance.load_existing.return_value = None
+                writer_instance.write_batch.side_effect = lambda rows: filtered_calls.append(rows) or len(rows)
+
+                snap.update_webform_history(db_path, object(), quiet_logger())
+
+            self.assertEqual(len(filtered_calls), 1)
+            self.assertEqual(filtered_calls[0], [{"peopleId": "p-1", "payload": 1}])

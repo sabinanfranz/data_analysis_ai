@@ -53,6 +53,18 @@
   - 고객사 불일치 뷰 추가: 딜 orgId ≠ People.organizationId 탐지, 규모별 캐시, 조직 이동/외부 링크 지원.
 - 백엔드/스크립트
   - `/api/rank/2025-deals-people` 집계(2025 Won 조직의 People 그룹 + 모든 딜)와 `/api/rank/mismatched-deals` 추가.
-  - People 웹폼 ID 유니크 카운트 도구 추가(`analyze_sequence_ids.py`), salesmap_latest.db 기준 고유 ID 199개.
+  - People 웹폼 ID 유니크 카운트 도구 추가(`analyze_sequence_ids.py`), salesmap_latest.db 기준 고유 ID 199개. 스냅샷 완료 후 webform submit 내역을 `/v2/webForm/<id>/submit`으로 수집해 `webform_history` 테이블에 적재하는 후처리 추가, webFormSubmitList 구조 대응 및 webform-only 실행 플래그 추가.
 - 문서/테스트
-  - `docs/org_tables_v2.md` 최신 메뉴/UX/API 반영. 프런트 테스트 업데이트(`org_tables_v2_frontend.test.js`), node --test 통과 확인.
+  - `docs/org_tables_v2.md` 최신 메뉴/UX/API 반영(상위 조직 JSON 통합, Salesmap People 링크, 2025 딜·People 필터 완화). 프런트 테스트 업데이트(`org_tables_v2_frontend.test.js`), node --test 통과 확인.
+
+# 2025-02-XX 작업 기록
+
+- 상위 조직 JSON 카드 UX
+  - 선택 상위 조직이 없을 때 버튼 비활성화 + “아래 표에서 소속 상위 조직을 선택해주세요” 안내, 선택 시 라벨로 상위 조직 표시.
+- 메모 정제 로직
+  - 폼 메모에 `utm_source`가 있을 때만 전처리, 전화/규모/업종/채널/동의/utm 제거.
+  - 남는 키가 기본 5개만이면 해당 메모를 제외, 특수 문구가 있으면 제외, 그 외에는 `text`를 정제된 JSON 문자열로 교체.
+  - webform_history는 deal.peopleId 기반 허용 ID로 필터링 후 저장.
+- 문서
+  - `docs/api_behavior.md` 신설: `/orgs/{id}/won-groups-json`의 웹폼·메모 정제 및 주요 API 행동 정리.
+  - `docs/org_tables_v2.md` 상위 조직 JSON UX 갱신.

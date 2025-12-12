@@ -10,7 +10,7 @@ import sqlite3
 import time
 import zipfile
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 import pandas as pd
 import requests
@@ -188,6 +188,121 @@ def collect_columns(records: List[Dict[str, Any]]) -> List[str]:
     return columns
 
 
+def collect_webform_ids(conn: sqlite3.Connection, log: logging.Logger) -> Tuple[List[str], Set[str]]:
+    conn.row_factory = sqlite3.Row
+    people_ids = {
+        str(row[0]).strip()
+        for row in conn.execute(
+            'SELECT DISTINCT peopleId FROM deal WHERE peopleId IS NOT NULL AND TRIM(peopleId) <> ""'
+        )
+        if row[0] is not None and str(row[0]).strip()
+    }
+    if not people_ids:
+        log.info("No peopleId found in deal table; skipping webform history collection.")
+        return [], set()
+    placeholders = ",".join("?" for _ in people_ids)
+    query = f'SELECT id, "제출된 웹폼 목록" AS webforms FROM people WHERE id IN ({placeholders})'
+    webform_ids: set[str] = set()
+    try:
+        for row in conn.execute(query, tuple(people_ids)):
+            webform_ids.update(parse_webforms_field(row["webforms"]))
+    except sqlite3.OperationalError as exc:
+        if "제출된 웹폼 목록" in str(exc):
+            log.info("Column '제출된 웹폼 목록' not found; skipping webform history collection.")
+            return [], people_ids
+        raise
+    ids = sorted(webform_ids)
+    log.info("Found %d unique webform IDs from deals' people set.", len(ids))
+    return ids, people_ids
+
+
+def fetch_webform_submissions(client: SalesmapClient, webform_id: str, log: logging.Logger) -> List[Dict[str, Any]]:
+    def _extract_items(payload: Dict[str, Any]) -> List[Dict[str, Any]]:
+        # Try common list keys first (webFormSubmitList appears under data)
+        for key in ("items", "list", "submissions", "results", "webFormSubmitList"):
+            value = payload.get(key)
+            if isinstance(value, list) and value:
+                return value
+        # If "data" is a dict, search within
+        data_val = payload.get("data")
+        if isinstance(data_val, dict):
+            inner = _extract_items(data_val)
+            if inner:
+                return inner
+        # Fallback: pick the first list value among top-level fields
+        for value in payload.values():
+            if isinstance(value, list) and value:
+                return value
+        return []
+
+    submissions: List[Dict[str, Any]] = []
+    cursor: Optional[str] = None
+    while True:
+        params = {"cursor": cursor} if cursor else None
+        data, err = client.get_json(f"webForm/{webform_id}/submit", params=params)
+        if err:
+            log.warning("webform %s fetch error: %s", webform_id, err)
+            break
+        if not data:
+            break
+        items = _extract_items(data)
+        if not items:
+            log.info("webform %s response had no items (cursor=%s)", webform_id, cursor)
+            break
+        for entry in items:
+            if isinstance(entry, dict):
+                submissions.append({**entry, "webFormId": webform_id})
+        # cursor/nextCursor can appear at top-level or inside data
+        next_cursor = data.get("cursor") or data.get("nextCursor")
+        if not next_cursor and isinstance(data.get("data"), dict):
+            next_cursor = data["data"].get("cursor") or data["data"].get("nextCursor")
+        cursor = next_cursor
+        if not cursor:
+            break
+    log.info("webform %s submissions fetched: %d", webform_id, len(submissions))
+    return submissions
+
+
+def update_webform_history(db_path: Path, client: SalesmapClient, log: logging.Logger) -> None:
+    if not db_path.exists():
+        log.warning("DB not found for webform history update: %s", db_path)
+        return
+    with sqlite3.connect(db_path) as conn:
+        webform_ids, allowed_people_ids = collect_webform_ids(conn, log)
+        if not webform_ids:
+            return
+        allowed_people_set = {pid for pid in allowed_people_ids if pid}
+        writer = TableWriter(conn, "webform_history")
+        writer.load_existing()
+        total = 0
+        dropped_missing_total = 0
+        dropped_not_allowed_total = 0
+        for wf_id in webform_ids:
+            submissions = fetch_webform_submissions(client, wf_id, log)
+            filtered, dropped_missing, dropped_not_allowed = filter_submissions_by_people(
+                submissions, allowed_people_set, log
+            )
+            if dropped_missing or dropped_not_allowed:
+                log.info(
+                    "webform %s submissions filtered: kept=%d dropped_missing_person=%d dropped_not_allowed=%d",
+                    wf_id,
+                    len(filtered),
+                    dropped_missing,
+                    dropped_not_allowed,
+                )
+            dropped_missing_total += dropped_missing
+            dropped_not_allowed_total += dropped_not_allowed
+            total += writer.write_batch(filtered)
+        conn.commit()
+    log.info(
+        "webform_history updated with %d rows (db=%s, dropped_missing_person=%d, dropped_not_allowed=%d)",
+        total,
+        db_path,
+        dropped_missing_total,
+        dropped_not_allowed_total,
+    )
+
+
 def normalize_records(records: List[Dict[str, Any]], columns: Sequence[str]) -> List[Dict[str, Any]]:
     normalized: List[Dict[str, Any]] = []
     for record in records:
@@ -200,6 +315,70 @@ def normalize_records(records: List[Dict[str, Any]], columns: Sequence[str]) -> 
                 row[col] = val
         normalized.append(row)
     return normalized
+
+
+def parse_webforms_field(raw: Any) -> List[str]:
+    if raw is None:
+        return []
+    if isinstance(raw, (dict, list)):
+        data = raw
+    else:
+        try:
+            data = json.loads(raw)
+        except Exception:
+            return []
+    if isinstance(data, list):
+        ids: List[str] = []
+        for item in data:
+            if isinstance(item, dict):
+                val = item.get("id") or item.get("name")
+                if val:
+                    ids.append(str(val))
+            elif item:
+                ids.append(str(item))
+        return ids
+    return []
+
+
+def _extract_person_id_from_submission(entry: Any) -> Optional[str]:
+    if not isinstance(entry, dict):
+        return None
+    for key in ("peopleId", "personId", "person_id", "people_id"):
+        val = entry.get(key)
+        if val is None:
+            continue
+        text = str(val).strip()
+        if text:
+            return text
+    person = entry.get("person")
+    if isinstance(person, dict):
+        for key in ("id", "personId", "peopleId"):
+            val = person.get(key)
+            if val is None:
+                continue
+            text = str(val).strip()
+            if text:
+                return text
+    return None
+
+
+def filter_submissions_by_people(
+    submissions: List[Dict[str, Any]], allowed_people_ids: Set[str], log: logging.Logger
+) -> Tuple[List[Dict[str, Any]], int, int]:
+    allowed = {pid for pid in allowed_people_ids if pid}
+    kept: List[Dict[str, Any]] = []
+    dropped_missing = 0
+    dropped_not_allowed = 0
+    for entry in submissions:
+        person_id = _extract_person_id_from_submission(entry)
+        if not person_id:
+            dropped_missing += 1
+            continue
+        if person_id not in allowed:
+            dropped_not_allowed += 1
+            continue
+        kept.append(entry)
+    return kept, dropped_missing, dropped_not_allowed
 
 
 class CheckpointManager:
@@ -680,11 +859,28 @@ def main() -> None:
     )
     parser.add_argument("--resume", action="store_true", help="Resume from the latest checkpoint if present.")
     parser.add_argument("--resume-run-tag", default=None, help="Resume from a specific checkpoint run_tag.")
+    parser.add_argument(
+        "--webform-only",
+        action="store_true",
+        help="Skip snapshot crawl and only update webform_history on the existing DB.",
+    )
     args = parser.parse_args()
 
     token = _load_token(args.token)
     if not token:
         raise SystemExit("SALESMAP_TOKEN is required (env or streamlit secrets).")
+
+    db_path = Path(args.db_path)
+    client = SalesmapClient(base_url=args.base_url, token=token)
+
+    if args.webform_only:
+        run_ts = datetime.datetime.now(datetime.timezone.utc)
+        log_dir = Path(args.log_dir)
+        setup_logging(log_dir, run_ts.strftime("%Y%m%d_%H%M%S"))
+        logger.info("Starting webform-only update on %s", db_path)
+        update_webform_history(db_path, client, logger)
+        logger.info("Done webform-only update.")
+        return
 
     run_ts = datetime.datetime.now(datetime.timezone.utc)
     checkpoint_dir = Path(args.checkpoint_dir)
@@ -696,7 +892,6 @@ def main() -> None:
     if args.resume and not resume_state:
         logger.info("Resume requested but no checkpoint found. Starting fresh.")
 
-    db_path = Path(args.db_path)
     backup_dir = Path(args.backup_dir)
     backup_created = maybe_backup_existing_db(db_path, backup_dir, args.keep_backups, enabled=not args.no_backup)
     if backup_created:
@@ -830,6 +1025,10 @@ def main() -> None:
     run_info["final_db_path"] = str(final_db_path)
     with sqlite3.connect(final_db_path) as conn:
         pd.DataFrame([run_info]).to_sql("run_info", conn, if_exists="replace", index=False)
+    try:
+        update_webform_history(Path(final_db_path), client, logger)
+    except Exception as exc:  # pragma: no cover - best-effort post step
+        logger.warning("webform history update failed: %s", exc)
 
     history_path = record_run_history(log_dir, run_info, manifest, log_path, backup_created)
     logger.info("Run history appended to %s", history_path)

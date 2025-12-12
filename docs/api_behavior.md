@@ -1,0 +1,20 @@
+# API Behavior Notes (dashboard/server)
+
+- 공통
+  - 기본 DB 경로: `salesmap_latest.db` (없으면 500).
+  - JSON 응답은 FastAPI 라우터(`/dashboard/server/org_tables_api.py`)를 통해 제공된다.
+
+- `/api/orgs/{org_id}/won-groups-json`
+  - 웹폼: People 레코드의 `"제출된 웹폼 목록"`을 `{name, date}`로 변환한다. 동일 webFormId의 제출일이 여러 개인 경우 `date`는 리스트가 될 수 있으며, 제출 내역이 없으면 `"날짜 확인 불가"`를 반환한다. webform id는 노출하지 않는다.
+  - 메모 정제:
+    - 폼 스타일(`키: 값` 줄) + `utm_source`가 있을 때만 전처리.
+    - 드롭 키: 전화/기업 규모/업종/채널/동의/utm 항목은 제거한다.
+    - 남은 키가 `고객이름/고객이메일/회사이름/고객담당업무/고객직급/직책`만 있으면 메모를 결과에서 제외한다.
+    - 의미 있는 정제 결과가 있으면 `text`를 구조화된 JSON 문자열로 대체한다. 전처리 대상이 아니거나 실패하면 원본 `text`를 그대로 둔다.
+    - 특수 문구 `(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)`이 있으면 해당 메모를 결과에서 제외한다.
+
+- 기타 주요 엔드포인트
+  - `/api/orgs/{org_id}/won-summary`: 상위 조직별 Won 합계(23/24/25)와 담당자/owner 목록을 반환.
+  - `/api/orgs/{org_id}/people?hasDeal=true|false|null`: 조직의 People 리스트(딜 여부 필터).
+  - `/api/people/{person_id}/deals`, `/api/people/{person_id}/memos`, `/api/deals/{deal_id}/memos`: 사람/딜 단위 데이터와 메모.
+  - 랭킹/이상치: `/api/rank/2025-deals`, `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary`.

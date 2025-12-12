@@ -1144,30 +1144,35 @@
       const hint = document.getElementById("wonGroupJsonHintFiltered");
       const viewBtn = document.getElementById("viewWonGroupJsonFilteredBtn");
       const copyBtn = document.getElementById("copyWonGroupJsonFilteredBtn");
+      const label = document.getElementById("wonGroupJsonSelectedUpper");
       if (!hint || !viewBtn || !copyBtn) return;
 
       if (!state.selectedOrg) {
         hint.textContent = "회사를 선택하세요.";
         viewBtn.disabled = true;
         copyBtn.disabled = true;
+        if (label) label.textContent = "";
         return;
       }
       if (!state.selectedUpperOrg) {
-        hint.textContent = "상위 조직을 선택하세요.";
+        hint.textContent = "아래 표에서 소속 상위 조직을 선택해주세요.";
         viewBtn.disabled = true;
         copyBtn.disabled = true;
+        if (label) label.textContent = "";
         return;
       }
       if (!data) {
         hint.textContent = "불러오는 중...";
         viewBtn.disabled = true;
         copyBtn.disabled = true;
+        if (label) label.textContent = `선택된 상위 조직: ${state.selectedUpperOrg}`;
         return;
       }
       const groups = data.groups || [];
       hint.textContent = groups.length ? "" : "선택한 상위 조직의 Won 딜이 없습니다.";
-      viewBtn.disabled = false;
-      copyBtn.disabled = false;
+      viewBtn.disabled = groups.length === 0;
+      copyBtn.disabled = groups.length === 0;
+      if (label) label.textContent = `선택된 상위 조직: ${state.selectedUpperOrg}`;
     }
 
     async function loadWonGroupJson(orgId) {
@@ -1645,6 +1650,7 @@
                 <button id="viewWonGroupJsonFilteredBtn" type="button">JSON 확인</button>
                 <button id="copyWonGroupJsonFilteredBtn" type="button">JSON 복사</button>
               </div>
+              <div class="muted" id="wonGroupJsonSelectedUpper"></div>
               <div class="muted" id="wonGroupJsonHintFiltered">상위 조직을 선택하세요.</div>
             </div>
           </div>

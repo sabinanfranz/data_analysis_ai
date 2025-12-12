@@ -1,6 +1,8 @@
+import json
+import re
 import sqlite3
 from pathlib import Path
-from typing import Any, Dict, List, Sequence, Set
+from typing import Any, Dict, List, Optional, Sequence, Set
 
 DB_PATH = Path(__file__).resolve().parent.parent.parent / "salesmap_latest.db"
 _OWNER_LOOKUP_CACHE: Dict[Path, Dict[str, str]] = {}
@@ -38,6 +40,90 @@ def _safe_json_load(value: Any) -> Any:
         except Exception:
             return value
     return value
+
+
+def _clean_form_memo(text: str) -> Optional[Dict[str, str]]:
+    """
+    Extract a minimal set of fields from form-style memos for LLM use.
+    Drops: phone/company_size/industry/channel/consent_*/utm_*
+    Keeps everything else (including question-like keys) after merging wrapped lines.
+    """
+    if not text:
+        return None
+
+    # Pre-trim: collapse double newlines and remove smiley ":)"
+    normalized_text = text.replace("\r\n", "\n").replace("\n\n", "\n").replace(":)", "")
+
+    # If special disclaimer exists, force empty cleanText
+    if "단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청" in normalized_text:
+        return ""
+
+    # Only proceed when utm_source is present
+    if "utm_source" not in normalized_text:
+        return None
+
+    lines_raw = normalized_text.split("\n")
+    merged_lines: List[str] = []
+    current = ""
+    for raw in lines_raw:
+        ln = raw.strip()
+        if not ln:
+            continue
+        if ":" in ln:
+            if current:
+                merged_lines.append(current)
+            current = ln
+        else:
+            # continuation line for previous value
+            if current:
+                current = f"{current} {ln}"
+            else:
+                current = ln
+    if current:
+        merged_lines.append(current)
+
+    drop_key_norms = {
+        "고객전화",
+        "회사기업규모",
+        "회사업종",
+        "방문경로",
+        "개인정보수집동의",
+        "고객마케팅수신동의",
+        "고객utm_source",
+        "고객utm_medium",
+        "고객utm_campaign",
+        "고객utm_content",
+    }
+
+    result: Dict[str, str] = {}
+    for ln in merged_lines:
+        match = re.match(r"^[-•]?\s*([^:]+):\s*(.*)$", ln)
+        if not match:
+            continue
+        raw_key, raw_val = match.group(1).strip(), match.group(2).strip().strip(".")
+        if raw_val in ("", "(공백)", "-"):
+            continue
+        key_norm = raw_key.replace(" ", "")
+        if key_norm in drop_key_norms:
+            continue
+        key = None
+        # question detection
+        if "궁금" in raw_key or "고민" in raw_key:
+            key = "question"
+        if not key:
+            # keep normalized key as-is (without spaces) to preserve info
+            key = key_norm
+        if key not in result:
+            result[key] = raw_val
+
+    if not result:
+        return None
+
+    minimal_set = {"고객이름", "고객이메일", "회사이름", "고객담당업무", "고객직급/직책"}
+    if set(result.keys()) == minimal_set:
+        return ""
+
+    return result
 
 
 def _get_owner_lookup(db_path: Path) -> Dict[str, str]:
@@ -761,18 +847,54 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
             text = text.split(" ")[0]
         return text
 
-    def _webform_names(raw: Any) -> List[str]:
+    def _parse_webforms(raw: Any) -> List[Dict[str, Any]]:
         data = _safe_json_load(raw)
-        names: List[str] = []
-        if isinstance(data, list):
-            for item in data:
-                if isinstance(item, dict):
-                    name = item.get("name")
-                    if name:
-                        names.append(str(name))
-                elif item:
-                    names.append(str(item))
-        return names
+        items: List[Dict[str, Any]] = []
+        if not isinstance(data, list):
+            return items
+        for entry in data:
+            if isinstance(entry, dict):
+                wf_id = entry.get("id")
+                wf_name = entry.get("name") or entry.get("label") or wf_id
+                items.append(
+                    {
+                        "id": str(wf_id) if wf_id is not None else None,
+                        "name": str(wf_name) if wf_name is not None else "",
+                    }
+                )
+            elif entry is not None:
+                items.append({"id": None, "name": str(entry)})
+        return items
+
+    def _build_history_index(conn: sqlite3.Connection, people_ids: List[str]) -> Dict[tuple[str, str], List[str]]:
+        if not people_ids:
+            return {}
+        placeholders = ",".join("?" for _ in people_ids)
+        try:
+            rows = _fetch_all(
+                conn,
+                f"SELECT peopleId, webFormId, createdAt FROM webform_history WHERE peopleId IN ({placeholders})",
+                tuple(people_ids),
+            )
+        except sqlite3.OperationalError as exc:
+            # Older DB without webform_history table
+            if "no such table" in str(exc):
+                return {}
+            raise
+        history: Dict[tuple[str, str], List[str]] = {}
+        for row in rows:
+            pid = str(row["peopleId"] or "").strip()
+            wf_id = str(row["webFormId"] or "").strip()
+            if not pid or not wf_id:
+                continue
+            date = _date_only(row["createdAt"])
+            if not date:
+                continue
+            key = (pid, wf_id)
+            dates = history.setdefault(key, [])
+            if date not in dates:
+                dates.append(date)
+        return history
 
     with _connect(db_path) as conn:
         org_rows = _fetch_all(
@@ -799,11 +921,30 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
             "FROM people WHERE organizationId = ?",
             (org_id,),
         )
+        people_ids = [row["id"] for row in people_rows if row["id"]]
+        webform_history_index = _build_history_index(conn, people_ids)
         people_map: Dict[str, Dict[str, Any]] = {}
         for row in people_rows:
             pid = row["id"]
             upper = _normalize_upper(row["upper_org"])
             team_sig = _normalize_team(row["team_signature"])
+            webform_entries = _parse_webforms(row["webforms"])
+
+            def _attach_date(entry: Dict[str, Any]) -> Dict[str, Any]:
+                wf_id = entry.get("id")
+                dates = webform_history_index.get((pid, wf_id)) if wf_id else None
+                if not dates:
+                    date_value: str | list[str] = "날짜 확인 불가"
+                else:
+                    unique_dates = sorted(set(dates))
+                    if len(unique_dates) == 1:
+                        date_value = unique_dates[0]
+                    else:
+                        date_value = unique_dates
+                cleaned = {"name": entry.get("name", "")}
+                cleaned["date"] = date_value
+                return cleaned
+
             people_map[pid] = {
                 "id": pid,
                 "name": row["name"],
@@ -812,7 +953,7 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
                 "team_signature": row["team_signature"],
                 "title_signature": row["title_signature"],
                 "edu_area": row["edu_area"],
-                "webforms": _webform_names(row["webforms"]),
+                "webforms": [_attach_date(entry) for entry in webform_entries],
             }
 
         deal_rows = _fetch_all(
@@ -844,7 +985,15 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
     org_memos: List[Dict[str, Any]] = []
     for memo in memo_rows:
         date_only = _date_only(memo["createdAt"])
-        entry = {"date": date_only, "text": memo["text"]}
+        cleaned = _clean_form_memo(memo["text"])
+        if cleaned == "":
+            # Skip low-value form memos
+            continue
+        if cleaned is None:
+            entry = {"date": date_only, "text": memo["text"]}
+        else:
+            # Replace text with structured cleanText
+            entry = {"date": date_only, "cleanText": cleaned}
         deal_id = memo["dealId"]
         person_id = memo["peopleId"]
         org_only = memo["organizationId"]

@@ -22,3 +22,9 @@ python -m venv .venv; .\.venv\Scripts\pip install -r requirements.txt
 $env:SALESMAP_TOKEN="<세일즈맵_API_토큰>"; python .\salesmap_first_page_snapshot.py --db-path .\salesmap_latest.db --log-dir .\logs --checkpoint-dir .\logs\checkpoints --backup-dir .\backups --keep-backups 30
 ```
 - 체크포인트는 `logs/checkpoints`에 저장되며, 파일 교체 실패 시 자동으로 tmp→본 파일 복사로 폴백합니다. 중단 후 재개하려면 같은 옵션에 `--resume`을 추가합니다.
+
+## 웹폼 제출 내역만 수집
+- 기존 스냅샷 DB에서 웹폼 제출 내역만 별도로 적재하려면:
+```powershell
+$env:SALESMAP_TOKEN="<세일즈맵_API_토큰>"; python .\salesmap_first_page_snapshot.py --webform-only --db-path .\salesmap_latest.db --log-dir .\logs
+```

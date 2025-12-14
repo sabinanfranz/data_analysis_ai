@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from . import database as db
 from .json_compact import compact_won_groups_json
+from .statepath_engine import build_statepath
 
 router = APIRouter(prefix="/api")
 
@@ -143,6 +144,17 @@ def get_won_groups_json_compact(org_id: str) -> dict:
     try:
         raw = db.get_won_groups_json(org_id=org_id)
         return compact_won_groups_json(raw)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/orgs/{org_id}/statepath")
+def get_statepath(org_id: str) -> dict:
+    try:
+        raw = db.get_won_groups_json(org_id=org_id)
+        compact = compact_won_groups_json(raw)
+        item = build_statepath(compact)
+        return {"item": item}
     except FileNotFoundError as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

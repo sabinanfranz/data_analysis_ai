@@ -18,6 +18,7 @@ LLM이 “어느 기능이 어느 파일에 있는지”를 빠르게 찾도록 
 | `dashboard/server/org_tables_api.py` | API 라우터 집합 | `/api/orgs`, `/api/orgs/{id}/won-groups-json(-compact)`, `/api/rank/*` | `docs/api_behavior.md` |
 | `dashboard/server/database.py` | DB 조회/집계, 메모/webform 정제 | `list_organizations`, `get_won_groups_json`, `get_won_summary_by_upper_org`, `get_rank_*`, `_clean_form_memo` | `docs/api_behavior.md`, `docs/json_logic.md` |
 | `dashboard/server/json_compact.py` | won-groups-json 축약 변환(LLM용) | `compact_won_groups_json` | `docs/json_logic.md` |
+| `dashboard/server/statepath_engine.py` | StatePath/추천 계산 | `build_statepath` (2024/2025 상태/이벤트/추천) | `docs/llm_context/06_API_CONTRACT_CORE.md` |
 | `org_tables_v2.html` | 프런트 렌더/캐시, JSON/모달/UX | fetch helpers, `render*`, `loadWonGroupJson`, webform/메모 모달 | `docs/org_tables_v2.md`, `docs/json_logic.md` |
 | `salesmap_first_page_snapshot.py` | Salesmap API 스냅샷/웹폼 적재, 체크포인트/백업 | `main()`, `CheckpointManager`, webform_history 후처리 | `docs/snapshot_pipeline.md` |
 | `build_org_tables.py` | 정적 org_tables.html 생성(구 레이아웃) | CLI 엔트리, HTML 생성 | `docs/org_tables_usage.md` |

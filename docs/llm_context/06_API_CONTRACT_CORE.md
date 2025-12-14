@@ -20,6 +20,7 @@
 | GET `/api/orgs/{org_id}/won-summary` | 상위 조직별 Won 합계(23/24/25) | path org_id | 상위 조직별 그룹, Won 상태 & 계약연도 23/24/25만 합산 | `{ "items": [ { "upper_org","won2023","won2024","won2025","contacts":[...], "owners":[...], "owners2025":[...], "dealCount" } ] }` |
 | GET `/api/orgs/{org_id}/won-groups-json` | 상위 조직별 People/Deal JSON | path org_id | 23/24/25 Won 있는 상위 조직만 포함 | `{ "organization": {...}, "groups": [ { "upper_org","team","people":[...], "deals":[...] } ] }` (세부 정제 규칙은 `docs/json_logic.md`) |
 | GET `/api/orgs/{org_id}/won-groups-json-compact` | won-groups-json 축약본(LLM용) | path org_id | 원본 그룹 구조를 compact 변환 | `{ "schema_version": "...", "organization": {...,"summary":...}, "groups": [ { "upper_org","team","deal_defaults", "counterparty_summary", "people":[...], "deals":[...] } ] }` |
+| GET `/api/orgs/{org_id}/statepath` | 2024/2025 StatePath + 추천 | path org_id | won-groups-json-compact 기반으로 StatePath/추천을 산출 | `{ "item": { "company_name": "...", "year_states": {...}, "path_2024_to_2025": {...}, "ops_reco": {...}, "qa": {...} } }` |
 
 ## 엔드포인트 설명/예시
 - `/api/orgs`: People/Deal 연결이 없는 조직은 제외. 2025년 Won 합계 내림차순으로 정렬 후 이름 순으로 보조 정렬.

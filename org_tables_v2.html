@@ -528,6 +528,16 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="statePathModalBackdrop">
+    <div class="modal json-modal">
+      <header>
+        <h3 id="statePathModalTitle">StatePath</h3>
+        <button class="close-btn" id="statePathModalClose" type="button">닫기</button>
+      </header>
+      <div class="body" id="statePathModalBody"></div>
+    </div>
+  </div>
+
   <script>
     const API_BASE = (() => {
       const origin = window.location.origin;
@@ -595,6 +605,7 @@
       wonGroupJsonCompact: null,
       filteredWonGroupJson: null,
       filteredWonGroupJsonCompact: null,
+      statePath: null,
       selectedUpperOrg: null,
       people: [],
       selectedPerson: null,
@@ -625,6 +636,12 @@
         body: null,
         bound: false,
       },
+      statePathModal: {
+        backdrop: null,
+        close: null,
+        title: null,
+        body: null,
+      },
       rankPeopleModal: {
         backdrop: null,
         close: null,
@@ -641,6 +658,7 @@
       sizes: null,
       wonGroupJsonByOrg: new Map(),
       wonGroupJsonCompactByOrg: new Map(),
+      statePathByOrg: new Map(),
       orgMemos: new Map(),
       peopleByOrg: new Map(),
       deals: new Map(),
@@ -778,6 +796,101 @@
           : "X";
 
       return { ownersText, teamPartText, dri };
+    }
+
+    function openStatePathModal(item) {
+      if (!state.statePathModal.backdrop || !state.statePathModal.body) return;
+      const body = state.statePathModal.body;
+      if (state.statePathModal.title) {
+        state.statePathModal.title.textContent = `StatePath - ${item.company_name || state.selectedOrg || ""}`;
+      }
+      const rowsYear = ["2024", "2025"]
+        .map((y) => {
+          const st = item.year_states?.[y] || {};
+          return `<tr>
+            <td>${y}</td>
+            <td>${formatEok(st.total_eok || 0)} (${st.bucket || "-"})</td>
+            <td>${formatEok(st.online_eok || 0)} (${st.bucket_online || "-"})</td>
+            <td>${formatEok(st.offline_eok || 0)} (${st.bucket_offline || "-"})</td>
+            <td>${formatEok(st.hrd_eok || 0)}</td>
+            <td>${formatEok(st.bu_eok || 0)}</td>
+          </tr>`;
+        })
+        .join("");
+
+      const cells = ["HRD_ONLINE", "HRD_OFFLINE", "BU_ONLINE", "BU_OFFLINE"]
+        .map((cell) => {
+          const c24 = item.year_states?.["2024"]?.cells?.[cell] || {};
+          const c25 = item.year_states?.["2025"]?.cells?.[cell] || {};
+          return `<tr>
+            <td>${cell}</td>
+            <td>${formatEok(c24.amt_eok || 0)} (${c24.bucket || "-"})</td>
+            <td>${formatEok(c25.amt_eok || 0)} (${c25.bucket || "-"})</td>
+          </tr>`;
+        })
+        .join("");
+
+      const events = item.path_2024_to_2025?.events || [];
+      const eventsHtml = events.length
+        ? events
+            .map(
+              (ev) =>
+                `<li><strong>${ev.type}</strong> ${ev.cell ? ev.cell + ": " : ""}${ev.from || ""} → ${ev.to || ""} ${ev.rail ? `(${ev.rail})` : ""}</li>`
+            )
+            .join("")
+        : "<li>변화 이벤트 없음</li>";
+
+      const reco = item.ops_reco || {};
+      const targets = (reco.target_counterparties || [])
+        .map(
+          (t) =>
+            `<tr><td>${t.rank}</td><td>${t.upper_org || "-"}</td><td>${t.lane || "-"}</td><td>${formatEok(t.amt_2024_eok || 0)}</td><td>${formatEok(t.amt_2025_eok || 0)}</td></tr>`
+        )
+        .join("");
+      const plays = (reco.action_play_top3 || [])
+        .map((p) => `<li><strong>${p.type}</strong>: ${p.text}</li>`)
+        .join("") || "<li>추천 없음</li>";
+
+      body.innerHTML = `
+        <section class="card">
+          <h3>연도별 요약</h3>
+          <div class="table-wrap full">
+            <table>
+              <thead><tr><th>연도</th><th>총액(억)</th><th>온라인(억)</th><th>오프라인(억)</th><th>HRD(억)</th><th>BU(억)</th></tr></thead>
+              <tbody>${rowsYear}</tbody>
+            </table>
+          </div>
+        </section>
+        <section class="card">
+          <h3>4셀 비교</h3>
+          <div class="table-wrap full">
+            <table>
+              <thead><tr><th>셀</th><th>2024</th><th>2025</th></tr></thead>
+              <tbody>${cells}</tbody>
+            </table>
+          </div>
+        </section>
+        <section class="card">
+          <h3>Path 이벤트 (Seed: ${item.path_2024_to_2025?.seed || "-"})</h3>
+          <ul>${eventsHtml}</ul>
+        </section>
+        <section class="card">
+          <h3>RevOps 추천</h3>
+          <div>Objective: <strong>${reco.next_objective_type || "-"}</strong>, Target Cell: <strong>${reco.next_target_cell || "-"}</strong></div>
+          <div class="table-wrap full">
+            <table>
+              <thead><tr><th>랭크</th><th>상위 조직</th><th>Lane</th><th>2024(억)</th><th>2025(억)</th></tr></thead>
+              <tbody>${targets}</tbody>
+            </table>
+          </div>
+          <ul>${plays}</ul>
+        </section>
+      `;
+      if (state.statePathModal.backdrop) state.statePathModal.backdrop.style.display = "flex";
+    }
+
+    function closeStatePathModal() {
+      if (state.statePathModal.backdrop) state.statePathModal.backdrop.style.display = "none";
     }
 
     function toJsonText(data) {
@@ -1179,6 +1292,13 @@
       return (value / 1e8).toFixed(2) + "억";
     }
 
+    function formatEok(num) {
+      if (num === null || num === undefined || Number.isNaN(num)) return "-";
+      const value = Number(num);
+      if (!Number.isFinite(value)) return "-";
+      return value.toFixed(2) + "억";
+    }
+
     function formatRatio(num) {
       if (num === null || num === undefined || Number.isNaN(num)) return "n/a";
       const value = Number(num);
@@ -1255,6 +1375,12 @@
       const sizes = Array.from(new Set(["전체", ...(data.sizes || [])]));
       cache.sizes = sizes;
       return sizes;
+    }
+
+    function updateStatePathButton() {
+      const btn = document.getElementById("statePathBtn");
+      if (!btn) return;
+      btn.disabled = !state.selectedOrg;
     }
 
     async function loadSizes() {
@@ -1346,6 +1472,8 @@
       state.wonGroupJsonCompact = null;
       state.filteredWonGroupJson = null;
       state.filteredWonGroupJsonCompact = null;
+      state.statePath = null;
+      updateStatePathButton();
       renderOrgMemos([]);
       renderWonSummary([]);
       renderWonGroupJsonAll(null);
@@ -1366,6 +1494,7 @@
       state.dealMemos = [];
       state.wonGroupJson = null;
       state.wonGroupJsonCompact = null;
+      state.statePath = null;
       state.filteredWonGroupJson = null;
       state.filteredWonGroupJsonCompact = null;
       setBreadcrumb();
@@ -1400,6 +1529,7 @@
         state.orgMemos = memos;
         state.people = peopleList || [];
         state.wonSummary = wonSummary || [];
+        updateStatePathButton();
 
         renderOrgMemos(memos);
         renderWonSummary(state.wonSummary);
@@ -1736,6 +1866,32 @@
       }
     }
 
+    async function loadStatePath(orgId) {
+      if (!orgId) {
+        showToast("회사를 선택하세요.", "info");
+        return;
+      }
+      const btn = document.getElementById("statePathBtn");
+      if (btn) btn.disabled = true;
+      try {
+        const cached = cache.statePathByOrg.get(orgId);
+        if (cached) {
+          state.statePath = cached;
+          openStatePathModal(cached);
+          return;
+        }
+        const data = await fetchJson(`/orgs/${orgId}/statepath`);
+        const item = data.item || data;
+        cache.statePathByOrg.set(orgId, item);
+        state.statePath = item;
+        openStatePathModal(item);
+      } catch (err) {
+        showToast(`StatePath 로드 오류: ${err.message}`, "error");
+      } finally {
+        updateStatePathButton();
+      }
+    }
+
     function renderOrgMemos(memos) {
       const hint = document.getElementById("orgMemoHint");
       const table = document.getElementById("orgMemoTable");
@@ -2035,6 +2191,7 @@
       state.personMemos = [];
       state.dealMemos = [];
       state.wonSummary = [];
+      state.statePath = null;
       state.filteredWonGroupJson = null;
       state.wonGroupJson = null;
       state.wonSummaryCleared = true;
@@ -2048,12 +2205,14 @@
 
       clearOrgViews();
       setBreadcrumb();
+      updateStatePathButton();
       await loadOrgs(0);
       state.wonSummaryCleared = false;
     }
 
     async function initOrgScreen() {
       document.getElementById("apiBaseLabel").textContent = API_BASE;
+      updateStatePathButton();
       document.getElementById("sizeSelect").addEventListener("change", async (e) => {
         state.size = e.target.value;
         await loadOrgs(0);
@@ -2067,8 +2226,10 @@
         if (DEBUG_ORG_SELECT) console.debug("[orgSelect] change", { val });
         if (!val) {
           state.selectedOrg = null;
+          state.statePath = null;
           clearOrgViews();
           setBreadcrumb();
+          updateStatePathButton();
           return;
         }
         try {
@@ -2085,6 +2246,7 @@
         }
       });
       document.getElementById("resetBtn").addEventListener("click", () => resetSelection());
+      document.getElementById("statePathBtn").addEventListener("click", () => loadStatePath(state.selectedOrg));
       const viewAll = document.getElementById("viewWonGroupJsonAllBtn");
       const copyAll = document.getElementById("copyWonGroupJsonAllBtn");
       const viewFiltered = document.getElementById("viewWonGroupJsonFilteredBtn");
@@ -2141,6 +2303,16 @@
         });
       }
       if (state.rankPeopleModal.close) state.rankPeopleModal.close.addEventListener("click", closeDealsModal);
+      state.statePathModal.backdrop = document.getElementById("statePathModalBackdrop");
+      state.statePathModal.close = document.getElementById("statePathModalClose");
+      state.statePathModal.title = document.getElementById("statePathModalTitle");
+      state.statePathModal.body = document.getElementById("statePathModalBody");
+      if (state.statePathModal.backdrop) {
+        state.statePathModal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.statePathModal.backdrop) closeStatePathModal();
+        });
+      }
+      if (state.statePathModal.close) state.statePathModal.close.addEventListener("click", closeStatePathModal);
       if (!state.modal.bound) {
         document.addEventListener("keydown", (e) => {
           if (e.key === "Escape") {
@@ -2148,6 +2320,7 @@
             closeJsonModal();
             closeDealsModal();
             closeWebformModal();
+            closeStatePathModal();
           }
         });
         state.modal.bound = true;
@@ -2186,6 +2359,7 @@
             <label class="muted">회사</label>
             <select id="orgSelect"></select>
             <button id="resetBtn" type="button">선택 초기화</button>
+            <button id="statePathBtn" type="button">StatePath 보기</button>
           </div>
         </header>
 

@@ -77,6 +77,10 @@
    - `/orgs/{id}/won-groups-json`과 `/orgs/{id}/won-groups-json-compact`를 모두 호출해 캐시 후 upper_org로 필터링한다. 회사/상위 조직이 바뀌면 모든 JSON 상태를 초기화하고 버튼을 비활성화한다.
    - JSON의 `organization` 블록에는 `id/name/size/industry` 외에 `industry_major`(업종 구분 대), `industry_mid`(업종 구분 중)도 포함된다. compact 버전은 `schema_version`·deal_defaults·summary 블록이 추가되고 memos/webforms가 제거된다.
    - 상위 조직이 선택되지 않았을 때는 “아래 표에서 소속 상위 조직을 선택해주세요” 안내와 함께 JSON 버튼이 비활성화된다. 선택하면 `선택된 상위 조직: …` 라벨이 표시된다.
+10. StatePath
+   - 회사 선택 후 `StatePath 보기` 버튼으로 `/api/orgs/{orgId}/statepath`를 호출해 2024/2025 상태, Path 이벤트, Seed, 추천을 모달로 표시한다.
+   - 모달 구성: 연도별 요약(총액/온라인/오프라인/HRD/BU), 4셀 비교(2024 vs 2025), 이벤트 목록(seed 포함), RevOps 추천(다음 목표/타겟 셀/카운터파티 A/B/C/action play).
+   - 금액은 API가 억 단위(amount_eok)로 내려주므로 `formatEok`(소수 2자리 + 억)로 표시한다. 캐시(`statePathByOrg`)로 재호출을 줄인다.
 
 ### 2025년 체결액 순위 화면
 - 규모 필터: 상단 `기업 규모` 셀렉터로 `/rank/2025-deals?size=...`를 호출하며, 규모별로 별도 캐시(Map)에 저장한다. 기본은 `전체`.

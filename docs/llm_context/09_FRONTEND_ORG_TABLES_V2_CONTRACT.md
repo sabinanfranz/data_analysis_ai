@@ -29,7 +29,7 @@
 6. 선택 초기화: 규모/검색/회사 선택 상태를 기본으로 리셋하고 목록 재조회. 상위 조직/People/Deal/메모/Won 요약/JSON 상태도 초기화한다. 자동 선택 없음.
 
 ## 5) 메뉴별 동작 요약
-- **조직/People/Deal 뷰어(`org-view`)**: 조직 목록/메모/People/Deal/메모, 상위 조직 Won 요약(2025 담당자/팀&파트/DRI 포함), 상위 조직별 JSON + 간소화 JSON, 웹폼 내역 모달(People 행 버튼), 딜/People 세일즈맵 링크.
+- **조직/People/Deal 뷰어(`org-view`)**: 조직 목록/메모/People/Deal/메모, 상위 조직 Won 요약(2025 담당자/팀&파트/DRI 포함), 상위 조직별 JSON + 간소화 JSON, StatePath 버튼/모달, 웹폼 내역 모달(People 행 버튼), 딜/People 세일즈맵 링크.
 - **2025년 체결액 순위(`rank-2025`)**: `/api/rank/2025-deals` 호출, 규모 필터, 등급 가이드/배수 모달. 표는 2024/2025 등급·총액, 24→25 배수, 2025 온라인/비온라인, 2026 목표액을 표시하며 요약 카드로 합계도 보여준다. 회사 클릭 시 조직 화면으로 이동.
 - **2025 대기업 딜·People(`rank-2025-people`)**: `/api/rank/2025-deals-people`, 규모/회사/상위 조직 필터, 딜 보기 모달.
 - **고객사 불일치(`mismatch-2025`)**: `/api/rank/mismatched-deals`, 규모 필터, 딜 org vs People org 비교.
@@ -41,3 +41,4 @@
 - 버튼 비활성화: 데이터 없는 상태에서 JSON 보기/복사, 웹폼 내역(없으면 “없음”), 조직 미선택 시 People/Deal 표 비움, 상위 조직 미선택 시 관련 표/버튼 비활성화.
 - 선택 표시: 선택된 행은 `active` 클래스, 상위 조직 라벨/브레드크럼에 선택 상태 반영.
 - Won 요약 DRI 규칙: 2025 Won 딜 담당자 이름 → PART_STRUCTURE 매핑, 단일 팀/파트(“셀” 제외)일 때만 `O`, 매핑 실패나 복수 콤보면 `X`.
+- StatePath 모달: `/api/orgs/{id}/statepath` 응답을 캐시(`statePathByOrg`) 후 연도별 요약/셀 비교/이벤트/추천 블록으로 렌더, 금액은 억 단위 그대로 표시(`formatEok`).

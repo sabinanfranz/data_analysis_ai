@@ -26,8 +26,8 @@
 - `GET /api/rank/won-industry-summary`: 기업 규모별 업종 구분(대) 단위로 2023/2024/2025 Won 금액을 합산하고 회사 수를 반환.
 
 ## 프런트 전역 상태/캐시 구조
-- 주요 상태(`state`): 활성 메뉴(`activeMenuId`), 규모/검색어/회사 선택, 랭킹 필터, People/Deal/상위 조직 선택, 메모 목록, 모달 핸들, 랭킹 화면에서 넘어올 때 쓸 `pendingOrgId`/`pendingOrgFallback`.
-- 캐시(`cache`): 조직별 회사 메모/People/Deal, People 메모, Deal 메모, 2025 랭킹, 조직 단건 조회(검색 결과에 없을 때 fallback용) 모두 `Map`으로 저장해 재요청을 줄인다. 캐시 무효화는 제공하지 않으므로 DB를 바꿨으면 새로고침 필요.
+- 주요 상태(`state`): 활성 메뉴(`activeMenuId`), 규모/검색어/회사 선택, 랭킹 필터, People/Deal/상위 조직 선택, 메모 목록, 모달 핸들, 랭킹 화면에서 넘어올 때 쓸 `pendingOrgId`/`pendingOrgFallback`, StatePath 포트폴리오 상태(`statepath2425`: segment/search/sort/limit/items/summary/loading/error).
+- 캐시(`cache`): 조직별 회사 메모/People/Deal, People 메모, Deal 메모, 2025 랭킹, 조직 단건 조회(검색 결과에 없을 때 fallback용) 모두 `Map`으로 저장해 재요청을 줄인다. StatePath 포트폴리오(`statepathPortfolioByKey`: 세그먼트/검색/정렬 키)와 상세(`statePathByOrg`)도 Map 캐시로 추가했다. 캐시 무효화는 제공하지 않으므로 DB를 바꿨으면 새로고침 필요.
 - 알림: `showToast`가 성공/에러 메시지를 하단 토스트로 3.2초간 노출.
 - 메모 모달: 메모 행을 클릭하면 작성일/작성자/본문을 모달로 보여주며, ESC 또는 배경 클릭/닫기 버튼으로 닫는다.
 - Salesmap 외부 링크: `SALESMAP_WORKSPACE_PATH` 상수로 워크스페이스 경로를 설정해 딜/People 링크를 Salesmap으로 연결한다(조직 뷰어 People 표, 2025 딜·People 표에서 이름 클릭 시 새 탭 이동).
@@ -39,7 +39,7 @@
   - `2025 대기업 딜·People` (2025 Won 딜이 있는 조직별 People 그룹, 딜은 상태 무관 전체 표시)
   - `고객사 불일치` (딜 orgId와 People.organizationId가 다른 경우 탐지)
   - `업종별 매출` (대/중견 업종별 Won 합계)
-  - `StatePath 24→25` (규모/패턴별 StatePath 포트폴리오)
+- `StatePath 24→25` (규모/패턴별 StatePath 포트폴리오)
 - 콘텐츠 영역은 메뉴별 렌더러가 채운다(`menuConfig` → `renderContent`).
 
 ### 조직/People/Deal 뷰어 흐름
@@ -105,6 +105,18 @@
 - 컬럼: `업종 구분(대)`, `2023 Won(억)`, `2024 Won(억)`, `2025 Won(억)`, `회사 수`.
 - 데이터 소스: `/rank/won-industry-summary?size=대기업|중견기업` (백엔드에서 연도별 Won 합계와 회사 수 집계).
 - 오류/빈 데이터 시 표 대신 안내 문구를 노출하고 토스트로 에러를 표시한다.
+
+### StatePath 24→25 포트폴리오 화면
+- 세그먼트 탭(전체/대기업/중견/중소/공공/대학교/기타·미입력) + 검색 + 정렬(2025 desc/Δ desc/name asc) 컨트롤이 상단에 노출된다.
+- `/api/statepath/portfolio-2425`를 호출해 2024/2025 회사 총액(억)과 버킷을 받아 테이블에 표시한다. 키 `{segment, search, sort, limit}` 조합별로 `statepathPortfolioByKey`에 캐싱한다.
+- 행 클릭 시 기존 StatePath 모달을 재사용해 `/api/orgs/{id}/statepath` 응답(2024/2025 state + path 이벤트/seed/추천)을 표시한다. 상세 응답은 `statePathByOrg` 캐시를 그대로 사용한다.
+- 하단에 “DB 교체 시 새로고침 필요(캐시 무효화 없음)” 안내 문구를 함께 노출한다.
+- V1/V2 추가 UX:
+  - Snapshot 카드(계정수/24·25 합계/Δ/Company 변화/OPEN·RISK), 퀵필터 칩(Risk/Open/ScaleUp/Company ↑↓=/Seed/Online·Offline Shift), Pattern Explorer(Company 전이 매트릭스, 4셀 이벤트 매트릭스, Rail 변화 요약), Top Patterns 5줄(OPEN/CLOSE/UP/DOWN/Seed) 렌더 및 클릭 필터 적용.
+  - Breadcrumb: 현재 세그먼트/검색/퀵필터/패턴 필터를 토큰으로 표시, x로 개별 해제, “전체 해제” 버튼 제공.
+  - 세그먼트 비교 테이블: segment=전체 + 검색/필터 기본값일 때만 표시, 세그먼트별 계정수·2025총액·비율(Company↑/OPEN/Risk/H→B)을 보여주며 행 클릭 시 해당 세그먼트로 전환 후 필터 초기화.
+  - 테이블 페이징: 기본 pageSize=200, Prev/Next 버튼. summary/매트릭스는 filteredItems 전체로 계산(정확성 유지).
+  - 용어/기준 안내: STATEPATH_GLOSSARY 기반 툴팁/title, 섹션별 ⓘ 버튼, 통합 “용어/기준” 모달을 제공해 Snapshot/QuickFilters/Pattern/SegmentComparison/TopPatterns/Breadcrumb/Pagination/버킷 정의를 확인할 수 있다.
 
 ## 예외/UX 처리
 - API 실패 시 토스트로 원인 메시지 표시, 관련 표는 비워진다.

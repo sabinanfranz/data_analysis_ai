@@ -342,13 +342,13 @@ def get_statepath_portfolio(
     search: str | None = None,
     filters: Optional[Dict[str, Any]] = None,
     sort: str = "won2025_desc",
-    limit: int = 200,
+    limit: int = 500,
     offset: int = 0,
     db_path: Path = DB_PATH,
 ) -> Dict[str, Any]:
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
-    limit = max(1, min(limit, 500))
+    limit = max(1, min(limit, 2000))
     offset = max(0, offset)
     rows = _statepath_rows(db_path)
     cells_by_org = _build_statepath_cells(rows)
@@ -481,19 +481,59 @@ def get_statepath_portfolio(
     sliced = filtered[offset : offset + limit]
 
     summary = _build_portfolio_summary(filtered, size_group, search, filters)
-    items = [
-        {
-            k: v
-            for k, v in item.items()
-            if not k.startswith("_") and k not in ("states", "path")
+    def _project(item: Dict[str, Any]) -> Dict[str, Any]:
+        # Minimal contract fields (underscore) + backward-compatible camelCase keys for FE
+        s24 = item.get("states", {}).get("2024", {})
+        s25 = item.get("states", {}).get("2025", {})
+        cells24 = s24.get("cells", {}) if isinstance(s24.get("cells"), dict) else {}
+        cells25 = s25.get("cells", {}) if isinstance(s25.get("cells"), dict) else {}
+        projected = {
+            "org_id": item["orgId"],
+            "org_name": item["orgName"],
+            "size_raw": item["sizeRaw"],
+            "segment": item["sizeGroup"],
+            "company_total_eok_2024": item["companyTotalEok2024"],
+            "company_bucket_2024": item["companyBucket2024"],
+            "company_total_eok_2025": item["companyTotalEok2025"],
+            "company_bucket_2025": item["companyBucket2025"],
+            "delta_eok": item["deltaEok"],
+            "company_online_bucket_2024": s24.get("bucket_online"),
+            "company_offline_bucket_2024": s24.get("bucket_offline"),
+            "company_online_bucket_2025": s25.get("bucket_online"),
+            "company_offline_bucket_2025": s25.get("bucket_offline"),
+            "cells_2024": cells24,
+            "cells_2025": cells25,
+            "seed": item.get("seed"),
         }
-        for item in sliced
-    ]
+        projected.update(
+            {
+                "orgId": item["orgId"],
+                "orgName": item["orgName"],
+                "sizeRaw": item["sizeRaw"],
+                "sizeGroup": item["sizeGroup"],
+                "companyTotalEok2024": item["companyTotalEok2024"],
+                "companyBucket2024": item["companyBucket2024"],
+                "companyTotalEok2025": item["companyTotalEok2025"],
+                "companyBucket2025": item["companyBucket2025"],
+                "deltaEok": item["deltaEok"],
+                "companyOnlineBucket2024": s24.get("bucket_online"),
+                "companyOfflineBucket2024": s24.get("bucket_offline"),
+                "companyOnlineBucket2025": s25.get("bucket_online"),
+                "companyOfflineBucket2025": s25.get("bucket_offline"),
+                "cells2024": cells24,
+                "cells2025": cells25,
+                "seed": item.get("seed"),
+            }
+        )
+        return projected
+
+    items = [_project(item) for item in sliced]
     return {
         "summary": summary,
         "items": items,
         "meta": {
-            "sizeGroup": size_group,
+            "segment": size_group,
+            "sizeGroup": size_group,  # backward compatibility
             "search": search or "",
             "sort": sort,
             "limit": limit,

@@ -161,10 +161,11 @@ def get_statepath(org_id: str) -> dict:
 
 @router.get("/statepath/portfolio-2425")
 def get_statepath_portfolio(
-    sizeGroup: str = Query("전체", description="대기업/중견기업/중소기업/공공기관/대학교/기타/미입력"),
+    segment: str = Query("전체", description="대기업/중견기업/중소기업/공공기관/대학교/기타/미입력"),
+    legacySizeGroup: str | None = Query(None, alias="sizeGroup"),
     search: str | None = Query(None, description="조직명 검색"),
     sort: str = Query("won2025_desc"),
-    limit: int = Query(200, ge=1, le=500),
+    limit: int = Query(500, ge=1, le=2000),
     offset: int = Query(0, ge=0),
     riskOnly: bool = False,
     hasOpen: bool = False,
@@ -192,8 +193,9 @@ def get_statepath_portfolio(
             "cell": cell,
             "cellEvent": cellEvent,
         }
+        chosen_segment = legacySizeGroup or segment
         return db.get_statepath_portfolio(
-            size_group=sizeGroup,
+            size_group=chosen_segment,
             search=search,
             filters=filters,
             sort=sort,

@@ -21,8 +21,10 @@
   - `/api/people/{person_id}/deals`, `/api/people/{person_id}/memos`, `/api/deals/{deal_id}/memos`: 사람/딜 단위 데이터와 메모.
   - 랭킹/이상치: `/api/rank/2025-deals`(grade/grade2024 + online/offline/2024 합계 포함), `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary`.
   - Compact JSON: `/api/orgs/{org_id}/won-groups-json-compact`은 won-groups-json을 LLM용으로 축약(schema_version 포함, deal_defaults/summary 추가)한 버전을 반환한다.
-  - StatePath: `/api/orgs/{org_id}/statepath`는 won-groups-json-compact를 내부 생성해 2024/2025 State, Path 이벤트, Seed, RevOps 추천(타겟 셀/카운터파티/액션)을 억 단위 금액과 함께 반환한다.
-  - StatePath 포트폴리오: `/api/statepath/portfolio-2425`는 규모/검색/패턴 필터 기반으로 2024→2025 StatePath 포트폴리오 요약/계정 리스트를 반환한다(억 단위). `/api/orgs/{id}/statepath-2425`는 단일 계정의 24/25 State + Path를 반환한다.
+  - StatePath 단건: `/api/orgs/{org_id}/statepath`는 won-groups-json-compact를 내부 생성해 2024/2025 State, Path 이벤트, Seed, RevOps 추천(타겟 셀/카운터파티/액션)을 억 단위 금액과 함께 반환한다.
+  - StatePath 포트폴리오/상세:
+    - `GET /api/statepath/portfolio-2425`: 규모/검색/정렬/패턴 필터(segment, search, sort, limit, offset, riskOnly, hasOpen, hasScaleUp, companyDir, seed, rail, railDir, companyFrom/To, cell, cellEvent) 기준으로 24/25 회사 총액(억)·버킷과 4셀/online·offline 버킷, 셀 금액, seed, 이벤트 카운트 등을 내려준다. `summary`에는 회사 버킷 전이 매트릭스, 4셀 이벤트 매트릭스, rail 변화 요약, top patterns, (전체 탭 기본 필터일 때) 세그먼트 비교가 포함된다.
+    - `GET /api/orgs/{id}/statepath-2425`: 단일 조직의 24/25 State + Path + QA, sizeGroup을 DB 집계 기반으로 반환한다(포트폴리오와 일관).
 
 ## 메모 정제 트리거/드롭 키 보강
 - 트리거: `utm_source`가 있거나 “고객 마케팅 수신 동의” 문구가 있을 때 폼 스타일 메모를 정제한다.

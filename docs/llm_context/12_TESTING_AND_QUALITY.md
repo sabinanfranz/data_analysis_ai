@@ -16,16 +16,17 @@
   ```
 
 ## 2) 프런트 테스트
-- 레포에 Node 패키지/런너 스크립트가 없으므로 별도 명령은 정의돼 있지 않다(TODO 필요 시 추가).
-- 프런트 로직은 수동/시각 검증이 주이며, 주요 함수는 `org_tables_v2.html` 자체 테스트(`org_tables_v2_frontend.test.js`, node --test)를 로컬 Node 환경에서 실행할 수 있다(사용 시 직접 node --test로 실행).
+- 별도 패키지 매니저 스크립트는 없지만 Node 내장 테스트로 스모크를 돌릴 수 있다.
+- `org_tables_v2.html` 주요 렌더/StatePath/툴팁 동작을 `node --test tests/org_tables_v2_frontend.test.js`로 실행(로컬 Node 필요).
 
 ## 3) 테스트 커버리지(핵심 영역)
 - `test_won_groups_json.py`: 웹폼 날짜 매핑, 메모 정제 규칙 검증.
 - `test_salesmap_first_page_snapshot.py`: 스냅샷 파이프라인 동작(체크포인트/백업 등) 검증.
 - `test_mismatched_deals_2025.py`, `test_rank_2025_deals_people.py`, `test_won_totals_by_size.py`: 랭킹/집계 로직 검증.
 - `test_build_org_tables.py`, `test_build_org_mindmap.py`: 정적 HTML/마인드맵 생성 로직 검증.
-- `org_tables_v2_frontend.test.js`: 프런트 렌더/함수에 대한 node --test (로컬 Node 필요).
+- `org_tables_v2_frontend.test.js`: 프런트 렌더/StatePath 메뉴/용어 모달 스모크(node --test).
 - `test_statepath_engine.py`: StatePath 버킷/경로/추천 로직 및 딜 폴백 검증.
+- `test_api_statepath_portfolio.py`: `/api/statepath/portfolio-2425` 응답 스키마/필터/금액 유형 검증.
 - `test_won_summary.py`: `/won-summary`의 owners2025 포함 여부 검증.
 
 ## 4) 변경 유형별 권장 실행

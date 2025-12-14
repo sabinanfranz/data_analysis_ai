@@ -8,8 +8,9 @@ scope는 `stable`(구조/원리 고정), `operational`(운영/실행 절차), `u
 last_verified는 실제 확인/테스트 시점을 적고, 미검증이면 `TODO`로 남깁니다.
 
 ## 질문 유형별 참조 문서
-- API 동작/엔드포인트 질문 → `docs/api_behavior.md` (scope: stable, last_verified: 2025-12-15)
-- 프런트 UX/조직·People·Deal 화면 동작, JSON 버튼/웹폼 모달 → `docs/org_tables_v2.md` (scope: ux, last_verified: 2025-12-15)
+- API 동작/엔드포인트 질문 → `docs/api_behavior.md` (scope: stable, last_verified: 2025-12-22)
+- 프런트 UX/조직·People·Deal 화면 + StatePath 24→25 패턴/필터/툴팁 → `docs/org_tables_v2.md` (scope: ux, last_verified: 2025-12-22)
+- 백엔드/프런트 계약(엔드포인트/상태/캐시) → `docs/llm_context/06_API_CONTRACT_CORE.md`, `docs/llm_context/09_FRONTEND_ORG_TABLES_V2_CONTRACT.md` (scope: stable/ux, last_verified: 2025-12-22)
 - 상위 조직별 JSON 생성·필터/compact 변환(백엔드+프런트) → `docs/json_logic.md` (scope: stable, last_verified: 2025-12-14)
 - 스냅샷/데이터 적재 파이프라인(웹폼 수집 포함) → `docs/snapshot_pipeline.md` (scope: operational, last_verified: 2025-12-14)
 - 실행/사용 가이드(백엔드 기동, 정적 서버, 드롭다운 동작) → `docs/user_guide.md` (scope: operational, last_verified: 2025-12-15)

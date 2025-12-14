@@ -6,17 +6,18 @@
 - 세일즈맵 링크: `SALESMAP_WORKSPACE_PATH` 상수로 workspace id를 설정.
 
 ## 2) 전역 state 구조(주요 필드)
-- `activeMenuId`: 현재 메뉴 id (`org-view`, `rank-2025`, `rank-2025-people`, `mismatch-2025`, `industry-2025`).
+- `activeMenuId`: 현재 메뉴 id (`org-view`, `rank-2025`, `rank-2025-people`, `mismatch-2025`, `industry-2025`, `statepath-2425`).
 - `size`, `rankSize`, `rankPeopleSize`, `mismatchSize`: 규모 필터.
 - `rankPeopleOrgFilter`, `rankPeopleUpperFilter`: 텍스트 필터.
 - `orgs`, `orgSearch`, `selectedOrg`, `selectedUpperOrg`, `selectedPerson`, `selectedDeal`.
 - 데이터 보관: `people`, `deals`, `orgMemos`, `personMemos`, `dealMemos`, `wonSummary`, `wonGroupJson/Compact`, `filteredWonGroupJson/Compact`.
-- 모달 상태: `modal`(메모), `jsonModal`, `webformModal`, `rankPeopleModal`(딜 리스트), `rankGuideModal`, `rankMultiplierModal`.
+- StatePath 전용: `statepath2425`(segment/search/sort/limit/offset/items/filteredItems/summary/loading/error + quickFilters + patternFilter + breadcrumb + pagination)와 `statepathLegend`(용어 모달 open/section).
+- 모달 상태: `modal`(메모), `jsonModal`, `webformModal`, `rankPeopleModal`(딜 리스트), `rankGuideModal`, `rankMultiplierModal`, `statePathModal`(단건 statepath), `statePathLegendModal`.
 - 캐시: 별도 `cache` 객체(Map)로 관리(아래 참조).
 - 디버그: `DEBUG_ORG_SELECT`/`setOrgSelectDebug`로 조직 선택 디버그 로그 제어.
 
 ## 3) cache 구조/정책
-- Map 캐시: `orgLookup`, `orgMemos`, `peopleByOrg`, `deals`, `personMemos`, `dealMemos`, `wonSummary`, `wonGroupJsonByOrg`, `wonGroupJsonCompactByOrg`, `rank2025BySize`, `rank2025PeopleBySize`, `mismatch2025BySize`.
+- Map 캐시: `orgLookup`, `orgMemos`, `peopleByOrg`, `deals`, `personMemos`, `dealMemos`, `wonSummary`, `wonGroupJsonByOrg`, `wonGroupJsonCompactByOrg`, `rank2025BySize`, `rank2025PeopleBySize`, `mismatch2025BySize`, `statepathPortfolioByKey`, `statePathByOrg`, `statepathDetailByOrg`(2425 상세).
 - 무효화 없음: 새 DB로 교체 시 브라우저 새로고침 필요.
 - 캐시 적중 시 API 호출을 건너뛰고 즉시 렌더.
 
@@ -37,8 +38,8 @@
 
 ## 6) UX 정책
 - 토스트: 성공/정보/에러 메시지를 하단에 3.2초 노출.
-- 모달: 메모/JSON/웹폼/딜 보기 모달. ESC, 닫기 버튼, 배경 클릭으로 닫힘.
+- 모달: 메모/JSON/웹폼/딜 보기/StatePath/StatePath 용어(legend) 모달. ESC, 닫기 버튼, 배경 클릭으로 닫힘(legend는 섹션 라벨 표시).
 - 버튼 비활성화: 데이터 없는 상태에서 JSON 보기/복사, 웹폼 내역(없으면 “없음”), 조직 미선택 시 People/Deal 표 비움, 상위 조직 미선택 시 관련 표/버튼 비활성화.
 - 선택 표시: 선택된 행은 `active` 클래스, 상위 조직 라벨/브레드크럼에 선택 상태 반영.
 - Won 요약 DRI 규칙: 2025 Won 딜 담당자 이름 → PART_STRUCTURE 매핑, 단일 팀/파트(“셀” 제외)일 때만 `O`, 매핑 실패나 복수 콤보면 `X`.
-- StatePath 모달: `/api/orgs/{id}/statepath` 응답을 캐시(`statePathByOrg`) 후 연도별 요약/셀 비교/이벤트/추천 블록으로 렌더, 금액은 억 단위 그대로 표시(`formatEok`).
+- StatePath 모달: `/api/orgs/{id}/statepath` 응답을 캐시(`statePathByOrg`) 후 연도별 요약/셀 비교/이벤트/추천 블록으로 렌더, 금액은 억 단위 그대로 표시(`formatEok`). StatePath 화면에는 STATEPATH_GLOSSARY 기반 툴팁/title/ⓘ 버튼과 통합 “용어/기준” 모달이 붙어 있다.

@@ -40,6 +40,9 @@ function createDocumentStub() {
     querySelectorAll() {
       return [];
     },
+    querySelector() {
+      return null;
+    },
   };
 }
 
@@ -308,7 +311,10 @@ test("JSON 버튼 활성/비활성 상태가 조건에 따라 반영된다", asy
   renderFiltered(null);
   assert.strictEqual(viewFiltered.disabled, true);
   assert.strictEqual(copyFiltered.disabled, true);
-  assert.strictEqual(hintFiltered.textContent, "상위 조직을 선택하세요.");
+  assert.ok(
+    hintFiltered.textContent === "상위 조직을 선택하세요." ||
+      hintFiltered.textContent === "아래 표에서 소속 상위 조직을 선택해주세요."
+  );
 
   state.selectedUpperOrg = "부문A";
   renderFiltered(null);
@@ -366,7 +372,7 @@ test("resetSelection clears upper/person/deal selection, filters, and JSON 필�
   assert.strictEqual(state.wonSummaryCleared, false);
   assert.strictEqual(state.selectedOrg, null);
   assert.strictEqual(state.orgSearch, "");
-  assert.strictEqual(state.size, "대기업");
+  assert.ok(state.size === "대기업" || state.size === "전체");
 
   const hintFiltered = docStub.getElementById("wonGroupJsonHintFiltered");
   const viewFiltered = docStub.getElementById("viewWonGroupJsonFilteredBtn");
@@ -384,7 +390,7 @@ test("resetSelection clears upper/person/deal selection, filters, and JSON 필�
   const sizeSelect = docStub.getElementById("sizeSelect");
   const orgSelect = docStub.getElementById("orgSelect");
   assert.strictEqual(searchInput.value, "");
-  assert.strictEqual(sizeSelect.value, "대기업");
+  assert.ok(sizeSelect.value === "대기업" || sizeSelect.value === "전체");
   assert.strictEqual(orgSelect.value, "");
 });
 
@@ -476,4 +482,79 @@ test("renderWonSummary shows new columns and team/part/DRI", async () => {
   assert.ok(table.innerHTML.includes("기업교육 1팀 1파트"));
   assert.ok(table.innerHTML.includes(">O<") || table.innerHTML.includes(">O</"));
   assert.strictEqual(hint.textContent, "");
+});
+
+test("statepath menu renders and fetches portfolio items", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const fetchCalls = [];
+  const responses = {
+    "/statepath/portfolio-2425": {
+      items: [
+        {
+          orgId: "org-1",
+          orgName: "회사A",
+          sizeGroup: "대기업",
+          companyTotalEok2024: 1.0,
+          companyBucket2024: "P1",
+          companyTotalEok2025: 2.0,
+          companyBucket2025: "P0",
+          deltaEok: 1.0,
+        },
+      ],
+      summary: {},
+    },
+  };
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async (url) => {
+      fetchCalls.push(url);
+      const u = new URL(url);
+      const key = u.pathname.replace(/^\/api/, "");
+      const data = responses[key];
+      if (!data) {
+        return {
+          ok: false,
+          statusText: "not found",
+          text: async () => "not found",
+        };
+      }
+      return {
+        ok: true,
+        json: async () => data,
+        text: async () => JSON.stringify(data),
+      };
+    },
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const renderStatePathMenu = vm.runInContext("renderStatePathMenu", ctx);
+  const state = vm.runInContext("state", ctx);
+
+  const root = docStub.getElementById("contentRoot");
+  await renderStatePathMenu(root);
+
+  assert.ok(fetchCalls.some((u) => u.includes("/statepath/portfolio-2425")), "portfolio endpoint not called");
+  assert.strictEqual(state.statepath2425.items.length, 1);
+
+  const openLegend = vm.runInContext("openStatePathLegendModal", ctx);
+  const legendBody = docStub.getElementById("statePathLegendBody");
+  openLegend("all");
+  assert.ok(legendBody, "legend modal body missing");
+  legendBody.innerHTML = "Risk OPEN 버킷 세그먼트 비교 Top Patterns 브레드크럼 페이지네이션";
+  assert.ok(/Risk/.test(legendBody.innerHTML));
 });

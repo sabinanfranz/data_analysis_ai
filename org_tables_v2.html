@@ -105,6 +105,17 @@
       background: rgba(56, 189, 248, 0.12);
     }
 
+    .seg-btn {
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: #0f1d30;
+    }
+
+    .seg-btn.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+    }
+
     .content {
       display: flex;
       flex-direction: column;
@@ -323,6 +334,97 @@
     .status.bad {
       color: var(--error);
     }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #0f1d30;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .chip.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+
+    .stat-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      background: #0f1d30;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-height: 72px;
+    }
+
+    .matrix-table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .matrix-table th,
+    .matrix-table td {
+      border: 1px solid var(--border);
+      padding: 6px;
+    }
+
+    .matrix-table td.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+    }
+
+    .event-badges {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(40px, 1fr));
+      gap: 6px;
+    }
+
+    .event-badge {
+      display: inline-block;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .event-badge.active {
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+    }
+
+    .info-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      color: var(--muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .info-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
     .memo-text {
       white-space: pre-wrap;
     }
@@ -538,6 +640,16 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="statePathLegendBackdrop">
+    <div class="modal json-modal">
+      <header>
+        <h3 id="statePathLegendTitle">StatePath 용어/필터 기준(24→25)</h3>
+        <button class="close-btn" id="statePathLegendClose" type="button">닫기</button>
+      </header>
+      <div class="body" id="statePathLegendBody" style="max-height:70vh; overflow:auto;"></div>
+    </div>
+  </div>
+
   <script>
     const API_BASE = (() => {
       const origin = window.location.origin;
@@ -559,6 +671,106 @@
     };
     const SALESMAP_WORKSPACE_PATH = "64cb5beda5a78ae225d7815b"; // update if workspace path changes
     const ORG_LIMIT = 200;
+    const STATEPATH_SEGMENTS = ["전체", "대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타/미입력"];
+    const BUCKET_ORDER = ["Ø", "P5", "P4", "P3", "P2", "P1", "P0", "S0"];
+    const STATEPATH_GLOSSARY = {
+      unit: {
+        short: "금액 단위: 억",
+        long: "※ 이 화면의 모든 금액은 ‘억’ 단위입니다. (amount_eok)",
+      },
+      years: {
+        short: "비교 구간: 2024→2025",
+        long: "2024년과 2025년의 State를 비교해 Path(OPEN/CLOSE/UP/DOWN 등)를 계산합니다.",
+      },
+      quickFilters: {
+        risk: {
+          short: "Risk: CLOSE/DOWN 포함",
+          long: "24→25에서 CLOSE(중단) 또는 DOWN(버킷 하락)이 하나라도 있으면 Risk로 봅니다.",
+        },
+        hasOpen: {
+          short: "New Open: 신규 셀 오픈",
+          long: "24년에 Ø였던 셀이 25년에 P5~S0로 바뀐 경우(Ø→비Ø)가 1개 이상입니다.",
+        },
+        hasScaleUp: {
+          short: "Scale Up: 버킷 상승",
+          long: "동일 셀에서 24 대비 25 버킷 등급이 상승한 경우가 1개 이상입니다.",
+        },
+        companyDir: {
+          short: "Company↑: 회사 버킷 상승",
+          long: "Company Total 버킷(Ø~S0)이 24→25에 올라가면 ↑, 내려가면 ↓, 같으면 = 입니다.",
+        },
+        seed: {
+          short: "Seed: 첫 확장 방향",
+          long: "2024에 한 lane만 열려 있고 2025에 다른 lane이 처음 열리면 그 방향을 Seed로 표시합니다. (H→B: HRD→BU / B→H: BU→HRD / SIMUL: 동시 / NONE: 해당 없음)",
+        },
+        railShift: {
+          short: "Shift: rail 성장",
+          long: "온라인(또는 오프라인) 합계 버킷이 24→25에 상승한 계정입니다.",
+        },
+      },
+      snapshot: {
+        accountCount: { short: "현재 필터 기준 계정 수", long: "현재 필터를 적용한 후 남은 계정 수입니다." },
+        sums: { short: "합계/증감", long: "현재 필터 기준 2024·2025 합계(억)와 Δ(2025-2024)입니다." },
+        companyDir: { short: "Company 변화", long: "회사 버킷이 상승/유지/하락한 계정 수입니다." },
+        openRisk: { short: "OPEN/RISK", long: "OPEN 계정 수(OPEN 이벤트 존재)와 Risk 계정 수(CLOSE/DOWN 존재)입니다." },
+      },
+      patternExplorer: {
+        transitionMatrix: {
+          short: "Company 버킷 전이(24→25)",
+          long: "행=2024 Company 버킷, 열=2025 Company 버킷. 셀 값=해당 전이를 가진 계정 수입니다. 셀 클릭 시 해당 전이만 필터링합니다.",
+        },
+        cellEventMatrix: {
+          short: "4셀 이벤트(OPEN/CLOSE/UP/DOWN)",
+          long: "HRD/BU × ONLINE/OFFLINE의 4셀에서 OPEN/CLOSE/UP/DOWN 발생 횟수를 보여줍니다. 배지 클릭 시 해당 셀+이벤트를 가진 계정만 필터링합니다.",
+        },
+        railMix: {
+          short: "Online/Offline 변화 요약",
+          long: "ONLINE/OFFLINE 합계 버킷의 up/flat/down 계정 수를 보여줍니다. 클릭 시 해당 rail 변화만 필터링합니다.",
+        },
+      },
+      segmentComparison: {
+        short: "세그먼트별 비교(전체 전용)",
+        long: "‘전체’ 탭에서 검색/필터가 기본값일 때만 노출됩니다. 행 클릭 시 해당 세그먼트 탭으로 이동합니다.",
+        columns: {
+          accountCount: "세그먼트 내 계정 수",
+          sum2025: "2025 합계(억)",
+          companyUpRate: "Company 버킷 상승 비율",
+          openRate: "OPEN 계정 비율",
+          riskRate: "Risk 계정 비율",
+          seedH2BRate: "H→B 비율(Seed)",
+        },
+      },
+      topPatterns: {
+        short: "현재 필터에서 가장 많이 발생한 패턴",
+        long: "현재 필터 결과에서 가장 빈도가 높은 OPEN/CLOSE/UP/DOWN 셀과 Seed 방향을 보여줍니다. 클릭 시 해당 조건으로 필터가 자동 적용됩니다.",
+      },
+      breadcrumb: {
+        short: "현재 적용 중인 필터",
+        long: "현재 선택된 세그먼트/매트릭스 선택/퀵필터/정렬 조건을 토큰으로 보여줍니다. 토큰의 (x)로 개별 조건을 해제할 수 있고, ‘전체 해제’로 초기화할 수 있습니다.",
+      },
+      sorting: {
+        won2025_desc: "2025 체결액(억) 내림차순",
+        delta_desc: "증감액(2025-2024) 내림차순",
+        bucket_up_desc: "Company 버킷 상승폭(등급 차이) 내림차순",
+        risk_first: "Risk 계정을 우선 정렬",
+      },
+      pagination: {
+        short: "표시 행 수 제한",
+        long: "테이블은 페이지 단위로 표시합니다(예: 200개). 패턴/요약/매트릭스는 전체 필터 결과를 기준으로 계산합니다.",
+      },
+      events: {
+        short: "OPEN/CLOSE/UP/DOWN/RAIL/COMPANY",
+        long: "OPEN: Ø→비Ø, CLOSE: 비Ø→Ø, UP/DOWN: 버킷 등급 상승/하락(Ø<P5<...<S0). RAIL_SCALE_CHANGE는 ONLINE/OFFLINE 버킷 변화, COMPANY_SCALE_CHANGE는 Company 버킷 변화입니다.",
+      },
+      cells: {
+        short: "HRD/BU × ONLINE/OFFLINE",
+        long: "Lane은 상위 조직(upper_org)에 HRD 키워드 포함 시 HRD, 아니면 BU. Rail은 과정포맷이 온라인 3종이면 ONLINE, 그 외 OFFLINE입니다.",
+      },
+      buckets: {
+        short: "버킷 임계값(회사/레일)",
+        long: "Company: Ø(0), P5(0~0.1), P4(0.1~0.25), P3(0.25~0.5), P2(0.5~1), P1(1~2), P0(2~10), S0(10+). Rail/Cell은 임계값 절반입니다.",
+      },
+    };
     let DEBUG_ORG_SELECT = Boolean(window.DEBUG_ORG_SELECT);
     window.setOrgSelectDebug = (flag) => {
       DEBUG_ORG_SELECT = Boolean(flag);
@@ -571,6 +783,7 @@
       { id: "rank-2025-people", label: "2025 대기업 딜·People", render: renderRank2025PeopleScreen },
       { id: "mismatch-2025", label: "고객사 불일치", render: renderMismatch2025Screen },
       { id: "industry-2025", label: "업종별 매출", render: renderIndustryMenu },
+      { id: "statepath-2425", label: "StatePath 24→25", render: renderStatePathMenu },
       { id: "org-view", label: "조직/People/Deal 뷰어", render: renderOrgScreen },
     ];
 
@@ -597,6 +810,42 @@
         title: null,
         body: null,
         bound: false,
+      },
+      statepath2425: {
+        segment: "전체",
+        search: "",
+        sort: "won2025_desc",
+        page: 0,
+        pageSize: 200,
+        items: [],
+        summary: null,
+        loading: false,
+        error: null,
+        limit: 500,
+        quickFilters: {
+          risk: false,
+          hasOpen: false,
+          hasScaleUp: false,
+          companyDir: "all",
+          seed: "all",
+          railShift: "all",
+        },
+        patternFilter: {
+          companyFrom: null,
+          companyTo: null,
+          cell: null,
+          cellEvent: null,
+          rail: null,
+          railDir: null,
+        },
+        filteredItems: [],
+        derived: null,
+        segmentComparison: [],
+      },
+      statepathLegend: {
+        open: false,
+        section: "all",
+        trigger: null,
       },
       orgs: [],
       orgSearch: "",
@@ -670,6 +919,7 @@
       orgLookup: new Map(),
       wonSummary: new Map(),
       yearlyTotals: null,
+      statepathPortfolioByKey: new Map(),
     };
     const NAME_TO_TEAM_PART = buildNameToTeamPartIndex(PART_STRUCTURE);
 
@@ -1304,6 +1554,1117 @@
       const value = Number(num);
       if (!Number.isFinite(value)) return "n/a";
       return value.toFixed(2);
+    }
+
+    function renderStatePathLegendModal() {
+      const body = state.statepathLegend.body;
+      if (!body) return;
+      const sectionLabel = {
+        snapshot: "Snapshot",
+        filters: "Quick Filters",
+        pattern: "Pattern Explorer",
+        segment: "Segment Comparison",
+        top: "Top Patterns",
+        breadcrumb: "Breadcrumb",
+        pagination: "Sorting/Pagination",
+        all: "전체",
+      }[state.statepathLegend.section] || "전체";
+      const bucketRowsCompany = [
+        ["Ø", "0"],
+        ["P5", "0 < x < 0.1"],
+        ["P4", "0.1 ≤ x < 0.25"],
+        ["P3", "0.25 ≤ x < 0.5"],
+        ["P2", "0.5 ≤ x < 1"],
+        ["P1", "1 ≤ x < 2"],
+        ["P0", "2 ≤ x < 10"],
+        ["S0", "10 이상"],
+      ];
+      const bucketRowsRail = [
+        ["Ø", "0"],
+        ["P5", "0 < x < 0.05"],
+        ["P4", "0.05 ≤ x < 0.125"],
+        ["P3", "0.125 ≤ x < 0.25"],
+        ["P2", "0.25 ≤ x < 0.5"],
+        ["P1", "0.5 ≤ x < 1"],
+        ["P0", "1 ≤ x < 5"],
+        ["S0", "5 이상"],
+      ];
+      const bucketTable = (title, rows) =>
+        `<div style="margin-top:8px;">
+          <div class="muted">${title}</div>
+          <div class="table-wrap full">
+            <table>
+              <thead><tr><th>버킷</th><th>구간(억)</th></tr></thead>
+              <tbody>${rows.map((r) => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join("")}</tbody>
+            </table>
+          </div>
+        </div>`;
+      body.innerHTML = `
+        <div class="muted">열려있는 섹션: ${sectionLabel}</div>
+        <h4>1) 단위/전제</h4>
+        <div>${getGlossaryLong("unit")}</div>
+        <div>${getGlossaryLong("years")}</div>
+
+        <h4>2) Snapshot Cards</h4>
+        <div>${STATEPATH_GLOSSARY.snapshot.accountCount.short}</div>
+        <div>${STATEPATH_GLOSSARY.snapshot.sums.long}</div>
+        <div>${STATEPATH_GLOSSARY.snapshot.companyDir.long}</div>
+        <div>${STATEPATH_GLOSSARY.snapshot.openRisk.long}</div>
+
+        <h4>3) Quick Filters</h4>
+        <ul>
+          <li>${getGlossaryLong("quickFilters.risk")}</li>
+          <li>${getGlossaryLong("quickFilters.hasOpen")}</li>
+          <li>${getGlossaryLong("quickFilters.hasScaleUp")}</li>
+          <li>${getGlossaryLong("quickFilters.companyDir")}</li>
+          <li>${getGlossaryLong("quickFilters.seed")}</li>
+          <li>${getGlossaryLong("quickFilters.railShift")}</li>
+        </ul>
+
+        <h4>4) Pattern Explorer</h4>
+        <div>${getGlossaryLong("patternExplorer.transitionMatrix")}</div>
+        <div>${getGlossaryLong("patternExplorer.cellEventMatrix")}</div>
+        <div>${getGlossaryLong("patternExplorer.railMix")}</div>
+
+        <h4>5) Segment Comparison(전체 전용)</h4>
+        <div>${getGlossaryLong("segmentComparison")}</div>
+
+        <h4>6) Top Patterns</h4>
+        <div>${getGlossaryLong("topPatterns")}</div>
+
+        <h4>7) Breadcrumb</h4>
+        <div>${getGlossaryLong("breadcrumb")}</div>
+
+        <h4>8) Sorting / Pagination</h4>
+        <div>정렬: ${Object.values(STATEPATH_GLOSSARY.sorting).join(", ")}</div>
+        <div>${getGlossaryLong("pagination")}</div>
+
+        <h4>9) Events / Cells / Buckets</h4>
+        <div>${getGlossaryLong("events")}</div>
+        <div>${getGlossaryLong("cells")}</div>
+        ${bucketTable("Company 버킷 임계값", bucketRowsCompany)}
+        ${bucketTable("Rail/Cell 버킷 임계값", bucketRowsRail)}
+      `;
+    }
+
+    function bindStatePathHelpButtons(root = document) {
+      root.querySelectorAll("[data-help-section]").forEach((btn) => {
+        btn.addEventListener("click", () => openStatePathLegendModal(btn.getAttribute("data-help-section"), btn));
+      });
+    }
+    function getGlossaryShort(path) {
+      const parts = path.split(".");
+      let cur = STATEPATH_GLOSSARY;
+      for (const p of parts) {
+        if (cur && typeof cur === "object" && p in cur) {
+          cur = cur[p];
+        } else {
+          return "";
+        }
+      }
+      if (typeof cur === "string") return cur;
+      return cur?.short || "";
+    }
+
+    function getGlossaryLong(path) {
+      const parts = path.split(".");
+      let cur = STATEPATH_GLOSSARY;
+      for (const p of parts) {
+        if (cur && typeof cur === "object" && p in cur) {
+          cur = cur[p];
+        } else {
+          return "";
+        }
+      }
+      if (typeof cur === "string") return cur;
+      return cur?.long || cur?.short || "";
+    }
+
+    function renderStatePathHelpButton(sectionKey) {
+      return `<button class="info-btn" aria-label="용어/기준 보기" data-help-section="${sectionKey}" title="${getGlossaryShort(sectionKey)}">ⓘ</button>`;
+    }
+
+    function openStatePathLegendModal(sectionKey = "all", trigger = null) {
+      state.statepathLegend.section = sectionKey || "all";
+      state.statepathLegend.open = true;
+      state.statepathLegend.trigger = trigger || null;
+      const body = state.statepathLegend.body;
+      if (!body) return;
+      renderStatePathLegendModal();
+      if (state.statepathLegend.backdrop) state.statepathLegend.backdrop.style.display = "flex";
+      if (state.statepathLegend.close) state.statepathLegend.close.focus?.();
+    }
+
+    function closeStatePathLegendModal() {
+      state.statepathLegend.open = false;
+      if (state.statepathLegend.backdrop) state.statepathLegend.backdrop.style.display = "none";
+      const trigger = state.statepathLegend.trigger;
+      if (trigger && typeof trigger.focus === "function") {
+        trigger.focus();
+      }
+    }
+
+    function bucketOrderIndex(bucket) {
+      const idx = BUCKET_ORDER.indexOf(bucket || "Ø");
+      return idx >= 0 ? idx : 0;
+    }
+
+    function getItemField(item, keys, fallback = null) {
+      for (const k of keys) {
+        if (item[k] !== undefined && item[k] !== null) return item[k];
+      }
+      return fallback;
+    }
+
+    function getCompanyBuckets(item) {
+      const b24 = getItemField(item, ["companyBucket2024", "company_bucket_2024", "company_bucket_2024".toLowerCase(), "company_bucket_2024".toUpperCase()], "Ø");
+      const b25 = getItemField(item, ["companyBucket2025", "company_bucket_2025"], "Ø");
+      const bon24 = getItemField(item, ["companyOnlineBucket2024", "company_online_bucket_2024"], "Ø");
+      const bon25 = getItemField(item, ["companyOnlineBucket2025", "company_online_bucket_2025"], "Ø");
+      const boff24 = getItemField(item, ["companyOfflineBucket2024", "company_offline_bucket_2024"], "Ø");
+      const boff25 = getItemField(item, ["companyOfflineBucket2025", "company_offline_bucket_2025"], "Ø");
+      return {
+        company: { "2024": b24, "2025": b25 },
+        online: { "2024": bon24, "2025": bon25 },
+        offline: { "2024": boff24, "2025": boff25 },
+      };
+    }
+
+    function getCellsByYear(item, year) {
+      if (year === "2024") {
+        return item.cells_2024 || item.cells2024 || {};
+      }
+      if (year === "2025") {
+        return item.cells_2025 || item.cells2025 || {};
+      }
+      return {};
+    }
+
+    function computePatternMeta(item) {
+      const buckets = getCompanyBuckets(item);
+      const cells24 = getCellsByYear(item, "2024");
+      const cells25 = getCellsByYear(item, "2025");
+      const cells = ["HRD_ONLINE", "HRD_OFFLINE", "BU_ONLINE", "BU_OFFLINE"];
+      const openCells = [];
+      const closeCells = [];
+      const upCells = [];
+      const downCells = [];
+      const cellBuckets = {};
+      cells.forEach((cell) => {
+        const b24 = (cells24[cell] && cells24[cell].bucket) || "Ø";
+        const b25 = (cells25[cell] && cells25[cell].bucket) || "Ø";
+        cellBuckets[cell] = { "2024": b24, "2025": b25 };
+        if (b24 === "Ø" && b25 !== "Ø") openCells.push(cell);
+        else if (b24 !== "Ø" && b25 === "Ø") closeCells.push(cell);
+        else if (bucketOrderIndex(b25) > bucketOrderIndex(b24)) upCells.push(cell);
+        else if (bucketOrderIndex(b25) < bucketOrderIndex(b24)) downCells.push(cell);
+      });
+      const companyDir =
+        bucketOrderIndex(buckets.company["2025"]) > bucketOrderIndex(buckets.company["2024"])
+          ? "up"
+          : bucketOrderIndex(buckets.company["2025"]) < bucketOrderIndex(buckets.company["2024"])
+          ? "down"
+          : "flat";
+      const railDir = {
+        ONLINE:
+          bucketOrderIndex(buckets.online["2025"]) > bucketOrderIndex(buckets.online["2024"])
+            ? "up"
+            : bucketOrderIndex(buckets.online["2025"]) < bucketOrderIndex(buckets.online["2024"])
+            ? "down"
+            : "flat",
+        OFFLINE:
+          bucketOrderIndex(buckets.offline["2025"]) > bucketOrderIndex(buckets.offline["2024"])
+            ? "up"
+            : bucketOrderIndex(buckets.offline["2025"]) < bucketOrderIndex(buckets.offline["2024"])
+            ? "down"
+            : "flat",
+      };
+      const seed = getItemField(item, ["seed"], null);
+      const meta = {
+        companyBuckets: buckets.company,
+        onlineBuckets: buckets.online,
+        offlineBuckets: buckets.offline,
+        cellBuckets,
+        openCells,
+        closeCells,
+        upCells,
+        downCells,
+        companyDir,
+        railDir,
+        seed,
+      };
+      meta.hasOpen = openCells.length > 0;
+      meta.hasScaleUp = upCells.length > 0;
+      meta.risk = closeCells.length > 0 || downCells.length > 0;
+      return meta;
+    }
+
+    function buildStatepathPortfolioKey(segment, search, sort, limit) {
+      return JSON.stringify({
+        segment: segment || "전체",
+        search: search || "",
+        sort: sort || "won2025_desc",
+        limit: limit || 500,
+      });
+    }
+
+    function isDefaultQuickFilters(qf) {
+      return (
+        !qf ||
+        (qf.risk === false &&
+          qf.hasOpen === false &&
+          qf.hasScaleUp === false &&
+          (qf.companyDir || "all") === "all" &&
+          (qf.seed || "all") === "all" &&
+          (qf.railShift || "all") === "all")
+      );
+    }
+
+    function isDefaultPatternFilters(pf) {
+      return (
+        !pf ||
+        !pf.companyFrom &&
+        !pf.companyTo &&
+        !pf.cell &&
+        !pf.cellEvent &&
+        !pf.rail &&
+        !pf.railDir
+      );
+    }
+
+    function applyStatepathFilters(items) {
+      const spState = state.statepath2425;
+      const qf = spState.quickFilters;
+      const pf = spState.patternFilter;
+      const metas = new Map();
+      const result = [];
+      const baseItems = Array.isArray(items) ? items : [];
+      for (const item of baseItems) {
+        const meta = computePatternMeta(item);
+        const metaKey = item.orgId || item.org_id || item.orgName || item.org_name;
+        metas.set(metaKey, meta);
+        const name = item.orgName || item.org_name || "";
+        if (spState.search && spState.search.trim()) {
+          if (!String(name).includes(spState.search.trim())) continue;
+        }
+        if (qf.risk && !meta.risk) continue;
+        if (qf.hasOpen && !meta.hasOpen) continue;
+        if (qf.hasScaleUp && !meta.hasScaleUp) continue;
+        if (qf.companyDir !== "all" && meta.companyDir !== qf.companyDir) continue;
+        if (qf.seed && qf.seed !== "all" && meta.seed !== qf.seed) continue;
+        if (qf.railShift === "onlineUp" && meta.railDir.ONLINE !== "up") continue;
+        if (qf.railShift === "offlineUp" && meta.railDir.OFFLINE !== "up") continue;
+        if (pf.companyFrom && pf.companyFrom !== meta.companyBuckets["2024"]) continue;
+        if (pf.companyTo && pf.companyTo !== meta.companyBuckets["2025"]) continue;
+        if (pf.cell || pf.cellEvent) {
+          const targetCell = pf.cell;
+          const events = [];
+          meta.openCells.forEach((c) => events.push({ cell: c, type: "OPEN" }));
+          meta.closeCells.forEach((c) => events.push({ cell: c, type: "CLOSE" }));
+          meta.upCells.forEach((c) => events.push({ cell: c, type: "UP" }));
+          meta.downCells.forEach((c) => events.push({ cell: c, type: "DOWN" }));
+          const matched = events.some((ev) => {
+            if (targetCell && ev.cell !== targetCell) return false;
+            if (pf.cellEvent && pf.cellEvent !== ev.type) return false;
+            return true;
+          });
+          if (!matched) continue;
+        }
+        if (pf.rail && pf.railDir && meta.railDir[pf.rail] !== pf.railDir) continue;
+        result.push(item);
+      }
+      return { items: result, metas };
+    }
+
+    function buildStatepathSummary(items, metas) {
+      const buckets = BUCKET_ORDER;
+      const matrix = Array.from({ length: buckets.length }, () => Array.from({ length: buckets.length }, () => 0));
+      const cellMatrix = {
+        HRD_ONLINE: { OPEN: 0, CLOSE: 0, UP: 0, DOWN: 0 },
+        HRD_OFFLINE: { OPEN: 0, CLOSE: 0, UP: 0, DOWN: 0 },
+        BU_ONLINE: { OPEN: 0, CLOSE: 0, UP: 0, DOWN: 0 },
+        BU_OFFLINE: { OPEN: 0, CLOSE: 0, UP: 0, DOWN: 0 },
+      };
+      const railSummary = { ONLINE: { up: 0, flat: 0, down: 0 }, OFFLINE: { up: 0, flat: 0, down: 0 } };
+      let sum2024 = 0;
+      let sum2025 = 0;
+      let deltaSum = 0;
+      let openCount = 0;
+      let riskCount = 0;
+      const seedCounts = { "H→B": 0, "B→H": 0, SIMUL: 0, NONE: 0 };
+      items.forEach((item) => {
+        const metaKey = item.orgId || item.org_id || item.orgName || item.org_name;
+        const meta = metas.get(metaKey) || computePatternMeta(item);
+        const b24 = meta.companyBuckets["2024"];
+        const b25 = meta.companyBuckets["2025"];
+        matrix[buckets.indexOf(b24)][buckets.indexOf(b25)] += 1;
+        sum2024 += Number(item.companyTotalEok2024 ?? item.company_total_eok_2024 ?? 0);
+        sum2025 += Number(item.companyTotalEok2025 ?? item.company_total_eok_2025 ?? 0);
+        deltaSum += Number(item.deltaEok ?? item.delta_eok ?? 0);
+        if (meta.hasOpen) openCount += 1;
+        if (meta.risk) riskCount += 1;
+        railSummary.ONLINE[meta.railDir.ONLINE] += 1;
+        railSummary.OFFLINE[meta.railDir.OFFLINE] += 1;
+        const seed = meta.seed || "NONE";
+        if (seedCounts[seed] !== undefined) seedCounts[seed] += 1;
+        ["HRD_ONLINE", "HRD_OFFLINE", "BU_ONLINE", "BU_OFFLINE"].forEach((cell) => {
+          const bPrev = meta.cellBuckets[cell]["2024"];
+          const bCurr = meta.cellBuckets[cell]["2025"];
+          if (bPrev === "Ø" && bCurr !== "Ø") cellMatrix[cell].OPEN += 1;
+          else if (bPrev !== "Ø" && bCurr === "Ø") cellMatrix[cell].CLOSE += 1;
+          else if (bucketOrderIndex(bCurr) > bucketOrderIndex(bPrev)) cellMatrix[cell].UP += 1;
+          else if (bucketOrderIndex(bCurr) < bucketOrderIndex(bPrev)) cellMatrix[cell].DOWN += 1;
+        });
+      });
+
+      const changeCounts = {
+        up: items.filter((it) => {
+          const k = it.orgId || it.org_id || it.orgName || it.org_name;
+          const meta = metas.get(k) || computePatternMeta(it);
+          return meta.companyDir === "up";
+        }).length,
+        flat: items.filter((it) => {
+          const k = it.orgId || it.org_id || it.orgName || it.org_name;
+          const meta = metas.get(k) || computePatternMeta(it);
+          return meta.companyDir === "flat";
+        }).length,
+        down: items.filter((it) => {
+          const k = it.orgId || it.org_id || it.orgName || it.org_name;
+          const meta = metas.get(k) || computePatternMeta(it);
+          return meta.companyDir === "down";
+        }).length,
+      };
+
+      return {
+        accountCount: items.length,
+        sum2024Eok: sum2024,
+        sum2025Eok: sum2025,
+        deltaSum,
+        companyBucketChangeCounts: changeCounts,
+        openAccountCount: openCount,
+        riskAccountCount: riskCount,
+        seedCounts,
+        companyTransitionMatrix: { buckets, counts: matrix },
+        cellEventMatrix: cellMatrix,
+        railChangeSummary: railSummary,
+      };
+    }
+
+    function computeStatepathDerived() {
+      const spState = state.statepath2425;
+      const { items, metas } = applyStatepathFilters(spState.items);
+      let sorted = [...items];
+      if (spState.sort === "delta_desc") {
+        sorted.sort((a, b) => (b.deltaEok ?? b.delta_eok ?? 0) - (a.deltaEok ?? a.delta_eok ?? 0));
+      } else if (spState.sort === "name_asc") {
+        sorted.sort((a, b) => (a.orgName || a.org_name || "").localeCompare(b.orgName || b.org_name || ""));
+      } else {
+        sorted.sort((a, b) => (b.companyTotalEok2025 ?? b.company_total_eok_2025 ?? 0) - (a.companyTotalEok2025 ?? a.company_total_eok_2025 ?? 0));
+      }
+      spState.filteredItems = sorted;
+      spState.derived = buildStatepathSummary(sorted, metas);
+      spState.segmentComparison = [];
+      if (
+        spState.segment === "전체" &&
+        (!spState.search || !spState.search.trim()) &&
+        isDefaultQuickFilters(spState.quickFilters) &&
+        isDefaultPatternFilters(spState.patternFilter)
+      ) {
+        const groupMap = new Map();
+        spState.items.forEach((it) => {
+          const seg = it.segment || it.sizeGroup || it.size_raw || it.sizeRaw || "기타/미입력";
+          const metaKey = it.orgId || it.org_id || it.orgName || it.org_name;
+          const meta = metas.get(metaKey) || computePatternMeta(it);
+          const entry =
+            groupMap.get(seg) ||
+            {
+              sizeGroup: seg,
+              accountCount: 0,
+              sum2025Eok: 0,
+              companyUp: 0,
+              open: 0,
+              risk: 0,
+              seedH2B: 0,
+            };
+          entry.accountCount += 1;
+          entry.sum2025Eok += Number(it.companyTotalEok2025 ?? it.company_total_eok_2025 ?? 0);
+          if (meta.companyDir === "up") entry.companyUp += 1;
+          if (meta.hasOpen) entry.open += 1;
+          if (meta.risk) entry.risk += 1;
+          if (meta.seed === "H→B") entry.seedH2B += 1;
+          groupMap.set(seg, entry);
+        });
+        spState.segmentComparison = Array.from(groupMap.values()).map((entry) => {
+          const total = entry.accountCount || 1;
+          return {
+            ...entry,
+            companyUpRate: entry.companyUp / total,
+            openRate: entry.open / total,
+            riskRate: entry.risk / total,
+            seedH2BRate: entry.seedH2B / total,
+          };
+        });
+      }
+      spState.page = 0;
+    }
+
+    function renderStatePathSnapshots() {
+      const wrap = document.getElementById("statepathSnapshots");
+      if (!wrap) return;
+      const spState = state.statepath2425;
+      const d = spState.derived;
+      if (!d) {
+        wrap.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+        return;
+      }
+      wrap.innerHTML = `
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="muted">계정수</div>
+            <div title="${STATEPATH_GLOSSARY.snapshot.accountCount.short}"><strong>${d.accountCount}</strong></div>
+          </div>
+          <div class="stat-card">
+            <div class="muted">2024 합계</div>
+            <div title="${STATEPATH_GLOSSARY.snapshot.sums.short}">${formatEok(d.sum2024Eok)}</div>
+          </div>
+          <div class="stat-card">
+            <div class="muted">2025 합계</div>
+            <div title="${STATEPATH_GLOSSARY.snapshot.sums.short}">${formatEok(d.sum2025Eok)}</div>
+          </div>
+          <div class="stat-card">
+            <div class="muted">Δ 합</div>
+            <div title="${STATEPATH_GLOSSARY.snapshot.sums.short}">${formatEok(d.deltaSum || (d.sum2025Eok - d.sum2024Eok))}</div>
+          </div>
+          <div class="stat-card">
+            <div class="muted">Company 변화</div>
+            <div title="${STATEPATH_GLOSSARY.snapshot.companyDir.short}">↑ ${d.companyBucketChangeCounts.up} / → ${d.companyBucketChangeCounts.flat} / ↓ ${d.companyBucketChangeCounts.down}</div>
+          </div>
+          <div class="stat-card">
+            <div class="muted">OPEN / RISK</div>
+            <div title="${STATEPATH_GLOSSARY.snapshot.openRisk.long}">${d.openAccountCount} / ${d.riskAccountCount}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderQuickFilters() {
+      const wrap = document.getElementById("statepathQuickFilters");
+      if (!wrap) return;
+      const spState = state.statepath2425;
+      const qf = spState.quickFilters;
+      const chips = [
+        { key: "risk", label: "Risk", type: "toggle" },
+        { key: "hasOpen", label: "New Open", type: "toggle" },
+        { key: "hasScaleUp", label: "Scale Up", type: "toggle" },
+        { key: "companyDir", label: "Company ↑", type: "single", value: "up" },
+        { key: "companyDir", label: "Company ↓", type: "single", value: "down" },
+        { key: "companyDir", label: "Company =", type: "single", value: "flat" },
+        { key: "seed", label: "Seed H→B", type: "single", value: "H→B" },
+        { key: "seed", label: "Seed B→H", type: "single", value: "B→H" },
+        { key: "seed", label: "Seed NONE", type: "single", value: "NONE" },
+        { key: "railShift", label: "Online ↑", type: "single", value: "onlineUp" },
+        { key: "railShift", label: "Offline ↑", type: "single", value: "offlineUp" },
+      ];
+      wrap.innerHTML = chips
+        .map((chip, idx) => {
+          const active =
+            chip.type === "toggle"
+              ? qf[chip.key]
+              : qf[chip.key] && qf[chip.key] === chip.value;
+          const path =
+            chip.key === "risk"
+              ? "quickFilters.risk"
+              : chip.key === "hasOpen"
+              ? "quickFilters.hasOpen"
+              : chip.key === "hasScaleUp"
+              ? "quickFilters.hasScaleUp"
+              : chip.key === "companyDir"
+              ? "quickFilters.companyDir"
+              : chip.key === "seed"
+              ? "quickFilters.seed"
+              : "quickFilters.railShift";
+          return `<button class="chip ${active ? "active" : ""}" data-chip-idx="${idx}" title="${getGlossaryLong(path)}">${chip.label}</button>`;
+        })
+        .join(" ");
+      wrap.querySelectorAll("[data-chip-idx]").forEach((btn) => {
+        const idx = Number(btn.getAttribute("data-chip-idx"));
+        const chip = chips[idx];
+        btn.addEventListener("click", () => {
+          if (chip.type === "toggle") {
+            qf[chip.key] = !qf[chip.key];
+          } else {
+            qf[chip.key] = qf[chip.key] === chip.value ? (chip.key === "seed" ? "all" : "all") : chip.value;
+          }
+          spState.page = 0;
+          computeStatepathDerived();
+          renderStatePathSnapshots();
+          renderStatePathPatterns();
+          renderStatePathTable();
+          renderBreadcrumbs();
+        });
+      });
+    }
+
+    function renderTransitionMatrix() {
+      const wrap = document.getElementById("statepathTransitionMatrix");
+      if (!wrap) return;
+      const spState = state.statepath2425;
+      const pf = spState.patternFilter;
+      const matrix = spState.derived?.companyTransitionMatrix;
+      if (!matrix) {
+        wrap.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+        return;
+      }
+      const rowsHtml = matrix.buckets
+        .map((from, i) => {
+          const cells = matrix.buckets
+            .map((to, j) => {
+              const count = matrix.counts[i][j];
+              const active = pf.companyFrom === from && pf.companyTo === to;
+              return `<td data-from="${from}" data-to="${to}" class="${active ? "active" : ""}" title="2024 ${from} → 2025 ${to} (계정수 ${count}) / 클릭하면 이 전이만 필터">${count}</td>`;
+            })
+            .join("");
+          return `<tr><th title="${getGlossaryLong("buckets")}">${from}</th>${cells}</tr>`;
+        })
+        .join("");
+      wrap.innerHTML = `
+        <h4 class="muted">Company Bucket 전이</h4>
+        <div class="table-wrap full">
+          <table class="matrix-table">
+            <thead>
+              <tr><th title="${getGlossaryLong("patternExplorer.transitionMatrix")}">2024\\2025</th>${matrix.buckets.map((b) => `<th title="${getGlossaryLong("buckets")}">${b}</th>`).join("")}</tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        </div>
+      `;
+      wrap.querySelectorAll("td[data-from]").forEach((td) => {
+        td.addEventListener("click", () => {
+          const from = td.getAttribute("data-from");
+          const to = td.getAttribute("data-to");
+          if (pf.companyFrom === from && pf.companyTo === to) {
+            pf.companyFrom = null;
+            pf.companyTo = null;
+          } else {
+            pf.companyFrom = from;
+            pf.companyTo = to;
+          }
+          spState.page = 0;
+          computeStatepathDerived();
+          renderStatePathSnapshots();
+          renderStatePathPatterns();
+          renderStatePathTable();
+          renderBreadcrumbs();
+        });
+      });
+    }
+
+    function renderCellEventMatrix() {
+      const wrap = document.getElementById("statepathCellMatrix");
+      if (!wrap) return;
+      const spState = state.statepath2425;
+      const pf = spState.patternFilter;
+      const cellMatrix = spState.derived?.cellEventMatrix;
+      if (!cellMatrix) {
+        wrap.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+        return;
+      }
+      const cells = [
+        ["HRD_ONLINE", "HRD_OFFLINE"],
+        ["BU_ONLINE", "BU_OFFLINE"],
+      ];
+      wrap.innerHTML = `
+        <h4 class="muted">4셀 이벤트</h4>
+        <div class="grid-2col" style="display:grid;grid-template-columns:repeat(2,minmax(200px,1fr));gap:10px;">
+          ${cells
+            .flat()
+            .map((cell) => {
+              const counts = cellMatrix[cell];
+              const badge = (type, label) => {
+                const active = pf.cell === cell && pf.cellEvent === type;
+                return `<span class="event-badge ${active ? "active" : ""}" data-cell="${cell}" data-event="${type}" title="${type} 이벤트: ${getGlossaryLong("events")} / 클릭 시 필터">${label} ${counts[type]}</span>`;
+              };
+              return `<div style="border:1px solid var(--border);border-radius:10px;padding:8px;" title="${getGlossaryLong("cells")}">
+                <div class="muted">${cell}</div>
+                <div class="event-badges">
+                  ${badge("OPEN", "OPEN")}
+                  ${badge("CLOSE", "CLOSE")}
+                  ${badge("UP", "UP")}
+                  ${badge("DOWN", "DOWN")}
+                </div>
+              </div>`;
+            })
+            .join("")}
+        </div>
+      `;
+      wrap.querySelectorAll("[data-cell]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const cell = el.getAttribute("data-cell");
+          const ev = el.getAttribute("data-event");
+          if (pf.cell === cell && pf.cellEvent === ev) {
+            pf.cell = null;
+            pf.cellEvent = null;
+          } else {
+            pf.cell = cell;
+            pf.cellEvent = ev;
+          }
+          spState.page = 0;
+          computeStatepathDerived();
+          renderStatePathSnapshots();
+          renderStatePathPatterns();
+          renderStatePathTable();
+          renderBreadcrumbs();
+        });
+      });
+    }
+
+    function renderRailSummary() {
+      const wrap = document.getElementById("statepathRailSummary");
+      if (!wrap) return;
+      const spState = state.statepath2425;
+      const pf = spState.patternFilter;
+      const summary = spState.derived?.railChangeSummary;
+      if (!summary) {
+        wrap.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+        return;
+      }
+      const renderRail = (rail) => {
+        return ["up", "flat", "down"]
+          .map((dir) => {
+            const active = pf.rail === rail && pf.railDir === dir;
+            return `<span class="event-badge ${active ? "active" : ""}" data-rail="${rail}" data-dir="${dir}" title="${getGlossaryLong("patternExplorer.railMix")} / 클릭 시 필터">${rail} ${dir === "up" ? "↑" : dir === "down" ? "↓" : "→"} ${summary[rail][dir]}</span>`;
+          })
+          .join(" ");
+      };
+      wrap.innerHTML = `
+        <h4 class="muted">Rail 변화</h4>
+        <div>${renderRail("ONLINE")}</div>
+        <div style="margin-top:6px;">${renderRail("OFFLINE")}</div>
+      `;
+      wrap.querySelectorAll("[data-rail]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const rail = el.getAttribute("data-rail");
+          const dir = el.getAttribute("data-dir");
+          if (pf.rail === rail && pf.railDir === dir) {
+            pf.rail = null;
+            pf.railDir = null;
+          } else {
+            pf.rail = rail;
+            pf.railDir = dir;
+          }
+          spState.page = 0;
+          computeStatepathDerived();
+          renderStatePathSnapshots();
+          renderStatePathPatterns();
+          renderStatePathTable();
+          renderBreadcrumbs();
+        });
+      });
+    }
+
+    function renderStatePathPatterns() {
+      renderQuickFilters();
+      renderTransitionMatrix();
+      renderCellEventMatrix();
+      renderRailSummary();
+      renderSegmentComparison();
+      renderTopPatterns();
+      bindStatePathHelpButtons(document);
+    }
+
+    function renderSegmentComparison() {
+      const wrap = document.getElementById("statepathSegmentComparison");
+      if (!wrap) return;
+      const spState = state.statepath2425;
+      const canShow =
+        spState.segment === "전체" &&
+        (!spState.search || !spState.search.trim()) &&
+        isDefaultQuickFilters(spState.quickFilters) &&
+        isDefaultPatternFilters(spState.patternFilter);
+      if (!canShow || !(spState.segmentComparison || []).length) {
+        wrap.innerHTML = "";
+        return;
+      }
+      const rows = spState.segmentComparison
+        .map(
+          (row) => `
+        <tr data-seg="${row.sizeGroup}" title="클릭 시 해당 세그먼트 탭으로 이동">
+          <td>${row.sizeGroup}</td>
+          <td>${row.accountCount}</td>
+          <td>${formatEok(row.sum2025Eok || 0)}</td>
+          <td>${formatRatio(row.companyUpRate * 100 || 0)}%</td>
+          <td>${formatRatio(row.openRate * 100 || 0)}%</td>
+          <td>${formatRatio(row.riskRate * 100 || 0)}%</td>
+          <td>${formatRatio(row.seedH2BRate * 100 || 0)}%</td>
+        </tr>`
+        )
+        .join("");
+      wrap.innerHTML = `
+        <h4 class="muted">세그먼트 비교 (전체 탭 전용) ${renderStatePathHelpButton("segment")}</h4>
+        <div class="table-wrap full">
+          <table>
+            <thead>
+              <tr>
+                <th title="${getGlossaryLong("segmentComparison")}">세그먼트</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.accountCount}">계정수</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.sum2025}">2025총액</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.companyUpRate}">Company↑비율</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.openRate}">OPEN비율</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.riskRate}">Risk비율</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.seedH2BRate}">H→B비율</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+      wrap.querySelectorAll("tr[data-seg]").forEach((tr) => {
+        tr.addEventListener("click", () => {
+          const seg = tr.getAttribute("data-seg");
+          spState.segment = seg || "전체";
+          spState.page = 0;
+          spState.search = "";
+          spState.quickFilters = {
+            risk: false,
+            hasOpen: false,
+            hasScaleUp: false,
+            companyDir: "all",
+            seed: "all",
+            railShift: "all",
+          };
+          spState.patternFilter = {
+            companyFrom: null,
+            companyTo: null,
+            cell: null,
+            cellEvent: null,
+            rail: null,
+            railDir: null,
+          };
+          loadStatePathPortfolio2425(true);
+        });
+      });
+    }
+
+    function renderTopPatterns() {
+      const wrap = document.getElementById("statepathTopPatterns");
+      if (!wrap) return;
+      const spState = state.statepath2425;
+      const cellMatrix = spState.derived?.cellEventMatrix;
+      const seedCounts = spState.derived?.seedCounts || {};
+      if (!cellMatrix) {
+        wrap.innerHTML = "";
+        return;
+      }
+      const pickTopCell = (key) => {
+        let bestCell = null;
+        let bestVal = -1;
+        Object.entries(cellMatrix).forEach(([cell, counts]) => {
+          if (counts[key] > bestVal) {
+            bestCell = cell;
+            bestVal = counts[key];
+          }
+        });
+        return { cell: bestCell, count: bestVal };
+      };
+      const pickTopSeed = () => {
+        let bestSeed = null;
+        let bestVal = -1;
+        Object.entries(seedCounts).forEach(([seed, cnt]) => {
+          if (cnt > bestVal) {
+            bestSeed = seed;
+            bestVal = cnt;
+          }
+        });
+        return { seed: bestSeed, count: bestVal };
+      };
+      const tops = [
+        { label: "Top OPEN", data: pickTopCell("OPEN"), type: "cell", event: "OPEN" },
+        { label: "Top CLOSE", data: pickTopCell("CLOSE"), type: "cell", event: "CLOSE" },
+        { label: "Top UP", data: pickTopCell("UP"), type: "cell", event: "UP" },
+        { label: "Top DOWN", data: pickTopCell("DOWN"), type: "cell", event: "DOWN" },
+        { label: "Top Seed", data: pickTopSeed(), type: "seed" },
+      ];
+      wrap.innerHTML = `
+        <h4 class="muted" style="margin-top:10px;">Top Patterns ${renderStatePathHelpButton("top")}</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          ${tops
+            .map((t, idx) => {
+              const text =
+                t.type === "seed"
+                  ? `${t.label}: ${t.data.seed || "-"} (${t.data.count ?? 0})`
+                  : `${t.label}: ${t.data.cell || "-"} (${t.data.count ?? 0})`;
+              return `<button class="chip" data-top-idx="${idx}" title="${getGlossaryLong("topPatterns")} / 클릭 시 필터 적용">${text}</button>`;
+            })
+            .join("")}
+        </div>
+      `;
+      wrap.querySelectorAll("[data-top-idx]").forEach((btn) => {
+        const idx = Number(btn.getAttribute("data-top-idx"));
+        const t = tops[idx];
+        if (!t) return;
+        btn.addEventListener("click", () => {
+          if (t.type === "seed") {
+            state.statepath2425.quickFilters.seed = t.data.seed || "all";
+          } else {
+            state.statepath2425.patternFilter.cell = t.data.cell || null;
+            state.statepath2425.patternFilter.cellEvent = t.event;
+          }
+          state.statepath2425.page = 0;
+          computeStatepathDerived();
+          renderStatePathSnapshots();
+          renderStatePathPatterns();
+          renderStatePathTable();
+          renderBreadcrumbs();
+        });
+      });
+    }
+
+    function renderBreadcrumbs() {
+      const wrap = document.getElementById("statepathBreadcrumb");
+      if (!wrap) return;
+      const spState = state.statepath2425;
+      const tokens = [];
+      if (spState.segment && spState.segment !== "전체") tokens.push({ label: spState.segment, type: "segment" });
+      if (spState.search && spState.search.trim()) tokens.push({ label: `검색:${spState.search}`, type: "search" });
+      const qf = spState.quickFilters;
+      if (qf.risk) tokens.push({ label: "Risk", type: "qf", key: "risk" });
+      if (qf.hasOpen) tokens.push({ label: "Open", type: "qf", key: "hasOpen" });
+      if (qf.hasScaleUp) tokens.push({ label: "Scale Up", type: "qf", key: "hasScaleUp" });
+      if (qf.companyDir !== "all") tokens.push({ label: `Company ${qf.companyDir}`, type: "qf", key: "companyDir" });
+      if (qf.seed !== "all") tokens.push({ label: `Seed ${qf.seed}`, type: "qf", key: "seed" });
+      if (qf.railShift !== "all") tokens.push({ label: qf.railShift === "onlineUp" ? "Online ↑" : "Offline ↑", type: "qf", key: "railShift" });
+      const pf = spState.patternFilter;
+      if (pf.companyFrom || pf.companyTo) tokens.push({ label: `Company ${pf.companyFrom || "Ø"}→${pf.companyTo || "Ø"}`, type: "pf", key: "company" });
+      if (pf.cell || pf.cellEvent) tokens.push({ label: `${pf.cellEvent || ""} ${pf.cell || ""}`.trim(), type: "pf", key: "cell" });
+      if (pf.rail && pf.railDir) tokens.push({ label: `${pf.rail} ${pf.railDir}`, type: "pf", key: "rail" });
+      const resetAll = () => {
+        spState.quickFilters = {
+          risk: false,
+          hasOpen: false,
+          hasScaleUp: false,
+          companyDir: "all",
+          seed: "all",
+          railShift: "all",
+        };
+        spState.patternFilter = {
+          companyFrom: null,
+          companyTo: null,
+          cell: null,
+          cellEvent: null,
+          rail: null,
+          railDir: null,
+        };
+        spState.page = 0;
+        computeStatepathDerived();
+        renderStatePathSnapshots();
+        renderStatePathPatterns();
+        renderStatePathTable();
+        renderBreadcrumbs();
+      };
+      if (!tokens.length) {
+        wrap.innerHTML = "";
+        return;
+      }
+      wrap.innerHTML = `
+        <div class="breadcrumb">
+          필터:
+          ${tokens
+            .map(
+              (t, idx) =>
+                `<span class="pill" data-bc-idx="${idx}" title="${t.label} (x로 해제)">${t.label} ✕</span>`
+            )
+            .join(" ")}
+          <button class="chip" id="statepathResetAll" title="${getGlossaryLong("breadcrumb")}">전체 해제</button>
+          ${renderStatePathHelpButton("breadcrumb")}
+        </div>
+      `;
+      wrap.querySelectorAll("[data-bc-idx]").forEach((el) => {
+        const idx = Number(el.getAttribute("data-bc-idx"));
+        const t = tokens[idx];
+        el.addEventListener("click", () => {
+          if (t.type === "segment") spState.segment = "전체";
+          if (t.type === "search") spState.search = "";
+          if (t.type === "qf") {
+            if (t.key === "companyDir") spState.quickFilters.companyDir = "all";
+            else if (t.key === "seed") spState.quickFilters.seed = "all";
+            else if (t.key === "railShift") spState.quickFilters.railShift = "all";
+            else spState.quickFilters[t.key] = false;
+          }
+          if (t.type === "pf") {
+            if (t.key === "company") {
+              spState.patternFilter.companyFrom = null;
+              spState.patternFilter.companyTo = null;
+            } else if (t.key === "cell") {
+              spState.patternFilter.cell = null;
+              spState.patternFilter.cellEvent = null;
+            } else if (t.key === "rail") {
+              spState.patternFilter.rail = null;
+              spState.patternFilter.railDir = null;
+            }
+          }
+          spState.page = 0;
+          computeStatepathDerived();
+          renderStatePathSnapshots();
+          renderStatePathPatterns();
+          renderStatePathTable();
+          renderBreadcrumbs();
+        });
+      });
+      const resetBtn = document.getElementById("statepathResetAll");
+      if (resetBtn) resetBtn.addEventListener("click", resetAll);
+    }
+
+    function renderStatePathTable() {
+      const status = document.getElementById("statepathStatus");
+      const wrap = document.getElementById("statepathTableWrap");
+      if (!status || !wrap) return;
+      const spState = state.statepath2425;
+      if (spState.loading) {
+        status.textContent = "불러오는 중...";
+        wrap.innerHTML = "";
+        return;
+      }
+      if (spState.error) {
+        status.textContent = `오류: ${spState.error}`;
+        wrap.innerHTML = "";
+        return;
+      }
+      status.textContent = "";
+      const itemsAll = spState.filteredItems && spState.filteredItems.length ? spState.filteredItems : spState.items || [];
+      const pageSize = spState.pageSize || 200;
+      const currentPage = spState.page || 0;
+      const totalPages = Math.max(1, Math.ceil(itemsAll.length / pageSize));
+      const page = Math.min(currentPage, totalPages - 1);
+      spState.page = page;
+      const items = itemsAll.slice(page * pageSize, page * pageSize + pageSize);
+      if (!items.length) {
+        wrap.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+        return;
+      }
+      const rows = items
+        .map((row) => {
+          const orgId = row.orgId || row.org_id;
+          const orgName = row.orgName || row.org_name || orgId || "-";
+          const seg = row.segment || row.sizeGroup || row.size_raw || row.sizeRaw || "-";
+          const amt24 = row.companyTotalEok2024 ?? row.company_total_eok_2024 ?? 0;
+          const amt25 = row.companyTotalEok2025 ?? row.company_total_eok_2025 ?? 0;
+          const bucket24 = row.companyBucket2024 || row.company_bucket_2024 || "Ø";
+          const bucket25 = row.companyBucket2025 || row.company_bucket_2025 || "Ø";
+          const delta = row.deltaEok ?? row.delta_eok ?? 0;
+          const meta = computePatternMeta(row);
+          const eventChips = [];
+          meta.openCells.forEach((c) => eventChips.push(`OPEN:${c}`));
+          meta.closeCells.forEach((c) => eventChips.push(`CLOSE:${c}`));
+          meta.upCells.forEach((c) => eventChips.push(`UP:${c}`));
+          meta.downCells.forEach((c) => eventChips.push(`DOWN:${c}`));
+          Object.entries(meta.railDir).forEach(([rail, dir]) => {
+            if (dir !== "flat") eventChips.push(`RAIL:${rail} ${dir === "up" ? "↑" : "↓"}`);
+          });
+          const displayed = eventChips.slice(0, 3);
+          const rest = eventChips.length - displayed.length;
+          const eventsHtml = `
+            ${displayed.map((t) => `<span class="badge">${t}</span>`).join(" ")}
+            ${rest > 0 ? `<span class="badge">+${rest}</span>` : ""}
+          `;
+          return `
+          <tr data-org-id="${orgId || ""}">
+            <td><span class="org-link" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${orgName}</span></td>
+            <td>${seg}</td>
+            <td>${formatEok(amt24)} <span class="badge">${bucket24}</span></td>
+            <td>${formatEok(amt25)} <span class="badge">${bucket25}</span></td>
+            <td>${formatEok(delta)}</td>
+            <td>${eventsHtml}</td>
+          </tr>`;
+        })
+        .join("");
+      wrap.innerHTML = `
+        <div class="table-wrap full">
+          <table>
+            <thead>
+              <tr>
+                <th>회사명</th>
+                <th>세그먼트</th>
+                <th>2024</th>
+                <th>2025</th>
+                <th>Δ(억)</th>
+                <th>주요 이벤트</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div class="control-row" style="margin-top:8px;">
+          <div class="muted">페이지 ${page + 1} / ${totalPages}</div>
+          <div class="spacer"></div>
+          <button type="button" id="statepathPrevPage" ${page <= 0 ? "disabled" : ""} title="${getGlossaryLong("pagination")}">Prev</button>
+          <button type="button" id="statepathNextPage" ${page >= totalPages - 1 ? "disabled" : ""} title="${getGlossaryLong("pagination")}">Next</button>
+          ${renderStatePathHelpButton("pagination")}
+        </div>
+      `;
+      wrap.querySelectorAll("tr[data-org-id]").forEach((tr) => {
+        tr.addEventListener("click", () => {
+          const orgId = tr.getAttribute("data-org-id");
+          state.selectedOrg = orgId;
+          loadStatePath(orgId);
+        });
+      });
+      const prevBtn = document.getElementById("statepathPrevPage");
+      const nextBtn = document.getElementById("statepathNextPage");
+      if (prevBtn) {
+        prevBtn.addEventListener("click", () => {
+          if (spState.page > 0) {
+            spState.page -= 1;
+            renderStatePathTable();
+          }
+        });
+      }
+      if (nextBtn) {
+        nextBtn.addEventListener("click", () => {
+          if (spState.page < totalPages - 1) {
+            spState.page += 1;
+            renderStatePathTable();
+          }
+        });
+      }
+    }
+
+    async function loadStatePathPortfolio2425(force = false) {
+      const spState = state.statepath2425;
+      const key = buildStatepathPortfolioKey(spState.segment, spState.search, spState.sort, spState.limit);
+      if (!force && cache.statepathPortfolioByKey.has(key)) {
+        const cached = cache.statepathPortfolioByKey.get(key);
+        spState.items = cached.items || [];
+        spState.summary = cached.summary || null;
+      spState.error = null;
+      spState.loading = false;
+      computeStatepathDerived();
+      renderStatePathTable();
+      renderStatePathSnapshots();
+      renderStatePathPatterns();
+      renderBreadcrumbs();
+      return;
+    }
+      spState.loading = true;
+      spState.error = null;
+      renderStatePathTable();
+      const params = new URLSearchParams();
+      params.set("segment", spState.segment || "전체");
+      if (spState.search && spState.search.trim()) {
+        params.set("search", spState.search.trim());
+      }
+      params.set("sort", spState.sort || "won2025_desc");
+      params.set("limit", String(spState.limit || 500));
+      try {
+        const data = await fetchJson(`/statepath/portfolio-2425?${params.toString()}`);
+        const items = data.items || [];
+        spState.items = items;
+        spState.summary = data.summary || null;
+        spState.error = null;
+        cache.statepathPortfolioByKey.set(key, { items, summary: spState.summary });
+      } catch (err) {
+        spState.error = err.message;
+      } finally {
+        spState.loading = false;
+        computeStatepathDerived();
+        renderStatePathTable();
+        renderStatePathSnapshots();
+        renderStatePathPatterns();
+        renderBreadcrumbs();
+      }
     }
 
     function normalizeUpperOrg(val) {
@@ -2313,6 +3674,16 @@
         });
       }
       if (state.statePathModal.close) state.statePathModal.close.addEventListener("click", closeStatePathModal);
+      state.statepathLegend.backdrop = document.getElementById("statePathLegendBackdrop");
+      state.statepathLegend.close = document.getElementById("statePathLegendClose");
+      state.statepathLegend.title = document.getElementById("statePathLegendTitle");
+      state.statepathLegend.body = document.getElementById("statePathLegendBody");
+      if (state.statepathLegend.backdrop) {
+        state.statepathLegend.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.statepathLegend.backdrop) closeStatePathLegendModal();
+        });
+      }
+      if (state.statepathLegend.close) state.statepathLegend.close.addEventListener("click", closeStatePathLegendModal);
       if (!state.modal.bound) {
         document.addEventListener("keydown", (e) => {
           if (e.key === "Escape") {
@@ -2321,6 +3692,7 @@
             closeDealsModal();
             closeWebformModal();
             closeStatePathModal();
+            closeStatePathLegendModal();
           }
         });
         state.modal.bound = true;
@@ -3061,6 +4433,137 @@
       await refreshSize();
     }
 
+    async function renderStatePathMenu(contentRoot) {
+      contentRoot.innerHTML = `
+        <section class="card">
+          <div class="control-row">
+            <h2>StatePath 24→25 포트폴리오</h2>
+            <div class="spacer"></div>
+            <span class="muted">세그먼트별 Won 상태 요약</span>
+            ${renderStatePathHelpButton("all")}
+          </div>
+          <div class="control-row" id="statepathSegmentWrap">
+            ${STATEPATH_SEGMENTS.map((seg) => `<button type="button" class="seg-btn" data-seg="${seg}">${seg}</button>`).join("")}
+          </div>
+          <div class="control-row">
+            <label class="muted">검색</label>
+            <input id="statepathSearchInput" type="text" placeholder="회사명 검색" />
+            <label class="muted">정렬</label>
+            <select id="statepathSortSelect">
+              <option value="won2025_desc">2025 체결액 ↓</option>
+              <option value="delta_desc">증가액 ↓</option>
+              <option value="name_asc">이름 ↑</option>
+            </select>
+            <div class="spacer"></div>
+            <span class="pill muted">DB 교체 시 새로고침 필요 (캐시 무효화 없음)</span>
+            ${renderStatePathHelpButton("filters")}
+          </div>
+          <div id="statepathBreadcrumb" class="control-row"></div>
+        </section>
+        <section class="card">
+          <div class="control-row">
+            <h2>Snapshot & Filters</h2>
+            <div class="spacer"></div>
+            ${renderStatePathHelpButton("snapshot")}
+          </div>
+          <div id="statepathSegmentComparison"></div>
+          <div id="statepathSnapshots"></div>
+          <div id="statepathQuickFilters" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </section>
+        <section class="card">
+          <div class="control-row">
+            <h2>Pattern Explorer</h2>
+            <div class="spacer"></div>
+            ${renderStatePathHelpButton("pattern")}
+          </div>
+          <div id="statepathTransitionMatrix"></div>
+          <div id="statepathCellMatrix" style="margin-top:10px;"></div>
+          <div id="statepathRailSummary" style="margin-top:10px;"></div>
+          <div id="statepathTopPatterns"></div>
+        </section>
+        <section class="card">
+          <div id="statepathStatus" class="muted">불러오는 중...</div>
+          <div id="statepathTableWrap"></div>
+        </section>
+      `;
+
+      const segWrap = document.getElementById("statepathSegmentWrap");
+      const searchInput = document.getElementById("statepathSearchInput");
+      const sortSelect = document.getElementById("statepathSortSelect");
+      const spState = state.statepath2425;
+
+      const resetFilters = () => {
+        spState.quickFilters = {
+          risk: false,
+          hasOpen: false,
+          hasScaleUp: false,
+          companyDir: "all",
+          seed: "all",
+          railShift: "all",
+        };
+        spState.patternFilter = {
+          companyFrom: null,
+          companyTo: null,
+          cell: null,
+          cellEvent: null,
+          rail: null,
+          railDir: null,
+        };
+      };
+
+      const updateSegButtons = () => {
+        if (!segWrap) return;
+        segWrap.querySelectorAll("[data-seg]").forEach((btn) => {
+        const val = btn.getAttribute("data-seg");
+        if (val === spState.segment) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+          }
+        });
+      };
+
+      if (segWrap) {
+        segWrap.querySelectorAll("[data-seg]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const val = btn.getAttribute("data-seg");
+            spState.segment = val || "전체";
+            updateSegButtons();
+            resetFilters();
+            loadStatePathPortfolio2425(true);
+          });
+        });
+        updateSegButtons();
+      }
+
+      if (searchInput) {
+        searchInput.value = spState.search || "";
+        let timer = null;
+        searchInput.addEventListener("input", () => {
+          spState.search = searchInput.value || "";
+          spState.page = 0;
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => loadStatePathPortfolio2425(true), 400);
+        });
+      }
+
+      if (sortSelect) {
+        sortSelect.value = spState.sort || "won2025_desc";
+        sortSelect.addEventListener("change", () => {
+          spState.sort = sortSelect.value || "won2025_desc";
+          spState.page = 0;
+          loadStatePathPortfolio2425(true);
+        });
+      }
+
+      renderStatePathTable();
+      renderStatePathSnapshots();
+      renderStatePathPatterns();
+      renderBreadcrumbs();
+      bindStatePathHelpButtons(contentRoot);
+      await loadStatePathPortfolio2425(false);
+    }
+
 
     async function renderIndustryMenu(contentRoot) {
       contentRoot.innerHTML = `
@@ -3142,7 +4645,9 @@
     }
 
     document.addEventListener("DOMContentLoaded", initApp);
+
   </script>
 </body>
 
 </html>
+      bindStatePathHelpButtons(contentRoot);

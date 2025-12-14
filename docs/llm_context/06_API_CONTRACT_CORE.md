@@ -5,6 +5,7 @@
 - 금액/날짜 포맷: DB에는 TEXT로 저장, 백엔드에서 그대로 전달(금액은 필요 시 `float` 변환). 프런트는 표시 시 1e8으로 나눠 억 단위 표기, 날짜는 `YYYY-MM-DD`까지만 사용.
 - 정렬/필터: 엔드포인트별로 명시(아래 표). 조직 목록은 “People 또는 Deal 연결 있음 + 2025년 Won 합계 내림차순”.
 - 캐시: 프런트(JS Map)에만 존재, 무효화 없음. 새 DB로 교체하면 브라우저 새로고침 필요(`docs/org_tables_v2.md` 참고).
+- StatePath 계열 응답(`/statepath/*`) 금액은 이미 억 단위(amount_eok)다. 프런트는 `formatEok`로 바로 표시하며 추가 나눗셈을 하지 않는다.
 
 ## 엔드포인트별 계약
 | 메서드/경로 | 목적 | 파라미터 | 정렬/필터 | 응답 스켈레톤 |
@@ -21,6 +22,8 @@
 | GET `/api/orgs/{org_id}/won-groups-json` | 상위 조직별 People/Deal JSON | path org_id | 23/24/25 Won 있는 상위 조직만 포함 | `{ "organization": {...}, "groups": [ { "upper_org","team","people":[...], "deals":[...] } ] }` (세부 정제 규칙은 `docs/json_logic.md`) |
 | GET `/api/orgs/{org_id}/won-groups-json-compact` | won-groups-json 축약본(LLM용) | path org_id | 원본 그룹 구조를 compact 변환 | `{ "schema_version": "...", "organization": {...,"summary":...}, "groups": [ { "upper_org","team","deal_defaults", "counterparty_summary", "people":[...], "deals":[...] } ] }` |
 | GET `/api/orgs/{org_id}/statepath` | 2024/2025 StatePath + 추천 | path org_id | won-groups-json-compact 기반으로 StatePath/추천을 산출 | `{ "item": { "company_name": "...", "year_states": {...}, "path_2024_to_2025": {...}, "ops_reco": {...}, "qa": {...} } }` |
+| GET `/api/statepath/portfolio-2425` | 24→25 StatePath 포트폴리오 | `segment`(기본 전체), `search`, `sort`(won2025_desc/delta_desc/bucket_up_desc/risk_first/name_asc), `limit`(≤2000), `offset`, 리스크/패턴 필터(riskOnly/hasOpen/hasScaleUp/companyDir/seed/rail/railDir/companyFrom/companyTo/cell/cellEvent) | DB Won 딜을 org×year×rail×upper_org로 합산 → lane/rail/4셀 금액·버킷 산출 → Python 필터/정렬 → pagination | `{ "summary": {accountCount,sum2024Eok,sum2025Eok,companyTransitionMatrix,cellEventMatrix,railChangeSummary,seedCounts,topPatterns,segmentComparison}, "items": [ {org_id/name, size_raw, segment, company_total_eok_2024/2025, company_bucket_2024/2025, online/offline bucket, cells_2024/2025(4셀 amt+bucket), seed, eventCounts...} ], "meta": {...} }` |
+| GET `/api/orgs/{org_id}/statepath-2425` | 24→25 StatePath 상세(포트폴리오와 일관) | path org_id | DB Won 딜을 단일 org 단위로 집계 | `{ "item": { "org": {id,name,sizeRaw,sizeGroup}, "year_states": {"2024": {...}, "2025": {...}}, "path_2024_to_2025": {...}, "qa": {...} } }` |
 
 ## 엔드포인트 설명/예시
 - `/api/orgs`: People/Deal 연결이 없는 조직은 제외. 2025년 Won 합계 내림차순으로 정렬 후 이름 순으로 보조 정렬.
@@ -28,6 +31,8 @@
 - `/api/orgs/{id}/won-groups-json-compact`: 위 JSON을 LLM 입력용으로 축약(people_id 참조, deal_defaults 추출, summary 블록 추가, 공백/null/빈 배열 제거).
 - `/api/orgs/{id}/won-summary`: `상태='Won'`이고 `계약 체결일`이 2023/2024/2025인 금액만 합산. 상위 조직 비어 있으면 `미입력` 그룹에 포함.
 - `/api/people/{id}/deals`: 계약일이 NULL인 건은 뒤로 보내고, 그 외 계약일 desc → 생성일 desc.
+- `/api/statepath/portfolio-2425`: segment/search/정렬/패턴 필터를 모두 Query로 받고, Won 딜을 24/25 + HRD/BU × ONLINE/OFFLINE으로 집계해 회사/셀 버킷·이벤트·전이 매트릭스·Top patterns·세그먼트 비교를 함께 반환한다(금액은 억 단위).
+- `/api/orgs/{id}/statepath-2425`: 동일 집계 로직을 단일 org에 적용해 year_states/path/qa/sizeGroup을 반환한다. 포트폴리오와 숫자가 최대한 일치하도록 summary/compact JSON을 거치지 않는다.
 
 ## 오류/에러 처리
 - DB 파일이 없거나 열 수 없으면 500.

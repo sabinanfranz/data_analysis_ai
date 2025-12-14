@@ -13,7 +13,9 @@
 - 그룹: `organizationId`.
 - 반환 필드:  
   - `orgId`, `orgName`(NULL 시 id), `industryMajor`, `industryMid`  
-  - `totalAmount`(Won 금액 합계), `formats`(과정포맷별 `{courseFormat,totalAmount}` 목록)
+  - `totalAmount`(Won 금액 합계), `onlineAmount`, `offlineAmount`, `grade`(2025),  
+    `totalAmount2024`, `grade2024`(2024 Won 총액 기준),  
+    `formats`(과정포맷별 `{courseFormat,totalAmount}` 목록)
 - 정렬: `totalAmount` 내림차순.
 
 ### GET `/api/rank/2025-deals-people`
@@ -47,5 +49,6 @@
 
 ## 엣지/처리 규칙
 - 2025 People 랭킹에서 상위 조직과 팀이 모두 없는(`미입력`) 경우는 제외한다(상위 조직만 미입력이고 팀이 있으면 포함).
+- 2025 랭킹 응답의 grade/online/offline/2024 합계는 프런트에서 24→25 배수, 2026 목표액(배수 적용), 등급 가이드/배수 모달에 활용한다.
 - 조직 목록(`GET /api/orgs`)은 People/Deal 연결이 없는 조직을 제외하고 2025 Won 합계 기준으로 정렬한다(참고: `docs/llm_context/06_API_CONTRACT_CORE.md`).
 - 프런트 캐시 무효화 없음: DB 교체 시 브라우저 새로고침 필요.

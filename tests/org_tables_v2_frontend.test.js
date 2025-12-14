@@ -387,3 +387,93 @@ test("resetSelection clears upper/person/deal selection, filters, and JSON 필�
   assert.strictEqual(sizeSelect.value, "대기업");
   assert.strictEqual(orgSelect.value, "");
 });
+
+test("computeTeamPartSummary maps owners and DRI rule", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const computeTeamPartSummary = vm.runInContext("computeTeamPartSummary", ctx);
+
+  const single = computeTeamPartSummary(["김솔이", "김정은"]);
+  assert.strictEqual(single.teamPartText, "기업교육 1팀 1파트");
+  assert.strictEqual(single.dri, "O");
+
+  const mixed = computeTeamPartSummary(["강지선", "정다혜"]);
+  assert.ok(mixed.teamPartText.includes(" / "));
+  assert.strictEqual(mixed.dri, "X");
+
+  const trailing = computeTeamPartSummary(["이윤지B"]);
+  assert.strictEqual(trailing.teamPartText, "기업교육 2팀 1파트");
+  assert.strictEqual(trailing.dri, "O");
+});
+
+test("renderWonSummary shows new columns and team/part/DRI", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  // required elements
+  const card = docStub.getElementById("wonSummaryCard");
+  const table = docStub.getElementById("wonSummaryTable");
+  const hint = docStub.getElementById("wonSummaryHint");
+
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const renderWonSummary = vm.runInContext("renderWonSummary", ctx);
+  const state = vm.runInContext("state", ctx);
+
+  state.selectedOrg = "org-1";
+  const summary = [
+    {
+      upper_org: "부문A",
+      won2023: 0,
+      won2024: 0,
+      won2025: 1e8,
+      contacts: [],
+      owners: ["오너X"],
+      owners2025: ["김솔이", "김정은"],
+    },
+  ];
+
+  renderWonSummary(summary);
+
+  assert.strictEqual(card.style.display, "");
+  assert.ok(table.innerHTML.includes("2025 담당자"));
+  assert.ok(table.innerHTML.includes("김솔이, 김정은"));
+  assert.ok(table.innerHTML.includes("기업교육 1팀 1파트"));
+  assert.ok(table.innerHTML.includes(">O<") || table.innerHTML.includes(">O</"));
+  assert.strictEqual(hint.textContent, "");
+});

@@ -15,6 +15,7 @@
 - **체크포인트 저장 폴백**: 체크포인트 파일 rename 실패(WinError 5 등) 시 3회 재시도 후 tmp→본 파일 복사로 저장, 실패 시 예외와 로그를 남깁니다. 필요하면 `.tmp`를 수동으로 `.json`에 복사해 재개 가능합니다.
 - **후처리: 웹폼 제출 내역 수집**: 스냅샷이 성공적으로 완료되면 `deal.peopleId`에 연결된 People의 `제출된 웹폼 목록`에서 webform id를 모으고, 각 id에 대해 `/v2/webForm/<id>/submit` API를 페이지네이션(cursor)로 호출해 `webform_history` 테이블을 추가로 업데이트합니다. 컬럼이 없거나 id가 없을 경우 건너뜁니다.
 - **웹폼만 단독 실행**: `--webform-only` 옵션으로 기존 DB(`--db-path`)에 대해 웹폼 제출 내역만 수집/적재할 수 있습니다. 예) `python salesmap_first_page_snapshot.py --webform-only --db-path salesmap_latest.db`.
+- **허용 ID 필터링**: webform 제출은 `deal.peopleId` 기반 허용 People ID 집합에만 적재하며, peopleId가 없거나 허용 목록 외인 건은 dropped_missing/dropped_not_allowed로 집계 후 건너뛴다.
 
 ## 주요 옵션
 - `--db-path`: 최종 SQLite 경로(기본 `salesmap_latest.db`).

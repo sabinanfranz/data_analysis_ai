@@ -73,3 +73,14 @@
   - `won-groups-json`의 organization 메타에 업종 구분(대/중) 추가 후 문서/테스트 반영.
   - 상위 조직 People 표에 웹폼 내역 버튼/타임라인 모달 추가 내용 반영.
   - 웹폼 모달을 테이블/확대 레이아웃으로 개선(날짜 복수 시 행 분리).
+
+# 2025-12-14 작업 기록
+
+- Compact JSON/LLM 지원
+  - `/orgs/{id}/won-groups-json-compact` 엔드포인트 및 프런트 버튼(전체/선택 상위 조직) 추가, schema_version/summary/deal_defaults 문서화.
+- 2025 랭킹 UI 갱신
+  - 2024/2025 등급·총액, 24→25 배수, 온라인/비온라인 분리, 2026 목표액(등급별 배수/삼성전자 50억) + 요약 카드/등급 가이드·배수 모달 추가.
+- 메모/웹폼 정제 문서화
+  - `utm_source`뿐 아니라 “고객 마케팅 수신 동의”로도 정제 트리거, ATD/SkyHive/제3자 동의 키 드롭 추가. compact 변환에서 memos/webforms 제거 명시.
+- 스냅샷 후처리
+  - webform_history 적재 시 deal.peopleId 기반 허용 ID 외 제출은 dropped_missing/dropped_not_allowed로 필터링 문서화.

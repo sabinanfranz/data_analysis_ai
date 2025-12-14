@@ -19,4 +19,9 @@
   - `/api/orgs/{org_id}/won-summary`: 상위 조직별 Won 합계(23/24/25)와 담당자/owner 목록을 반환.
   - `/api/orgs/{org_id}/people?hasDeal=true|false|null`: 조직의 People 리스트(딜 여부 필터).
   - `/api/people/{person_id}/deals`, `/api/people/{person_id}/memos`, `/api/deals/{deal_id}/memos`: 사람/딜 단위 데이터와 메모.
-  - 랭킹/이상치: `/api/rank/2025-deals`, `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary`.
+  - 랭킹/이상치: `/api/rank/2025-deals`(grade/grade2024 + online/offline/2024 합계 포함), `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary`.
+  - Compact JSON: `/api/orgs/{org_id}/won-groups-json-compact`은 won-groups-json을 LLM용으로 축약(schema_version 포함, deal_defaults/summary 추가)한 버전을 반환한다.
+
+## 메모 정제 트리거/드롭 키 보강
+- 트리거: `utm_source`가 있거나 “고객 마케팅 수신 동의” 문구가 있을 때 폼 스타일 메모를 정제한다.
+- 드롭 키 추가: `ATD's Privacy Notice`, `SkyHive's Privacy Policy`, `개인정보 제3자 제공 동의`도 제거 대상이다.

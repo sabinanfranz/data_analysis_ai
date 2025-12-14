@@ -7,6 +7,21 @@ from typing import Any, Dict, List, Optional, Sequence, Set
 DB_PATH = Path(__file__).resolve().parent.parent.parent / "salesmap_latest.db"
 _OWNER_LOOKUP_CACHE: Dict[Path, Dict[str, str]] = {}
 YEARS_FOR_WON = {"2023", "2024", "2025"}
+ONLINE_COURSE_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포팅"}
+
+
+def _date_only(val: Any) -> str:
+    """
+    Normalize a datetime-ish value to YYYY-MM-DD. Returns "" when empty/None.
+    """
+    if val is None:
+        return ""
+    text = str(val)
+    if "T" in text:
+        text = text.split("T")[0]
+    if " " in text:
+        text = text.split(" ")[0]
+    return text
 
 
 def _connect(db_path: Path) -> sqlite3.Connection:
@@ -58,8 +73,8 @@ def _clean_form_memo(text: str) -> Optional[Dict[str, str]]:
     if "단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청" in normalized_text:
         return ""
 
-    # Only proceed when utm_source is present
-    if "utm_source" not in normalized_text:
+    # Only proceed when utm_source or 고객 마케팅 수신 동의가 있을 때
+    if "utm_source" not in normalized_text and "고객 마케팅 수신 동의" not in normalized_text:
         return None
 
     lines_raw = normalized_text.split("\n")
@@ -89,6 +104,9 @@ def _clean_form_memo(text: str) -> Optional[Dict[str, str]]:
         "방문경로",
         "개인정보수집동의",
         "고객마케팅수신동의",
+        "SkyHive'sPrivacyPolicy",
+        "ATD'sPrivacyNotice",
+        "개인정보제3자제공동의",
         "고객utm_source",
         "고객utm_medium",
         "고객utm_campaign",
@@ -334,6 +352,27 @@ def _to_number(val: Any) -> float | None:
         return None
 
 
+def _compute_grade(total_amount: float) -> str:
+    """
+    Grade bands based on 2025 총액 (억 기준, 이상~미만):
+    S0: >=10, P0: >=2, P1: >=1, P2: >=0.5, P3: >=0.25, P4: >=0.1, P5: <0.1
+    """
+    amount_eok = (total_amount or 0.0) / 1e8
+    if amount_eok >= 10.0:
+        return "S0"
+    if amount_eok >= 2.0:
+        return "P0"
+    if amount_eok >= 1.0:
+        return "P1"
+    if amount_eok >= 0.5:
+        return "P2"
+    if amount_eok >= 0.25:
+        return "P3"
+    if amount_eok >= 0.1:
+        return "P4"
+    return "P5"
+
+
 def get_deals_for_person(person_id: str, db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
@@ -478,6 +517,7 @@ def get_won_summary_by_upper_org(org_id: str, db_path: Path = DB_PATH) -> List[D
                 "won2025": 0.0,
                 "contacts": set(),
                 "owners": set(),
+                "owners2025": set(),
                 "dealCount": 0,
             },
         )
@@ -508,6 +548,11 @@ def get_won_summary_by_upper_org(org_id: str, db_path: Path = DB_PATH) -> List[D
             entry["owners"].add(str(owner_name))
         else:
             entry["owners"].add("미입력")
+        if year == "2025":
+            if owner_name:
+                entry["owners2025"].add(str(owner_name))
+            else:
+                entry["owners2025"].add("미입력")
 
     # Convert sets to sorted lists and amounts to numbers (kept as float for formatting on frontend)
     result: List[Dict[str, Any]] = []
@@ -520,6 +565,7 @@ def get_won_summary_by_upper_org(org_id: str, db_path: Path = DB_PATH) -> List[D
                 "won2025": entry["won2025"],
                 "contacts": sorted(entry["contacts"]),
                 "owners": sorted(entry["owners"]),
+                "owners2025": sorted(entry["owners2025"]),
                 "dealCount": entry["dealCount"],
             }
         )
@@ -531,7 +577,9 @@ def get_won_summary_by_upper_org(org_id: str, db_path: Path = DB_PATH) -> List[D
 
 def get_rank_2025_deals(size: str = "전체", db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
     """
-    Aggregate 2025 'Won' deals by organization (total) and course format breakdown.
+    Aggregate 2024/2025 'Won' deals by organization.
+    - 2025: total + online/offline split + grade
+    - 2024: total + grade
     """
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
@@ -543,29 +591,43 @@ def get_rank_2025_deals(size: str = "전체", db_path: Path = DB_PATH) -> List[D
         params.append(size)
 
     with _connect(db_path) as conn:
-        rows = _fetch_all(
+        rows_2025 = _fetch_all(
             conn,
             'SELECT '
             '  d.organizationId AS orgId, '
             '  COALESCE(o."이름", d.organizationId) AS orgName, '
-            '  o."업종 구분(대)" AS industry_major, '
-            '  o."업종 구분(중)" AS industry_mid, '
             '  d."과정포맷" AS courseFormat, '
             '  SUM(CAST(d."금액" AS REAL)) AS totalAmount '
             "FROM deal d "
             "LEFT JOIN organization o ON o.id = d.organizationId "
             f"WHERE {' AND '.join(conditions)} "
-            'GROUP BY d.organizationId, orgName, industry_major, industry_mid, d."과정포맷"',
+            'GROUP BY d.organizationId, orgName, d."과정포맷"',
             params,
         )
 
-    # Accumulate per org and per course format
+        conditions_2024 = ['d."상태" = ?', 'd."계약 체결일" LIKE ?']
+        params_2024: List[Any] = ["Won", "2024%"]
+        if size and size != "전체":
+            conditions_2024.append('o."기업 규모" = ?')
+            params_2024.append(size)
+        rows_2024 = _fetch_all(
+            conn,
+            'SELECT '
+            '  d.organizationId AS orgId, '
+            '  COALESCE(o."이름", d.organizationId) AS orgName, '
+            '  SUM(CAST(d."금액" AS REAL)) AS totalAmount '
+            "FROM deal d "
+            "LEFT JOIN organization o ON o.id = d.organizationId "
+            f"WHERE {' AND '.join(conditions_2024)} "
+            'GROUP BY d.organizationId, orgName',
+            params_2024,
+        )
+
+    # Accumulate per org with online/offline split (2025) and 2024 total
     orgs: Dict[str, Dict[str, Any]] = {}
-    for row in rows:
+    for row in rows_2025:
         org_id = row["orgId"]
         org_name = row["orgName"]
-        industry_major = row["industry_major"]
-        industry_mid = row["industry_mid"]
         course = row["courseFormat"]
         amount = _to_number(row["totalAmount"]) or 0.0
         org_entry = orgs.setdefault(
@@ -573,26 +635,41 @@ def get_rank_2025_deals(size: str = "전체", db_path: Path = DB_PATH) -> List[D
             {
                 "orgId": org_id,
                 "orgName": org_name,
-                "industryMajor": industry_major,
-                "industryMid": industry_mid,
                 "totalAmount": 0.0,
-                "formats": [],
+                "onlineAmount": 0.0,
+                "offlineAmount": 0.0,
+                "totalAmount2024": 0.0,
             },
         )
         if not org_entry.get("orgName") and org_name:
             org_entry["orgName"] = org_name
-        if not org_entry.get("industryMajor") and industry_major:
-            org_entry["industryMajor"] = industry_major
-        if not org_entry.get("industryMid") and industry_mid:
-            org_entry["industryMid"] = industry_mid
         org_entry["totalAmount"] += amount
-        org_entry["formats"].append({"courseFormat": course, "totalAmount": amount})
+        if course in ONLINE_COURSE_FORMATS:
+            org_entry["onlineAmount"] += amount
+        else:
+            org_entry["offlineAmount"] += amount
 
-    # Sort formats per org by amount desc
+    for row in rows_2024:
+        org_id = row["orgId"]
+        org_entry = orgs.setdefault(
+            org_id,
+            {
+                "orgId": org_id,
+                "orgName": row["orgName"],
+                "totalAmount": 0.0,
+                "onlineAmount": 0.0,
+                "offlineAmount": 0.0,
+                "totalAmount2024": 0.0,
+            },
+        )
+        amount = _to_number(row["totalAmount"]) or 0.0
+        org_entry["totalAmount2024"] += amount
+
     for entry in orgs.values():
-        entry["formats"].sort(key=lambda x: x["totalAmount"] or 0, reverse=True)
+        entry["grade"] = _compute_grade(entry["totalAmount"])
+        entry["grade2024"] = _compute_grade(entry["totalAmount2024"])
+        entry["totalAmount2024"] = entry.get("totalAmount2024", 0.0)
 
-    # Return orgs sorted by totalAmount desc
     ranked = sorted(orgs.values(), key=lambda x: x["totalAmount"] or 0, reverse=True)
     return ranked
 
@@ -848,16 +925,6 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
         cleaned = (val or "").strip()
         return cleaned if cleaned else "미입력"
 
-    def _date_only(val: Any) -> str:
-        if val is None:
-            return ""
-        text = str(val)
-        if "T" in text:
-            text = text.split("T")[0]
-        if " " in text:
-            text = text.split(" ")[0]
-        return text
-
     def _parse_webforms(raw: Any) -> List[Dict[str, Any]]:
         data = _safe_json_load(raw)
         items: List[Dict[str, Any]] = []
@@ -1076,23 +1143,23 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
         group["deals"].append(
             {
                 "id": row["id"],
-                "created_at": row["created_at"],
-                "name": row["name"],
-                "team": row["team"],
-                "owner": owner_name,
-                "status": row["status"],
-                "probability": row["probability"],
-                "expected_date": row["expected_date"],
-                "expected_amount": _to_number(row["expected_amount"]),
-                "lost_confirmed_at": row["lost_confirmed_at"],
-                "lost_reason": row["lost_reason"],
-                "course_format": row["course_format"],
-                "category": row["category"],
-                "contract_date": row["contract_date"],
-                "amount": _to_number(row["amount"]),
-                "start_date": row["start_date"],
-                "end_date": row["end_date"],
-                "net_percent": row["net_percent"],
+            "created_at": _date_only(row["created_at"]),
+            "name": row["name"],
+            "team": row["team"],
+            "owner": owner_name,
+            "status": row["status"],
+            "probability": row["probability"],
+            "expected_date": _date_only(row["expected_date"]),
+            "expected_amount": _to_number(row["expected_amount"]),
+            "lost_confirmed_at": _date_only(row["lost_confirmed_at"]),
+            "lost_reason": row["lost_reason"],
+            "course_format": row["course_format"],
+            "category": row["category"],
+            "contract_date": _date_only(row["contract_date"]),
+            "amount": _to_number(row["amount"]),
+            "start_date": _date_only(row["start_date"]),
+            "end_date": _date_only(row["end_date"]),
+            "net_percent": row["net_percent"],
                 "people": {
                     "id": person["id"],
                     "name": person["name"],

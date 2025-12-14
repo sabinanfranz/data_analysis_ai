@@ -17,12 +17,14 @@
 | GET `/api/people/{person_id}/deals` | 특정 People의 Deal | path person_id | 계약일 desc, NULL 마지막 → 생성일 desc | `{ "items": [ { "id","peopleId","organizationId","name","status","amount","expected_amount","contract_date","owner_json","created_at" } ] }` |
 | GET `/api/people/{person_id}/memos` | 특정 People 메모 | `limit`(1~500, 기본 200) | createdAt desc | `{ "items": [ { "id","text","ownerId","ownerName","createdAt",... } ] }` |
 | GET `/api/deals/{deal_id}/memos` | 특정 Deal 메모 | `limit`(1~500, 기본 200) | createdAt desc | `{ "items": [ { "id","text","ownerId","ownerName","createdAt",... } ] }` |
-| GET `/api/orgs/{org_id}/won-summary` | 상위 조직별 Won 합계(23/24/25) | path org_id | 상위 조직별 그룹, Won 상태 & 계약연도 23/24/25만 합산 | `{ "items": [ { "upper_org","won2023","won2024","won2025","contacts":[...], "owners":[...], "dealCount" } ] }` |
+| GET `/api/orgs/{org_id}/won-summary` | 상위 조직별 Won 합계(23/24/25) | path org_id | 상위 조직별 그룹, Won 상태 & 계약연도 23/24/25만 합산 | `{ "items": [ { "upper_org","won2023","won2024","won2025","contacts":[...], "owners":[...], "owners2025":[...], "dealCount" } ] }` |
 | GET `/api/orgs/{org_id}/won-groups-json` | 상위 조직별 People/Deal JSON | path org_id | 23/24/25 Won 있는 상위 조직만 포함 | `{ "organization": {...}, "groups": [ { "upper_org","team","people":[...], "deals":[...] } ] }` (세부 정제 규칙은 `docs/json_logic.md`) |
+| GET `/api/orgs/{org_id}/won-groups-json-compact` | won-groups-json 축약본(LLM용) | path org_id | 원본 그룹 구조를 compact 변환 | `{ "schema_version": "...", "organization": {...,"summary":...}, "groups": [ { "upper_org","team","deal_defaults", "counterparty_summary", "people":[...], "deals":[...] } ] }` |
 
 ## 엔드포인트 설명/예시
 - `/api/orgs`: People/Deal 연결이 없는 조직은 제외. 2025년 Won 합계 내림차순으로 정렬 후 이름 순으로 보조 정렬.
-- `/api/orgs/{id}/won-groups-json`: webform id 미노출, 날짜 매핑(`"날짜 확인 불가"`/단일/리스트), 메모 정제(전화/동의/utm 제거, 특정 문구/정보 부족 시 제외). 전체 구조/정제 규칙은 `docs/json_logic.md` 참고.
+- `/api/orgs/{id}/won-groups-json`: webform id 미노출, 날짜 매핑(`"날짜 확인 불가"`/단일/리스트), 메모 정제(전화/동의/utm 제거, 특정 문구/정보 부족 시 제외). “고객 마케팅 수신 동의”만 있어도 정제를 시도하며 ATD/SkyHive/제3자 동의 키도 제거한다. 전체 구조/정제 규칙은 `docs/json_logic.md` 참고.
+- `/api/orgs/{id}/won-groups-json-compact`: 위 JSON을 LLM 입력용으로 축약(people_id 참조, deal_defaults 추출, summary 블록 추가, 공백/null/빈 배열 제거).
 - `/api/orgs/{id}/won-summary`: `상태='Won'`이고 `계약 체결일`이 2023/2024/2025인 금액만 합산. 상위 조직 비어 있으면 `미입력` 그룹에 포함.
 - `/api/people/{id}/deals`: 계약일이 NULL인 건은 뒤로 보내고, 그 외 계약일 desc → 생성일 desc.
 

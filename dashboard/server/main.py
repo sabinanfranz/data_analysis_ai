@@ -4,6 +4,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import get_initial_dashboard_data
 from .org_tables_api import router as org_tables_router
 
+from fastapi.responses import FileResponse
+
+@app.get("/", include_in_schema=False)
+def index():
+    return FileResponse("org_tables_v2.html")
+
 app = FastAPI(title="Org Tables Dashboard API")
 
 frontend_origins = ["http://localhost:5173", "http://127.0.0.1:5173"]

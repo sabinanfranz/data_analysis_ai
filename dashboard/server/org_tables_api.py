@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, Query
 
 from . import database as db
+from .json_compact import compact_won_groups_json
 
 router = APIRouter(prefix="/api")
 
@@ -133,6 +134,15 @@ def get_won_summary(org_id: str) -> dict:
 def get_won_groups_json(org_id: str) -> dict:
     try:
         return db.get_won_groups_json(org_id=org_id)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/orgs/{org_id}/won-groups-json-compact")
+def get_won_groups_json_compact(org_id: str) -> dict:
+    try:
+        raw = db.get_won_groups_json(org_id=org_id)
+        return compact_won_groups_json(raw)
     except FileNotFoundError as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

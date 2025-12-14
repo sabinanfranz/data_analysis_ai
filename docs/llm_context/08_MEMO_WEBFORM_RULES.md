@@ -11,7 +11,7 @@
 
 ## 2) 메모 정제(폼 스타일 메모만)
 - 전처리 대상 조건:
-  - 메모 본문이 키:값 형태(라인 단위)이고, `utm_source` 문자열이 포함될 때만 수행.
+  - 메모 본문이 키:값 형태(라인 단위)이고, `utm_source` 또는 “고객 마케팅 수신 동의” 문자열이 포함될 때만 수행.
   - `(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)` 특수 문구가 있으면 전처리 결과를 빈 문자열로 처리(해당 메모 제외).
 - 전처리 순서:
   1. 개행 정리: `\n\n` → `\n`, `:)` 제거.
@@ -22,7 +22,7 @@
   - 기업 규모: `회사기업규모`
   - 업종: `회사업종`
   - 채널: `방문경로`
-  - 동의: `개인정보수집동의`, `고객마케팅수신동의`
+  - 동의: `개인정보수집동의`, `고객마케팅수신동의`, `ATD'sPrivacyNotice`, `SkyHive'sPrivacyPolicy`, `개인정보제3자제공동의`
   - UTM: `고객utm_source`, `고객utm_medium`, `고객utm_campaign`, `고객utm_content`
 - 값이 비어 있거나 `(공백)`/`-`이면 버린다.
 - 질문 인식: 키에 `궁금` 또는 `고민`이 있으면 `question` 키로 저장.
@@ -36,5 +36,5 @@
   - Dict 결과: `text`를 제거하고 `cleanText` 키로 구조화 JSON을 넣는다.
 
 ## 3) 적용 위치
-- 백엔드: `dashboard/server/database.py`의 `get_won_groups_json`에서 메모/웹폼 변환을 적용해 `groups` 내 People/Deal/Org memos, People webforms에 반영한다.
+- 백엔드: `dashboard/server/database.py`의 `get_won_groups_json`에서 메모/웹폼 변환을 적용해 `groups` 내 People/Deal/Org memos, People webforms에 반영한다. compact 변환에서는 memos/webforms가 제거된다.
 - 상세 로직/예제 테스트: `tests/test_won_groups_json.py` 참조.

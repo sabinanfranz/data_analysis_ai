@@ -32,7 +32,7 @@
 
 ## 6) webform_history 후처리 계약
 - 대상: 웹폼 제출 이벤트. `peopleId/webFormId/organizationId/dealId/leadId/createdAt/contents`를 저장.
-- 허용 ID: peopleId 기준으로 매핑하며, 빈 값은 건너뛴다.
+- 허용 ID: peopleId 기준으로 매핑하며, 빈 값은 dropped_missing, 허용 목록 외는 dropped_not_allowed로 건너뛴다(로그에 카운트).
 - 페이지네이션: Salesmap API 페이지 단위로 모든 제출을 순회(코드에서 반복 호출). 실패 시 재시도 로직 공유.
 
 ## 7) 실패 시 데이터 잔존 체크리스트

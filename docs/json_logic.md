@@ -70,8 +70,8 @@
 
 ## 메모/웹폼 정제 간단 메모
 - 폼 메모 정제:
-  - `utm_source`가 있어야 정제 진행.
-  - 전화/기업 규모/업종/채널/동의/utm 항목은 제거.
+  - `utm_source` 또는 “고객 마케팅 수신 동의”가 있어야 정제 진행.
+  - 전화/기업 규모/업종/채널/동의/utm 항목은 제거(ATD/SkyHive/제3자 동의 포함).
   - 남는 키가 `고객이름/고객이메일/회사이름/고객담당업무/고객직급/직책`만이면 제외.
   - 특수 문구 `(단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청)`이 있으면 제외.
   - 그 외에는 `cleanText`로 구조화하고, 정제 실패 시 원문 text 유지.
@@ -96,3 +96,13 @@
   1) `org_tables_v2.html`을 열고 회사를 선택한다.
   2) 상위 조직 표에서 한 행을 클릭해 선택한다.
   3) “JSON 확인/복사” 버튼으로 전체/선택 JSON을 열어 구조가 의도대로 필터링되었는지 확인한다.
+
+## Compact JSON 변환(LLM용)
+- 엔드포인트: `/api/orgs/{id}/won-groups-json-compact`, 변환기: `dashboard/server/json_compact.py`.
+- 변환 규칙:
+  - deal.people를 `people_id` 참조로 바꾸고, 누락된 사람은 stub로 people 리스트에 추가.
+  - Deal `team`을 Day1 팀(`day1_teams`)으로 정규화, 날짜 필드를 YYYY-MM-DD로 통일.
+  - Won 딜 기준으로 그룹/조직 summary(`won_amount_by_year`, online/offline) 생성 후 organization.summary에 누적.
+  - 동일 값이 80% 이상 반복되는 deal 필드를 `deal_defaults`로 끌어올리고 개별 deal에서 제거.
+  - memos/webforms 제거, null/빈 배열/빈 객체는 재귀적으로 pruning.
+- 반환 형태: `schema_version`, `organization`(+`summary`), `groups`(upper_org/team/deal_defaults/counterparty_summary/people/deals).

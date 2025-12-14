@@ -84,3 +84,14 @@
   - `utm_source`뿐 아니라 “고객 마케팅 수신 동의”로도 정제 트리거, ATD/SkyHive/제3자 동의 키 드롭 추가. compact 변환에서 memos/webforms 제거 명시.
 - 스냅샷 후처리
   - webform_history 적재 시 deal.peopleId 기반 허용 ID 외 제출은 dropped_missing/dropped_not_allowed로 필터링 문서화.
+
+# 2025-12-15 작업 기록
+
+- StatePath/추천 레이어 추가
+  - compact JSON 기반 StatePath 엔진(`statepath_engine.py`)으로 2024/2025 상태, Path 이벤트, Seed, RevOps 추천(목표/타겟 셀/카운터파티/액션) 계산.
+  - 신규 API `/api/orgs/{id}/statepath` 추가, 억 단위 금액으로 응답.
+  - 프런트 org_tables_v2에 `StatePath 보기` 버튼/모달 추가(연도별 요약, 4셀 비교, 이벤트, 추천). formatEok 도입.
+- Won 요약 확장
+  - `/won-summary`에 2025 Won 딜 담당자 `owners2025` 추가, 프런트 테이블에 팀&파트/DRI 가능 컬럼 포함.
+- 테스트/문서
+  - StatePath/owners2025 단위테스트 추가, API/프런트 계약 및 org_tables_v2 문서 업데이트.

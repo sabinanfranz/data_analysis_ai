@@ -18,6 +18,7 @@ python -m venv .venv; .\.venv\Scripts\pip install -r requirements.txt
    - 회사 목록은 People 또는 Deal이 1건 이상 연결된 조직만 표시되며, 2025년 Won 금액 합계 내림차순으로 정렬된다(동률 시 이름 순).
    - 페이지 진입/선택 초기화 후에는 자동으로 회사를 선택하지 않는다. 반드시 드롭다운에서 회사를 선택해야 People/Deal/JSON이 로드된다.
    - 규모 필터에서 결과가 0건이고 검색어가 비어 있으면 자동으로 `전체`로 전환해 재조회한다.
+   - 회사 선택 후 `StatePath 보기` 버튼으로 2024/2025 상태·이벤트·추천을 모달로 확인할 수 있다(금액은 억 단위 표시).
 
 ## Salesmap 스냅샷(DB 생성)
 - 사전 준비: PowerShell에서 환경 변수 `SALESMAP_TOKEN`을 설정.

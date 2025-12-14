@@ -159,6 +159,64 @@ def get_statepath(org_id: str) -> dict:
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/statepath/portfolio-2425")
+def get_statepath_portfolio(
+    sizeGroup: str = Query("전체", description="대기업/중견기업/중소기업/공공기관/대학교/기타/미입력"),
+    search: str | None = Query(None, description="조직명 검색"),
+    sort: str = Query("won2025_desc"),
+    limit: int = Query(200, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    riskOnly: bool = False,
+    hasOpen: bool = False,
+    hasScaleUp: bool = False,
+    companyDir: str = Query("all"),
+    seed: str = Query("all"),
+    rail: str = Query("all"),
+    railDir: str = Query("all"),
+    companyFrom: str = Query("all"),
+    companyTo: str = Query("all"),
+    cell: str = Query("all"),
+    cellEvent: str = Query("all"),
+) -> dict:
+    try:
+        filters = {
+            "riskOnly": riskOnly,
+            "hasOpen": hasOpen,
+            "hasScaleUp": hasScaleUp,
+            "companyDir": companyDir,
+            "seed": seed,
+            "rail": rail,
+            "railDir": railDir,
+            "companyFrom": companyFrom,
+            "companyTo": companyTo,
+            "cell": cell,
+            "cellEvent": cellEvent,
+        }
+        return db.get_statepath_portfolio(
+            size_group=sizeGroup,
+            search=search,
+            filters=filters,
+            sort=sort,
+            limit=limit,
+            offset=offset,
+        )
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/orgs/{org_id}/statepath-2425")
+def get_statepath_detail(org_id: str) -> dict:
+    try:
+        item = db.get_statepath_detail(org_id)
+        if not item:
+            raise HTTPException(status_code=404, detail="Organization not found")
+        return {"item": item}
+    except HTTPException:
+        raise
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/orgs/{org_id}")
 def get_org(org_id: str) -> dict:
     try:

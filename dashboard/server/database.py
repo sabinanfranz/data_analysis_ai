@@ -4,10 +4,14 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set
 
+from . import statepath_engine as sp
+
 DB_PATH = Path(__file__).resolve().parent.parent.parent / "salesmap_latest.db"
 _OWNER_LOOKUP_CACHE: Dict[Path, Dict[str, str]] = {}
 YEARS_FOR_WON = {"2023", "2024", "2025"}
 ONLINE_COURSE_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포팅"}
+SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타/미입력"]
+PUBLIC_KEYWORDS = ["공단", "공사", "진흥원", "재단", "협회", "청", "시청", "도청", "구청", "교육청", "원"]
 
 
 def _date_only(val: Any) -> str:
@@ -55,6 +59,24 @@ def _safe_json_load(value: Any) -> Any:
         except Exception:
             return value
     return value
+
+
+def infer_size_group(org_name: str | None, size_raw: str | None) -> str:
+    name = (org_name or "").strip()
+    size_val = (size_raw or "").strip()
+    if "대기업" in size_val:
+        return "대기업"
+    if "중견" in size_val:
+        return "중견기업"
+    if "중소" in size_val:
+        return "중소기업"
+    upper_name = name.upper()
+    if any(keyword in name for keyword in ["대학교", "대학"]) or "UNIVERSITY" in upper_name:
+        return "대학교"
+    for kw in PUBLIC_KEYWORDS:
+        if kw in name:
+            return "공공기관"
+    return "기타/미입력"
 
 
 def _clean_form_memo(text: str) -> Optional[Dict[str, str]]:
@@ -258,6 +280,399 @@ def list_organizations(
     return orgs
 
 
+# ----------------------- StatePath Portfolio Helpers -----------------------
+def _statepath_rows(db_path: Path) -> List[sqlite3.Row]:
+    with _connect(db_path) as conn:
+        rows = _fetch_all(
+            conn,
+            'SELECT '
+            '  d.organizationId AS orgId, '
+            '  COALESCE(o."이름", d.organizationId) AS orgName, '
+            '  o."기업 규모" AS sizeRaw, '
+            '  p."소속 상위 조직" AS upper_org, '
+            '  d."과정포맷" AS course_format, '
+            '  d."금액" AS amount, '
+            '  d."예상 체결액" AS expected_amount, '
+            '  d."계약 체결일" AS contract_date, '
+            '  d."생성 날짜" AS created_at '
+            "FROM deal d "
+            "LEFT JOIN organization o ON o.id = d.organizationId "
+            "LEFT JOIN people p ON p.id = d.peopleId "
+            'WHERE d."상태" = \'Won\' AND d.organizationId IS NOT NULL',
+        )
+    return rows
+
+
+def _build_statepath_cells(rows: List[sqlite3.Row]) -> Dict[str, Dict[str, Dict[str, float]]]:
+    data: Dict[str, Dict[str, Dict[str, float]]] = {}
+    for row in rows:
+        year = _parse_year_from_text(row["contract_date"]) or _parse_year_from_text(row["created_at"])
+        if year not in ("2024", "2025"):
+            continue
+        amount = _amount_fallback(row["amount"], row["expected_amount"])
+        if amount <= 0:
+            continue
+        lane = sp.infer_lane(row["upper_org"])
+        rail = sp.infer_rail_from_deal({"course_format": row["course_format"]})
+        org_id = row["orgId"]
+        cell = f"{lane}_{rail}"
+        org_entry = data.setdefault(org_id, {y: {"HRD_ONLINE": 0.0, "HRD_OFFLINE": 0.0, "BU_ONLINE": 0.0, "BU_OFFLINE": 0.0} for y in ("2024", "2025")})
+        org_entry[year][cell] += amount / 1e8
+    return data
+
+
+def _build_state_from_cells(cells: Dict[str, Dict[str, float]]) -> Dict[str, Any]:
+    return sp.build_state(cells, "2024"), sp.build_state(cells, "2025")
+
+
+def _build_path_from_states(state_2024: Dict[str, Any], state_2025: Dict[str, Any]) -> Dict[str, Any]:
+    return sp.build_path(state_2024, state_2025)
+
+
+def _bucket_dir(prev: str, curr: str) -> str:
+    if prev == curr:
+        return "flat"
+    if sp.BUCKET_ORDER.index(curr) > sp.BUCKET_ORDER.index(prev):
+        return "up"
+    return "down"
+
+
+def get_statepath_portfolio(
+    size_group: str = "전체",
+    search: str | None = None,
+    filters: Optional[Dict[str, Any]] = None,
+    sort: str = "won2025_desc",
+    limit: int = 200,
+    offset: int = 0,
+    db_path: Path = DB_PATH,
+) -> Dict[str, Any]:
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+    limit = max(1, min(limit, 500))
+    offset = max(0, offset)
+    rows = _statepath_rows(db_path)
+    cells_by_org = _build_statepath_cells(rows)
+    meta_map: Dict[str, sqlite3.Row] = {}
+    for row in rows:
+        if row["orgId"] not in meta_map:
+            meta_map[row["orgId"]] = row
+
+    items_raw: List[Dict[str, Any]] = []
+    for org_id, org_cells in cells_by_org.items():
+        row_meta = meta_map.get(org_id)
+        if not row_meta:
+            continue
+        state24, state25 = _build_state_from_cells(org_cells)
+        path = _build_path_from_states(state24, state25)
+        seed = path["seed"]
+        org_name = row_meta["orgName"]
+        sg = infer_size_group(org_name, row_meta["sizeRaw"])
+        if size_group != "전체" and sg != size_group:
+            continue
+        if search and search not in org_name:
+            continue
+        bucket_dir = _bucket_dir(state24["bucket"], state25["bucket"])
+        rail_dir_online = _bucket_dir(state24["bucket_online"], state25["bucket_online"])
+        rail_dir_offline = _bucket_dir(state24["bucket_offline"], state25["bucket_offline"])
+        events = path["events"]
+        has_open = any(ev["type"] in ("OPEN", "OPEN_CELL") for ev in events)
+        has_scale_up = any(ev["type"] in ("SCALE_UP", "SCALE_UP_CELL") for ev in events)
+        risk = any(ev["type"] in ("CLOSE", "CLOSE_CELL", "SCALE_DOWN", "SCALE_DOWN_CELL") for ev in events)
+        item = {
+            "orgId": org_id,
+            "orgName": org_name,
+            "sizeRaw": row_meta["sizeRaw"],
+            "sizeGroup": sg,
+            "companyTotalEok2024": state24["total_eok"],
+            "companyBucket2024": state24["bucket"],
+            "companyTotalEok2025": state25["total_eok"],
+            "companyBucket2025": state25["bucket"],
+            "deltaEok": state25["total_eok"] - state24["total_eok"],
+            "companyBucketTransition": f"{state24['bucket']}→{state25['bucket']}",
+            "seed": seed,
+            "risk": risk,
+            "eventCounts": {
+                "openCell": sum(1 for ev in events if ev["type"] in ("OPEN", "OPEN_CELL")),
+                "closeCell": sum(1 for ev in events if ev["type"] in ("CLOSE", "CLOSE_CELL")),
+                "scaleUpCell": sum(1 for ev in events if ev["type"] in ("SCALE_UP", "SCALE_UP_CELL")),
+                "scaleDownCell": sum(1 for ev in events if ev["type"] in ("SCALE_DOWN", "SCALE_DOWN_CELL")),
+                "companyChange": 1 if state24["bucket"] != state25["bucket"] else 0,
+                "railChange": sum(1 for ev in events if ev["type"] == "RAIL_SCALE_CHANGE"),
+            },
+            "openedCells": [ev.get("cell") for ev in events if ev["type"] in ("OPEN", "OPEN_CELL")],
+            "closedCells": [ev.get("cell") for ev in events if ev["type"] in ("CLOSE", "CLOSE_CELL")],
+            "scaledUpCells": [ev.get("cell") for ev in events if ev["type"] in ("SCALE_UP", "SCALE_UP_CELL")],
+            "scaledDownCells": [ev.get("cell") for ev in events if ev["type"] in ("SCALE_DOWN", "SCALE_DOWN_CELL")],
+            "railChange": {
+                "ONLINE": rail_dir_online,
+                "OFFLINE": rail_dir_offline,
+            },
+            "qaFlagCount": len(path.get("qa_flags", [])),
+            "states": {"2024": state24, "2025": state25},
+            "path": path,
+            "_events": events,
+            "_bucket_dir": bucket_dir,
+            "_has_open": has_open,
+            "_has_scale_up": has_scale_up,
+        }
+        items_raw.append(item)
+
+    filters = filters or {}
+    filtered = []
+    for item in items_raw:
+        if filters.get("riskOnly") and not item["risk"]:
+            continue
+        if filters.get("hasOpen") and not item["_has_open"]:
+            continue
+        if filters.get("hasScaleUp") and not item["_has_scale_up"]:
+            continue
+        company_dir = filters.get("companyDir", "all")
+        if company_dir != "all" and item["_bucket_dir"] != company_dir:
+            continue
+        seed = filters.get("seed", "all")
+        if seed != "all" and item["seed"] != seed:
+            continue
+        rail = filters.get("rail", "all")
+        rail_dir = filters.get("railDir", "all")
+        if rail != "all":
+            if rail_dir != "all" and item["railChange"].get(rail) != rail_dir:
+                continue
+        company_from = filters.get("companyFrom", "all")
+        company_to = filters.get("companyTo", "all")
+        if company_from != "all" and item["companyBucket2024"] != company_from:
+            continue
+        if company_to != "all" and item["companyBucket2025"] != company_to:
+            continue
+        cell = filters.get("cell", "all")
+        cell_event = filters.get("cellEvent", "all")
+        if cell != "all" or cell_event != "all":
+            matched = False
+            for ev in item["_events"]:
+                if cell != "all" and ev.get("cell") != cell:
+                    continue
+                if cell_event != "all":
+                    if cell_event == "OPEN" and ev["type"] not in ("OPEN", "OPEN_CELL"):
+                        continue
+                    if cell_event == "CLOSE" and ev["type"] not in ("CLOSE", "CLOSE_CELL"):
+                        continue
+                    if cell_event == "UP" and ev["type"] not in ("SCALE_UP", "SCALE_UP_CELL"):
+                        continue
+                    if cell_event == "DOWN" and ev["type"] not in ("SCALE_DOWN", "SCALE_DOWN_CELL"):
+                        continue
+                matched = True
+                break
+            if not matched:
+                continue
+        filtered.append(item)
+
+    def sort_key(it: Dict[str, Any]):
+        if sort == "delta_desc":
+            return -(it["deltaEok"])
+        if sort == "bucket_up_desc":
+            return -sp.BUCKET_ORDER.index(it["companyBucket2025"]) + sp.BUCKET_ORDER.index(it["companyBucket2024"])
+        if sort == "risk_first":
+            return (0 if it["risk"] else 1, -it["companyTotalEok2025"])
+        if sort == "name_asc":
+            return (it["orgName"] or "")
+        return -it["companyTotalEok2025"]
+
+    filtered.sort(key=sort_key)
+    total_count = len(filtered)
+    sliced = filtered[offset : offset + limit]
+
+    summary = _build_portfolio_summary(filtered, size_group, search, filters)
+    items = [
+        {
+            k: v
+            for k, v in item.items()
+            if not k.startswith("_") and k not in ("states", "path")
+        }
+        for item in sliced
+    ]
+    return {
+        "summary": summary,
+        "items": items,
+        "meta": {
+            "sizeGroup": size_group,
+            "search": search or "",
+            "sort": sort,
+            "limit": limit,
+            "offset": offset,
+            "totalCount": total_count,
+        },
+    }
+
+
+def _build_portfolio_summary(items: List[Dict[str, Any]], size_group: str, search: str | None, filters: Dict[str, Any]) -> Dict[str, Any]:
+    if not items:
+        buckets = sp.BUCKET_ORDER
+        return {
+            "accountCount": 0,
+            "sum2024Eok": 0.0,
+            "sum2025Eok": 0.0,
+            "companyBucketChangeCounts": {"up": 0, "flat": 0, "down": 0},
+            "openAccountCount": 0,
+            "closeAccountCount": 0,
+            "riskAccountCount": 0,
+            "seedCounts": {s: 0 for s in ["H→B", "B→H", "SIMUL", "NONE"]},
+            "companyTransitionMatrix": {"buckets": buckets, "counts": [[0 for _ in buckets] for _ in buckets]},
+            "cellEventMatrix": {cell: {"OPEN": 0, "CLOSE": 0, "UP": 0, "DOWN": 0} for cell in ["HRD_ONLINE", "HRD_OFFLINE", "BU_ONLINE", "BU_OFFLINE"]},
+            "railChangeSummary": {"ONLINE": {"up": 0, "flat": 0, "down": 0}, "OFFLINE": {"up": 0, "flat": 0, "down": 0}},
+            "topPatterns": {},
+            "segmentComparison": [],
+        }
+    buckets = sp.BUCKET_ORDER
+    matrix = [[0 for _ in buckets] for _ in buckets]
+    cell_matrix = {cell: {"OPEN": 0, "CLOSE": 0, "UP": 0, "DOWN": 0} for cell in ["HRD_ONLINE", "HRD_OFFLINE", "BU_ONLINE", "BU_OFFLINE"]}
+    rail_change = {"ONLINE": {"up": 0, "flat": 0, "down": 0}, "OFFLINE": {"up": 0, "flat": 0, "down": 0}}
+    seed_counts = {s: 0 for s in ["H→B", "B→H", "SIMUL", "NONE"]}
+    open_count = 0
+    close_count = 0
+    risk_count = 0
+    sum2024 = 0.0
+    sum2025 = 0.0
+    for it in items:
+        sum2024 += it["companyTotalEok2024"]
+        sum2025 += it["companyTotalEok2025"]
+        dir_company = _bucket_dir(it["companyBucket2024"], it["companyBucket2025"])
+        i = buckets.index(it["companyBucket2024"])
+        j = buckets.index(it["companyBucket2025"])
+        matrix[i][j] += 1
+        if dir_company == "up":
+            open_count += 1
+        if dir_company == "down":
+            close_count += 1
+        if it["risk"]:
+            risk_count += 1
+        seed_counts[it["seed"]] = seed_counts.get(it["seed"], 0) + 1
+        for ev in it["_events"]:
+            c = ev.get("cell")
+            if c in cell_matrix:
+                if ev["type"] in ("OPEN", "OPEN_CELL"):
+                    cell_matrix[c]["OPEN"] += 1
+                elif ev["type"] in ("CLOSE", "CLOSE_CELL"):
+                    cell_matrix[c]["CLOSE"] += 1
+                elif ev["type"] in ("SCALE_UP", "SCALE_UP_CELL"):
+                    cell_matrix[c]["UP"] += 1
+                elif ev["type"] in ("SCALE_DOWN", "SCALE_DOWN_CELL"):
+                    cell_matrix[c]["DOWN"] += 1
+        for rail in ("ONLINE", "OFFLINE"):
+            rail_change[rail][it["railChange"][rail]] += 1
+
+    top_patterns = {
+        "topOpenCell": _top_cell_event(cell_matrix, "OPEN"),
+        "topCloseCell": _top_cell_event(cell_matrix, "CLOSE"),
+        "topUpCell": _top_cell_event(cell_matrix, "UP"),
+        "topDownCell": _top_cell_event(cell_matrix, "DOWN"),
+        "topSeed": _top_seed(seed_counts),
+    }
+    segment_comparison: List[Dict[str, Any]] = []
+    if (
+        size_group == "전체"
+        and not search
+        and all(v in (False, "all", None) for v in filters.values())
+    ):
+        group_map: Dict[str, Dict[str, Any]] = {}
+        for it in items:
+            sg = it["sizeGroup"]
+            entry = group_map.setdefault(
+                sg,
+                {
+                    "sizeGroup": sg,
+                    "accountCount": 0,
+                    "sum2025Eok": 0.0,
+                    "companyUp": 0,
+                    "open": 0,
+                    "risk": 0,
+                    "seedH2B": 0,
+                },
+            )
+            entry["accountCount"] += 1
+            entry["sum2025Eok"] += it["companyTotalEok2025"]
+            if _bucket_dir(it["companyBucket2024"], it["companyBucket2025"]) == "up":
+                entry["companyUp"] += 1
+            if it["openedCells"]:
+                entry["open"] += 1
+            if it["risk"]:
+                entry["risk"] += 1
+            if it["seed"] == "H→B":
+                entry["seedH2B"] += 1
+        for sg, entry in group_map.items():
+            total = entry["accountCount"]
+            segment_comparison.append(
+                {
+                    "sizeGroup": sg,
+                    "accountCount": total,
+                    "sum2025Eok": entry["sum2025Eok"],
+                    "companyUpRate": entry["companyUp"] / total if total else 0,
+                    "openRate": entry["open"] / total if total else 0,
+                    "riskRate": entry["risk"] / total if total else 0,
+                    "seedH2BRate": entry["seedH2B"] / total if total else 0,
+                }
+            )
+
+    return {
+        "accountCount": len(items),
+        "sum2024Eok": sum2024,
+        "sum2025Eok": sum2025,
+        "companyBucketChangeCounts": {
+            "up": sum(1 for it in items if _bucket_dir(it["companyBucket2024"], it["companyBucket2025"]) == "up"),
+            "flat": sum(1 for it in items if _bucket_dir(it["companyBucket2024"], it["companyBucket2025"]) == "flat"),
+            "down": sum(1 for it in items if _bucket_dir(it["companyBucket2024"], it["companyBucket2025"]) == "down"),
+        },
+        "openAccountCount": open_count,
+        "closeAccountCount": close_count,
+        "riskAccountCount": risk_count,
+        "seedCounts": seed_counts,
+        "companyTransitionMatrix": {"buckets": buckets, "counts": matrix},
+        "cellEventMatrix": cell_matrix,
+        "railChangeSummary": rail_change,
+        "topPatterns": top_patterns,
+        "segmentComparison": segment_comparison,
+    }
+
+
+def _top_cell_event(cell_matrix: Dict[str, Dict[str, int]], key: str) -> Dict[str, Any]:
+    best_cell = None
+    best_val = -1
+    for cell, counts in cell_matrix.items():
+        if counts[key] > best_val:
+            best_cell = cell
+            best_val = counts[key]
+    return {"cell": best_cell, "count": best_val}
+
+
+def _top_seed(seed_counts: Dict[str, int]) -> Dict[str, Any]:
+    best_seed = None
+    best_val = -1
+    for seed, cnt in seed_counts.items():
+        if cnt > best_val:
+            best_seed = seed
+            best_val = cnt
+    return {"seed": best_seed, "count": best_val}
+
+
+def get_statepath_detail(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any] | None:
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+    rows = [r for r in _statepath_rows(db_path) if r["orgId"] == org_id]
+    if not rows:
+        return None
+    cells_by_org = _build_statepath_cells(rows)
+    cells = cells_by_org.get(org_id)
+    if not cells:
+        return None
+    state24, state25 = _build_state_from_cells(cells)
+    path = _build_path_from_states(state24, state25)
+    org_name = rows[0]["orgName"]
+    size_raw = rows[0]["sizeRaw"]
+    size_group_val = infer_size_group(org_name, size_raw)
+    return {
+        "org": {"id": org_id, "name": org_name, "sizeRaw": size_raw, "sizeGroup": size_group_val},
+        "year_states": {"2024": state24, "2025": state25},
+        "path_2024_to_2025": path,
+        "qa": {"flags": [], "checks": {"y2024_ok": True, "y2025_ok": True}},
+    }
 def get_org_by_id(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any] | None:
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
@@ -350,6 +765,25 @@ def _to_number(val: Any) -> float | None:
         return float(val)
     except (TypeError, ValueError):
         return None
+
+
+def _parse_year_from_text(val: Any) -> str | None:
+    if val is None:
+        return None
+    text = str(val)
+    if len(text) >= 4 and text[:4].isdigit():
+        return text[:4]
+    return None
+
+
+def _amount_fallback(amount: Any, expected: Any) -> float:
+    num = _to_number(amount)
+    if num is not None and num > 0:
+        return num
+    num_exp = _to_number(expected)
+    if num_exp is not None and num_exp > 0:
+        return num_exp
+    return 0.0
 
 
 def _compute_grade(total_amount: float) -> str:

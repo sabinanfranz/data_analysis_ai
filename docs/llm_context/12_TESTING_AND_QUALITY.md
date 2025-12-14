@@ -25,6 +25,8 @@
 - `test_mismatched_deals_2025.py`, `test_rank_2025_deals_people.py`, `test_won_totals_by_size.py`: 랭킹/집계 로직 검증.
 - `test_build_org_tables.py`, `test_build_org_mindmap.py`: 정적 HTML/마인드맵 생성 로직 검증.
 - `org_tables_v2_frontend.test.js`: 프런트 렌더/함수에 대한 node --test (로컬 Node 필요).
+- `test_statepath_engine.py`: StatePath 버킷/경로/추천 로직 및 딜 폴백 검증.
+- `test_won_summary.py`: `/won-summary`의 owners2025 포함 여부 검증.
 
 ## 4) 변경 유형별 권장 실행
 - **API/쿼리/정제 로직 변경**: `PYTHONPATH=. python3 -m unittest tests.test_won_groups_json tests.test_won_totals_by_size tests.test_mismatched_deals_2025 tests.test_rank_2025_deals_people`

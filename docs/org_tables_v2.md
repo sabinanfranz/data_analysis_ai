@@ -38,6 +38,8 @@
   - `2025년 체결액 순위` (Won 2025)
   - `2025 대기업 딜·People` (2025 Won 딜이 있는 조직별 People 그룹, 딜은 상태 무관 전체 표시)
   - `고객사 불일치` (딜 orgId와 People.organizationId가 다른 경우 탐지)
+  - `업종별 매출` (대/중견 업종별 Won 합계)
+  - `StatePath 24→25` (규모/패턴별 StatePath 포트폴리오)
 - 콘텐츠 영역은 메뉴별 렌더러가 채운다(`menuConfig` → `renderContent`).
 
 ### 조직/People/Deal 뷰어 흐름

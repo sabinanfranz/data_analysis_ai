@@ -11,6 +11,7 @@
   Start-Process "http://localhost:8001/org_tables_v2.html"
   ```  
   또는 `Start-Process .\org_tables_v2.html` (API 기본 `http://localhost:8000/api`).
+  - StatePath 확인: 조직 선택 후 `StatePath 보기` 버튼으로 `/api/orgs/{id}/statepath` 응답을 모달로 확인(억 단위 금액 그대로 표시).
 
 ## 2) 스냅샷 실행 (전체 수집)
 - 필수: `SALESMAP_TOKEN` 설정.

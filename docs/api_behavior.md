@@ -16,11 +16,13 @@
 
 - 기타 주요 엔드포인트
   - `/api/orgs`: People 또는 Deal이 한 건 이상 연결된 조직만 반환하며, 2025년 Won 금액 합계 내림차순으로 정렬(동률 시 이름 순). limit 기본 200.
-  - `/api/orgs/{org_id}/won-summary`: 상위 조직별 Won 합계(23/24/25)와 담당자/owner 목록을 반환.
+  - `/api/orgs/{org_id}/won-summary`: 상위 조직별 Won 합계(23/24/25)와 담당자/owner 목록을 반환하며, 2025 Won 딜의 데이원 담당자 리스트 `owners2025`를 추가로 포함한다.
   - `/api/orgs/{org_id}/people?hasDeal=true|false|null`: 조직의 People 리스트(딜 여부 필터).
   - `/api/people/{person_id}/deals`, `/api/people/{person_id}/memos`, `/api/deals/{deal_id}/memos`: 사람/딜 단위 데이터와 메모.
   - 랭킹/이상치: `/api/rank/2025-deals`(grade/grade2024 + online/offline/2024 합계 포함), `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary`.
   - Compact JSON: `/api/orgs/{org_id}/won-groups-json-compact`은 won-groups-json을 LLM용으로 축약(schema_version 포함, deal_defaults/summary 추가)한 버전을 반환한다.
+  - StatePath: `/api/orgs/{org_id}/statepath`는 won-groups-json-compact를 내부 생성해 2024/2025 State, Path 이벤트, Seed, RevOps 추천(타겟 셀/카운터파티/액션)을 억 단위 금액과 함께 반환한다.
+  - StatePath 포트폴리오: `/api/statepath/portfolio-2425`는 규모/검색/패턴 필터 기반으로 2024→2025 StatePath 포트폴리오 요약/계정 리스트를 반환한다(억 단위). `/api/orgs/{id}/statepath-2425`는 단일 계정의 24/25 State + Path를 반환한다.
 
 ## 메모 정제 트리거/드롭 키 보강
 - 트리거: `utm_source`가 있거나 “고객 마케팅 수신 동의” 문구가 있을 때 폼 스타일 메모를 정제한다.

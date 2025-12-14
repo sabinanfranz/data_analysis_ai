@@ -6,6 +6,25 @@ from typing import Any, Dict, List, Optional, Tuple
 ONLINE_COURSE_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포팅"}
 YEAR_ORDER = ["2024", "2025"]
 BUCKET_ORDER = ["Ø", "P5", "P4", "P3", "P2", "P1", "P0", "S0"]
+HRD_KEYWORDS = [
+    "HRD",
+    "HR",
+    "인사",
+    "피플",
+    "PEOPLE",
+    "TALENT",
+    "인재",
+    "교육",
+    "육성",
+    "러닝",
+    "LEARNING",
+    "L&D",
+    "아카데미",
+    "연수",
+    "성장지원",
+    "인재개발",
+    "조직문화",
+]
 
 
 def normalize_text(val: Any) -> str:
@@ -27,9 +46,13 @@ def amount_to_eok(val: Any) -> float:
 
 
 def infer_lane(upper_org: Any) -> str:
-    text = normalize_text(upper_org).upper()
-    if "HRD" in text:
-        return "HRD"
+    text = normalize_text(upper_org)
+    if not text or text == "미입력":
+        return "BU"
+    upper = text.upper()
+    for kw in HRD_KEYWORDS:
+        if kw.upper() in upper:
+            return "HRD"
     return "BU"
 
 

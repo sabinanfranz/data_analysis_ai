@@ -6,16 +6,22 @@ from dashboard.server import statepath_engine as sp
 class BucketAndLaneTest(unittest.TestCase):
     def test_bucket_company(self):
         self.assertEqual(sp.bucket_company(0), "Ø")
-        self.assertEqual(sp.bucket_company(0.05), "P5")
-        self.assertEqual(sp.bucket_company(0.2), "P4")
-        self.assertEqual(sp.bucket_company(0.3), "P3")
-        self.assertEqual(sp.bucket_company(0.7), "P2")
-        self.assertEqual(sp.bucket_company(1.5), "P1")
-        self.assertEqual(sp.bucket_company(5), "P0")
-        self.assertEqual(sp.bucket_company(15), "S0")
+        self.assertEqual(sp.bucket_company(0.099), "P5")
+        self.assertEqual(sp.bucket_company(0.1), "P4")
+        self.assertEqual(sp.bucket_company(0.249), "P4")
+        self.assertEqual(sp.bucket_company(0.25), "P3")
+        self.assertEqual(sp.bucket_company(0.49), "P3")
+        self.assertEqual(sp.bucket_company(0.5), "P2")
+        self.assertEqual(sp.bucket_company(0.99), "P2")
+        self.assertEqual(sp.bucket_company(1.0), "P1")
+        self.assertEqual(sp.bucket_company(1.99), "P1")
+        self.assertEqual(sp.bucket_company(2.0), "P0")
+        self.assertEqual(sp.bucket_company(9.99), "P0")
+        self.assertEqual(sp.bucket_company(10.0), "S0")
 
     def test_infer_lane(self):
         self.assertEqual(sp.infer_lane("HRD 부문"), "HRD")
+        self.assertEqual(sp.infer_lane("인재개발원"), "HRD")
         self.assertEqual(sp.infer_lane("미입력"), "BU")
 
 

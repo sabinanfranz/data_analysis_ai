@@ -47,6 +47,20 @@
 - 반환 필드(업종별): `industry`(업종 구분 대), `won2023/2024/2025` 합계, `orgCount`(조직 수).
 - 정렬: 총액(won2023+won2024+won2025) 내림차순.
 
+### GET `/api/rank/2025-top100-counterparty-dri`
+- 목적: 규모별 2025 Won Top100 기업에 대해 상위 조직(upper_org)별 온라인/비온라인/담당자/DRI 계산.
+- 필터: `size`(기본 `대기업`), `limit`(기본 100, 최대 200), `offset`(기본 0, org 목록 페이지네이션용).
+- 집계 규칙:
+  - 조건: `상태='Won' AND 계약 체결일 LIKE '2025%'`
+  - 온라인: `구독제(온라인)`, `선택구매(온라인)`, `포팅`(완전 일치), 그 외는 비온라인
+  - upper_org가 없으면 `미입력`으로 그룹
+  - owners2025: deal 담당자 JSON에서 이름/ID 추출 후 유니크 리스트(없으면 `미입력`)
+- 정렬: orgWon2025 desc → cpTotal2025 desc (cpTotal은 정렬용, 표시는 하지 않음)
+- 반환 필드(행):
+  - `orgId/orgName`, `orgTier`(grade), `orgWon2025` (orgOnline/offline는 필요 시만 활용)
+  - `upperOrg`, `cpOnline2025`, `cpOffline2025`, `cpTotal2025`, `owners2025`, `dealCount2025`
+- meta: `orgCount`(Top 조직 수), `rowCount`(카운터파티 행 수), `offset`, `limit`
+
 ## 엣지/처리 규칙
 - 2025 People 랭킹에서 상위 조직과 팀이 모두 없는(`미입력`) 경우는 제외한다(상위 조직만 미입력이고 팀이 있으면 포함).
 - 2025 랭킹 응답의 grade/online/offline/2024 합계는 프런트에서 24→25 배수, 2026 목표액(배수 적용), 등급 가이드/배수 모달에 활용한다.

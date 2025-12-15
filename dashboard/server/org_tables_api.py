@@ -113,6 +113,24 @@ def get_rank_2025_deals_people(
     except FileNotFoundError as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 
+@router.get("/rank/2025-top100-counterparty-dri")
+def get_rank_2025_top100_counterparty_dri(
+    size: str = Query("대기업", description='조직 규모 필터 (예: "대기업", "전체")'),
+    limit: int = Query(100, ge=1, le=200),
+    offset: int = Query(0, ge=0, description="org 목록 offset (limit 단위)"),
+) -> dict:
+    try:
+        return db.get_rank_2025_top100_counterparty_dri(size=size, limit=limit, offset=offset)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+@router.get("/rank/2025-counterparty-dri/detail")
+def get_rank_counterparty_dri_detail(orgId: str = Query(...), upperOrg: str = Query(...)) -> dict:
+    try:
+        return db.get_rank_2025_counterparty_detail(org_id=orgId, upper_org=upperOrg)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
 
 @router.get("/rank/won-industry-summary")
 def get_rank_won_industry_summary(

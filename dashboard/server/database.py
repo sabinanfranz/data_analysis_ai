@@ -2,7 +2,7 @@ import json
 import re
 import sqlite3
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Set
+from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from . import statepath_engine as sp
 
@@ -12,6 +12,7 @@ YEARS_FOR_WON = {"2023", "2024", "2025"}
 ONLINE_COURSE_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포팅"}
 SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타/미입력"]
 PUBLIC_KEYWORDS = ["공단", "공사", "진흥원", "재단", "협회", "청", "시청", "도청", "구청", "교육청", "원"]
+_COUNTERPARTY_DRI_CACHE: Dict[Tuple[Path, float, str, int], Dict[str, Any]] = {}
 
 
 def _date_only(val: Any) -> str:
@@ -1277,6 +1278,141 @@ def get_won_industry_summary(
     return result
 
 
+def get_rank_2025_counterparty_detail(
+    org_id: str, upper_org: str, db_path: Path = DB_PATH
+) -> Dict[str, Any]:
+    """
+    Detail for a specific org + upper_org:
+    - people filtered by upper_org
+    - team breakdown (2025 Won online/offline, deal counts, deals list)
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+    upper_norm = (upper_org or "").strip() or "미입력"
+    online_set = sp.ONLINE_COURSE_FORMATS
+
+    def _norm_upper(val: Any) -> str:
+        text = (val or "").strip()
+        return text if text else "미입력"
+
+    def _parse_owner_names(raw: Any) -> List[str]:
+        names: List[str] = []
+        data = _safe_json_load(raw)
+        if isinstance(data, dict):
+            name = data.get("name") or data.get("id")
+            if name:
+                names.append(str(name))
+        elif isinstance(data, list):
+            for item in data:
+                if isinstance(item, dict):
+                    name = item.get("name") or item.get("id")
+                    if name:
+                        names.append(str(name))
+                elif isinstance(item, str) and item.strip():
+                    names.append(item.strip())
+        elif isinstance(data, str) and data.strip():
+            names.append(data.strip())
+        return names
+
+    with _connect(db_path) as conn:
+        people_rows = _fetch_all(
+            conn,
+            'SELECT id, COALESCE("이름", id) AS name, '
+            '"소속 상위 조직" AS upper_org, '
+            '"팀(명함/메일서명)" AS team_signature, '
+            '"직급(명함/메일서명)" AS title_signature, '
+            '"담당 교육 영역" AS edu_area '
+            "FROM people "
+            "WHERE organizationId = ?",
+            (org_id,),
+        )
+
+        deal_rows = _fetch_all(
+            conn,
+            'SELECT '
+            '  d.id, '
+            '  COALESCE(d."이름", d.id) AS name, '
+            '  d."상태" AS status, '
+            '  d."금액" AS amount, '
+            '  d."예상 체결액" AS expected_amount, '
+            '  d."계약 체결일" AS contract_date, '
+            '  d."생성 날짜" AS created_at, '
+            '  d."과정포맷" AS course_format, '
+            '  d."담당자" AS owner_json, '
+            '  p."소속 상위 조직" AS upper_org, '
+            '  p."팀(명함/메일서명)" AS team_signature '
+            "FROM deal d "
+            "LEFT JOIN people p ON p.id = d.peopleId "
+            "WHERE d.organizationId = ? AND d.\"상태\" = 'Won' AND d.\"계약 체결일\" LIKE '2025%'",
+            (org_id,),
+        )
+
+    people = []
+    for p in people_rows:
+        if _norm_upper(p["upper_org"]) != upper_norm:
+            continue
+        people.append(
+            {
+                "id": p["id"],
+                "name": p["name"],
+                "upper_org": _norm_upper(p["upper_org"]),
+                "team_signature": (p["team_signature"] or "").strip() or "미입력",
+                "title_signature": (p["title_signature"] or "").strip() or "미입력",
+                "edu_area": (p["edu_area"] or "").strip() or "미입력",
+            }
+        )
+
+    team_map: Dict[str, Dict[str, Any]] = {}
+    for d in deal_rows:
+        if _norm_upper(d["upper_org"]) != upper_norm:
+            continue
+        team = (d["team_signature"] or "미입력").strip() or "미입력"
+        entry = team_map.setdefault(team, {"team": team, "online": 0.0, "offline": 0.0, "deals": []})
+        amt = _amount_fallback(d["amount"], d["expected_amount"])
+        fmt = d["course_format"] or ""
+        if fmt in online_set:
+            entry["online"] += amt
+        else:
+            entry["offline"] += amt
+        owner_names = _parse_owner_names(d["owner_json"])
+        entry["deals"].append(
+            {
+                "name": d["name"],
+                "status": d["status"],
+                "amount": amt,
+                "expected_amount": _to_number(d["expected_amount"]) or 0.0,
+                "contract_date": d["contract_date"],
+                "created_at": d["created_at"],
+                "course_format": d["course_format"],
+                "owner": ", ".join(owner_names) if owner_names else "",
+                "team": team,
+            }
+        )
+
+    # sort deals by contract_date desc then created_at desc for readability
+    for entry in team_map.values():
+        entry["deals"].sort(
+            key=lambda x: (
+                (_parse_year_from_text(x.get("contract_date")) or ""),
+                x.get("contract_date") or "",
+                x.get("created_at") or "",
+            ),
+            reverse=True,
+        )
+
+    summary = {
+        "online": sum(t["online"] for t in team_map.values()),
+        "offline": sum(t["offline"] for t in team_map.values()),
+        "dealCount": sum(len(t["deals"]) for t in team_map.values()),
+    }
+
+    return {
+        "people": people,
+        "teams": list(team_map.values()),
+        "summary": summary,
+    }
+
+
 def get_rank_2025_deals_people(size: str = "대기업", db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
     """
     For organizations (by size) that have Won deals in 2025, return people with all their deals (any status).
@@ -1795,4 +1931,202 @@ def get_won_totals_by_size(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
 
     result = list(by_size.values())
     result.sort(key=lambda x: (x["won2023"] + x["won2024"] + x["won2025"]), reverse=True)
+    return result
+
+
+def get_rank_2025_top100_counterparty_dri(
+    size: str = "대기업", limit: int = 100, offset: int = 0, db_path: Path = DB_PATH
+) -> Dict[str, Any]:
+    """
+    Top organizations by 2025 Won (size-filtered) with counterparty(upper_org) breakdown and owners list.
+    - Online formats: 구독제(온라인)/선택구매(온라인)/포팅 (exact match)
+    - Offline: others
+    - Sorting: orgWon2025 desc, then cpTotal2025 desc
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    limit = max(1, min(limit or 100, 200))
+    offset = max(0, offset or 0)
+
+    cache_key = (db_path, db_path.stat().st_mtime, size or "대기업", limit, offset)
+    cached = _COUNTERPARTY_DRI_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    conditions = ['d."상태" = ?', 'd."계약 체결일" LIKE ?']
+    params: List[Any] = ["Won", "2025%"]
+    if size and size != "전체":
+        conditions.append('o."기업 규모" = ?')
+        params.append(size)
+
+    online_set = sp.ONLINE_COURSE_FORMATS
+
+    with _connect(db_path) as conn:
+        top_orgs = _fetch_all(
+            conn,
+            'WITH org_sum AS ('
+            '  SELECT d.organizationId AS orgId, COALESCE(o."이름", d.organizationId) AS orgName, '
+            '         o."기업 규모" AS sizeRaw, SUM(CAST(d."금액" AS REAL)) AS totalAmount '
+            "  FROM deal d "
+            "  LEFT JOIN organization o ON o.id = d.organizationId "
+            f"  WHERE {' AND '.join(conditions)} "
+            "  GROUP BY d.organizationId, orgName, sizeRaw "
+            '), ranked AS ('
+            "  SELECT * FROM org_sum ORDER BY totalAmount DESC LIMIT ? OFFSET ?"
+            ") SELECT * FROM ranked",
+            params + [limit, offset],
+        )
+
+        top_ids = {row["orgId"] for row in top_orgs}
+        if not top_ids:
+            return {
+                "size": size or "대기업",
+                "limit": limit,
+                "offset": offset,
+                "rows": [],
+                "meta": {"orgCount": 0, "rowCount": 0, "offset": offset, "limit": limit},
+            }
+
+        placeholders = ",".join(["?"] * len(top_ids))
+        counterparty_rows = _fetch_all(
+            conn,
+            f'SELECT '
+            '  d.organizationId AS orgId, '
+            '  COALESCE(o."이름", d.organizationId) AS orgName, '
+            '  o."기업 규모" AS sizeRaw, '
+            '  p."소속 상위 조직" AS upper_org, '
+            '  d."과정포맷" AS course_format, '
+            '  SUM(CAST(d."금액" AS REAL)) AS amount_sum, '
+            '  COUNT(*) AS dealCount '
+            "FROM deal d "
+            "LEFT JOIN organization o ON o.id = d.organizationId "
+            "LEFT JOIN people p ON p.id = d.peopleId "
+            f"WHERE {' AND '.join(conditions)} AND d.organizationId IN ({placeholders}) "
+            'GROUP BY d.organizationId, orgName, sizeRaw, upper_org, d."과정포맷"',
+            params + list(top_ids),
+        )
+
+    def _norm_text(val: Any) -> str:
+        text = (val or "").strip()
+        return text if text else "미입력"
+
+    org_lookup = {
+        row["orgId"]: {
+            "orgId": row["orgId"],
+            "orgName": _norm_text(row["orgName"]),
+            "sizeRaw": row["sizeRaw"],
+            "total": _to_number(row["totalAmount"]) or 0.0,
+        }
+        for row in top_orgs
+    }
+
+    cp_map: Dict[Tuple[str, str], Dict[str, Any]] = {}
+    for row in counterparty_rows:
+        org_id = row["orgId"]
+        upper = _norm_text(row["upper_org"])
+        key = (org_id, upper)
+        entry = cp_map.setdefault(
+            key,
+            {
+                "orgId": org_id,
+                "upperOrg": upper,
+                "cpOnline2025": 0.0,
+                "cpOffline2025": 0.0,
+                "cpTotal2025": 0.0,
+                "owners2025": set(),
+                "dealCount2025": 0,
+                "orgName": org_lookup.get(org_id, {}).get("orgName", org_id),
+                "sizeRaw": org_lookup.get(org_id, {}).get("sizeRaw"),
+            },
+        )
+        amount = _to_number(row["amount_sum"]) or 0.0
+        if row["course_format"] in online_set:
+            entry["cpOnline2025"] += amount
+        else:
+            entry["cpOffline2025"] += amount
+        entry["cpTotal2025"] += amount
+        entry["dealCount2025"] += int(row["dealCount"] or 0)
+
+    # owners: fetch minimal rows for top orgs only
+    owner_rows: List[sqlite3.Row] = []
+    with _connect(db_path) as conn:
+        owner_rows = _fetch_all(
+            conn,
+            'SELECT d.organizationId AS orgId, COALESCE(p."소속 상위 조직","미입력") AS upper_org, d."담당자" AS owner_json '
+            "FROM deal d "
+            "LEFT JOIN people p ON p.id = d.peopleId "
+            f"WHERE d.\"상태\" = 'Won' AND d.\"계약 체결일\" LIKE '2025%' AND d.organizationId IN ({placeholders})",
+            list(top_ids),
+        )
+
+    def _parse_owner_names(raw: Any) -> List[str]:
+        names: List[str] = []
+        data = _safe_json_load(raw)
+        if isinstance(data, dict):
+            name = data.get("name") or data.get("id")
+            if name:
+                names.append(str(name))
+        elif isinstance(data, list):
+            for item in data:
+                if isinstance(item, dict):
+                    name = item.get("name") or item.get("id")
+                    if name:
+                        names.append(str(name))
+                elif isinstance(item, str) and item.strip():
+                    names.append(item.strip())
+        elif isinstance(data, str) and data.strip():
+            names.append(data.strip())
+        return names
+
+    for row in owner_rows:
+        org_id = row["orgId"]
+        upper = _norm_text(row["upper_org"])
+        key = (org_id, upper)
+        if key not in cp_map:
+            continue
+        entry = cp_map[key]
+        owner_names = _parse_owner_names(row["owner_json"])
+        if owner_names:
+            for name in owner_names:
+                entry["owners2025"].add(name)
+        else:
+            entry["owners2025"].add("미입력")
+
+    rows: List[Dict[str, Any]] = []
+    for (org_id, upper), cp in cp_map.items():
+        org_entry = org_lookup.get(org_id, {})
+        rows.append(
+            {
+                "orgId": org_id,
+                "orgName": cp.get("orgName", org_id),
+                "orgTier": _compute_grade(org_entry.get("total", 0.0)),
+                "orgWon2025": org_entry.get("total", 0.0),
+                "orgOnline2025": 0.0 if org_id not in org_lookup else None,  # populated below
+                "orgOffline2025": 0.0 if org_id not in org_lookup else None,
+                "upperOrg": upper,
+                "cpOnline2025": cp["cpOnline2025"],
+                "cpOffline2025": cp["cpOffline2025"],
+                "cpTotal2025": cp["cpTotal2025"],
+                "owners2025": sorted(cp["owners2025"]) if cp.get("owners2025") else [],
+                "dealCount2025": cp["dealCount2025"],
+            }
+        )
+
+    # set org online/offline from org_lookup
+    for row in rows:
+        org_entry = org_lookup.get(row["orgId"], {})
+        row["orgOnline2025"] = org_entry.get("online", 0.0)
+        row["orgOffline2025"] = org_entry.get("offline", 0.0)
+
+    rows.sort(key=lambda r: (-r["orgWon2025"], -r["cpTotal2025"]))
+
+    result = {
+        "size": size or "대기업",
+        "limit": limit,
+        "offset": offset,
+        "rows": rows,
+        "meta": {"orgCount": len(top_orgs), "rowCount": len(rows), "offset": offset, "limit": limit},
+    }
+    _COUNTERPARTY_DRI_CACHE[cache_key] = result
     return result

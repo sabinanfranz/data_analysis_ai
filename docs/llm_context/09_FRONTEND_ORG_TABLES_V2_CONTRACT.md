@@ -6,18 +6,19 @@
 - 세일즈맵 링크: `SALESMAP_WORKSPACE_PATH` 상수로 workspace id를 설정.
 
 ## 2) 전역 state 구조(주요 필드)
-- `activeMenuId`: 현재 메뉴 id (`org-view`, `rank-2025`, `rank-2025-people`, `mismatch-2025`, `industry-2025`, `statepath-2425`).
+- `activeMenuId`: 현재 메뉴 id (`org-view`, `rank-2025`, `rank-2025-people`, `rank-2025-counterparty-dri`, `mismatch-2025`, `industry-2025`, `statepath-2425`).
 - `size`, `rankSize`, `rankPeopleSize`, `mismatchSize`: 규모 필터.
 - `rankPeopleOrgFilter`, `rankPeopleUpperFilter`: 텍스트 필터.
 - `orgs`, `orgSearch`, `selectedOrg`, `selectedUpperOrg`, `selectedPerson`, `selectedDeal`.
 - 데이터 보관: `people`, `deals`, `orgMemos`, `personMemos`, `dealMemos`, `wonSummary`, `wonGroupJson/Compact`, `filteredWonGroupJson/Compact`.
 - StatePath 전용: `statepath2425`(segment/search/sort/limit/offset/items/filteredItems/summary/loading/error + quickFilters + patternFilter + breadcrumb + pagination)와 `statepathLegend`(용어 모달 open/section).
+- 2025 카운터파티 DRI 전용: `rankCounterpartyDri`(size/rows/loading/error/selected/detail).
 - 모달 상태: `modal`(메모), `jsonModal`, `webformModal`, `rankPeopleModal`(딜 리스트), `rankGuideModal`, `rankMultiplierModal`, `statePathModal`(단건 statepath), `statePathLegendModal`.
 - 캐시: 별도 `cache` 객체(Map)로 관리(아래 참조).
 - 디버그: `DEBUG_ORG_SELECT`/`setOrgSelectDebug`로 조직 선택 디버그 로그 제어.
 
 ## 3) cache 구조/정책
-- Map 캐시: `orgLookup`, `orgMemos`, `peopleByOrg`, `deals`, `personMemos`, `dealMemos`, `wonSummary`, `wonGroupJsonByOrg`, `wonGroupJsonCompactByOrg`, `rank2025BySize`, `rank2025PeopleBySize`, `mismatch2025BySize`, `statepathPortfolioByKey`, `statePathByOrg`, `statepathDetailByOrg`(2425 상세).
+- Map 캐시: `orgLookup`, `orgMemos`, `peopleByOrg`, `deals`, `personMemos`, `dealMemos`, `wonSummary`, `wonGroupJsonByOrg`, `wonGroupJsonCompactByOrg`, `rank2025BySize`, `rank2025PeopleBySize`, `rank2025CounterpartyDriBySize`, `mismatch2025BySize`, `statepathPortfolioByKey`, `statePathByOrg`, `statepathDetailByOrg`(2425 상세).
 - 무효화 없음: 새 DB로 교체 시 브라우저 새로고침 필요.
 - 캐시 적중 시 API 호출을 건너뛰고 즉시 렌더.
 
@@ -33,6 +34,7 @@
 - **조직/People/Deal 뷰어(`org-view`)**: 조직 목록/메모/People/Deal/메모, 상위 조직 Won 요약(2025 담당자/팀&파트/DRI 포함), 상위 조직별 JSON + 간소화 JSON, StatePath 버튼/모달, 웹폼 내역 모달(People 행 버튼), 딜/People 세일즈맵 링크.
 - **2025년 체결액 순위(`rank-2025`)**: `/api/rank/2025-deals` 호출, 규모 필터, 등급 가이드/배수 모달. 표는 2024/2025 등급·총액, 24→25 배수, 2025 온라인/비온라인, 2026 목표액을 표시하며 요약 카드로 합계도 보여준다. 회사 클릭 시 조직 화면으로 이동.
 - **2025 대기업 딜·People(`rank-2025-people`)**: `/api/rank/2025-deals-people`, 규모/회사/상위 조직 필터, 딜 보기 모달.
+- **2025 Top100 카운터파티 DRI(`rank-2025-counterparty-dri`)**: `/api/rank/2025-top100-counterparty-dri?size=...&limit=100&offset=...`를 규모별로 호출, 기업 25 총액 desc → upper_org 총액 desc 정렬된 표를 렌더. 온라인=구독제(온라인)/선택구매(온라인)/포팅, owners/upper_org 미입력은 `미입력` 정규화. 팀&파트/DRI는 PART_STRUCTURE 기반 프런트 계산. Org 100개 단위 Prev/Next로 다음 상위 조직 묶음을 조회. 행 클릭 시 won-groups-json/people로 팀별 25 온라인/비온라인, 딜 리스트, People(웹폼 버튼 포함) 상세를 모달로 보여주며, 상단에 25 담당자/팀&파트/DRI 요약을 강조한다.
 - **고객사 불일치(`mismatch-2025`)**: `/api/rank/mismatched-deals`, 규모 필터, 딜 org vs People org 비교.
 - **업종별 매출(`industry-2025`)**: `/api/rank/won-industry-summary`, 업종 구분(대)별 23/24/25 Won 합계/회사 수 표시.
 
@@ -43,3 +45,4 @@
 - 선택 표시: 선택된 행은 `active` 클래스, 상위 조직 라벨/브레드크럼에 선택 상태 반영.
 - Won 요약 DRI 규칙: 2025 Won 딜 담당자 이름 → PART_STRUCTURE 매핑, 단일 팀/파트(“셀” 제외)일 때만 `O`, 매핑 실패나 복수 콤보면 `X`.
 - StatePath 모달: `/api/orgs/{id}/statepath` 응답을 캐시(`statePathByOrg`) 후 연도별 요약/셀 비교/이벤트/추천 블록으로 렌더, 금액은 억 단위 그대로 표시(`formatEok`). StatePath 화면에는 STATEPATH_GLOSSARY 기반 툴팁/title/ⓘ 버튼과 통합 “용어/기준” 모달이 붙어 있다.
+- StatePath JSON 내보내기: Accounts Table 섹션에서 필터 결과 전체(filteredItems)를 메타+행 JSON으로 보기/복사할 수 있고, StatePath 상세 모달에서 RevOps 추천을 제외한 Core JSON을 복사할 수 있다(툴팁/legend에 기준 명시, 클립보드 실패 시 textarea 폴백).

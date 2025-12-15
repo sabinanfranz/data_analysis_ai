@@ -524,6 +524,13 @@
       max-height: 720px;
     }
 
+    /* Extra wide modal for counterparty detail */
+    .modal.xl {
+      max-width: 90vw;
+      width: 90vw;
+      min-width: 1200px;
+    }
+
     .webform-modal {
       max-width: 1040px;
       width: 100%;
@@ -533,6 +540,15 @@
       max-height: 540px;
       white-space: normal;
       overflow: auto;
+    }
+
+    .nowrap-ellipsis {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 240px;
+      display: inline-block;
+      vertical-align: top;
     }
 
     .close-btn {
@@ -634,6 +650,8 @@
     <div class="modal json-modal">
       <header>
         <h3 id="statePathModalTitle">StatePath</h3>
+        <div class="spacer"></div>
+        <button class="chip" id="statePathCoreCopyBtn" type="button" title="Core JSON 복사">Core JSON 복사</button>
         <button class="close-btn" id="statePathModalClose" type="button">닫기</button>
       </header>
       <div class="body" id="statePathModalBody"></div>
@@ -669,6 +687,7 @@
         "온라인셀": ["강진우", "강다현", "이수빈"],
       },
     };
+    const COUNTERPARTY_ONLINE_FORMATS = new Set(["구독제(온라인)", "선택구매(온라인)", "포팅"]);
     const SALESMAP_WORKSPACE_PATH = "64cb5beda5a78ae225d7815b"; // update if workspace path changes
     const ORG_LIMIT = 200;
     const STATEPATH_SEGMENTS = ["전체", "대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타/미입력"];
@@ -758,6 +777,20 @@
         short: "표시 행 수 제한",
         long: "테이블은 페이지 단위로 표시합니다(예: 200개). 패턴/요약/매트릭스는 전체 필터 결과를 기준으로 계산합니다.",
       },
+      export: {
+        table: {
+          short: "목록 JSON 복사(필터 전체 기준)",
+          long: "현재 필터 결과 전체(filteredItems 전체)를 테이블 요약 JSON으로 복사합니다. 페이지네이션과 무관하게 필터링된 전체 건수를 포함합니다.",
+        },
+        detail: {
+          short: "Core JSON 복사",
+          long: "계정 상세의 RevOps 추천을 제외하고 State/Path/Seed/QA만 복사합니다.",
+        },
+        note: {
+          short: "페이지와 무관하게 필터 전체 기준",
+          long: "테이블은 페이지로 보이지만 JSON 복사는 필터 결과 전체 기준입니다. 필요 시 검색/필터로 건수를 줄여 복사하세요.",
+        },
+      },
       events: {
         short: "OPEN/CLOSE/UP/DOWN/RAIL/COMPANY",
         long: "OPEN: Ø→비Ø, CLOSE: 비Ø→Ø, UP/DOWN: 버킷 등급 상승/하락(Ø<P5<...<S0). RAIL_SCALE_CHANGE는 ONLINE/OFFLINE 버킷 변화, COMPANY_SCALE_CHANGE는 Company 버킷 변화입니다.",
@@ -781,6 +814,7 @@
     const menuConfig = [
       { id: "rank-2025", label: "2025년 체결액 순위", render: renderRank2025Screen },
       { id: "rank-2025-people", label: "2025 대기업 딜·People", render: renderRank2025PeopleScreen },
+      { id: "rank-2025-counterparty-dri", label: "2025 Top100 카운터파티 DRI", render: renderRankCounterpartyDriScreen },
       { id: "mismatch-2025", label: "고객사 불일치", render: renderMismatch2025Screen },
       { id: "industry-2025", label: "업종별 매출", render: renderIndustryMenu },
       { id: "statepath-2425", label: "StatePath 24→25", render: renderStatePathMenu },
@@ -796,13 +830,13 @@
       rankPeopleUpperFilter: "",
       mismatchSize: "대기업",
       rankMultipliers: {
-        S0: 1.2,
-        P0: 1.3,
-        P1: 1.5,
+        S0: 1.5,
+        P0: 1.7,
+        P1: 1.7,
         P2: 1.5,
-        P3: 1.75,
-        P4: 2.0,
-        P5: 2.0,
+        P3: 1.0,
+        P4: 1.0,
+        P5: 1.0,
       },
       rankPeopleModal: {
         backdrop: null,
@@ -846,6 +880,19 @@
         open: false,
         section: "all",
         trigger: null,
+      },
+      rankCounterpartyDri: {
+        size: "대기업",
+        rows: [],
+        loading: false,
+        error: null,
+        selected: null,
+        detail: null,
+        search: "",
+        dri: "all",
+        hideMissingUpper: false,
+        sort: "default",
+        page: 0,
       },
       orgs: [],
       orgSearch: "",
@@ -920,6 +967,7 @@
       wonSummary: new Map(),
       yearlyTotals: null,
       statepathPortfolioByKey: new Map(),
+      rank2025CounterpartyDriBySize: new Map(),
     };
     const NAME_TO_TEAM_PART = buildNameToTeamPartIndex(PART_STRUCTURE);
 
@@ -1048,9 +1096,28 @@
       return { ownersText, teamPartText, dri };
     }
 
+    function isCounterpartyOnline(formatVal) {
+      const fmt = (formatVal || "").trim();
+      return COUNTERPARTY_ONLINE_FORMATS.has(fmt);
+    }
+
+    function amountFromDeal(deal) {
+      const amt = Number(deal.amount || deal["금액"] || 0);
+      if (Number.isFinite(amt) && amt > 0) return amt;
+      const exp = Number(deal.expected_amount || deal.expectedAmount || deal["예상 체결액"] || 0);
+      if (Number.isFinite(exp) && exp > 0) return exp;
+      return 0;
+    }
+
     function openStatePathModal(item) {
       if (!state.statePathModal.backdrop || !state.statePathModal.body) return;
       const body = state.statePathModal.body;
+      if (state.statePathModal.copyCoreBtn) {
+        state.statePathModal.copyCoreBtn.disabled = !item;
+        state.statePathModal.copyCoreBtn.title = item
+          ? getGlossaryShort("export.detail") || "Core JSON 복사"
+          : "상세 로딩 후 사용";
+      }
       if (state.statePathModal.title) {
         state.statePathModal.title.textContent = `StatePath - ${item.company_name || state.selectedOrg || ""}`;
       }
@@ -1152,7 +1219,7 @@
       }
     }
 
-    async function copyJsonData(data) {
+    async function copyJsonData(data, successMessage) {
       const text = toJsonText(data);
       if (!text.trim()) {
         showToast("복사할 JSON이 없습니다.", "error");
@@ -1160,7 +1227,7 @@
       }
       try {
         await navigator.clipboard.writeText(text);
-        showToast("JSON을 복사했습니다.", "success");
+        showToast(successMessage || "JSON을 복사했습니다.", "success");
       } catch (_) {
         const textarea = document.createElement("textarea");
         textarea.value = text;
@@ -1168,7 +1235,7 @@
         textarea.select();
         document.execCommand("copy");
         document.body.removeChild(textarea);
-        showToast("JSON을 복사했습니다.", "success");
+        showToast(successMessage || "JSON을 복사했습니다.", "success");
       }
     }
 
@@ -1567,6 +1634,7 @@
         top: "Top Patterns",
         breadcrumb: "Breadcrumb",
         pagination: "Sorting/Pagination",
+        export: "Export/JSON",
         all: "전체",
       }[state.statepathLegend.section] || "전체";
       const bucketRowsCompany = [
@@ -1639,7 +1707,12 @@
         <div>정렬: ${Object.values(STATEPATH_GLOSSARY.sorting).join(", ")}</div>
         <div>${getGlossaryLong("pagination")}</div>
 
-        <h4>9) Events / Cells / Buckets</h4>
+        <h4>9) Export / JSON</h4>
+        <div>${getGlossaryLong("export.table")}</div>
+        <div>${getGlossaryLong("export.detail")}</div>
+        <div>${getGlossaryLong("export.note")}</div>
+
+        <h4>10) Events / Cells / Buckets</h4>
         <div>${getGlossaryLong("events")}</div>
         <div>${getGlossaryLong("cells")}</div>
         ${bucketTable("Company 버킷 임계값", bucketRowsCompany)}
@@ -1797,6 +1870,73 @@
       meta.hasScaleUp = upCells.length > 0;
       meta.risk = closeCells.length > 0 || downCells.length > 0;
       return meta;
+    }
+
+    function buildMajorEventLabels(meta) {
+      const labels = [];
+      (meta.openCells || []).forEach((c) => labels.push(`OPEN:${c}`));
+      (meta.closeCells || []).forEach((c) => labels.push(`CLOSE:${c}`));
+      (meta.upCells || []).forEach((c) => labels.push(`UP:${c}`));
+      (meta.downCells || []).forEach((c) => labels.push(`DOWN:${c}`));
+      if (meta.railDir) {
+        Object.entries(meta.railDir).forEach(([rail, dir]) => {
+          if (dir !== "flat") labels.push(`RAIL:${rail} ${dir === "up" ? "↑" : "↓"}`);
+        });
+      }
+      return labels;
+    }
+
+    function stripRevOpsFromStatePath(detailObj) {
+      if (!detailObj) return null;
+      let cloned;
+      try {
+        cloned = JSON.parse(JSON.stringify(detailObj));
+      } catch (_) {
+        return null;
+      }
+      delete cloned.ops_reco;
+      delete cloned.revops_reco;
+      return cloned;
+    }
+
+    function buildStatePathTableExportObject() {
+      const spState = state.statepath2425 || {};
+      const itemsAll =
+        (spState.filteredItems && spState.filteredItems.length ? spState.filteredItems : spState.items) || [];
+      const rows = itemsAll.map((row) => {
+        const orgId = row.orgId || row.org_id || "";
+        const orgName = row.orgName || row.org_name || orgId || "";
+        const segment = row.segment || row.sizeGroup || row.size_raw || row.sizeRaw || "";
+        const amt24 = row.companyTotalEok2024 ?? row.company_total_eok_2024 ?? 0;
+        const amt25 = row.companyTotalEok2025 ?? row.company_total_eok_2025 ?? 0;
+        const bucket24 = row.companyBucket2024 || row.company_bucket_2024 || "Ø";
+        const bucket25 = row.companyBucket2025 || row.company_bucket_2025 || "Ø";
+        const delta = row.deltaEok ?? row.delta_eok ?? amt25 - amt24;
+        const meta = computePatternMeta(row);
+        return {
+          org_id: orgId,
+          company_name: orgName,
+          segment,
+          y2024: { amt_eok: amt24, bucket: bucket24 },
+          y2025: { amt_eok: amt25, bucket: bucket25 },
+          delta_eok: delta,
+          major_events: buildMajorEventLabels(meta),
+        };
+      });
+      const filters = {
+        segment: spState.segment || "전체",
+        search: spState.search || "",
+        sort: spState.sort || "won2025_desc",
+        quickFilters: { ...(spState.quickFilters || {}) },
+        patternFilter: { ...(spState.patternFilter || {}) },
+      };
+      return {
+        export_type: "statepath_2425_table_v2",
+        generated_at: new Date().toISOString(),
+        filters,
+        row_count: rows.length,
+        rows,
+      };
     }
 
     function buildStatepathPortfolioKey(segment, search, sort, limit) {
@@ -2531,10 +2671,9 @@
       const page = Math.min(currentPage, totalPages - 1);
       spState.page = page;
       const items = itemsAll.slice(page * pageSize, page * pageSize + pageSize);
-      if (!items.length) {
-        wrap.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
-        return;
-      }
+      const exportDisabled = !itemsAll.length;
+      const exportTooltip = exportDisabled ? "복사할 데이터가 없습니다." : getGlossaryShort("export.table");
+      const viewTooltip = exportDisabled ? "복사할 데이터가 없습니다." : getGlossaryShort("export.table");
       const rows = items
         .map((row) => {
           const orgId = row.orgId || row.org_id;
@@ -2546,16 +2685,9 @@
           const bucket25 = row.companyBucket2025 || row.company_bucket_2025 || "Ø";
           const delta = row.deltaEok ?? row.delta_eok ?? 0;
           const meta = computePatternMeta(row);
-          const eventChips = [];
-          meta.openCells.forEach((c) => eventChips.push(`OPEN:${c}`));
-          meta.closeCells.forEach((c) => eventChips.push(`CLOSE:${c}`));
-          meta.upCells.forEach((c) => eventChips.push(`UP:${c}`));
-          meta.downCells.forEach((c) => eventChips.push(`DOWN:${c}`));
-          Object.entries(meta.railDir).forEach(([rail, dir]) => {
-            if (dir !== "flat") eventChips.push(`RAIL:${rail} ${dir === "up" ? "↑" : "↓"}`);
-          });
-          const displayed = eventChips.slice(0, 3);
-          const rest = eventChips.length - displayed.length;
+          const eventLabels = buildMajorEventLabels(meta);
+          const displayed = eventLabels.slice(0, 3);
+          const rest = eventLabels.length - displayed.length;
           const eventsHtml = `
             ${displayed.map((t) => `<span class="badge">${t}</span>`).join(" ")}
             ${rest > 0 ? `<span class="badge">+${rest}</span>` : ""}
@@ -2571,7 +2703,8 @@
           </tr>`;
         })
         .join("");
-      wrap.innerHTML = `
+      const tableHtml = items.length
+        ? `
         <div class="table-wrap full">
           <table>
             <thead>
@@ -2587,6 +2720,17 @@
             <tbody>${rows}</tbody>
           </table>
         </div>
+      `
+        : `<div class="muted">데이터가 없습니다.</div>`;
+      wrap.innerHTML = `
+        <div class="control-row" style="margin-bottom:8px;">
+          <h3 style="margin:0;">Accounts Table</h3>
+          <div class="spacer"></div>
+          <button type="button" id="statepathExportViewBtn" ${exportDisabled ? "disabled" : ""} title="${viewTooltip}">JSON 보기</button>
+          <button type="button" id="statepathExportCopyBtn" ${exportDisabled ? "disabled" : ""} title="${exportTooltip}">JSON 복사</button>
+          ${renderStatePathHelpButton("export")}
+        </div>
+        ${tableHtml}
         <div class="control-row" style="margin-top:8px;">
           <div class="muted">페이지 ${page + 1} / ${totalPages}</div>
           <div class="spacer"></div>
@@ -2620,6 +2764,32 @@
           }
         });
       }
+      const exportCopyBtn = document.getElementById("statepathExportCopyBtn");
+      if (exportCopyBtn) {
+        exportCopyBtn.addEventListener("click", async () => {
+          const exportObj = buildStatePathTableExportObject();
+          if (!exportObj.row_count) {
+            showToast("복사할 데이터가 없습니다.", "warning");
+            return;
+          }
+          if (exportObj.row_count > 2000) {
+            showToast("건수가 많아 복사가 무거울 수 있습니다. 필터로 줄여주세요.", "warning");
+          }
+          await copyJsonData(exportObj, `JSON 복사 완료 (${exportObj.row_count}건)`);
+        });
+      }
+      const exportViewBtn = document.getElementById("statepathExportViewBtn");
+      if (exportViewBtn) {
+        exportViewBtn.addEventListener("click", () => {
+          const exportObj = buildStatePathTableExportObject();
+          if (!exportObj.row_count) {
+            showToast("표시할 JSON이 없습니다.", "warning");
+            return;
+          }
+          openJsonModal("StatePath 24→25 표 JSON", exportObj);
+        });
+      }
+      bindStatePathHelpButtons(wrap);
     }
 
     async function loadStatePathPortfolio2425(force = false) {
@@ -3668,12 +3838,28 @@
       state.statePathModal.close = document.getElementById("statePathModalClose");
       state.statePathModal.title = document.getElementById("statePathModalTitle");
       state.statePathModal.body = document.getElementById("statePathModalBody");
+      state.statePathModal.copyCoreBtn = document.getElementById("statePathCoreCopyBtn");
       if (state.statePathModal.backdrop) {
         state.statePathModal.backdrop.addEventListener("click", (e) => {
           if (e.target === state.statePathModal.backdrop) closeStatePathModal();
         });
       }
       if (state.statePathModal.close) state.statePathModal.close.addEventListener("click", closeStatePathModal);
+      if (state.statePathModal.copyCoreBtn) {
+        state.statePathModal.copyCoreBtn.addEventListener("click", () => {
+          const detail = state.statePath;
+          if (!detail) {
+            showToast("상세 로딩 후 사용하세요.", "warning");
+            return;
+          }
+          const core = stripRevOpsFromStatePath(detail);
+          if (!core) {
+            showToast("복사할 JSON이 없습니다.", "error");
+            return;
+          }
+          copyJsonData(core, "Core JSON 복사 완료");
+        });
+      }
       state.statepathLegend.backdrop = document.getElementById("statePathLegendBackdrop");
       state.statepathLegend.close = document.getElementById("statePathLegendClose");
       state.statepathLegend.title = document.getElementById("statePathLegendTitle");
@@ -3857,6 +4043,18 @@
       return items;
     }
 
+    async function loadRankCounterpartyDriData(size) {
+      const key = size && size !== "전체" ? size : "대기업";
+      const cached = cache.rank2025CounterpartyDriBySize.get(key);
+      if (cached) return cached;
+      const params = new URLSearchParams();
+      if (size && size !== "전체") params.set("size", size);
+      const query = params.toString();
+      const data = await fetchJson(`/rank/2025-top100-counterparty-dri${query ? `?${query}` : ""}`);
+      cache.rank2025CounterpartyDriBySize.set(key, data);
+      return data;
+    }
+
     async function loadMismatchData(size) {
       const key = size && size !== "전체" ? size : "전체";
       const cached = cache.mismatch2025BySize.get(key);
@@ -3877,20 +4075,117 @@
       return cache.yearlyTotals;
     }
 
+    async function getWonGroupsJsonCached(orgId) {
+      if (!orgId) return null;
+      if (cache.wonGroupJsonByOrg.has(orgId)) return cache.wonGroupJsonByOrg.get(orgId);
+      const data = await fetchJson(`/orgs/${orgId}/won-groups-json`);
+      cache.wonGroupJsonByOrg.set(orgId, data);
+      return data;
+    }
+
+    async function getPeopleByOrgCached(orgId) {
+      if (!orgId) return [];
+      if (cache.peopleByOrg.has(orgId)) return cache.peopleByOrg.get(orgId);
+      const data = await fetchJson(`/orgs/${orgId}/people`);
+      const items = data.items || [];
+      cache.peopleByOrg.set(orgId, items);
+      return items;
+    }
+
+    function isSamsung(row) {
+      const name = (row.orgName || row.orgId || "").trim();
+      return name === "삼성전자";
+    }
+
     function computeTargets(items) {
       const multipliers = state.rankMultipliers || {};
       return (items || []).map((row) => {
         const total2025 = row.totalAmount || 0;
+        const online2025 = row.onlineAmount || 0;
+        const offline2025 = row.offlineAmount || 0;
         const grade = row.grade;
         const multiplier = Number(multipliers[grade]) || 1;
-        let target2026 = total2025 * multiplier;
+        let offlineTarget2026 = offline2025 * multiplier;
+        let onlineTarget2026 = online2025;
+        let target2026 = onlineTarget2026 + offlineTarget2026;
         if (row.orgName === "삼성전자" || row.orgId === "삼성전자") {
           target2026 = 50 * 1e8; // 50억 하드코딩
+          onlineTarget2026 = online2025; // keep online as-is
+          offlineTarget2026 = target2026 - onlineTarget2026;
         }
         const total2024 = row.totalAmount2024 || 0;
         const ratio2025to2024 = total2024 ? total2025 / total2024 : null;
-        return { ...row, target2026, ratio2025to2024 };
+        return { ...row, target2026, ratio2025to2024, target2026Online: onlineTarget2026, target2026Offline: offlineTarget2026 };
       });
+    }
+
+    async function buildRankSummaryBySize() {
+      const summaryRows = [];
+      let sizes = [];
+      try {
+        sizes = await getSizes();
+      } catch (err) {
+        sizes = ["전체"];
+      }
+      const uniqueSizes = Array.from(new Set(["전체", ...(sizes || [])]));
+      for (const size of uniqueSizes) {
+        try {
+          const rowsRaw = await loadRankData(size);
+          const rows = computeTargets(rowsRaw || []);
+          const filtered = rows.filter((r) => !isSamsung(r));
+          const sum25 = filtered.reduce((acc, r) => acc + (r.totalAmount || 0), 0);
+          const sum25Online = filtered.reduce((acc, r) => acc + (r.onlineAmount || 0), 0);
+          const sum25Offline = filtered.reduce((acc, r) => acc + (r.offlineAmount || 0), 0);
+          const sum26Online = filtered.reduce((acc, r) => acc + (r.target2026Online || 0), 0);
+          const sum26Offline = filtered.reduce((acc, r) => acc + (r.target2026Offline || 0), 0);
+          const sum26 = sum26Online + sum26Offline;
+          const gradesMap = new Map();
+          filtered.forEach((r) => {
+            const g = r.grade || "-";
+            const entry = gradesMap.get(g) || {
+              grade: g,
+              sum25: 0,
+              sum25Online: 0,
+              sum25Offline: 0,
+              sum26Online: 0,
+              sum26Offline: 0,
+            };
+            entry.sum25 += r.totalAmount || 0;
+            entry.sum25Online += r.onlineAmount || 0;
+            entry.sum25Offline += r.offlineAmount || 0;
+            entry.sum26Online += r.target2026Online || 0;
+            entry.sum26Offline += r.target2026Offline || 0;
+            gradesMap.set(g, entry);
+          });
+          const grades = Array.from(gradesMap.values()).map((g) => ({
+            ...g,
+            sum26: g.sum26Online + g.sum26Offline,
+          }));
+          summaryRows.push({
+            size,
+            sum25,
+            sum25Online,
+            sum25Offline,
+            sum26,
+            sum26Online,
+            sum26Offline,
+            grades,
+          });
+        } catch (err) {
+          summaryRows.push({
+            size,
+            sum25: 0,
+            sum25Online: 0,
+            sum25Offline: 0,
+            sum26: 0,
+            sum26Online: 0,
+            sum26Offline: 0,
+            grades: [],
+            error: err.message,
+          });
+        }
+      }
+      return summaryRows;
     }
 
     function renderRankTable(items) {
@@ -3912,6 +4207,8 @@
                 <th>2025년 온라인(억)</th>
                 <th>2025년 비온라인(억)</th>
                 <th>2026년 목표액(억)</th>
+                <th>26 온라인(억)</th>
+                <th>26 비온라인(억)</th>
               </tr>
             </thead>
             <tbody>
@@ -3929,6 +4226,8 @@
                       <td>${formatAmount(row.onlineAmount)}</td>
                       <td>${formatAmount(row.offlineAmount)}</td>
                       <td>${formatAmount(row.target2026)}</td>
+                      <td>${formatAmount(row.target2026Online)}</td>
+                      <td>${formatAmount(row.target2026Offline)}</td>
                     </tr>`
                 )
                 .join("")}
@@ -4152,25 +4451,112 @@
 
       let currentItems = [];
 
-      const renderSummary = (items) => {
-        if (!summaryBody) return;
-        if (!items || !items.length) {
-          summaryBody.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
-          return;
+      const summaryOpenState = {};
+      const renderGradeTable = (grades) => {
+        if (!grades || !grades.length) {
+          return `<div class="muted">해당 등급 없음</div>`;
         }
-        const total2025 = items.reduce((sum, row) => sum + (row.totalAmount || 0), 0);
-        const total2026 = items.reduce((sum, row) => sum + (row.target2026 || 0), 0);
-        summaryBody.innerHTML = `
-          <div>규모: <strong>${state.rankSize || "전체"}</strong></div>
-          <div>2025년 체결액 합: ${formatAmount(total2025)}</div>
-          <div>2026년 목표액 합: ${formatAmount(total2026)}</div>
+        return `
+          <div class="table-wrap full" style="margin-top:6px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>등급</th>
+                  <th>2025 합계(억)</th>
+                  <th>25 온라인(억)</th>
+                  <th>25 비온라인(억)</th>
+                  <th>2026 목표액(억)</th>
+                  <th>26 온라인(억)</th>
+                  <th>26 비온라인(억)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${grades
+                  .map(
+                    (g) => `<tr>
+                      <td>${g.grade}</td>
+                      <td>${formatAmount(g.sum25)}</td>
+                      <td>${formatAmount(g.sum25Online)}</td>
+                      <td>${formatAmount(g.sum25Offline)}</td>
+                      <td>${formatAmount(g.sum26)}</td>
+                      <td>${formatAmount(g.sum26Online)}</td>
+                      <td>${formatAmount(g.sum26Offline)}</td>
+                    </tr>`
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
         `;
+      };
+
+      const renderSummaryTable = async () => {
+        if (!summaryBody) return;
+        summaryBody.textContent = "불러오는 중...";
+        try {
+          const rows = await buildRankSummaryBySize();
+          if (!rows.length) {
+            summaryBody.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+            return;
+          }
+          const tableRows = rows
+            .map((r, idx) => {
+              const key = r.size || `row-${idx}`;
+              const open = summaryOpenState[key] || false;
+              return `
+                <tr class="summary-row" data-sum-key="${key}">
+                  <td><button class="chip" data-toggle="${key}" aria-expanded="${open}">${open ? "▲" : "▼"}</button> ${r.size}</td>
+                  <td>${formatAmount(r.sum25)}</td>
+                  <td>${formatAmount(r.sum25Online)}</td>
+                  <td>${formatAmount(r.sum25Offline)}</td>
+                  <td>${formatAmount(r.sum26)}</td>
+                  <td>${formatAmount(r.sum26Online)}</td>
+                  <td>${formatAmount(r.sum26Offline)}</td>
+                </tr>
+                ${
+                  open
+                    ? `<tr class="summary-sub" data-sum-sub="${key}"><td colspan="7">${renderGradeTable(r.grades)}</td></tr>`
+                    : ""
+                }
+              `;
+            })
+            .join("");
+
+          summaryBody.innerHTML = `
+            <div class="muted" style="margin-bottom:6px;">드롭다운과 무관하게 기업 규모별 25/26 합계를 표시합니다 (삼성전자 제외)</div>
+            <div class="table-wrap full">
+              <table>
+                <thead>
+                  <tr>
+                    <th>규모</th>
+                    <th>2025 합계(억)</th>
+                    <th>25 온라인(억)</th>
+                    <th>25 비온라인(억)</th>
+                    <th>2026 목표액(억)</th>
+                    <th>26 온라인(억)</th>
+                    <th>26 비온라인(억)</th>
+                  </tr>
+                </thead>
+                <tbody>${tableRows}</tbody>
+              </table>
+            </div>
+          `;
+
+          summaryBody.querySelectorAll("[data-toggle]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const key = btn.getAttribute("data-toggle");
+              summaryOpenState[key] = !summaryOpenState[key];
+              renderSummaryTable();
+            });
+          });
+        } catch (err) {
+          summaryBody.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        }
       };
 
       const renderAll = (items) => {
         currentItems = computeTargets(items);
         target.innerHTML = renderRankTable(currentItems);
-        renderSummary(currentItems);
         target.querySelectorAll(".org-link").forEach((cell) => {
           cell.addEventListener("click", async () => {
             const idx = Number(cell.getAttribute("data-idx"));
@@ -4183,10 +4569,10 @@
 
       const refresh = async () => {
         if (target) target.textContent = "불러오는 중...";
-        if (summaryBody) summaryBody.textContent = "불러오는 중...";
         try {
           const items = await loadRankData(state.rankSize);
           renderAll(items);
+          await renderSummaryTable();
         } catch (err) {
           if (target) target.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
           if (summaryBody) summaryBody.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
@@ -4216,10 +4602,458 @@
         btnGuide.addEventListener("click", () => openGradeGuideModal());
       }
       if (btnMultiplier) {
-        btnMultiplier.addEventListener("click", () => openMultiplierModal(() => renderAll(currentItems)));
+        btnMultiplier.addEventListener("click", () => openMultiplierModal(() => refresh()));
       }
 
       await refresh();
+    }
+
+    async function renderRankCounterpartyDriScreen(contentRoot) {
+      const stateDri = state.rankCounterpartyDri;
+      const ORG_PAGE_SIZE = 100;
+      contentRoot.innerHTML = `
+        <section class="card">
+          <div class="control-row">
+            <h2>2025 Top100 카운터파티 DRI</h2>
+            <div class="spacer"></div>
+            <label class="muted">기업 규모</label>
+            <select id="rankCounterpartySizeSelect"></select>
+            <span class="pill muted">DB 교체 시 새로고침 필요 (캐시 무효화 없음)</span>
+          </div>
+          <div class="control-row" style="margin-top:6px; gap:8px; flex-wrap:wrap;">
+            <label class="muted">검색</label>
+            <input id="rankCounterpartySearch" type="text" placeholder="기업/카운터파티/담당자 검색" style="min-width:220px;" />
+            <label class="muted">DRI</label>
+            <select id="rankCounterpartyDriFilter">
+              <option value="all">전체</option>
+              <option value="O">O만</option>
+              <option value="X">X만</option>
+            </select>
+            <label><input type="checkbox" id="rankCounterpartyHideMissing" /> 미입력 upper_org 숨김</label>
+            <label class="muted">정렬</label>
+            <select id="rankCounterpartySort">
+              <option value="default">기업총액↓ → CP총액↓(기본)</option>
+              <option value="cp_online_desc">CP 온라인↓</option>
+              <option value="cp_offline_desc">CP 비온라인↓</option>
+            </select>
+          </div>
+          <div class="muted" style="margin-top:6px;">2025 Won Top100 → upper_org별 온라인/비온라인/DRI/담당자 리스트</div>
+        </section>
+        <section class="card">
+          <div id="rankCounterpartyStatus" class="muted">불러오는 중...</div>
+          <div id="rankCounterpartyOrgPager"></div>
+          <div id="rankCounterpartyTable"></div>
+        </section>
+        <div class="modal-backdrop" id="counterpartyModal" style="display:none;">
+          <div class="modal xl" role="dialog" aria-modal="true" aria-labelledby="counterpartyModalTitle">
+            <header class="control-row">
+              <h3 id="counterpartyModalTitle">카운터파티 상세</h3>
+              <div class="spacer"></div>
+              <button type="button" id="counterpartyModalClose" class="close-btn" aria-label="닫기">닫기</button>
+            </header>
+            <div id="rankCounterpartyDetail" class="muted" style="padding:8px; max-height:70vh; overflow:auto;">행을 클릭하면 상세를 표시합니다.</div>
+          </div>
+        </div>
+      `;
+
+      const sizeSelect = document.getElementById("rankCounterpartySizeSelect");
+      const statusEl = document.getElementById("rankCounterpartyStatus");
+      const tableWrap = document.getElementById("rankCounterpartyTable");
+      const detailWrap = document.getElementById("rankCounterpartyDetail");
+      const modal = document.getElementById("counterpartyModal");
+      const modalClose = document.getElementById("counterpartyModalClose");
+      const searchInput = document.getElementById("rankCounterpartySearch");
+      const driSelect = document.getElementById("rankCounterpartyDriFilter");
+      const hideMissingChk = document.getElementById("rankCounterpartyHideMissing");
+      const sortSelect = document.getElementById("rankCounterpartySort");
+
+      const applyFilters = () => {
+        const rows = stateDri.rows || [];
+        const term = (stateDri.search || "").trim();
+        const driFilter = stateDri.dri || "all";
+        const hideMissing = stateDri.hideMissingUpper;
+        const sort = stateDri.sort || "default";
+
+        let filtered = rows.filter((r) => {
+          if (hideMissing && (!r.upperOrg || normalizeUpperOrg(r.upperOrg) === "미입력")) return false;
+          return true;
+        });
+        filtered = filtered.filter((r) => {
+          if (driFilter !== "all") {
+            const tp = computeTeamPartSummary(r.owners2025 || []);
+            if (tp.dri !== driFilter) return false;
+          }
+          return true;
+        });
+        if (term) {
+          filtered = filtered.filter((r) => {
+            const owners = (r.owners2025 || []).join(" ");
+            return (
+              String(r.orgName || "").includes(term) ||
+              String(r.upperOrg || "").includes(term) ||
+              owners.includes(term)
+            );
+          });
+        }
+        if (sort === "cp_online_desc") {
+          filtered.sort((a, b) => (b.cpOnline2025 || 0) - (a.cpOnline2025 || 0));
+        } else if (sort === "cp_offline_desc") {
+          filtered.sort((a, b) => (b.cpOffline2025 || 0) - (a.cpOffline2025 || 0));
+        } else {
+          filtered.sort((a, b) => {
+            if ((b.orgWon2025 || 0) !== (a.orgWon2025 || 0)) return (b.orgWon2025 || 0) - (a.orgWon2025 || 0);
+            return (b.cpTotal2025 || 0) - (a.cpTotal2025 || 0);
+          });
+        }
+        return filtered;
+      };
+
+      const renderTable = () => {
+        const allRows = applyFilters();
+        stateDri.filtered = allRows;
+        const rows = allRows;
+        if (!rows.length) {
+          tableWrap.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+          return;
+        }
+        const htmlRows = rows
+          .map((row, idx) => {
+            const owners = Array.isArray(row.owners2025) && row.owners2025.length ? row.owners2025.join(", ") : "미입력";
+            const tp = computeTeamPartSummary(row.owners2025 || []);
+            const ownersText = owners === "미입력" ? "미입력" : owners.split(",").map((s) => s.trim()).join(", ");
+            return `
+              <tr data-idx="${idx}">
+                <td><span class="org-link" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.orgName || row.orgId || "-"}</span></td>
+                <td>${(row.orgTier || "미입력") || "미입력"}</td>
+                <td>${formatAmount(row.orgWon2025)}</td>
+                <td>${row.upperOrg || "미입력"}</td>
+                <td>${formatAmount(row.cpOnline2025)}</td>
+                <td>${formatAmount(row.cpOffline2025)}</td>
+                <td class="nowrap-ellipsis" title="${owners}">${ownersText}</td>
+                <td>${tp.teamPartText || "-"}</td>
+                <td>${tp.dri || "X"}</td>
+              </tr>
+            `;
+          })
+          .join("");
+        tableWrap.innerHTML = `
+          <div class="table-wrap full">
+            <table>
+              <thead>
+                <tr>
+                  <th>기업명</th>
+                  <th>티어</th>
+                  <th>25년 체결액</th>
+                  <th>카운터파티</th>
+                  <th>25 온라인</th>
+                  <th>25 비온라인</th>
+                  <th>25 담당자</th>
+                  <th>팀&파트</th>
+                  <th>DRI 가능</th>
+                </tr>
+          </thead>
+          <tbody>${htmlRows}</tbody>
+        </table>
+          </div>
+        `;
+        tableWrap.querySelectorAll("tr[data-idx]").forEach((tr) => {
+          tr.addEventListener("click", () => {
+            const idx = Number(tr.getAttribute("data-idx"));
+            const row = rows[idx];
+            if (!row) return;
+            stateDri.selected = row;
+            loadCounterpartyDetail(row);
+          });
+        });
+      };
+
+      const loadData = async () => {
+        stateDri.loading = true;
+        stateDri.error = null;
+        statusEl.textContent = "불러오는 중...";
+        tableWrap.innerHTML = "";
+        try {
+          const params = new URLSearchParams();
+          params.set("size", stateDri.size || "대기업");
+          params.set("limit", ORG_PAGE_SIZE);
+          params.set("offset", stateDri.offset || 0);
+          const data = await fetchJson(`/rank/2025-top100-counterparty-dri?${params.toString()}`);
+          stateDri.rows = data.rows || [];
+          stateDri.meta = data.meta || {};
+          statusEl.textContent = `${stateDri.size || "대기업"} / org ${data.meta?.orgCount ?? "-"}개 · row ${data.meta?.rowCount ?? "-"} · offset ${(stateDri.offset || 0) + 1}`;
+          renderTable();
+          detailWrap.textContent = "행을 클릭하면 상세를 표시합니다.";
+          stateDri.selected = null;
+          stateDri.detail = null;
+        } catch (err) {
+          stateDri.error = err.message;
+          statusEl.textContent = `오류: ${err.message}`;
+        } finally {
+          stateDri.loading = false;
+        }
+      };
+
+      try {
+        const sizes = await getSizes();
+        sizeSelect.innerHTML = sizes.map((s) => `<option value="${s}">${s}</option>`).join("");
+        if (!sizes.includes(stateDri.size)) {
+          stateDri.size = sizes.find((s) => s === "대기업") || sizes[0] || "대기업";
+        }
+        sizeSelect.value = stateDri.size;
+      } catch (err) {
+        sizeSelect.innerHTML = `<option value="대기업">대기업</option>`;
+      }
+
+      sizeSelect.addEventListener("change", async (e) => {
+        stateDri.size = e.target.value || "대기업";
+        stateDri.offset = 0;
+        await loadData();
+        renderOrgPager();
+      });
+
+      const closeCounterpartyModal = () => {
+        if (modal) modal.style.display = "none";
+        if (detailWrap) detailWrap.innerHTML = "행을 클릭하면 상세를 표시합니다.";
+        stateDri.detail = null;
+        stateDri.selected = null;
+      };
+      if (modalClose && modal) {
+        modalClose.addEventListener("click", closeCounterpartyModal);
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) closeCounterpartyModal();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && modal.style.display === "flex") {
+            closeCounterpartyModal();
+          }
+        });
+      }
+      if (searchInput) {
+        searchInput.value = stateDri.search || "";
+        let timer = null;
+        searchInput.addEventListener("input", () => {
+          stateDri.search = searchInput.value || "";
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(renderTable, 300);
+        });
+      }
+      if (driSelect) {
+        driSelect.value = stateDri.dri || "all";
+        driSelect.addEventListener("change", () => {
+          stateDri.dri = driSelect.value || "all";
+          renderTable();
+        });
+      }
+      if (hideMissingChk) {
+        hideMissingChk.checked = !!stateDri.hideMissingUpper;
+        hideMissingChk.addEventListener("change", () => {
+          stateDri.hideMissingUpper = hideMissingChk.checked;
+          renderTable();
+        });
+      }
+      if (sortSelect) {
+        sortSelect.value = stateDri.sort || "default";
+        sortSelect.addEventListener("change", () => {
+          stateDri.sort = sortSelect.value || "default";
+          renderTable();
+        });
+      }
+
+      // Org-level pagination (fetch next 100 orgs)
+      const renderOrgPager = () => {
+        const pager = document.getElementById("rankCounterpartyOrgPager");
+        if (!pager) return;
+        const offset = stateDri.offset || 0;
+        const meta = stateDri.meta || {};
+        const hasPrev = offset > 0;
+        const hasNext = (meta.orgCount || 0) >= ORG_PAGE_SIZE; // optimistic when total unknown
+        pager.innerHTML = `
+          <div class="control-row" style="margin-top:6px;">
+            <div class="muted">Org ${offset + 1} ~ ${offset + (meta.orgCount || stateDri.rows.length || 0)}</div>
+            <div class="spacer"></div>
+            <button type="button" id="rankCpOrgPrev" ${hasPrev ? "" : "disabled"}>Prev 100</button>
+            <button type="button" id="rankCpOrgNext" ${hasNext ? "" : "disabled"}>Next 100</button>
+          </div>
+        `;
+        const prevBtn = document.getElementById("rankCpOrgPrev");
+        const nextBtn = document.getElementById("rankCpOrgNext");
+        if (prevBtn) {
+          prevBtn.addEventListener("click", async () => {
+            stateDri.offset = Math.max(0, offset - ORG_PAGE_SIZE);
+            await loadData();
+            renderOrgPager();
+          });
+        }
+        if (nextBtn) {
+          nextBtn.addEventListener("click", async () => {
+            stateDri.offset = offset + ORG_PAGE_SIZE;
+            await loadData();
+            renderOrgPager();
+          });
+        }
+      };
+
+      const loadCounterpartyDetail = async (row) => {
+        if (!detailWrap) return;
+        if (!row) {
+          detailWrap.textContent = "행을 클릭하면 상세를 표시합니다.";
+          return;
+        }
+        if (modal) modal.style.display = "flex";
+        detailWrap.textContent = "불러오는 중...";
+        try {
+          const orgId = row.orgId;
+          const upper = normalizeUpperOrg(row.upperOrg);
+          const detail = await fetchJson(`/rank/2025-counterparty-dri/detail?orgId=${encodeURIComponent(orgId)}&upperOrg=${encodeURIComponent(upper)}`);
+          const teams = detail.teams || [];
+          const peopleFiltered = detail.people || [];
+          const summary = detail.summary || {
+            online: teams.reduce((acc, t) => acc + (t.online || 0), 0),
+            offline: teams.reduce((acc, t) => acc + (t.offline || 0), 0),
+            dealCount: teams.reduce((acc, t) => acc + (t.deals ? t.deals.length : 0), 0),
+          };
+          stateDri.detail = detail;
+          const tp = computeTeamPartSummary(row.owners2025 || []);
+          const ownersLine =
+            Array.isArray(row.owners2025) && row.owners2025.length ? row.owners2025.join(", ") : "미입력";
+
+          const renderDeals = (teamName) => {
+            const target = teams.find((t) => t.team === teamName) || teams[0];
+            if (!target || !target.deals.length) {
+              return `<div class="muted">딜이 없습니다.</div>`;
+            }
+            const rowsHtml = target.deals
+              .map(
+                (d) => `
+                  <tr>
+                    <td>${formatDate(d.created_at)}</td>
+                    <td>${d.name}</td>
+                    <td>${d.status}</td>
+                    <td>${formatAmount(d.amount)}</td>
+                    <td>${formatAmount(d.expected_amount)}</td>
+                    <td>${formatDate(d.contract_date)}</td>
+                    <td>${d.owner || "-"}</td>
+                    <td>${d.course_format || "-"}</td>
+                  </tr>
+                `
+              )
+              .join("");
+            return `
+              <div class="table-wrap full">
+                <table>
+                  <thead><tr><th>생성일</th><th>이름</th><th>상태</th><th>금액(억)</th><th>예상(억)</th><th>계약일</th><th>담당자</th><th>과정포맷</th></tr></thead>
+                  <tbody>${rowsHtml}</tbody>
+                </table>
+              </div>
+            `;
+          };
+
+          const teamTable = teams.length
+            ? `
+              <div class="table-wrap full">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>팀</th>
+                      <th>25 온라인(억)</th>
+                      <th>25 비온라인(억)</th>
+                      <th>딜 건수</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${teams
+                      .map(
+                        (t, idx) => `
+                        <tr>
+                          <td>${t.team}</td>
+                          <td>${formatAmount(t.online)}</td>
+                          <td>${formatAmount(t.offline)}</td>
+                          <td>${t.deals.length}</td>
+                          <td><button type="button" class="counterparty-team-btn" data-team="${t.team}" ${t.deals.length ? "" : "disabled"}>${t.deals.length ? "딜 보기" : "-"}</button></td>
+                        </tr>
+                      `
+                      )
+                      .join("")}
+                  </tbody>
+                </table>
+              </div>
+            `
+            : `<div class="muted">선택된 카운터파티의 팀 데이터가 없습니다.</div>`;
+
+          const peopleTable = peopleFiltered.length
+            ? `
+              <div class="table-wrap full">
+                <table>
+                  <thead><tr><th>이름</th><th>소속 상위 조직</th><th>팀</th><th>직급</th><th>교육 영역</th><th>웹폼</th></tr></thead>
+                  <tbody>
+                    ${peopleFiltered
+                      .map((p, idx) => {
+                        const webforms = getWebformsForPerson(p.id);
+                        const hasWebforms = Array.isArray(webforms) && webforms.length > 0;
+                        return `
+                          <tr data-pidx="${idx}">
+                            <td>${p.name || "-"}</td>
+                            <td>${normalizeUpperOrg(p.upper_org)}</td>
+                            <td>${(p.team_signature || "미입력").trim() || "미입력"}</td>
+                            <td>${(p.title_signature || "미입력").trim() || "미입력"}</td>
+                            <td>${(p.edu_area || "미입력").trim() || "미입력"}</td>
+                            <td><button type="button" class="webform-btn" data-pid="${p.id}" ${hasWebforms ? "" : "disabled"}>${hasWebforms ? "내역 확인" : "없음"}</button></td>
+                          </tr>
+                        `;
+                      })
+                      .join("")}
+                  </tbody>
+                </table>
+              </div>
+            `
+            : `<div class="muted">상위 조직에 해당하는 People이 없습니다.</div>`;
+
+          detailWrap.innerHTML = `
+            <div style="margin-bottom:6px;">${row.orgName || row.orgId || "-"} / ${upper}</div>
+            <div class="pill" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:10px; font-size:14px;">
+              <span><strong>25 담당자:</strong> ${ownersLine}</span>
+              <span><strong>팀&파트:</strong> ${tp.teamPartText || "-"}</span>
+              <span><strong>DRI:</strong> <span style="font-weight:700; color:${tp.dri === "O" ? "var(--success)" : "var(--error)"};">${tp.dri || "X"}</span></span>
+            </div>
+            <div class="pill muted" title="온라인 합계 / 비온라인 합계 / 딜 건수 (24→25 기준 온라인 판정: 구독제(온라인)/선택구매(온라인)/포팅)">
+              합계: 온라인 ${formatAmount(summary.online)} / 비온라인 ${formatAmount(summary.offline)} · 딜 ${summary.dealCount || 0}건
+            </div>
+            <h4>팀 요약</h4>
+            ${teamTable}
+            <div id="counterpartyDealsWrap">${renderDeals(teams[0]?.team)}</div>
+            <h4 style="margin-top:12px;">People</h4>
+            ${peopleTable}
+          `;
+
+          detailWrap.querySelectorAll(".counterparty-team-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const teamName = btn.getAttribute("data-team");
+              const dealsWrap = detailWrap.querySelector("#counterpartyDealsWrap");
+              if (dealsWrap) {
+                dealsWrap.innerHTML = renderDeals(teamName);
+              }
+            });
+          });
+          detailWrap.querySelectorAll(".webform-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const pid = btn.getAttribute("data-pid");
+              const wf = getWebformsForPerson(pid);
+              openWebformModal(
+                (peopleFiltered.find((p) => String(p.id) === String(pid)) || {}).name || "-",
+                wf
+              );
+            });
+          });
+          if (modal) modal.style.display = "flex";
+        } catch (err) {
+          detailWrap.innerHTML = `<div class="muted">상세 로드 오류: ${err.message}</div>`;
+          if (modal) modal.style.display = "flex";
+        }
+      };
+
+      await loadData();
+      renderOrgPager();
     }
 
     async function renderMismatch2025Screen(contentRoot) {
@@ -4650,4 +5484,3 @@
 </body>
 
 </html>
-      bindStatePathHelpButtons(contentRoot);

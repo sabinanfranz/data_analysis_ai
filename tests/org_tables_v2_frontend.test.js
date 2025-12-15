@@ -3,6 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { test } from "node:test";
 import vm from "node:vm";
+import { JSDOM } from "jsdom";
 
 // Minimal DOM stub to satisfy render helpers during loadOrgDetail().
 class StubElement {
@@ -24,6 +25,7 @@ class StubElement {
     return null;
   }
   setAttribute() {}
+  focus() {}
 }
 
 function createDocumentStub() {
@@ -557,4 +559,128 @@ test("statepath menu renders and fetches portfolio items", async () => {
   assert.ok(legendBody, "legend modal body missing");
   legendBody.innerHTML = "Risk OPEN 버킷 세그먼트 비교 Top Patterns 브레드크럼 페이지네이션";
   assert.ok(/Risk/.test(legendBody.innerHTML));
+});
+
+test("StatePath export helpers build objects and strip revops", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({}), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const state = vm.runInContext("state", ctx);
+  state.statepath2425.loading = false;
+  state.statepath2425.error = null;
+  state.statepath2425.segment = "대기업";
+  state.statepath2425.search = "Org";
+  state.statepath2425.sort = "won2025_desc";
+  state.statepath2425.quickFilters = { risk: true, hasOpen: false, hasScaleUp: false, companyDir: "up", seed: "H→B", railShift: "all" };
+  state.statepath2425.patternFilter = { companyFrom: "Ø", companyTo: "P5", cell: "BU_ONLINE", cellEvent: "OPEN", rail: null, railDir: null };
+  state.statepath2425.filteredItems = [
+    {
+      orgId: "org-1",
+      orgName: "Org One",
+      segment: "대기업",
+      companyTotalEok2024: 1.0,
+      companyTotalEok2025: 2.5,
+      companyBucket2024: "Ø",
+      companyBucket2025: "P5",
+      companyOnlineBucket2024: "Ø",
+      companyOnlineBucket2025: "P5",
+      companyOfflineBucket2024: "Ø",
+      companyOfflineBucket2025: "Ø",
+      deltaEok: 1.5,
+      cells_2024: { BU_ONLINE: { bucket: "Ø" } },
+      cells_2025: { BU_ONLINE: { bucket: "P5" } },
+    },
+  ];
+
+  const exportObj = vm.runInContext("buildStatePathTableExportObject()", ctx);
+  assert.strictEqual(exportObj.export_type, "statepath_2425_table_v2");
+  assert.strictEqual(exportObj.row_count, 1);
+  assert.ok(exportObj.filters.quickFilters.risk, "quickFilters not captured");
+  assert.deepStrictEqual(exportObj.rows[0].y2024.bucket, "Ø");
+  assert.ok(exportObj.rows[0].major_events.includes("OPEN:BU_ONLINE"), "major events not derived");
+
+  const strip = vm.runInContext("stripRevOpsFromStatePath", ctx);
+  const detail = { company_name: "Org One", ops_reco: { foo: 1 }, revops_reco: { bar: 2 }, path_2024_to_2025: { seed: "NONE" } };
+  const cloned = strip(detail);
+  assert.ok(cloned && !("ops_reco" in cloned) && !("revops_reco" in cloned), "revops keys not stripped");
+  assert.ok(detail.ops_reco, "original object mutated");
+});
+
+test("StatePath table render includes JSON copy controls", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({}), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const state = vm.runInContext("state", ctx);
+  state.statepath2425.loading = false;
+  state.statepath2425.error = null;
+  state.statepath2425.filteredItems = [
+    {
+      orgId: "o1",
+      orgName: "Org One",
+      segment: "대기업",
+      companyTotalEok2024: 1,
+      companyTotalEok2025: 2,
+      companyBucket2024: "P5",
+      companyBucket2025: "P4",
+      cells_2024: { BU_ONLINE: { bucket: "Ø" } },
+      cells_2025: { BU_ONLINE: { bucket: "P5" } },
+    },
+  ];
+
+  const renderTable = vm.runInContext("renderStatePathTable", ctx);
+  // Ensure required DOM nodes exist
+  docStub.getElementById("statepathStatus");
+  docStub.getElementById("statepathTableWrap");
+  renderTable();
+  const wrap = docStub.getElementById("statepathTableWrap");
+  assert.ok((wrap.innerHTML || "").includes("JSON 복사"), "export button not rendered");
+});
+
+test("counterparty owners cell renders single line without <br/> or newline", () => {
+  const owners = ["홍길동", "김철수"];
+  const ownersText = owners.join(", ");
+  const cellHtml = `<td class="nowrap-ellipsis" title="${ownersText}">${ownersText}</td>`;
+  const dom = new JSDOM(`<table><tr>${cellHtml}</tr></table>`);
+  const td = dom.window.document.querySelector("td");
+  if (!td) throw new Error("td not rendered");
+  if (td.innerHTML.includes("<br")) {
+    throw new Error("owners cell contains <br/>");
+  }
+  if (td.textContent.includes("\n")) {
+    throw new Error("owners cell contains newline");
+  }
 });

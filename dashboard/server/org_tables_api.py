@@ -104,6 +104,20 @@ def get_rank_won_yearly_totals() -> dict:
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/rank/2025/summary-by-size")
+def get_rank_2025_summary_by_size(
+    exclude_org_name: str = Query("삼성전자", description="합계에서 제외할 조직명 (정확히 일치)"),
+    years: str = Query("2025,2026", description="콤마 구분 연도 리스트(예: 2025,2026)"),
+) -> dict:
+    try:
+        years_list = [int(str(y).strip()) for y in (years.split(",") if years else []) if str(y).strip()]
+        return db.get_rank_2025_summary_by_size(exclude_org_name=exclude_org_name, years=years_list)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/rank/2025-deals-people")
 def get_rank_2025_deals_people(
     size: str = Query("대기업", description='조직 규모 필터 (예: "대기업", "전체")')

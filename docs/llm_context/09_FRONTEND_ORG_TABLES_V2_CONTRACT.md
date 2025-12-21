@@ -32,9 +32,9 @@
 
 ## 5) 메뉴별 동작 요약
 - **조직/People/Deal 뷰어(`org-view`)**: 조직 목록/메모/People/Deal/메모, 상위 조직 Won 요약(2025 담당자/팀&파트/DRI 포함), 상위 조직별 JSON + 간소화 JSON, StatePath 버튼/모달, 웹폼 내역 모달(People 행 버튼), 딜/People 세일즈맵 링크.
-- **2025년 체결액 순위(`rank-2025`)**: `/api/rank/2025-deals` 호출, 규모 필터, 등급 가이드/배수 모달. 표는 2024/2025 등급·총액, 24→25 배수, 2025 온라인/비온라인, 2026 목표액을 표시하며 요약 카드로 합계도 보여준다. 회사 클릭 시 조직 화면으로 이동.
+- **2025년 체결액 순위(`rank-2025`)**: `/api/rank/2025-deals` 호출, 규모 필터, 등급 가이드/배수 모달. 표는 2024/2025 등급·총액, 24→25 배수, 2025 온라인/비온라인, 2026 목표액을 표시하며 요약 카드는 서버 합계(`/api/rank/2025/summary-by-size`, 기본 삼성전자 제외)를 그대로 사용한다. 회사 클릭 시 조직 화면으로 이동.
 - **2025 대기업 딜·People(`rank-2025-people`)**: `/api/rank/2025-deals-people`, 규모/회사/상위 조직 필터, 딜 보기 모달.
-- **2025 Top100 카운터파티 DRI(`rank-2025-counterparty-dri`)**: `/api/rank/2025-top100-counterparty-dri?size=...&limit=100&offset=...`를 규모별로 호출, 기업 25 총액 desc → upper_org 총액 desc 정렬된 표를 렌더. 온라인=구독제(온라인)/선택구매(온라인)/포팅, owners/upper_org 미입력은 `미입력` 정규화. 팀&파트/DRI는 PART_STRUCTURE 기반 프런트 계산. Org 100개 단위 Prev/Next로 다음 상위 조직 묶음을 조회. 행 클릭 시 won-groups-json/people로 팀별 25 온라인/비온라인, 딜 리스트, People(웹폼 버튼 포함) 상세를 모달로 보여주며, 상단에 25 담당자/팀&파트/DRI 요약을 강조한다.
+- **2025 Top100 카운터파티 DRI(`rank-2025-counterparty-dri`)**: `/api/rank/2025-top100-counterparty-dri?size=...&limit=100&offset=...`를 규모별로 호출, 기업 25 총액 desc → upper_org 총액 desc 정렬된 표를 렌더. 온라인=구독제(온라인)/선택구매(온라인)/포팅, owners/upper_org 미입력은 `미입력` 정규화. 팀&파트/DRI는 PART_STRUCTURE 기반 프런트 계산(단일 팀·파트면 O, ‘셀’ 포함도 허용). 팀&파트 드롭다운 필터, DRI 필터, 검색, 미입력 upper_org 숨김, 정렬을 조합해 표를 필터링한다. Org 100개 단위 Prev/Next로 다음 상위 조직 묶음을 조회. 행 클릭 시 won-groups-json/people로 팀별 25 온라인/비온라인, 딜 리스트, People(웹폼 버튼 포함) 상세를 모달로 보여주며, 상단에 25 담당자/팀&파트/DRI 요약을 강조한다.
 - **고객사 불일치(`mismatch-2025`)**: `/api/rank/mismatched-deals`, 규모 필터, 딜 org vs People org 비교.
 - **업종별 매출(`industry-2025`)**: `/api/rank/won-industry-summary`, 업종 구분(대)별 23/24/25 Won 합계/회사 수 표시.
 
@@ -43,6 +43,6 @@
 - 모달: 메모/JSON/웹폼/딜 보기/StatePath/StatePath 용어(legend) 모달. ESC, 닫기 버튼, 배경 클릭으로 닫힘(legend는 섹션 라벨 표시).
 - 버튼 비활성화: 데이터 없는 상태에서 JSON 보기/복사, 웹폼 내역(없으면 “없음”), 조직 미선택 시 People/Deal 표 비움, 상위 조직 미선택 시 관련 표/버튼 비활성화.
 - 선택 표시: 선택된 행은 `active` 클래스, 상위 조직 라벨/브레드크럼에 선택 상태 반영.
-- Won 요약 DRI 규칙: 2025 Won 딜 담당자 이름 → PART_STRUCTURE 매핑, 단일 팀/파트(“셀” 제외)일 때만 `O`, 매핑 실패나 복수 콤보면 `X`.
+- Won 요약 DRI 규칙: 2025 Won 딜 담당자 이름 → PART_STRUCTURE 매핑, 단일 팀/파트면 `O`(셀 포함 허용), 매핑 실패나 복수 콤보면 `X`.
 - StatePath 모달: `/api/orgs/{id}/statepath` 응답을 캐시(`statePathByOrg`) 후 연도별 요약/셀 비교/이벤트/추천 블록으로 렌더, 금액은 억 단위 그대로 표시(`formatEok`). StatePath 화면에는 STATEPATH_GLOSSARY 기반 툴팁/title/ⓘ 버튼과 통합 “용어/기준” 모달이 붙어 있다.
 - StatePath JSON 내보내기: Accounts Table 섹션에서 필터 결과 전체(filteredItems)를 메타+행 JSON으로 보기/복사할 수 있고, StatePath 상세 모달에서 RevOps 추천을 제외한 Core JSON을 복사할 수 있다(툴팁/legend에 기준 명시, 클립보드 실패 시 textarea 폴백).

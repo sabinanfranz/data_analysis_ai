@@ -20,6 +20,7 @@
   - `/api/orgs/{org_id}/people?hasDeal=true|false|null`: 조직의 People 리스트(딜 여부 필터).
   - `/api/people/{person_id}/deals`, `/api/people/{person_id}/memos`, `/api/deals/{deal_id}/memos`: 사람/딜 단위 데이터와 메모.
   - 랭킹/이상치: `/api/rank/2025-deals`(grade/grade2024 + online/offline/2024 합계 포함), `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary`.
+  - 25/26 규모 합계 요약: `GET /api/rank/2025/summary-by-size`는 상태=Won 딜을 계약연도 기준(기본 2025/2026)으로 기업 규모별 합산해 반환하며, 기본 exclude_org_name은 “삼성전자”다. DB mtime+exclude 키로 메모리 캐시된다(`snapshot_version=db_mtime:<int>`).
   - Compact JSON: `/api/orgs/{org_id}/won-groups-json-compact`은 won-groups-json을 LLM용으로 축약(schema_version 포함, deal_defaults/summary 추가)한 버전을 반환한다.
   - StatePath 단건: `/api/orgs/{org_id}/statepath`는 won-groups-json-compact를 내부 생성해 2024/2025 State, Path 이벤트, Seed, RevOps 추천(타겟 셀/카운터파티/액션)을 억 단위 금액과 함께 반환한다.
   - StatePath 포트폴리오/상세:

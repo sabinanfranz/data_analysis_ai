@@ -13,6 +13,7 @@ ONLINE_COURSE_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포
 SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타/미입력"]
 PUBLIC_KEYWORDS = ["공단", "공사", "진흥원", "재단", "협회", "청", "시청", "도청", "구청", "교육청", "원"]
 _COUNTERPARTY_DRI_CACHE: Dict[Tuple[Path, float, str, int], Dict[str, Any]] = {}
+_RANK_2025_SUMMARY_CACHE: Dict[Tuple[Path, float, str, Tuple[int, ...]], Dict[str, Any]] = {}
 
 
 def _date_only(val: Any) -> str:
@@ -1934,6 +1935,86 @@ def get_won_totals_by_size(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
     return result
 
 
+def get_rank_2025_summary_by_size(
+    exclude_org_name: str = "삼성전자",
+    years: Optional[Sequence[int]] = None,
+    db_path: Path = DB_PATH,
+) -> Dict[str, Any]:
+    """
+    Aggregate Won amount by organization size for given years (default 2025/2026), excluding a specific org name.
+    Returns cached result per DB mtime + exclude key.
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    years_list = [int(y) for y in (years or [2025, 2026]) if y is not None]
+    if not years_list:
+        years_list = [2025, 2026]
+    years_str = [str(y) for y in years_list]
+    stat = db_path.stat()
+    snapshot_version = f"db_mtime:{int(stat.st_mtime)}"
+
+    cache_key = (db_path, stat.st_mtime, exclude_org_name or "", tuple(years_list))
+    cached = _RANK_2025_SUMMARY_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    year_placeholders = ",".join(["?"] * len(years_str))
+    params: List[Any] = list(years_str)
+    exclude_condition = ""
+    if exclude_org_name:
+        exclude_condition = ' AND COALESCE(o."이름", d.organizationId) <> ?'
+        params.append(exclude_org_name)
+
+    with _connect(db_path) as conn:
+        rows = _fetch_all(
+            conn,
+            f'''
+            SELECT
+              COALESCE(NULLIF(o."기업 규모", ''), '미입력') AS size,
+              SUBSTR(d."계약 체결일", 1, 4) AS year,
+              SUM(CAST(d."금액" AS REAL)) AS totalAmount
+            FROM deal d
+            LEFT JOIN organization o ON o.id = d.organizationId
+            WHERE d."상태" = 'Won'
+              AND d."계약 체결일" IS NOT NULL
+              AND SUBSTR(d."계약 체결일", 1, 4) IN ({year_placeholders})
+              {exclude_condition}
+            GROUP BY size, year
+            ''',
+            params,
+        )
+
+    by_size: Dict[str, Dict[str, float]] = {}
+    totals = {"sum_2025": 0.0, "sum_2026": 0.0}
+    for row in rows:
+        size = (row["size"] or "미입력").strip() or "미입력"
+        year = str(row["year"])
+        amount = _to_number(row["totalAmount"]) or 0.0
+        entry = by_size.setdefault(size, {"sum_2025": 0.0, "sum_2026": 0.0})
+        if year == "2025":
+            entry["sum_2025"] += amount
+            totals["sum_2025"] += amount
+        elif year == "2026":
+            entry["sum_2026"] += amount
+            totals["sum_2026"] += amount
+
+    # ensure sizes exist even when missing
+    default_sizes = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "미입력"]
+    for size in default_sizes:
+        by_size.setdefault(size, {"sum_2025": 0.0, "sum_2026": 0.0})
+
+    result = {
+        "snapshot_version": snapshot_version,
+        "excluded_org_names": [exclude_org_name] if exclude_org_name else [],
+        "years": years_list,
+        "by_size": by_size,
+        "totals": totals,
+    }
+    _RANK_2025_SUMMARY_CACHE[cache_key] = result
+    return result
+
+
 def get_rank_2025_top100_counterparty_dri(
     size: str = "대기업", limit: int = 100, offset: int = 0, db_path: Path = DB_PATH
 ) -> Dict[str, Any]:
@@ -1959,6 +2040,12 @@ def get_rank_2025_top100_counterparty_dri(
     if size and size != "전체":
         conditions.append('o."기업 규모" = ?')
         params.append(size)
+
+    conditions_2026: List[str] = []
+    params_2026: List[Any] = []
+    if size and size != "전체":
+        conditions_2026.append('o."기업 규모" = ?')
+        params_2026.append(size)
 
     online_set = sp.ONLINE_COURSE_FORMATS
 
@@ -2006,6 +2093,25 @@ def get_rank_2025_top100_counterparty_dri(
             'GROUP BY d.organizationId, orgName, sizeRaw, upper_org, d."과정포맷"',
             params + list(top_ids),
         )
+        counterparty_rows_2026 = _fetch_all(
+            conn,
+            f'SELECT '
+            '  d.organizationId AS orgId, '
+            '  COALESCE(o."이름", d.organizationId) AS orgName, '
+            '  o."기업 규모" AS sizeRaw, '
+            '  p."소속 상위 조직" AS upper_org, '
+            '  d."과정포맷" AS course_format, '
+            '  d."금액" AS amount, '
+            '  d."예상 체결액" AS expected_amount, '
+            '  d."계약 체결일" AS contract_date, '
+            '  d."수주 예정일" AS expected_date, '
+            '  d."성사 가능성" AS probability '
+            "FROM deal d "
+            "LEFT JOIN organization o ON o.id = d.organizationId "
+            "LEFT JOIN people p ON p.id = d.peopleId "
+            f"WHERE {' AND '.join(conditions_2026 + [f'd.organizationId IN ({placeholders})'])} ",
+            params_2026 + list(top_ids),
+        )
 
     def _norm_text(val: Any) -> str:
         text = (val or "").strip()
@@ -2034,6 +2140,7 @@ def get_rank_2025_top100_counterparty_dri(
                 "cpOnline2025": 0.0,
                 "cpOffline2025": 0.0,
                 "cpTotal2025": 0.0,
+                "cpOffline2026": 0.0,
                 "owners2025": set(),
                 "dealCount2025": 0,
                 "orgName": org_lookup.get(org_id, {}).get("orgName", org_id),
@@ -2047,6 +2154,56 @@ def get_rank_2025_top100_counterparty_dri(
             entry["cpOffline2025"] += amount
         entry["cpTotal2025"] += amount
         entry["dealCount2025"] += int(row["dealCount"] or 0)
+
+    def _year_from_str(val: Any) -> str | None:
+        if not val:
+            return None
+        s = str(val).strip()
+        if len(s) >= 4 and s[:4].isdigit():
+            return s[:4]
+        return None
+
+    def _pick_amount(row: sqlite3.Row) -> float:
+        amt = _to_number(row["amount"])
+        if not amt:
+            amt = _to_number(row["expected_amount"])
+        return amt or 0.0
+
+    VALID_PROB = {"높음", "확정"}
+
+    for row in counterparty_rows_2026:
+        prob = (row["probability"] or "").strip()
+        if prob not in VALID_PROB:
+            continue
+        contract_year = _year_from_str(row["contract_date"])
+        expected_year = _year_from_str(row["expected_date"])
+        year = contract_year or expected_year
+        if year != "2026":
+            continue
+        amount = _pick_amount(row)
+        if not amount:
+            continue
+        org_id = row["orgId"]
+        upper = _norm_text(row["upper_org"])
+        key = (org_id, upper)
+        entry = cp_map.setdefault(
+            key,
+            {
+                "orgId": org_id,
+                "upperOrg": upper,
+                "cpOnline2025": 0.0,
+                "cpOffline2025": 0.0,
+                "cpTotal2025": 0.0,
+                "cpOffline2026": 0.0,
+                "owners2025": set(),
+                "dealCount2025": 0,
+                "orgName": org_lookup.get(org_id, {}).get("orgName", org_id),
+                "sizeRaw": org_lookup.get(org_id, {}).get("sizeRaw"),
+            },
+        )
+        if row["course_format"] in online_set:
+            continue
+        entry["cpOffline2026"] += amount
 
     # owners: fetch minimal rows for top orgs only
     owner_rows: List[sqlite3.Row] = []
@@ -2108,6 +2265,7 @@ def get_rank_2025_top100_counterparty_dri(
                 "cpOnline2025": cp["cpOnline2025"],
                 "cpOffline2025": cp["cpOffline2025"],
                 "cpTotal2025": cp["cpTotal2025"],
+                "cpOffline2026": cp.get("cpOffline2026", 0.0),
                 "owners2025": sorted(cp["owners2025"]) if cp.get("owners2025") else [],
                 "dealCount2025": cp["dealCount2025"],
             }

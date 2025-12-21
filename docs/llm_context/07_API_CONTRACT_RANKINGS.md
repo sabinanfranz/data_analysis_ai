@@ -61,6 +61,13 @@
   - `upperOrg`, `cpOnline2025`, `cpOffline2025`, `cpTotal2025`, `owners2025`, `dealCount2025`
 - meta: `orgCount`(Top 조직 수), `rowCount`(카운터파티 행 수), `offset`, `limit`
 
+### GET `/api/rank/2025/summary-by-size`
+- 목적: 규모별 2025/2026 Won 합계(기본 삼성전자 제외)를 빠르게 반환.
+- 필터: `exclude_org_name`(기본 "삼성전자"), `years`(콤마 리스트, 기본 2025,2026).
+- 집계 규칙: 상태 Won + 계약연도 in years, 조직명이 exclude와 정확히 일치하면 제외, 기업 규모 null/빈값은 `미입력`으로 정규화.
+- 캐시: DB mtime + exclude 이름 + years 조합으로 메모리 캐시, 응답에 `snapshot_version=db_mtime:<int>` 포함.
+- 응답: `by_size`에 규모별 `sum_2025/sum_2026`, `totals`에 전체 합계, `excluded_org_names`/`years` 메타 포함.
+
 ## 엣지/처리 규칙
 - 2025 People 랭킹에서 상위 조직과 팀이 모두 없는(`미입력`) 경우는 제외한다(상위 조직만 미입력이고 팀이 있으면 포함).
 - 2025 랭킹 응답의 grade/online/offline/2024 합계는 프런트에서 24→25 배수, 2026 목표액(배수 적용), 등급 가이드/배수 모달에 활용한다.

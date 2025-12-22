@@ -63,6 +63,22 @@ def _safe_json_load(value: Any) -> Any:
     return value
 
 
+def _prob_is_high(val: Any) -> bool:
+    """
+    Return True if probability includes '확정' or '높음'.
+    Supports string, list, or JSON string.
+    """
+    if val is None:
+        return False
+    loaded = val
+    if isinstance(val, str):
+        loaded = _safe_json_load(val)
+    if isinstance(loaded, list):
+        return any(_prob_is_high(item) for item in loaded)
+    text = str(loaded).strip()
+    return text in {"확정", "높음"}
+
+
 def infer_size_group(org_name: str | None, size_raw: str | None) -> str:
     name = (org_name or "").strip()
     size_val = (size_raw or "").strip()
@@ -1067,8 +1083,8 @@ def get_rank_2025_deals(size: str = "전체", db_path: Path = DB_PATH) -> List[D
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
 
-    conditions = ['d."상태" = ?', 'd."계약 체결일" LIKE ?']
-    params: List[Any] = ["Won", "2025%"]
+    conditions = ['d."계약 체결일" LIKE ?']
+    params: List[Any] = ["2025%"]
     if size and size != "전체":
         conditions.append('o."기업 규모" = ?')
         params.append(size)
@@ -1293,6 +1309,7 @@ def get_rank_2025_counterparty_detail(
     Detail for a specific org + upper_org:
     - people filtered by upper_org
     - team breakdown (2025 Won online/offline, deal counts, deals list)
+    - offline deal sources for 25/26 (to mirror counterparty DRI aggregates)
     """
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
@@ -1341,9 +1358,13 @@ def get_rank_2025_counterparty_detail(
             '  d.id, '
             '  COALESCE(d."이름", d.id) AS name, '
             '  d."상태" AS status, '
+            '  d."성사 가능성" AS probability, '
             '  d."금액" AS amount, '
             '  d."예상 체결액" AS expected_amount, '
             '  d."계약 체결일" AS contract_date, '
+            '  d."수주 예정일" AS expected_date, '
+            '  d."수강시작일" AS start_date, '
+            '  d."수강종료일" AS end_date, '
             '  d."생성 날짜" AS created_at, '
             '  d."과정포맷" AS course_format, '
             '  d."담당자" AS owner_json, '
@@ -1351,9 +1372,20 @@ def get_rank_2025_counterparty_detail(
             '  p."팀(명함/메일서명)" AS team_signature '
             "FROM deal d "
             "LEFT JOIN people p ON p.id = d.peopleId "
-            "WHERE d.organizationId = ? AND d.\"상태\" = 'Won' AND d.\"계약 체결일\" LIKE '2025%'",
+            "WHERE d.organizationId = ?",
             (org_id,),
         )
+
+    def _start_year(val: Any) -> str | None:
+        return _parse_year_from_text(val)
+
+    def _is_offline(fmt: Any) -> bool:
+        return (fmt or "").strip() not in online_set
+
+    def _is_high(prob: Any, status: Any) -> bool:
+        if _prob_is_high(prob):
+            return True
+        return (status or "").strip() == "Won"
 
     people = []
     for p in people_rows:
@@ -1371,6 +1403,8 @@ def get_rank_2025_counterparty_detail(
         )
 
     team_map: Dict[str, Dict[str, Any]] = {}
+    offline25_deals: List[Dict[str, Any]] = []
+    offline26_deals: List[Dict[str, Any]] = []
     for d in deal_rows:
         if _norm_upper(d["upper_org"]) != upper_norm:
             continue
@@ -1378,24 +1412,45 @@ def get_rank_2025_counterparty_detail(
         entry = team_map.setdefault(team, {"team": team, "online": 0.0, "offline": 0.0, "deals": []})
         amt = _amount_fallback(d["amount"], d["expected_amount"])
         fmt = d["course_format"] or ""
-        if fmt in online_set:
-            entry["online"] += amt
-        else:
-            entry["offline"] += amt
+        year = _year_from_dates(d["contract_date"], d["expected_date"])
+        start_year = _start_year(d["start_date"])
+        if year == "2025":
+            if fmt in online_set:
+                entry["online"] += amt
+            else:
+                entry["offline"] += amt
         owner_names = _parse_owner_names(d["owner_json"])
         entry["deals"].append(
             {
+                "id": d["id"],
                 "name": d["name"],
                 "status": d["status"],
+                "probability": d["probability"],
                 "amount": amt,
                 "expected_amount": _to_number(d["expected_amount"]) or 0.0,
                 "contract_date": d["contract_date"],
+                "expected_date": d["expected_date"],
+                "start_date": d["start_date"],
+                "end_date": d["end_date"],
                 "created_at": d["created_at"],
                 "course_format": d["course_format"],
                 "owner": ", ".join(owner_names) if owner_names else "",
                 "team": team,
             }
         )
+        # offline sources
+        if amt > 0 and _is_offline(fmt):
+            if _is_high(d["probability"], d["status"]) and year == "2025" and start_year != "2026":
+                offline25_deals.append(entry["deals"][-1])
+            if (
+                _is_high(d["probability"], d["status"])
+                and year == "2026"
+            ) or (
+                _is_high(d["probability"], d["status"])
+                and year == "2025"
+                and start_year == "2026"
+            ):
+                offline26_deals.append(entry["deals"][-1])
 
     # sort deals by contract_date desc then created_at desc for readability
     for entry in team_map.values():
@@ -1407,6 +1462,8 @@ def get_rank_2025_counterparty_detail(
             ),
             reverse=True,
         )
+    offline25_deals.sort(key=lambda x: (x.get("contract_date") or "", x.get("created_at") or ""), reverse=True)
+    offline26_deals.sort(key=lambda x: (x.get("contract_date") or "", x.get("created_at") or ""), reverse=True)
 
     summary = {
         "online": sum(t["online"] for t in team_map.values()),
@@ -1414,10 +1471,18 @@ def get_rank_2025_counterparty_detail(
         "dealCount": sum(len(t["deals"]) for t in team_map.values()),
     }
 
+    # flatten deals for frontend filtering
+    all_deals: List[Dict[str, Any]] = []
+    for entry in team_map.values():
+        all_deals.extend(entry["deals"])
+
     return {
         "people": people,
         "teams": list(team_map.values()),
         "summary": summary,
+        "deals": all_deals,
+        "offline25_deals": offline25_deals,
+        "offline26_deals": offline26_deals,
     }
 
 
@@ -2042,17 +2107,16 @@ def get_rank_2025_top100_counterparty_dri(
     if cached is not None:
         return cached
 
-    conditions = ['d."상태" = ?', 'd."계약 체결일" LIKE ?']
-    params: List[Any] = ["Won", "2025%"]
+    conditions = [
+        '('
+        ' (d."계약 체결일" LIKE ? OR d."수주 예정일" LIKE ?)'
+        ' OR (d."계약 체결일" LIKE ? OR d."수주 예정일" LIKE ?)'
+        ')'
+    ]
+    params: List[Any] = ["2025%", "2025%", "2026%", "2026%"]
     if size and size != "전체":
         conditions.append('o."기업 규모" = ?')
         params.append(size)
-
-    conditions_2026: List[str] = []
-    params_2026: List[Any] = []
-    if size and size != "전체":
-        conditions_2026.append('o."기업 규모" = ?')
-        params_2026.append(size)
 
     online_set = sp.ONLINE_COURSE_FORMATS
 
@@ -2091,51 +2155,16 @@ def get_rank_2025_top100_counterparty_dri(
             '  o."기업 규모" AS sizeRaw, '
             '  p."소속 상위 조직" AS upper_org, '
             '  d."과정포맷" AS course_format, '
-            '  SUM(CAST(d."금액" AS REAL)) AS amount_sum, '
-            '  SUM(CAST(d."예상 체결액" AS REAL)) AS expected_sum, '
-            '  d."수주 예정일" AS expected_date, '
-            '  d."수강시작일" AS start_date, '
-            '  COUNT(*) AS dealCount '
-            "FROM deal d "
-            "LEFT JOIN organization o ON o.id = d.organizationId "
-            "LEFT JOIN people p ON p.id = d.peopleId "
-            f"WHERE {' AND '.join(conditions)} AND d.organizationId IN ({placeholders}) "
-            'GROUP BY d.organizationId, orgName, sizeRaw, upper_org, d."과정포맷"',
-            params + list(top_ids),
-        )
-        counterparty_rows_2026 = _fetch_all(
-            conn,
-            f'SELECT '
-            '  d.organizationId AS orgId, '
-            '  COALESCE(o."이름", d.organizationId) AS orgName, '
-            '  o."기업 규모" AS sizeRaw, '
-            '  p."소속 상위 조직" AS upper_org, '
-            '  d."과정포맷" AS course_format, '
             '  d."금액" AS amount, '
             '  d."예상 체결액" AS expected_amount, '
             '  d."계약 체결일" AS contract_date, '
             '  d."수주 예정일" AS expected_date, '
+            '  d."수강시작일" AS start_date, '
             '  d."성사 가능성" AS probability '
             "FROM deal d "
             "LEFT JOIN organization o ON o.id = d.organizationId "
             "LEFT JOIN people p ON p.id = d.peopleId "
-            f"WHERE {' AND '.join(conditions_2026 + [f'd.organizationId IN ({placeholders})'])} ",
-            params_2026 + list(top_ids),
-        )
-        counterparty_rows_start_2026 = _fetch_all(
-            conn,
-            f'SELECT '
-            '  d.organizationId AS orgId, '
-            '  COALESCE(o."이름", d.organizationId) AS orgName, '
-            '  o."기업 규모" AS sizeRaw, '
-            '  p."소속 상위 조직" AS upper_org, '
-            '  d."과정포맷" AS course_format, '
-            '  SUM(CAST(d."금액" AS REAL)) AS amount_sum '
-            "FROM deal d "
-            "LEFT JOIN organization o ON o.id = d.organizationId "
-            "LEFT JOIN people p ON p.id = d.peopleId "
-            f"WHERE {' AND '.join(conditions + ['d.\"수강시작일\" LIKE \"2026%\"', f'd.organizationId IN ({placeholders})'])} "
-            'GROUP BY d.organizationId, orgName, sizeRaw, upper_org, d."과정포맷"',
+            f"WHERE {' AND '.join(conditions)} AND d.organizationId IN ({placeholders}) ",
             params + list(top_ids),
         )
 
@@ -2173,88 +2202,29 @@ def get_rank_2025_top100_counterparty_dri(
                 "sizeRaw": org_lookup.get(org_id, {}).get("sizeRaw"),
             },
         )
-        amount = _amount_fallback(row["amount_sum"], row["expected_sum"])
-        # 수강시작일이 2026이면 25 비온라인에서 제외(26 가산에서 처리)
-        start_year = _parse_year_from_text(row["start_date"])
-        if start_year == "2026":
+        amount = _amount_fallback(row["amount"], row["expected_amount"])
+        if not amount:
             continue
-        if row["course_format"] in online_set:
-            entry["cpOnline2025"] += amount
-        else:
-            entry["cpOffline2025"] += amount
-        entry["cpTotal2025"] += amount
-        entry["dealCount2025"] += int(row["dealCount"] or 0)
-
-    def _year_from_str(val: Any) -> str | None:
-        if not val:
-            return None
-        s = str(val).strip()
-        if len(s) >= 4 and s[:4].isdigit():
-            return s[:4]
-        return None
-
-    def _pick_amount(row: sqlite3.Row) -> float:
-        return _amount_fallback(row["amount"], row["expected_amount"])
-
-    VALID_PROB = {"높음", "확정"}
-
-    for row in counterparty_rows_2026:
-        prob = (row["probability"] or "").strip()
-        if prob not in VALID_PROB:
-            continue
+        prob_high = _prob_is_high(row["probability"])
+        fmt = row["course_format"]
         year = _year_from_dates(row["contract_date"], row["expected_date"])
-        if year != "2026":
-            continue
-        amount = _pick_amount(row)
-        if not amount:
-            continue
-        org_id = row["orgId"]
-        upper = _norm_text(row["upper_org"])
-        key = (org_id, upper)
-        entry = cp_map.setdefault(
-            key,
-            {
-                "orgId": org_id,
-                "upperOrg": upper,
-                "cpOnline2025": 0.0,
-                "cpOffline2025": 0.0,
-                "cpTotal2025": 0.0,
-                "cpOffline2026": 0.0,
-                "owners2025": set(),
-                "dealCount2025": 0,
-                "orgName": org_lookup.get(org_id, {}).get("orgName", org_id),
-                "sizeRaw": org_lookup.get(org_id, {}).get("sizeRaw"),
-            },
-        )
-        if row["course_format"] in online_set:
-            continue
-        entry["cpOffline2026"] += amount
+        start_year = _parse_year_from_text(row["start_date"])
+        is_offline = fmt not in online_set
 
-    for row in counterparty_rows_start_2026:
-        amount = _amount_fallback(row["amount_sum"], None)
-        if not amount:
-            continue
-        org_id = row["orgId"]
-        upper = _norm_text(row["upper_org"])
-        key = (org_id, upper)
-        entry = cp_map.setdefault(
-            key,
-            {
-                "orgId": org_id,
-                "upperOrg": upper,
-                "cpOnline2025": 0.0,
-                "cpOffline2025": 0.0,
-                "cpTotal2025": 0.0,
-                "cpOffline2026": 0.0,
-                "owners2025": set(),
-                "dealCount2025": 0,
-                "orgName": org_lookup.get(org_id, {}).get("orgName", org_id),
-                "sizeRaw": org_lookup.get(org_id, {}).get("sizeRaw"),
-            },
-        )
-        if row["course_format"] in online_set:
-            continue
-        entry["cpOffline2026"] += amount
+        if prob_high and year == "2025":
+            if is_offline and start_year != "2026":
+                entry["cpOffline2025"] += amount
+                entry["cpTotal2025"] += amount
+                entry["dealCount2025"] += 1
+            elif not is_offline:
+                entry["cpOnline2025"] += amount
+                entry["cpTotal2025"] += amount
+                entry["dealCount2025"] += 1
+            # 2025 + start 2026 오프라인 → 26 가산
+            if is_offline and start_year == "2026":
+                entry["cpOffline2026"] += amount
+        if prob_high and year == "2026" and is_offline:
+            entry["cpOffline2026"] += amount
 
     # owners: fetch minimal rows for top orgs only
     owner_rows: List[sqlite3.Row] = []

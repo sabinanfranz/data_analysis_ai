@@ -5037,109 +5037,113 @@
           const orgId = row.orgId;
           const upper = normalizeUpperOrg(row.upperOrg);
           const detail = await fetchJson(`/rank/2025-counterparty-dri/detail?orgId=${encodeURIComponent(orgId)}&upperOrg=${encodeURIComponent(upper)}`);
-          const teams = detail.teams || [];
-          const peopleFiltered = detail.people || [];
-          const summary = detail.summary || {
-            online: teams.reduce((acc, t) => acc + (t.online || 0), 0),
-            offline: teams.reduce((acc, t) => acc + (t.offline || 0), 0),
-            dealCount: teams.reduce((acc, t) => acc + (t.deals ? t.deals.length : 0), 0),
-          };
-          stateDri.detail = detail;
+          const deals = detail.deals || [];
+          console.debug("[counterparty detail] org", orgId, "upper", upper, "deals", deals.length, deals);
+          const onlineSet = COUNTERPARTY_ONLINE_FORMATS;
+          const ownersLine = Array.isArray(row.owners2025) && row.owners2025.length ? row.owners2025.join(", ") : "미입력";
           const tp = computeTeamPartSummary(row.owners2025 || []);
-          const ownersLine =
-            Array.isArray(row.owners2025) && row.owners2025.length ? row.owners2025.join(", ") : "미입력";
 
-          const renderDeals = (teamName) => {
-            const target = teams.find((t) => t.team === teamName) || teams[0];
-            if (!target || !target.deals.length) {
-              return `<div class="muted">딜이 없습니다.</div>`;
+          const parseYear = (v) => {
+            if (!v) return null;
+            const s = String(v).trim();
+            return s && s.length >= 4 && /^\d{4}/.test(s) ? s.slice(0, 4) : null;
+          };
+          const yearFromDates = (contract, expected) => {
+            const y = parseYear(contract);
+            return y || parseYear(expected);
+          };
+          const pickAmount = (d) => {
+            const amt = Number(d.amount || 0);
+            if (Number.isFinite(amt) && amt > 0) return amt;
+            const exp = Number(d.expected_amount || 0);
+            if (Number.isFinite(exp) && exp > 0) return exp;
+            return 0;
+          };
+          const isOffline = (fmt) => !onlineSet.has((fmt || "").trim());
+          const isHighProb = (p, status) => {
+            const fallbackWon = (status || "").trim() === "Won";
+            if (p === null || p === undefined || p === "") return fallbackWon;
+            const text = (p || "").trim();
+            if (text === "확정" || text === "높음") return true;
+            try {
+              const parsed = JSON.parse(p);
+              if (Array.isArray(parsed)) {
+                return parsed.some((v) => {
+                  const t = String(v || "").trim();
+                  return t === "확정" || t === "높음";
+                });
+              }
+            } catch (_) {
+              // ignore JSON parse errors
             }
-            const rowsHtml = target.deals
-              .map(
-                (d) => `
+            return fallbackWon;
+          };
+
+          const offline25 = detail.offline25_deals || deals.filter((d) => {
+            const year = yearFromDates(d.contract_date, d.expected_date);
+            const startYear = parseYear(d.start_date);
+            return isHighProb(d.probability, d.status) && year === "2025" && isOffline(d.course_format) && startYear !== "2026";
+          });
+
+          const target26 = detail.offline25_deals || offline25.slice();
+
+          const offline26 = detail.offline26_deals || deals.filter((d) => {
+            const year = yearFromDates(d.contract_date, d.expected_date);
+            const startYear = parseYear(d.start_date);
+            const prob = (d.probability || "").trim();
+            const isHigh = isHighProb(prob, d.status);
+            const amt = pickAmount(d);
+            if (!amt || !isOffline(d.course_format)) return false;
+            if (isHigh && year === "2026") return true;
+            if (isHigh && year === "2025" && startYear === "2026") return true;
+            return false;
+          });
+
+          const renderDealTable = (title, rows) => {
+            if (!rows || !rows.length) {
+              return `<h4>${title}</h4><div class="muted">데이터가 없습니다.</div>`;
+            }
+            const body = rows
+              .map((d) => {
+                return `
                   <tr>
                     <td>${formatDate(d.created_at)}</td>
-                    <td>${d.name}</td>
-                    <td>${d.status}</td>
-                    <td>${formatAmount(d.amount)}</td>
+                    <td>${d.name || "-"}</td>
+                    <td>${d.status || "-"}</td>
+                    <td>${d.probability || "-"}</td>
                     <td>${formatAmount(d.expected_amount)}</td>
+                    <td>${formatDate(d.start_date)}</td>
+                    <td>${formatDate(d.end_date)}</td>
+                    <td>${formatAmount(pickAmount(d))}</td>
                     <td>${formatDate(d.contract_date)}</td>
                     <td>${d.owner || "-"}</td>
-                    <td>${d.course_format || "-"}</td>
                   </tr>
-                `
-              )
+                `;
+              })
               .join("");
             return `
-              <div class="table-wrap full">
-                <table>
-                  <thead><tr><th>생성일</th><th>이름</th><th>상태</th><th>금액(억)</th><th>예상(억)</th><th>계약일</th><th>담당자</th><th>과정포맷</th></tr></thead>
-                  <tbody>${rowsHtml}</tbody>
-                </table>
-              </div>
-            `;
-          };
-
-          const teamTable = teams.length
-            ? `
+              <h4>${title}</h4>
               <div class="table-wrap full">
                 <table>
                   <thead>
                     <tr>
-                      <th>팀</th>
-                      <th>25 온라인(억)</th>
-                      <th>25 비온라인(억)</th>
-                      <th>딜 건수</th>
-                      <th></th>
+                      <th>생성일</th>
+                      <th>이름</th>
+                      <th>상태</th>
+                      <th>성사가능성</th>
+                      <th>예상 체결액</th>
+                      <th>수강시작일</th>
+                      <th>수강종료일</th>
+                      <th>금액</th>
+                      <th>계약체결일</th>
+                      <th>담당자</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    ${teams
-                      .map(
-                        (t, idx) => `
-                        <tr>
-                          <td>${t.team}</td>
-                          <td>${formatAmount(t.online)}</td>
-                          <td>${formatAmount(t.offline)}</td>
-                          <td>${t.deals.length}</td>
-                          <td><button type="button" class="counterparty-team-btn" data-team="${t.team}" ${t.deals.length ? "" : "disabled"}>${t.deals.length ? "딜 보기" : "-"}</button></td>
-                        </tr>
-                      `
-                      )
-                      .join("")}
-                  </tbody>
+                  <tbody>${body}</tbody>
                 </table>
               </div>
-            `
-            : `<div class="muted">선택된 카운터파티의 팀 데이터가 없습니다.</div>`;
-
-          const peopleTable = peopleFiltered.length
-            ? `
-              <div class="table-wrap full">
-                <table>
-                  <thead><tr><th>이름</th><th>소속 상위 조직</th><th>팀</th><th>직급</th><th>교육 영역</th><th>웹폼</th></tr></thead>
-                  <tbody>
-                    ${peopleFiltered
-                      .map((p, idx) => {
-                        const webforms = getWebformsForPerson(p.id);
-                        const hasWebforms = Array.isArray(webforms) && webforms.length > 0;
-                        return `
-                          <tr data-pidx="${idx}">
-                            <td>${p.name || "-"}</td>
-                            <td>${normalizeUpperOrg(p.upper_org)}</td>
-                            <td>${(p.team_signature || "미입력").trim() || "미입력"}</td>
-                            <td>${(p.title_signature || "미입력").trim() || "미입력"}</td>
-                            <td>${(p.edu_area || "미입력").trim() || "미입력"}</td>
-                            <td><button type="button" class="webform-btn" data-pid="${p.id}" ${hasWebforms ? "" : "disabled"}>${hasWebforms ? "내역 확인" : "없음"}</button></td>
-                          </tr>
-                        `;
-                      })
-                      .join("")}
-                  </tbody>
-                </table>
-              </div>
-            `
-            : `<div class="muted">상위 조직에 해당하는 People이 없습니다.</div>`;
+            `;
+          };
 
           detailWrap.innerHTML = `
             <div style="margin-bottom:6px;">${row.orgName || row.orgId || "-"} / ${upper}</div>
@@ -5148,35 +5152,10 @@
               <span><strong>팀&파트:</strong> ${tp.teamPartText || "-"}</span>
               <span><strong>DRI:</strong> <span style="font-weight:700; color:${tp.dri === "O" ? "var(--success)" : "var(--error)"};">${tp.dri || "X"}</span></span>
             </div>
-            <div class="pill muted" title="온라인 합계 / 비온라인 합계 / 딜 건수 (24→25 기준 온라인 판정: 구독제(온라인)/선택구매(온라인)/포팅)">
-              합계: 온라인 ${formatAmount(summary.online)} / 비온라인 ${formatAmount(summary.offline)} · 딜 ${summary.dealCount || 0}건
-            </div>
-            <h4>팀 요약</h4>
-            ${teamTable}
-            <div id="counterpartyDealsWrap">${renderDeals(teams[0]?.team)}</div>
-            <h4 style="margin-top:12px;">People</h4>
-            ${peopleTable}
+            ${renderDealTable("25 비온라인 (집계 소스)", offline25)}
+            ${renderDealTable("26 비온라인 타겟 (배수 적용 대상)", target26)}
+            ${renderDealTable("26 비온라인 체결 (집계 소스)", offline26)}
           `;
-
-          detailWrap.querySelectorAll(".counterparty-team-btn").forEach((btn) => {
-            btn.addEventListener("click", () => {
-              const teamName = btn.getAttribute("data-team");
-              const dealsWrap = detailWrap.querySelector("#counterpartyDealsWrap");
-              if (dealsWrap) {
-                dealsWrap.innerHTML = renderDeals(teamName);
-              }
-            });
-          });
-          detailWrap.querySelectorAll(".webform-btn").forEach((btn) => {
-            btn.addEventListener("click", () => {
-              const pid = btn.getAttribute("data-pid");
-              const wf = getWebformsForPerson(pid);
-              openWebformModal(
-                (peopleFiltered.find((p) => String(p.id) === String(pid)) || {}).name || "-",
-                wf
-              );
-            });
-          });
           if (modal) modal.style.display = "flex";
         } catch (err) {
           detailWrap.innerHTML = `<div class="muted">상세 로드 오류: ${err.message}</div>`;

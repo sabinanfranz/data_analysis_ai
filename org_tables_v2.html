@@ -230,6 +230,17 @@
       align-items: center;
     }
 
+    .card.compact {
+      padding: 8px 10px;
+      min-height: auto;
+      gap: 8px;
+    }
+
+    .control-row.tight {
+      margin-top: 2px;
+      gap: 6px;
+    }
+
     .quad-grid {
       display: grid;
       grid-template-columns: 1.2fr 1fr;
@@ -4682,7 +4693,7 @@
       const stateDri = state.rankCounterpartyDri;
       const ORG_PAGE_SIZE = 100;
       contentRoot.innerHTML = `
-        <section class="card">
+        <section class="card compact">
           <div class="control-row">
             <h2>2025 Top100 카운터파티 DRI</h2>
             <div class="spacer"></div>
@@ -4690,7 +4701,7 @@
             <select id="rankCounterpartySizeSelect"></select>
             <span class="pill muted">DB 교체 시 새로고침 필요 (캐시 무효화 없음)</span>
           </div>
-          <div class="control-row" style="margin-top:6px; gap:8px; flex-wrap:wrap;">
+          <div class="control-row tight" style="flex-wrap:wrap;">
             <label class="muted">검색</label>
             <input id="rankCounterpartySearch" type="text" placeholder="기업/카운터파티/담당자 검색" style="min-width:220px;" />
             <label class="muted">DRI</label>
@@ -4709,7 +4720,6 @@
               <option value="cp_offline_desc">CP 비온라인↓</option>
             </select>
           </div>
-          <div class="muted" style="margin-top:6px;">2025 Won Top100 → upper_org별 온라인/비온라인/DRI/담당자 리스트</div>
         </section>
         <section class="card">
           <div id="rankCounterpartyStatus" class="muted">불러오는 중...</div>
@@ -4816,7 +4826,7 @@
             teamPartSelect.value = currentVal;
           }
         }
-        const htmlRows = rows
+            const htmlRows = rows
           .map((row, idx) => {
             const owners = Array.isArray(row.owners2025) && row.owners2025.length ? row.owners2025.join(", ") : "미입력";
             const tp = computeTeamPartSummary(row.owners2025 || []);
@@ -4831,7 +4841,7 @@
             return `
               <tr data-idx="${idx}">
                 <td>${tier}</td>
-                <td><span class="org-link" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.orgName || row.orgId || "-"}</span></td>
+                <td><span class="org-link" data-org-link="${idx}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.orgName || row.orgId || "-"}</span></td>
                 <td>${row.upperOrg || "미입력"}</td>
                 <td class="nowrap-ellipsis" title="${owners}">${ownersText}</td>
                 <td>${tp.teamPartText || "-"}</td>
@@ -4870,6 +4880,15 @@
             if (!row) return;
             stateDri.selected = row;
             loadCounterpartyDetail(row);
+          });
+        });
+        tableWrap.querySelectorAll("[data-org-link]").forEach((el) => {
+          el.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            const idx = Number(el.getAttribute("data-org-link"));
+            const row = rows[idx];
+            if (!row) return;
+            await navigateToOrg(row.orgId);
           });
         });
       };

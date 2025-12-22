@@ -818,6 +818,13 @@ def _parse_year_from_text(val: Any) -> str | None:
     return None
 
 
+def _year_from_dates(contract_date: Any, expected_date: Any) -> str | None:
+    year = _parse_year_from_text(contract_date)
+    if year:
+        return year
+    return _parse_year_from_text(expected_date)
+
+
 def _amount_fallback(amount: Any, expected: Any) -> float:
     num = _to_number(amount)
     if num is not None and num > 0:
@@ -2085,6 +2092,9 @@ def get_rank_2025_top100_counterparty_dri(
             '  p."소속 상위 조직" AS upper_org, '
             '  d."과정포맷" AS course_format, '
             '  SUM(CAST(d."금액" AS REAL)) AS amount_sum, '
+            '  SUM(CAST(d."예상 체결액" AS REAL)) AS expected_sum, '
+            '  d."수주 예정일" AS expected_date, '
+            '  d."수강시작일" AS start_date, '
             '  COUNT(*) AS dealCount '
             "FROM deal d "
             "LEFT JOIN organization o ON o.id = d.organizationId "
@@ -2111,6 +2121,22 @@ def get_rank_2025_top100_counterparty_dri(
             "LEFT JOIN people p ON p.id = d.peopleId "
             f"WHERE {' AND '.join(conditions_2026 + [f'd.organizationId IN ({placeholders})'])} ",
             params_2026 + list(top_ids),
+        )
+        counterparty_rows_start_2026 = _fetch_all(
+            conn,
+            f'SELECT '
+            '  d.organizationId AS orgId, '
+            '  COALESCE(o."이름", d.organizationId) AS orgName, '
+            '  o."기업 규모" AS sizeRaw, '
+            '  p."소속 상위 조직" AS upper_org, '
+            '  d."과정포맷" AS course_format, '
+            '  SUM(CAST(d."금액" AS REAL)) AS amount_sum '
+            "FROM deal d "
+            "LEFT JOIN organization o ON o.id = d.organizationId "
+            "LEFT JOIN people p ON p.id = d.peopleId "
+            f"WHERE {' AND '.join(conditions + ['d.\"수강시작일\" LIKE \"2026%\"', f'd.organizationId IN ({placeholders})'])} "
+            'GROUP BY d.organizationId, orgName, sizeRaw, upper_org, d."과정포맷"',
+            params + list(top_ids),
         )
 
     def _norm_text(val: Any) -> str:
@@ -2147,7 +2173,11 @@ def get_rank_2025_top100_counterparty_dri(
                 "sizeRaw": org_lookup.get(org_id, {}).get("sizeRaw"),
             },
         )
-        amount = _to_number(row["amount_sum"]) or 0.0
+        amount = _amount_fallback(row["amount_sum"], row["expected_sum"])
+        # 수강시작일이 2026이면 25 비온라인에서 제외(26 가산에서 처리)
+        start_year = _parse_year_from_text(row["start_date"])
+        if start_year == "2026":
+            continue
         if row["course_format"] in online_set:
             entry["cpOnline2025"] += amount
         else:
@@ -2164,10 +2194,7 @@ def get_rank_2025_top100_counterparty_dri(
         return None
 
     def _pick_amount(row: sqlite3.Row) -> float:
-        amt = _to_number(row["amount"])
-        if not amt:
-            amt = _to_number(row["expected_amount"])
-        return amt or 0.0
+        return _amount_fallback(row["amount"], row["expected_amount"])
 
     VALID_PROB = {"높음", "확정"}
 
@@ -2175,12 +2202,36 @@ def get_rank_2025_top100_counterparty_dri(
         prob = (row["probability"] or "").strip()
         if prob not in VALID_PROB:
             continue
-        contract_year = _year_from_str(row["contract_date"])
-        expected_year = _year_from_str(row["expected_date"])
-        year = contract_year or expected_year
+        year = _year_from_dates(row["contract_date"], row["expected_date"])
         if year != "2026":
             continue
         amount = _pick_amount(row)
+        if not amount:
+            continue
+        org_id = row["orgId"]
+        upper = _norm_text(row["upper_org"])
+        key = (org_id, upper)
+        entry = cp_map.setdefault(
+            key,
+            {
+                "orgId": org_id,
+                "upperOrg": upper,
+                "cpOnline2025": 0.0,
+                "cpOffline2025": 0.0,
+                "cpTotal2025": 0.0,
+                "cpOffline2026": 0.0,
+                "owners2025": set(),
+                "dealCount2025": 0,
+                "orgName": org_lookup.get(org_id, {}).get("orgName", org_id),
+                "sizeRaw": org_lookup.get(org_id, {}).get("sizeRaw"),
+            },
+        )
+        if row["course_format"] in online_set:
+            continue
+        entry["cpOffline2026"] += amount
+
+    for row in counterparty_rows_start_2026:
+        amount = _amount_fallback(row["amount_sum"], None)
         if not amount:
             continue
         org_id = row["orgId"]

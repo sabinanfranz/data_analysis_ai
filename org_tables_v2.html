@@ -236,6 +236,13 @@
       gap: 8px;
     }
 
+    /* Compact header cards for control rows */
+    .card.compact-header {
+      padding: 8px 10px;
+      min-height: auto;
+      gap: 6px;
+    }
+
     .control-row.tight {
       margin-top: 2px;
       gap: 6px;
@@ -1028,7 +1035,6 @@
         body: null,
         bound: false,
       },
-      rankSummaryBySize: null,
       pendingOrgId: null,
       pendingOrgFallback: null,
       wonSummaryCleared: false,
@@ -1052,7 +1058,6 @@
       yearlyTotals: null,
       statepathPortfolioByKey: new Map(),
       rank2025CounterpartyDriBySize: new Map(),
-      rank2025SummaryByExclude: new Map(),
     };
     const NAME_TO_TEAM_PART = buildNameToTeamPartIndex(PART_STRUCTURE);
 
@@ -4275,57 +4280,45 @@
       });
     }
 
-    async function loadRankSummaryBySize(excludeOrgName = "삼성전자") {
-      const key = excludeOrgName || "ALL";
-      const cached = cache.rank2025SummaryByExclude.get(key);
-      if (cached) return cached;
-      const params = new URLSearchParams();
-      if (excludeOrgName) params.set("exclude_org_name", excludeOrgName);
-      const query = params.toString();
-      const data = await fetchJson(`/rank/2025/summary-by-size${query ? `?${query}` : ""}`);
-      cache.rank2025SummaryByExclude.set(key, data);
-      return data;
-    }
-
     function renderRankTable(items) {
       if (!items || !items.length) {
         return `<div class="muted">데이터가 없습니다.</div>`;
       }
       return `
         <div class="table-wrap full">
-          <table>
-            <thead>
-              <tr>
-                <th>순위</th>
-                <th>회사</th>
-                <th>2024년 등급</th>
-                <th>2024년 총액(억)</th>
-                <th>24→25 배수</th>
-                <th>2025년 등급</th>
-                <th>2025년 총액(억)</th>
-                <th>2025년 온라인(억)</th>
-                <th>2025년 비온라인(억)</th>
-                <th>2026년 목표액(억)</th>
-                <th>26 온라인(억)</th>
-                <th>26 비온라인(억)</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${items
-                .map(
-                  (row, idx) =>
-                    `<tr>
-                      <td>${idx + 1}</td>
-                      <td><span class="org-link" data-idx="${idx}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.orgName || row.orgId || "-"}</span></td>
-                      <td>${row.grade2024 || "-"}</td>
-                      <td>${formatAmount(row.totalAmount2024)}</td>
-                      <td>${formatRatio(row.ratio2025to2024)}</td>
-                      <td>${row.grade || "-"}</td>
-                      <td>${formatAmount(row.totalAmount)}</td>
-                      <td>${formatAmount(row.onlineAmount)}</td>
-                      <td>${formatAmount(row.offlineAmount)}</td>
-                      <td>${formatAmount(row.target2026)}</td>
-                      <td>${formatAmount(row.target2026Online)}</td>
+            <table>
+              <thead>
+                <tr>
+                  <th>순위</th>
+                  <th>회사</th>
+                  <th>25년 등급</th>
+                  <th>24년 등급</th>
+                  <th>24년 총액(억)</th>
+                  <th>24→25 배수</th>
+                  <th>25년 총액(억)</th>
+                  <th>25년 온라인(억)</th>
+                  <th>25년 비온라인(억)</th>
+                  <th>26년 목표액(억)</th>
+                  <th>26 온라인(억)</th>
+                  <th>26 비온라인(억)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${items
+                  .map(
+                    (row, idx) =>
+                      `<tr>
+                        <td>${idx + 1}</td>
+                        <td><span class="org-link" data-idx="${idx}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.orgName || row.orgId || "-"}</span></td>
+                        <td>${row.grade || "-"}</td>
+                        <td>${row.grade2024 || "-"}</td>
+                        <td>${formatAmount(row.totalAmount2024)}</td>
+                        <td>${formatRatio(row.ratio2025to2024)}</td>
+                        <td>${formatAmount(row.totalAmount)}</td>
+                        <td>${formatAmount(row.onlineAmount)}</td>
+                        <td>${formatAmount(row.offlineAmount)}</td>
+                        <td>${formatAmount(row.target2026)}</td>
+                        <td>${formatAmount(row.target2026Online)}</td>
                       <td>${formatAmount(row.target2026Offline)}</td>
                     </tr>`
                 )
@@ -4517,7 +4510,7 @@
 
     async function renderRank2025Screen(contentRoot) {
       contentRoot.innerHTML = `
-        <section class="card">
+        <section class="card compact-header">
           <div class="control-row">
             <h2>등급/목표 설정</h2>
             <div class="spacer"></div>
@@ -4525,11 +4518,7 @@
             <button id="openMultiplierModal" type="button">등급별 배수 설정</button>
           </div>
         </section>
-        <section class="card">
-          <h2>요약 합계</h2>
-          <div id="rankSummaryBody" class="muted">불러오는 중...</div>
-        </section>
-        <section class="card">
+        <section class="card compact-header">
           <div class="control-row">
             <h2>2025년 체결액 순위 (Won 상태)</h2>
             <div class="spacer"></div>
@@ -4544,95 +4533,10 @@
 
       const target = document.getElementById("rankBody");
       const sizeSelect = document.getElementById("rankSizeSelect");
-      const summaryBody = document.getElementById("rankSummaryBody");
       const btnGuide = document.getElementById("openGradeGuide");
       const btnMultiplier = document.getElementById("openMultiplierModal");
 
       let currentItems = [];
-      let summaryData = state.rankSummaryBySize || null;
-      let summaryLoading = false;
-
-      const renderSummaryTable = () => {
-        if (!summaryBody) return;
-        if (summaryLoading && !summaryData) {
-          summaryBody.textContent = "계산 중...";
-          return;
-        }
-        if (!summaryData) {
-          summaryBody.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
-          return;
-        }
-        const bySize = summaryData.by_size || {};
-        const order = ["대기업", "중견기업", "중견", "중소기업", "중소", "공공기관", "대학교", "기타/미입력", "기타", "미입력"];
-        const seen = new Set();
-        const rows = [];
-        order.forEach((size) => {
-          if (size in bySize) {
-            rows.push([size, bySize[size]]);
-            seen.add(size);
-          }
-        });
-        Object.keys(bySize || {}).forEach((size) => {
-          if (!seen.has(size)) rows.push([size, bySize[size]]);
-        });
-        const excluded = (summaryData.excluded_org_names || []).filter(Boolean);
-        const note = excluded.length ? `${excluded.join(", ")} 제외` : "특정 제외 없음";
-        const tableRows = rows
-          .map(
-            ([size, val]) => `
-              <tr>
-                <td>${size}</td>
-                <td>${formatEok((val?.sum_2025 || 0) / 1e8)}</td>
-                <td>${formatEok((val?.sum_2026 || 0) / 1e8)}</td>
-              </tr>
-            `
-          )
-          .join("");
-        const total25 = summaryData.totals?.sum_2025 || 0;
-        const total26 = summaryData.totals?.sum_2026 || 0;
-        summaryBody.innerHTML = `
-          <div class="muted" style="margin-bottom:6px;">드롭다운과 무관하게 기업 규모별 25/26 Won 합계를 표시합니다 (${note})</div>
-          <div class="table-wrap full">
-            <table>
-              <thead>
-                <tr>
-                  <th>규모</th>
-                  <th>2025 합계(억)</th>
-                  <th>2026 합계(억)</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${tableRows}
-                <tr>
-                  <td><strong>총합</strong></td>
-                  <td><strong>${formatEok(total25 / 1e8)}</strong></td>
-                  <td><strong>${formatEok(total26 / 1e8)}</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        `;
-      };
-
-      const ensureSummary = async () => {
-        if (summaryData || summaryLoading) return;
-        summaryLoading = true;
-        renderSummaryTable();
-        let summaryError = false;
-        try {
-          const data = await loadRankSummaryBySize("삼성전자");
-          summaryData = data;
-          state.rankSummaryBySize = data;
-        } catch (err) {
-          summaryBody.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
-          summaryError = true;
-        } finally {
-          summaryLoading = false;
-          if (!summaryError) {
-            renderSummaryTable();
-          }
-        }
-      };
 
       const renderAll = (items) => {
         currentItems = computeTargets(items);
@@ -4652,10 +4556,8 @@
         try {
           const items = await loadRankData(state.rankSize);
           renderAll(items);
-          renderSummaryTable();
         } catch (err) {
           if (target) target.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
-          if (summaryBody && !summaryData) summaryBody.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
           showToast(`랭킹 데이터를 불러오지 못했습니다: ${err.message}`, "error");
         }
       };
@@ -4685,7 +4587,6 @@
         btnMultiplier.addEventListener("click", () => openMultiplierModal(() => refresh()));
       }
 
-      ensureSummary();
       await refresh();
     }
 

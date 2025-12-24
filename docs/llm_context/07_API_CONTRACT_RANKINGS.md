@@ -1,8 +1,17 @@
+---
+title: 랭킹/집계/이상치 API 계약
+last_synced: 2025-12-24
+sync_source:
+  - dashboard/server/org_tables_api.py
+  - dashboard/server/database.py
+  - org_tables_v2.html
+---
+
 # 랭킹/집계/이상치 API 계약
 
 ## 공통 규칙
-- 금액 컬럼은 DB에 TEXT로 저장되며, 백엔드에서 `float`로 변환 후 반환. 프런트는 억 단위(1e8)로 표시.
-- 연도 필터는 `계약 체결일`에서 앞 4자리로 판단한다.
+- 금액 컬럼은 DB에 TEXT로 저장되며, 백엔드에서 `_to_number`로 변환 후 반환. 프런트는 억 단위(1e8)로 표시.
+- 연도 필터는 `계약 체결일`에서 앞 4자리로 판단한다(없으면 생성일/수주예정일 등 각 엔드포인트 규칙을 따름).
 - 규모(size) 필터가 있을 때만 적용(`전체`는 필터 없음).
 
 ## 엔드포인트별 정의
@@ -76,3 +85,10 @@
 - 2025 랭킹 응답의 grade/online/offline/2024 합계는 프런트에서 24→25 배수, 2026 목표액(배수 적용), 등급 가이드/배수 모달에 활용한다.
 - 조직 목록(`GET /api/orgs`)은 People/Deal 연결이 없는 조직을 제외하고 2025 Won 합계 기준으로 정렬한다(참고: `docs/llm_context/06_API_CONTRACT_CORE.md`).
 - 프런트 캐시 무효화 없음: DB 교체 시 브라우저 새로고침 필요.
+
+## Verification
+- `/api/rank/2025-deals`가 상태 Won + 계약연도 2025만 포함하고 totalAmount 기준으로 정렬되는지 확인한다.
+- `/api/rank/2025-deals-people`가 상위 조직/팀 모두 `미입력`인 행을 제외하고 2025 Won 합계 desc로 정렬되는지 확인한다.
+- `/api/rank/mismatched-deals`가 deal.organizationId ≠ people.organizationId 조건을 지키는지 샘플 조회로 확인한다.
+- `/api/rank/2025-top100-counterparty-dri`에서 온라인 정의(구독제/선택구매/포팅)와 성사 가능성 필터(확정/높음)가 코드와 일치하는지 확인한다.
+- `/api/rank/2025/summary-by-size` 응답에 snapshot_version=db_mtime:<int>가 포함되는지 확인한다.

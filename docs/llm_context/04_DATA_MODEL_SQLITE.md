@@ -1,3 +1,13 @@
+---
+title: SQLite 데이터 모델 요약
+last_synced: 2025-12-24
+sync_source:
+  - salesmap_first_page_snapshot.py
+  - dashboard/server/database.py
+  - dashboard/server/org_tables_api.py
+  - org_tables_v2.html
+---
+
 # SQLite 데이터 모델 요약
 
 ## 1) DB 생성 주체와 생명주기
@@ -33,7 +43,7 @@
 
 ## 4) 돈/날짜 컬럼 규칙
 - 금액/숫자: `deal."금액"`, `"예상 체결액"` 등은 TEXT로 저장되며, 백엔드에서 `float`로 변환(`_to_number`). 프런트는 표시 시 1e8(억) 단위로 나눈 값을 소수 2자리로 표기(`formatAmount`).
-- 날짜: 대부분 TEXT(ISO 비슷한 문자열)로 저장. 백엔드는 단순 슬라이싱(YYYY-MM-DD)으로 사용하며, webform_history도 날짜 문자열을 리스트/단일 값으로 반환. 표시는 `formatDate`로 `YYYY-MM-DD`까지만 보여준다.
+- 날짜: 대부분 TEXT(ISO 비슷한 문자열)로 저장. 백엔드는 단순 슬라이싱(YYYY-MM-DD)으로 사용하며, webform_history도 날짜 문자열을 리스트/단일 값으로 반환. 표시는 화면별 규칙으로 포맷(`formatDate` → `YYYY-MM-DD`, `formatDateYYMMDD` → `YYMMDD` 예: 교육1팀 딜체크).
 
 ## 5) 인덱스/성능 팁
 - 현재 스키마에는 선언된 인덱스가 없다. 빈번히 조인/필터하는 컬럼에 인덱스를 고려할 수 있다(TODO):
@@ -55,3 +65,8 @@ for t in tables:
         print(f" - {c['name']} ({c['type']})")
 PY
 ```
+
+## Verification
+- `sqlite_master`에 `deal/people/organization/memo/webform_history` 등이 존재하고 주요 컬럼이 문서와 일치하는지 `PRAGMA table_info`로 확인한다.
+- 금액/날짜가 TEXT로 저장되고 백엔드 `_to_number`/슬라이싱 방식과 프런트 포맷(`formatAmount`, `formatDateYYMMDD` 등) 규칙이 일치하는지 확인한다.
+- `webform_history`에 peopleId+webFormId 조합이 저장돼 있으며 won-groups-json에서 날짜 리스트가 매핑되는지 샘플로 확인한다.

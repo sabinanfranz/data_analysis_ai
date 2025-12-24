@@ -1,3 +1,13 @@
+---
+title: Salesmap Snapshot Pipeline
+last_synced: 2025-12-24
+sync_source:
+  - salesmap_first_page_snapshot.py
+  - logs/run_history.jsonl
+  - docs/error_log.md
+  - docs/llm_context/05_SNAPSHOT_PIPELINE_CONTRACT.md
+---
+
 # Salesmap Snapshot Pipeline
 
 이 프로젝트는 Salesmap API 데이터를 SQLite로 스냅샷하며, 대량 데이터와 네트워크/잠금 이슈에 대비한 복구·재개 기능을 포함합니다.
@@ -34,3 +44,9 @@
 
 ## 테스트
 - `python3 -m unittest discover -s tests` 로 유닛 테스트 실행. TableWriter, 체크포인트, 백오프/폴백 로직을 커버합니다(로컬에 pandas 없을 때를 위한 스텁 포함).
+
+## Verification
+- 스냅샷 실행 시 logs/run_history.jsonl에 final_db_path, 에러 수, 테이블별 row/col이 기록되는지 확인한다.
+- 교체 실패 시 replace_file_with_retry의 retry/rename/copy 폴백 로그가 남고 백업/폴백 DB가 생성되는지 확인한다.
+- 체크포인트 `.json`이 생성되고 rename 실패 시 tmp→복사가 수행되는지 확인한다.
+- `--webform-only` 실행 시 기존 DB에 webform_history가 업데이트되고 dropped_missing/dropped_not_allowed 카운트가 로그에 표시되는지 확인한다.

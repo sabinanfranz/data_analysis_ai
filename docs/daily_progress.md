@@ -1,3 +1,14 @@
+---
+title: Daily Progress Log
+last_synced: 2025-12-24
+sync_source:
+  - org_tables_v2.html
+  - build_org_tables.py
+  - salesmap_first_page_snapshot.py
+  - dashboard/server/database.py
+  - dashboard/server/org_tables_api.py
+---
+
 # 2025-12-09 작업 기록
 
 - org_tables_v2 상위 조직 JSON UX 보완
@@ -95,3 +106,8 @@
   - `/won-summary`에 2025 Won 딜 담당자 `owners2025` 추가, 프런트 테이블에 팀&파트/DRI 가능 컬럼 포함.
 - 테스트/문서
   - StatePath/owners2025 단위테스트 추가, API/프런트 계약 및 org_tables_v2 문서 업데이트.
+
+## Verification
+- `git log` 또는 주요 파일(`org_tables_v2.html`, `database.py`, `org_tables_api.py`, `salesmap_first_page_snapshot.py`)에서 일지에 기재된 기능이 실제 반영됐는지 확인한다.
+- `docs/org_tables_v2.md`, `docs/api_behavior.md`, `docs/json_logic.md` 등이 기록된 날짜 이후에 업데이트됐는지 md front matter의 `last_synced`로 확인한다.
+- `node --test tests/org_tables_v2_frontend.test.js`와 `PYTHONPATH=. python3 -m unittest`가 기록된 시점에 통과하는지 재실행해 검증한다.

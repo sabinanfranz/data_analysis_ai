@@ -1,3 +1,13 @@
+---
+title: User Guide (PowerShell 한 줄 실행)
+last_synced: 2025-12-24
+sync_source:
+  - org_tables_v2.html
+  - dashboard/server/main.py
+  - salesmap_first_page_snapshot.py
+  - docs/org_tables_v2.md
+---
+
 # User Guide (PowerShell 한 줄 실행)
 
 ## org_tables_v2 실행/재실행
@@ -34,3 +44,9 @@ $env:SALESMAP_TOKEN="<세일즈맵_API_토큰>"; python .\salesmap_first_page_sn
 ```powershell
 $env:SALESMAP_TOKEN="<세일즈맵_API_토큰>"; python .\salesmap_first_page_snapshot.py --webform-only --db-path .\salesmap_latest.db --log-dir .\logs
 ```
+
+## Verification
+- PowerShell 한 줄 명령으로 uvicorn/정적 서버가 기동되고 `http://localhost:8001/org_tables_v2.html`에서 API 호출이 성공하는지 확인한다.
+- 사이드바에 교육1팀 딜체크 메뉴가 4번째로 노출되고 `/api/deal-check/edu1` 호출이 성공하는지 확인한다.
+- 스냅샷 명령 실행 시 logs/run_history.jsonl에 기록이 남고 replace_file_with_retry의 폴백 로그가 출력되는지 확인한다.
+- `--webform-only` 실행 후 `webform_history` 테이블 row 수가 증가하는지 sqlite로 확인한다.

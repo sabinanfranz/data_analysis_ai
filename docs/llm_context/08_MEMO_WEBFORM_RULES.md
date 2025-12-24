@@ -1,3 +1,13 @@
+---
+title: 메모/웹폼 정제 규칙 (/won-groups-json)
+last_synced: 2025-12-24
+sync_source:
+  - dashboard/server/database.py
+  - tests/test_won_groups_json.py
+  - docs/json_logic.md
+  - salesmap_first_page_snapshot.py
+---
+
 # 메모/웹폼 정제 규칙 (/won-groups-json)
 
 ## 1) 웹폼 제출내역 변환
@@ -38,3 +48,9 @@
 ## 3) 적용 위치
 - 백엔드: `dashboard/server/database.py`의 `get_won_groups_json`에서 메모/웹폼 변환을 적용해 `groups` 내 People/Deal/Org memos, People webforms에 반영한다. compact 변환에서는 memos/webforms가 제거된다.
 - 상세 로직/예제 테스트: `tests/test_won_groups_json.py` 참조.
+
+## Verification
+- `_clean_form_memo`가 utm/동의/전화/규모/업종/채널 키를 제거하고 질문 키를 `question`으로 매핑하는지 테스트로 확인한다.
+- webform 날짜 매핑이 `peopleId+webFormId` 기준이며 날짜가 없을 때 `"날짜 확인 불가"`, 여러 건이면 리스트로 반환되는지 샘플 DB로 확인한다.
+- 메모 정제 결과가 빈 문자열이면 응답에서 메모가 제거되고, `None`이면 원문 text가 유지되는지 확인한다.
+- compact 변환(`/won-groups-json-compact`)에서 memos/webforms가 제거되는지 확인한다.

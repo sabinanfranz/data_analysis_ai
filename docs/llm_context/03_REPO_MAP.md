@@ -1,3 +1,14 @@
+---
+title: 레포 지도(기능 ↔ 파일)
+last_synced: 2025-12-24
+sync_source:
+  - org_tables_v2.html
+  - dashboard/server/org_tables_api.py
+  - dashboard/server/database.py
+  - salesmap_first_page_snapshot.py
+  - tests/test_deal_check_edu1.py
+---
+
 # 레포 지도(기능 ↔ 파일)
 
 LLM이 “어느 기능이 어느 파일에 있는지”를 빠르게 찾도록 핵심 트리와 역할을 요약했습니다.
@@ -15,15 +26,16 @@ LLM이 “어느 기능이 어느 파일에 있는지”를 빠르게 찾도록 
 | 파일 | 역할 | 주요 함수·엔드포인트 | 참고 문서 |
 | --- | --- | --- | --- |
 | `dashboard/server/main.py` | FastAPI 앱/라우터 등록, CORS 설정 | `/api/*` 라우터 포함 | `docs/api_behavior.md`, `docs/llm_context/02_ARCHITECTURE.md` |
-| `dashboard/server/org_tables_api.py` | API 라우터 집합 | `/api/orgs`, `/api/orgs/{id}/won-groups-json(-compact)`, `/api/rank/*` | `docs/api_behavior.md` |
-| `dashboard/server/database.py` | DB 조회/집계, 메모/webform 정제 | `list_organizations`, `get_won_groups_json`, `get_won_summary_by_upper_org`, `get_rank_*`, `_clean_form_memo` | `docs/api_behavior.md`, `docs/json_logic.md` |
+| `dashboard/server/org_tables_api.py` | API 라우터 집합 | `/api/orgs`, `/api/orgs/{id}/won-groups-json(-compact)`, `/api/deal-check/edu1`, `/api/rank/*` | `docs/api_behavior.md` |
+| `dashboard/server/database.py` | DB 조회/집계, 메모/webform 정제 | `list_organizations`, `get_won_groups_json`, `get_won_summary_by_upper_org`, `get_rank_*`, `_clean_form_memo`, `get_edu1_deal_check_sql_deals` | `docs/api_behavior.md`, `docs/json_logic.md` |
 | `dashboard/server/json_compact.py` | won-groups-json 축약 변환(LLM용) | `compact_won_groups_json` | `docs/json_logic.md` |
 | `dashboard/server/statepath_engine.py` | StatePath/추천 계산 | `build_statepath` (2024/2025 상태/이벤트/추천) | `docs/llm_context/06_API_CONTRACT_CORE.md` |
-| `org_tables_v2.html` | 프런트 렌더/캐시, JSON/모달/UX | fetch helpers, `render*`, `loadWonGroupJson`, webform/메모 모달 | `docs/org_tables_v2.md`, `docs/json_logic.md` |
+| `org_tables_v2.html` | 프런트 렌더/캐시, JSON/모달/UX | fetch helpers, `render*`, `loadWonGroupJson`, `renderEdu1DealCheck*`, webform/메모 모달 | `docs/org_tables_v2.md`, `docs/json_logic.md` |
 | `salesmap_first_page_snapshot.py` | Salesmap API 스냅샷/웹폼 적재, 체크포인트/백업 | `main()`, `CheckpointManager`, webform_history 후처리 | `docs/snapshot_pipeline.md` |
 | `build_org_tables.py` | 정적 org_tables.html 생성(구 레이아웃) | CLI 엔트리, HTML 생성 | `docs/org_tables_usage.md` |
 | `docs/llm_context/*.md` | LLM용 컨텍스트(인덱스/아키텍처/지도 등) | - | `docs/llm_context/00_INDEX.md` |
 | `tests/test_won_groups_json.py` | webform 날짜 매핑/메모 정제/JSON 테스트 | `build_sample_db`, 단위 테스트 2종 | `docs/json_logic.md` |
+| `tests/test_deal_check_edu1.py` | 교육1팀 딜체크 필터/정렬/메모 카운트 테스트 | retention/owners 필터/정렬/memoCount 케이스 | `docs/api_behavior.md`, `docs/org_tables_v2.md` |
 | `docs/api_behavior.md` | API 동작/필터/정제 요약 | - | - |
 | `docs/org_tables_v2.md` | 프런트 UX/화면 흐름/버튼 상태 | - | - |
 | `docs/snapshot_pipeline.md` | 스냅샷 동작/교체/재개 절차 | - | - |
@@ -42,4 +54,11 @@ LLM이 “어느 기능이 어느 파일에 있는지”를 빠르게 찾도록 
 
 ### 참고
 - 조직 목록은 People 또는 Deal이 1건 이상 있는 조직만 반환하며, 2025년 Won 금액 내림차순 정렬(이름 순 보조).
+- 교육1팀 딜체크는 `/api/deal-check/edu1` → 프런트 `renderEdu1DealCheck*` 흐름이며, 리텐션/신규 분리와 nowrap/colgroup 폭 규칙을 갖는다.
 - 프런트 캐시는 클라이언트 메모리(Map) 기반이며 무효화가 없으므로 DB 교체 시 새로고침이 필요합니다.
+
+## Verification
+- `dashboard/server/org_tables_api.py`에 `/api/deal-check/edu1` 라우터가 존재하고 main에 등록돼 있는지 확인한다.
+- `dashboard/server/database.py`의 `get_edu1_deal_check_sql_deals`가 people 조인(personId/personName)과 memoCount 집계를 포함하는지 확인한다.
+- `org_tables_v2.html`에서 `renderEdu1DealCheck*` 흐름과 colgroup 폭 지정(15ch/8ch/동적)이 존재하는지 확인한다.
+- 테스트 `tests/test_deal_check_edu1.py`가 retention/owners/정렬/memoCount를 커버하는지 실행 또는 내용 확인한다.

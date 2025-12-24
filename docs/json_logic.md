@@ -1,3 +1,13 @@
+---
+title: 상위 조직별 JSON 생성 로직 정리
+last_synced: 2025-12-24
+sync_source:
+  - dashboard/server/database.py
+  - dashboard/server/json_compact.py
+  - org_tables_v2.html
+  - tests/test_won_groups_json.py
+---
+
 # 상위 조직별 JSON 생성 로직 정리
 
 이 문서는 조직/People/Deal 뷰어에서 사용하는 “상위 조직별 JSON”이 어떻게 만들어지는지 설명합니다. 백엔드가 만드는 **전체 JSON**과, 프런트가 상위 조직을 선택했을 때 만드는 **선택 상위 조직 JSON**을 각각 단계별로 풀어 적었습니다. 비개발자도 흐름을 따라 읽을 수 있도록 최대한 서술형으로 정리했습니다.
@@ -106,3 +116,9 @@
   - 동일 값이 80% 이상 반복되는 deal 필드를 `deal_defaults`로 끌어올리고 개별 deal에서 제거.
   - memos/webforms 제거, null/빈 배열/빈 객체는 재귀적으로 pruning.
 - 반환 형태: `schema_version`, `organization`(+`summary`), `groups`(upper_org/team/deal_defaults/counterparty_summary/people/deals).
+
+## Verification
+- `/api/orgs/{id}/won-groups-json` 응답에 industry_major/mid, webforms 날짜 매핑, 메모 정제(cleanText/제거)가 적용되는지 샘플 org로 확인한다.
+- People 상위 조직 선택 시 프런트 `filterWonGroupByUpper`가 `groups`만 필터링하고 `organization` 블록은 그대로 유지하는지 확인한다.
+- compact 변환에서 deal_defaults/summary가 포함되고 memos/webforms가 제거되는지 확인한다.
+- `tests/test_won_groups_json.py`가 메모/웹폼 정제 규칙을 커버하고 통과하는지 실행해 확인한다.

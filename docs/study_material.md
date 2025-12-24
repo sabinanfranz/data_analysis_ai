@@ -1,3 +1,13 @@
+---
+title: Study Material for data_analysis_ai
+last_synced: 2025-12-24
+sync_source:
+  - docs/org_tables_v2.md
+  - salesmap_first_page_snapshot.py
+  - dashboard/server/database.py
+  - org_tables_v2.html
+---
+
 # Study Material for `data_analysis_ai`
 
 이 문서는 초보 개발자가 이 프로젝트를 빠르게 이해하고, 필요한 개념을 무엇부터 공부하면 좋을지 안내하는 가이드입니다.
@@ -52,3 +62,8 @@
 
 ## 8) 참고 링크 (스스로 검색)
 - FastAPI 공식 문서, SQLite 튜토리얼, MDN fetch/DOM, pytest 기본 가이드.
+
+## Verification
+- `docs/org_tables_v2.md`, `docs/api_behavior.md`, `docs/json_logic.md`에서 설명하는 흐름이 최신 코드와 일치하는지 앞서 읽은 뒤 샘플 실행으로 확인한다.
+- `salesmap_first_page_snapshot.py`에 서술된 백오프/체크포인트/웹폼 적재 흐름이 문서에 반영돼 있는지 확인한다.
+- `org_tables_v2.html`의 상태/캐시 구조와 Study Material의 요약이 같은지 DevTools Sources로 확인한다.

@@ -1,3 +1,13 @@
+---
+title: 용어집 (Glossary)
+last_synced: 2025-12-24
+sync_source:
+  - dashboard/server/database.py
+  - org_tables_v2.html
+  - docs/json_logic.md
+  - salesmap_first_page_snapshot.py
+---
+
 # 용어집 (Glossary)
 
 프로젝트 전반에서 반복적으로 등장하는 핵심 용어를 정규화된 표기/정의와 함께 정리한다. 필드명·테이블명은 실제 SQLite 스냅샷 스키마(dashboard/server/database.py 참조)를 기준으로 기재한다.
@@ -17,7 +27,7 @@
 ## Deal / 딜
 - 정의: 영업 기회·계약 단위 레코드. 금액/상태/일자/과정포맷/담당자 등을 가진다.
 - 원천: SQLite `deal` 테이블 (`id`, `"이름"`, `"상태"`, `"금액"`, `"예상 체결액"`, `"계약 체결일"`, `"생성 날짜"`, `"과정포맷"`, `"담당자"` JSON, `organizationId`, `peopleId`), API `/api/orgs/{id}/won-summary`, `/api/orgs/{id}/won-groups-json`, 랭킹/StatePath 엔드포인트.
-- 비고/주의: 금액은 `금액>0` 없으면 `예상 체결액>0`을 사용. 연도 판단은 `"계약 체결일"` 우선, 없으면 `"생성 날짜"`. 상태 `"Won"`만 집계에 포함하는 경우가 많음.
+- 비고/주의: 금액은 `금액>0` 없으면 `예상 체결액>0`을 사용. 연도 판단은 `"계약 체결일"` 우선, 없으면 `"생성 날짜"`. 상태 `"Won"`만 집계에 포함하는 경우가 많음. 교육1팀 딜체크에서는 `상태='SQL'` + owners 필터만 허용되며 예상 체결액은 리텐션 판정에 사용하지 않는다.
 - 예시: `"상태"="Won"`, `"과정포맷"="구독제(온라인)"`, `"계약 체결일"="2025-03-01"`.
 
 ## Memo / 메모
@@ -79,3 +89,9 @@
 - 원천: `won-groups-json` 응답의 `webforms` 배열, 프런트 `getWebformsForPerson`/`openWebformModal`.
 - 비고/주의: People 상세/카운터파티 상세에서 버튼으로 노출. 없으면 비활성화.
 - 예시: `{"name":"2024-10-01 컨택","date":"2024-10-01"}`.
+
+## Verification
+- `dashboard/server/database.py`에서 금액/연도 판정과 owner 정규화(trim + 영문 1글자 suffix 제거)가 용어 정의와 일치하는지 확인한다.
+- `org_tables_v2.html`에서 과정포맷 온라인 판정 리스트와 DRI/PART_STRUCTURE 매핑이 용어 설명과 동일한지 확인한다.
+- `won-groups-json` 응답에 industry_major/mid와 webforms 날짜 매핑이 포함되는지 샘플 호출로 확인한다.
+- 교육1팀 딜체크에서 `상태='SQL'` + owners 필터, 리텐션 금액 판정이 용어 설명과 일치하는지 확인한다.

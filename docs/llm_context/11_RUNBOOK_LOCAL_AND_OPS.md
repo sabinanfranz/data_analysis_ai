@@ -1,3 +1,14 @@
+---
+title: Runbook: 로컬 실행 & 운영(스냅샷/복구)
+last_synced: 2025-12-24
+sync_source:
+  - salesmap_first_page_snapshot.py
+  - org_tables_v2.html
+  - docs/user_guide.md
+  - docs/snapshot_pipeline.md
+  - logs/run_history.jsonl
+---
+
 # Runbook: 로컬 실행 & 운영(스냅샷/복구)
 
 ## 1) 로컬 실행 (백엔드/프런트)
@@ -12,6 +23,7 @@
   ```  
   또는 `Start-Process .\org_tables_v2.html` (API 기본 `http://localhost:8000/api`).
   - StatePath 확인: 조직 선택 후 `StatePath 보기` 버튼으로 `/api/orgs/{id}/statepath` 응답을 모달로 확인(억 단위 금액 그대로 표시).
+  - 교육1팀 딜체크 확인: 사이드바 4번째 메뉴에서 `/api/deal-check/edu1` 데이터를 로드하고 리텐션/신규 테이블이 분리되는지 확인.
 
 ## 2) 스냅샷 실행 (전체 수집)
 - 필수: `SALESMAP_TOKEN` 설정.
@@ -45,3 +57,9 @@
 - DB를 여는 다른 프로그램(뷰어, 브라우저 플러그인 등) 닫기 → 잠금 방지.
 - 디스크 여유 공간 확인(체크포인트/백업 유지).
 - 네트워크/토큰 준비: `SALESMAP_TOKEN` 설정, API Base 기본 `https://salesmap.kr/api/v2`(변경 시 `SALESMAP_API_BASE`).
+
+## Verification
+- FastAPI/프런트 기동 후 사이드바 메뉴(특히 교육1팀 딜체크)가 정상 표시되고 API 호출이 성공하는지 확인한다.
+- 스냅샷 실행 시 logs/run_history.jsonl에 final_db_path와 run_info/manifest가 기록되는지 확인한다.
+- DB 잠금/체크포인트 rename 실패 시 로그에 retry/폴백 메시지가 남고 tmp→복사로 해결 가능한지 테스트한다.
+- `--resume` 또는 `--resume-run-tag`로 중단 지점에서 재개되는지 체크포인트를 사용해 확인한다.

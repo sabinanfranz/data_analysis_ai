@@ -1,3 +1,13 @@
+---
+title: org_tables (정적) 계약 – build_org_tables.py 버전
+last_synced: 2025-12-24
+sync_source:
+  - build_org_tables.py
+  - org_tables.html
+  - docs/org_tables_usage.md
+  - docs/daily_progress.md
+---
+
 # org_tables (정적) 계약 – build_org_tables.py 버전
 
 > 이 문서는 정적 HTML(`org_tables.html`) 버전에 대한 UI/상태 계약을 분리해 설명합니다. 실시간 API를 쓰는 `org_tables_v2.html`과 혼동하지 않도록 주의하세요.
@@ -30,3 +40,9 @@
 - 결과 HTML: `org_tables.html`
 - 사용 가이드/옵션: `docs/org_tables_usage.md`
 - 변경 이력(정적 UI 개편): `docs/daily_progress.md` 참고
+
+## Verification
+- `python build_org_tables.py --output org_tables.html` 실행 시 API 호출 없이 HTML이 생성되는지 확인한다.
+- 생성된 `org_tables.html`에서 딜 있음/없음 두 세트가 독립적으로 선택/렌더되는지 확인한다.
+- 금액이 억 단위 소수 2자리, 날짜가 `YYYY-MM-DD`로 표시되는지 표에서 확인한다.
+- People/Deal 선택 시 네트워크 요청이 발생하지 않는지 DevTools Network로 확인한다.

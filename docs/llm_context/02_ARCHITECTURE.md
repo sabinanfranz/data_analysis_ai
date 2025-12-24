@@ -1,9 +1,20 @@
+---
+title: 아키텍처 개요
+last_synced: 2025-12-24
+sync_source:
+  - salesmap_first_page_snapshot.py
+  - dashboard/server/main.py
+  - dashboard/server/org_tables_api.py
+  - dashboard/server/database.py
+  - org_tables_v2.html
+---
+
 # 아키텍처 개요
 
 ## 1) 시스템 개요
 - Salesmap API에서 조직/People/Deal/웹폼 데이터를 가져와 **스냅샷(SQLite)** 으로 저장한다.
 - FastAPI 서버(`dashboard/server`)가 스냅샷 DB를 읽어 API(`/api/...`)를 제공한다.
-- 프런트(`org_tables_v2.html`)가 API를 호출해 조직/People/Deal/상위 조직 JSON/StatePath를 렌더링한다.
+- 프런트(`org_tables_v2.html`)가 API를 호출해 조직/People/Deal/상위 조직 JSON/StatePath/교육1팀 딜체크를 렌더링한다.
 - 캐시는 프런트(JS Map) 단에서만 사용하며, 백엔드는 무상태로 DB를 직접 읽는다.
 - 기본 DB 경로는 `salesmap_latest.db`이며, 존재하지 않으면 500 에러로 응답한다.
 
@@ -12,8 +23,8 @@
 | --- | --- | --- |
 | 스냅샷 스크립트 | Salesmap API 호출 → SQLite 스냅샷 적재, 웹폼 제출 내역(webform_history) 후처리 | `salesmap_first_page_snapshot.py`, `snapshot_pipeline.md` |
 | SQLite DB | 조직/People/Deal/메모/웹폼/히스토리 저장. FastAPI가 직접 읽음 | `salesmap_latest.db` |
-| FastAPI 서버 | DB 조회/집계/StatePath API 제공(`/api`) | `dashboard/server/main.py`, `org_tables_api.py`, `database.py`, `json_compact.py`, `statepath_engine.py` |
-| 프런트(정적 HTML) | API fetch → 표/모달/JSON/StatePath 렌더, 클라이언트 캐시(Map) | `org_tables_v2.html`, `org_tables_v2.md` |
+| FastAPI 서버 | DB 조회/집계/StatePath/교육1팀 딜체크 API 제공(`/api`) | `dashboard/server/main.py`, `org_tables_api.py`, `database.py`, `json_compact.py`, `statepath_engine.py` |
+| 프런트(정적 HTML) | API fetch → 표/모달/JSON/StatePath/교육1팀 딜체크 렌더, 클라이언트 캐시(Map) | `org_tables_v2.html`, `org_tables_v2.md` |
 | LLM 컨텍스트 문서 | 동작/계약/흐름을 요약해 외부 LLM에 전달 | `docs/llm_context/*.md` |
 
 ## 3) 데이터 흐름
@@ -38,5 +49,12 @@ flowchart LR
 - 조직 목록(`/api/orgs`): People 또는 Deal이 1건 이상 있는 조직만 반환, 2025년 Won 합계 내림차순 정렬(이름 순 보조).
 - 상위 조직 JSON(`/api/orgs/{id}/won-groups-json`): webform id 미노출, 날짜 매핑, 메모 정제(전화/동의/utm 제거 등) 적용.
 - StatePath(`/api/orgs/{id}/statepath`): won-groups-json-compact를 기반으로 2024/2025 상태·이벤트·Seed·추천을 계산해 억 단위 금액으로 반환.
+- 교육 1팀 딜체크(`/api/deal-check/edu1`): `상태='SQL'` 딜 중 교육1팀 owners 포함 건만 반환, 2025 Won 금액 파싱 성공 조직은 `isRetention=true`, 정렬은 orgWon2025Total DESC → createdAt ASC → dealId ASC.
 - 프런트 캐시 무효화 없음: 새 DB로 교체 시 브라우저 새로고침 필요.
 - 자동 선택 없음: 초기/리셋 시 회사는 자동으로 선택되지 않으며 사용자가 선택해야 데이터 로드.
+
+## Verification
+- `uvicorn dashboard.server.main:app` 기동 시 `/api`가 열리고 기본 DB 경로가 `salesmap_latest.db`인지 확인한다.
+- `/api/deal-check/edu1`가 SQL 딜을 교육1팀 필터와 정렬 규칙대로 반환하는지 샘플 호출로 확인한다.
+- org_tables_v2.html이 origin 기반으로 API_BASE를 설정하고, 캐시(Map)가 존재해 재호출이 줄어드는지 DevTools Network로 확인한다.
+- 상위 조직 JSON(`/api/orgs/{id}/won-groups-json`) 응답에 webforms/memos 정제가 적용되어 있는지 확인한다.

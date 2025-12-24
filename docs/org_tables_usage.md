@@ -1,3 +1,12 @@
+---
+title: Org Tables Explorer 사용 가이드 (정적 org_tables.html)
+last_synced: 2025-12-24
+sync_source:
+  - build_org_tables.py
+  - org_tables.html
+  - docs/llm_context/10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md
+---
+
 # Org Tables Explorer 사용 가이드
 
 > FastAPI 기반 실시간 뷰어인 `org_tables_v2.html`의 동작/구조는 `docs/org_tables_v2.md`를 참고하세요. 이 문서는 정적 HTML을 생성하는 `build_org_tables.py` 버전(`org_tables.html`)만 다룹니다.
@@ -28,3 +37,8 @@
 ## 파일 및 스크립트 위치
 - 생성 스크립트: `build_org_tables.py`
 - 생성된 HTML: `org_tables.html` (명령 실행 위치에 생성)
+
+## Verification
+- `python3 build_org_tables.py --output org_tables.html` 실행 후 파일이 생성되는지 확인한다.
+- org_tables.html을 열어 3×3 레이아웃과 딜 있음/없음 세트가 동작하는지 확인한다.
+- 금액/날짜 포맷(억, YYYY-MM-DD)이 올바른지 표에서 확인한다.

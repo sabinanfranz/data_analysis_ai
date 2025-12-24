@@ -1,3 +1,13 @@
+---
+title: org_tables_v2 동작 정리 (FastAPI 기반)
+last_synced: 2025-12-24
+sync_source:
+  - org_tables_v2.html
+  - dashboard/server/org_tables_api.py
+  - dashboard/server/database.py
+  - dashboard/server/json_compact.py
+---
+
 # org_tables_v2 동작 정리 (FastAPI 기반)
 
 `org_tables_v2.html`는 정적 HTML+JS로 동작하지만, 데이터는 FastAPI 백엔드(`/dashboard/server`)가 제공하는 `/api` 엔드포인트에서 실시간으로 불러옵니다. 현재 구현된 흐름과 UI, 캐시, 오류 처리 방식을 상세히 정리합니다.
@@ -33,15 +43,27 @@
 - Salesmap 외부 링크: `SALESMAP_WORKSPACE_PATH` 상수로 워크스페이스 경로를 설정해 딜/People 링크를 Salesmap으로 연결한다(조직 뷰어 People 표, 2025 딜·People 표에서 이름 클릭 시 새 탭 이동).
 
 ## 메뉴/화면 구성
-- 사이드바 메뉴:  
+- 사이드바 메뉴(순서):
+  - `2025 Top100 카운터파티 DRI`
+  - `2025년 체결액 순위`
   - `조직/People/Deal 뷰어`(기본)
-  - `2025년 체결액 순위` (Won 2025)
-  - `2025 대기업 딜·People` (2025 Won 딜이 있는 조직별 People 그룹, 딜은 상태 무관 전체 표시)
-  - `2025 Top100 카운터파티 DRI` (규모별 2025 Won Top100 → upper_org별 온라인/비온라인/DRI/담당자)
-  - `고객사 불일치` (딜 orgId와 People.organizationId가 다른 경우 탐지)
-  - `업종별 매출` (대/중견 업종별 Won 합계)
-- `StatePath 24→25` (규모/패턴별 StatePath 포트폴리오)
-- 콘텐츠 영역은 메뉴별 렌더러가 채운다(`menuConfig` → `renderContent`).
+  - `교육 1팀 딜체크` (신규)
+  - `StatePath 24→25`
+  - `2025 대기업 딜·People`
+  - `업종별 매출`
+  - `고객사 불일치`
+- 콘텐츠 영역은 메뉴별 렌더러가 채운다(`MENU_RENDERERS` → `renderContent`).
+
+### 교육 1팀 딜체크 (org_tables_v2.html `renderEdu1DealCheck`)
+- 대상 데이터: `/api/deal-check/edu1` (SQL 딜 중 owners에 교육1팀 멤버 포함, personId/personName 포함).
+- 컨테이너: 리텐션(2025 Won 금액 파싱>=0 조직) / 신규로 분리, 같은 정렬 적용.
+- 정렬: orgWon2025Total DESC → createdAt ASC → dealId ASC.
+- 컬럼: 기업명(세일즈맵 조직 링크, 15ch 고정) / 소속 상위 조직(15ch) / 팀(15ch) / 담당자(고객사, people 링크, 8ch 고정) / 생성날짜(YYMMDD) / 딜 이름(세일즈맵 딜 링크, 남는 폭 사용) / 과정포맷(동적 폭) / 파트(owners→PART_STRUCTURE 매핑) / 데이원(owners raw) / 가능성(리스트→"값1/값2") / 수주 예정일(YYMMDD) / 예상(금액 포맷) / 메모(버튼).
+- 줄바꿈 정책: `.edu1-dealcheck` 래퍼 하위 table/th/td/button에 `white-space: nowrap; word-break: keep-all; overflow-wrap: normal;` + ellipsis. 가로 스크롤 허용.
+- 폭 정책: org/upper/team=15ch 고정, personName=8ch 고정, memo=버튼 폭 측정 기반(px, clamp 72~140), 그 외 동적(px) 측정, 딜 이름은 남는 폭 사용.
+- 메모: memoCount>0 → `메모 확인` 활성 버튼, memoCount=0 → `메모 없음` 비활성 버튼(pointer-events:none). 모달은 ESC/X/오버레이로 닫힘, 날짜 YYMMDD, 메모 내용 `pre-wrap`, 내용 폰트 1.5em.
+- 링크: 기업명/딜/담당자는 세일즈맵 새 탭 이동(SALESMAP_BASE, org/people/deal URL), 내부 navigateToOrg 사용 안 함.
+
 
 ### 조직/People/Deal 뷰어 흐름
 1. 초기화(`initOrgScreen`)
@@ -142,3 +164,12 @@
   ```bash
   PYTHONPATH=. .venv/bin/pytest -q
   ```
+
+## Verification
+- 사이드바 메뉴가 순서대로 `2025 Top100 카운터파티 DRI` → `2025년 체결액 순위` → `조직/People/Deal 뷰어` → `교육 1팀 딜체크` → `StatePath 24→25` → … 로 노출되는지 확인한다.
+- 교육 1팀 딜체크 테이블에서 orgWon2025Total DESC → createdAt ASC → dealId ASC 정렬, 리텐션/신규 분리, nowrap/keep-all + colgroup 폭(15ch/8ch/동적/딜이름 남는 폭/메모 버튼 폭) 규칙이 적용되는지 DevTools로 확인한다.
+- 교육 1팀 메모 버튼이 memoCount=0일 때 `메모 없음` 비활성 버튼(pointer-events none), memoCount>0일 때 `메모 확인` 활성 버튼으로 표시되고 모달이 ESC/X/오버레이로 닫히는지 확인한다.
+- 가능성 컬럼이 배열을 "/"로 조인해 한 줄로 표시되고 날짜가 `YYMMDD`, 예상 금액이 `formatAmount`(억)로 렌더되는지 확인한다.
+- 조직/People/Deal 뷰어에서 조직 목록이 2025 Won desc → 이름 asc로 정렬되고 People/Deal 없는 조직이 제외되는지 확인한다.
+- 상위 조직 JSON/compact 버튼이 선택 여부에 따라 비활성/활성으로 변하며, 필터된 JSON이 upper_org 기준으로만 그룹을 남기는지 확인한다.
+- StatePath 보기/포트폴리오 화면에서 금액이 억 단위 그대로 표시되고 segment/search/정렬/패턴 필터가 모두 반영되는지 확인한다.

@@ -1,3 +1,13 @@
+---
+title: Error Log & Mitigation Notes
+last_synced: 2025-12-24
+sync_source:
+  - salesmap_first_page_snapshot.py
+  - logs/run_history.jsonl
+  - docs/snapshot_pipeline.md
+  - docs/llm_context/05_SNAPSHOT_PIPELINE_CONTRACT.md
+---
+
 # Error Log & Mitigation Notes
 
 최근 스냅샷 실행 중 발생한 주요 오류와 대응 방법 정리.
@@ -40,3 +50,9 @@
   2. `.tmp`를 `.json`으로 수동 복사(필요 시 `.bak` 백업 후 덮어쓰기).
   3. `--resume --resume-run-tag <run_tag>`로 재실행하여 manifest/run_history까지 마무리.
   4. 완료 후 `logs/run_history.jsonl`의 `final_db_path`와 DB의 `run_info`/`manifest` 테이블을 확인.
+
+## Verification
+- `logs/run_history.jsonl`에 DB 교체 실패 시 `final_db_path`가 폴백 경로로 기록되는지 확인한다.
+- `salesmap_first_page_snapshot.py` 로그에서 replace_file_with_retry의 retry/rename/copy 폴백 메시지가 출력되는지 확인한다.
+- 체크포인트 rename 실패 상황에서 `.json.tmp`를 수동 복사 후 `--resume --resume-run-tag`로 정상 재개되는지 테스트한다.
+- 재개/복구 후 `run_info`/`manifest` 테이블이 채워지고 temp DB가 남아 있지 않은지 확인한다.

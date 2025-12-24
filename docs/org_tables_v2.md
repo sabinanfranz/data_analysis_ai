@@ -47,19 +47,20 @@ sync_source:
   - `2025 Top100 카운터파티 DRI`
   - `2025년 체결액 순위`
   - `조직/People/Deal 뷰어`(기본)
-  - `교육 1팀 딜체크` (신규)
+  - `교육 1팀 딜체크`
+  - `교육 2팀 딜체크`
   - `StatePath 24→25`
   - `2025 대기업 딜·People`
   - `업종별 매출`
   - `고객사 불일치`
 - 콘텐츠 영역은 메뉴별 렌더러가 채운다(`MENU_RENDERERS` → `renderContent`).
 
-### 교육 1팀 딜체크 (org_tables_v2.html `renderEdu1DealCheck`)
-- 대상 데이터: `/api/deal-check/edu1` (SQL 딜 중 owners에 교육1팀 멤버 포함, personId/personName 포함).
+### 교육 딜체크 (org_tables_v2.html `renderDealCheckScreen`)
+- 대상 데이터: `/api/deal-check?team=edu1|edu2` (SQL 딜 중 owners에 해당 팀 멤버 포함, personId/personName 포함). 레거시 `/api/deal-check/edu1`, `/api/deal-check/edu2`도 공통 엔진 호출.
 - 컨테이너: 리텐션(2025 Won 금액 파싱>=0 조직) / 신규로 분리, 같은 정렬 적용.
 - 정렬: orgWon2025Total DESC → createdAt ASC → dealId ASC.
 - 컬럼: 기업명(세일즈맵 조직 링크, 15ch 고정) / 소속 상위 조직(15ch) / 팀(15ch) / 담당자(고객사, people 링크, 8ch 고정) / 생성날짜(YYMMDD) / 딜 이름(세일즈맵 딜 링크, 남는 폭 사용) / 과정포맷(동적 폭) / 파트(owners→PART_STRUCTURE 매핑) / 데이원(owners raw) / 가능성(리스트→"값1/값2") / 수주 예정일(YYMMDD) / 예상(금액 포맷) / 메모(버튼).
-- 줄바꿈 정책: `.edu1-dealcheck` 래퍼 하위 table/th/td/button에 `white-space: nowrap; word-break: keep-all; overflow-wrap: normal;` + ellipsis. 가로 스크롤 허용.
+- 줄바꿈 정책: `.dealcheck-screen` 래퍼 하위 table/th/td/button에 `white-space: nowrap; word-break: keep-all; overflow-wrap: normal;` + ellipsis. 가로 스크롤 허용.
 - 폭 정책: org/upper/team=15ch 고정, personName=8ch 고정, memo=버튼 폭 측정 기반(px, clamp 72~140), 그 외 동적(px) 측정, 딜 이름은 남는 폭 사용.
 - 메모: memoCount>0 → `메모 확인` 활성 버튼, memoCount=0 → `메모 없음` 비활성 버튼(pointer-events:none). 모달은 ESC/X/오버레이로 닫힘, 날짜 YYMMDD, 메모 내용 `pre-wrap`, 내용 폰트 1.5em.
 - 링크: 기업명/딜/담당자는 세일즈맵 새 탭 이동(SALESMAP_BASE, org/people/deal URL), 내부 navigateToOrg 사용 안 함.
@@ -166,8 +167,8 @@ sync_source:
   ```
 
 ## Verification
-- 사이드바 메뉴가 순서대로 `2025 Top100 카운터파티 DRI` → `2025년 체결액 순위` → `조직/People/Deal 뷰어` → `교육 1팀 딜체크` → `StatePath 24→25` → … 로 노출되는지 확인한다.
-- 교육 1팀 딜체크 테이블에서 orgWon2025Total DESC → createdAt ASC → dealId ASC 정렬, 리텐션/신규 분리, nowrap/keep-all + colgroup 폭(15ch/8ch/동적/딜이름 남는 폭/메모 버튼 폭) 규칙이 적용되는지 DevTools로 확인한다.
+- 사이드바 메뉴가 순서대로 `2025 Top100 카운터파티 DRI` → `2025년 체결액 순위` → `조직/People/Deal 뷰어` → `교육 1팀 딜체크` → `교육 2팀 딜체크` → `StatePath 24→25` → … 로 노출되는지 확인한다.
+- 교육 1·2팀 딜체크 테이블에서 orgWon2025Total DESC → createdAt ASC → dealId ASC 정렬, 리텐션/신규 분리, nowrap/keep-all + colgroup 폭(15ch/8ch/동적/딜이름 남는 폭/메모 버튼 폭) 규칙이 적용되는지 DevTools로 확인한다.
 - 교육 1팀 메모 버튼이 memoCount=0일 때 `메모 없음` 비활성 버튼(pointer-events none), memoCount>0일 때 `메모 확인` 활성 버튼으로 표시되고 모달이 ESC/X/오버레이로 닫히는지 확인한다.
 - 가능성 컬럼이 배열을 "/"로 조인해 한 줄로 표시되고 날짜가 `YYMMDD`, 예상 금액이 `formatAmount`(억)로 렌더되는지 확인한다.
 - 조직/People/Deal 뷰어에서 조직 목록이 2025 Won desc → 이름 asc로 정렬되고 People/Deal 없는 조직이 제외되는지 확인한다.

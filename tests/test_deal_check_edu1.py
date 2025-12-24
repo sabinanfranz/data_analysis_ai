@@ -1,5 +1,6 @@
 import sqlite3
 import tempfile
+import unittest
 from pathlib import Path
 
 from dashboard.server import database as db
@@ -16,6 +17,7 @@ def _init_db(path: Path) -> None:
         CREATE TABLE people (
             id TEXT PRIMARY KEY,
             organizationId TEXT,
+            "이름" TEXT,
             "소속 상위 조직" TEXT,
             "팀(명함/메일서명)" TEXT
         );
@@ -47,13 +49,15 @@ def _init_db(path: Path) -> None:
         [
             ("orgA", "알파"),
             ("orgB", "베타"),
+            ("orgC", "감마"),
         ],
     )
     conn.executemany(
-        'INSERT INTO people (id, organizationId, "소속 상위 조직", "팀(명함/메일서명)") VALUES (?, ?, ?, ?)',
+        'INSERT INTO people (id, organizationId, "이름", "소속 상위 조직", "팀(명함/메일서명)") VALUES (?, ?, ?, ?, ?)',
         [
-            ("pA", "orgA", "HRD본부", "팀A"),
-            ("pB", "orgB", "BU본부", "팀B"),
+            ("pA", "orgA", "사람A", "HRD본부", "팀A"),
+            ("pB", "orgB", "사람B", "BU본부", "팀B"),
+            ("pC", "orgC", "사람C", "HRD본부", "팀C"),
         ],
     )
     conn.executemany(
@@ -123,6 +127,51 @@ def _init_db(path: Path) -> None:
                 "높음",
                 "2025-05-01",
             ),
+            (
+                "won-c",
+                None,
+                "orgC",
+                "Won C",
+                "Won",
+                "200",
+                None,
+                "2025-01-05",
+                "2025-01-05",
+                "",
+                "",
+                "",
+                "",
+            ),
+            (
+                "deal-c1",
+                "pC",
+                "orgC",
+                "딜 C1",
+                "SQL",
+                "0",
+                "300",
+                "",
+                "2025-01-15",
+                "온라인",
+                '["권노을"]',
+                "높음",
+                "2025-02-01",
+            ),
+            (
+                "deal-c2",
+                "pC",
+                "orgC",
+                "딜 C2",
+                "SQL",
+                "0",
+                "300",
+                "",
+                "2025-01-20",
+                "온라인",
+                "비멤버",
+                "높음",
+                "2025-02-02",
+            ),
         ],
     )
     conn.executemany(
@@ -136,22 +185,34 @@ def _init_db(path: Path) -> None:
     conn.close()
 
 
-def test_edu1_deal_check_retention_filter_sort_memo() -> None:
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as tmp:
-        db_path = Path(tmp.name)
-    _init_db(db_path)
-    try:
-        items = db.get_edu1_deal_check_sql_deals(db_path=db_path)
-        deal_ids = [row["dealId"] for row in items]
-        assert deal_ids == ["deal-a0", "deal-a1", "deal-b1"]
+class DealCheckTest(unittest.TestCase):
+    def test_deal_check_team_filters_and_retention(self) -> None:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as tmp:
+            db_path = Path(tmp.name)
+        _init_db(db_path)
+        try:
+            items = db.get_deal_check("edu1", db_path=db_path)
+            deal_ids = [row["dealId"] for row in items]
+            self.assertEqual(deal_ids, ["deal-a0", "deal-a1", "deal-b1"])
 
-        assert all(row["isRetention"] for row in items if row["orgId"] == "orgA")
-        assert all(not row["isRetention"] for row in items if row["orgId"] == "orgB")
+            self.assertTrue(all(row["isRetention"] for row in items if row["orgId"] == "orgA"))
+            self.assertTrue(all(not row["isRetention"] for row in items if row["orgId"] == "orgB"))
 
-        memo_item = next(row for row in items if row["dealId"] == "deal-a1")
-        assert memo_item["memoCount"] == 2
-        assert memo_item["orgWon2025Total"] == 100.0
+            memo_item = next(row for row in items if row["dealId"] == "deal-a1")
+            self.assertEqual(memo_item["memoCount"], 2)
+            self.assertEqual(memo_item["orgWon2025Total"], 100.0)
 
-        assert "deal-b2" not in deal_ids
-    finally:
-        db_path.unlink(missing_ok=True)
+            self.assertNotIn("deal-b2", deal_ids)
+
+            edu2_items = db.get_deal_check("edu2", db_path=db_path)
+            edu2_ids = [row["dealId"] for row in edu2_items]
+            self.assertEqual(edu2_ids, ["deal-c1"])
+            edu2_row = edu2_items[0]
+            self.assertEqual(edu2_row["orgId"], "orgC")
+            self.assertTrue(edu2_row["isRetention"])
+            self.assertEqual(edu2_row["orgWon2025Total"], 200.0)
+
+            with self.assertRaises(ValueError):
+                db.get_deal_check("unknown", db_path=db_path)
+        finally:
+            db_path.unlink(missing_ok=True)

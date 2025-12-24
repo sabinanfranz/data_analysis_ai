@@ -76,12 +76,34 @@ def get_deal_memos(deal_id: str, limit: int = Query(200, ge=1, le=500)) -> dict:
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/deal-check")
+def get_deal_check(team: str = Query(..., description="팀 키 (edu1|edu2)")) -> dict:
+    try:
+        return {"items": db.get_deal_check(team)}
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/deal-check/edu1")
 def get_edu1_deal_check() -> dict:
     try:
-        return {"items": db.get_edu1_deal_check_sql_deals()}
+        return {"items": db.get_deal_check("edu1")}
     except FileNotFoundError as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+
+@router.get("/deal-check/edu2")
+def get_edu2_deal_check() -> dict:
+    try:
+        return {"items": db.get_deal_check("edu2")}
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
 
 
 @router.get("/rank/2025-deals")

@@ -22,12 +22,12 @@ sync_source:
 - 데이터 보관: `people`, `deals`, `orgMemos`, `personMemos`, `dealMemos`, `wonSummary`, `wonGroupJson/Compact`, `filteredWonGroupJson/Compact`.
 - StatePath 전용: `statepath2425`(segment/search/sort/limit/offset/items/filteredItems/summary/loading/error + quickFilters + patternFilter + breadcrumb + pagination)와 `statepathLegend`(용어 모달 open/section).
 - 2025 카운터파티 DRI 전용: `rankCounterpartyDri`(size/rows/loading/error/selected/detail/search/dri/hideMissingUpper/sort/teamPart/teamPartOptions).
-- 교육 1팀 딜체크 전용: `edu1DealCheck`(loading/error/items) + 캐시 key `edu1DealCheck`.
+- 교육 딜체크 전용: `dealCheck`(teamKey→loading/error/items) + 캐시 key `dealCheck`(edu1/edu2).
 - 모달 상태: `modal`(메모), `jsonModal`, `webformModal`, `rankPeopleModal`(딜 리스트), `rankGuideModal`, `rankMultiplierModal`, `statePathModal`(단건 statepath), `statePathLegendModal`, 교육1팀 딜 메모 모달.
 - 디버그: `DEBUG_ORG_SELECT`/`setOrgSelectDebug`로 조직 선택 디버그 로그 제어.
 
 ## 3) cache 구조/정책
-- Map 캐시: `orgLookup`, `orgMemos`, `peopleByOrg`, `deals`, `personMemos`, `dealMemos`, `wonSummary`, `wonGroupJsonByOrg`, `wonGroupJsonCompactByOrg`, `rank2025BySize`, `rank2025PeopleBySize`, `rank2025CounterpartyDriBySize`, `mismatch2025BySize`, `statepathPortfolioByKey`, `statePathByOrg`, `statepathDetailByOrg`(2425 상세), `edu1DealCheck`.
+- Map 캐시: `orgLookup`, `orgMemos`, `peopleByOrg`, `deals`, `personMemos`, `dealMemos`, `wonSummary`, `wonGroupJsonByOrg`, `wonGroupJsonCompactByOrg`, `rank2025BySize`, `rank2025PeopleBySize`, `rank2025CounterpartyDriBySize`, `mismatch2025BySize`, `statepathPortfolioByKey`, `statePathByOrg`, `statepathDetailByOrg`(2425 상세), `dealCheck`(edu1/edu2).
 - 무효화 없음: 새 DB로 교체 시 브라우저 새로고침 필요.
 - 캐시 적중 시 API 호출을 건너뛰고 즉시 렌더.
 
@@ -38,11 +38,11 @@ sync_source:
 4. People 선택: People 행 클릭 → Deals fetch(`/people/{id}/deals`) → Deal 메모 fetch(`/deals/{id}/memos`) → 관련 표/모달 갱신.
 5. JSON 버튼: `/orgs/{id}/won-groups-json`·`won-groups-json-compact`를 캐시 후 전체/선택 상위 조직 JSON/compact 모달/복사. 선택 없으면 버튼 비활성화 + 안내 문구.
 6. 선택 초기화: 규모/검색/회사 선택 상태를 기본으로 리셋하고 목록 재조회. 상위 조직/People/Deal/메모/Won 요약/JSON 상태도 초기화한다. 자동 선택 없음.
-7. 교육 1팀 딜체크: 첫 로드시 캐시 없으면 `/api/deal-check/edu1` 호출 → 리텐션/신규로 분리 → memoCount/링크/정렬 적용 테이블을 렌더. 캐시 적중 시 재호출 생략.
+7. 교육 딜체크: 팀별 첫 로드시 캐시 없으면 `/api/deal-check?team=edu1|edu2` 호출 → 리텐션/신규로 분리 → memoCount/링크/정렬 적용 테이블을 렌더. 캐시 적중 시 재호출 생략.
 
 ## 5) 메뉴별 동작 요약
 - **조직/People/Deal 뷰어(`org-view`)**: 조직 목록/메모/People/Deal/메모, 상위 조직 Won 요약(2025 담당자/팀&파트/DRI 포함), 상위 조직별 JSON + 간소화 JSON, StatePath 버튼/모달, 웹폼 내역 모달(People 행 버튼), 딜/People 세일즈맵 링크.
-- **교육 1팀 딜체크(`edu1-dealcheck`)**: `/api/deal-check/edu1` SQL 딜 중 교육1팀 owners 필터. 리텐션(2025 Won 금액 파싱 성공 >=0) vs 신규 컨테이너 두 개, 같은 정렬(orgWon2025Total DESC → createdAt ASC → dealId ASC). 컬럼: 기업명(세일즈맵 조직 링크, 15ch), 소속 상위 조직(15ch), 팀(15ch), 담당자(고객, 8ch), 생성날짜(YYMMDD), 딜 이름(세일즈맵 딜 링크, 남은 폭), 과정포맷(동적 폭), 파트(PART_STRUCTURE 매핑), 데이원(owners 원문), 가능성(Array → "/" join), 수주 예정일(YYMMDD), 예상, 메모 버튼. nowrap/keep-all를 wrapper(.edu1-dealcheck) 하위에 강제, 테이블 컨테이너는 가로 스크롤. 메모: memoCount>0 → `메모 확인` 활성 버튼, 0 → `메모 없음` 비활성 버튼. 모달은 ESC/X/오버레이 닫기, 날짜 YYMMDD, 내용 pre-wrap/1.5em.
+- **교육 딜체크(`edu1-dealcheck`, `edu2-dealcheck`)**: `/api/deal-check?team=...` SQL 딜 중 팀별 owners 필터. 리텐션(2025 Won 금액 파싱 성공 >=0) vs 신규 컨테이너 두 개, 같은 정렬(orgWon2025Total DESC → createdAt ASC → dealId ASC). 컬럼: 기업명(세일즈맵 조직 링크, 15ch), 소속 상위 조직(15ch), 팀(15ch), 담당자(고객, 8ch), 생성날짜(YYMMDD), 딜 이름(세일즈맵 딜 링크, 남은 폭), 과정포맷(동적 폭), 파트(PART_STRUCTURE 매핑 teamKey별), 데이원(owners 원문), 가능성(Array → "/" join), 수주 예정일(YYMMDD), 예상, 메모 버튼. nowrap/keep-all를 wrapper(.dealcheck-screen) 하위에 강제, 테이블 컨테이너는 가로 스크롤. 메모: memoCount>0 → `메모 확인` 활성 버튼, 0 → `메모 없음` 비활성 버튼. 모달은 ESC/X/오버레이 닫기, 날짜 YYMMDD, 내용 pre-wrap/1.5em.
 - **2025년 체결액 순위(`rank-2025`)**: `/api/rank/2025-deals` 호출, 규모 필터, 등급 가이드/배수 모달. 표는 24/25년 등급·총액, 24→25 배수, 25년 온라인/비온라인, 26년 목표액을 표시하며 별도 요약 카드는 없다. 회사 클릭 시 조직 화면으로 이동.
 - **2025 대기업 딜·People(`rank-2025-people`)**: `/api/rank/2025-deals-people`, 규모/회사/상위 조직 필터, 딜 보기 모달.
 - **2025 Top100 카운터파티 DRI(`rank-2025-counterparty-dri`)**: `/api/rank/2025-top100-counterparty-dri?size=...&limit=100&offset=...` 호출. 온라인=구독제(온라인)/선택구매(온라인)/포팅, owners/upper_org 미입력은 `미입력` 정규화. 팀&파트/DRI는 PART_STRUCTURE 기반 프런트 계산(단일 팀·파트면 O, ‘셀’ 포함도 허용). 필터: 검색, DRI, 팀&파트 드롭다운, 미입력 상위 조직 숨김, 정렬, 규모. 회사명 클릭 시 조직/People/Deal 뷰어로 이동해 해당 회사 검색, 나머지 영역 클릭 시 모달을 열어 25 비온라인·26 타겟·26 비온라인 체결 소스 딜을 표로 보여준다(금액→예상체결액 폴백, 계약체결일→수주예정일 연도 판정, 성사가능성 “높음/확정”이면 집계, 2025 딜이라도 수강시작 2026이면 26 체결로 가산). Org 100개 단위 Prev/Next로 다음 상위 조직 묶음을 조회한다.
@@ -57,12 +57,12 @@ sync_source:
 - Won 요약 DRI 규칙: 2025 Won 딜 담당자 이름 → PART_STRUCTURE 매핑, 단일 팀/파트면 `O`(셀 포함 허용), 매핑 실패나 복수 콤보면 `X`.
 - StatePath 모달: `/api/orgs/{id}/statepath` 응답을 캐시(`statePathByOrg`) 후 연도별 요약/셀 비교/이벤트/추천 블록으로 렌더, 금액은 억 단위 그대로 표시(`formatEok`). StatePath 화면에는 STATEPATH_GLOSSARY 기반 툴팁/title/ⓘ 버튼과 통합 “용어/기준” 모달이 붙어 있다.
 - StatePath JSON 내보내기: Accounts Table 섹션에서 필터 결과 전체(filteredItems)를 메타+행 JSON으로 보기/복사할 수 있고, StatePath 상세 모달에서 RevOps 추천을 제외한 Core JSON을 복사할 수 있다(툴팁/legend에 기준 명시, 클립보드 실패 시 textarea 폴백).
-- 교육1팀 테이블 전용 스타일: `.edu1-dealcheck` 래퍼 하위 table/th/td/button에 `white-space: nowrap`, `word-break: keep-all`, `overflow-wrap: normal`, ellipsis를 강제. table-layout: fixed, colgroup으로 15ch 고정(org/upper/team), 8ch 고정(personName), 동적 측정(courseFormat/createdAt/part/owners/probability/expectedCloseDate/expectedAmount), 메모는 버튼 폭 측정 기반, 딜 이름은 남는 폭을 사용. 테이블 컨테이너는 `overflow-x: auto`.
+- 교육 딜체크 스타일: `.dealcheck-screen` 래퍼 하위 table/th/td/button에 `white-space: nowrap`, `word-break: keep-all`, `overflow-wrap: normal`, ellipsis를 강제. table-layout: fixed, colgroup으로 15ch 고정(org/upper/team), 8ch 고정(personName), 동적 측정(courseFormat/createdAt/part/owners/probability/expectedCloseDate/expectedAmount), 메모는 버튼 폭 측정 기반, 딜 이름은 남는 폭을 사용. 테이블 컨테이너는 `overflow-x: auto`.
 - 링크: 기업명/딜/고객 담당자/데이원 담당자(일부 화면)는 `target="_blank"`로 세일즈맵 워크스페이스 이동, 내부 `navigateToOrg`는 edu1 테이블에서 사용하지 않는다.
 
 ## Verification
-- edu1 메뉴가 메인 4번째에 노출되고 `/api/deal-check/edu1` 캐시 키를 사용해 로드/렌더되는지 확인한다.
-- edu1 테이블 정렬(orgWon2025Total DESC → createdAt ASC → dealId ASC), 컬럼 폭 정책(15ch/8ch/동적/딜이름 남는 폭/메모 버튼 폭)이 적용됐는지 DevTools에서 col width를 확인한다.
-- edu1 가능성 값이 배열을 "/"로 조인하여 한 줄로 표시되고, 날짜가 `YYMMDD`, 메모 버튼이 memoCount=0일 때 비활성(`메모 없음`)인지 확인한다.
-- edu1 메모 모달이 ESC/X/오버레이로 닫히고, 날짜 `YYMMDD`, 내용 pre-wrap + 1.5em 폰트가 적용되는지 확인한다.
+- edu1/edu2 메뉴가 메인 4·5번째에 노출되고 `/api/deal-check?team=...` 캐시 키를 사용해 로드/렌더되는지 확인한다.
+- edu1/edu2 테이블 정렬(orgWon2025Total DESC → createdAt ASC → dealId ASC), 컬럼 폭 정책(15ch/8ch/동적/딜이름 남는 폭/메모 버튼 폭)이 적용됐는지 DevTools에서 col width를 확인한다.
+- 가능성 값이 배열을 "/"로 조인하여 한 줄로 표시되고, 날짜가 `YYMMDD`, 메모 버튼이 memoCount=0일 때 비활성(`메모 없음`)인지 확인한다.
+- 메모 모달이 ESC/X/오버레이로 닫히고, 날짜 `YYMMDD`, 내용 pre-wrap + 1.5em 폰트가 적용되는지 확인한다.
 - 조직/People/Deal 뷰어에서 조직 목록 정렬(2025 Won desc → name asc)과 상위 조직 선택 시 JSON/compact 버튼 활성화/비활성 동작을 확인한다.

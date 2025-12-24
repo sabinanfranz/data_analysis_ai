@@ -243,12 +243,11 @@
       gap: 6px;
     }
 
-    #edu1RetentionCard,
-    #edu1SummaryCard {
+    .dealcheck-screen .card {
       min-height: auto;
     }
 
-    .card h2.edu1-retention-title {
+    .card h2.dealcheck-retention-title {
       font-size: 30px;
       font-weight: 800;
       padding: 6px 10px;
@@ -257,7 +256,7 @@
       color: #22c55e;
     }
 
-    .card h2.edu1-new-title {
+    .card h2.dealcheck-new-title {
       font-size: 30px;
       font-weight: 800;
       padding: 6px 10px;
@@ -266,26 +265,26 @@
       color: #fbbf24;
     }
 
-    .edu1-dealcheck .table-wrap,
-    .edu1-table-wrap {
+    .dealcheck-screen .table-wrap,
+    .dealcheck-table-wrap {
       overflow-x: auto;
       max-width: 100%;
     }
 
-    .edu1-dealcheck .edu1-table,
-    .edu1-dealcheck .edu1-table * {
+    .dealcheck-screen .dealcheck-table,
+    .dealcheck-screen .dealcheck-table * {
       white-space: nowrap !important;
       word-break: keep-all !important;
       overflow-wrap: normal !important;
     }
 
-    .edu1-dealcheck .edu1-table {
+    .dealcheck-screen .dealcheck-table {
       table-layout: fixed;
       width: 100%;
     }
 
-    .edu1-dealcheck .edu1-table th,
-    .edu1-dealcheck .edu1-table td {
+    .dealcheck-screen .dealcheck-table th,
+    .dealcheck-screen .dealcheck-table td {
       padding: 2px 8px;
       line-height: 18px;
       font-size: 12px;
@@ -293,7 +292,7 @@
       text-overflow: ellipsis;
     }
 
-    .edu1-dealcheck .btn-memo {
+    .dealcheck-screen .btn-memo {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -341,7 +340,7 @@
       outline: none;
     }
 
-    .edu1-deal-name {
+    .dealcheck-deal-name {
       display: inline-block;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -359,7 +358,7 @@
       text-decoration: underline;
     }
 
-    .edu1-table td[data-col="personName"] a.sm-link {
+    .dealcheck-table td[data-col="personName"] a.sm-link {
       display: inline-block;
       max-width: 100%;
       overflow: hidden;
@@ -1082,6 +1081,23 @@
       console.log("[orgSelect] debug mode:", DEBUG_ORG_SELECT);
     };
 
+    const DEALCHECK_TEAMS = {
+      edu1: {
+        id: "edu1-dealcheck",
+        label: "교육 1팀 딜체크",
+        apiPath: "/deal-check/edu1",
+        partTeamKey: "기업교육 1팀",
+        menuOrder: 4,
+      },
+      edu2: {
+        id: "edu2-dealcheck",
+        label: "교육 2팀 딜체크",
+        apiPath: "/deal-check/edu2",
+        partTeamKey: "기업교육 2팀",
+        menuOrder: 5,
+      },
+    };
+
     const MENU_SECTIONS = [
       {
         sectionId: "main",
@@ -1091,7 +1107,8 @@
           { id: "rank-2025-counterparty-dri", label: "2025 Top100 카운터파티 DRI" },
           { id: "rank-2025", label: "2025년 체결액 순위" },
           { id: "org-view", label: "조직/People/Deal 뷰어" },
-          { id: "edu1-dealcheck", label: "교육 1팀 딜체크" },
+          { id: DEALCHECK_TEAMS.edu1.id, label: DEALCHECK_TEAMS.edu1.label },
+          { id: DEALCHECK_TEAMS.edu2.id, label: DEALCHECK_TEAMS.edu2.label },
         ],
       },
       {
@@ -1115,7 +1132,8 @@
       "industry-2025": renderIndustryMenu,
       "statepath-2425": renderStatePathMenu,
       "org-view": renderOrgScreen,
-      "edu1-dealcheck": renderEdu1DealCheck,
+      [DEALCHECK_TEAMS.edu1.id]: (root) => renderDealCheckScreen("edu1", root),
+      [DEALCHECK_TEAMS.edu2.id]: (root) => renderDealCheckScreen("edu2", root),
     };
 
     const MENU_ITEMS = MENU_SECTIONS.flatMap((section) => section.items);
@@ -1137,10 +1155,9 @@
       rankPeopleOrgFilter: "",
       rankPeopleUpperFilter: "",
       mismatchSize: "대기업",
-      edu1DealCheck: {
-        loading: false,
-        error: null,
-        items: [],
+      dealCheck: {
+        edu1: { loading: false, error: null, items: [] },
+        edu2: { loading: false, error: null, items: [] },
       },
       rankMultipliers: {
         S0: 1.5,
@@ -1289,7 +1306,10 @@
       yearlyTotals: null,
       statepathPortfolioByKey: new Map(),
       rank2025CounterpartyDriBySize: new Map(),
-      edu1DealCheck: null,
+      dealCheck: {
+        edu1: null,
+        edu2: null,
+      },
     };
     const NAME_TO_TEAM_PART = buildNameToTeamPartIndex(PART_STRUCTURE);
 
@@ -1342,15 +1362,22 @@
       return stripTrailingLetter(trimmed);
     }
 
-    const EDU1_PART_LOOKUP = (() => {
-      const team = PART_STRUCTURE["기업교육 1팀"] || {};
+    const PART_LOOKUP_CACHE = {};
+
+    function getDealCheckPartLookup(teamKey) {
+      if (PART_LOOKUP_CACHE[teamKey]) return PART_LOOKUP_CACHE[teamKey];
+      const cfg = DEALCHECK_TEAMS[teamKey];
+      const team = (cfg && PART_STRUCTURE[cfg.partTeamKey]) || {};
       const buildSet = (names) =>
         new Set((names || []).map((n) => normalizeOwnerName(n)).filter(Boolean));
-      return {
+      const lookup = {
         part1: buildSet(team["1파트"]),
         part2: buildSet(team["2파트"]),
+        online: buildSet(team["온라인셀"]),
       };
-    })();
+      PART_LOOKUP_CACHE[teamKey] = lookup;
+      return lookup;
+    }
 
     function resolveOwnerTeamPart(name) {
       const trimmed = (name || "").trim();
@@ -1431,15 +1458,17 @@
       return { ownersText, teamPartText, dri };
     }
 
-    function inferPartFromOwnersEdu1(owners) {
+    function inferPartFromOwners(teamKey, owners) {
       const names = Array.isArray(owners) ? owners : [];
       if (!names.length) return "미매핑";
+      const lookup = getDealCheckPartLookup(teamKey);
       const parts = new Set();
       names.forEach((name) => {
         const normalized = normalizeOwnerName(name);
         if (!normalized) return;
-        if (EDU1_PART_LOOKUP.part1.has(normalized)) parts.add("1파트");
-        if (EDU1_PART_LOOKUP.part2.has(normalized)) parts.add("2파트");
+        if (lookup.part1.has(normalized)) parts.add("1파트");
+        if (lookup.part2.has(normalized)) parts.add("2파트");
+        if (lookup.online.has(normalized)) parts.add("온라인셀");
       });
       if (!parts.size) return "미매핑";
       return ["1파트", "2파트", "온라인셀"].filter((p) => parts.has(p)).join("+");
@@ -1653,8 +1682,9 @@
       state.rankPeopleModal.backdrop.style.display = "flex";
     }
 
-    function fitColumnsToContent(tableEl, items) {
+    function fitColumnsToContent(tableEl, items, options = {}) {
       if (!tableEl) return;
+      const inferPartFn = typeof options.inferPartFn === "function" ? options.inferPartFn : () => "-";
       const keys = ["courseFormat", "createdAt", "part", "owners", "probability", "expectedCloseDate", "expectedAmount"];
       const canvas = fitColumnsToContent._canvas || (fitColumnsToContent._canvas = document.createElement("canvas"));
       const ctx = canvas.getContext("2d");
@@ -1686,7 +1716,7 @@
         const values = {
           courseFormat: row.courseFormat || "",
           createdAt: formatDateYYMMDD(row.createdAt),
-          part: inferPartFromOwnersEdu1(owners),
+          part: inferPartFn(owners),
           owners: owners.length ? owners.join(", ") : "-",
           probability: formatProbability(row.probability),
           expectedCloseDate: formatDateYYMMDD(row.expectedCloseDate),
@@ -1729,7 +1759,7 @@
       const col = tableEl.querySelector('col[data-col="memo"]');
       if (!col) return;
       const measureBox = document.createElement("div");
-      measureBox.className = "edu1-dealcheck";
+      measureBox.className = "dealcheck-screen";
       measureBox.style.position = "absolute";
       measureBox.style.visibility = "hidden";
       measureBox.style.pointerEvents = "none";
@@ -4657,42 +4687,47 @@
       await initOrgScreen();
     }
 
-    async function loadEdu1DealCheck() {
-      if (cache.edu1DealCheck) {
-        state.edu1DealCheck.loading = false;
-        state.edu1DealCheck.error = null;
-        state.edu1DealCheck.items = cache.edu1DealCheck;
-        return cache.edu1DealCheck;
+    async function loadDealCheck(teamKey) {
+      const cfg = DEALCHECK_TEAMS[teamKey];
+      if (!cfg) throw new Error("Unknown teamKey: " + teamKey);
+      if (cache.dealCheck[teamKey]) {
+        state.dealCheck[teamKey].loading = false;
+        state.dealCheck[teamKey].error = null;
+        state.dealCheck[teamKey].items = cache.dealCheck[teamKey];
+        return cache.dealCheck[teamKey];
       }
-      state.edu1DealCheck.loading = true;
-      state.edu1DealCheck.error = null;
+      state.dealCheck[teamKey].loading = true;
       try {
-        const data = await fetchJson("/deal-check/edu1");
+        const res = await fetch(`${API_BASE}${cfg.apiPath}`);
+        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+        const data = await res.json();
         const items = data.items || [];
-        cache.edu1DealCheck = items;
-        state.edu1DealCheck.items = items;
+        cache.dealCheck[teamKey] = items;
+        state.dealCheck[teamKey].items = items;
+        state.dealCheck[teamKey].error = null;
         return items;
-      } catch (err) {
-        state.edu1DealCheck.error = err.message;
-        showToast(`교육 1팀 딜체크 로드 오류: ${err.message}`, "error");
-        throw err;
+      } catch (e) {
+        state.dealCheck[teamKey].error = String(e);
+        showToast(`${cfg.label} 로드 오류: ${e}`, "error");
+        return [];
       } finally {
-        state.edu1DealCheck.loading = false;
+        state.dealCheck[teamKey].loading = false;
       }
     }
 
-    function renderEdu1DealCheckTable(items) {
+    function renderDealCheckTable(teamKey, items) {
+      const inferPartFn = (owners) => inferPartFromOwners(teamKey, owners);
       const rows = (items || [])
         .map((row) => {
           const owners = Array.isArray(row.owners) ? row.owners.filter(Boolean) : [];
           const ownersText = owners.length ? owners.join(", ") : "-";
-          const part = inferPartFromOwnersEdu1(owners);
+          const part = inferPartFn(owners);
           const dealName = row.dealName || "-";
           const dealNameEscaped = escapeHtml(dealName);
           const dealLink =
             row.dealId && row.dealId.trim()
-              ? `<a class="sm-link edu1-deal-name" href="${salesmapDealUrl(row.dealId)}" target="_blank" rel="noopener noreferrer" title="${dealNameEscaped}">${dealNameEscaped}</a>`
-              : `<span class="edu1-deal-name" title="${dealNameEscaped}">${dealNameEscaped}</span>`;
+              ? `<a class="sm-link dealcheck-deal-name" href="${salesmapDealUrl(row.dealId)}" target="_blank" rel="noopener noreferrer" title="${dealNameEscaped}">${dealNameEscaped}</a>`
+              : `<span class="dealcheck-deal-name" title="${dealNameEscaped}">${dealNameEscaped}</span>`;
           const memoCell =
             row.memoCount && row.memoCount > 0
               ? `<button type="button" class="btn-memo btn-memo--active" data-action="deal-memo" data-deal-id="${row.dealId}">메모 확인</button>`
@@ -4704,7 +4739,7 @@
               : orgLabel;
           const customerCell =
             row.personId && row.personId.trim()
-              ? `<a class="sm-link edu1-person-link" href="${salesmapPeopleUrl(row.personId)}" target="_blank" rel="noopener noreferrer">${row.personName || row.personId}</a>`
+              ? `<a class="sm-link" href="${salesmapPeopleUrl(row.personId)}" target="_blank" rel="noopener noreferrer">${row.personName || row.personId}</a>`
               : row.personName || "-";
           return `
             <tr>
@@ -4727,8 +4762,8 @@
         .join("");
 
       return `
-        <div class="table-wrap full edu1-table-wrap">
-          <table class="edu1-table">
+        <div class="table-wrap full dealcheck-table-wrap">
+          <table class="dealcheck-table">
             <colgroup>
               <col data-col="orgName" style="width:15ch; min-width:15ch; max-width:15ch;" />
               <col data-col="upperOrg" style="width:15ch; min-width:15ch; max-width:15ch;" />
@@ -4767,41 +4802,46 @@
       `;
     }
 
-    async function renderEdu1DealCheck(contentRoot) {
+    async function renderDealCheckScreen(teamKey, contentRoot) {
+      const cfg = DEALCHECK_TEAMS[teamKey];
+      if (!cfg) {
+        contentRoot.innerHTML = `<div class="muted">알 수 없는 팀(${teamKey})입니다.</div>`;
+        return;
+      }
       contentRoot.innerHTML = `
-        <div class="edu1-dealcheck">
-        <section class="card" id="edu1SummaryCard">
+        <div class="dealcheck-screen" data-team="${teamKey}">
+        <section class="card" id="${teamKey}SummaryCard">
           <div class="control-row">
-            <h2>교육 1팀 딜체크</h2>
+            <h2>${cfg.label}</h2>
             <div class="spacer"></div>
-            <span class="pill muted" id="edu1SummaryCount">리텐션 0건 / 신규 0건</span>
+            <span class="pill muted" id="${teamKey}SummaryCount">리텐션 0건 / 신규 0건</span>
           </div>
-          <div class="muted">상태=SQL이며 딜 담당자 중 교육 1팀 담당자가 포함된 딜만 노출됩니다.</div>
+          <div class="muted">상태=SQL이며 딜 담당자 중 ${cfg.partTeamKey} 담당자가 포함된 딜만 노출됩니다.</div>
         </section>
-        <section class="card" id="edu1RetentionCard">
+        <section class="card" id="${teamKey}RetentionCard">
           <div class="control-row">
-            <h2 class="edu1-retention-title">리텐션 고객</h2>
+            <h2 class="dealcheck-retention-title">리텐션 고객</h2>
             <div class="spacer"></div>
-            <span class="muted" id="edu1RetentionCount">0건</span>
+            <span class="muted" id="${teamKey}RetentionCount">0건</span>
           </div>
-          <div id="edu1RetentionBody" class="muted">불러오는 중...</div>
+          <div id="${teamKey}RetentionBody" class="muted">불러오는 중...</div>
         </section>
         <section class="card">
           <div class="control-row">
-            <h2 class="edu1-new-title">신규 고객</h2>
+            <h2 class="dealcheck-new-title">신규 고객</h2>
             <div class="spacer"></div>
-            <span class="muted" id="edu1NewCount">0건</span>
+            <span class="muted" id="${teamKey}NewCount">0건</span>
           </div>
-          <div id="edu1NewBody" class="muted">불러오는 중...</div>
+          <div id="${teamKey}NewBody" class="muted">불러오는 중...</div>
         </section>
         </div>
       `;
 
-      const summaryCount = document.getElementById("edu1SummaryCount");
-      const retentionCount = document.getElementById("edu1RetentionCount");
-      const newCount = document.getElementById("edu1NewCount");
-      const retentionBody = document.getElementById("edu1RetentionBody");
-      const newBody = document.getElementById("edu1NewBody");
+      const summaryCount = document.getElementById(`${teamKey}SummaryCount`);
+      const retentionCount = document.getElementById(`${teamKey}RetentionCount`);
+      const newCount = document.getElementById(`${teamKey}NewCount`);
+      const retentionBody = document.getElementById(`${teamKey}RetentionBody`);
+      const newBody = document.getElementById(`${teamKey}NewBody`);
 
       const attachHandlers = (container) => {
         container.querySelectorAll('button[data-action="deal-memo"]').forEach((btn) => {
@@ -4814,37 +4854,39 @@
         });
       };
 
+      const inferPartFn = (owners) => inferPartFromOwners(teamKey, owners);
+
       const renderAll = (items) => {
-        const retentionItems = sortEdu1DealCheckItems(items.filter((row) => row.isRetention));
-        const newItems = sortEdu1DealCheckItems(items.filter((row) => !row.isRetention));
+        const retentionItems = sortDealCheckItems(items.filter((row) => row.isRetention));
+        const newItems = sortDealCheckItems(items.filter((row) => !row.isRetention));
 
         summaryCount.textContent = `리텐션 ${retentionItems.length}건 / 신규 ${newItems.length}건`;
         retentionCount.textContent = `${retentionItems.length}건`;
         newCount.textContent = `${newItems.length}건`;
 
         retentionBody.innerHTML = retentionItems.length
-          ? renderEdu1DealCheckTable(retentionItems)
+          ? renderDealCheckTable(teamKey, retentionItems)
           : `<div class="muted">해당 딜이 없습니다.</div>`;
         newBody.innerHTML = newItems.length
-          ? renderEdu1DealCheckTable(newItems)
+          ? renderDealCheckTable(teamKey, newItems)
           : `<div class="muted">해당 딜이 없습니다.</div>`;
 
         attachHandlers(retentionBody);
         attachHandlers(newBody);
-        const retentionTable = retentionBody.querySelector("table.edu1-table");
-        const newTable = newBody.querySelector("table.edu1-table");
+        const retentionTable = retentionBody.querySelector("table.dealcheck-table");
+        const newTable = newBody.querySelector("table.dealcheck-table");
         if (retentionTable) {
-          if (retentionItems.length) fitColumnsToContent(retentionTable, retentionItems);
+          if (retentionItems.length) fitColumnsToContent(retentionTable, retentionItems, { inferPartFn });
           applyMemoColumnWidth(retentionTable);
         }
         if (newTable) {
-          if (newItems.length) fitColumnsToContent(newTable, newItems);
+          if (newItems.length) fitColumnsToContent(newTable, newItems, { inferPartFn });
           applyMemoColumnWidth(newTable);
         }
       };
 
       try {
-        const items = await loadEdu1DealCheck();
+        const items = await loadDealCheck(teamKey);
         renderAll(items);
       } catch (err) {
         retentionBody.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
@@ -4852,7 +4894,7 @@
       }
     }
 
-    function sortEdu1DealCheckItems(items) {
+    function sortDealCheckItems(items) {
       const list = Array.isArray(items) ? items.slice() : [];
       const num = (val) => (Number.isFinite(Number(val)) ? Number(val) : 0);
       return list.sort((a, b) => {

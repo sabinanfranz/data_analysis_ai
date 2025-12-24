@@ -34,18 +34,19 @@ sync_source:
   - StatePath 단건: `/api/orgs/{org_id}/statepath`는 won-groups-json-compact를 기반으로 2024/2025 State, Path 이벤트, Seed, RevOps 추천을 억 단위 금액으로 반환.
   - StatePath 포트폴리오/상세: `/api/statepath/portfolio-2425`, `/api/orgs/{id}/statepath-2425`에서 필터/정렬/버킷/패턴 요약을 제공.
 
-## 교육 1팀 딜체크 전용 엔드포인트
-- `GET /api/deal-check/edu1` (org_tables_api.py → database.get_edu1_deal_check_sql_deals)
-  - 대상: `deal."상태"='SQL'`이며 owners 중 교육 1팀 구성원이 1명 이상 포함된 딜.
+## 딜체크 공통 엔드포인트
+- `GET /api/deal-check?team=edu1|edu2` (org_tables_api.py → database.get_deal_check)
+  - 대상: `deal."상태"='SQL'`이며 owners 중 team 파라미터에 해당하는 PART_STRUCTURE 구성원이 1명 이상 포함된 딜.
   - 응답 필드: dealId, orgId, orgName, orgWon2025Total, isRetention, createdAt, dealName, courseFormat, owners[], probability, expectedCloseDate, expectedAmount, memoCount, upperOrg, teamSignature, personId, personName.
   - 리텐션 판정: 2025 Won 딜 금액 파싱 성공(>=0)이 있는 orgId. 금액 파싱 실패/NULL 제외, 예상 체결액 미사용.
   - 정렬: orgWon2025Total DESC → createdAt ASC → dealId ASC.
   - memoCount: memo 테이블에서 dealId별 COUNT 후 left join(0이면 프런트에서 비활성 버튼 “메모 없음”).
+- 호환 라우트: `/api/deal-check/edu1`, `/api/deal-check/edu2`는 내부적으로 `/api/deal-check?team=...`를 호출.
 
 ## Verification
-- `/api/deal-check/edu1` 호출 시 personId/personName, memoCount, orgWon2025Total 필드 포함 여부 확인.
-- `/api/deal-check/edu1` 결과 정렬이 orgWon2025Total DESC → createdAt ASC → dealId ASC인지 샘플 데이터로 검증.
-- owners에 교육1팀 멤버가 없는 SQL 딜이 필터링되는지 확인.
+- `/api/deal-check?team=edu1|edu2` 호출 시 personId/personName, memoCount, orgWon2025Total 필드 포함 여부 확인.
+- `/api/deal-check` 결과 정렬이 orgWon2025Total DESC → createdAt ASC → dealId ASC인지 샘플 데이터로 검증.
+- owners에 해당 팀 멤버가 없는 SQL 딜이 필터링되는지 확인.
 - `/api/deals/{deal_id}/memos` 결과 건수와 memoCount가 일치하는지 spot-check.
 - `/api/orgs/{org_id}/won-groups-json`에서 industry_major/mid 포함, 웹폼 날짜 변환, 메모 정제 규칙 적용 여부 확인.
 - `/api/statepath/portfolio-2425`에서 기본 필터/정렬 응답이 정상인지, cache hit 시에도 동일 응답인지 확인.

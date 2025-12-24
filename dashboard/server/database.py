@@ -89,6 +89,26 @@ def _parse_owner_names(raw: Any) -> List[str]:
     return deduped
 
 
+def _parse_owner_names_normalized(raw: Any) -> List[str]:
+    return [normalize_owner_name(name) for name in _parse_owner_names(raw) if name]
+
+
+def _dealcheck_members(team_key: str) -> Set[str]:
+    if team_key in _DEALCHECK_MEMBER_CACHE:
+        return _DEALCHECK_MEMBER_CACHE[team_key]
+    cfg = TEAM_CONFIG.get(team_key)
+    if not cfg:
+        raise ValueError(f"Unknown teamKey: {team_key}")
+    team_name = cfg.get("part_team_key")
+    team = PART_STRUCTURE.get(team_name, {})
+    names: List[str] = []
+    for part_names in team.values():
+        names.extend(part_names or [])
+    members = {normalize_owner_name(n) for n in names if n}
+    _DEALCHECK_MEMBER_CACHE[team_key] = members
+    return members
+
+
 def _prob_is_high(val: Any) -> bool:
     """
     Return True if probability includes '확정' or '높음'.
@@ -132,24 +152,30 @@ def normalize_owner_name(name: str) -> str:
     return text
 
 
-EDU1_TEAM_MEMBERS = {
-    normalize_owner_name(name)
-    for name in [
-        "김솔이",
-        "황초롱",
-        "김정은",
-        "김동찬",
-        "정태윤",
-        "서정연",
-        "오진선",
-        "강지선",
-        "정하영",
-        "박범규",
-        "하승민",
-        "이은서",
-        "김세연",
-    ]
+PART_STRUCTURE = {
+    "기업교육 1팀": {
+        "1파트": ["김솔이", "황초롱", "김정은", "김동찬", "정태윤", "서정연", "오진선"],
+        "2파트": ["강지선", "정하영", "박범규", "하승민", "이은서", "김세연"],
+    },
+    "기업교육 2팀": {
+        "1파트": ["권노을", "이윤지B", "이현진", "김민선", "강연정", "방신우", "홍제환"],
+        "2파트": ["정다혜", "임재우", "송승희", "손승완", "김윤지", "손지훈", "홍예진"],
+        "온라인셀": ["강진우", "강다현", "이수빈"],
+    },
 }
+
+TEAM_CONFIG = {
+    "edu1": {
+        "label": "교육 1팀 딜체크",
+        "part_team_key": "기업교육 1팀",
+    },
+    "edu2": {
+        "label": "교육 2팀 딜체크",
+        "part_team_key": "기업교육 2팀",
+    },
+}
+
+_DEALCHECK_MEMBER_CACHE: Dict[str, Set[str]] = {}
 
 
 def _clean_form_memo(text: str) -> Optional[Dict[str, str]]:
@@ -1914,9 +1940,10 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
     }
 
 
-def get_edu1_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
+def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
+    allowed_members = _dealcheck_members(team_key)
 
     retention_org_ids: Set[str] = set()
     org_won_2025_total: Dict[str, float] = {}
@@ -1975,11 +2002,11 @@ def get_edu1_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any
 
     items: List[Dict[str, Any]] = []
     for row in rows:
-        owner_names = _parse_owner_names(row["owner_json"])
-        if not owner_names:
+        owner_names_raw = _parse_owner_names(row["owner_json"])
+        if not owner_names_raw:
             continue
-        normalized_owners = [normalize_owner_name(name) for name in owner_names if name]
-        if not any(name in EDU1_TEAM_MEMBERS for name in normalized_owners):
+        normalized_owners = _parse_owner_names_normalized(row["owner_json"])
+        if not any(name in allowed_members for name in normalized_owners):
             continue
 
         org_id = row["org_id"]
@@ -1996,7 +2023,7 @@ def get_edu1_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any
                 "createdAt": row["created_at"],
                 "dealName": row["deal_name"],
                 "courseFormat": row["course_format"],
-                "owners": owner_names,
+                "owners": owner_names_raw,
                 "probability": row["probability"],
                 "expectedCloseDate": row["expected_close_date"],
                 "expectedAmount": _to_number(row["expected_amount"]),
@@ -2014,6 +2041,14 @@ def get_edu1_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any
         )
     )
     return items
+
+
+def get_edu1_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
+    return get_deal_check("edu1", db_path=db_path)
+
+
+def get_edu2_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
+    return get_deal_check("edu2", db_path=db_path)
 
 
 def get_initial_dashboard_data(db_path: Path = DB_PATH) -> Dict[str, Any]:

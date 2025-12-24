@@ -76,6 +76,14 @@ def get_deal_memos(deal_id: str, limit: int = Query(200, ge=1, le=500)) -> dict:
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/deal-check/edu1")
+def get_edu1_deal_check() -> dict:
+    try:
+        return {"items": db.get_edu1_deal_check_sql_deals()}
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/rank/2025-deals")
 def get_rank_2025_deals(
     size: str = Query("전체", description='조직 규모 필터 (예: "대기업", "전체")')

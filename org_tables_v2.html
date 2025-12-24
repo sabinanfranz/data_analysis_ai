@@ -243,6 +243,210 @@
       gap: 6px;
     }
 
+    #edu1RetentionCard,
+    #edu1SummaryCard {
+      min-height: auto;
+    }
+
+    .card h2.edu1-retention-title {
+      font-size: 30px;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: rgba(34, 197, 94, 0.14);
+      color: #22c55e;
+    }
+
+    .card h2.edu1-new-title {
+      font-size: 30px;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: rgba(251, 191, 36, 0.14);
+      color: #fbbf24;
+    }
+
+    .edu1-dealcheck .table-wrap,
+    .edu1-table-wrap {
+      overflow-x: auto;
+      max-width: 100%;
+    }
+
+    .edu1-dealcheck .edu1-table,
+    .edu1-dealcheck .edu1-table * {
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      overflow-wrap: normal !important;
+    }
+
+    .edu1-dealcheck .edu1-table {
+      table-layout: fixed;
+      width: 100%;
+    }
+
+    .edu1-dealcheck .edu1-table th,
+    .edu1-dealcheck .edu1-table td {
+      padding: 2px 8px;
+      line-height: 18px;
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .edu1-dealcheck .btn-memo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 18px;
+      line-height: 18px;
+      padding: 0 8px;
+      border-radius: 8px;
+      font-size: inherit;
+      vertical-align: middle;
+      box-sizing: border-box;
+      min-height: 0;
+      min-width: 0;
+      max-width: 100%;
+      white-space: nowrap;
+    }
+
+    .btn-memo--active {
+      cursor: pointer;
+      border: 1px solid rgba(52, 211, 153, 0.55);
+      background: rgba(52, 211, 153, 0.14);
+      color: #34d399;
+    }
+
+    .btn-memo--active:hover {
+      background: rgba(52, 211, 153, 0.22);
+    }
+
+    .btn-memo--active:focus {
+      outline: 2px solid rgba(52, 211, 153, 0.45);
+      outline-offset: 2px;
+    }
+
+    .btn-memo--disabled {
+      cursor: not-allowed;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.35);
+      box-shadow: none;
+      filter: grayscale(1);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .btn-memo--disabled:focus {
+      outline: none;
+    }
+
+    .edu1-deal-name {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      vertical-align: bottom;
+      white-space: nowrap !important;
+    }
+
+    .sm-link {
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .sm-link:hover {
+      text-decoration: underline;
+    }
+
+    .edu1-table td[data-col="personName"] a.sm-link {
+      display: inline-block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .memo-modal {
+      max-width: 900px;
+      width: min(900px, 92vw);
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .memo-modal .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .memo-modal .modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .memo-modal .modal-body {
+      overflow: auto;
+      padding: 12px;
+    }
+
+    .memo-modal .modal-close {
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #1f2937;
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .memo-modal .modal-close:hover {
+      background: rgba(56, 189, 248, 0.18);
+    }
+
+    .memo-modal table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .memo-modal th,
+    .memo-modal td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .memo-modal td.memo-date {
+      white-space: nowrap;
+      width: 80px;
+    }
+
+    .memo-modal td.memo-text {
+      white-space: pre-wrap !important;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      font-size: 1.5em !important;
+      line-height: 1.45;
+    }
+
+    .memo-table {
+      table-layout: fixed;
+      width: 100%;
+    }
+
     .control-row.tight {
       margin-top: 2px;
       gap: 6px;
@@ -699,6 +903,16 @@
     </div>
   </div>
 
+  <div class="modal-backdrop" id="dealMemoModalBackdrop">
+    <div class="memo-modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div class="modal-title" id="dealMemoModalTitle">딜 메모</div>
+        <button class="modal-close" id="dealMemoModalClose" type="button" aria-label="닫기">×</button>
+      </div>
+      <div class="modal-body" id="dealMemoModalBody"></div>
+    </div>
+  </div>
+
   <div class="modal-backdrop" id="statePathModalBackdrop">
     <div class="modal json-modal">
       <header>
@@ -742,6 +956,10 @@
     };
     const COUNTERPARTY_ONLINE_FORMATS = new Set(["구독제(온라인)", "선택구매(온라인)", "포팅"]);
     const SALESMAP_WORKSPACE_PATH = "64cb5beda5a78ae225d7815b"; // update if workspace path changes
+    const SALESMAP_BASE = "https://salesmap.kr/64cb5beda5a78ae225d7815b";
+    const salesmapOrgUrl = (orgId) => `${SALESMAP_BASE}/contact/organization/${encodeURIComponent(orgId || "")}`;
+    const salesmapPeopleUrl = (personId) => `${SALESMAP_BASE}/contact/people/${encodeURIComponent(personId || "")}`;
+    const salesmapDealUrl = (dealId) => `${SALESMAP_BASE}/deal/${encodeURIComponent(dealId || "")}`;
     const ORG_LIMIT = 200;
     const STATEPATH_SEGMENTS = ["전체", "대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타/미입력"];
     const BUCKET_ORDER = ["Ø", "P5", "P4", "P3", "P2", "P1", "P0", "S0"];
@@ -873,6 +1091,7 @@
           { id: "rank-2025-counterparty-dri", label: "2025 Top100 카운터파티 DRI" },
           { id: "rank-2025", label: "2025년 체결액 순위" },
           { id: "org-view", label: "조직/People/Deal 뷰어" },
+          { id: "edu1-dealcheck", label: "교육 1팀 딜체크" },
         ],
       },
       {
@@ -896,6 +1115,7 @@
       "industry-2025": renderIndustryMenu,
       "statepath-2425": renderStatePathMenu,
       "org-view": renderOrgScreen,
+      "edu1-dealcheck": renderEdu1DealCheck,
     };
 
     const MENU_ITEMS = MENU_SECTIONS.flatMap((section) => section.items);
@@ -917,6 +1137,11 @@
       rankPeopleOrgFilter: "",
       rankPeopleUpperFilter: "",
       mismatchSize: "대기업",
+      edu1DealCheck: {
+        loading: false,
+        error: null,
+        items: [],
+      },
       rankMultipliers: {
         S0: 1.5,
         P0: 1.7,
@@ -932,6 +1157,12 @@
         title: null,
         body: null,
         bound: false,
+      },
+      dealMemoModal: {
+        backdrop: null,
+        close: null,
+        title: null,
+        body: null,
       },
       statepath2425: {
         segment: "전체",
@@ -1058,6 +1289,7 @@
       yearlyTotals: null,
       statepathPortfolioByKey: new Map(),
       rank2025CounterpartyDriBySize: new Map(),
+      edu1DealCheck: null,
     };
     const NAME_TO_TEAM_PART = buildNameToTeamPartIndex(PART_STRUCTURE);
 
@@ -1103,6 +1335,22 @@
       }
       return trimmed;
     }
+
+    function normalizeOwnerName(name) {
+      const trimmed = (name || "").trim();
+      if (!trimmed) return "";
+      return stripTrailingLetter(trimmed);
+    }
+
+    const EDU1_PART_LOOKUP = (() => {
+      const team = PART_STRUCTURE["기업교육 1팀"] || {};
+      const buildSet = (names) =>
+        new Set((names || []).map((n) => normalizeOwnerName(n)).filter(Boolean));
+      return {
+        part1: buildSet(team["1파트"]),
+        part2: buildSet(team["2파트"]),
+      };
+    })();
 
     function resolveOwnerTeamPart(name) {
       const trimmed = (name || "").trim();
@@ -1181,6 +1429,20 @@
       const dri = displayCombos.length === 1 ? "O" : "X";
 
       return { ownersText, teamPartText, dri };
+    }
+
+    function inferPartFromOwnersEdu1(owners) {
+      const names = Array.isArray(owners) ? owners : [];
+      if (!names.length) return "미매핑";
+      const parts = new Set();
+      names.forEach((name) => {
+        const normalized = normalizeOwnerName(name);
+        if (!normalized) return;
+        if (EDU1_PART_LOOKUP.part1.has(normalized)) parts.add("1파트");
+        if (EDU1_PART_LOOKUP.part2.has(normalized)) parts.add("2파트");
+      });
+      if (!parts.size) return "미매핑";
+      return ["1파트", "2파트", "온라인셀"].filter((p) => parts.has(p)).join("+");
     }
 
     function tierMultiplier(tier) {
@@ -1391,9 +1653,171 @@
       state.rankPeopleModal.backdrop.style.display = "flex";
     }
 
+    function fitColumnsToContent(tableEl, items) {
+      if (!tableEl) return;
+      const keys = ["courseFormat", "createdAt", "part", "owners", "probability", "expectedCloseDate", "expectedAmount"];
+      const canvas = fitColumnsToContent._canvas || (fitColumnsToContent._canvas = document.createElement("canvas"));
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.font = window.getComputedStyle(tableEl).font || "12px sans-serif";
+
+      const measure = (text) => {
+        const value = text === null || text === undefined ? "" : String(text);
+        return ctx.measureText(value).width;
+      };
+
+      const clampWidth = (key, width) => {
+        if (key === "createdAt" || key === "expectedCloseDate") {
+          return 72;
+        }
+        if (key === "courseFormat") {
+          const min = 90;
+          const max = 240;
+          return Math.max(min, Math.min(max, width));
+        }
+        const min = 56;
+        const max = 220;
+        return Math.max(min, Math.min(max, width));
+      };
+
+      const longest = {};
+      (items || []).forEach((row) => {
+        const owners = Array.isArray(row.owners) ? row.owners.filter(Boolean) : [];
+        const values = {
+          courseFormat: row.courseFormat || "",
+          createdAt: formatDateYYMMDD(row.createdAt),
+          part: inferPartFromOwnersEdu1(owners),
+          owners: owners.length ? owners.join(", ") : "-",
+          probability: formatProbability(row.probability),
+          expectedCloseDate: formatDateYYMMDD(row.expectedCloseDate),
+          expectedAmount: formatAmount(row.expectedAmount),
+        };
+        keys.forEach((k) => {
+          const text = values[k] || "";
+          if (!longest[k] || String(text).length > String(longest[k]).length) {
+            longest[k] = text;
+          }
+        });
+      });
+
+      const widths = {};
+      keys.forEach((k) => {
+        const text = longest[k] || "";
+        widths[k] = clampWidth(k, measure(text) + 12);
+      });
+
+      keys.forEach((k) => {
+        const col = tableEl.querySelector(`col[data-col="${k}"]`);
+        if (col) {
+          col.style.width = `${widths[k]}px`;
+        }
+      });
+
+      // Fixed-width columns for org/upper/team
+      ["orgName", "upperOrg", "teamSignature"].forEach((k) => {
+        const col = tableEl.querySelector(`col[data-col="${k}"]`);
+        if (col) {
+          col.style.width = "15ch";
+          col.style.minWidth = "15ch";
+          col.style.maxWidth = "15ch";
+        }
+      });
+    }
+
+    function applyMemoColumnWidth(tableEl) {
+      if (!tableEl) return;
+      const col = tableEl.querySelector('col[data-col="memo"]');
+      if (!col) return;
+      const measureBox = document.createElement("div");
+      measureBox.className = "edu1-dealcheck";
+      measureBox.style.position = "absolute";
+      measureBox.style.visibility = "hidden";
+      measureBox.style.pointerEvents = "none";
+      measureBox.style.zIndex = "-1";
+      measureBox.style.left = "-9999px";
+      const makeBtn = (text, extra) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = `btn-memo ${extra}`;
+        btn.textContent = text;
+        return btn;
+      };
+      const activeBtn = makeBtn("메모 확인", "btn-memo--active");
+      const disabledBtn = makeBtn("메모 없음", "btn-memo--disabled");
+      measureBox.appendChild(activeBtn);
+      measureBox.appendChild(disabledBtn);
+      document.body.appendChild(measureBox);
+      const activeWidth = activeBtn.getBoundingClientRect().width;
+      const disabledWidth = disabledBtn.getBoundingClientRect().width;
+      document.body.removeChild(measureBox);
+      const base = Math.max(activeWidth, disabledWidth);
+      const buffer = 12;
+      const min = 72;
+      const max = 140;
+      const finalWidth = Math.max(min, Math.min(max, base + buffer));
+      col.style.width = `${finalWidth}px`;
+    }
+
     function closeDealsModal() {
       if (!state.rankPeopleModal.backdrop) return;
       state.rankPeopleModal.backdrop.style.display = "none";
+    }
+
+    async function openDealMemoModal(dealId, triggerEl) {
+      if (!state.dealMemoModal.backdrop || !state.dealMemoModal.title || !state.dealMemoModal.body) return;
+      if (!dealId) return;
+      let data;
+      try {
+        data = await fetchJson(`/deals/${dealId}/memos?limit=200`);
+      } catch (err) {
+        showToast(`메모를 불러오지 못했습니다: ${err.message}`, "error");
+        return;
+      }
+      const items = data.items || [];
+      if (!items.length) {
+        showToast("메모 없음");
+        if (triggerEl) {
+          const cell = triggerEl.closest("td");
+          if (cell) cell.textContent = "메모 없음";
+        }
+        return;
+      }
+      const rows = items
+        .slice()
+        .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))
+        .map((m) => {
+          const text = escapeHtml(normalizeMemoText(m.text));
+          return `<tr><td class="memo-date">${formatDateYYMMDD(m.createdAt)}</td><td class="memo-text">${text || "-"}</td></tr>`;
+        })
+        .join("");
+      state.dealMemoModal.title.textContent = "딜 메모";
+      state.dealMemoModal.body.innerHTML = `
+        <div class="table-wrap full">
+          <table class="memo-table">
+            <thead>
+              <tr><th style="width: 120px;">생성일</th><th>메모 내용</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+      state.dealMemoModal.backdrop.style.display = "flex";
+      const escListener = (e) => {
+        if (e.key === "Escape") {
+          closeDealMemoModal();
+        }
+      };
+      state.dealMemoModal._esc = escListener;
+      document.addEventListener("keydown", escListener);
+    }
+
+    function closeDealMemoModal() {
+      if (!state.dealMemoModal.backdrop) return;
+      state.dealMemoModal.backdrop.style.display = "none";
+      if (state.dealMemoModal._esc) {
+        document.removeEventListener("keydown", state.dealMemoModal._esc);
+        state.dealMemoModal._esc = null;
+      }
     }
 
     function closeJsonModal() {
@@ -1761,6 +2185,48 @@
       if (!val) return "-";
       const clean = String(val).split("T")[0].split(" ")[0];
       return clean || val;
+    }
+
+    function formatDateYYMMDD(val) {
+      if (!val) return "-";
+      const clean = String(val).split("T")[0].split(" ")[0];
+      const match = clean.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (match) {
+        return match[1].slice(2) + match[2] + match[3];
+      }
+      const digits = clean.replace(/\D/g, "");
+      if (digits.length >= 8) {
+        return digits.slice(2, 8);
+      }
+      return clean || val;
+    }
+
+    function formatProbability(val) {
+      if (val === null || val === undefined) return "-";
+      let parsed = val;
+      if (typeof val === "string") {
+        const text = val.trim();
+        if ((text.startsWith("[") && text.endsWith("]")) || (text.startsWith("{") && text.endsWith("}"))) {
+          try {
+            parsed = JSON.parse(text);
+          } catch (_) {
+            return text || "-";
+          }
+        } else {
+          return text || "-";
+        }
+      }
+      const joinParts = (arr) => {
+        const parts = arr.map((item) => String(item).trim()).filter(Boolean);
+        return parts.length ? parts.join("/") : "-";
+      };
+      if (Array.isArray(parsed)) {
+        return joinParts(parsed);
+      }
+      if (parsed && typeof parsed === "object") {
+        return joinParts(Object.values(parsed));
+      }
+      return String(parsed);
     }
 
     function formatAmount(num) {
@@ -3024,6 +3490,15 @@
         .trim();
     }
 
+    function escapeHtml(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
     function setBreadcrumb() {
       const orgName = state.orgs.find((o) => o.id === state.selectedOrg)?.name || "-";
       const personName = state.selectedPerson && state.people.find((p) => p.id === state.selectedPerson)?.name || "-";
@@ -3995,6 +4470,16 @@
         });
       }
       if (state.rankPeopleModal.close) state.rankPeopleModal.close.addEventListener("click", closeDealsModal);
+      state.dealMemoModal.backdrop = document.getElementById("dealMemoModalBackdrop");
+      state.dealMemoModal.close = document.getElementById("dealMemoModalClose");
+      state.dealMemoModal.title = document.getElementById("dealMemoModalTitle");
+      state.dealMemoModal.body = document.getElementById("dealMemoModalBody");
+      if (state.dealMemoModal.backdrop) {
+        state.dealMemoModal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.dealMemoModal.backdrop) closeDealMemoModal();
+        });
+      }
+      if (state.dealMemoModal.close) state.dealMemoModal.close.addEventListener("click", closeDealMemoModal);
       state.statePathModal.backdrop = document.getElementById("statePathModalBackdrop");
       state.statePathModal.close = document.getElementById("statePathModalClose");
       state.statePathModal.title = document.getElementById("statePathModalTitle");
@@ -4038,6 +4523,7 @@
             closeJsonModal();
             closeDealsModal();
             closeWebformModal();
+            closeDealMemoModal();
             closeStatePathModal();
             closeStatePathLegendModal();
           }
@@ -4169,6 +4655,217 @@
       `;
 
       await initOrgScreen();
+    }
+
+    async function loadEdu1DealCheck() {
+      if (cache.edu1DealCheck) {
+        state.edu1DealCheck.loading = false;
+        state.edu1DealCheck.error = null;
+        state.edu1DealCheck.items = cache.edu1DealCheck;
+        return cache.edu1DealCheck;
+      }
+      state.edu1DealCheck.loading = true;
+      state.edu1DealCheck.error = null;
+      try {
+        const data = await fetchJson("/deal-check/edu1");
+        const items = data.items || [];
+        cache.edu1DealCheck = items;
+        state.edu1DealCheck.items = items;
+        return items;
+      } catch (err) {
+        state.edu1DealCheck.error = err.message;
+        showToast(`교육 1팀 딜체크 로드 오류: ${err.message}`, "error");
+        throw err;
+      } finally {
+        state.edu1DealCheck.loading = false;
+      }
+    }
+
+    function renderEdu1DealCheckTable(items) {
+      const rows = (items || [])
+        .map((row) => {
+          const owners = Array.isArray(row.owners) ? row.owners.filter(Boolean) : [];
+          const ownersText = owners.length ? owners.join(", ") : "-";
+          const part = inferPartFromOwnersEdu1(owners);
+          const dealName = row.dealName || "-";
+          const dealNameEscaped = escapeHtml(dealName);
+          const dealLink =
+            row.dealId && row.dealId.trim()
+              ? `<a class="sm-link edu1-deal-name" href="${salesmapDealUrl(row.dealId)}" target="_blank" rel="noopener noreferrer" title="${dealNameEscaped}">${dealNameEscaped}</a>`
+              : `<span class="edu1-deal-name" title="${dealNameEscaped}">${dealNameEscaped}</span>`;
+          const memoCell =
+            row.memoCount && row.memoCount > 0
+              ? `<button type="button" class="btn-memo btn-memo--active" data-action="deal-memo" data-deal-id="${row.dealId}">메모 확인</button>`
+              : `<button type="button" class="btn-memo btn-memo--disabled" disabled aria-disabled="true" tabindex="-1">메모 없음</button>`;
+          const orgLabel = row.orgName || row.orgId || "-";
+          const orgCell =
+            row.orgId && row.orgId.trim()
+              ? `<a class="sm-link" href="${salesmapOrgUrl(row.orgId)}" target="_blank" rel="noopener noreferrer">${orgLabel}</a>`
+              : orgLabel;
+          const customerCell =
+            row.personId && row.personId.trim()
+              ? `<a class="sm-link edu1-person-link" href="${salesmapPeopleUrl(row.personId)}" target="_blank" rel="noopener noreferrer">${row.personName || row.personId}</a>`
+              : row.personName || "-";
+          return `
+            <tr>
+              <td data-col="orgName">${orgCell}</td>
+              <td data-col="upperOrg">${row.upperOrg || "-"}</td>
+              <td data-col="teamSignature">${row.teamSignature || "-"}</td>
+              <td data-col="personName">${customerCell}</td>
+              <td data-col="createdAt">${formatDateYYMMDD(row.createdAt)}</td>
+              <td data-col="dealName">${dealLink}</td>
+              <td data-col="courseFormat">${row.courseFormat || "-"}</td>
+              <td data-col="part">${part}</td>
+              <td data-col="owners">${ownersText}</td>
+              <td data-col="probability">${formatProbability(row.probability)}</td>
+              <td data-col="expectedCloseDate">${formatDateYYMMDD(row.expectedCloseDate)}</td>
+              <td data-col="expectedAmount">${formatAmount(row.expectedAmount)}</td>
+              <td data-col="memo">${memoCell}</td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      return `
+        <div class="table-wrap full edu1-table-wrap">
+          <table class="edu1-table">
+            <colgroup>
+              <col data-col="orgName" style="width:15ch; min-width:15ch; max-width:15ch;" />
+              <col data-col="upperOrg" style="width:15ch; min-width:15ch; max-width:15ch;" />
+              <col data-col="teamSignature" style="width:15ch; min-width:15ch; max-width:15ch;" />
+              <col data-col="personName" style="width:8ch; min-width:8ch; max-width:8ch;" />
+              <col data-col="createdAt" />
+              <col data-col="dealName" />
+              <col data-col="courseFormat" />
+              <col data-col="part" />
+              <col data-col="owners" />
+              <col data-col="probability" />
+              <col data-col="expectedCloseDate" />
+              <col data-col="expectedAmount" />
+              <col data-col="memo" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th data-col="orgName">기업명</th>
+                <th data-col="upperOrg">소속 상위 조직</th>
+                <th data-col="teamSignature">팀(명함/메일서명)</th>
+                <th data-col="personName">담당자</th>
+                <th data-col="createdAt">생성 날짜</th>
+                <th data-col="dealName">딜 이름</th>
+                <th data-col="courseFormat">과정포맷</th>
+                <th data-col="part">파트</th>
+                <th data-col="owners">데이원</th>
+                <th data-col="probability">가능성</th>
+                <th data-col="expectedCloseDate">수주 예정일</th>
+                <th data-col="expectedAmount">예상</th>
+                <th data-col="memo">메모</th>
+              </tr>
+            </thead>
+            <tbody>${rows || ""}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    async function renderEdu1DealCheck(contentRoot) {
+      contentRoot.innerHTML = `
+        <div class="edu1-dealcheck">
+        <section class="card" id="edu1SummaryCard">
+          <div class="control-row">
+            <h2>교육 1팀 딜체크</h2>
+            <div class="spacer"></div>
+            <span class="pill muted" id="edu1SummaryCount">리텐션 0건 / 신규 0건</span>
+          </div>
+          <div class="muted">상태=SQL이며 딜 담당자 중 교육 1팀 담당자가 포함된 딜만 노출됩니다.</div>
+        </section>
+        <section class="card" id="edu1RetentionCard">
+          <div class="control-row">
+            <h2 class="edu1-retention-title">리텐션 고객</h2>
+            <div class="spacer"></div>
+            <span class="muted" id="edu1RetentionCount">0건</span>
+          </div>
+          <div id="edu1RetentionBody" class="muted">불러오는 중...</div>
+        </section>
+        <section class="card">
+          <div class="control-row">
+            <h2 class="edu1-new-title">신규 고객</h2>
+            <div class="spacer"></div>
+            <span class="muted" id="edu1NewCount">0건</span>
+          </div>
+          <div id="edu1NewBody" class="muted">불러오는 중...</div>
+        </section>
+        </div>
+      `;
+
+      const summaryCount = document.getElementById("edu1SummaryCount");
+      const retentionCount = document.getElementById("edu1RetentionCount");
+      const newCount = document.getElementById("edu1NewCount");
+      const retentionBody = document.getElementById("edu1RetentionBody");
+      const newBody = document.getElementById("edu1NewBody");
+
+      const attachHandlers = (container) => {
+        container.querySelectorAll('button[data-action="deal-memo"]').forEach((btn) => {
+          if (btn.disabled) return;
+          btn.addEventListener("click", async () => {
+            const dealId = btn.getAttribute("data-deal-id");
+            if (!dealId) return;
+            await openDealMemoModal(dealId, btn);
+          });
+        });
+      };
+
+      const renderAll = (items) => {
+        const retentionItems = sortEdu1DealCheckItems(items.filter((row) => row.isRetention));
+        const newItems = sortEdu1DealCheckItems(items.filter((row) => !row.isRetention));
+
+        summaryCount.textContent = `리텐션 ${retentionItems.length}건 / 신규 ${newItems.length}건`;
+        retentionCount.textContent = `${retentionItems.length}건`;
+        newCount.textContent = `${newItems.length}건`;
+
+        retentionBody.innerHTML = retentionItems.length
+          ? renderEdu1DealCheckTable(retentionItems)
+          : `<div class="muted">해당 딜이 없습니다.</div>`;
+        newBody.innerHTML = newItems.length
+          ? renderEdu1DealCheckTable(newItems)
+          : `<div class="muted">해당 딜이 없습니다.</div>`;
+
+        attachHandlers(retentionBody);
+        attachHandlers(newBody);
+        const retentionTable = retentionBody.querySelector("table.edu1-table");
+        const newTable = newBody.querySelector("table.edu1-table");
+        if (retentionTable) {
+          if (retentionItems.length) fitColumnsToContent(retentionTable, retentionItems);
+          applyMemoColumnWidth(retentionTable);
+        }
+        if (newTable) {
+          if (newItems.length) fitColumnsToContent(newTable, newItems);
+          applyMemoColumnWidth(newTable);
+        }
+      };
+
+      try {
+        const items = await loadEdu1DealCheck();
+        renderAll(items);
+      } catch (err) {
+        retentionBody.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        newBody.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+      }
+    }
+
+    function sortEdu1DealCheckItems(items) {
+      const list = Array.isArray(items) ? items.slice() : [];
+      const num = (val) => (Number.isFinite(Number(val)) ? Number(val) : 0);
+      return list.sort((a, b) => {
+        const totalDiff = num(b.orgWon2025Total) - num(a.orgWon2025Total);
+        if (totalDiff) return totalDiff;
+        const dateA = a.createdAt || "";
+        const dateB = b.createdAt || "";
+        if (dateA < dateB) return -1;
+        if (dateA > dateB) return 1;
+        const idA = a.dealId || "";
+        const idB = b.dealId || "";
+        return idA.localeCompare(idB);
+      });
     }
 
     async function loadRankData(size) {

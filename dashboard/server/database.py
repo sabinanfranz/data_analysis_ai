@@ -63,6 +63,32 @@ def _safe_json_load(value: Any) -> Any:
     return value
 
 
+def _parse_owner_names(raw: Any) -> List[str]:
+    names: List[str] = []
+    data = _safe_json_load(raw)
+    if isinstance(data, dict):
+        name = data.get("name") or data.get("id")
+        if name:
+            names.append(str(name).strip())
+    elif isinstance(data, list):
+        for item in data:
+            if isinstance(item, dict):
+                name = item.get("name") or item.get("id")
+                if name:
+                    names.append(str(name).strip())
+            elif isinstance(item, str) and item.strip():
+                names.append(item.strip())
+    elif isinstance(data, str) and data.strip():
+        names.append(data.strip())
+    seen: Set[str] = set()
+    deduped: List[str] = []
+    for name in names:
+        if name and name not in seen:
+            seen.add(name)
+            deduped.append(name)
+    return deduped
+
+
 def _prob_is_high(val: Any) -> bool:
     """
     Return True if probability includes '확정' or '높음'.
@@ -95,6 +121,35 @@ def infer_size_group(org_name: str | None, size_raw: str | None) -> str:
         if kw in name:
             return "공공기관"
     return "기타/미입력"
+
+
+def normalize_owner_name(name: str) -> str:
+    text = (name or "").strip()
+    if not text:
+        return ""
+    if re.search(r"[A-Za-z]$", text):
+        return text[:-1].strip()
+    return text
+
+
+EDU1_TEAM_MEMBERS = {
+    normalize_owner_name(name)
+    for name in [
+        "김솔이",
+        "황초롱",
+        "김정은",
+        "김동찬",
+        "정태윤",
+        "서정연",
+        "오진선",
+        "강지선",
+        "정하영",
+        "박범규",
+        "하승민",
+        "이은서",
+        "김세연",
+    ]
+}
 
 
 def _clean_form_memo(text: str) -> Optional[Dict[str, str]]:
@@ -1615,18 +1670,13 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
             return items
         for entry in data:
             if isinstance(entry, dict):
-                wf_id = entry.get("id")
-                wf_name = entry.get("name") or entry.get("label") or wf_id
-                items.append(
-                    {
-                        "id": str(wf_id) if wf_id is not None else None,
-                        "name": str(wf_name) if wf_name is not None else "",
-                    }
-                )
-            elif entry is not None:
-                items.append({"id": None, "name": str(entry)})
+                wf_id = entry.get("id") or entry.get("webFormId") or entry.get("webformId")
+                name = entry.get("name") or entry.get("title")
+                if name or wf_id:
+                    items.append({"id": wf_id, "name": name or ""})
+            elif isinstance(entry, str) and entry.strip():
+                items.append({"id": None, "name": entry.strip()})
         return items
-
     def _build_history_index(conn: sqlite3.Connection, people_ids: List[str]) -> Dict[tuple[str, str], List[str]]:
         if not people_ids:
             return {}
@@ -1862,6 +1912,108 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
         "organization": {**org_meta, "memos": org_memos},
         "groups": groups_list,
     }
+
+
+def get_edu1_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    retention_org_ids: Set[str] = set()
+    org_won_2025_total: Dict[str, float] = {}
+
+    with _connect(db_path) as conn:
+        won_rows = _fetch_all(
+            conn,
+            'SELECT organizationId AS org_id, "금액" AS amount '
+            "FROM deal "
+            "WHERE \"상태\" = 'Won' "
+            "AND \"계약 체결일\" LIKE '2025%' "
+            "AND organizationId IS NOT NULL",
+        )
+
+        for row in won_rows:
+            org_id = row["org_id"]
+            if not org_id:
+                continue
+            amount = _to_number(row["amount"])
+            if amount is None or amount < 0:
+                continue
+            retention_org_ids.add(org_id)
+            org_won_2025_total[org_id] = org_won_2025_total.get(org_id, 0.0) + amount
+
+        rows = _fetch_all(
+            conn,
+            "SELECT "
+            "  d.id AS deal_id, "
+            "  d.peopleId AS people_id, "
+            "  d.organizationId AS deal_org_id, "
+            "  d.\"생성 날짜\" AS created_at, "
+            "  d.\"이름\" AS deal_name, "
+            "  d.\"과정포맷\" AS course_format, "
+            "  d.\"담당자\" AS owner_json, "
+            "  d.\"성사 가능성\" AS probability, "
+            "  d.\"수주 예정일\" AS expected_close_date, "
+            "  d.\"예상 체결액\" AS expected_amount, "
+            "  p.\"소속 상위 조직\" AS upper_org, "
+            "  p.\"팀(명함/메일서명)\" AS team_signature, "
+            "  p.id AS person_id, "
+            "  p.\"이름\" AS person_name, "
+            "  COALESCE(d.organizationId, p.organizationId) AS org_id, "
+            "  o.\"이름\" AS org_name, "
+            "  mc.memoCount AS memo_count "
+            "FROM deal d "
+            "LEFT JOIN people p ON p.id = d.peopleId "
+            "LEFT JOIN organization o ON o.id = COALESCE(d.organizationId, p.organizationId) "
+            "LEFT JOIN ("
+            "  SELECT dealId, COUNT(*) AS memoCount "
+            "  FROM memo "
+            "  WHERE dealId IS NOT NULL AND TRIM(dealId) <> '' "
+            "  GROUP BY dealId"
+            ") mc ON mc.dealId = d.id "
+            "WHERE d.\"상태\" = 'SQL'",
+        )
+
+    items: List[Dict[str, Any]] = []
+    for row in rows:
+        owner_names = _parse_owner_names(row["owner_json"])
+        if not owner_names:
+            continue
+        normalized_owners = [normalize_owner_name(name) for name in owner_names if name]
+        if not any(name in EDU1_TEAM_MEMBERS for name in normalized_owners):
+            continue
+
+        org_id = row["org_id"]
+        org_name = row["org_name"] or org_id or "-"
+        items.append(
+            {
+                "dealId": row["deal_id"],
+                "orgId": org_id,
+                "orgName": org_name,
+                "upperOrg": row["upper_org"],
+                "teamSignature": row["team_signature"],
+                "personId": row["person_id"],
+                "personName": row["person_name"],
+                "createdAt": row["created_at"],
+                "dealName": row["deal_name"],
+                "courseFormat": row["course_format"],
+                "owners": owner_names,
+                "probability": row["probability"],
+                "expectedCloseDate": row["expected_close_date"],
+                "expectedAmount": _to_number(row["expected_amount"]),
+                "memoCount": int(row["memo_count"] or 0),
+                "isRetention": bool(org_id and org_id in retention_org_ids),
+                "orgWon2025Total": org_won_2025_total.get(org_id, 0.0) if org_id else 0.0,
+            }
+        )
+
+    items.sort(
+        key=lambda x: (
+            -(x.get("orgWon2025Total") or 0.0),
+            x.get("createdAt") or "",
+            x.get("dealId") or "",
+        )
+    )
+    return items
 
 
 def get_initial_dashboard_data(db_path: Path = DB_PATH) -> Dict[str, Any]:

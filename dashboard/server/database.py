@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import sqlite3
 from pathlib import Path
@@ -6,7 +7,9 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from . import statepath_engine as sp
 
-DB_PATH = Path(__file__).resolve().parent.parent.parent / "salesmap_latest.db"
+DB_PATH_ENV = os.getenv("DB_PATH", "salesmap_latest.db")
+print(f"[db] Using DB_PATH={DB_PATH_ENV}")
+DB_PATH = Path(DB_PATH_ENV)
 _OWNER_LOOKUP_CACHE: Dict[Path, Dict[str, str]] = {}
 YEARS_FOR_WON = {"2023", "2024", "2025"}
 ONLINE_COURSE_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포팅"}

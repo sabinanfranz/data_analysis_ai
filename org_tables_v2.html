@@ -320,6 +320,22 @@
       background: rgba(52, 211, 153, 0.22);
     }
 
+    /* Target 2026 */
+    .target2026-wrap { padding: 14px; }
+    .target2026-header { display:flex; flex-direction:column; gap:6px; margin-bottom: 12px; }
+    .target2026-title { font-size: 22px; font-weight: 900; }
+    .target2026-sub { opacity: 0.75; font-size: 12px; }
+    .target2026-grid-wrap { width: 100%; overflow-x: auto; }
+    .target2026-grid { width: 100%; min-width: 960px; display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; justify-items: stretch; align-items: stretch; }
+    .target2026-card { padding: 14px; min-height: 120px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; background: rgba(255,255,255,0.06); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.08); backdrop-filter: blur(4px); width: auto; }
+    .target2026-card-title { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+    .target2026-card-metric { font-size: 28px; font-weight: 900; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+    .target2026-card.top { border: 1px solid rgba(52,211,153,0.25); }
+    .target2026-card.bottom { border: 1px solid rgba(251,191,36,0.25); }
+    .target2026-card:hover { transform: translateY(-1px); transition: 120ms; }
+    @media (max-width: 1100px) { .target2026-grid { grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 640px) { .target2026-grid { grid-template-columns: 1fr;} .target2026-card-metric { font-size: 24px; } }
+
     .btn-memo--active:focus {
       outline: 2px solid rgba(52, 211, 153, 0.45);
       outline-offset: 2px;
@@ -1105,6 +1121,7 @@
         defaultOpen: true,
         items: [
           { id: "rank-2025-counterparty-dri", label: "2025 Top100 카운터파티 DRI" },
+          { id: "target-2026", label: "2026 체결액 Target" },
           { id: "rank-2025", label: "2025년 체결액 순위" },
           { id: "org-view", label: "조직/People/Deal 뷰어" },
           { id: DEALCHECK_TEAMS.edu1.id, label: DEALCHECK_TEAMS.edu1.label },
@@ -1128,6 +1145,7 @@
       "rank-2025": renderRank2025Screen,
       "rank-2025-people": renderRank2025PeopleScreen,
       "rank-2025-counterparty-dri": renderRankCounterpartyDriScreen,
+      "target-2026": renderTarget2026Screen,
       "mismatch-2025": renderMismatch2025Screen,
       "industry-2025": renderIndustryMenu,
       "statepath-2425": renderStatePathMenu,
@@ -1229,9 +1247,11 @@
         hideMissingUpper: false,
         sort: "default",
         page: 0,
+        offset: 0,
         teamPart: "all",
         teamPartOptions: ["all"],
       },
+      rankCounterpartyCache: {},
       orgs: [],
       orgSearch: "",
       selectedOrg: null,
@@ -1249,6 +1269,7 @@
       personMemos: [],
       dealMemos: [],
       wonSummary: [],
+      _globalModalsBound: false,
       modal: {
         backdrop: null,
         close: null,
@@ -1494,6 +1515,69 @@
       const exp = Number(deal.expected_amount || deal.expectedAmount || deal["예상 체결액"] || 0);
       if (Number.isFinite(exp) && exp > 0) return exp;
       return 0;
+    }
+
+    function buildTarget2026Kpis(source) {
+      const big = source?.big || [];
+      const mid = source?.mid || [];
+      const small = source?.small || [];
+      const rowsAll = [...big, ...mid, ...small];
+      console.debug("[target2026] rows", rowsAll.length, rowsAll[0] || {});
+
+      const parseRow = (row) => {
+        const tier = (row.orgTier || "").toUpperCase();
+        const orgName = (row.orgName || "").trim();
+        const offline25 = Number(row.cpOffline2025 || 0) || 0;
+        const offline26 = Number(row.cpOffline2026 || 0) || 0;
+        const target26 = offline25 * tierMultiplier(tier);
+        return { tier, orgName, offline25, offline26, target26 };
+      };
+
+      const parseList = (rows) => rows.map(parseRow);
+      const bigParsed = parseList(big);
+      const midParsed = parseList(mid);
+      const smallParsed = parseList(small);
+
+      const isSamsungS0 = (r) => r.tier === "S0" && r.orgName === "삼성전자";
+
+      const sumGroup = (list, pred) => {
+        const filtered = list.filter(pred);
+        const won26 = filtered.reduce((acc, r) => acc + r.offline26, 0);
+        const target26 = filtered.reduce((acc, r) => acc + r.target26, 0);
+        return { won26, target26, count: filtered.length };
+      };
+
+      const g1 = sumGroup(bigParsed, (r) => ["S0", "P0", "P1"].includes(r.tier) && !isSamsungS0(r));
+      const g2 = sumGroup(bigParsed, (r) => r.tier === "P2");
+      const g3 = sumGroup(bigParsed, (r) => ["P3", "P4", "P5"].includes(r.tier));
+      const g4 = sumGroup([...midParsed, ...smallParsed], () => true);
+      const g5 = sumGroup(bigParsed, (r) => r.tier === "S0" && !isSamsungS0(r));
+      const g6 = sumGroup(bigParsed, (r) => r.tier === "P0");
+      const g7 = sumGroup(bigParsed, (r) => r.tier === "P1");
+      const g8 = sumGroup(bigParsed, (r) => r.tier === "P2");
+
+      console.debug("[target2026] groupCounts", {
+        g1: g1.count,
+        g2: g2.count,
+        g3: g3.count,
+        g4: g4.count,
+        g5: g5.count,
+        g6: g6.count,
+        g7: g7.count,
+        g8: g8.count,
+      });
+
+      const groups = [
+        { title: "대기업 S0/P0/P1", ...g1, rowClass: "top" },
+        { title: "대기업 P2", ...g2, rowClass: "top" },
+        { title: "대기업 P3/P4/P5", ...g3, rowClass: "top" },
+        { title: "중견/중소", ...g4, rowClass: "top" },
+        { title: "대기업 S0", ...g5, rowClass: "bottom" },
+        { title: "대기업 P0", ...g6, rowClass: "bottom" },
+        { title: "대기업 P1", ...g7, rowClass: "bottom" },
+        { title: "대기업 P2", ...g8, rowClass: "bottom" },
+      ];
+      return groups;
     }
 
     function openStatePathModal(item) {
@@ -1794,7 +1878,12 @@
     }
 
     async function openDealMemoModal(dealId, triggerEl) {
-      if (!state.dealMemoModal.backdrop || !state.dealMemoModal.title || !state.dealMemoModal.body) return;
+      bindGlobalModalsOnce();
+      if (!state.dealMemoModal.backdrop || !state.dealMemoModal.title || !state.dealMemoModal.body) {
+        console.warn("[dealMemoModal] not bound");
+        showToast("메모 팝업 초기화 오류(모달 연결 실패)", "error");
+        return;
+      }
       if (!dealId) return;
       let data;
       try {
@@ -2187,6 +2276,55 @@
       return resp.json();
     }
 
+    let target2026Cache = null;
+
+    async function loadCounterpartyRows(size = "대기업", offset = 0, limit = 100) {
+      const key = `${size || "대기업"}|${offset}|${limit}`;
+      if (state.rankCounterpartyCache[key]) {
+        return state.rankCounterpartyCache[key];
+      }
+      const params = new URLSearchParams();
+      params.set("size", size || "대기업");
+      params.set("limit", limit);
+      params.set("offset", offset);
+      const data = await fetchJson(`/rank/2025-top100-counterparty-dri?${params.toString()}`);
+      const result = { rows: data.rows || [], meta: data.meta || {} };
+      state.rankCounterpartyCache[key] = result;
+      return result;
+    }
+
+    async function loadTarget2026SourceRows() {
+      if (target2026Cache) return target2026Cache;
+      let sizes = [];
+      try {
+        sizes = await getSizes();
+      } catch (err) {
+        console.debug("[target2026] getSizes failed, fallback defaults", err);
+      }
+      const pickSize = (pref) => {
+        const found = sizes.find((s) => s.includes(pref));
+        return found || pref;
+      };
+      const sizeBig = pickSize("대기업");
+      const sizeMid = pickSize("중견");
+      const sizeSmall = pickSize("중소");
+      const [big, mid, small] = await Promise.all([
+        loadCounterpartyRows(sizeBig, 0, 100),
+        loadCounterpartyRows(sizeMid, 0, 100),
+        loadCounterpartyRows(sizeSmall, 0, 100),
+      ]);
+      target2026Cache = { big: big.rows || [], mid: mid.rows || [], small: small.rows || [] };
+      console.debug("[target2026] source rows", {
+        big: target2026Cache.big.length,
+        mid: target2026Cache.mid.length,
+        small: target2026Cache.small.length,
+      });
+      if (target2026Cache.big.length === 0 && target2026Cache.mid.length === 0 && target2026Cache.small.length === 0) {
+        throw new Error("DRI 데이터가 비어 있습니다.");
+      }
+      return target2026Cache;
+    }
+
     async function fetchOrgById(orgId) {
       const cached = cache.orgLookup.get(orgId);
       if (cached) return cached;
@@ -2271,6 +2409,14 @@
       const value = Number(num);
       if (!Number.isFinite(value)) return "-";
       return value.toFixed(2) + "억";
+    }
+
+    // Target 2026 전용: 숫자 문자열만 반환(억 미포함)
+    function formatEokNumberOnly(num) {
+      if (num === null || num === undefined || Number.isNaN(num)) return "0.00";
+      const value = Number(num);
+      if (!Number.isFinite(value)) return "0.00";
+      return value.toFixed(2);
     }
 
     function formatRatio(num) {
@@ -4408,6 +4554,7 @@
     }
 
     async function initOrgScreen() {
+      bindGlobalModalsOnce();
       document.getElementById("apiBaseLabel").textContent = API_BASE;
       updateStatePathButton();
       document.getElementById("sizeSelect").addEventListener("change", async (e) => {
@@ -4460,107 +4607,6 @@
       if (copyAllCompact) copyAllCompact.addEventListener("click", () => copyJsonData(state.wonGroupJsonCompact));
       if (viewFilteredCompact) viewFilteredCompact.addEventListener("click", () => openJsonModal("선택 상위 조직 간소화 JSON", state.filteredWonGroupJsonCompact));
       if (copyFilteredCompact) copyFilteredCompact.addEventListener("click", () => copyJsonData(state.filteredWonGroupJsonCompact));
-
-      state.modal.backdrop = document.getElementById("memoModalBackdrop");
-      state.modal.close = document.getElementById("memoModalClose");
-      state.modal.date = document.getElementById("memoModalDate");
-      state.modal.author = document.getElementById("memoModalAuthor");
-      state.modal.body = document.getElementById("memoModalBody");
-      state.modal.backdrop.addEventListener("click", (e) => {
-        if (e.target === state.modal.backdrop) closeMemoModal();
-      });
-      state.modal.close.addEventListener("click", closeMemoModal);
-      state.jsonModal.backdrop = document.getElementById("jsonModalBackdrop");
-      state.jsonModal.close = document.getElementById("jsonModalClose");
-      state.jsonModal.title = document.getElementById("jsonModalTitle");
-      state.jsonModal.body = document.getElementById("jsonModalBody");
-      if (state.jsonModal.backdrop) {
-        state.jsonModal.backdrop.addEventListener("click", (e) => {
-          if (e.target === state.jsonModal.backdrop) closeJsonModal();
-        });
-      }
-      if (state.jsonModal.close) state.jsonModal.close.addEventListener("click", closeJsonModal);
-      state.webformModal.backdrop = document.getElementById("webformModalBackdrop");
-      state.webformModal.close = document.getElementById("webformModalClose");
-      state.webformModal.title = document.getElementById("webformModalTitle");
-      state.webformModal.body = document.getElementById("webformModalBody");
-      if (state.webformModal.backdrop) {
-        state.webformModal.backdrop.addEventListener("click", (e) => {
-          if (e.target === state.webformModal.backdrop) closeWebformModal();
-        });
-      }
-      if (state.webformModal.close) state.webformModal.close.addEventListener("click", closeWebformModal);
-      state.rankPeopleModal.backdrop = document.getElementById("dealsModalBackdrop");
-      state.rankPeopleModal.close = document.getElementById("dealsModalClose");
-      state.rankPeopleModal.title = document.getElementById("dealsModalTitle");
-      state.rankPeopleModal.body = document.getElementById("dealsModalBody");
-      if (state.rankPeopleModal.backdrop) {
-        state.rankPeopleModal.backdrop.addEventListener("click", (e) => {
-          if (e.target === state.rankPeopleModal.backdrop) closeDealsModal();
-        });
-      }
-      if (state.rankPeopleModal.close) state.rankPeopleModal.close.addEventListener("click", closeDealsModal);
-      state.dealMemoModal.backdrop = document.getElementById("dealMemoModalBackdrop");
-      state.dealMemoModal.close = document.getElementById("dealMemoModalClose");
-      state.dealMemoModal.title = document.getElementById("dealMemoModalTitle");
-      state.dealMemoModal.body = document.getElementById("dealMemoModalBody");
-      if (state.dealMemoModal.backdrop) {
-        state.dealMemoModal.backdrop.addEventListener("click", (e) => {
-          if (e.target === state.dealMemoModal.backdrop) closeDealMemoModal();
-        });
-      }
-      if (state.dealMemoModal.close) state.dealMemoModal.close.addEventListener("click", closeDealMemoModal);
-      state.statePathModal.backdrop = document.getElementById("statePathModalBackdrop");
-      state.statePathModal.close = document.getElementById("statePathModalClose");
-      state.statePathModal.title = document.getElementById("statePathModalTitle");
-      state.statePathModal.body = document.getElementById("statePathModalBody");
-      state.statePathModal.copyCoreBtn = document.getElementById("statePathCoreCopyBtn");
-      if (state.statePathModal.backdrop) {
-        state.statePathModal.backdrop.addEventListener("click", (e) => {
-          if (e.target === state.statePathModal.backdrop) closeStatePathModal();
-        });
-      }
-      if (state.statePathModal.close) state.statePathModal.close.addEventListener("click", closeStatePathModal);
-      if (state.statePathModal.copyCoreBtn) {
-        state.statePathModal.copyCoreBtn.addEventListener("click", () => {
-          const detail = state.statePath;
-          if (!detail) {
-            showToast("상세 로딩 후 사용하세요.", "warning");
-            return;
-          }
-          const core = stripRevOpsFromStatePath(detail);
-          if (!core) {
-            showToast("복사할 JSON이 없습니다.", "error");
-            return;
-          }
-          copyJsonData(core, "Core JSON 복사 완료");
-        });
-      }
-      state.statepathLegend.backdrop = document.getElementById("statePathLegendBackdrop");
-      state.statepathLegend.close = document.getElementById("statePathLegendClose");
-      state.statepathLegend.title = document.getElementById("statePathLegendTitle");
-      state.statepathLegend.body = document.getElementById("statePathLegendBody");
-      if (state.statepathLegend.backdrop) {
-        state.statepathLegend.backdrop.addEventListener("click", (e) => {
-          if (e.target === state.statepathLegend.backdrop) closeStatePathLegendModal();
-        });
-      }
-      if (state.statepathLegend.close) state.statepathLegend.close.addEventListener("click", closeStatePathLegendModal);
-      if (!state.modal.bound) {
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") {
-            closeMemoModal();
-            closeJsonModal();
-            closeDealsModal();
-            closeWebformModal();
-            closeDealMemoModal();
-            closeStatePathModal();
-            closeStatePathLegendModal();
-          }
-        });
-        state.modal.bound = true;
-      }
-
       await loadSizes();
       const sizeSelect = document.getElementById("sizeSelect");
       if (sizeSelect) sizeSelect.value = state.size;
@@ -4712,6 +4758,120 @@
         return [];
       } finally {
         state.dealCheck[teamKey].loading = false;
+      }
+    }
+
+    function bindGlobalModalsOnce() {
+      if (state._globalModalsBound) return;
+      state._globalModalsBound = true;
+
+      state.modal.backdrop = document.getElementById("memoModalBackdrop");
+      state.modal.close = document.getElementById("memoModalClose");
+      state.modal.date = document.getElementById("memoModalDate");
+      state.modal.author = document.getElementById("memoModalAuthor");
+      state.modal.body = document.getElementById("memoModalBody");
+      if (state.modal.backdrop) {
+        state.modal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.modal.backdrop) closeMemoModal();
+        });
+      }
+      if (state.modal.close) state.modal.close.addEventListener("click", closeMemoModal);
+
+      state.jsonModal.backdrop = document.getElementById("jsonModalBackdrop");
+      state.jsonModal.close = document.getElementById("jsonModalClose");
+      state.jsonModal.title = document.getElementById("jsonModalTitle");
+      state.jsonModal.body = document.getElementById("jsonModalBody");
+      if (state.jsonModal.backdrop) {
+        state.jsonModal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.jsonModal.backdrop) closeJsonModal();
+        });
+      }
+      if (state.jsonModal.close) state.jsonModal.close.addEventListener("click", closeJsonModal);
+
+      state.webformModal.backdrop = document.getElementById("webformModalBackdrop");
+      state.webformModal.close = document.getElementById("webformModalClose");
+      state.webformModal.title = document.getElementById("webformModalTitle");
+      state.webformModal.body = document.getElementById("webformModalBody");
+      if (state.webformModal.backdrop) {
+        state.webformModal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.webformModal.backdrop) closeWebformModal();
+        });
+      }
+      if (state.webformModal.close) state.webformModal.close.addEventListener("click", closeWebformModal);
+
+      state.rankPeopleModal.backdrop = document.getElementById("dealsModalBackdrop");
+      state.rankPeopleModal.close = document.getElementById("dealsModalClose");
+      state.rankPeopleModal.title = document.getElementById("dealsModalTitle");
+      state.rankPeopleModal.body = document.getElementById("dealsModalBody");
+      if (state.rankPeopleModal.backdrop) {
+        state.rankPeopleModal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.rankPeopleModal.backdrop) closeDealsModal();
+        });
+      }
+      if (state.rankPeopleModal.close) state.rankPeopleModal.close.addEventListener("click", closeDealsModal);
+
+      state.dealMemoModal.backdrop = document.getElementById("dealMemoModalBackdrop");
+      state.dealMemoModal.close = document.getElementById("dealMemoModalClose");
+      state.dealMemoModal.title = document.getElementById("dealMemoModalTitle");
+      state.dealMemoModal.body = document.getElementById("dealMemoModalBody");
+      if (state.dealMemoModal.backdrop) {
+        state.dealMemoModal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.dealMemoModal.backdrop) closeDealMemoModal();
+        });
+      }
+      if (state.dealMemoModal.close) state.dealMemoModal.close.addEventListener("click", closeDealMemoModal);
+
+      state.statePathModal.backdrop = document.getElementById("statePathModalBackdrop");
+      state.statePathModal.close = document.getElementById("statePathModalClose");
+      state.statePathModal.title = document.getElementById("statePathModalTitle");
+      state.statePathModal.body = document.getElementById("statePathModalBody");
+      state.statePathModal.copyCoreBtn = document.getElementById("statePathCoreCopyBtn");
+      if (state.statePathModal.backdrop) {
+        state.statePathModal.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.statePathModal.backdrop) closeStatePathModal();
+        });
+      }
+      if (state.statePathModal.close) state.statePathModal.close.addEventListener("click", closeStatePathModal);
+      if (state.statePathModal.copyCoreBtn) {
+        state.statePathModal.copyCoreBtn.addEventListener("click", () => {
+          const detail = state.statePath;
+          if (!detail) {
+            showToast("상세 로딩 후 사용하세요.", "warning");
+            return;
+          }
+          const core = stripRevOpsFromStatePath(detail);
+          if (!core) {
+            showToast("복사할 JSON이 없습니다.", "error");
+            return;
+          }
+          copyJsonData(core, "Core JSON 복사 완료");
+        });
+      }
+
+      state.statepathLegend.backdrop = document.getElementById("statePathLegendBackdrop");
+      state.statepathLegend.close = document.getElementById("statePathLegendClose");
+      state.statepathLegend.title = document.getElementById("statePathLegendTitle");
+      state.statepathLegend.body = document.getElementById("statePathLegendBody");
+      if (state.statepathLegend.backdrop) {
+        state.statepathLegend.backdrop.addEventListener("click", (e) => {
+          if (e.target === state.statepathLegend.backdrop) closeStatePathLegendModal();
+        });
+      }
+      if (state.statepathLegend.close) state.statepathLegend.close.addEventListener("click", closeStatePathLegendModal);
+
+      if (!state.modal.bound) {
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            closeMemoModal();
+            closeJsonModal();
+            closeDealsModal();
+            closeWebformModal();
+            closeDealMemoModal();
+            closeStatePathModal();
+            closeStatePathLegendModal();
+          }
+        });
+        state.modal.bound = true;
       }
     }
 
@@ -5539,11 +5699,7 @@
         statusEl.textContent = "불러오는 중...";
         tableWrap.innerHTML = "";
         try {
-          const params = new URLSearchParams();
-          params.set("size", stateDri.size || "대기업");
-          params.set("limit", ORG_PAGE_SIZE);
-          params.set("offset", stateDri.offset || 0);
-          const data = await fetchJson(`/rank/2025-top100-counterparty-dri?${params.toString()}`);
+          const data = await loadCounterpartyRows(stateDri.size || "대기업", stateDri.offset || 0, ORG_PAGE_SIZE);
           stateDri.rows = data.rows || [];
           stateDri.meta = data.meta || {};
           statusEl.textContent = `${stateDri.size || "대기업"} / org ${data.meta?.orgCount ?? "-"}개 · row ${data.meta?.rowCount ?? "-"} · offset ${(stateDri.offset || 0) + 1}`;
@@ -5860,6 +6016,53 @@
 
       await loadData();
       renderOrgPager();
+    }
+
+    async function renderTarget2026Screen(contentRoot) {
+      bindGlobalModalsOnce();
+      const sizes = ["대기업", "중견기업", "중소기업"];
+      contentRoot.innerHTML = `
+        <section class="card target2026-wrap">
+          <div class="target2026-header">
+            <div class="target2026-title">2026 체결액 Target</div>
+            <div class="target2026-sub">26 비온라인 체결 / 26 비온라인 타겟 (억)</div>
+          </div>
+          <div id="target2026Body" class="target2026-grid-wrap"><div class="target2026-grid"></div></div>
+        </section>
+      `;
+      const bodyEl = document.getElementById("target2026Body");
+      if (!bodyEl) return;
+      bodyEl.innerHTML = `<div class="muted">불러오는 중...</div>`;
+      try {
+        const source = await loadTarget2026SourceRows();
+        const allRows = [...(source.big || []), ...(source.mid || []), ...(source.small || [])];
+        if (!allRows.length) {
+          bodyEl.innerHTML = `<div class="muted">데이터가 없습니다. (DRI 데이터 없음)</div>`;
+          return;
+        }
+        const kpis = buildTarget2026Kpis(source);
+        const cards = kpis
+          .map((kpi) => {
+            const wonText = `${formatEokNumberOnly(kpi.won26 / 1e8)}억`;
+            const tgtText = `${formatEokNumberOnly(kpi.target26 / 1e8)}억`;
+            return `
+              <div class="target2026-card ${kpi.rowClass}">
+                <div class="target2026-card-title">${kpi.title}</div>
+                <div class="target2026-card-metric">${wonText} / ${tgtText}</div>
+              </div>
+            `;
+          })
+          .join("");
+        const grid = bodyEl.querySelector(".target2026-grid");
+        if (grid) {
+          grid.innerHTML = cards;
+        } else {
+          bodyEl.innerHTML = `<div class="target2026-grid">${cards}</div>`;
+        }
+      } catch (err) {
+        bodyEl.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        showToast(`2026 체결액 Target 조회 오류: ${err.message}`, "error");
+      }
     }
 
     async function renderMismatch2025Screen(contentRoot) {
@@ -6280,6 +6483,7 @@
     }
 
     function initApp() {
+      bindGlobalModalsOnce();
       renderSidebar();
       renderContent();
     }

@@ -6,6 +6,7 @@ sync_source:
   - dashboard/server/database.py
   - dashboard/server/json_compact.py
   - dashboard/server/statepath_engine.py
+  - org_tables_v2.html
 ---
 
 # API Behavior Notes (dashboard/server)
@@ -28,11 +29,12 @@ sync_source:
   - `/api/orgs/{org_id}/won-summary`: 상위 조직별 Won 합계(23/24/25)와 담당자/owner 목록, 2025 Won 딜 데이원 담당자 리스트 `owners2025` 포함.
   - `/api/orgs/{org_id}/people?hasDeal=true|false|null`: 조직의 People 리스트(딜 여부 필터).
   - `/api/people/{person_id}/deals`, `/api/people/{person_id}/memos`, `/api/deals/{deal_id}/memos`: 사람/딜 단위 데이터와 메모.
-  - 랭킹/이상치: `/api/rank/2025-deals`, `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary`.
-  - 25/26 규모 합계 요약: `GET /api/rank/2025/summary-by-size`는 상태=Won 딜을 계약연도 기준(기본 2025/2026)으로 규모별 합산. exclude_org_name 기본 “삼성전자”. DB mtime+exclude 조합으로 메모리 캐시(`snapshot_version=db_mtime:<int>`).
-  - Compact JSON: `/api/orgs/{org_id}/won-groups-json-compact`은 won-groups-json을 축약(schema_version 포함, deal_defaults/summary 추가)한 버전.
-  - StatePath 단건: `/api/orgs/{org_id}/statepath`는 won-groups-json-compact를 기반으로 2024/2025 State, Path 이벤트, Seed, RevOps 추천을 억 단위 금액으로 반환.
-  - StatePath 포트폴리오/상세: `/api/statepath/portfolio-2425`, `/api/orgs/{id}/statepath-2425`에서 필터/정렬/버킷/패턴 요약을 제공.
+- 랭킹/이상치: `/api/rank/2025-deals`, `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary`.
+- 25/26 규모 합계 요약: `GET /api/rank/2025/summary-by-size`는 상태=Won 딜을 계약연도 기준(기본 2025/2026)으로 규모별 합산. exclude_org_name 기본 “삼성전자”. DB mtime+exclude 조합으로 메모리 캐시(`snapshot_version=db_mtime:<int>`).
+- Compact JSON: `/api/orgs/{org_id}/won-groups-json-compact`은 won-groups-json을 축약(schema_version 포함, deal_defaults/summary 추가)한 버전.
+- StatePath 단건: `/api/orgs/{org_id}/statepath`는 won-groups-json-compact를 기반으로 2024/2025 State, Path 이벤트, Seed, RevOps 추천을 억 단위 금액으로 반환.
+- StatePath 포트폴리오/상세: `/api/statepath/portfolio-2425`, `/api/orgs/{id}/statepath-2425`에서 필터/정렬/버킷/패턴 요약을 제공.
+- 카운터파티 상세: `/api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...`는 org/upper_org 딜 상세를 반환하며, `deals` 항목에 `people_id/people_name/upper_org`가 포함되어 프런트 팝업의 “상위 조직/교담자” 컬럼을 렌더하는 근거가 된다.
 
 ## 딜체크 공통 엔드포인트
 - `GET /api/deal-check?team=edu1|edu2` (org_tables_api.py → database.get_deal_check)
@@ -50,3 +52,4 @@ sync_source:
 - `/api/deals/{deal_id}/memos` 결과 건수와 memoCount가 일치하는지 spot-check.
 - `/api/orgs/{org_id}/won-groups-json`에서 industry_major/mid 포함, 웹폼 날짜 변환, 메모 정제 규칙 적용 여부 확인.
 - `/api/statepath/portfolio-2425`에서 기본 필터/정렬 응답이 정상인지, cache hit 시에도 동일 응답인지 확인.
+- `/api/rank/2025-counterparty-dri/detail` 응답에서 deals[].people_id/people_name/upper_org가 존재하고 프런트 팝업에서 상위 조직/교담자 컬럼으로 노출되는지 확인.

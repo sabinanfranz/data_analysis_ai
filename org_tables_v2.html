@@ -1120,8 +1120,8 @@
         title: "메인 메뉴",
         defaultOpen: true,
         items: [
+          { id: "target-2026", label: "2026 Target Board" },
           { id: "rank-2025-counterparty-dri", label: "2025 카운터파티 DRI" },
-          { id: "target-2026", label: "2026 체결액 Target" },
           { id: "rank-2025", label: "2025 체결액 순위" },
           { id: "org-view", label: "조직/People/Deal 뷰어" },
           { id: DEALCHECK_TEAMS.edu1.id, label: DEALCHECK_TEAMS.edu1.label },
@@ -1134,8 +1134,8 @@
         defaultOpen: true,
         items: [
           { id: "statepath-2425", label: "StatePath 24→25" },
-          { id: "rank-2025-people", label: "2025 대기업 딜·People" },
-          { id: "industry-2025", label: "업종별 매출" },
+          { id: "rank-2025-people", label: "2025 대기업 딜·People", hidden: true }, // 화면 비노출
+          { id: "industry-2025", label: "업종별 매출", hidden: true }, // 화면 비노출
           { id: "mismatch-2025", label: "고객사 불일치" },
         ],
       },
@@ -2253,15 +2253,17 @@
           saveSectionOpen(section.sectionId, isOpen);
         });
 
-        section.items.forEach((item) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "menu-item";
-          if (state.activeMenuId === item.id) btn.classList.add("active");
-          btn.textContent = item.label;
-          btn.addEventListener("click", () => setActiveMenu(item.id));
-          itemsWrap.appendChild(btn);
-        });
+        section.items
+          .filter((item) => !item.hidden)
+          .forEach((item) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "menu-item";
+            if (state.activeMenuId === item.id) btn.classList.add("active");
+            btn.textContent = item.label;
+            btn.addEventListener("click", () => setActiveMenu(item.id));
+            itemsWrap.appendChild(btn);
+          });
 
         li.appendChild(header);
         li.appendChild(itemsWrap);
@@ -5352,21 +5354,21 @@
                 .map(
                   (row, idx) => `
                     <tr>
-                      <td><span class="org-link" data-idx="${idx}" data-org-id="${row.dealOrgId || ""}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.dealOrgName || row.dealOrgId || "-"}</span></td>
-                      <td><span class="org-link alt" data-idx="${idx}" data-org-id="${row.personOrgId || ""}" style="cursor:pointer; color: var(--accent-2); text-decoration: underline;">${row.personOrgName || row.personOrgId || "-"}</span></td>
+                      <td><span class="org-link" data-idx="${idx}" data-org-id="${row.dealOrgId || ""}" style="cursor:pointer; color: #2563eb; text-decoration: underline;">${row.dealOrgName || row.dealOrgId || "-"}</span></td>
+                      <td><span class="org-link alt" data-idx="${idx}" data-org-id="${row.personOrgId || ""}" style="cursor:pointer; color: #10b981; text-decoration: underline;">${row.personOrgName || row.personOrgId || "-"}</span></td>
                       <td>
                         <div>${
                           buildSalesmapLink("deal", row.dealId)
-                            ? `<a href="${buildSalesmapLink("deal", row.dealId)}" target="_blank" rel="noopener">${row.dealName || "-"}</a>`
-                            : (row.dealName || "-")
+                            ? `<a href="${buildSalesmapLink("deal", row.dealId)}" target="_blank" rel="noopener" style="color:#2563eb;">${row.dealName || "-"}</a>`
+                            : `<span style="color:#2563eb;">${row.dealName || "-"}</span>`
                         }</div>
                         <div class="muted" style="font-size:11px;">${row.dealId || ""}</div>
                       </td>
                       <td>
                         <div>${
                           buildSalesmapLink("person", row.personId)
-                            ? `<a href="${buildSalesmapLink("person", row.personId)}" target="_blank" rel="noopener">${row.personName || "-"}</a>`
-                            : (row.personName || "-")
+                            ? `<a href="${buildSalesmapLink("person", row.personId)}" target="_blank" rel="noopener" style="color:#10b981;">${row.personName || "-"}</a>`
+                            : `<span style="color:#10b981;">${row.personName || "-"}</span>`
                         }</div>
                         <div class="muted" style="font-size:11px;">${row.personId || ""}</div>
                       </td>
@@ -6060,9 +6062,20 @@
             const body = sorted
               .map((d) => {
                 const owners = extractOwnerNames(d);
+                const dealName = d.name || "-";
+                const dealLink =
+                  d.id && d.id.trim()
+                    ? `<a class="sm-link" href="${salesmapDealUrl(d.id)}" target="_blank" rel="noopener noreferrer">${dealName}</a>`
+                    : dealName;
+                const personLink =
+                  d.people_id && d.people_id.trim()
+                    ? `<a class="sm-link" href="${salesmapPeopleUrl(d.people_id)}" target="_blank" rel="noopener noreferrer">${d.people_name || d.people_id}</a>`
+                    : d.people_name || "-";
                 return `
                   <tr>
-                    <td>${d.name || "-"}</td>
+                    <td>${dealLink}</td>
+                    <td>${d.upper_org || "-"}</td>
+                    <td>${personLink}</td>
                     <td>${owners}</td>
                     <td>${formatAmount(pickAmount(d))}</td>
                     <td>${d.course_format || "-"}</td>
@@ -6082,6 +6095,8 @@
                   <thead>
                     <tr>
                       <th>이름</th>
+                      <th>상위 조직</th>
+                      <th>교담자</th>
                       <th>담당자</th>
                       <th>금액</th>
                       <th>과정포맷</th>
@@ -6126,7 +6141,7 @@
       contentRoot.innerHTML = `
         <section class="card target2026-wrap">
           <div class="target2026-header">
-            <div class="target2026-title">2026 체결액 Target</div>
+            <div class="target2026-title">2026 비온라인 체결액 Target</div>
             <div class="target2026-sub">26 비온라인 체결 / 26 비온라인 타겟 (억)</div>
           </div>
           <div id="target2026Body" class="target2026-grid-wrap"><div class="target2026-grid"></div></div>

@@ -1441,6 +1441,8 @@ def get_rank_2025_counterparty_detail(
             'SELECT '
             '  d.id, '
             '  COALESCE(d."이름", d.id) AS name, '
+            '  d.peopleId AS people_id, '
+            '  COALESCE(p."이름", p.id) AS people_name, '
             '  d."상태" AS status, '
             '  d."성사 가능성" AS probability, '
             '  d."금액" AS amount, '
@@ -1508,6 +1510,8 @@ def get_rank_2025_counterparty_detail(
             {
                 "id": d["id"],
                 "name": d["name"],
+                "people_id": d["people_id"],
+                "people_name": d["people_name"],
                 "status": d["status"],
                 "probability": d["probability"],
                 "amount": amt,
@@ -1520,6 +1524,7 @@ def get_rank_2025_counterparty_detail(
                 "course_format": d["course_format"],
                 "owner": ", ".join(owner_names) if owner_names else "",
                 "team": team,
+                "upper_org": _norm_upper(d["upper_org"]),
             }
         )
         # offline sources

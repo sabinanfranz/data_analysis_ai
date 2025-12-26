@@ -1120,9 +1120,9 @@
         title: "메인 메뉴",
         defaultOpen: true,
         items: [
-          { id: "rank-2025-counterparty-dri", label: "2025 Top100 카운터파티 DRI" },
+          { id: "rank-2025-counterparty-dri", label: "2025 카운터파티 DRI" },
           { id: "target-2026", label: "2026 체결액 Target" },
-          { id: "rank-2025", label: "2025년 체결액 순위" },
+          { id: "rank-2025", label: "2025 체결액 순위" },
           { id: "org-view", label: "조직/People/Deal 뷰어" },
           { id: DEALCHECK_TEAMS.edu1.id, label: DEALCHECK_TEAMS.edu1.label },
           { id: DEALCHECK_TEAMS.edu2.id, label: DEALCHECK_TEAMS.edu2.label },
@@ -1769,7 +1769,17 @@
     function fitColumnsToContent(tableEl, items, options = {}) {
       if (!tableEl) return;
       const inferPartFn = typeof options.inferPartFn === "function" ? options.inferPartFn : () => "-";
-      const keys = ["courseFormat", "createdAt", "part", "owners", "probability", "expectedCloseDate", "expectedAmount"];
+      const includeTier = Boolean(options.includeTier);
+      const keys = [
+        ...(includeTier ? ["tier"] : []),
+        "courseFormat",
+        "createdAt",
+        "part",
+        "owners",
+        "probability",
+        "expectedCloseDate",
+        "expectedAmount",
+      ];
       const canvas = fitColumnsToContent._canvas || (fitColumnsToContent._canvas = document.createElement("canvas"));
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
@@ -1781,6 +1791,11 @@
       };
 
       const clampWidth = (key, width) => {
+        if (key === "tier") {
+          const min = 44;
+          const max = 72;
+          return Math.max(min, Math.min(max, width));
+        }
         if (key === "createdAt" || key === "expectedCloseDate") {
           return 72;
         }
@@ -1798,6 +1813,7 @@
       (items || []).forEach((row) => {
         const owners = Array.isArray(row.owners) ? row.owners.filter(Boolean) : [];
         const values = {
+          ...(includeTier ? { tier: computeTierFromWon2025Total(row.orgWon2025Total) } : {}),
           courseFormat: row.courseFormat || "",
           createdAt: formatDateYYMMDD(row.createdAt),
           part: inferPartFn(owners),
@@ -2417,6 +2433,11 @@
       const value = Number(num);
       if (!Number.isFinite(value)) return "0.00";
       return value.toFixed(2);
+    }
+
+    function isOnlineCourseFormat(v) {
+      const s = (v ?? "").trim();
+      return s === "구독제(온라인)" || s === "선택구매(온라인)" || s === "포팅";
     }
 
     function formatRatio(num) {
@@ -4875,7 +4896,20 @@
       }
     }
 
-    function renderDealCheckTable(teamKey, items) {
+    function computeTierFromWon2025Total(orgWon2025Total) {
+      const eok = (Number(orgWon2025Total) || 0) / 1e8;
+      if (eok <= 0) return "Ø";
+      if (eok < 0.1) return "P5";
+      if (eok < 0.25) return "P4";
+      if (eok < 0.5) return "P3";
+      if (eok < 1) return "P2";
+      if (eok < 2) return "P1";
+      if (eok < 10) return "P0";
+      return "S0";
+    }
+
+    function renderDealCheckTable(teamKey, items, opts = {}) {
+      const includeTier = Boolean(opts.includeTier);
       const inferPartFn = (owners) => inferPartFromOwners(teamKey, owners);
       const rows = (items || [])
         .map((row) => {
@@ -4901,8 +4935,11 @@
             row.personId && row.personId.trim()
               ? `<a class="sm-link" href="${salesmapPeopleUrl(row.personId)}" target="_blank" rel="noopener noreferrer">${row.personName || row.personId}</a>`
               : row.personName || "-";
+          const tierVal = row._tier || computeTierFromWon2025Total(row.orgWon2025Total);
+          const tierCell = includeTier ? `<td data-col="tier">${tierVal}</td>` : "";
           return `
             <tr>
+              ${tierCell}
               <td data-col="orgName">${orgCell}</td>
               <td data-col="upperOrg">${row.upperOrg || "-"}</td>
               <td data-col="teamSignature">${row.teamSignature || "-"}</td>
@@ -4921,10 +4958,18 @@
         })
         .join("");
 
+      const tierColgroup = includeTier
+        ? '<col data-col="tier" />'
+        : "";
+      const tierHead = includeTier
+        ? '<th data-col="tier">티어</th>'
+        : "";
+
       return `
         <div class="table-wrap full dealcheck-table-wrap">
           <table class="dealcheck-table">
             <colgroup>
+              ${tierColgroup}
               <col data-col="orgName" style="width:15ch; min-width:15ch; max-width:15ch;" />
               <col data-col="upperOrg" style="width:15ch; min-width:15ch; max-width:15ch;" />
               <col data-col="teamSignature" style="width:15ch; min-width:15ch; max-width:15ch;" />
@@ -4941,6 +4986,7 @@
             </colgroup>
             <thead>
               <tr>
+                ${tierHead}
                 <th data-col="orgName">기업명</th>
                 <th data-col="upperOrg">소속 상위 조직</th>
                 <th data-col="teamSignature">팀(명함/메일서명)</th>
@@ -4978,30 +5024,50 @@
           </div>
           <div class="muted">상태=SQL이며 딜 담당자 중 ${cfg.partTeamKey} 담당자가 포함된 딜만 노출됩니다.</div>
         </section>
-        <section class="card" id="${teamKey}RetentionCard">
+        <section class="card" id="${teamKey}RetHighCard">
           <div class="control-row">
-            <h2 class="dealcheck-retention-title">리텐션 고객</h2>
+            <h2 class="dealcheck-retention-title">리텐션 고객 - S0/P0/P1/P2</h2>
             <div class="spacer"></div>
-            <span class="muted" id="${teamKey}RetentionCount">0건</span>
+            <span class="muted" id="${teamKey}RetHighCount">0건</span>
           </div>
-          <div id="${teamKey}RetentionBody" class="muted">불러오는 중...</div>
+          <div id="${teamKey}RetHighBody" class="muted">불러오는 중...</div>
         </section>
-        <section class="card">
+        <section class="card" id="${teamKey}NewOnlineCard">
           <div class="control-row">
-            <h2 class="dealcheck-new-title">신규 고객</h2>
+            <h2 class="dealcheck-new-title">신규 고객 - 온라인</h2>
             <div class="spacer"></div>
-            <span class="muted" id="${teamKey}NewCount">0건</span>
+            <span class="muted" id="${teamKey}NewOnlineCount">0건</span>
           </div>
-          <div id="${teamKey}NewBody" class="muted">불러오는 중...</div>
+          <div id="${teamKey}NewOnlineBody" class="muted">불러오는 중...</div>
+        </section>
+        <section class="card" id="${teamKey}RetLowCard">
+          <div class="control-row">
+            <h2 class="dealcheck-retention-title">리텐션 고객 - P3/P4/P5</h2>
+            <div class="spacer"></div>
+            <span class="muted" id="${teamKey}RetLowCount">0건</span>
+          </div>
+          <div id="${teamKey}RetLowBody" class="muted">불러오는 중...</div>
+        </section>
+        <section class="card" id="${teamKey}NewOfflineCard">
+          <div class="control-row">
+            <h2 class="dealcheck-new-title">신규 고객 - 비온라인</h2>
+            <div class="spacer"></div>
+            <span class="muted" id="${teamKey}NewOfflineCount">0건</span>
+          </div>
+          <div id="${teamKey}NewOfflineBody" class="muted">불러오는 중...</div>
         </section>
         </div>
       `;
 
       const summaryCount = document.getElementById(`${teamKey}SummaryCount`);
-      const retentionCount = document.getElementById(`${teamKey}RetentionCount`);
-      const newCount = document.getElementById(`${teamKey}NewCount`);
-      const retentionBody = document.getElementById(`${teamKey}RetentionBody`);
-      const newBody = document.getElementById(`${teamKey}NewBody`);
+      const retHighCount = document.getElementById(`${teamKey}RetHighCount`);
+      const newOnlineCount = document.getElementById(`${teamKey}NewOnlineCount`);
+      const retLowCount = document.getElementById(`${teamKey}RetLowCount`);
+      const newOfflineCount = document.getElementById(`${teamKey}NewOfflineCount`);
+      const retHighBody = document.getElementById(`${teamKey}RetHighBody`);
+      const newOnlineBody = document.getElementById(`${teamKey}NewOnlineBody`);
+      const retLowBody = document.getElementById(`${teamKey}RetLowBody`);
+      const newOfflineBody = document.getElementById(`${teamKey}NewOfflineBody`);
 
       const attachHandlers = (container) => {
         container.querySelectorAll('button[data-action="deal-memo"]').forEach((btn) => {
@@ -5020,29 +5086,65 @@
         const retentionItems = sortDealCheckItems(items.filter((row) => row.isRetention));
         const newItems = sortDealCheckItems(items.filter((row) => !row.isRetention));
 
-        summaryCount.textContent = `리텐션 ${retentionItems.length}건 / 신규 ${newItems.length}건`;
-        retentionCount.textContent = `${retentionItems.length}건`;
-        newCount.textContent = `${newItems.length}건`;
+        const retentionHigh = [];
+        const retentionLow = [];
+        retentionItems.forEach((row) => {
+          const tier = computeTierFromWon2025Total(row.orgWon2025Total);
+          row._tier = tier;
+          if (["S0", "P0", "P1", "P2"].includes(tier)) retentionHigh.push(row);
+          else retentionLow.push(row);
+        });
 
-        retentionBody.innerHTML = retentionItems.length
-          ? renderDealCheckTable(teamKey, retentionItems)
-          : `<div class="muted">해당 딜이 없습니다.</div>`;
-        newBody.innerHTML = newItems.length
-          ? renderDealCheckTable(teamKey, newItems)
-          : `<div class="muted">해당 딜이 없습니다.</div>`;
+        const newOnline = [];
+        const newOffline = [];
+        newItems.forEach((row) => {
+          if (isOnlineCourseFormat(row.courseFormat)) newOnline.push(row);
+          else newOffline.push(row);
+        });
 
-        attachHandlers(retentionBody);
-        attachHandlers(newBody);
-        const retentionTable = retentionBody.querySelector("table.dealcheck-table");
-        const newTable = newBody.querySelector("table.dealcheck-table");
-        if (retentionTable) {
-          if (retentionItems.length) fitColumnsToContent(retentionTable, retentionItems, { inferPartFn });
-          applyMemoColumnWidth(retentionTable);
-        }
-        if (newTable) {
-          if (newItems.length) fitColumnsToContent(newTable, newItems, { inferPartFn });
-          applyMemoColumnWidth(newTable);
-        }
+        summaryCount.textContent = `R(S0~P2) ${retentionHigh.length} / N(온라인) ${newOnline.length} / R(P3~P5) ${retentionLow.length} / N(비온라인) ${newOffline.length}`;
+        retHighCount.textContent = `${retentionHigh.length}건`;
+        newOnlineCount.textContent = `${newOnline.length}건`;
+        retLowCount.textContent = `${retentionLow.length}건`;
+        newOfflineCount.textContent = `${newOffline.length}건`;
+
+        const sections = [
+          { key: "ret-high", items: retentionHigh, includeTier: true, body: retHighBody },
+          { key: "new-online", items: newOnline, includeTier: false, body: newOnlineBody },
+          { key: "ret-low", items: retentionLow, includeTier: true, body: retLowBody },
+          { key: "new-offline", items: newOffline, includeTier: false, body: newOfflineBody },
+        ];
+
+        // Clear containers
+        retHighBody.innerHTML = "";
+        newOnlineBody.innerHTML = "";
+        retLowBody.innerHTML = "";
+        newOfflineBody.innerHTML = "";
+
+        const renderSection = (section) => {
+          const { key, items: sectItems, includeTier, body } = section;
+          const idSuffix = `${teamKey}-${key}-table`;
+          const html = sectItems.length
+            ? renderDealCheckTable(teamKey, sectItems, { includeTier })
+            : '<div class="muted">해당 딜이 없습니다.</div>';
+          body.innerHTML = html;
+          const tableEl = body.querySelector("table.dealcheck-table");
+          if (tableEl && sectItems.length) {
+            fitColumnsToContent(tableEl, sectItems, { inferPartFn, includeTier });
+            applyMemoColumnWidth(tableEl);
+            tableEl.id = idSuffix;
+            tableEl.querySelectorAll('button[data-action="deal-memo"]').forEach((btn) => {
+              if (btn.disabled) return;
+              btn.addEventListener("click", async () => {
+                const dealId = btn.getAttribute("data-deal-id");
+                if (!dealId) return;
+                await openDealMemoModal(dealId, btn);
+              });
+            });
+          }
+        };
+
+        sections.forEach(renderSection);
       };
 
       try {
@@ -5190,16 +5292,16 @@
                 <tr>
                   <th>순위</th>
                   <th>회사</th>
-                  <th>25년 등급</th>
-                  <th>24년 등급</th>
-                  <th>24년 총액(억)</th>
+                  <th>25 티어</th>
+                  <th>24 티어</th>
+                  <th>24년 총액</th>
                   <th>24→25 배수</th>
-                  <th>25년 총액(억)</th>
-                  <th>25년 온라인(억)</th>
-                  <th>25년 비온라인(억)</th>
-                  <th>26년 목표액(억)</th>
-                  <th>26 온라인(억)</th>
-                  <th>26 비온라인(억)</th>
+                  <th>25년 총액</th>
+                  <th>25년 온라인</th>
+                  <th>25년 비온라인</th>
+                  <th>26년 타겟</th>
+                  <th>26 온라인</th>
+                  <th>26 비온라인</th>
                 </tr>
               </thead>
               <tbody>

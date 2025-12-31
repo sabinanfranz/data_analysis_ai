@@ -17,6 +17,8 @@ SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대
 PUBLIC_KEYWORDS = ["공단", "공사", "진흥원", "재단", "협회", "청", "시청", "도청", "구청", "교육청", "원"]
 _COUNTERPARTY_DRI_CACHE: Dict[Tuple[Path, float, str, int], Dict[str, Any]] = {}
 _RANK_2025_SUMMARY_CACHE: Dict[Tuple[Path, float, str, Tuple[int, ...]], Dict[str, Any]] = {}
+_PERF_MONTHLY_DATA_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
+_PERF_MONTHLY_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] = {}
 
 
 def _date_only(val: Any) -> str:
@@ -126,6 +128,44 @@ def _prob_is_high(val: Any) -> bool:
         return any(_prob_is_high(item) for item in loaded)
     text = str(loaded).strip()
     return text in {"확정", "높음"}
+
+
+def _prob_tokens(val: Any) -> Set[str]:
+    """
+    Normalize probability field into a set of string tokens.
+    Supports string, list, dict values, or JSON string of those shapes.
+    """
+    if val is None:
+        return set()
+    loaded: Any = val
+    if isinstance(val, str):
+        loaded = _safe_json_load(val)
+    if isinstance(loaded, list):
+        tokens: Set[str] = set()
+        for item in loaded:
+            tokens.update(_prob_tokens(item))
+        return tokens
+    if isinstance(loaded, dict):
+        tokens = set()
+        for v in loaded.values():
+            tokens.update(_prob_tokens(v))
+        return tokens
+    return {str(loaded).strip()} if str(loaded).strip() else set()
+
+
+def _prob_is_confirmed(val: Any) -> bool:
+    tokens = _prob_tokens(val)
+    return "확정" in tokens
+
+
+def _prob_is_high_only(val: Any) -> bool:
+    tokens = _prob_tokens(val)
+    return "높음" in tokens and "확정" not in tokens
+
+
+def _prob_equals(val: Any, target: str) -> bool:
+    tokens = _prob_tokens(val)
+    return target in tokens
 
 
 def infer_size_group(org_name: str | None, size_raw: str | None) -> str:
@@ -923,6 +963,51 @@ def _year_from_dates(contract_date: Any, expected_date: Any) -> str | None:
     if year:
         return year
     return _parse_year_from_text(expected_date)
+
+
+def _month_key_from_text(val: Any) -> str | None:
+    """
+    Extract YYMM from strings like YYYY-MM or YYYY-MM-DD (also tolerates YYYY/MM).
+    """
+    if val is None:
+        return None
+    text = str(val)
+    match = re.match(r"^(\d{4})[-/]?(\d{1,2})", text)
+    if not match:
+        return None
+    year, month = match.group(1), match.group(2)
+    return f"{year[-2:]}{int(month):02d}"
+
+
+def _month_key_from_dates(contract_date: Any, expected_date: Any) -> str | None:
+    return _month_key_from_text(contract_date) or _month_key_from_text(expected_date)
+
+
+def _month_range_keys(from_ym: str, to_ym: str) -> List[str]:
+    """
+    Build YYMM list inclusive between two YYYY-MM strings.
+    """
+    def _parse_pair(text: str) -> Tuple[int, int]:
+        parts = re.split(r"[-/]", text.strip())
+        if len(parts) >= 2 and parts[0].isdigit() and parts[1].isdigit():
+            return int(parts[0]), int(parts[1])
+        raise ValueError(f"Invalid year-month: {text}")
+
+    y1, m1 = _parse_pair(from_ym)
+    y2, m2 = _parse_pair(to_ym)
+    start = (y1, m1)
+    end = (y2, m2)
+    if (y1, m1) > (y2, m2):
+        start, end = end, start
+    year, month = start
+    keys: List[str] = []
+    while (year, month) <= end:
+        keys.append(f"{year % 100:02d}{month:02d}")
+        month += 1
+        if month > 12:
+            month = 1
+            year += 1
+    return keys
 
 
 def _amount_fallback(amount: Any, expected: Any) -> float:
@@ -2280,6 +2365,328 @@ def get_rank_2025_summary_by_size(
     }
     _RANK_2025_SUMMARY_CACHE[cache_key] = result
     return result
+
+
+def _detect_course_id_column(conn: sqlite3.Connection) -> Optional[str]:
+    """
+    Find an existing course id column from known candidates.
+    Returns the first match or None if nothing is found.
+    """
+    info_rows = _fetch_all(conn, "PRAGMA table_info('deal')")
+    candidates = ["코스 ID", "코스ID", "course_id", "courseId", "Course ID"]
+    for row in info_rows:
+        name = row["name"]
+        if name in candidates:
+            return name
+    return None
+
+def _load_perf_monthly_data(db_path: Path) -> Dict[str, Any]:
+    """
+    Load deals with fields required for monthly performance aggregation.
+    Caches per DB mtime to keep summary/drilldown in sync.
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    stat = db_path.stat()
+    cache_key = (db_path, stat.st_mtime)
+    cached = _PERF_MONTHLY_DATA_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    def has_value(val: Any) -> bool:
+        return val is not None and str(val).strip() != ""
+
+    try_query_error = None
+    with _connect(db_path) as conn:
+        course_id_col = _detect_course_id_column(conn)
+        course_id_select = f'd."{course_id_col}" AS course_id' if course_id_col else "NULL AS course_id"
+        base_query = f'''
+            SELECT
+              d.id AS deal_id,
+              d."이름" AS deal_name,
+              d.organizationId AS org_id,
+              COALESCE(o."이름", d.organizationId) AS org_name,
+              o."기업 규모" AS size_raw,
+              p."소속 상위 조직" AS upper_org,
+              p."이름" AS person_name,
+              d."과정포맷" AS course_format,
+              d."담당자" AS owner_json,
+              d."상태" AS status,
+              d."성사 가능성" AS probability,
+              d."금액" AS amount,
+              d."예상 체결액" AS expected_amount,
+              d."계약 체결일" AS contract_date,
+              d."수주 예정일" AS expected_close_date,
+              d."수강시작일" AS start_date,
+              d."수강종료일" AS end_date,
+              {course_id_select}
+            FROM deal d
+            LEFT JOIN organization o ON o.id = d.organizationId
+            LEFT JOIN people p ON p.id = d.peopleId
+            WHERE
+              (
+                d."계약 체결일" LIKE '2025%' OR d."계약 체결일" LIKE '2026%' OR
+                d."수주 예정일" LIKE '2025%' OR d."수주 예정일" LIKE '2026%'
+              )
+        '''
+        try:
+            rows = _fetch_all(conn, base_query)
+        except sqlite3.OperationalError as exc:
+            try_query_error = exc
+            course_id_col = None
+            fallback_query = base_query.replace(course_id_select, "NULL AS course_id")
+            rows = _fetch_all(conn, fallback_query)
+
+    major_sizes = {"대기업", "중견기업", "중소기업"}
+    data_rows: List[Dict[str, Any]] = []
+    for row in rows:
+        month_key = _month_key_from_dates(row["contract_date"], row["expected_close_date"])
+        if not month_key:
+            continue
+        org_name = row["org_name"] or (row["org_id"] or "-")
+        size_group = infer_size_group(org_name, row["size_raw"])
+        is_major = size_group in major_sizes
+        is_online = (row["course_format"] or "").strip() in ONLINE_COURSE_FORMATS
+        amount_num = _to_number(row["amount"])
+        expected_amount_num = _to_number(row["expected_amount"])
+        start_ok = has_value(row["start_date"])
+        end_ok = has_value(row["end_date"])
+        course_id_ok = True if course_id_col is None else has_value(row["course_id"])
+
+        bucket: Optional[str] = None
+        amount_used: float = 0.0
+
+        if (
+            (row["status"] or "").strip() == "Won"
+            and start_ok
+            and end_ok
+            and course_id_ok
+            and amount_num is not None
+        ):
+            bucket = "CONTRACT"
+            amount_used = amount_num
+        elif _prob_equals(row["probability"], "확정"):
+            bucket = "CONFIRMED"
+            amount_used = _amount_fallback(amount_num, expected_amount_num)
+        elif _prob_equals(row["probability"], "높음"):
+            bucket = "HIGH"
+            amount_used = _amount_fallback(amount_num, expected_amount_num)
+
+        if not bucket:
+            continue
+
+        data_rows.append(
+            {
+                "month": month_key,
+                "bucket": bucket,
+                "amount_used": float(amount_used or 0.0),
+                "amount": amount_num,
+                "expected_amount": expected_amount_num,
+                "org_name": org_name,
+                "upper_org": row["upper_org"] or "미입력",
+                "customer_person_name": row["person_name"] or "미입력",
+                "deal_id": row["deal_id"],
+                "deal_name": row["deal_name"] or row["deal_id"],
+                "course_format": row["course_format"],
+                "day1_owner_names": _parse_owner_names(row["owner_json"]),
+                "status": row["status"],
+                "probability": row["probability"],
+                "expected_close_date": row["expected_close_date"],
+                "start_date": row["start_date"],
+                "end_date": row["end_date"],
+                "course_id": row["course_id"] if course_id_col else None,
+                "contract_date": row["contract_date"],
+                "is_online": is_online,
+                "is_major_size": is_major,
+                "org_is_samsung": org_name == "삼성전자",
+                "course_id_available": course_id_col is not None,
+            }
+        )
+
+    payload = {
+        "rows": data_rows,
+        "snapshot_version": f"db_mtime:{int(stat.st_mtime)}",
+        "course_id_available": any(r.get("course_id") is not None for r in data_rows) or course_id_col is not None,
+        "try_query_error": str(try_query_error) if try_query_error else None,
+    }
+    _PERF_MONTHLY_DATA_CACHE[cache_key] = payload
+    return payload
+
+
+def _perf_segments() -> List[Dict[str, Any]]:
+    big_label = {
+        "ALL": "전체",
+        "SAMSUNG": "삼성전자",
+        "SAMSUNG_ONLINE": "삼성전자 / 온라인",
+        "SAMSUNG_OFFLINE": "삼성전자 / 비온라인",
+        "NON_SAMSUNG_MAJOR_SIZE": "기업 고객(삼성 제외)",
+        "NON_MAJOR_SIZE": "공공 고객",
+        "NON_SAMSUNG_ONLINE": "온라인(삼성 제외)",
+        "NON_SAMSUNG_ONLINE_MAJOR_SIZE": "온라인(기업 고객(삼전 제외))",
+        "ONLINE_NON_MAJOR_SIZE": "온라인(공공 고객)",
+        "NON_SAMSUNG_OFFLINE": "비온라인(삼성 제외)",
+        "NON_SAMSUNG_OFFLINE_MAJOR_SIZE": "비온라인(기업 고객(삼전 제외))",
+        "OFFLINE_NON_MAJOR_SIZE": "비온라인(공공 고객)",
+    }
+    defs = [
+        ("ALL", lambda d: True),
+        ("SAMSUNG", lambda d: d["org_is_samsung"]),
+        ("SAMSUNG_ONLINE", lambda d: d["org_is_samsung"] and d["is_online"]),
+        ("SAMSUNG_OFFLINE", lambda d: d["org_is_samsung"] and not d["is_online"]),
+        ("NON_SAMSUNG_MAJOR_SIZE", lambda d: not d["org_is_samsung"] and d["is_major_size"]),
+        ("NON_MAJOR_SIZE", lambda d: not d["is_major_size"]),
+        ("NON_SAMSUNG_ONLINE", lambda d: not d["org_is_samsung"] and d["is_online"]),
+        ("NON_SAMSUNG_ONLINE_MAJOR_SIZE", lambda d: not d["org_is_samsung"] and d["is_online"] and d["is_major_size"]),
+        ("ONLINE_NON_MAJOR_SIZE", lambda d: d["is_online"] and not d["is_major_size"]),
+        ("NON_SAMSUNG_OFFLINE", lambda d: not d["org_is_samsung"] and not d["is_online"]),
+        ("NON_SAMSUNG_OFFLINE_MAJOR_SIZE", lambda d: not d["org_is_samsung"] and not d["is_online"] and d["is_major_size"]),
+        ("OFFLINE_NON_MAJOR_SIZE", lambda d: not d["is_online"] and not d["is_major_size"]),
+    ]
+    return [{"key": key, "label": big_label.get(key, key), "predicate": pred} for key, pred in defs]
+
+
+_PERF_ROW_ORDER = ["TOTAL", "CONTRACT", "CONFIRMED", "HIGH"]
+_PERF_ROW_LABEL = {
+    "TOTAL": "합산",
+    "CONTRACT": "계약 체결",
+    "CONFIRMED": "성사 확정",
+    "HIGH": "성사 높음",
+}
+
+
+def get_perf_monthly_amounts_summary(
+    from_month: str = "2025-01",
+    to_month: str = "2026-12",
+    db_path: Path = DB_PATH,
+) -> Dict[str, Any]:
+    """
+    Summary table for monthly amounts by segment and row (계약/확정/높음).
+    Amounts are raw 원 단위; months are YYMM keys.
+    """
+    months = _month_range_keys(from_month, to_month)
+    month_set = set(months)
+    if not months:
+        raise ValueError("from/to month range is empty")
+
+    payload = _load_perf_monthly_data(db_path)
+    stat = db_path.stat()
+    cache_key = (db_path, stat.st_mtime, from_month, to_month)
+    cached = _PERF_MONTHLY_SUMMARY_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    rows_data = [row for row in payload["rows"] if row["month"] in month_set]
+    segments_result: List[Dict[str, Any]] = []
+    for seg in _perf_segments():
+        bucket_data: Dict[str, Dict[str, Any]] = {}
+        for bucket_key in _PERF_ROW_ORDER:
+            bucket_data[bucket_key] = {
+                "byMonth": {m: 0.0 for m in months},
+                "dealCountByMonth": {m: 0 for m in months},
+            }
+        for deal in rows_data:
+            bucket = deal["bucket"]
+            if bucket not in bucket_data:
+                continue
+            if not seg["predicate"](deal):
+                continue
+            month = deal["month"]
+            bucket_data[bucket]["byMonth"][month] += deal["amount_used"]
+            bucket_data[bucket]["dealCountByMonth"][month] += 1
+            bucket_data["TOTAL"]["byMonth"][month] += deal["amount_used"]
+            bucket_data["TOTAL"]["dealCountByMonth"][month] += 1
+
+        seg_rows: List[Dict[str, Any]] = []
+        for row_key in _PERF_ROW_ORDER:
+            seg_rows.append(
+                {
+                    "key": row_key,
+                    "label": _PERF_ROW_LABEL.get(row_key, row_key),
+                    "byMonth": bucket_data[row_key]["byMonth"],
+                    "dealCountByMonth": bucket_data[row_key]["dealCountByMonth"],
+                }
+            )
+        segments_result.append({"key": seg["key"], "label": seg["label"], "rows": seg_rows})
+
+    result = {
+        "months": months,
+        "segments": segments_result,
+        "meta": {"snapshot_version": payload.get("snapshot_version")},
+    }
+    _PERF_MONTHLY_SUMMARY_CACHE[cache_key] = result
+    return result
+
+
+def get_perf_monthly_amounts_deals(
+    segment: str,
+    row: str,
+    month: str,
+    db_path: Path = DB_PATH,
+) -> Dict[str, Any]:
+    """
+    Drilldown list of deals for a given segment/row/month (YYMM).
+    """
+    month_key = month.strip()
+    if not month_key or len(month_key) != 4:
+        raise ValueError("month must be YYMM format, e.g., 2501")
+
+    seg_defs = {seg["key"]: seg for seg in _perf_segments()}
+    if segment not in seg_defs:
+        raise ValueError(f"Unknown segment: {segment}")
+    row_defs = {k: _PERF_ROW_LABEL[k] for k in _PERF_ROW_ORDER}
+    if row not in row_defs:
+        raise ValueError(f"Unknown row: {row}")
+
+    payload = _load_perf_monthly_data(db_path)
+    seg_def = seg_defs[segment]
+    items: List[Dict[str, Any]] = []
+    buckets_for_row: Set[str] = {"CONTRACT", "CONFIRMED", "HIGH"} if row == "TOTAL" else {row}
+    seen: Set[str] = set()
+    for deal in payload["rows"]:
+        if deal["month"] != month_key:
+            continue
+        if deal["bucket"] not in buckets_for_row:
+            continue
+        if not seg_def["predicate"](deal):
+            continue
+        deal_id = deal["deal_id"]
+        if deal_id in seen:
+            continue
+        seen.add(deal_id)
+        items.append(
+            {
+                "orgName": deal["org_name"],
+                "upperOrg": deal["upper_org"],
+                "customerPersonName": deal["customer_person_name"],
+                "dealId": deal["deal_id"],
+                "dealName": deal["deal_name"],
+                "courseFormat": deal["course_format"],
+                "day1OwnerNames": deal["day1_owner_names"],
+                "status": deal["status"],
+                "probability": deal["probability"],
+                "expectedCloseDate": deal["expected_close_date"],
+                "expectedAmount": deal["expected_amount"],
+                "startDate": deal["start_date"],
+                "endDate": deal["end_date"],
+                "courseId": deal["course_id"],
+                "contractDate": deal["contract_date"],
+                "amount": deal["amount"],
+                "amountUsed": deal["amount_used"],
+            }
+        )
+
+    total_amount = sum(d.get("amountUsed") or 0.0 for d in items)
+    return {
+        "segment": {"key": segment, "label": seg_def["label"]},
+        "row": {"key": row, "label": row_defs[row]},
+        "month": month_key,
+        "totalAmount": total_amount,
+        "dealCount": len(items),
+        "items": items,
+        "note": "성사 확정/높음은 금액이 없으면 예상 체결액을 합산합니다.",
+        "meta": {"snapshot_version": payload.get("snapshot_version")},
+    }
 
 
 def get_rank_2025_top100_counterparty_dri(

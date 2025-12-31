@@ -148,6 +148,33 @@ def get_rank_2025_summary_by_size(
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/performance/monthly-amounts/summary")
+def get_performance_monthly_amounts_summary(
+    from_month: str = Query("2025-01", description="시작 YYYY-MM"),
+    to_month: str = Query("2026-12", description="종료 YYYY-MM"),
+) -> dict:
+    try:
+        return db.get_perf_monthly_amounts_summary(from_month=from_month, to_month=to_month)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/performance/monthly-amounts/deals")
+def get_performance_monthly_amounts_deals(
+    segment: str = Query(..., description="세그먼트 키"),
+    row: str = Query(..., description="CONTRACT|CONFIRMED|HIGH"),
+    month: str = Query(..., description="YYMM (예: 2501)"),
+) -> dict:
+    try:
+        return db.get_perf_monthly_amounts_deals(segment=segment, row=row, month=month)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/rank/2025-deals-people")
 def get_rank_2025_deals_people(
     size: str = Query("대기업", description='조직 규모 필터 (예: "대기업", "전체")')

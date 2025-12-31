@@ -567,6 +567,127 @@
       max-height: none;
     }
 
+    .perf-table th,
+    .perf-table td {
+      min-width: 64px;
+      white-space: nowrap;
+    }
+
+    .perf-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: #0c182c;
+    }
+
+    .perf-table .sticky-col {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: #0c182c;
+    }
+
+    .perf-table thead .sticky-col {
+      z-index: 4;
+    }
+
+    /* 월별 체결액 전용 테이블/셀 스타일 */
+    .mp-monthly-table th,
+    .mp-monthly-table td,
+    .mp-monthly-table .mp-cell-btn {
+      font-size: 12px;
+      line-height: 1;
+      text-align: center;
+      vertical-align: middle;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .mp-monthly-table td.mp-kind,
+    .mp-monthly-table th.mp-kind {
+      text-align: center;
+    }
+
+    .mp-monthly-table .mp-cell-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 3.6em;
+      height: 1.9em;
+      padding: 0 0.2em;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: inherit;
+      text-align: center;
+    }
+
+    .mp-monthly-table button.mp-cell-btn {
+      cursor: pointer;
+    }
+
+    .mp-monthly-table .mp-cell-btn.is-zero {
+      opacity: 0.55;
+      border-color: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.03);
+      cursor: default;
+    }
+
+    .mp-monthly-table td.mp-num {
+      width: 4.2em;
+      min-width: 4.2em;
+      padding: 0.15em 0.25em;
+      text-align: center;
+    }
+
+    /* ✅ 딜 목록 모달 폭 강제(기존 modal/json-modal max-width 덮어쓰기) */
+    .modal.deals-modal-wide {
+      width: min(96vw, 1440px) !important;
+      max-width: 96vw !important;
+    }
+
+    .modal.deals-modal-wide .body {
+      overflow-x: auto !important;
+      white-space: normal;
+    }
+
+    /* ✅ 딜 모달 테이블: 값 길이대로 컬럼 폭 결정 */
+    .modal.deals-modal-wide table.mp-deals-table {
+      table-layout: auto;
+      width: max-content;
+      max-width: none;
+    }
+
+    /* ✅ 딜이름 칼럼: 20글자(≈20em) + 말줄임 확실히 */
+    .modal.deals-modal-wide .deal-name-cell {
+      width: 20em !important;
+      max-width: 20em !important;
+      min-width: 20em !important;
+      white-space: nowrap;
+    }
+
+    .modal.deals-modal-wide .deal-name-cell .deal-name-link {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ✅ auto-fit 컬럼: 내용 길이대로, 숨김 금지 */
+    .modal.deals-modal-wide .mp-deals-table th.auto-fit,
+    .modal.deals-modal-wide .mp-deals-table td.auto-fit {
+      white-space: nowrap;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
+    /* ✅ 모달 딜 테이블: 좌측 정렬 강제 */
+    .modal.deals-modal-wide .mp-deals-table th.align-left,
+    .modal.deals-modal-wide .mp-deals-table td.align-left {
+      text-align: left !important;
+      padding-left: 10px;
+    }
+
     .breadcrumb {
       display: flex;
       gap: 6px;
@@ -909,7 +1030,7 @@
   </div>
 
   <div class="modal-backdrop" id="dealsModalBackdrop">
-    <div class="modal json-modal">
+    <div class="modal json-modal deals-modal-wide">
       <header>
         <h3 id="dealsModalTitle">딜 목록</h3>
         <button class="close-btn" id="dealsModalClose" type="button">닫기</button>
@@ -1116,6 +1237,12 @@
 
     const MENU_SECTIONS = [
       {
+        sectionId: "perf",
+        title: "사업부 퍼포먼스",
+        defaultOpen: true,
+        items: [{ id: "biz-perf-monthly", label: "월별 체결액" }],
+      },
+      {
         sectionId: "main",
         title: "메인 메뉴",
         defaultOpen: true,
@@ -1142,6 +1269,7 @@
     ];
 
     const MENU_RENDERERS = {
+      "biz-perf-monthly": renderBizPerfMonthly,
       "rank-2025": renderRank2025Screen,
       "rank-2025-people": renderRank2025PeopleScreen,
       "rank-2025-counterparty-dri": renderRankCounterpartyDriScreen,
@@ -1252,6 +1380,11 @@
         teamPartOptions: ["all"],
       },
       rankCounterpartyCache: {},
+      perfMonthly: {
+        loading: false,
+        error: null,
+        data: null,
+      },
       orgs: [],
       orgSearch: "",
       selectedOrg: null,
@@ -2295,6 +2428,20 @@
     }
 
     let target2026Cache = null;
+    async function loadBizPerfSummary() {
+      if (state.perfMonthly.data) return state.perfMonthly.data;
+      const data = await fetchJson(`/performance/monthly-amounts/summary?from=2025-01&to=2026-12`);
+      state.perfMonthly.data = data;
+      return data;
+    }
+
+    async function loadBizPerfDeals(segmentKey, rowKey, monthKey) {
+      const params = new URLSearchParams();
+      params.set("segment", segmentKey);
+      params.set("row", rowKey);
+      params.set("month", monthKey);
+      return fetchJson(`/performance/monthly-amounts/deals?${params.toString()}`);
+    }
 
     async function loadCounterpartyRows(size = "대기업", offset = 0, limit = 100) {
       const key = `${size || "대기업"}|${offset}|${limit}`;
@@ -2420,6 +2567,12 @@
       const value = Number(num);
       if (!Number.isFinite(value)) return "-";
       return (value / 1e8).toFixed(2) + "억";
+    }
+
+    function formatEok1(amountWon) {
+      const n = Number(amountWon || 0);
+      if (!Number.isFinite(n)) return "0.0";
+      return (n / 1e8).toFixed(1);
     }
 
     function formatEok(num) {
@@ -5509,6 +5662,219 @@
           </table>
         </div>
       `;
+    }
+
+    function renderBizPerfCard(segment, months = []) {
+      const headerCells = months.map((m) => `<th>${m}</th>`).join("");
+      const bodyRows =
+        (segment.rows || [])
+          .map((row) => {
+            const vals = row.byMonth || {};
+            return `
+              <tr>
+                <td class="sticky-col">${row.label || row.key}</td>
+                ${months
+                  .map((m) => {
+                    const v = vals[m] || 0;
+                    const cnt = (row.dealCountByMonth || {})[m] || 0;
+                    const disabled = cnt === 0;
+                    return `
+                      <td>
+                        ${disabled
+                          ? `<span class="mp-cell-btn is-zero">${formatEok1(0)}</span>`
+                          : `<button type="button" class="mp-cell-btn" data-perf-cell="1" data-segment="${segment.key}" data-row="${row.key}" data-month="${m}">${formatEok1(v)}</button>`}
+                      </td>
+                    `;
+                  })
+                  .join("")}
+              </tr>
+            `;
+          })
+          .join("") || `<tr><td class="sticky-col muted" colspan="${months.length + 1}">데이터가 없습니다.</td></tr>`;
+
+      return `
+        <section class="card">
+          <div class="control-row">
+            <h3>${segment.label || segment.key}</h3>
+            <div class="spacer"></div>
+            <span class="pill muted">${segment.key}</span>
+          </div>
+          <div class="table-wrap full perf-table-wrap">
+            <table class="perf-table mp-monthly-table">
+              <thead>
+                <tr>
+                  <th class="sticky-col mp-kind">구분</th>
+                  ${headerCells}
+                </tr>
+              </thead>
+              <tbody>
+                ${bodyRows}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    function formatPerfMonthLabel(key) {
+      if (!key) return "-";
+      const text = String(key);
+      if (text.length === 4) {
+        return `20${text.slice(0, 2)}-${text.slice(2)}`;
+      }
+      return text;
+    }
+
+    async function openBizPerfDealsModal(segmentKey, rowKey, monthKey) {
+      bindGlobalModalsOnce();
+      if (!state.rankPeopleModal.backdrop || !state.rankPeopleModal.title || !state.rankPeopleModal.body) {
+        showToast("딜 모달을 초기화할 수 없습니다.", "error");
+        return;
+      }
+      state.rankPeopleModal.backdrop.style.display = "flex";
+      state.rankPeopleModal.title.textContent = "월별 체결액 딜 목록";
+      state.rankPeopleModal.body.innerHTML = `<div class="muted">불러오는 중...</div>`;
+      try {
+        const data = await loadBizPerfDeals(segmentKey, rowKey, monthKey);
+        const titleLabel = `${(data.segment && data.segment.label) || segmentKey} · ${formatPerfMonthLabel(data.month)} · ${(data.row && data.row.label) || rowKey}`;
+        state.rankPeopleModal.title.textContent = `월별 체결액 - ${titleLabel}`;
+        const items = (data.items || []).slice();
+        const sortKey = (it) => {
+          const a = Number(it.amount);
+          const e = Number(it.expectedAmount);
+          if (Number.isFinite(a) && a > 0) return a;
+          if (Number.isFinite(e) && e > 0) return e;
+          return 0;
+        };
+        items.sort((x, y) => {
+          const diff = sortKey(y) - sortKey(x);
+          if (diff !== 0) return diff;
+          return String(x.dealName || "").localeCompare(String(y.dealName || ""), "ko");
+        });
+        const rowsHtml =
+          items
+            .map((item) => {
+              const dealLink = buildSalesmapLink("deal", item.dealId);
+              const owners = Array.isArray(item.day1OwnerNames) ? item.day1OwnerNames.filter(Boolean).join(", ") : item.day1OwnerNames || "-";
+              const fmtAmt = (v) => (Number(v) > 0 ? formatEok1(v) : "-");
+              return `
+                <tr>
+                  <td class="align-left">${item.orgName || "-"}</td>
+                  <td class="align-left">${normalizeUpperOrg(item.upperOrg)}</td>
+                  <td class="align-left">${item.customerPersonName || "-"}</td>
+                  <td class="deal-name-cell align-left">${dealLink ? `<a class="deal-name-link" href="${dealLink}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">${item.dealName || item.dealId || "-"}</a>` : `<span class="deal-name-link">${item.dealName || item.dealId || "-"}</span>`}</td>
+                  <td class="auto-fit">${item.courseFormat || "-"}</td>
+                  <td class="auto-fit">${owners || "-"}</td>
+                  <td class="auto-fit">${item.status || "-"}</td>
+                  <td class="auto-fit">${formatProbability(item.probability)}</td>
+                  <td class="auto-fit amount">${formatDate(item.expectedCloseDate)}</td>
+                  <td class="auto-fit amount">${fmtAmt(item.expectedAmount)}</td>
+                  <td class="auto-fit">${formatDate(item.startDate)}</td>
+                  <td class="auto-fit">${formatDate(item.endDate)}</td>
+                  <td class="auto-fit">${item.courseId || "-"}</td>
+                  <td class="auto-fit amount">${formatDate(item.contractDate)}</td>
+                  <td class="auto-fit amount">${fmtAmt(item.amount)}</td>
+                </tr>
+              `;
+            })
+            .join("") || `<tr><td colspan="15" class="muted">딜이 없습니다.</td></tr>`;
+
+        state.rankPeopleModal.body.innerHTML = `
+          <div class="table-wrap full" style="max-height:60vh; overflow:auto;">
+            <table class="perf-table mp-monthly-table mp-deals-table">
+              <colgroup>
+                <col style="width:14em" />
+                <col style="width:14em" />
+                <col style="width:8em" />
+                <col style="width:20em" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="align-left">기업명</th>
+                  <th class="align-left">소속 상위 조직</th>
+                  <th class="align-left">담당자</th>
+                  <th class="align-left">딜이름</th>
+                  <th class="auto-fit">과정포맷</th>
+                  <th class="auto-fit">데이원</th>
+                  <th class="auto-fit">상태</th>
+                  <th class="auto-fit">가능성</th>
+                  <th class="auto-fit amount">수주 예정일</th>
+                  <th class="auto-fit amount">예상 체결액</th>
+                  <th class="auto-fit">수강시작일</th>
+                  <th class="auto-fit">수강종료일</th>
+                  <th class="auto-fit">코스 ID</th>
+                  <th class="auto-fit amount">계약체결일</th>
+                  <th class="auto-fit amount">금액</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `;
+      } catch (err) {
+        state.rankPeopleModal.body.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        showToast(`딜 목록을 불러오지 못했습니다: ${err.message}`, "error");
+      }
+    }
+
+    async function renderBizPerfMonthly(contentRoot) {
+      state.perfMonthly.loading = true;
+      state.perfMonthly.error = null;
+      contentRoot.innerHTML = `
+        <section class="card compact-header">
+          <div class="control-row">
+            <div>
+              <h1>월별 체결액</h1>
+              <div class="muted" id="perfMonthlyMeta">단위: 억(표기 생략) / 클릭 시 딜 목록 표시</div>
+            </div>
+            <div class="spacer"></div>
+            <span class="pill muted">2025-01 ~ 2026-12</span>
+          </div>
+        </section>
+        <div id="perfMonthlyCards" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="muted">불러오는 중...</div>
+        </div>
+      `;
+
+      const cardsRoot = document.getElementById("perfMonthlyCards");
+      const metaEl = document.getElementById("perfMonthlyMeta");
+
+      const attachCellHandlers = () => {
+        cardsRoot.querySelectorAll("[data-perf-cell]").forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            const segment = e.currentTarget.getAttribute("data-segment");
+            const row = e.currentTarget.getAttribute("data-row");
+            const month = e.currentTarget.getAttribute("data-month");
+            await openBizPerfDealsModal(segment, row, month);
+          });
+        });
+      };
+
+      const renderCards = (data) => {
+        if (!data || !data.segments || !data.segments.length) {
+          cardsRoot.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+          return;
+        }
+        const snapshot = data.meta && data.meta.snapshot_version ? ` · ${data.meta.snapshot_version}` : "";
+        if (metaEl) {
+          metaEl.textContent = `단위: 억(표기 생략) / 클릭 시 딜 목록 표시${snapshot}`;
+        }
+        cardsRoot.innerHTML = data.segments.map((seg) => renderBizPerfCard(seg, data.months || [])).join("");
+        attachCellHandlers();
+      };
+
+      try {
+        const data = await loadBizPerfSummary();
+        renderCards(data);
+      } catch (err) {
+        state.perfMonthly.error = err;
+        if (cardsRoot) cardsRoot.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        showToast(`월별 체결액을 불러오지 못했습니다: ${err.message}`, "error");
+      } finally {
+        state.perfMonthly.loading = false;
+      }
     }
 
     async function renderRank2025Screen(contentRoot) {

@@ -38,6 +38,8 @@ sync_source:
 | GET `/api/deal-check` | 팀별 딜체크(SQL 딜) | `team`(edu1\|edu2) | orgWon2025Total desc → createdAt asc → dealId asc | `{ "items": [ {dealId, orgId, orgName, orgWon2025Total, isRetention, createdAt, dealName, courseFormat, owners, probability, expectedCloseDate, expectedAmount, memoCount, upperOrg, teamSignature, personId, personName} ] }` |
 | GET `/api/deal-check/edu1` | 교육 1팀 딜체크(SQL 딜, legacy wrapper) | 없음 | orgWon2025Total desc → createdAt asc → dealId asc | 위 `/api/deal-check?team=edu1`과 동일 |
 | GET `/api/deal-check/edu2` | 교육 2팀 딜체크(SQL 딜, legacy wrapper) | 없음 | orgWon2025Total desc → createdAt asc → dealId asc | 위 `/api/deal-check?team=edu2`과 동일 |
+| GET `/api/performance/monthly-amounts/summary` | 2025-01~2026-12 월별 체결액 세그먼트 요약 | `from`(YYYY-MM, 기본 2025-01), `to`(기본 2026-12) | 세그먼트 key 유지, label은 기업/공공/온라인/비온라인(삼전 제외) 표기로 반환. rows=TOTAL→CONTRACT→CONFIRMED→HIGH, month 키=YYMM 24개 모두 포함 | `{ "months":[...], "segments":[ { "key","label","rows":[ { "key","label","byMonth":{"2501":0.0,...},"dealCountByMonth":{"2501":0,...}}, ... ] } ], "meta":{"snapshot_version": "..."} }` |
+| GET `/api/performance/monthly-amounts/deals` | 월별 체결액 딜 목록(요약 셀 클릭용) | `segment`(세그먼트 key), `row`(TOTAL\|CONTRACT\|CONFIRMED\|HIGH), `month`(YYMM) | row=TOTAL은 CONTRACT/CONFIRMED/HIGH 합집합 dedupe. 응답 totalAmount=amount>0 else expectedAmount 합계 | `{ "segment":{"key","label"}, "row":{"key","label"}, "month":"2501", "totalAmount":..., "dealCount":..., "items":[ {orgName,upperOrg,customerPersonName,dealId,dealName,courseFormat,day1OwnerNames,status,probability,expectedCloseDate,expectedAmount,startDate,endDate,courseId,contractDate,amount,amountUsed} ], "meta":{"snapshot_version": "..."} }` |
 
 ## 엔드포인트 설명/예시
 - `/api/orgs`: People/Deal 연결이 없는 조직은 제외. 2025년 Won 합계 내림차순으로 정렬 후 이름 순으로 보조 정렬.
@@ -48,6 +50,8 @@ sync_source:
 - `/api/statepath/portfolio-2425`: segment/search/정렬/패턴 필터를 모두 Query로 받고, Won 딜을 24/25 + HRD/BU × ONLINE/OFFLINE으로 집계해 회사/셀 버킷·이벤트·전이 매트릭스·Top patterns·세그먼트 비교를 함께 반환한다(금액은 억 단위).
 - `/api/orgs/{id}/statepath-2425`: 동일 집계 로직을 단일 org에 적용해 year_states/path/qa/sizeGroup을 반환한다. 포트폴리오와 숫자가 최대한 일치하도록 summary/compact JSON을 거치지 않는다.
 - `/api/deal-check/edu1`: `deal."상태"='SQL'` + owners에 교육 1팀 멤버 1명 이상. 2025 Won 금액 파싱 성공(>=0) 조직은 `isRetention=true`, 금액 파싱 실패/NULL 제외, 예상 체결액은 판정/합산에 미사용. `memoCount`는 메모 테이블 COUNT를 left join한다.
+- `/api/performance/monthly-amounts/summary`: 세그먼트 label이 `기업 고객(삼성 제외)`, `공공 고객`, `온라인(삼성 제외)`, `온라인(기업 고객(삼전 제외))`, `온라인(공공 고객)`, `비온라인(삼성 제외)`, `비온라인(기업 고객(삼전 제외))`, `비온라인(공공 고객)`으로 노출되고 rows가 TOTAL→CONTRACT→CONFIRMED→HIGH 순서로 24개월 YYMM 키를 포함한다.
+- `/api/performance/monthly-amounts/deals`: row=TOTAL은 CONTRACT/CONFIRMED/HIGH 합집합을 반환하며, `totalAmount`는 amount>0 else expectedAmount 합계다. 프런트는 금액>0 우선, 없으면 예상 체결액으로 정렬해 표시한다.
 
 ## 오류/에러 처리
 - DB 파일이 없거나 열 수 없으면 500.
@@ -60,3 +64,5 @@ sync_source:
 - `/api/orgs/{id}/won-groups-json-compact`에서 memos/webforms가 제거되고 summary/deal_defaults가 포함되는지 확인한다.
 - `/api/orgs/{id}/won-summary`가 Won 상태 + 23/24/25 계약연도만 합산하고 상위 조직 비어 있으면 `미입력`으로 묶는지 확인한다.
 - `/api/statepath/portfolio-2425` 금액이 억 단위이고 segment/search/정렬/패턴 필터가 모두 반영되는지 실제 호출로 점검한다.
+- `/api/performance/monthly-amounts/summary`가 세그먼트 label/row 순서/YYMM 24개 키를 모두 포함하는지 확인한다.
+- `/api/performance/monthly-amounts/deals`가 row=TOTAL에서도 세 버킷 합집합을 반환하고 totalAmount가 amount>0 else expectedAmount 합계인지 확인한다.

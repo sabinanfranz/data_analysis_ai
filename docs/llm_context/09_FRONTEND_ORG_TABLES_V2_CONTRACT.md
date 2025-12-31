@@ -14,9 +14,16 @@ sync_source:
 최신 `org_tables_v2.html` 기준으로 메뉴/상태/렌더 계약을 정리한다.
 
 ## 메뉴/상태
-- 메인: `2026 Target Board`, `2025 카운터파티 DRI`, `2025 체결액 순위`, `조직/People/Deal 뷰어`, `교육 1팀 딜체크`, `교육 2팀 딜체크`
+- 메인: `사업부 퍼포먼스(월별 체결액)`, `2026 Target Board`, `2025 카운터파티 DRI`, `2025 체결액 순위`, `조직/People/Deal 뷰어`, `교육 1팀 딜체크`, `교육 2팀 딜체크`
 - 서브: `StatePath 24→25`, (hidden) `2025 대기업 딜·People`, `업종별 매출`, `고객사 불일치`
 - 상태: `state`에 activeMenuId/size/rankSize/rankPeopleSize/각 메뉴별 캐시와 모달 핸들 보유. dealMemo/webform/json/statepath 모달은 `bindGlobalModalsOnce`에서 1회 바인딩.
+
+## 사업부 퍼포먼스 > 월별 체결액 (`renderBizPerfMonthly`)
+- API: `/performance/monthly-amounts/summary` (기본 2025-01~2026-12, YYMM=2501~2612). 세그먼트 label 예: `기업 고객(삼성 제외)`, `공공 고객`, `온라인(삼성 제외)`, `온라인(기업 고객(삼전 제외))`, `온라인(공공 고객)`, `비온라인(삼성 제외)`, `비온라인(기업 고객(삼전 제외))`, `비온라인(공공 고객)`. key는 기존 유지.
+- rows: `TOTAL` → `CONTRACT` → `CONFIRMED` → `HIGH` 4개 고정. 금액은 프런트에서 억 단위 1자리(`formatEok1`) 표기, 헤더/숫자/구분 모두 중앙 정렬. 0은 비활성(span), 나머지는 버튼.
+- 클릭: 버튼 클릭 시 `/performance/monthly-amounts/deals?segment=...&row=...&month=YYMM` 호출. `row=TOTAL`은 세 버킷 합집합을 dedupe 후 반환.
+- 모달 테이블: 카드/합계 없이 테이블만. 기업명/소속 상위 조직/담당자/딜이름은 좌측 정렬, 딜이름은 20em 폭+ellipsis. 나머지 11개 컬럼(과정포맷/데이원/상태/가능성/수주 예정일/예상 체결액/수강시작일/수강종료일/코스 ID/계약체결일/금액)은 auto-fit(줄바꿈 금지, 잘림 없음)으로 가로 스크롤. 금액 컬럼은 금액>0 우선, 없으면 예상 체결액으로 정렬 후 표시(0이면 `-`).
+- 레이아웃: 모달 `.deals-modal-wide`로 `width=min(96vw, 1440px)`, body overflow-x 허용, 테이블 `table-layout:auto` + `width:max-content`.
 
 ## 교육 딜체크 (`renderDealCheckScreen`)
 - 데이터: `/api/deal-check?team=edu1|edu2` (SQL 딜, 팀 멤버 포함). 리텐션 기준: orgWon2025Total 파싱 성공 ≥ 0.
@@ -59,3 +66,6 @@ sync_source:
 - 교육 딜체크가 4 섹션(리텐션 S0~P2, 신규 온라인, 리텐션 P3~P5, 신규 비온라인)으로 렌더되고 리텐션 표에만 티어 컬럼이 존재하며 nowrap/가로스크롤 규칙이 적용되는지 확인.
 - Target Board KPI가 0이 아니고 cpOffline2025/2026 기반 합산·타겟 계산을 반영하는지 확인(삼성전자 S0 제외).
 - 고객사 불일치 표에서 링크 색상이 배경과 명확히 구분되고 링크 클릭 시 조직 뷰어나 Salesmap으로 이동하는지 확인.
+- 월별 체결액 카드에서 세그먼트 label이 기업/공공/온라인/비온라인(삼전 제외) 표기로 보이고 rows가 TOTAL→계약 체결→성사 확정→성사 높음 순서로 24개월 금액을 1자리 소수로 표시하는지 확인.
+- 월별 체결액 셀 클릭 시 모달이 넓게 열리고(가로 스크롤 가능) 기업명/소속 상위 조직/담당자/딜이름은 좌측 정렬, 나머지 컬럼은 auto-fit으로 잘림 없이 노출되는지 확인.
+- 모달 정렬이 금액>0 우선, 없으면 예상 체결액 기준 내림차순(동액 시 딜 이름)인지 확인.

@@ -35,6 +35,9 @@ sync_source:
 - StatePath 단건: `/api/orgs/{org_id}/statepath`는 won-groups-json-compact를 기반으로 2024/2025 State, Path 이벤트, Seed, RevOps 추천을 억 단위 금액으로 반환.
 - StatePath 포트폴리오/상세: `/api/statepath/portfolio-2425`, `/api/orgs/{id}/statepath-2425`에서 필터/정렬/버킷/패턴 요약을 제공.
 - 카운터파티 상세: `/api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...`는 org/upper_org 딜 상세를 반환하며, `deals` 항목에 `people_id/people_name/upper_org`가 포함되어 프런트 팝업의 “상위 조직/교담자” 컬럼을 렌더하는 근거가 된다.
+- 월별 체결액(사업부 퍼포먼스):
+  - 요약: `GET /api/performance/monthly-amounts/summary?from=YYYY-MM&to=YYYY-MM` 기본 2025-01~2026-12. 세그먼트 key는 기존 유지, label은 `기업 고객(삼성 제외)`, `공공 고객`, `온라인(삼성 제외)`, `온라인(기업 고객(삼전 제외))`, `온라인(공공 고객)`, `비온라인(삼성 제외)`, `비온라인(기업 고객(삼전 제외))`, `비온라인(공공 고객)` 등으로 반환. 각 세그먼트의 rows는 `TOTAL → CONTRACT → CONFIRMED → HIGH` 순서 고정, month 키는 24개월 YYMM(2501~2612) 모두 포함. 금액은 원 단위(프런트가 1e8으로 나누어 1자리 표기).
+  - 딜목록: `GET /api/performance/monthly-amounts/deals?segment=...&row=...&month=YYMM`. `row=TOTAL`은 CONTRACT/CONFIRMED/HIGH 합집합을 dedupe 후 반환. 응답 `items`는 org/upper/person/deal/team/probability/date/amount/expectedAmount 포함, `totalAmount`는 amount>0 else expectedAmount 합산. 프런트는 금액>0 우선, 없으면 예상 체결액으로 정렬해 표시.
 
 ## 딜체크 공통 엔드포인트
 - `GET /api/deal-check?team=edu1|edu2` (org_tables_api.py → database.get_deal_check)
@@ -53,3 +56,5 @@ sync_source:
 - `/api/orgs/{org_id}/won-groups-json`에서 industry_major/mid 포함, 웹폼 날짜 변환, 메모 정제 규칙 적용 여부 확인.
 - `/api/statepath/portfolio-2425`에서 기본 필터/정렬 응답이 정상인지, cache hit 시에도 동일 응답인지 확인.
 - `/api/rank/2025-counterparty-dri/detail` 응답에서 deals[].people_id/people_name/upper_org가 존재하고 프런트 팝업에서 상위 조직/교담자 컬럼으로 노출되는지 확인.
+- `/api/performance/monthly-amounts/summary`가 세그먼트 label(기업 고객/공공/온라인/비온라인)과 row 순서(TOTAL→CONTRACT→CONFIRMED→HIGH), 24개월 YYMM 키를 모두 포함하는지 확인한다.
+- `/api/performance/monthly-amounts/deals`에서 row=TOTAL이 세 버킷 합집합으로 반환되고 totalAmount가 amount>0 else expectedAmount 합계와 일치하는지 샘플 월/세그먼트로 검증한다.

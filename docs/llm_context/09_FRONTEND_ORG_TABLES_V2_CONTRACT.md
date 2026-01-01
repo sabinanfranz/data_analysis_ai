@@ -1,12 +1,13 @@
 ---
 title: org_tables_v2 프런트 계약
-last_synced: 2025-12-25
+last_synced: 2025-12-26
 sync_source:
   - org_tables_v2.html
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py
   - dashboard/server/json_compact.py
   - dashboard/server/statepath_engine.py
+  - tests/test_pl_progress_2026.py
 ---
 
 # org_tables_v2 프런트 계약
@@ -14,7 +15,7 @@ sync_source:
 최신 `org_tables_v2.html` 기준으로 메뉴/상태/렌더 계약을 정리한다.
 
 ## 메뉴/상태
-- 메인: `사업부 퍼포먼스(월별 체결액)`, `2026 Target Board`, `2025 카운터파티 DRI`, `2025 체결액 순위`, `조직/People/Deal 뷰어`, `교육 1팀 딜체크`, `교육 2팀 딜체크`
+- 메인: `사업부 퍼포먼스(월별 체결액, 2026 P&L 진행율매출)`, `2026 Target Board`, `2025 카운터파티 DRI`, `2025 체결액 순위`, `조직/People/Deal 뷰어`, `교육 1팀 딜체크`, `교육 2팀 딜체크`
 - 서브: `StatePath 24→25`, (hidden) `2025 대기업 딜·People`, `업종별 매출`, `고객사 불일치`
 - 상태: `state`에 activeMenuId/size/rankSize/rankPeopleSize/각 메뉴별 캐시와 모달 핸들 보유. dealMemo/webform/json/statepath 모달은 `bindGlobalModalsOnce`에서 1회 바인딩.
 
@@ -24,6 +25,13 @@ sync_source:
 - 클릭: 버튼 클릭 시 `/performance/monthly-amounts/deals?segment=...&row=...&month=YYMM` 호출. `row=TOTAL`은 세 버킷 합집합을 dedupe 후 반환.
 - 모달 테이블: 카드/합계 없이 테이블만. 기업명/소속 상위 조직/담당자/딜이름은 좌측 정렬, 딜이름은 20em 폭+ellipsis. 나머지 11개 컬럼(과정포맷/데이원/상태/가능성/수주 예정일/예상 체결액/수강시작일/수강종료일/코스 ID/계약체결일/금액)은 auto-fit(줄바꿈 금지, 잘림 없음)으로 가로 스크롤. 금액 컬럼은 금액>0 우선, 없으면 예상 체결액으로 정렬 후 표시(0이면 `-`).
 - 레이아웃: 모달 `.deals-modal-wide`로 `width=min(96vw, 1440px)`, body overflow-x 허용, 테이블 `table-layout:auto` + `width:max-content`.
+
+## 사업부 퍼포먼스 > 2026 P&L 진행율매출 (`renderBizPerfPlProgress2026`)
+- API: `/performance/pl-progress-2026/summary?year=2026` + `/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E`. 로직/타겟은 `dashboard/server/database.py::get_pl_progress_summary`, 테스트 `tests/test_pl_progress_2026.py`.
+- 컬럼: 항목 옆에 연간 합계 `2026(T)`, `2026(E)`가 먼저, 이후 월 헤더 2601(T),2601(E)…2612(T/E). 행: 총매출/온라인/출강 → 공헌비용(합계/온라인/출강) → 공헌이익(합계/온라인/출강) → 고정비(합계/제작비/마케팅비/인건비/임대료/기타비용) → OP/영업이익률. 값은 억 단위 최대 소수점 2자리(불필요 0 제거), percent는 `%` suffix. 연간 영업이익률은 연간 OP/연간 총매출로 재계산한다.
+- 온라인 판정: `구독제(온라인)/구독제 (온라인)/선택구매(온라인)/선택구매 (온라인)/포팅`만 온라인, 그 외(복합 포함)는 출강. 진행율매출은 수강시작/종료 모두 존재+금액>0(없으면 예상 체결액) 딜만, 확률이 확정/높음 또는 확률 비어 있고 상태가 Won인 딜을 E에 포함.
+- 클릭: E 컬럼의 “월별” 총매출/온라인/출강만 버튼 렌더(연간 컬럼은 클릭 불가, 0이면 비활성). 클릭 시 드릴다운 모달에서 진행율매출(해당월), overlap/total 일수, 금액/예상액/날짜/상태/가능성/과정포맷 등을 표기하며 정렬은 인식액 DESC → 사용금액 DESC → 이름 ASC.
+- 모달 레이아웃: 월별 체결액 모달과 동일하게 `.deals-modal-wide` + `mp-deals-table` auto 레이아웃, 딜이름 20em ellipsis, 처음 4개 컬럼 좌측 정렬, 나머지 auto-fit 가로 스크롤.
 
 ## 교육 딜체크 (`renderDealCheckScreen`)
 - 데이터: `/api/deal-check?team=edu1|edu2` (SQL 딜, 팀 멤버 포함). 리텐션 기준: orgWon2025Total 파싱 성공 ≥ 0.
@@ -66,7 +74,8 @@ sync_source:
 - 상위 조직별 JSON/compact, StatePath 모달(`/orgs/{id}/statepath`), People/Deal/메모 2×2 컨테이너, 웹폼 모달.
 
 ## Verification
-- 메뉴 순서가 `2026 Target Board` → `2025 카운터파티 DRI` → `2025 체결액 순위` → `조직/People/Deal 뷰어` → `교육 1/2팀 딜체크` → `StatePath 24→25`로 노출되는지 확인.
+- 메뉴 순서가 `사업부 퍼포먼스(월별 체결액, 2026 P&L 진행율매출)` → `2026 Target Board` → `2025 카운터파티 DRI` → `2025 체결액 순위` → `조직/People/Deal 뷰어` → `교육 1/2팀 딜체크` → `StatePath 24→25`로 노출되는지 확인.
+- 2026 P&L 진행율매출 표 헤더가 2601(T)/2601(E)~2612(T/E) 순으로 보이고, Target 값이 고정 입력과 일치하며 E는 확정/높음+Won 폴백 딜만 안분 계산되는지 확인. E 컬럼 클릭 시 진행율매출/일수 컬럼을 포함한 모달이 열리고 정렬이 인식액 DESC → 사용금액 DESC → 이름 ASC인지 확인.
 - 2025 체결액 순위 헤더가 “25 티어/24 티어/…/26년 타겟/26 온라인/26 비온라인”으로 표기되고 값은 억 포맷인지 확인.
 - DRI 모달에서 “상위 조직/교담자” 컬럼과 딜/교담자 링크가 정상 동작하는지 확인.
 - 교육 딜체크가 4 섹션(리텐션 S0~P2, 신규 온라인, 리텐션 P3~P5, 신규 비온라인)으로 렌더되고 리텐션 표에만 티어 컬럼이 존재하며 nowrap/가로스크롤 규칙이 적용되는지 확인.

@@ -639,6 +639,169 @@
       text-align: center;
     }
 
+    .pl-progress-table .row-label {
+      text-align: left;
+      padding-left: 6px;
+      min-width: 140px;
+    }
+
+    .pl-progress-table .row-label.level-1 {
+      padding-left: 18px;
+    }
+
+    /* P&L 전용 테이블 (임원 대시보드 스타일) */
+    .pnl-table {
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .pnl-table th,
+    .pnl-table td {
+      padding: 8px 10px;
+      text-align: right !important;
+    }
+
+    .pnl-table th.col-item,
+    .pnl-table td.col-item {
+      text-align: left !important;
+    }
+
+    .pnl-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+    }
+
+    .pnl-table th.group {
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      text-transform: none;
+    }
+
+    .pnl-table th.year-group {
+      background: rgba(255, 255, 255, 0.08);
+      border-left: 2px solid rgba(255, 255, 255, 0.3);
+      border-right: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .pnl-table .col-year {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .pnl-table td.col-year {
+      font-weight: 650;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .pnl-table th.col-year {
+      font-weight: 750;
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    .pnl-table .year-start {
+      border-left: 2px solid rgba(255, 255, 255, 0.28);
+    }
+
+    .pnl-table .year-end {
+      border-right: 2px solid rgba(255, 255, 255, 0.28);
+    }
+
+    .pnl-table .col-t {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .pnl-table .col-e {
+      background: linear-gradient(180deg, rgba(80, 160, 255, 0.14) 0%, rgba(80, 160, 255, 0.06) 100%);
+    }
+
+    .pnl-table td.col-year.col-e,
+    .pnl-table th.col-year.col-e {
+      background: linear-gradient(180deg, rgba(80, 160, 255, 0.18) 0%, rgba(80, 160, 255, 0.08) 100%);
+    }
+
+    .pnl-table .month-start {
+      border-left: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .pnl-table .badge {
+      display: inline-block;
+      padding: 3px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .pnl-table .badge-t {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .pnl-table .badge-e {
+      background: rgba(80, 160, 255, 0.22);
+      color: rgba(255, 255, 255, 0.95);
+      border-color: rgba(80, 160, 255, 0.25);
+    }
+
+    .pnl-table td.clickable {
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    .pnl-table td.clickable:hover {
+      cursor: pointer;
+      filter: brightness(1.08);
+      text-decoration: underline;
+    }
+
+    .pnl-table .pnl-num {
+      display: block;
+      width: 100%;
+      text-align: right !important;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pnl-table .pnl-item {
+      display: block;
+      width: 100%;
+      text-align: left !important;
+    }
+
+    .pnl-table .pnl-head-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
+    }
+
+    .pnl-table .is-current-month {
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .pnl-table .is-current-month.col-e {
+      background: linear-gradient(180deg, rgba(80, 160, 255, 0.2) 0%, rgba(80, 160, 255, 0.1) 100%);
+    }
+
+    .pnl-table .current-month-start {
+      border-left: 2px solid rgba(255, 255, 255, 0.28);
+    }
+
+    .pnl-table .current-month-end {
+      border-right: 2px solid rgba(255, 255, 255, 0.28);
+    }
+
+    .pnl-table td.is-current-month .pnl-num {
+      color: rgba(255, 255, 255, 0.96);
+      font-weight: 650;
+    }
+
+    .pnl-table th.is-current-month-group {
+      background: rgba(255, 255, 255, 0.09);
+      border-left: 2px solid rgba(255, 255, 255, 0.28);
+      border-right: 2px solid rgba(255, 255, 255, 0.28);
+    }
+
     /* ✅ 딜 목록 모달 폭 강제(기존 modal/json-modal max-width 덮어쓰기) */
     .modal.deals-modal-wide {
       width: min(96vw, 1440px) !important;
@@ -1499,7 +1662,10 @@
         sectionId: "perf",
         title: "사업부 퍼포먼스",
         defaultOpen: true,
-        items: [{ id: "biz-perf-monthly", label: "월별 체결액" }],
+        items: [
+          { id: "biz-perf-monthly", label: "월별 체결액" },
+          { id: "biz-perf-pl-progress-2026", label: "2026 P&L 진행율매출" },
+        ],
       },
       {
         sectionId: "main",
@@ -1529,6 +1695,7 @@
 
     const MENU_RENDERERS = {
       "biz-perf-monthly": renderBizPerfMonthly,
+      "biz-perf-pl-progress-2026": renderBizPerfPlProgress2026,
       "rank-2025": renderRank2025Screen,
       "rank-2025-people": renderRank2025PeopleScreen,
       "rank-2025-counterparty-dri": renderRankCounterpartyDriScreen,
@@ -1646,6 +1813,12 @@
         loading: false,
         error: null,
         data: null,
+      },
+      perfPlProgress2026: {
+        loading: false,
+        error: null,
+        summary: null,
+        dealsCache: new Map(),
       },
       orgs: [],
       orgSearch: "",
@@ -2705,6 +2878,32 @@
       return fetchJson(`/performance/monthly-amounts/deals?${params.toString()}`);
     }
 
+    async function loadPlProgress2026Summary(year = 2026) {
+      const cached = state.perfPlProgress2026.summary;
+      if (cached && cached.year === year) return cached;
+      const params = new URLSearchParams();
+      params.set("year", year);
+      const data = await fetchJson(`/performance/pl-progress-2026/summary?${params.toString()}`);
+      state.perfPlProgress2026.summary = data;
+      return data;
+    }
+
+    async function loadPlProgress2026Deals({ year = 2026, month, rail, variant = "E", limit = 500, offset = 0 }) {
+      const key = `${year}|${month}|${rail}|${variant}|${offset}|${limit}`;
+      const cache = state.perfPlProgress2026.dealsCache.get(key);
+      if (cache) return cache;
+      const params = new URLSearchParams();
+      params.set("year", year);
+      params.set("month", month);
+      params.set("rail", rail);
+      params.set("variant", variant);
+      params.set("limit", limit);
+      params.set("offset", offset);
+      const data = await fetchJson(`/performance/pl-progress-2026/deals?${params.toString()}`);
+      state.perfPlProgress2026.dealsCache.set(key, data);
+      return data;
+    }
+
     async function loadCounterpartyRows(size = "대기업", offset = 0, limit = 100) {
       const key = `${size || "대기업"}|${offset}|${limit}`;
       if (state.rankCounterpartyCache[key]) {
@@ -2850,6 +3049,21 @@
       const value = Number(num);
       if (!Number.isFinite(value)) return "0.00";
       return value.toFixed(2);
+    }
+
+    function formatEokMax2(num) {
+      const value = Number(num);
+      if (!Number.isFinite(value)) return "-";
+      return value.toFixed(1);
+    }
+
+    function formatPercentValue(num) {
+      if (num === null || num === undefined || Number.isNaN(num)) return "-";
+      let value = Number(num);
+      if (!Number.isFinite(value)) return "-";
+      if (value > 0 && value <= 1) value = value * 100;
+      if (value < 0 && value >= -1) value = value * 100;
+      return `${value.toFixed(1)}%`;
     }
 
     function isOnlineCourseFormat(v) {
@@ -6213,6 +6427,239 @@
         showToast(`월별 체결액을 불러오지 못했습니다: ${err.message}`, "error");
       } finally {
         state.perfMonthly.loading = false;
+      }
+    }
+
+    async function openPlProgressDealsModal({ month, rail, variant = "E" }) {
+      bindGlobalModalsOnce();
+      if (!state.rankPeopleModal.backdrop || !state.rankPeopleModal.title || !state.rankPeopleModal.body) {
+        showToast("딜 모달을 초기화할 수 없습니다.", "error");
+        return;
+      }
+      state.rankPeopleModal.backdrop.style.display = "flex";
+      state.rankPeopleModal.title.textContent = "2026 P&L 진행율매출 딜 목록";
+      state.rankPeopleModal.body.innerHTML = `<div class="muted">불러오는 중...</div>`;
+      try {
+        const data = await loadPlProgress2026Deals({ year: 2026, month, rail, variant });
+        const titleLabel = `${month} · ${rail} · ${variant}`;
+        state.rankPeopleModal.title.textContent = `2026 P&L 진행율매출 - ${titleLabel}`;
+        const items = (data.items || []).slice();
+        items.sort((a, b) => {
+          const recDiff = Number(b.recognizedAmount || 0) - Number(a.recognizedAmount || 0);
+          if (recDiff !== 0) return recDiff;
+          const amtDiff = Number(b.amountUsed || 0) - Number(a.amountUsed || 0);
+          if (amtDiff !== 0) return amtDiff;
+          return String(a.dealName || "").localeCompare(String(b.dealName || ""), "ko");
+        });
+        const rowsHtml =
+          items
+            .map((item) => {
+              const dealLink = buildSalesmapLink("deal", item.dealId);
+              const owners = Array.isArray(item.day1OwnerNames) ? item.day1OwnerNames.filter(Boolean).join(", ") : item.day1OwnerNames || "-";
+              const fmtWon = (v) => (Number(v) > 0 ? formatEok1(v) : "-");
+              const fmtRec = (v) => (Number(v) > 0 ? formatEokMax2(v) : "-");
+              const overlap = item.overlapDays && item.totalDays ? `${item.overlapDays}/${item.totalDays}` : "-";
+              return `
+                <tr>
+                  <td class="align-left">${item.orgName || "-"}</td>
+                  <td class="align-left">${normalizeUpperOrg(item.upperOrg)}</td>
+                  <td class="align-left">${item.customerPersonName || "-"}</td>
+                  <td class="deal-name-cell align-left">${dealLink ? `<a class="deal-name-link" href="${dealLink}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">${item.dealName || item.dealId || "-"}</a>` : `<span class="deal-name-link">${item.dealName || item.dealId || "-"}</span>`}</td>
+                  <td class="auto-fit">${item.courseFormat || "-"}</td>
+                  <td class="auto-fit">${owners || "-"}</td>
+                  <td class="auto-fit">${item.status || "-"}</td>
+                  <td class="auto-fit">${formatProbability(item.probability)}</td>
+                  <td class="auto-fit amount">${formatDate(item.expectedCloseDate)}</td>
+                  <td class="auto-fit amount">${fmtWon(item.expectedAmount)}</td>
+                  <td class="auto-fit">${formatDate(item.startDate)}</td>
+                  <td class="auto-fit">${formatDate(item.endDate)}</td>
+                  <td class="auto-fit amount">${formatDate(item.contractDate)}</td>
+                  <td class="auto-fit amount">${fmtWon(item.amount)}</td>
+                  <td class="auto-fit amount">${fmtRec(item.recognizedAmount)}</td>
+                  <td class="auto-fit amount">${overlap}</td>
+                </tr>
+              `;
+            })
+            .join("") ||
+          `<tr><td class="muted" colspan="16">데이터가 없습니다.</td></tr>`;
+
+        state.rankPeopleModal.body.innerHTML = `
+          <div class="table-wrap full">
+            <table class="perf-table mp-monthly-table mp-deals-table">
+              <thead>
+                <tr>
+                  <th class="align-left">기업명</th>
+                  <th class="align-left">소속 상위 조직</th>
+                  <th class="align-left">담당자</th>
+                  <th class="align-left">딜이름</th>
+                  <th class="auto-fit">과정포맷</th>
+                  <th class="auto-fit">데이원</th>
+                  <th class="auto-fit">상태</th>
+                  <th class="auto-fit">가능성</th>
+                  <th class="auto-fit amount">수주 예정일</th>
+                  <th class="auto-fit amount">예상 체결액</th>
+                  <th class="auto-fit">수강시작일</th>
+                  <th class="auto-fit">수강종료일</th>
+                  <th class="auto-fit amount">계약체결일</th>
+                  <th class="auto-fit amount">금액</th>
+                  <th class="auto-fit amount">진행율매출(해당월)</th>
+                  <th class="auto-fit amount">일수</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `;
+      } catch (err) {
+        state.rankPeopleModal.body.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        showToast(`딜 목록을 불러오지 못했습니다: ${err.message}`, "error");
+      }
+    }
+
+    async function renderBizPerfPlProgress2026(contentRoot) {
+      state.perfPlProgress2026.loading = true;
+      state.perfPlProgress2026.error = null;
+      contentRoot.innerHTML = `
+        <section class="card compact-header">
+          <div class="control-row">
+            <div>
+              <h1>2026 P&L 진행율매출</h1>
+              <div class="muted" id="plProgressMeta">단위: 억 / (T)=Target, (E)=Expected</div>
+            </div>
+            <div class="spacer"></div>
+            <span class="pill muted">2026-01 ~ 2026-12</span>
+          </div>
+        </section>
+        <section class="card">
+          <div id="plProgressTableWrap" class="muted">불러오는 중...</div>
+        </section>
+      `;
+
+      const tableWrap = document.getElementById("plProgressTableWrap");
+      const metaEl = document.getElementById("plProgressMeta");
+
+      const renderTable = (data) => {
+        if (!data || !data.rows || !data.rows.length) {
+          tableWrap.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+          return;
+        }
+        const columns = data.columns || [];
+        const yearCols = columns.filter((c) => c.kind === "YEAR");
+        const monthCols = (data.months || []).flatMap((m) => columns.filter((c) => c.month === m));
+        const orderedCols = [...yearCols, ...monthCols];
+
+        const now = new Date();
+        const currentYYMM = `${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+        const headerRow1 = [
+          `<th class="col-item mp-kind sticky-col" rowspan="2">항목</th>`,
+          `<th class="group col-year year-group" colspan="${yearCols.length}">${data.year || 2026} 전체</th>`,
+          ...data.months.map((m) => {
+            const cls = m === currentYYMM ? "group col-month month-group is-current-month-group" : "group col-month month-group";
+            return `<th class="${cls}" colspan="2">${m}</th>`;
+          }),
+        ].join("");
+
+        const headerRow2 = orderedCols
+          .map((col) => {
+            const isYear = col.kind === "YEAR";
+            const isT = col.variant === "T";
+            const isE = col.variant === "E";
+            const extra = [];
+            if (isYear && isT) extra.push("year-start");
+            if (isYear && isE) extra.push("year-end");
+            if (!isYear && isT) extra.push("month-start");
+            if (col.month === currentYYMM) {
+              extra.push("is-current-month");
+              if (isT) extra.push("current-month-start");
+              if (isE) extra.push("current-month-end");
+            }
+            const badge = isT ? '<span class="badge badge-t">T</span>' : '<span class="badge badge-e">E</span>';
+            return `<th class="${["col-year", "col-month", isT ? "col-t" : "col-e", ...extra].filter(Boolean).join(" ")}"><div class="pnl-head-right">${badge}</div></th>`;
+          })
+          .join("");
+
+        const bodyRows =
+          data.rows
+            .map((row) => {
+              const cells = orderedCols
+                .map((col) => {
+                  const val = row.values ? row.values[col.key] : null;
+                  const isClickable =
+                    col.variant === "E" &&
+                    col.kind !== "YEAR" &&
+                    (row.key === "REV_TOTAL" || row.key === "REV_ONLINE" || row.key === "REV_OFFLINE");
+                  const display = row.format === "percent" ? formatPercentValue(val) : formatEokMax2(val);
+                  const rail = row.key === "REV_TOTAL" ? "TOTAL" : row.key === "REV_ONLINE" ? "ONLINE" : "OFFLINE";
+                  const isZero = !Number.isFinite(Number(val)) || Number(val) <= 0;
+                  const classes = [
+                    col.kind === "YEAR" ? "col-year" : "",
+                    col.kind === "YEAR" && col.variant === "T" ? "year-start" : "",
+                    col.kind === "YEAR" && col.variant === "E" ? "year-end" : "",
+                    col.variant === "T" ? "col-t" : "col-e",
+                    col.kind !== "YEAR" && col.variant === "T" ? "month-start" : "",
+                    col.month === currentYYMM ? "is-current-month" : "",
+                    col.month === currentYYMM && col.variant === "T" ? "current-month-start" : "",
+                    col.month === currentYYMM && col.variant === "E" ? "current-month-end" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ");
+                  if (isClickable) {
+                    return `<td class="${classes} mp-num clickable">${isZero ? `<span class="mp-cell-btn is-zero">${formatEokMax2(0)}</span>` : `<button type="button" class="mp-cell-btn" data-pl-cell="1" data-month="${col.month}" data-rail="${rail}"><span class="pnl-num">${display}</span></button>`}</td>`;
+                  }
+                  return `<td class="${classes} mp-num"><span class="pnl-num">${display}</span></td>`;
+                })
+                .join("");
+              const labelCls = row.level ? `row-label level-${row.level} col-item` : "row-label col-item";
+              return `<tr><td class="${labelCls} sticky-col"><span class="pnl-item">${row.label}</span></td>${cells}</tr>`;
+            })
+            .join("");
+
+        tableWrap.innerHTML = `
+          <div class="table-wrap full perf-table-wrap">
+            <table class="perf-table mp-monthly-table pl-progress-table pnl-table" style="--item-col-w: 190px; --year-col-w: 110px;">
+              <thead>
+                <tr>${headerRow1}</tr>
+                <tr>${headerRow2}</tr>
+              </thead>
+              <tbody>
+                ${bodyRows}
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        tableWrap.querySelectorAll("[data-pl-cell]").forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            const month = e.currentTarget.getAttribute("data-month");
+            const rail = e.currentTarget.getAttribute("data-rail");
+            await openPlProgressDealsModal({ month, rail, variant: "E" });
+          });
+        });
+
+        const metaParts = [];
+        if (data.meta && data.meta.snapshot_version) metaParts.push(data.meta.snapshot_version);
+        if (data.meta && data.meta.generated_at) metaParts.push(data.meta.generated_at);
+        const excluded = (data.meta && data.meta.excluded) || {};
+        metaParts.push(
+          `제외: 날짜 ${excluded.missing_dates || 0}, 금액 ${excluded.missing_amount || 0}, 기간 ${excluded.invalid_date_range || 0}`
+        );
+        if (metaEl) {
+          metaEl.textContent = `단위: 억 / (T)=Target, (E)=Expected(성사 가능성 높음·확정 딜만)${metaParts.length ? " · " + metaParts.join(" · ") : ""}`;
+        }
+      };
+
+      try {
+        const data = await loadPlProgress2026Summary(2026);
+        renderTable(data);
+      } catch (err) {
+        state.perfPlProgress2026.error = err;
+        if (tableWrap) tableWrap.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        showToast(`P&L 진행율매출을 불러오지 못했습니다: ${err.message}`, "error");
+      } finally {
+        state.perfPlProgress2026.loading = false;
       }
     }
 

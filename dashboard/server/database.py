@@ -1,7 +1,9 @@
+import calendar
 import json
 import os
 import re
 import sqlite3
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
@@ -13,12 +15,36 @@ DB_PATH = Path(DB_PATH_ENV)
 _OWNER_LOOKUP_CACHE: Dict[Path, Dict[str, str]] = {}
 YEARS_FOR_WON = {"2023", "2024", "2025"}
 ONLINE_COURSE_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포팅"}
+ONLINE_PNL_FORMATS = {
+    "구독제(온라인)",
+    "구독제 (온라인)",
+    "선택구매(온라인)",
+    "선택구매 (온라인)",
+    "포팅",
+}
 SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타/미입력"]
 PUBLIC_KEYWORDS = ["공단", "공사", "진흥원", "재단", "협회", "청", "시청", "도청", "구청", "교육청", "원"]
 _COUNTERPARTY_DRI_CACHE: Dict[Tuple[Path, float, str, int], Dict[str, Any]] = {}
 _RANK_2025_SUMMARY_CACHE: Dict[Tuple[Path, float, str, Tuple[int, ...]], Dict[str, Any]] = {}
 _PERF_MONTHLY_DATA_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
 _PERF_MONTHLY_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] = {}
+_PL_PROGRESS_PAYLOAD_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
+_PL_PROGRESS_SUMMARY_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
+
+PL_2026_TARGET: Dict[str, Dict[str, float]] = {
+    "2601": {"online": 3.7, "offline": 2.1},
+    "2602": {"online": 4.0, "offline": 2.1},
+    "2603": {"online": 4.3, "offline": 8.6},
+    "2604": {"online": 4.6, "offline": 9.1},
+    "2605": {"online": 4.9, "offline": 12.4},
+    "2606": {"online": 5.3, "offline": 15.1},
+    "2607": {"online": 5.5, "offline": 18.0},
+    "2608": {"online": 5.5, "offline": 21.6},
+    "2609": {"online": 5.5, "offline": 18.0},
+    "2610": {"online": 5.6, "offline": 14.7},
+    "2611": {"online": 5.6, "offline": 14.6},
+    "2612": {"online": 5.6, "offline": 13.6},
+}
 
 
 def _date_only(val: Any) -> str:
@@ -166,6 +192,42 @@ def _prob_is_high_only(val: Any) -> bool:
 def _prob_equals(val: Any, target: str) -> bool:
     tokens = _prob_tokens(val)
     return target in tokens
+
+
+def _parse_date(val: Any) -> Optional[date]:
+    text = _date_only(val)
+    if not text:
+        return None
+    try:
+        return datetime.strptime(text, "%Y-%m-%d").date()
+    except Exception:
+        return None
+
+
+def _normalize_course_format(val: Any) -> str:
+    text = (val or "").strip()
+    # Remove spaces before parentheses to match 온라인 포맷 변형
+    text = re.sub(r"\s+\(", "(", text)
+    return text
+
+
+def _is_online_for_pnl(val: Any) -> bool:
+    fmt = _normalize_course_format(val)
+    return fmt in ONLINE_PNL_FORMATS
+
+
+def _month_keys_for_year(year: int) -> List[str]:
+    yy = f"{year % 100:02d}"
+    return [f"{yy}{m:02d}" for m in range(1, 13)]
+
+
+def _month_boundaries(year: int) -> Dict[str, Tuple[date, date]]:
+    boundaries: Dict[str, Tuple[date, date]] = {}
+    for m in range(1, 13):
+        month_key = f"{year % 100:02d}{m:02d}"
+        last_day = calendar.monthrange(year, m)[1]
+        boundaries[month_key] = (date(year, m, 1), date(year, m, last_day))
+    return boundaries
 
 
 def infer_size_group(org_name: str | None, size_raw: str | None) -> str:
@@ -2554,6 +2616,26 @@ _PERF_ROW_LABEL = {
     "HIGH": "성사 높음",
 }
 
+_PL_PROGRESS_ROWS = [
+    ("REV_TOTAL", "총매출", 0, "eok"),
+    ("REV_ONLINE", "└ 온라인 매출", 1, "eok"),
+    ("REV_OFFLINE", "└ 출강 매출", 1, "eok"),
+    ("COST_CONTRIB_TOTAL", "공헌비용 합계", 0, "eok"),
+    ("COST_CONTRIB_ONLINE", "└ 온라인 공헌비용", 1, "eok"),
+    ("COST_CONTRIB_OFFLINE", "└ 출강 공헌비용", 1, "eok"),
+    ("PROFIT_CONTRIB_TOTAL", "공헌이익 합계", 0, "eok"),
+    ("PROFIT_CONTRIB_ONLINE", "└ 온라인 공헌이익", 1, "eok"),
+    ("PROFIT_CONTRIB_OFFLINE", "└ 출강 공헌이익", 1, "eok"),
+    ("COST_FIXED_TOTAL", "고정비 합계", 0, "eok"),
+    ("COST_FIXED_PROD", "└ 제작비", 1, "eok"),
+    ("COST_FIXED_MKT", "└ 마케팅비", 1, "eok"),
+    ("COST_FIXED_LABOR", "└ 인건비", 1, "eok"),
+    ("COST_FIXED_RENT", "└ 임대료", 1, "eok"),
+    ("COST_FIXED_OTHER", "└ 기타비용", 1, "eok"),
+    ("OP", "OP", 0, "eok"),
+    ("OP_MARGIN", "영업이익률(%)", 0, "percent"),
+]
+
 
 def get_perf_monthly_amounts_summary(
     from_month: str = "2025-01",
@@ -2686,6 +2768,361 @@ def get_perf_monthly_amounts_deals(
         "items": items,
         "note": "성사 확정/높음은 금액이 없으면 예상 체결액을 합산합니다.",
         "meta": {"snapshot_version": payload.get("snapshot_version")},
+    }
+
+
+def _pl_target_for_year(year: int) -> Dict[str, Dict[str, float]]:
+    if year == 2026:
+        return PL_2026_TARGET
+    return {}
+
+
+def _round2(val: Optional[float]) -> Optional[float]:
+    if val is None:
+        return None
+    return round(float(val), 4)
+
+
+def _load_pl_progress_payload(year: int = 2026, db_path: Path = DB_PATH) -> Dict[str, Any]:
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    stat = db_path.stat()
+    cache_key = (db_path, stat.st_mtime, year)
+    cached = _PL_PROGRESS_PAYLOAD_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    month_keys = _month_keys_for_year(year)
+    month_windows = _month_boundaries(year)
+    excluded = {"missing_dates": 0, "missing_amount": 0, "invalid_date_range": 0}
+
+    with _connect(db_path) as conn:
+        rows = _fetch_all(
+            conn,
+            """
+            SELECT
+              d.id AS deal_id,
+              d."이름" AS deal_name,
+              d.organizationId AS org_id,
+              COALESCE(o."이름", d.organizationId) AS org_name,
+              p."소속 상위 조직" AS upper_org,
+              p."이름" AS person_name,
+              d."과정포맷" AS course_format,
+              d."담당자" AS owner_json,
+              d."상태" AS status,
+              d."성사 가능성" AS probability,
+              d."금액" AS amount,
+              d."예상 체결액" AS expected_amount,
+              d."계약 체결일" AS contract_date,
+              d."수주 예정일" AS expected_close_date,
+              d."수강시작일" AS start_date,
+              d."수강종료일" AS end_date
+            FROM deal d
+            LEFT JOIN organization o ON o.id = d.organizationId
+            LEFT JOIN people p ON p.id = d.peopleId
+            WHERE d."수강시작일" IS NOT NULL OR d."수강종료일" IS NOT NULL
+            """,
+        )
+
+    deals: List[Dict[str, Any]] = []
+    for row in rows:
+        tokens = _prob_tokens(row["probability"])
+        status = (row["status"] or "").strip()
+        is_expected = "확정" in tokens or "높음" in tokens or (not tokens and status == "Won")
+        if not is_expected:
+            continue
+
+        start = _parse_date(row["start_date"])
+        end = _parse_date(row["end_date"])
+        if not start or not end:
+            excluded["missing_dates"] += 1
+            continue
+        if end < start:
+            excluded["invalid_date_range"] += 1
+            continue
+
+        amount_num = _to_number(row["amount"])
+        expected_num = _to_number(row["expected_amount"])
+        amount_used = amount_num if amount_num and amount_num > 0 else expected_num if expected_num and expected_num > 0 else None
+        if amount_used is None:
+            excluded["missing_amount"] += 1
+            continue
+
+        total_days = (end - start).days + 1
+        if total_days <= 0:
+            excluded["invalid_date_range"] += 1
+            continue
+
+        is_online = _is_online_for_pnl(row["course_format"])
+        recognized_by_month: Dict[str, float] = {}
+        overlap_by_month: Dict[str, Dict[str, int]] = {}
+        for month_key, (m_start, m_end) in month_windows.items():
+            if end < m_start or start > m_end:
+                continue
+            overlap_start = max(start, m_start)
+            overlap_end = min(end, m_end)
+            overlap_days = (overlap_end - overlap_start).days + 1
+            if overlap_days <= 0:
+                continue
+            recognized_eok = (float(amount_used) * overlap_days / total_days) / 1e8
+            if recognized_eok <= 0:
+                continue
+            recognized_by_month[month_key] = recognized_eok
+            overlap_by_month[month_key] = {"overlap_days": overlap_days, "total_days": total_days}
+
+        if not recognized_by_month:
+            continue
+
+        deals.append(
+            {
+                "deal_id": row["deal_id"],
+                "deal_name": row["deal_name"] or row["deal_id"],
+                "org_id": row["org_id"],
+                "org_name": row["org_name"] or (row["org_id"] or "-"),
+                "upper_org": row["upper_org"] or "미입력",
+                "customer_person_name": row["person_name"] or "미입력",
+                "course_format": row["course_format"],
+                "owner_names": _parse_owner_names(row["owner_json"]),
+                "status": row["status"],
+                "probability": row["probability"],
+                "expected_close_date": row["expected_close_date"],
+                "expected_amount": expected_num,
+                "contract_date": row["contract_date"],
+                "start_date": row["start_date"],
+                "end_date": row["end_date"],
+                "amount": amount_num,
+                "amount_used": float(amount_used),
+                "recognized_by_month": recognized_by_month,
+                "overlap_by_month": overlap_by_month,
+                "is_online": is_online,
+            }
+        )
+
+    payload = {
+        "deals": deals,
+        "month_keys": month_keys,
+        "snapshot_version": f"db_mtime:{int(stat.st_mtime)}",
+        "excluded": excluded,
+    }
+    _PL_PROGRESS_PAYLOAD_CACHE[cache_key] = payload
+    return payload
+
+
+def get_pl_progress_summary(year: int = 2026, db_path: Path = DB_PATH) -> Dict[str, Any]:
+    months = _month_keys_for_year(year)
+    targets = _pl_target_for_year(year)
+    if not months:
+        raise ValueError("No months available for given year")
+
+    payload = _load_pl_progress_payload(year=year, db_path=db_path)
+    stat = db_path.stat()
+    cache_key = (db_path, stat.st_mtime, year)
+    cached = _PL_PROGRESS_SUMMARY_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    data_variant: Dict[str, Dict[str, Dict[str, float]]] = {
+        "T": {m: {"online": 0.0, "offline": 0.0} for m in months},
+        "E": {m: {"online": 0.0, "offline": 0.0} for m in months},
+    }
+    for month, tgt in targets.items():
+        if month in data_variant["T"]:
+            data_variant["T"][month]["online"] = float(tgt.get("online", 0.0))
+            data_variant["T"][month]["offline"] = float(tgt.get("offline", 0.0))
+
+    for deal in payload["deals"]:
+        variant = "E"
+        for month, amt in deal["recognized_by_month"].items():
+            if month not in data_variant[variant]:
+                continue
+            key = "online" if deal["is_online"] else "offline"
+            data_variant[variant][month][key] += float(amt)
+
+    def compute_rows_for_variant(variant: str) -> Dict[str, Dict[str, float]]:
+        rows: Dict[str, Dict[str, float]] = {key: {} for key, _, _, _ in _PL_PROGRESS_ROWS}
+        for month in months:
+            online_rev = data_variant[variant][month]["online"]
+            offline_rev = data_variant[variant][month]["offline"]
+            total_rev = online_rev + offline_rev
+            contrib_cost_online = online_rev * 0.15
+            contrib_cost_offline = offline_rev * 0.45
+            contrib_cost_total = contrib_cost_online + contrib_cost_offline
+            profit_online = online_rev - contrib_cost_online
+            profit_offline = offline_rev - contrib_cost_offline
+            profit_total = profit_online + profit_offline
+            fixed_prod = 0.2
+            fixed_mkt = 0.3
+            fixed_labor = 6.0
+            fixed_rent = fixed_labor * 0.15
+            fixed_other = 1.0 + (offline_rev * 0.05)
+            fixed_total = fixed_prod + fixed_mkt + fixed_labor + fixed_rent + fixed_other
+            op = profit_total - fixed_total
+            margin = (op / total_rev * 100.0) if total_rev > 0 else None
+
+            rows["REV_TOTAL"][month] = _round2(total_rev)
+            rows["REV_ONLINE"][month] = _round2(online_rev)
+            rows["REV_OFFLINE"][month] = _round2(offline_rev)
+            rows["COST_CONTRIB_TOTAL"][month] = _round2(contrib_cost_total)
+            rows["COST_CONTRIB_ONLINE"][month] = _round2(contrib_cost_online)
+            rows["COST_CONTRIB_OFFLINE"][month] = _round2(contrib_cost_offline)
+            rows["PROFIT_CONTRIB_TOTAL"][month] = _round2(profit_total)
+            rows["PROFIT_CONTRIB_ONLINE"][month] = _round2(profit_online)
+            rows["PROFIT_CONTRIB_OFFLINE"][month] = _round2(profit_offline)
+            rows["COST_FIXED_TOTAL"][month] = _round2(fixed_total)
+            rows["COST_FIXED_PROD"][month] = _round2(fixed_prod)
+            rows["COST_FIXED_MKT"][month] = _round2(fixed_mkt)
+            rows["COST_FIXED_LABOR"][month] = _round2(fixed_labor)
+            rows["COST_FIXED_RENT"][month] = _round2(fixed_rent)
+            rows["COST_FIXED_OTHER"][month] = _round2(fixed_other)
+            rows["OP"][month] = _round2(op)
+            rows["OP_MARGIN"][month] = _round2(margin) if margin is not None else None
+        return rows
+
+    computed: Dict[str, Dict[str, Dict[str, float]]] = {}
+    for variant in ["T", "E"]:
+        computed[variant] = compute_rows_for_variant(variant)
+
+    year_key_t = f"Y{year}_T"
+    year_key_e = f"Y{year}_E"
+
+    columns: List[Dict[str, Any]] = [
+        {"key": year_key_t, "label": f"{year}(T)", "month": None, "variant": "T", "kind": "YEAR"},
+        {"key": year_key_e, "label": f"{year}(E)", "month": None, "variant": "E", "kind": "YEAR"},
+    ]
+    for m in months:
+        columns.append({"key": f"{m}_T", "label": f"{m}(T)", "month": m, "variant": "T", "kind": "MONTH"})
+        columns.append({"key": f"{m}_E", "label": f"{m}(E)", "month": m, "variant": "E", "kind": "MONTH"})
+
+    totals_by_variant: Dict[str, Dict[str, Optional[float]]] = {v: {} for v in ["T", "E"]}
+    for variant in ["T", "E"]:
+        for key, label, level, fmt in _PL_PROGRESS_ROWS:
+            if fmt == "percent":
+                continue
+            total_val = sum((computed[variant][key].get(m) or 0.0) for m in months)
+            totals_by_variant[variant][key] = _round2(total_val)
+
+    rows_out: List[Dict[str, Any]] = []
+    for key, label, level, fmt in _PL_PROGRESS_ROWS:
+        values: Dict[str, Optional[float]] = {}
+        # monthly values
+        for m in months:
+            values[f"{m}_T"] = computed["T"][key][m]
+            values[f"{m}_E"] = computed["E"][key][m]
+        # yearly values
+        if fmt == "percent":
+            rev_t = totals_by_variant["T"].get("REV_TOTAL") or 0.0
+            rev_e = totals_by_variant["E"].get("REV_TOTAL") or 0.0
+            op_t = totals_by_variant["T"].get("OP") or 0.0
+            op_e = totals_by_variant["E"].get("OP") or 0.0
+            values[year_key_t] = _round2(op_t / rev_t * 100.0) if rev_t > 0 else None
+            values[year_key_e] = _round2(op_e / rev_e * 100.0) if rev_e > 0 else None
+        else:
+            values[year_key_t] = totals_by_variant["T"].get(key, 0.0)
+            values[year_key_e] = totals_by_variant["E"].get(key, 0.0)
+
+        rows_out.append({"key": key, "label": label, "level": level, "format": fmt, "values": values})
+
+    result = {
+        "year": year,
+        "months": months,
+        "columns": columns,
+        "rows": rows_out,
+        "meta": {
+            "unit": "억",
+            "snapshot_version": payload.get("snapshot_version"),
+            "generated_at": datetime.utcnow().isoformat(),
+            "excluded": payload.get("excluded", {}),
+        },
+    }
+    _PL_PROGRESS_SUMMARY_CACHE[cache_key] = result
+    return result
+
+
+def get_pl_progress_deals(
+    year: int,
+    month: str,
+    rail: str,
+    variant: str = "E",
+    limit: int = 500,
+    offset: int = 0,
+    db_path: Path = DB_PATH,
+) -> Dict[str, Any]:
+    month_key = month.strip()
+    if not month_key or len(month_key) != 4:
+        raise ValueError("month must be YYMM format (e.g., 2601)")
+    rail_norm = rail.upper()
+    if rail_norm not in {"TOTAL", "ONLINE", "OFFLINE"}:
+        raise ValueError("rail must be TOTAL|ONLINE|OFFLINE")
+    variant_norm = (variant or "E").upper()
+    if variant_norm not in {"E", "T"}:
+        raise ValueError("variant must be E or T")
+    if variant_norm == "T":
+        return {
+            "year": year,
+            "month": month_key,
+            "rail": rail_norm,
+            "variant": variant_norm,
+            "items": [],
+            "meta": {"snapshot_version": None, "total": 0},
+        }
+
+    limit = max(1, min(limit or 500, 2000))
+    offset = max(0, offset or 0)
+
+    payload = _load_pl_progress_payload(year=year, db_path=db_path)
+    items: List[Dict[str, Any]] = []
+    for deal in payload["deals"]:
+        if month_key not in deal["recognized_by_month"]:
+            continue
+        if rail_norm == "ONLINE" and not deal["is_online"]:
+            continue
+        if rail_norm == "OFFLINE" and deal["is_online"]:
+            continue
+        recognized_amt = deal["recognized_by_month"].get(month_key, 0.0)
+        overlap_info = deal["overlap_by_month"].get(month_key, {})
+        items.append(
+            {
+                "dealId": deal["deal_id"],
+                "dealName": deal["deal_name"],
+                "orgId": deal["org_id"],
+                "orgName": deal["org_name"],
+                "upperOrg": deal["upper_org"],
+                "customerPersonId": None,
+                "customerPersonName": deal["customer_person_name"],
+                "day1OwnerNames": deal["owner_names"],
+                "courseFormat": deal["course_format"],
+                "status": deal["status"],
+                "probability": deal["probability"],
+                "expectedCloseDate": deal["expected_close_date"],
+                "expectedAmount": deal["expected_amount"],
+                "contractDate": deal["contract_date"],
+                "startDate": deal["start_date"],
+                "endDate": deal["end_date"],
+                "amount": deal["amount"],
+                "amountUsed": deal["amount_used"],
+                "recognizedAmount": _round2(recognized_amt),
+                "totalDays": overlap_info.get("total_days"),
+                "overlapDays": overlap_info.get("overlap_days"),
+            }
+        )
+
+    def sort_key(item: Dict[str, Any]) -> Tuple[float, float, str]:
+        rec = float(item.get("recognizedAmount") or 0.0)
+        amt = float(item.get("amountUsed") or 0.0)
+        return (rec, amt, item.get("dealName") or "")
+
+    items.sort(key=lambda it: sort_key(it), reverse=True)
+    total = len(items)
+    sliced = items[offset : offset + limit]
+
+    return {
+        "year": year,
+        "month": month_key,
+        "rail": rail_norm,
+        "variant": variant_norm,
+        "items": sliced,
+        "meta": {"snapshot_version": payload.get("snapshot_version"), "total": total},
     }
 
 

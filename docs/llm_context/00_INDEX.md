@@ -1,6 +1,6 @@
 ---
 title: LLM Context Pack 인덱스
-last_synced: 2025-12-24
+last_synced: 2025-12-26
 sync_source:
   - docs/api_behavior.md
   - docs/org_tables_v2.md
@@ -11,7 +11,7 @@ sync_source:
 
 # LLM Context Pack 인덱스
 
-외부 LLM이 짧은 시간에 프로젝트를 이해하도록 돕는 문서 모음이다. 데이터 수집 → API → 프런트/UX → JSON 가공 → 운영/테스트까지 경로별로 정리되어 있으며, 최신 코드 기준(2025-12-24)으로 모두 동기화되어 있다.
+외부 LLM이 짧은 시간에 프로젝트를 이해하도록 돕는 문서 모음이다. 데이터 수집 → API → 프런트/UX → JSON 가공 → 운영/테스트까지 경로별로 정리되어 있으며, 최신 코드 기준(2025-12-26)으로 모두 동기화되어 있다.
 
 ## 문서 맵(카테고리별 1줄 요약)
 - **A. 아키텍처/개요**
@@ -30,8 +30,8 @@ sync_source:
   - `llm_context/06_API_CONTRACT_CORE.md`: 핵심 API 테이블(edu1 딜체크 포함) 계약/정렬/포맷.
   - `llm_context/07_API_CONTRACT_RANKINGS.md`: 랭킹/DRI/StatePath 포트폴리오 계약.
 - **E. 프런트 UI/UX 스펙**
-  - `org_tables_v2.md`: 메뉴/UX/캐시/JSON/StatePath/교육1팀 딜체크 화면 상세.
-  - `llm_context/09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`: 프런트 상태/캐시 계약, edu1 테이블 폭/버튼/링크 규칙.
+- `org_tables_v2.md`: 메뉴/UX/캐시/사업부 퍼포먼스(월별 체결액·2026 P&L 진행율매출)/StatePath/교육1팀 딜체크 화면 상세.
+- `llm_context/09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`: 프런트 상태/캐시 계약, 월별 체결액/2026 P&L 진행율매출(연간 합계 포함)/edu1 테이블 폭·버튼·링크 규칙.
   - `llm_context/10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md`: 정적 `build_org_tables.py`(org_tables.html) 버전 계약.
 - **F. 테스트/품질**
   - `llm_context/12_TESTING_AND_QUALITY.md`: pytest/node --test, DB 스위치 시 검증 포인트.
@@ -55,7 +55,7 @@ sync_source:
 - 새 문서를 추가하거나 내용이 변경되면 이 인덱스의 문서 맵/단축 안내를 함께 갱신한다.
 
 ## Verification
-- 각 문서 상단에 `last_synced: 2025-12-24`와 `sync_source`가 존재하는지 확인한다.
-- `org_tables_v2.html`의 최신 기능(교육1팀 딜체크, nowrap 규칙)이 `org_tables_v2.md`와 `09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`에 반영됐는지 확인한다.
+- 각 문서 상단에 `last_synced: 2025-12-26`와 `sync_source`가 존재하는지 확인한다.
+- `org_tables_v2.html`의 최신 기능(교육1팀 딜체크, nowrap 규칙, 2026 P&L 진행율매출 연간 합계 컬럼)이 `org_tables_v2.md`와 `09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`에 반영됐는지 확인한다.
 - API `/api/deal-check/edu1`가 `06_API_CONTRACT_CORE.md`에 명시돼 있고 응답 필드가 일치하는지 확인한다.
 - snapshot/웹폼 정제 규칙이 `snapshot_pipeline.md`와 `08_MEMO_WEBFORM_RULES.md`에 동일하게 기술됐는지 확인한다.

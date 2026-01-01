@@ -175,6 +175,40 @@ def get_performance_monthly_amounts_deals(
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/performance/pl-progress-2026/summary")
+def get_pl_progress_summary(year: int = Query(2026, description="연도 (기본 2026)")) -> dict:
+    try:
+        return db.get_pl_progress_summary(year=year)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/performance/pl-progress-2026/deals")
+def get_pl_progress_deals(
+    year: int = Query(2026, description="연도 (기본 2026)"),
+    month: str = Query(..., description="YYMM (예: 2601)"),
+    rail: str = Query(..., description="TOTAL|ONLINE|OFFLINE"),
+    variant: str = Query("E", description="T|E (T는 드릴다운 없음)"),
+    limit: int = Query(500, ge=1, le=2000),
+    offset: int = Query(0, ge=0),
+) -> dict:
+    try:
+        return db.get_pl_progress_deals(
+            year=year,
+            month=month,
+            rail=rail,
+            variant=variant,
+            limit=limit,
+            offset=offset,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/rank/2025-deals-people")
 def get_rank_2025_deals_people(
     size: str = Query("대기업", description='조직 규모 필터 (예: "대기업", "전체")')

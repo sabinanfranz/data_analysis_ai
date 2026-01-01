@@ -1,15 +1,16 @@
 ---
 title: Docs Index
-last_synced: 2025-12-25
+last_synced: 2025-12-26
 sync_source:
   - docs/org_tables_v2.md
   - docs/api_behavior.md
   - docs/llm_context/09_FRONTEND_ORG_TABLES_V2_CONTRACT.md
+  - docs/llm_context/00_INDEX.md
 ---
 
 # Docs Index (문서 맵)
 
-- `docs/org_tables_v2.md`: org_tables_v2 UI/메뉴/상태/DRI/Target Board/딜체크 4섹션 최신 동작 정리.
+- `docs/org_tables_v2.md`: org_tables_v2 UI/메뉴/상태/DRI/Target Board/딜체크 4섹션/2026 P&L 진행율매출(연간 합계 포함) 최신 동작 정리.
 - `docs/api_behavior.md`: FastAPI 엔드포인트 행동 요약(랭킹/딜체크/StatePath/카운터파티 상세 등).
 - `docs/json_logic.md`: 상위 조직별 JSON 생성/compact 규칙, 메모/웹폼 정제.
 - `docs/user_guide.md`: 로컬 실행/PowerShell 한 줄 실행법.
@@ -23,3 +24,4 @@ sync_source:
 ## Verification
 - 상기 문서가 모두 존재하고 frontmatter(`last_synced`, `sync_source`)가 포함되어 있는지 확인한다.
 - UI/엔드포인트 스펙 확인 시 `org_tables_v2.html`, `dashboard/server/*`, `tests/*` 코드와 불일치가 없는지 샘플 실행/호출로 점검한다.
+- `org_tables_v2.md`/`09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`에 2026 P&L 진행율매출 신규 화면(연간 합계 컬럼)과 API(`/performance/pl-progress-2026/*`)가 반영돼 있는지 확인한다.

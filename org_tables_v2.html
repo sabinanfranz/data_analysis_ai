@@ -953,6 +953,215 @@
       cursor: pointer;
     }
 
+    /* StatePath filter drawer */
+    .sp-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 90;
+    }
+
+    .sp-drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .sp-drawer {
+      position: fixed;
+      top: 0;
+      right: -420px;
+      width: min(400px, 90vw);
+      height: 100vh;
+      background: #0f172a;
+      border-left: 1px solid var(--border);
+      box-shadow: -6px 0 20px rgba(0, 0, 0, 0.3);
+      transition: right 0.22s ease;
+      z-index: 91;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sp-drawer.open {
+      right: 0;
+    }
+
+    .sp-drawer__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(120deg, #0f1d30, #102034);
+    }
+
+    .sp-drawer__body {
+      padding: 14px 16px 20px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sp-drawer__section {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      background: #0c1424;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sp-drawer__title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .sp-drawer__hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .sp-icon-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .sp-filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #0c182c;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    .sp-filter-btn .badge {
+      background: rgba(56, 189, 248, 0.18);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+    }
+
+    .applied-bar {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 6px 8px;
+      background: rgba(56, 189, 248, 0.05);
+    }
+
+    .sp-header-card {
+      padding: 10px 12px;
+      margin-bottom: 6px;
+    }
+
+    .sp-header-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sp-applied-bar {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 2px 0;
+      min-height: 28px;
+    }
+
+    .sp-applied-bar .pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    .sp-clear-btn {
+      background: #1c283a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+
+    /* StatePath cards: remove global min-height */
+    .sp-card {
+      min-height: 0 !important;
+      height: auto !important;
+      align-self: flex-start;
+      gap: 8px;
+    }
+
+    .sp-card .control-row {
+      margin: 0;
+    }
+
+    .sp-card h2 {
+      margin: 0;
+    }
+
+    /* Snapshot tiles */
+    .sp-snapshots {
+      padding: 0;
+      margin: 0;
+    }
+
+    .sp-snap-card {
+      padding: 10px 12px;
+    }
+
+    .sp-snap-grid {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(140px, 1fr);
+      gap: 10px;
+      align-items: start;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      padding-bottom: 0;
+    }
+
+    .sp-snap-tile {
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .sp-snap-label {
+      font-size: 12px;
+      opacity: 0.75;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sp-snap-value {
+      margin-top: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     @media (max-width: 900px) {
       .layout {
         grid-template-columns: 1fr;
@@ -1154,18 +1363,6 @@
           long: "ONLINE/OFFLINE 합계 버킷의 up/flat/down 계정 수를 보여줍니다. 클릭 시 해당 rail 변화만 필터링합니다.",
         },
       },
-      segmentComparison: {
-        short: "세그먼트별 비교(전체 전용)",
-        long: "‘전체’ 탭에서 검색/필터가 기본값일 때만 노출됩니다. 행 클릭 시 해당 세그먼트 탭으로 이동합니다.",
-        columns: {
-          accountCount: "세그먼트 내 계정 수",
-          sum2025: "2025 합계(억)",
-          companyUpRate: "Company 버킷 상승 비율",
-          openRate: "OPEN 계정 비율",
-          riskRate: "Risk 계정 비율",
-          seedH2BRate: "H→B 비율(Seed)",
-        },
-      },
       topPatterns: {
         short: "현재 필터에서 가장 많이 발생한 패턴",
         long: "현재 필터 결과에서 가장 빈도가 높은 OPEN/CLOSE/UP/DOWN 셀과 Seed 방향을 보여줍니다. 클릭 시 해당 조건으로 필터가 자동 적용됩니다.",
@@ -1354,9 +1551,12 @@
           rail: null,
           railDir: null,
         },
+        tier2024: [],
+        ui: {
+          filterDrawerOpen: false,
+        },
         filteredItems: [],
         derived: null,
-        segmentComparison: [],
       },
       statepathLegend: {
         open: false,
@@ -2673,16 +2873,13 @@
         <div>${getGlossaryLong("patternExplorer.cellEventMatrix")}</div>
         <div>${getGlossaryLong("patternExplorer.railMix")}</div>
 
-        <h4>5) Segment Comparison(전체 전용)</h4>
-        <div>${getGlossaryLong("segmentComparison")}</div>
-
-        <h4>6) Top Patterns</h4>
+        <h4>5) Top Patterns</h4>
         <div>${getGlossaryLong("topPatterns")}</div>
 
-        <h4>7) Breadcrumb</h4>
+        <h4>6) Breadcrumb</h4>
         <div>${getGlossaryLong("breadcrumb")}</div>
 
-        <h4>8) Sorting / Pagination</h4>
+        <h4>7) Sorting / Pagination</h4>
         <div>정렬: ${Object.values(STATEPATH_GLOSSARY.sorting).join(", ")}</div>
         <div>${getGlossaryLong("pagination")}</div>
 
@@ -2927,6 +3124,114 @@
       });
     }
 
+    function resetStatepathClientFilters() {
+      const spState = state.statepath2425;
+      spState.quickFilters = {
+        risk: false,
+        hasOpen: false,
+        hasScaleUp: false,
+        companyDir: "all",
+        seed: "all",
+        railShift: "all",
+      };
+      spState.patternFilter = {
+        companyFrom: null,
+        companyTo: null,
+        cell: null,
+        cellEvent: null,
+        rail: null,
+        railDir: null,
+      };
+      spState.tier2024 = [];
+      spState.page = 0;
+      spState.search = "";
+      spState.sort = "won2025_desc";
+    }
+
+    let statepathFilterDrawerTrigger = null;
+    let statepathFilterEscBound = false;
+
+    function handleStatepathFilterEsc(e) {
+      if (e.key === "Escape") {
+        closeStatepathFilterDrawer({ restoreFocus: true });
+      }
+    }
+
+    function openStatepathFilterDrawer() {
+      const drawer = document.getElementById("statepathFilterDrawer");
+      const backdrop = document.getElementById("statepathFilterBackdrop");
+      const closeBtn = document.getElementById("statepathCloseFilterDrawer");
+      if (!drawer || !backdrop) return;
+      statepathFilterDrawerTrigger = document.activeElement;
+      drawer.classList.add("open");
+      backdrop.classList.add("open");
+      state.statepath2425.ui = state.statepath2425.ui || {};
+      state.statepath2425.ui.filterDrawerOpen = true;
+      if (closeBtn) closeBtn.focus();
+      if (!statepathFilterEscBound) {
+        document.addEventListener("keydown", handleStatepathFilterEsc);
+        statepathFilterEscBound = true;
+      }
+    }
+
+    function closeStatepathFilterDrawer({ restoreFocus = true } = {}) {
+      const drawer = document.getElementById("statepathFilterDrawer");
+      const backdrop = document.getElementById("statepathFilterBackdrop");
+      if (drawer) drawer.classList.remove("open");
+      if (backdrop) backdrop.classList.remove("open");
+      state.statepath2425.ui = state.statepath2425.ui || {};
+      state.statepath2425.ui.filterDrawerOpen = false;
+      if (statepathFilterEscBound) {
+        document.removeEventListener("keydown", handleStatepathFilterEsc);
+        statepathFilterEscBound = false;
+      }
+      if (restoreFocus && statepathFilterDrawerTrigger instanceof HTMLElement) {
+        statepathFilterDrawerTrigger.focus();
+      }
+      statepathFilterDrawerTrigger = null;
+    }
+
+    function bindStatepathFilterDrawerEvents() {
+      const openBtn = document.getElementById("statepathOpenFilterDrawer");
+      const closeBtn = document.getElementById("statepathCloseFilterDrawer");
+      const backdrop = document.getElementById("statepathFilterBackdrop");
+      if (openBtn) {
+        openBtn.addEventListener("click", () => openStatepathFilterDrawer());
+      }
+      if (closeBtn) {
+        closeBtn.addEventListener("click", () => closeStatepathFilterDrawer());
+      }
+      if (backdrop) {
+        backdrop.addEventListener("click", () => closeStatepathFilterDrawer());
+      }
+    }
+
+    function countActiveStatepathFilters() {
+      const spState = state.statepath2425 || {};
+      let count = 0;
+      if (Array.isArray(spState.tier2024) && spState.tier2024.length) count += 1;
+      const qf = spState.quickFilters || {};
+      if (qf.risk) count += 1;
+      if (qf.hasOpen) count += 1;
+      if (qf.hasScaleUp) count += 1;
+      if ((qf.companyDir || "all") !== "all") count += 1;
+      if ((qf.seed || "all") !== "all") count += 1;
+      if ((qf.railShift || "all") !== "all") count += 1;
+      const pf = spState.patternFilter || {};
+      if (pf.companyFrom || pf.companyTo) count += 1;
+      if (pf.cell || pf.cellEvent) count += 1;
+      if (pf.rail && pf.railDir) count += 1;
+      return count;
+    }
+
+    function updateStatepathFilterCountBadge() {
+      const badge = document.getElementById("statepathFilterCount");
+      if (!badge) return;
+      const count = countActiveStatepathFilters();
+      badge.textContent = String(count);
+      badge.style.display = count > 0 ? "inline-flex" : "none";
+    }
+
     function isDefaultQuickFilters(qf) {
       return (
         !qf ||
@@ -2962,9 +3267,10 @@
         const meta = computePatternMeta(item);
         const metaKey = item.orgId || item.org_id || item.orgName || item.org_name;
         metas.set(metaKey, meta);
-        const name = item.orgName || item.org_name || "";
-        if (spState.search && spState.search.trim()) {
-          if (!String(name).includes(spState.search.trim())) continue;
+        const tierSel = spState.tier2024 || [];
+        if (Array.isArray(tierSel) && tierSel.length > 0) {
+          const b24 = (meta.companyBuckets || {})["2024"] || "Ø";
+          if (!tierSel.includes(b24)) continue;
         }
         if (qf.risk && !meta.risk) continue;
         if (qf.hasOpen && !meta.hasOpen) continue;
@@ -3073,57 +3379,9 @@
       const spState = state.statepath2425;
       const { items, metas } = applyStatepathFilters(spState.items);
       let sorted = [...items];
-      if (spState.sort === "delta_desc") {
-        sorted.sort((a, b) => (b.deltaEok ?? b.delta_eok ?? 0) - (a.deltaEok ?? a.delta_eok ?? 0));
-      } else if (spState.sort === "name_asc") {
-        sorted.sort((a, b) => (a.orgName || a.org_name || "").localeCompare(b.orgName || b.org_name || ""));
-      } else {
-        sorted.sort((a, b) => (b.companyTotalEok2025 ?? b.company_total_eok_2025 ?? 0) - (a.companyTotalEok2025 ?? a.company_total_eok_2025 ?? 0));
-      }
+      sorted.sort((a, b) => (b.companyTotalEok2025 ?? b.company_total_eok_2025 ?? 0) - (a.companyTotalEok2025 ?? a.company_total_eok_2025 ?? 0));
       spState.filteredItems = sorted;
       spState.derived = buildStatepathSummary(sorted, metas);
-      spState.segmentComparison = [];
-      if (
-        spState.segment === "전체" &&
-        (!spState.search || !spState.search.trim()) &&
-        isDefaultQuickFilters(spState.quickFilters) &&
-        isDefaultPatternFilters(spState.patternFilter)
-      ) {
-        const groupMap = new Map();
-        spState.items.forEach((it) => {
-          const seg = it.segment || it.sizeGroup || it.size_raw || it.sizeRaw || "기타/미입력";
-          const metaKey = it.orgId || it.org_id || it.orgName || it.org_name;
-          const meta = metas.get(metaKey) || computePatternMeta(it);
-          const entry =
-            groupMap.get(seg) ||
-            {
-              sizeGroup: seg,
-              accountCount: 0,
-              sum2025Eok: 0,
-              companyUp: 0,
-              open: 0,
-              risk: 0,
-              seedH2B: 0,
-            };
-          entry.accountCount += 1;
-          entry.sum2025Eok += Number(it.companyTotalEok2025 ?? it.company_total_eok_2025 ?? 0);
-          if (meta.companyDir === "up") entry.companyUp += 1;
-          if (meta.hasOpen) entry.open += 1;
-          if (meta.risk) entry.risk += 1;
-          if (meta.seed === "H→B") entry.seedH2B += 1;
-          groupMap.set(seg, entry);
-        });
-        spState.segmentComparison = Array.from(groupMap.values()).map((entry) => {
-          const total = entry.accountCount || 1;
-          return {
-            ...entry,
-            companyUpRate: entry.companyUp / total,
-            openRate: entry.open / total,
-            riskRate: entry.risk / total,
-            seedH2BRate: entry.seedH2B / total,
-          };
-        });
-      }
       spState.page = 0;
     }
 
@@ -3137,33 +3395,125 @@
         return;
       }
       wrap.innerHTML = `
-        <div class="stat-grid">
-          <div class="stat-card">
-            <div class="muted">계정수</div>
-            <div title="${STATEPATH_GLOSSARY.snapshot.accountCount.short}"><strong>${d.accountCount}</strong></div>
-          </div>
-          <div class="stat-card">
-            <div class="muted">2024 합계</div>
-            <div title="${STATEPATH_GLOSSARY.snapshot.sums.short}">${formatEok(d.sum2024Eok)}</div>
-          </div>
-          <div class="stat-card">
-            <div class="muted">2025 합계</div>
-            <div title="${STATEPATH_GLOSSARY.snapshot.sums.short}">${formatEok(d.sum2025Eok)}</div>
-          </div>
-          <div class="stat-card">
-            <div class="muted">Δ 합</div>
-            <div title="${STATEPATH_GLOSSARY.snapshot.sums.short}">${formatEok(d.deltaSum || (d.sum2025Eok - d.sum2024Eok))}</div>
-          </div>
-          <div class="stat-card">
-            <div class="muted">Company 변화</div>
-            <div title="${STATEPATH_GLOSSARY.snapshot.companyDir.short}">↑ ${d.companyBucketChangeCounts.up} / → ${d.companyBucketChangeCounts.flat} / ↓ ${d.companyBucketChangeCounts.down}</div>
-          </div>
-          <div class="stat-card">
-            <div class="muted">OPEN / RISK</div>
-            <div title="${STATEPATH_GLOSSARY.snapshot.openRisk.long}">${d.openAccountCount} / ${d.riskAccountCount}</div>
+        <div class="sp-snapshots">
+          <div class="sp-snap-grid">
+            <div class="sp-snap-tile">
+              <div class="sp-snap-label">계정수</div>
+              <div class="sp-snap-value" title="${STATEPATH_GLOSSARY.snapshot.accountCount.short}">${d.accountCount}</div>
+            </div>
+            <div class="sp-snap-tile">
+              <div class="sp-snap-label">2024 합계</div>
+              <div class="sp-snap-value" title="${STATEPATH_GLOSSARY.snapshot.sums.short}">${formatEok(d.sum2024Eok)}</div>
+            </div>
+            <div class="sp-snap-tile">
+              <div class="sp-snap-label">2025 합계</div>
+              <div class="sp-snap-value" title="${STATEPATH_GLOSSARY.snapshot.sums.short}">${formatEok(d.sum2025Eok)}</div>
+            </div>
+            <div class="sp-snap-tile">
+              <div class="sp-snap-label">Δ 합</div>
+              <div class="sp-snap-value" title="${STATEPATH_GLOSSARY.snapshot.sums.short}">${formatEok(d.deltaSum || (d.sum2025Eok - d.sum2024Eok))}</div>
+            </div>
+            <div class="sp-snap-tile">
+              <div class="sp-snap-label">Company 변화</div>
+              <div class="sp-snap-value" title="${STATEPATH_GLOSSARY.snapshot.companyDir.short}">↑ ${d.companyBucketChangeCounts.up} / → ${d.companyBucketChangeCounts.flat} / ↓ ${d.companyBucketChangeCounts.down}</div>
+            </div>
+            <div class="sp-snap-tile">
+              <div class="sp-snap-label">OPEN / RISK</div>
+              <div class="sp-snap-value" title="${STATEPATH_GLOSSARY.snapshot.openRisk.long}">${d.openAccountCount} / ${d.riskAccountCount}</div>
+            </div>
           </div>
         </div>
       `;
+    }
+
+    function renderSegmentPickerInDrawer() {
+      const wrap = document.getElementById("statepathSegmentPicker");
+      if (!wrap) return;
+      const spState = state.statepath2425;
+      const current = spState.segment || "전체";
+      wrap.innerHTML = `
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          ${STATEPATH_SEGMENTS.map(
+            (seg) =>
+              `<label style="display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--border);border-radius:10px;min-width:120px;">
+                <input type="radio" name="sp-seg" value="${seg}" ${seg === current ? "checked" : ""} />
+                <span>${seg}</span>
+              </label>`
+          ).join("")}
+        </div>
+      `;
+      wrap.querySelectorAll('input[name="sp-seg"]').forEach((input) => {
+        input.addEventListener("change", () => {
+          const val = input.value || "전체";
+          if (state.statepath2425.segment === val) return;
+          state.statepath2425.segment = val;
+          resetStatepathClientFilters();
+          loadStatePathPortfolio2425(true);
+        });
+      });
+    }
+
+    function renderTier2024Filter() {
+      const wrap = document.getElementById("statepathTier2024Wrap");
+      if (!wrap) return;
+      const spState = state.statepath2425;
+      const selected = Array.isArray(spState.tier2024) ? spState.tier2024 : [];
+      const buckets = [...BUCKET_ORDER].reverse();
+      const presets = [
+        { key: "all", label: "전체", value: [] },
+        { key: "top", label: "상위(P2~S0)", value: ["P2", "P1", "P0", "S0"] },
+        { key: "no-empty", label: "Ø 제외", value: BUCKET_ORDER.filter((b) => b !== "Ø") },
+      ];
+      wrap.innerHTML = `
+        <div class="control-row" style="gap:6px;flex-wrap:wrap;">
+          ${presets
+            .map(
+              (p) =>
+                `<button type="button" class="chip ${selected.length === p.value.length && p.value.every((v) => selected.includes(v)) ? "active" : ""}" data-preset="${p.key}">${p.label}</button>`
+            )
+            .join("")}
+        </div>
+        <div class="sp-drawer__hint">미선택 = 전체</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          ${buckets
+            .map(
+              (b) =>
+                `<label style="display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--border);border-radius:8px;min-width:72px;">
+                  <input type="checkbox" data-tier="${b}" ${selected.includes(b) ? "checked" : ""} />
+                  <span>${b}</span>
+                </label>`
+            )
+            .join("")}
+        </div>
+      `;
+      const applyChange = () => {
+        spState.page = 0;
+        computeStatepathDerived();
+        renderStatePathSnapshots();
+        renderStatePathPatterns();
+        renderStatePathTable();
+        renderBreadcrumbs();
+      };
+      wrap.querySelectorAll("[data-preset]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const preset = presets.find((p) => p.key === btn.getAttribute("data-preset"));
+          spState.tier2024 = preset ? [...preset.value] : [];
+          applyChange();
+        });
+      });
+      wrap.querySelectorAll('input[data-tier]').forEach((checkbox) => {
+        checkbox.addEventListener("change", (e) => {
+          const val = e.target.getAttribute("data-tier");
+          const next = new Set(spState.tier2024 || []);
+          if (e.target.checked) {
+            next.add(val);
+          } else {
+            next.delete(val);
+          }
+          spState.tier2024 = Array.from(next);
+          applyChange();
+        });
+      });
     }
 
     function renderQuickFilters() {
@@ -3171,48 +3521,63 @@
       if (!wrap) return;
       const spState = state.statepath2425;
       const qf = spState.quickFilters;
-      const chips = [
-        { key: "risk", label: "Risk", type: "toggle" },
-        { key: "hasOpen", label: "New Open", type: "toggle" },
-        { key: "hasScaleUp", label: "Scale Up", type: "toggle" },
-        { key: "companyDir", label: "Company ↑", type: "single", value: "up" },
-        { key: "companyDir", label: "Company ↓", type: "single", value: "down" },
-        { key: "companyDir", label: "Company =", type: "single", value: "flat" },
-        { key: "seed", label: "Seed H→B", type: "single", value: "H→B" },
-        { key: "seed", label: "Seed B→H", type: "single", value: "B→H" },
-        { key: "seed", label: "Seed NONE", type: "single", value: "NONE" },
-        { key: "railShift", label: "Online ↑", type: "single", value: "onlineUp" },
-        { key: "railShift", label: "Offline ↑", type: "single", value: "offlineUp" },
+      const groups = [
+        {
+          title: "이벤트",
+          items: [
+            { key: "risk", label: "Risk", type: "toggle", path: "quickFilters.risk" },
+            { key: "hasOpen", label: "New Open", type: "toggle", path: "quickFilters.hasOpen" },
+            { key: "hasScaleUp", label: "Scale Up", type: "toggle", path: "quickFilters.hasScaleUp" },
+          ],
+        },
+        {
+          title: "성장 방향",
+          items: [
+            { key: "companyDir", label: "Company ↑", type: "single", value: "up", path: "quickFilters.companyDir" },
+            { key: "companyDir", label: "Company =", type: "single", value: "flat", path: "quickFilters.companyDir" },
+            { key: "companyDir", label: "Company ↓", type: "single", value: "down", path: "quickFilters.companyDir" },
+          ],
+        },
+        {
+          title: "Seed",
+          items: [
+            { key: "seed", label: "Seed H→B", type: "single", value: "H→B", path: "quickFilters.seed" },
+            { key: "seed", label: "Seed B→H", type: "single", value: "B→H", path: "quickFilters.seed" },
+            { key: "seed", label: "Seed NONE", type: "single", value: "NONE", path: "quickFilters.seed" },
+          ],
+        },
+        {
+          title: "Rail",
+          items: [
+            { key: "railShift", label: "Online ↑", type: "single", value: "onlineUp", path: "quickFilters.railShift" },
+            { key: "railShift", label: "Offline ↑", type: "single", value: "offlineUp", path: "quickFilters.railShift" },
+          ],
+        },
       ];
-      wrap.innerHTML = chips
-        .map((chip, idx) => {
-          const active =
-            chip.type === "toggle"
-              ? qf[chip.key]
-              : qf[chip.key] && qf[chip.key] === chip.value;
-          const path =
-            chip.key === "risk"
-              ? "quickFilters.risk"
-              : chip.key === "hasOpen"
-              ? "quickFilters.hasOpen"
-              : chip.key === "hasScaleUp"
-              ? "quickFilters.hasScaleUp"
-              : chip.key === "companyDir"
-              ? "quickFilters.companyDir"
-              : chip.key === "seed"
-              ? "quickFilters.seed"
-              : "quickFilters.railShift";
-          return `<button class="chip ${active ? "active" : ""}" data-chip-idx="${idx}" title="${getGlossaryLong(path)}">${chip.label}</button>`;
-        })
-        .join(" ");
-      wrap.querySelectorAll("[data-chip-idx]").forEach((btn) => {
-        const idx = Number(btn.getAttribute("data-chip-idx"));
-        const chip = chips[idx];
+      wrap.innerHTML = groups
+        .map(
+          (group) => `
+            <div class="sp-drawer__hint" style="margin:6px 0 4px;">${group.title}</div>
+            <div class="control-row" style="gap:6px;flex-wrap:wrap;">
+              ${group.items
+                .map((chip, idx) => {
+                  const active = chip.type === "toggle" ? qf[chip.key] : qf[chip.key] === chip.value;
+                  return `<button class="chip ${active ? "active" : ""}" data-chip-key="${chip.key}" data-chip-type="${chip.type}" data-chip-value="${chip.value || ""}" title="${getGlossaryLong(chip.path)}">${chip.label}</button>`;
+                })
+                .join("")}
+            </div>
+          `
+        )
+        .join("");
+      wrap.querySelectorAll("[data-chip-key]").forEach((btn) => {
         btn.addEventListener("click", () => {
-          if (chip.type === "toggle") {
-            qf[chip.key] = !qf[chip.key];
+          const key = btn.getAttribute("data-chip-key");
+          const type = btn.getAttribute("data-chip-type");
+          const value = btn.getAttribute("data-chip-value");
+          if (type === "toggle") {
+            qf[key] = !qf[key];
           } else {
-            qf[chip.key] = qf[chip.key] === chip.value ? (chip.key === "seed" ? "all" : "all") : chip.value;
+            qf[key] = qf[key] === value ? "all" : value;
           }
           spState.page = 0;
           computeStatepathDerived();
@@ -3382,80 +3747,13 @@
     }
 
     function renderStatePathPatterns() {
+      renderTier2024Filter();
       renderQuickFilters();
       renderTransitionMatrix();
       renderCellEventMatrix();
       renderRailSummary();
-      renderSegmentComparison();
       renderTopPatterns();
       bindStatePathHelpButtons(document);
-    }
-
-    function renderSegmentComparison() {
-      const wrap = document.getElementById("statepathSegmentComparison");
-      if (!wrap) return;
-      const spState = state.statepath2425;
-      const canShow =
-        spState.segment === "전체" &&
-        (!spState.search || !spState.search.trim()) &&
-        isDefaultQuickFilters(spState.quickFilters) &&
-        isDefaultPatternFilters(spState.patternFilter);
-      if (!canShow || !(spState.segmentComparison || []).length) {
-        wrap.innerHTML = "";
-        return;
-      }
-      const rows = spState.segmentComparison
-        .map(
-          (row) => `
-        <tr data-seg="${row.sizeGroup}" title="클릭 시 해당 세그먼트 탭으로 이동">
-          <td>${row.sizeGroup}</td>
-          <td>${row.accountCount}</td>
-          <td>${formatEok(row.sum2025Eok || 0)}</td>
-          <td>${formatRatio(row.companyUpRate * 100 || 0)}%</td>
-          <td>${formatRatio(row.openRate * 100 || 0)}%</td>
-          <td>${formatRatio(row.riskRate * 100 || 0)}%</td>
-          <td>${formatRatio(row.seedH2BRate * 100 || 0)}%</td>
-        </tr>`
-        )
-        .join("");
-      wrap.innerHTML = `
-        <h4 class="muted">세그먼트 비교 (전체 탭 전용) ${renderStatePathHelpButton("segment")}</h4>
-        <div class="table-wrap full">
-          <table>
-            <thead>
-              <tr>
-                <th title="${getGlossaryLong("segmentComparison")}">세그먼트</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.accountCount}">계정수</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.sum2025}">2025총액</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.companyUpRate}">Company↑비율</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.openRate}">OPEN비율</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.riskRate}">Risk비율</th><th title="${STATEPATH_GLOSSARY.segmentComparison.columns.seedH2BRate}">H→B비율</th>
-              </tr>
-            </thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-      `;
-      wrap.querySelectorAll("tr[data-seg]").forEach((tr) => {
-        tr.addEventListener("click", () => {
-          const seg = tr.getAttribute("data-seg");
-          spState.segment = seg || "전체";
-          spState.page = 0;
-          spState.search = "";
-          spState.quickFilters = {
-            risk: false,
-            hasOpen: false,
-            hasScaleUp: false,
-            companyDir: "all",
-            seed: "all",
-            railShift: "all",
-          };
-          spState.patternFilter = {
-            companyFrom: null,
-            companyTo: null,
-            cell: null,
-            cellEvent: null,
-            rail: null,
-            railDir: null,
-          };
-          loadStatePathPortfolio2425(true);
-        });
-      });
     }
 
     function renderTopPatterns() {
@@ -3533,12 +3831,14 @@
     }
 
     function renderBreadcrumbs() {
-      const wrap = document.getElementById("statepathBreadcrumb");
+      const wrap = document.getElementById("statepathAppliedBar");
       if (!wrap) return;
       const spState = state.statepath2425;
       const tokens = [];
       if (spState.segment && spState.segment !== "전체") tokens.push({ label: spState.segment, type: "segment" });
-      if (spState.search && spState.search.trim()) tokens.push({ label: `검색:${spState.search}`, type: "search" });
+      if (Array.isArray(spState.tier2024) && spState.tier2024.length) {
+        tokens.push({ label: `24티어:${spState.tier2024.join(",")}`, type: "tier2024" });
+      }
       const qf = spState.quickFilters;
       if (qf.risk) tokens.push({ label: "Risk", type: "qf", key: "risk" });
       if (qf.hasOpen) tokens.push({ label: "Open", type: "qf", key: "hasOpen" });
@@ -3550,53 +3850,23 @@
       if (pf.companyFrom || pf.companyTo) tokens.push({ label: `Company ${pf.companyFrom || "Ø"}→${pf.companyTo || "Ø"}`, type: "pf", key: "company" });
       if (pf.cell || pf.cellEvent) tokens.push({ label: `${pf.cellEvent || ""} ${pf.cell || ""}`.trim(), type: "pf", key: "cell" });
       if (pf.rail && pf.railDir) tokens.push({ label: `${pf.rail} ${pf.railDir}`, type: "pf", key: "rail" });
-      const resetAll = () => {
-        spState.quickFilters = {
-          risk: false,
-          hasOpen: false,
-          hasScaleUp: false,
-          companyDir: "all",
-          seed: "all",
-          railShift: "all",
-        };
-        spState.patternFilter = {
-          companyFrom: null,
-          companyTo: null,
-          cell: null,
-          cellEvent: null,
-          rail: null,
-          railDir: null,
-        };
-        spState.page = 0;
-        computeStatepathDerived();
-        renderStatePathSnapshots();
-        renderStatePathPatterns();
-        renderStatePathTable();
-        renderBreadcrumbs();
-      };
       if (!tokens.length) {
-        wrap.innerHTML = "";
+        wrap.innerHTML = `<span class="muted" style="font-size:12px;">필터 없음</span>`;
+        updateStatepathFilterCountBadge();
         return;
       }
-      wrap.innerHTML = `
-        <div class="breadcrumb">
-          필터:
-          ${tokens
-            .map(
-              (t, idx) =>
-                `<span class="pill" data-bc-idx="${idx}" title="${t.label} (x로 해제)">${t.label} ✕</span>`
-            )
-            .join(" ")}
-          <button class="chip" id="statepathResetAll" title="${getGlossaryLong("breadcrumb")}">전체 해제</button>
-          ${renderStatePathHelpButton("breadcrumb")}
-        </div>
-      `;
+      wrap.innerHTML = tokens
+        .map(
+          (t, idx) =>
+            `<span class="pill" data-bc-idx="${idx}" title="${t.label} (x로 해제)">${t.label} ✕</span>`
+        )
+        .join(" ");
       wrap.querySelectorAll("[data-bc-idx]").forEach((el) => {
         const idx = Number(el.getAttribute("data-bc-idx"));
         const t = tokens[idx];
         el.addEventListener("click", () => {
           if (t.type === "segment") spState.segment = "전체";
-          if (t.type === "search") spState.search = "";
+          if (t.type === "tier2024") spState.tier2024 = [];
           if (t.type === "qf") {
             if (t.key === "companyDir") spState.quickFilters.companyDir = "all";
             else if (t.key === "seed") spState.quickFilters.seed = "all";
@@ -3621,11 +3891,12 @@
           renderStatePathPatterns();
           renderStatePathTable();
           renderBreadcrumbs();
+          renderTier2024Filter();
         });
       });
-      const resetBtn = document.getElementById("statepathResetAll");
-      if (resetBtn) resetBtn.addEventListener("click", resetAll);
+      updateStatepathFilterCountBadge();
     }
+
 
     function renderStatePathTable() {
       const status = document.getElementById("statepathStatus");
@@ -3773,6 +4044,8 @@
 
     async function loadStatePathPortfolio2425(force = false) {
       const spState = state.statepath2425;
+      spState.search = "";
+      spState.sort = "won2025_desc";
       const key = buildStatepathPortfolioKey(spState.segment, spState.search, spState.sort, spState.limit);
       if (!force && cache.statepathPortfolioByKey.has(key)) {
         const cached = cache.statepathPortfolioByKey.get(key);
@@ -3792,10 +4065,7 @@
       renderStatePathTable();
       const params = new URLSearchParams();
       params.set("segment", spState.segment || "전체");
-      if (spState.search && spState.search.trim()) {
-        params.set("search", spState.search.trim());
-      }
-      params.set("sort", spState.sort || "won2025_desc");
+      params.set("sort", "won2025_desc");
       params.set("limit", String(spState.limit || 500));
       try {
         const data = await fetchJson(`/statepath/portfolio-2425?${params.toString()}`);
@@ -6761,42 +7031,25 @@
 
     async function renderStatePathMenu(contentRoot) {
       contentRoot.innerHTML = `
-        <section class="card">
-          <div class="control-row">
-            <h2>StatePath 24→25 포트폴리오</h2>
-            <div class="spacer"></div>
-            <span class="muted">세그먼트별 Won 상태 요약</span>
-            ${renderStatePathHelpButton("all")}
+        <h2 style="margin:0;">StatePath 24→25 포트폴리오</h2>
+        <section class="card sp-header-card sp-card">
+          <div class="sp-header-row">
+            <button id="statepathOpenFilterDrawer" class="sp-filter-btn" type="button" title="필터 열기">
+              필터 <span id="statepathFilterCount" class="badge">0</span>
+            </button>
+            <div id="statepathAppliedBar" class="sp-applied-bar"></div>
+            <button id="statepathClearAll" class="sp-clear-btn" type="button" title="필터 전체 해제">전체 해제</button>
           </div>
-          <div class="control-row" id="statepathSegmentWrap">
-            ${STATEPATH_SEGMENTS.map((seg) => `<button type="button" class="seg-btn" data-seg="${seg}">${seg}</button>`).join("")}
-          </div>
-          <div class="control-row">
-            <label class="muted">검색</label>
-            <input id="statepathSearchInput" type="text" placeholder="회사명 검색" />
-            <label class="muted">정렬</label>
-            <select id="statepathSortSelect">
-              <option value="won2025_desc">2025 체결액 ↓</option>
-              <option value="delta_desc">증가액 ↓</option>
-              <option value="name_asc">이름 ↑</option>
-            </select>
-            <div class="spacer"></div>
-            <span class="pill muted">DB 교체 시 새로고침 필요 (캐시 무효화 없음)</span>
-            ${renderStatePathHelpButton("filters")}
-          </div>
-          <div id="statepathBreadcrumb" class="control-row"></div>
         </section>
-        <section class="card">
+        <section class="card sp-snap-card sp-card">
           <div class="control-row">
-            <h2>Snapshot & Filters</h2>
+            <h2>Snapshot</h2>
             <div class="spacer"></div>
             ${renderStatePathHelpButton("snapshot")}
           </div>
-          <div id="statepathSegmentComparison"></div>
           <div id="statepathSnapshots"></div>
-          <div id="statepathQuickFilters" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
         </section>
-        <section class="card">
+        <section class="card sp-card">
           <div class="control-row">
             <h2>Pattern Explorer</h2>
             <div class="spacer"></div>
@@ -6807,81 +7060,55 @@
           <div id="statepathRailSummary" style="margin-top:10px;"></div>
           <div id="statepathTopPatterns"></div>
         </section>
-        <section class="card">
+        <section class="card sp-card">
           <div id="statepathStatus" class="muted">불러오는 중...</div>
           <div id="statepathTableWrap"></div>
         </section>
+        <div id="statepathFilterBackdrop" class="sp-drawer-backdrop"></div>
+        <aside id="statepathFilterDrawer" class="sp-drawer" role="dialog" aria-modal="true" aria-label="StatePath Filters">
+          <div class="sp-drawer__header">
+            <div>
+              <div style="font-weight:700;">필터</div>
+              <div class="sp-drawer__hint">변경 즉시 테이블/스냅샷이 갱신됩니다. (서버 재호출 없음)</div>
+              <div class="sp-drawer__hint">DB를 교체했다면 브라우저 새로고침이 필요합니다. (클라이언트 캐시 무효화 없음)</div>
+            </div>
+            <button id="statepathCloseFilterDrawer" class="sp-icon-btn" aria-label="닫기">✕</button>
+          </div>
+          <div class="sp-drawer__body">
+            <div class="sp-drawer__section">
+              <div class="sp-drawer__title">기업 규모</div>
+              <div class="sp-drawer__hint">변경 시 서버에서 목록을 다시 불러옵니다.</div>
+              <div id="statepathSegmentPicker"></div>
+            </div>
+            <div class="sp-drawer__section">
+              <div class="sp-drawer__title">2024 티어</div>
+              <div id="statepathTier2024Wrap"></div>
+            </div>
+            <div class="sp-drawer__section">
+              <div class="sp-drawer__title">Quick Filters</div>
+              <div class="sp-drawer__hint">자주 쓰는 필터(위험/오픈/성장 방향 등)</div>
+              <div id="statepathQuickFilters"></div>
+            </div>
+          </div>
+        </aside>
       `;
 
-      const segWrap = document.getElementById("statepathSegmentWrap");
-      const searchInput = document.getElementById("statepathSearchInput");
-      const sortSelect = document.getElementById("statepathSortSelect");
       const spState = state.statepath2425;
-
-      const resetFilters = () => {
-        spState.quickFilters = {
-          risk: false,
-          hasOpen: false,
-          hasScaleUp: false,
-          companyDir: "all",
-          seed: "all",
-          railShift: "all",
-        };
-        spState.patternFilter = {
-          companyFrom: null,
-          companyTo: null,
-          cell: null,
-          cellEvent: null,
-          rail: null,
-          railDir: null,
-        };
-      };
-
-      const updateSegButtons = () => {
-        if (!segWrap) return;
-        segWrap.querySelectorAll("[data-seg]").forEach((btn) => {
-        const val = btn.getAttribute("data-seg");
-        if (val === spState.segment) {
-          btn.classList.add("active");
-        } else {
-          btn.classList.remove("active");
-          }
-        });
-      };
-
-      if (segWrap) {
-        segWrap.querySelectorAll("[data-seg]").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const val = btn.getAttribute("data-seg");
-            spState.segment = val || "전체";
-            updateSegButtons();
-            resetFilters();
-            loadStatePathPortfolio2425(true);
-          });
-        });
-        updateSegButtons();
-      }
-
-      if (searchInput) {
-        searchInput.value = spState.search || "";
-        let timer = null;
-        searchInput.addEventListener("input", () => {
-          spState.search = searchInput.value || "";
-          spState.page = 0;
-          if (timer) clearTimeout(timer);
-          timer = setTimeout(() => loadStatePathPortfolio2425(true), 400);
-        });
-      }
-
-      if (sortSelect) {
-        sortSelect.value = spState.sort || "won2025_desc";
-        sortSelect.addEventListener("change", () => {
-          spState.sort = sortSelect.value || "won2025_desc";
-          spState.page = 0;
+      spState.search = "";
+      spState.sort = "won2025_desc";
+      bindStatepathFilterDrawerEvents();
+      renderSegmentPickerInDrawer();
+      const clearBtn = document.getElementById("statepathClearAll");
+      if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+          resetStatepathClientFilters();
+          spState.segment = "전체";
+          renderSegmentPickerInDrawer();
           loadStatePathPortfolio2425(true);
         });
       }
-
+      updateStatepathFilterCountBadge();
+      renderTier2024Filter();
       renderStatePathTable();
       renderStatePathSnapshots();
       renderStatePathPatterns();

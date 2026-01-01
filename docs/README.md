@@ -22,6 +22,7 @@ sync_source:
 - 기타: `docs/error_log.md`(장애 대응), `docs/llm_context/12_TESTING_AND_QUALITY.md`(테스트 가이드).
 
 ## Verification
-- 상기 문서가 모두 존재하고 frontmatter(`last_synced`, `sync_source`)가 포함되어 있는지 확인한다.
+- 모든 문서에 frontmatter(`last_synced`, `sync_source`)가 포함되어 있고 날짜가 최신인지 확인한다.
+- 각 문서가 `Purpose/Behavioral Contract/Invariants/Coupling Map/Edge Cases/Verification` 섹션을 갖추고 있는지 점검한다.
 - UI/엔드포인트 스펙 확인 시 `org_tables_v2.html`, `dashboard/server/*`, `tests/*` 코드와 불일치가 없는지 샘플 실행/호출로 점검한다.
-- `org_tables_v2.md`/`09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`에 2026 P&L 진행율매출 신규 화면(연간 합계 컬럼)과 API(`/performance/pl-progress-2026/*`)가 반영돼 있는지 확인한다.
+- `org_tables_v2.md`와 `llm_context/09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`에 2026 P&L(연간 컬럼, 현재 월 하이라이트)과 메뉴 라벨(2026 P&L → 2026 월별 체결액)이 반영돼 있는지 확인한다.

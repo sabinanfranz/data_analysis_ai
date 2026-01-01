@@ -762,6 +762,13 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .mp-deals-table .pnl-num {
+      display: block;
+      width: 100%;
+      text-align: right !important;
+      font-variant-numeric: tabular-nums;
+    }
+
     .pnl-table .pnl-item {
       display: block;
       width: 100%;
@@ -802,15 +809,24 @@
       border-right: 2px solid rgba(255, 255, 255, 0.28);
     }
 
-    /* ✅ 딜 목록 모달 폭 강제(기존 modal/json-modal max-width 덮어쓰기) */
+    /* ✅ 딜 목록 모달 폭/높이/스크롤 개선 */
     .modal.deals-modal-wide {
-      width: min(96vw, 1440px) !important;
+      width: min(96vw, 1400px) !important;
       max-width: 96vw !important;
+      max-height: min(90vh, 900px);
+      overflow: hidden;
     }
 
     .modal.deals-modal-wide .body {
-      overflow-x: auto !important;
+      overflow: hidden !important;
       white-space: normal;
+      padding: 0;
+    }
+
+    .deals-modal-scroll {
+      overflow: auto;
+      max-height: calc(min(90vh, 900px) - 56px);
+      padding: 0 12px 12px;
     }
 
     /* ✅ 딜 모달 테이블: 값 길이대로 컬럼 폭 결정 */
@@ -849,6 +865,77 @@
     .modal.deals-modal-wide .mp-deals-table td.align-left {
       text-align: left !important;
       padding-left: 10px;
+    }
+
+    .mp-deals-table thead th {
+      position: static;
+      background: rgba(12, 18, 32, 0.98);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .mp-deals-table td.num,
+    .mp-deals-table th.num {
+      text-align: right !important;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .mp-deals-table td.txt,
+    .mp-deals-table th.txt {
+      text-align: left !important;
+    }
+
+    .mp-deals-table tbody tr:nth-child(2n) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .mp-deals-table tbody tr:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .deals-modal-header {
+      position: sticky;
+      top: 0;
+      z-index: 6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(10, 16, 28, 0.98);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .deals-modal-title {
+      font-weight: 750;
+      font-size: 14px;
+    }
+
+    .deals-modal-subtitle {
+      margin-top: 2px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .deals-modal-x {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 18px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .deals-modal-x:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .deals-modal-x:active {
+      transform: translateY(1px);
     }
 
     .breadcrumb {
@@ -1465,9 +1552,12 @@
 
   <div class="modal-backdrop" id="dealsModalBackdrop">
     <div class="modal json-modal deals-modal-wide">
-      <header>
-        <h3 id="dealsModalTitle">딜 목록</h3>
-        <button class="close-btn" id="dealsModalClose" type="button">닫기</button>
+      <header class="deals-modal-header">
+        <div>
+          <div class="deals-modal-title" id="dealsModalTitle">딜 목록</div>
+          <div class="deals-modal-subtitle" id="dealsModalSubtitle"></div>
+        </div>
+        <button class="deals-modal-x" id="dealsModalClose" type="button" aria-label="닫기">✕</button>
       </header>
       <div class="body code-body" id="dealsModalBody"></div>
     </div>
@@ -1663,8 +1753,8 @@
         title: "사업부 퍼포먼스",
         defaultOpen: true,
         items: [
-          { id: "biz-perf-monthly", label: "월별 체결액" },
-          { id: "biz-perf-pl-progress-2026", label: "2026 P&L 진행율매출" },
+          { id: "biz-perf-pl-progress-2026", label: "2026 P&L" },
+          { id: "biz-perf-monthly", label: "2026 월별 체결액" },
         ],
       },
       {
@@ -5531,6 +5621,7 @@
       state.rankPeopleModal.backdrop = document.getElementById("dealsModalBackdrop");
       state.rankPeopleModal.close = document.getElementById("dealsModalClose");
       state.rankPeopleModal.title = document.getElementById("dealsModalTitle");
+      state.rankPeopleModal.subtitle = document.getElementById("dealsModalSubtitle");
       state.rankPeopleModal.body = document.getElementById("dealsModalBody");
       if (state.rankPeopleModal.backdrop) {
         state.rankPeopleModal.backdrop.addEventListener("click", (e) => {
@@ -6286,11 +6377,13 @@
       }
       state.rankPeopleModal.backdrop.style.display = "flex";
       state.rankPeopleModal.title.textContent = "월별 체결액 딜 목록";
-      state.rankPeopleModal.body.innerHTML = `<div class="muted">불러오는 중...</div>`;
+      if (state.rankPeopleModal.subtitle) state.rankPeopleModal.subtitle.textContent = "";
+      state.rankPeopleModal.body.innerHTML = `<div class="muted" style="padding:12px;">불러오는 중...</div>`;
       try {
         const data = await loadBizPerfDeals(segmentKey, rowKey, monthKey);
         const titleLabel = `${(data.segment && data.segment.label) || segmentKey} · ${formatPerfMonthLabel(data.month)} · ${(data.row && data.row.label) || rowKey}`;
         state.rankPeopleModal.title.textContent = `월별 체결액 - ${titleLabel}`;
+        if (state.rankPeopleModal.subtitle) state.rankPeopleModal.subtitle.textContent = `${formatPerfMonthLabel(data.month)} · ${(data.segment && data.segment.label) || segmentKey} · ${(data.row && data.row.label) || rowKey}`;
         const items = (data.items || []).slice();
         const sortKey = (it) => {
           const a = Number(it.amount);
@@ -6312,28 +6405,28 @@
               const fmtAmt = (v) => (Number(v) > 0 ? formatEok1(v) : "-");
               return `
                 <tr>
-                  <td class="align-left">${item.orgName || "-"}</td>
-                  <td class="align-left">${normalizeUpperOrg(item.upperOrg)}</td>
-                  <td class="align-left">${item.customerPersonName || "-"}</td>
-                  <td class="deal-name-cell align-left">${dealLink ? `<a class="deal-name-link" href="${dealLink}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">${item.dealName || item.dealId || "-"}</a>` : `<span class="deal-name-link">${item.dealName || item.dealId || "-"}</span>`}</td>
-                  <td class="auto-fit">${item.courseFormat || "-"}</td>
-                  <td class="auto-fit">${owners || "-"}</td>
-                  <td class="auto-fit">${item.status || "-"}</td>
-                  <td class="auto-fit">${formatProbability(item.probability)}</td>
-                  <td class="auto-fit amount">${formatDate(item.expectedCloseDate)}</td>
-                  <td class="auto-fit amount">${fmtAmt(item.expectedAmount)}</td>
-                  <td class="auto-fit">${formatDate(item.startDate)}</td>
-                  <td class="auto-fit">${formatDate(item.endDate)}</td>
-                  <td class="auto-fit">${item.courseId || "-"}</td>
-                  <td class="auto-fit amount">${formatDate(item.contractDate)}</td>
-                  <td class="auto-fit amount">${fmtAmt(item.amount)}</td>
+                  <td class="align-left txt">${item.orgName || "-"}</td>
+                  <td class="align-left txt">${normalizeUpperOrg(item.upperOrg)}</td>
+                  <td class="align-left txt">${item.customerPersonName || "-"}</td>
+                  <td class="deal-name-cell align-left txt">${dealLink ? `<a class="deal-name-link" href="${dealLink}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">${item.dealName || item.dealId || "-"}</a>` : `<span class="deal-name-link">${item.dealName || item.dealId || "-"}</span>`}</td>
+                  <td class="auto-fit txt">${item.courseFormat || "-"}</td>
+                  <td class="auto-fit txt">${owners || "-"}</td>
+                  <td class="auto-fit txt">${item.status || "-"}</td>
+                  <td class="auto-fit txt">${formatProbability(item.probability)}</td>
+                  <td class="auto-fit txt">${formatDate(item.expectedCloseDate)}</td>
+                  <td class="auto-fit num"><span class="pnl-num">${fmtAmt(item.expectedAmount)}</span></td>
+                  <td class="auto-fit txt">${formatDate(item.startDate)}</td>
+                  <td class="auto-fit txt">${formatDate(item.endDate)}</td>
+                  <td class="auto-fit txt">${item.courseId || "-"}</td>
+                  <td class="auto-fit txt">${formatDate(item.contractDate)}</td>
+                  <td class="auto-fit num"><span class="pnl-num">${fmtAmt(item.amount)}</span></td>
                 </tr>
               `;
             })
             .join("") || `<tr><td colspan="15" class="muted">딜이 없습니다.</td></tr>`;
 
         state.rankPeopleModal.body.innerHTML = `
-          <div class="table-wrap full" style="max-height:60vh; overflow:auto;">
+          <div class="table-wrap full deals-modal-scroll">
             <table class="perf-table mp-monthly-table mp-deals-table">
               <colgroup>
                 <col style="width:14em" />
@@ -6343,21 +6436,21 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th class="align-left">기업명</th>
-                  <th class="align-left">소속 상위 조직</th>
-                  <th class="align-left">담당자</th>
-                  <th class="align-left">딜이름</th>
-                  <th class="auto-fit">과정포맷</th>
-                  <th class="auto-fit">데이원</th>
-                  <th class="auto-fit">상태</th>
-                  <th class="auto-fit">가능성</th>
-                  <th class="auto-fit amount">수주 예정일</th>
-                  <th class="auto-fit amount">예상 체결액</th>
-                  <th class="auto-fit">수강시작일</th>
-                  <th class="auto-fit">수강종료일</th>
-                  <th class="auto-fit">코스 ID</th>
-                  <th class="auto-fit amount">계약체결일</th>
-                  <th class="auto-fit amount">금액</th>
+                  <th class="align-left txt">기업명</th>
+                  <th class="align-left txt">소속 상위 조직</th>
+                  <th class="align-left txt">담당자</th>
+                  <th class="align-left txt">딜이름</th>
+                  <th class="auto-fit txt">과정포맷</th>
+                  <th class="auto-fit txt">데이원</th>
+                  <th class="auto-fit txt">상태</th>
+                  <th class="auto-fit txt">가능성</th>
+                  <th class="auto-fit txt">수주 예정일</th>
+                  <th class="auto-fit num">예상 체결액</th>
+                  <th class="auto-fit txt">수강시작일</th>
+                  <th class="auto-fit txt">수강종료일</th>
+                  <th class="auto-fit txt">코스 ID</th>
+                  <th class="auto-fit txt">계약체결일</th>
+                  <th class="auto-fit num">금액</th>
                 </tr>
               </thead>
               <tbody>
@@ -6438,11 +6531,14 @@
       }
       state.rankPeopleModal.backdrop.style.display = "flex";
       state.rankPeopleModal.title.textContent = "2026 P&L 진행율매출 딜 목록";
-      state.rankPeopleModal.body.innerHTML = `<div class="muted">불러오는 중...</div>`;
+      if (state.rankPeopleModal.subtitle) state.rankPeopleModal.subtitle.textContent = "";
+      state.rankPeopleModal.body.innerHTML = `<div class="muted" style="padding:12px;">불러오는 중...</div>`;
       try {
         const data = await loadPlProgress2026Deals({ year: 2026, month, rail, variant });
         const titleLabel = `${month} · ${rail} · ${variant}`;
         state.rankPeopleModal.title.textContent = `2026 P&L 진행율매출 - ${titleLabel}`;
+        if (state.rankPeopleModal.subtitle)
+          state.rankPeopleModal.subtitle.textContent = `${formatPerfMonthLabel(month)} · ${rail} · 가능성(높음/확정)`;
         const items = (data.items || []).slice();
         items.sort((a, b) => {
           const recDiff = Number(b.recognizedAmount || 0) - Number(a.recognizedAmount || 0);
@@ -6461,22 +6557,22 @@
               const overlap = item.overlapDays && item.totalDays ? `${item.overlapDays}/${item.totalDays}` : "-";
               return `
                 <tr>
-                  <td class="align-left">${item.orgName || "-"}</td>
-                  <td class="align-left">${normalizeUpperOrg(item.upperOrg)}</td>
-                  <td class="align-left">${item.customerPersonName || "-"}</td>
-                  <td class="deal-name-cell align-left">${dealLink ? `<a class="deal-name-link" href="${dealLink}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">${item.dealName || item.dealId || "-"}</a>` : `<span class="deal-name-link">${item.dealName || item.dealId || "-"}</span>`}</td>
-                  <td class="auto-fit">${item.courseFormat || "-"}</td>
-                  <td class="auto-fit">${owners || "-"}</td>
-                  <td class="auto-fit">${item.status || "-"}</td>
-                  <td class="auto-fit">${formatProbability(item.probability)}</td>
-                  <td class="auto-fit amount">${formatDate(item.expectedCloseDate)}</td>
-                  <td class="auto-fit amount">${fmtWon(item.expectedAmount)}</td>
-                  <td class="auto-fit">${formatDate(item.startDate)}</td>
-                  <td class="auto-fit">${formatDate(item.endDate)}</td>
-                  <td class="auto-fit amount">${formatDate(item.contractDate)}</td>
-                  <td class="auto-fit amount">${fmtWon(item.amount)}</td>
-                  <td class="auto-fit amount">${fmtRec(item.recognizedAmount)}</td>
-                  <td class="auto-fit amount">${overlap}</td>
+                  <td class="align-left txt">${item.orgName || "-"}</td>
+                  <td class="align-left txt">${normalizeUpperOrg(item.upperOrg)}</td>
+                  <td class="align-left txt">${item.customerPersonName || "-"}</td>
+                  <td class="deal-name-cell align-left txt">${dealLink ? `<a class="deal-name-link" href="${dealLink}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">${item.dealName || item.dealId || "-"}</a>` : `<span class="deal-name-link">${item.dealName || item.dealId || "-"}</span>`}</td>
+                  <td class="auto-fit txt">${item.courseFormat || "-"}</td>
+                  <td class="auto-fit txt">${owners || "-"}</td>
+                  <td class="auto-fit txt">${item.status || "-"}</td>
+                  <td class="auto-fit txt">${formatProbability(item.probability)}</td>
+                  <td class="auto-fit txt">${formatDate(item.expectedCloseDate)}</td>
+                  <td class="auto-fit num"><span class="pnl-num">${fmtWon(item.expectedAmount)}</span></td>
+                  <td class="auto-fit txt">${formatDate(item.startDate)}</td>
+                  <td class="auto-fit txt">${formatDate(item.endDate)}</td>
+                  <td class="auto-fit txt">${formatDate(item.contractDate)}</td>
+                  <td class="auto-fit num"><span class="pnl-num">${fmtWon(item.amount)}</span></td>
+                  <td class="auto-fit num"><span class="pnl-num">${fmtRec(item.recognizedAmount)}</span></td>
+                  <td class="auto-fit num"><span class="pnl-num">${overlap}</span></td>
                 </tr>
               `;
             })
@@ -6484,26 +6580,26 @@
           `<tr><td class="muted" colspan="16">데이터가 없습니다.</td></tr>`;
 
         state.rankPeopleModal.body.innerHTML = `
-          <div class="table-wrap full">
+          <div class="table-wrap full" style="max-height:60vh; overflow:auto; padding: 0 12px 12px;">
             <table class="perf-table mp-monthly-table mp-deals-table">
               <thead>
                 <tr>
-                  <th class="align-left">기업명</th>
-                  <th class="align-left">소속 상위 조직</th>
-                  <th class="align-left">담당자</th>
-                  <th class="align-left">딜이름</th>
-                  <th class="auto-fit">과정포맷</th>
-                  <th class="auto-fit">데이원</th>
-                  <th class="auto-fit">상태</th>
-                  <th class="auto-fit">가능성</th>
-                  <th class="auto-fit amount">수주 예정일</th>
-                  <th class="auto-fit amount">예상 체결액</th>
-                  <th class="auto-fit">수강시작일</th>
-                  <th class="auto-fit">수강종료일</th>
-                  <th class="auto-fit amount">계약체결일</th>
-                  <th class="auto-fit amount">금액</th>
-                  <th class="auto-fit amount">진행율매출(해당월)</th>
-                  <th class="auto-fit amount">일수</th>
+                  <th class="align-left txt">기업명</th>
+                  <th class="align-left txt">소속 상위 조직</th>
+                  <th class="align-left txt">담당자</th>
+                  <th class="align-left txt">딜이름</th>
+                  <th class="auto-fit txt">과정포맷</th>
+                  <th class="auto-fit txt">데이원</th>
+                  <th class="auto-fit txt">상태</th>
+                  <th class="auto-fit txt">가능성</th>
+                  <th class="auto-fit txt">수주 예정일</th>
+                  <th class="auto-fit num">예상 체결액</th>
+                  <th class="auto-fit txt">수강시작일</th>
+                  <th class="auto-fit txt">수강종료일</th>
+                  <th class="auto-fit txt">계약체결일</th>
+                  <th class="auto-fit num">금액</th>
+                  <th class="auto-fit num">진행율매출(해당월)</th>
+                  <th class="auto-fit num">일수</th>
                 </tr>
               </thead>
               <tbody>

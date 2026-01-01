@@ -1,6 +1,6 @@
 ---
 title: org_tables_v2 프런트 계약
-last_synced: 2025-12-24
+last_synced: 2025-12-25
 sync_source:
   - org_tables_v2.html
   - dashboard/server/org_tables_api.py
@@ -45,6 +45,12 @@ sync_source:
 - API: `/rank/2025-top100-counterparty-dri?size=...&limit=100&offset=...`, 온라인 판정=구독제(온라인)/선택구매(온라인)/포팅 완전 일치. 정렬: orgWon2025 DESC → cpTotal2025 DESC. 팀&파트/DRI는 PART_STRUCTURE 매핑(단일 팀·파트면 O).
 - 모달: org+upper_org의 딜/팀/People 요약. 딜/소스 표 컬럼 = 이름(딜 링크)/상위 조직/교담자(people 링크)/담당자/금액/과정포맷/계약·예정일/수강시작일/상태/성사가능성/생성일. 25 소스는 온라인·비온라인 테이블, 26은 비온라인 체결만 표시(`26 비온라인 타겟` 제거).
 
+## StatePath 24→25 (`renderStatePathMenu`)
+- 헤더: 별도 타이틀 없이 1줄(`sp-header-card`) 구성. 좌측 Primary CTA 필터 버튼(아이콘+라벨+배지, `sp-filter-cta`), 중앙 적용 칩(없으면 연한 “필터 없음” pill), 우측 전체 해제. 필터 배지는 0도 항상 표시하며 필터 적용 시 버튼 `.is-active`로 강조된다. Drawer 열림 시 버튼 `.is-open`.
+- 필터 CTA 발견성: 최초 진입 시 sessionStorage `sp_filter_hint_shown`이 없으면 버튼에 `hint-pulse` 애니메이션 2회 적용. CTA는 aria-haspopup="dialog", aria-controls="statepathFilterDrawer".
+- 필터 동작: 필터 버튼 → Drawer, 전체 해제 → segment를 `전체`로 되돌리고 클라이언트 필터 리셋 후 `/statepath/portfolio-2425` 재호출. Drawer 필터는 세그먼트/2024 티어/Quick 필터(클라이언트 적용) 유지.
+- Snapshot: 6타일(계정수/2024 합계/2025 합계/Δ 합/Company 변화/OPEN·RISK)이 1행 고정, 폭이 좁으면 `.sp-snap-grid`의 `overflow-x:auto`로 가로 스크롤.
+
 ## 2026 Target Board (`renderTarget2026Screen`)
 - 데이터 로더 재사용(`/rank/2025-top100-counterparty-dri` 대/중견/중소 3회). KPI 8개(2×4 고정, 가로 스크롤/ min-width 960px):
   - 대기업 S0/P0/P1 (삼성전자 S0 제외), 대기업 P2, 대기업 P3~P5, 중견/중소
@@ -69,3 +75,5 @@ sync_source:
 - 월별 체결액 카드에서 세그먼트 label이 기업/공공/온라인/비온라인(삼전 제외) 표기로 보이고 rows가 TOTAL→계약 체결→성사 확정→성사 높음 순서로 24개월 금액을 1자리 소수로 표시하는지 확인.
 - 월별 체결액 셀 클릭 시 모달이 넓게 열리고(가로 스크롤 가능) 기업명/소속 상위 조직/담당자/딜이름은 좌측 정렬, 나머지 컬럼은 auto-fit으로 잘림 없이 노출되는지 확인.
 - 모달 정렬이 금액>0 우선, 없으면 예상 체결액 기준 내림차순(동액 시 딜 이름)인지 확인.
+- StatePath 상단에 타이틀이 없고 필터 CTA(아이콘+배지)가 좌측 Primary 버튼으로 노출되는지, Drawer 열림 시 버튼 `.is-open` 스타일이 반영되는지 확인.
+- StatePath 필터 0개일 때 연한 “필터 없음” pill이 적용 칩 영역에 표시되고, 전체 해제 클릭 시 segment가 “전체”로 복귀하며 `/statepath/portfolio-2425`를 재호출하는지 확인.

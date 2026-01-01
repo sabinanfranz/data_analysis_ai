@@ -1,6 +1,6 @@
 ---
 title: org_tables_v2 동작 정리 (FastAPI 기반)
-last_synced: 2025-12-24
+last_synced: 2025-12-25
 sync_source:
   - org_tables_v2.html
   - dashboard/server/org_tables_api.py
@@ -8,7 +8,6 @@ sync_source:
   - dashboard/server/json_compact.py
   - dashboard/server/statepath_engine.py
   - docs/llm_context/09_FRONTEND_ORG_TABLES_V2_CONTRACT.md
-  - dashboard/server/database.py
 ---
 
 # org_tables_v2 동작 정리 (FastAPI 기반)
@@ -60,6 +59,12 @@ sync_source:
 - Won 요약: `/orgs/{id}/won-summary`로 상위 조직별 23/24/25 Won 합계, 고객/데이원 담당자 리스트.
 - 상위 조직 People/Deal/메모 2×2 컨테이너 + 상위 조직별 JSON/compact, StatePath 모달.
 
+### StatePath 24→25
+- 헤더: 별도 타이틀 없이 필터 CTA(아이콘+라벨+배지) · 적용 칩(없으면 “필터 없음” 연한 pill) · 전체 해제 버튼 1줄만 노출. 필터 배지는 0도 항상 표시하며, 필터 적용 시 버튼이 활성화 상태가 된다.
+- 필터 버튼: 클릭 시 Drawer를 열며, Drawer 열림/닫힘 상태가 버튼 스타일에 반영된다. 최초 진입 시 sessionStorage `sp_filter_hint_shown`이 없으면 버튼에 2회 pulse 애니메이션을 보여준다.
+- 전체 해제: segment를 `전체`로 되돌리고 클라이언트 필터를 초기화한 뒤 `/statepath/portfolio-2425`를 다시 호출한다(샘플 경로는 org_tables_v2.html 내 `loadStatePathPortfolio2425`).
+- Snapshot: 6개 타일(계정수/2024 합계/2025 합계/Δ 합/Company 변화/OPEN·RISK)이 가로 1행 고정, 폭이 좁으면 가로 스크롤. `.sp-snap-grid`는 `grid-auto-flow: column` + `overflow-x:auto`로 줄바꿈을 막는다.
+
 ### 고객사 불일치
 - 데이터: `/rank/mismatched-deals?size=...` 캐시. 표: 딜 org/People org/딜/고객/계약일/금액/과정포맷/과정 형태. 회사/딜/People 링크는 명확한 블루/그린 색상으로 표시.
 
@@ -73,3 +78,5 @@ sync_source:
 - DRI 모달에서 딜/교담자 링크가 작동하고 “상위 조직/교담자” 컬럼이 보이는지 확인.
 - 교육 1/2팀 딜체크가 4섹션(리텐션 S0~P2, 신규 온라인, 리텐션 P3~P5, 신규 비온라인)으로 나뉘고 리텐션 표에만 티어 컬럼이 표시되며 nowrap/가로 스크롤 규칙이 적용되는지 확인.
 - 고객사 불일치 표에서 링크 색상이 배경과 충분히 대비되고 각 링크가 조직 뷰어나 Salesmap으로 이동하는지 확인.
+- StatePath 헤더에서 타이틀 없이 필터 CTA(아이콘+배지)가 좌측에 크게 보이고, 필터 0개일 때 중앙에 연한 “필터 없음” pill이 표시되는지 확인.
+- StatePath 필터 버튼 클릭 시 Drawer가 열리고, 전체 해제 클릭 시 segment가 “전체”로 복귀한 뒤 `/statepath/portfolio-2425`를 재호출해 Snapshot/표가 초기화되는지 확인.

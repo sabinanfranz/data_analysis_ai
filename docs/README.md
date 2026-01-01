@@ -1,6 +1,6 @@
 ---
 title: Docs Index
-last_synced: 2025-12-24
+last_synced: 2025-12-25
 sync_source:
   - docs/org_tables_v2.md
   - docs/api_behavior.md

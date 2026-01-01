@@ -1036,23 +1036,85 @@
       cursor: pointer;
     }
 
-    .sp-filter-btn {
+    .sp-filter-cta {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: #0c182c;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px 10px;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      user-select: none;
+      transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .sp-filter-btn .badge {
-      background: rgba(56, 189, 248, 0.18);
-      color: var(--accent);
-      border: 1px solid rgba(56, 189, 248, 0.3);
+    .sp-filter-cta:hover {
+      background: rgba(255, 255, 255, 0.11);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .sp-filter-cta:focus {
+      outline: none;
+    }
+
+    .sp-filter-cta:focus-visible {
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+    }
+
+    .sp-filter-cta__icon {
+      opacity: 0.95;
+      font-size: 14px;
+    }
+
+    .sp-filter-cta__text {
+      font-size: 14px;
+    }
+
+    .sp-filter-cta__badge {
+      min-width: 24px;
+      height: 20px;
+      padding: 0 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 999px;
-      padding: 2px 8px;
       font-size: 12px;
+      font-weight: 800;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .sp-filter-cta.is-active {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .sp-filter-cta.is-active .sp-filter-cta__badge {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    .sp-filter-cta.is-open {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    @keyframes spPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.0);
+      }
+      50% {
+        box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.0);
+      }
+    }
+
+    .sp-filter-cta.hint-pulse {
+      animation: spPulse 1.2s ease-in-out 2;
     }
 
     .applied-bar {
@@ -3161,6 +3223,7 @@
       const drawer = document.getElementById("statepathFilterDrawer");
       const backdrop = document.getElementById("statepathFilterBackdrop");
       const closeBtn = document.getElementById("statepathCloseFilterDrawer");
+      const btn = document.getElementById("statepathOpenFilterDrawer");
       if (!drawer || !backdrop) return;
       statepathFilterDrawerTrigger = document.activeElement;
       drawer.classList.add("open");
@@ -3168,6 +3231,7 @@
       state.statepath2425.ui = state.statepath2425.ui || {};
       state.statepath2425.ui.filterDrawerOpen = true;
       if (closeBtn) closeBtn.focus();
+      if (btn) btn.classList.add("is-open");
       if (!statepathFilterEscBound) {
         document.addEventListener("keydown", handleStatepathFilterEsc);
         statepathFilterEscBound = true;
@@ -3177,10 +3241,12 @@
     function closeStatepathFilterDrawer({ restoreFocus = true } = {}) {
       const drawer = document.getElementById("statepathFilterDrawer");
       const backdrop = document.getElementById("statepathFilterBackdrop");
+      const btn = document.getElementById("statepathOpenFilterDrawer");
       if (drawer) drawer.classList.remove("open");
       if (backdrop) backdrop.classList.remove("open");
       state.statepath2425.ui = state.statepath2425.ui || {};
       state.statepath2425.ui.filterDrawerOpen = false;
+      if (btn) btn.classList.remove("is-open");
       if (statepathFilterEscBound) {
         document.removeEventListener("keydown", handleStatepathFilterEsc);
         statepathFilterEscBound = false;
@@ -3226,10 +3292,13 @@
 
     function updateStatepathFilterCountBadge() {
       const badge = document.getElementById("statepathFilterCount");
+      const btn = document.getElementById("statepathOpenFilterDrawer");
       if (!badge) return;
       const count = countActiveStatepathFilters();
       badge.textContent = String(count);
-      badge.style.display = count > 0 ? "inline-flex" : "none";
+      if (btn) {
+        btn.classList.toggle("is-active", count > 0);
+      }
     }
 
     function isDefaultQuickFilters(qf) {
@@ -3851,7 +3920,7 @@
       if (pf.cell || pf.cellEvent) tokens.push({ label: `${pf.cellEvent || ""} ${pf.cell || ""}`.trim(), type: "pf", key: "cell" });
       if (pf.rail && pf.railDir) tokens.push({ label: `${pf.rail} ${pf.railDir}`, type: "pf", key: "rail" });
       if (!tokens.length) {
-        wrap.innerHTML = `<span class="muted" style="font-size:12px;">필터 없음</span>`;
+        wrap.innerHTML = `<span class="pill" style="background:rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.08); color: var(--muted); cursor: default;">필터 없음</span>`;
         updateStatepathFilterCountBadge();
         return;
       }
@@ -7031,11 +7100,12 @@
 
     async function renderStatePathMenu(contentRoot) {
       contentRoot.innerHTML = `
-        <h2 style="margin:0;">StatePath 24→25 포트폴리오</h2>
         <section class="card sp-header-card sp-card">
           <div class="sp-header-row">
-            <button id="statepathOpenFilterDrawer" class="sp-filter-btn" type="button" title="필터 열기">
-              필터 <span id="statepathFilterCount" class="badge">0</span>
+            <button id="statepathOpenFilterDrawer" class="sp-filter-cta" type="button" title="필터 열기" aria-haspopup="dialog" aria-controls="statepathFilterDrawer">
+              <span class="sp-filter-cta__icon" aria-hidden="true">⛭</span>
+              <span class="sp-filter-cta__text">필터</span>
+              <span id="statepathFilterCount" class="sp-filter-cta__badge">0</span>
             </button>
             <div id="statepathAppliedBar" class="sp-applied-bar"></div>
             <button id="statepathClearAll" class="sp-clear-btn" type="button" title="필터 전체 해제">전체 해제</button>
@@ -7098,12 +7168,48 @@
       spState.sort = "won2025_desc";
       bindStatepathFilterDrawerEvents();
       renderSegmentPickerInDrawer();
+
+      if (typeof sessionStorage !== "undefined") {
+        const hintKey = "sp_filter_hint_shown";
+        const btn = document.getElementById("statepathOpenFilterDrawer");
+        try {
+          const shown = sessionStorage.getItem(hintKey);
+          if (!shown && btn) {
+            btn.classList.add("hint-pulse");
+            setTimeout(() => btn.classList.remove("hint-pulse"), 2400);
+            sessionStorage.setItem(hintKey, "1");
+          }
+        } catch (e) {
+          if (btn) {
+            btn.classList.add("hint-pulse");
+            setTimeout(() => btn.classList.remove("hint-pulse"), 2400);
+          }
+        }
+      }
       const clearBtn = document.getElementById("statepathClearAll");
       if (clearBtn) {
         clearBtn.addEventListener("click", () => {
           resetStatepathClientFilters();
           spState.segment = "전체";
           renderSegmentPickerInDrawer();
+
+      if (typeof sessionStorage !== "undefined") {
+        const hintKey = "sp_filter_hint_shown";
+        const btn = document.getElementById("statepathOpenFilterDrawer");
+        try {
+          const shown = sessionStorage.getItem(hintKey);
+          if (!shown && btn) {
+            btn.classList.add("hint-pulse");
+            setTimeout(() => btn.classList.remove("hint-pulse"), 2400);
+            sessionStorage.setItem(hintKey, "1");
+          }
+        } catch (e) {
+          if (btn) {
+            btn.classList.add("hint-pulse");
+            setTimeout(() => btn.classList.remove("hint-pulse"), 2400);
+          }
+        }
+      }
           loadStatePathPortfolio2425(true);
         });
       }

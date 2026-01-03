@@ -809,6 +809,257 @@
       border-right: 2px solid rgba(255, 255, 255, 0.28);
     }
 
+    :root {
+      --pnl-lever-h: 72px;
+      --pnl-btn-gap: 8px;
+    }
+
+    /* P&L 가정(Assumptions) 바 */
+    .pnl-assumptions {
+      display: block;
+      margin: 10px 0 12px 0;
+      overflow-x: hidden;
+    }
+
+    .pnl-top-split {
+      display: flex;
+      gap: 0;
+      align-items: flex-start;
+    }
+
+    .pnl-top-left {
+      flex: 0 0 66.666%;
+      min-width: 0;
+      padding-right: 10px;
+    }
+
+    .pnl-top-right {
+      flex: 0 0 33.333%;
+      min-width: 0;
+    }
+
+    @media (max-width: 1100px) {
+      .pnl-top-split {
+        flex-direction: column;
+      }
+      .pnl-top-left {
+        flex-basis: auto;
+        width: 100%;
+        padding-right: 0;
+      }
+      .pnl-top-right {
+        display: none;
+      }
+    }
+
+    .pnl-assump-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+      min-width: 0;
+      flex-wrap: nowrap;
+    }
+
+    @media (max-width: 1100px) {
+      .pnl-assump-row {
+        flex-wrap: wrap;
+      }
+    }
+
+    .pnl-field {
+      padding: 8px 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      min-width: 0;
+      height: var(--pnl-lever-h);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex: 1 1 0;
+    }
+
+    .pnl-field .label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pnl-ctrl {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .pnl-field input {
+      width: 100%;
+      min-width: 0;
+      height: 34px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 6px 8px;
+      color: rgba(255, 255, 255, 0.92);
+    }
+
+    .pnl-field .unit {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      white-space: nowrap;
+    }
+
+    .pnl-field.is-dirty {
+      border-color: rgba(80, 160, 255, 0.28);
+      background: rgba(80, 160, 255, 0.06);
+    }
+
+    .pnl-step {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .pnl-step:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    .pnl-assump-actions {
+      display: flex;
+      flex-direction: column;
+      gap: var(--pnl-btn-gap);
+      align-items: stretch;
+    }
+
+    .pnl-action-btn {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .pnl-action-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .pnl-actions-stack {
+      height: var(--pnl-lever-h);
+      display: flex;
+      flex-direction: column;
+      gap: var(--pnl-btn-gap);
+      flex: 0 0 140px;
+      min-width: 120px;
+    }
+
+    .pnl-actions-stack .pnl-action-btn {
+      height: calc((var(--pnl-lever-h) - var(--pnl-btn-gap)) / 2);
+    }
+
+    .pnl-assump-info {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .pnl-assump-info.hidden {
+      display: none;
+    }
+
+    .pnl-assump-info .small {
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    /* P&L 가정 확인 모달 */
+    #pnlAssumpModalBackdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1300;
+    }
+
+    #pnlAssumpModalBackdrop.show {
+      display: flex;
+    }
+
+    .pnl-assump-modal {
+      width: min(520px, 92vw);
+      border-radius: 14px;
+      background: rgba(12, 18, 32, 0.98);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+    }
+
+    .pnl-assump-modal .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .pnl-assump-modal .modal-title {
+      font-weight: 750;
+      font-size: 15px;
+    }
+
+    .pnl-assump-modal .modal-body {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .pnl-assump-modal .modal-x {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
     /* ✅ 딜 목록 모달 폭/높이/스크롤 개선 */
     .modal.deals-modal-wide {
       width: min(96vw, 1400px) !important;
@@ -1802,6 +2053,23 @@
     const MENU_IDS = new Set(MENU_ITEMS.map((item) => item.id));
     const MENU_SECTION_STORAGE_PREFIX = "menu_section_open__";
     const DEFAULT_MENU_ID = "org-view";
+    const DEFAULT_PNL_ASSUMPTIONS = {
+      onlineContribMarginRate: 0.85,
+      offlineContribMarginRate: 0.55,
+      monthlyProdCost: 0.2,
+      monthlyMktCost: 0.3,
+      monthlyLaborCost: 6.0,
+    };
+
+    function getDefaultPnlDrafts() {
+      return {
+        onlineContribMarginRate: (DEFAULT_PNL_ASSUMPTIONS.onlineContribMarginRate * 100).toFixed(1),
+        offlineContribMarginRate: (DEFAULT_PNL_ASSUMPTIONS.offlineContribMarginRate * 100).toFixed(1),
+        monthlyProdCost: DEFAULT_PNL_ASSUMPTIONS.monthlyProdCost.toFixed(1),
+        monthlyMktCost: DEFAULT_PNL_ASSUMPTIONS.monthlyMktCost.toFixed(1),
+        monthlyLaborCost: DEFAULT_PNL_ASSUMPTIONS.monthlyLaborCost.toFixed(1),
+      };
+    }
 
     function getInitialMenuId() {
       const hash = (window.location.hash || "").replace(/^#/, "");
@@ -1909,6 +2177,8 @@
         error: null,
         summary: null,
         dealsCache: new Map(),
+        assumptions: { ...DEFAULT_PNL_ASSUMPTIONS },
+        assumptionDraft: getDefaultPnlDrafts(),
       },
       orgs: [],
       orgSearch: "",
@@ -2953,6 +3223,7 @@
     }
 
     let target2026Cache = null;
+    let pnlAssumptionTimer = null;
     async function loadBizPerfSummary() {
       if (state.perfMonthly.data) return state.perfMonthly.data;
       const data = await fetchJson(`/performance/monthly-amounts/summary?from=2025-01&to=2026-12`);
@@ -3154,6 +3425,144 @@
       if (value > 0 && value <= 1) value = value * 100;
       if (value < 0 && value >= -1) value = value * 100;
       return `${value.toFixed(1)}%`;
+    }
+
+    function applyAssumptionsToPnlData(data, assumptions = DEFAULT_PNL_ASSUMPTIONS) {
+      if (!data || !data.rows) return data;
+      const months = data.months || [];
+      const columns = data.columns || [];
+      const cloned = {
+        ...data,
+        rows: data.rows.map((row) => ({ ...row, values: { ...(row.values || {}) } })),
+      };
+      const rowMap = new Map(cloned.rows.map((row) => [row.key, row]));
+      const yearKeyByVariant = {};
+      columns.forEach((c) => {
+        if (c.kind === "YEAR" && c.variant) {
+          yearKeyByVariant[c.variant] = c.key;
+        }
+      });
+      const isEKey = (key) => {
+        if (!key) return false;
+        return key.endsWith("_E") || key === yearKeyByVariant["E"];
+      };
+
+      const toNum = (v) => {
+        const n = Number(v);
+        return Number.isFinite(n) ? n : null;
+      };
+      const setVal = (rowKey, key, value) => {
+        if (!isEKey(key)) return;
+        const row = rowMap.get(rowKey);
+        if (!row) return;
+        if (!row.values) row.values = {};
+        row.values[key] = Number.isFinite(value) ? value : value === null ? null : null;
+      };
+      const sumNullable = (vals) => {
+        const nums = vals.filter((v) => Number.isFinite(v));
+        if (!nums.length) return null;
+        return nums.reduce((a, b) => a + b, 0);
+      };
+      const sumRowVariant = (rowKey, variant) => {
+        const row = rowMap.get(rowKey);
+        if (!row) return null;
+        let has = false;
+        let total = 0;
+        months.forEach((m) => {
+          const v = toNum(row.values ? row.values[`${m}_${variant}`] : null);
+          if (Number.isFinite(v)) {
+            total += v;
+            has = true;
+          }
+        });
+        return has ? total : null;
+      };
+
+      const onlineMargin = Number(
+        assumptions.onlineContribMarginRate ?? DEFAULT_PNL_ASSUMPTIONS.onlineContribMarginRate
+      );
+      const offlineMargin = Number(
+        assumptions.offlineContribMarginRate ?? DEFAULT_PNL_ASSUMPTIONS.offlineContribMarginRate
+      );
+      const monthlyProd = Number(assumptions.monthlyProdCost ?? DEFAULT_PNL_ASSUMPTIONS.monthlyProdCost);
+      const monthlyMkt = Number(assumptions.monthlyMktCost ?? DEFAULT_PNL_ASSUMPTIONS.monthlyMktCost);
+      const monthlyLabor = Number(assumptions.monthlyLaborCost ?? DEFAULT_PNL_ASSUMPTIONS.monthlyLaborCost);
+      const monthlyRent = monthlyLabor * 0.15;
+
+      const yearKeyE = yearKeyByVariant["E"];
+
+      months.forEach((month) => {
+        const suffix = `${month}_E`;
+        const revOnline = toNum(rowMap.get("REV_ONLINE")?.values?.[suffix]);
+        const revOffline = toNum(rowMap.get("REV_OFFLINE")?.values?.[suffix]);
+        const revTotalVal = toNum(rowMap.get("REV_TOTAL")?.values?.[suffix]) ?? sumNullable([revOnline, revOffline]);
+
+        const contribOnline = revOnline === null ? null : revOnline * (1 - onlineMargin);
+        const contribOffline = revOffline === null ? null : revOffline * (1 - offlineMargin);
+        const contribTotal = sumNullable([contribOnline, contribOffline]);
+
+        const profitOnline = revOnline === null ? null : revOnline - (contribOnline ?? 0);
+        const profitOffline = revOffline === null ? null : revOffline - (contribOffline ?? 0);
+        const profitTotal = sumNullable([profitOnline, profitOffline]);
+
+        const fixedOther = revOffline === null ? null : 1.0 + revOffline * 0.05;
+        const fixedTotal =
+          fixedOther === null ? null : monthlyProd + monthlyMkt + monthlyLabor + monthlyRent + fixedOther;
+
+        const opVal = profitTotal === null || fixedTotal === null ? null : profitTotal - fixedTotal;
+        const margin = revTotalVal && opVal !== null && revTotalVal > 0 ? (opVal / revTotalVal) * 100 : null;
+
+        setVal("COST_CONTRIB_ONLINE", suffix, contribOnline);
+        setVal("COST_CONTRIB_OFFLINE", suffix, contribOffline);
+        setVal("COST_CONTRIB_TOTAL", suffix, contribTotal);
+
+        setVal("PROFIT_CONTRIB_ONLINE", suffix, profitOnline);
+        setVal("PROFIT_CONTRIB_OFFLINE", suffix, profitOffline);
+        setVal("PROFIT_CONTRIB_TOTAL", suffix, profitTotal);
+
+        setVal("COST_FIXED_PROD", suffix, monthlyProd);
+        setVal("COST_FIXED_MKT", suffix, monthlyMkt);
+        setVal("COST_FIXED_LABOR", suffix, monthlyLabor);
+        setVal("COST_FIXED_RENT", suffix, monthlyRent);
+        setVal("COST_FIXED_OTHER", suffix, fixedOther);
+        setVal("COST_FIXED_TOTAL", suffix, fixedTotal);
+
+        setVal("OP", suffix, opVal);
+        setVal("OP_MARGIN", suffix, margin);
+      });
+
+      if (yearKeyE) {
+        cloned.rows.forEach((row) => {
+          if (row.format === "percent") {
+            const revTotal = sumRowVariant("REV_TOTAL", "E");
+            const opTotal = sumRowVariant("OP", "E");
+            const marginYear = revTotal && opTotal !== null && revTotal > 0 ? (opTotal / revTotal) * 100 : null;
+            setVal("OP_MARGIN", yearKeyE, marginYear);
+          } else {
+            const summed = sumRowVariant(row.key, "E");
+            setVal(row.key, yearKeyE, summed);
+          }
+        });
+        // year-level fixed others for E use yearly offline rev if present
+        const revOfflineYear = toNum(rowMap.get("REV_OFFLINE")?.values?.[yearKeyE]);
+        const fixedOtherYear = revOfflineYear === null ? null : 1.0 + revOfflineYear * 0.05;
+        if (fixedOtherYear !== null) {
+          setVal("COST_FIXED_OTHER", yearKeyE, fixedOtherYear);
+          const fixedTotalYear =
+            monthlyProd * 12 + monthlyMkt * 12 + monthlyLabor * 12 + monthlyRent * 12 + fixedOtherYear;
+          setVal("COST_FIXED_TOTAL", yearKeyE, fixedTotalYear);
+          const profitTotalYear = toNum(rowMap.get("PROFIT_CONTRIB_TOTAL")?.values?.[yearKeyE]);
+          const opYear =
+            profitTotalYear === null || fixedTotalYear === null ? null : profitTotalYear - fixedTotalYear;
+          setVal("OP", yearKeyE, opYear);
+          const revTotalYear = toNum(rowMap.get("REV_TOTAL")?.values?.[yearKeyE]);
+          const marginYear =
+            revTotalYear && opYear !== null && revTotalYear > 0 ? (opYear / revTotalYear) * 100 : null;
+          setVal("OP_MARGIN", yearKeyE, marginYear);
+        }
+      }
+
+      return cloned;
     }
 
     function isOnlineCourseFormat(v) {
@@ -6622,19 +7031,252 @@
           <div class="control-row">
             <div>
               <h1>2026 P&L 진행율매출</h1>
-              <div class="muted" id="plProgressMeta">단위: 억 / (T)=Target, (E)=Expected</div>
+              <div class="muted" id="plProgressMeta">단위: 억</div>
             </div>
             <div class="spacer"></div>
             <span class="pill muted">2026-01 ~ 2026-12</span>
           </div>
+          <div id="pnlAssumptionsBar"></div>
         </section>
         <section class="card">
           <div id="plProgressTableWrap" class="muted">불러오는 중...</div>
         </section>
+        <div id="pnlAssumpModalBackdrop">
+          <div class="pnl-assump-modal">
+            <div class="modal-header">
+              <div class="modal-title">가정 확인</div>
+              <button class="modal-x" id="pnlAssumpModalClose" aria-label="닫기">✕</button>
+            </div>
+            <div class="modal-body" id="pnlAssumpModalBody"></div>
+          </div>
+        </div>
       `;
 
       const tableWrap = document.getElementById("plProgressTableWrap");
       const metaEl = document.getElementById("plProgressMeta");
+      const assumptionsBar = document.getElementById("pnlAssumptionsBar");
+      const assumpModal = document.getElementById("pnlAssumpModalBackdrop");
+      const assumpModalBody = document.getElementById("pnlAssumpModalBody");
+      const assumpModalClose = document.getElementById("pnlAssumpModalClose");
+      let assumpEscHandler = null;
+
+      const closeAssumpModal = () => {
+        assumpModal.classList.remove("show");
+        if (assumpEscHandler) {
+          document.removeEventListener("keydown", assumpEscHandler);
+          assumpEscHandler = null;
+        }
+      };
+
+      const openAssumpModal = () => {
+        if (!assumpModal || !assumpModalBody) return;
+        const meta = (state.perfPlProgress2026.summary && state.perfPlProgress2026.summary.meta) || {};
+        const excluded = meta.excluded || {};
+        const lines = [];
+        lines.push("임대료=인건비×15% · 기타비용=1억/월+출강×5%");
+        const metaTokens = [];
+        metaTokens.push("(T)=Target, (E)=Expected(가능성 높음·확정 딜만)");
+        metaTokens.push(`제외: 날짜 ${excluded.missing_dates || 0}, 금액 ${excluded.missing_amount || 0}, 기간 ${excluded.invalid_date_range || 0}`);
+        if (meta.snapshot_version) metaTokens.push(meta.snapshot_version);
+        if (meta.generated_at) metaTokens.push(`generated_at:${meta.generated_at}`);
+        lines.push(metaTokens.filter(Boolean).join(" · "));
+        const a = state.perfPlProgress2026.assumptions;
+        lines.push(
+          `공헌이익률 온라인 ${((a.onlineContribMarginRate ?? 0) * 100).toFixed(1)}% · 출강 ${(
+            (a.offlineContribMarginRate ?? 0) * 100
+          ).toFixed(1)}%`
+        );
+        lines.push(
+          `월 제작비 ${Number(a.monthlyProdCost || 0).toFixed(1)}억 · 마케팅비 ${Number(a.monthlyMktCost || 0).toFixed(
+            1
+          )}억 · 인건비 ${Number(a.monthlyLaborCost || 0).toFixed(1)}억`
+        );
+        assumpModalBody.innerHTML = lines
+          .filter(Boolean)
+          .map((ln) => `<div class="small muted">${ln}</div>`)
+          .join("");
+        assumpModal.classList.add("show");
+        assumpEscHandler = (e) => {
+          if (e.key === "Escape") closeAssumpModal();
+        };
+        document.addEventListener("keydown", assumpEscHandler);
+      };
+      if (assumpModal) {
+        assumpModal.addEventListener("click", (e) => {
+          if (e.target === assumpModal) closeAssumpModal();
+        });
+      }
+      if (assumpModalClose) {
+        assumpModalClose.addEventListener("click", () => closeAssumpModal());
+      }
+
+      const renderWithAssumptions = () => {
+        if (!state.perfPlProgress2026.summary) return;
+        const adjusted = applyAssumptionsToPnlData(
+          state.perfPlProgress2026.summary,
+          state.perfPlProgress2026.assumptions
+        );
+        renderTable(adjusted);
+      };
+
+      const renderAssumptionsUI = () => {
+        if (!assumptionsBar) return;
+        const a = state.perfPlProgress2026.assumptions;
+        const draft = state.perfPlProgress2026.assumptionDraft || getDefaultPnlDrafts();
+        state.perfPlProgress2026.assumptionDraft = draft;
+        const fields = [
+          { key: "onlineContribMarginRate", label: "공헌이익률(온라인)", unit: "%", type: "rate" },
+          { key: "offlineContribMarginRate", label: "공헌이익률(출강)", unit: "%", type: "rate" },
+          { key: "monthlyProdCost", label: "월 제작비", unit: "억", type: "amount" },
+          { key: "monthlyMktCost", label: "월 마케팅비", unit: "억", type: "amount" },
+          { key: "monthlyLaborCost", label: "월 인건비", unit: "억", type: "amount" },
+        ];
+        const formatDraft = (key, type) => {
+          const currentDraft = draft[key];
+          if (typeof currentDraft === "string") return currentDraft;
+          const val = a[key] ?? DEFAULT_PNL_ASSUMPTIONS[key];
+          return type === "rate" ? (Number(val) * 100 || 0).toFixed(1) : Number(val || 0).toFixed(1);
+        };
+        const fieldHtml = fields.map((f) => {
+          const display = formatDraft(f.key, f.type);
+          const dirty = Math.abs((a[f.key] ?? 0) - DEFAULT_PNL_ASSUMPTIONS[f.key]) > 1e-9;
+          return `
+            <div class="pnl-field${dirty ? " is-dirty" : ""}">
+              <div class="label">${f.label}</div>
+              <div class="pnl-ctrl">
+                <button class="pnl-step" type="button" data-pnl-step="-0.1" data-pnl-key="${f.key}" data-pnl-type="${f.type}">−</button>
+                <input type="text" inputmode="decimal" autocomplete="off" spellcheck="false" value="${display}" data-pnl-key="${f.key}" data-pnl-type="${f.type}" />
+                <button class="pnl-step" type="button" data-pnl-step="0.1" data-pnl-key="${f.key}" data-pnl-type="${f.type}">+</button>
+                <span class="unit">${f.unit}</span>
+              </div>
+            </div>
+          `;
+        });
+
+        const gridItems = `
+          <div class="pnl-assump-row">
+            ${fieldHtml[0]}
+            ${fieldHtml[1]}
+            ${fieldHtml[2]}
+            ${fieldHtml[3]}
+            ${fieldHtml[4]}
+            <div class="pnl-actions-stack">
+              <button class="pnl-action-btn" id="pnlAssumpInfoBtn" type="button">가정 확인</button>
+              <button class="pnl-action-btn" id="pnlResetAssumptionsBtn" type="button">리셋</button>
+            </div>
+          </div>
+        `;
+
+        assumptionsBar.innerHTML = `
+          <div class="pnl-assumptions">
+            <div class="pnl-top-split">
+              <div class="pnl-top-left">
+                ${gridItems}
+              </div>
+              <div class="pnl-top-right"></div>
+            </div>
+          </div>
+        `;
+
+        const inputs = assumptionsBar.querySelectorAll("input[data-pnl-key]");
+        const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
+        const setDirty = (key, fieldEl) => {
+          const isDirty = Math.abs((state.perfPlProgress2026.assumptions[key] ?? 0) - DEFAULT_PNL_ASSUMPTIONS[key]) > 1e-9;
+          if (fieldEl) fieldEl.classList.toggle("is-dirty", isDirty);
+        };
+        const commitDraft = (key, type, sourceEl, { format = false } = {}) => {
+          const raw = state.perfPlProgress2026.assumptionDraft[key] ?? "";
+          const parsed = parseFloat(raw);
+          if (!Number.isFinite(parsed)) {
+            if (format && sourceEl) {
+              const val = state.perfPlProgress2026.assumptions[key] ?? DEFAULT_PNL_ASSUMPTIONS[key];
+              const display = type === "rate" ? (Number(val) * 100 || 0).toFixed(1) : Number(val || 0).toFixed(1);
+              sourceEl.value = display;
+              state.perfPlProgress2026.assumptionDraft[key] = display;
+            }
+            return;
+          }
+          let num = parsed;
+          if (type === "rate") num = num / 100;
+          num = type === "rate" ? clamp(num, 0, 1) : clamp(num, 0, 999);
+          state.perfPlProgress2026.assumptions[key] = num;
+          if (format && sourceEl) {
+            const display = type === "rate" ? (num * 100).toFixed(1) : num.toFixed(1);
+            sourceEl.value = display;
+            state.perfPlProgress2026.assumptionDraft[key] = display;
+          }
+          setDirty(key, sourceEl?.closest(".pnl-field"));
+        };
+        const scheduleRender = () => {
+          clearTimeout(pnlAssumptionTimer);
+          pnlAssumptionTimer = setTimeout(() => renderWithAssumptions(), 200);
+        };
+
+        inputs.forEach((input) => {
+          input.addEventListener("input", (e) => {
+            const key = e.currentTarget.getAttribute("data-pnl-key");
+            if (!key) return;
+            state.perfPlProgress2026.assumptionDraft[key] = e.currentTarget.value;
+            const type = e.currentTarget.getAttribute("data-pnl-type");
+            if (!type) return;
+            commitDraft(key, type, e.currentTarget, { format: false });
+            setDirty(key, e.currentTarget.closest(".pnl-field"));
+            scheduleRender();
+          });
+          input.addEventListener("blur", (e) => {
+            const key = e.currentTarget.getAttribute("data-pnl-key");
+            const type = e.currentTarget.getAttribute("data-pnl-type");
+            if (!key || !type) return;
+            commitDraft(key, type, e.currentTarget, { format: true });
+            scheduleRender();
+          });
+        });
+
+        assumptionsBar.querySelectorAll(".pnl-step").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            const key = e.currentTarget.getAttribute("data-pnl-key");
+            const type = e.currentTarget.getAttribute("data-pnl-type");
+            const deltaBase = parseFloat(e.currentTarget.getAttribute("data-pnl-step") || "0");
+            if (!key || !type || !Number.isFinite(deltaBase)) return;
+            const multiplier = e.shiftKey ? 10 : 1;
+            const currentVal = state.perfPlProgress2026.assumptions[key] ?? DEFAULT_PNL_ASSUMPTIONS[key];
+            const basePercent = type === "rate" ? currentVal * 100 : currentVal;
+            let next = basePercent + deltaBase * multiplier;
+            next = type === "rate" ? clamp(next, 0, 100) : clamp(next, 0, 999);
+            state.perfPlProgress2026.assumptions[key] = type === "rate" ? next / 100 : next;
+            state.perfPlProgress2026.assumptionDraft[key] = next.toFixed(1);
+            const inputEl = assumptionsBar.querySelector(`input[data-pnl-key="${key}"]`);
+            if (inputEl) {
+              inputEl.value = next.toFixed(1);
+              setDirty(key, inputEl.closest(".pnl-field"));
+            }
+            renderWithAssumptions();
+          });
+        });
+
+        const resetBtn = document.getElementById("pnlResetAssumptionsBtn");
+        if (resetBtn) {
+          resetBtn.addEventListener("click", () => {
+            state.perfPlProgress2026.assumptions = { ...DEFAULT_PNL_ASSUMPTIONS };
+            state.perfPlProgress2026.assumptionDraft = getDefaultPnlDrafts();
+            inputs.forEach((input) => {
+              const key = input.getAttribute("data-pnl-key");
+              const type = input.getAttribute("data-pnl-type");
+              if (!key || !type) return;
+              const display = type === "rate" ? (DEFAULT_PNL_ASSUMPTIONS[key] * 100).toFixed(1) : DEFAULT_PNL_ASSUMPTIONS[key].toFixed(1);
+              input.value = display;
+              const field = input.closest(".pnl-field");
+              if (field) field.classList.remove("is-dirty");
+            });
+            renderWithAssumptions();
+          });
+        }
+
+        const infoBtn = document.getElementById("pnlAssumpInfoBtn");
+        if (infoBtn) {
+          infoBtn.addEventListener("click", () => openAssumpModal());
+        }
+      };
 
       const renderTable = (data) => {
         if (!data || !data.rows || !data.rows.length) {
@@ -6735,21 +7377,17 @@
           });
         });
 
-        const metaParts = [];
-        if (data.meta && data.meta.snapshot_version) metaParts.push(data.meta.snapshot_version);
-        if (data.meta && data.meta.generated_at) metaParts.push(data.meta.generated_at);
-        const excluded = (data.meta && data.meta.excluded) || {};
-        metaParts.push(
-          `제외: 날짜 ${excluded.missing_dates || 0}, 금액 ${excluded.missing_amount || 0}, 기간 ${excluded.invalid_date_range || 0}`
-        );
         if (metaEl) {
-          metaEl.textContent = `단위: 억 / (T)=Target, (E)=Expected(성사 가능성 높음·확정 딜만)${metaParts.length ? " · " + metaParts.join(" · ") : ""}`;
+          metaEl.textContent = `단위: 억 · (T)=Target / (E)=Expected`;
         }
       };
 
+      renderAssumptionsUI();
+
       try {
         const data = await loadPlProgress2026Summary(2026);
-        renderTable(data);
+        state.perfPlProgress2026.summary = data;
+        renderWithAssumptions();
       } catch (err) {
         state.perfPlProgress2026.error = err;
         if (tableWrap) tableWrap.innerHTML = `<div class="muted">오류: ${err.message}</div>`;

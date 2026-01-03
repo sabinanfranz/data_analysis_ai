@@ -6,6 +6,7 @@ sync_source:
   - docs/api_behavior.md
   - docs/llm_context/09_FRONTEND_ORG_TABLES_V2_CONTRACT.md
   - docs/llm_context/00_INDEX.md
+  - docs/llm_context/13_RAILWAY_AND_CI.md
 ---
 
 # Docs Index (문서 맵)
@@ -19,6 +20,7 @@ sync_source:
 - `docs/study_material.md`: 프로젝트 개요와 학습 가이드.
 - `docs/org_tables_usage.md`: 정적 org_tables.html 생성/사용 가이드.
 - `docs/llm_context/`: LLM 컨텍스트 팩(아키텍처/계약/프런트/테스트 등 세부 문서).
+- `docs/llm_context/13_RAILWAY_AND_CI.md`: GitHub Actions(일 배포) → GitHub Release → Railway 재배포 + 컨테이너 start.sh DB 다운로드/uvicorn 기동 계약.
 - 기타: `docs/error_log.md`(장애 대응), `docs/llm_context/12_TESTING_AND_QUALITY.md`(테스트 가이드).
 
 ## Verification

@@ -7,6 +7,7 @@ sync_source:
   - docs/llm_context/06_API_CONTRACT_CORE.md
   - docs/llm_context/09_FRONTEND_ORG_TABLES_V2_CONTRACT.md
   - docs/json_logic.md
+  - docs/llm_context/13_RAILWAY_AND_CI.md
 ---
 
 # LLM Context Pack 인덱스
@@ -22,6 +23,7 @@ sync_source:
   - `user_guide.md`: PowerShell/WSL에서 백엔드/정적 서버 실행 한 줄 예제.
   - `snapshot_pipeline.md`: 스냅샷 스크립트 실행/백오프/체크포인트/웹폼 후처리.
   - `llm_context/11_RUNBOOK_LOCAL_AND_OPS.md`: 로컬/운영 런북, 캐시/DB 교체 시 유의점.
+  - `llm_context/13_RAILWAY_AND_CI.md`: GitHub Actions(일일 스냅샷→릴리스→Railway 재배포)와 컨테이너 엔트리 start.sh 동작 계약.
 - **C. 데이터/파이프라인**
   - `snapshot_pipeline.md`, `llm_context/05_SNAPSHOT_PIPELINE_CONTRACT.md`: 수집 흐름, 체크포인트/백업 계약.
   - `llm_context/08_MEMO_WEBFORM_RULES.md`: 메모/웹폼 정제 규칙.

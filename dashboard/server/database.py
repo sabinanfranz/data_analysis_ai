@@ -3,7 +3,7 @@ import json
 import os
 import re
 import sqlite3
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
@@ -65,6 +65,14 @@ def _connect(db_path: Path) -> sqlite3.Connection:
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
+
+
+def _has_column(conn: sqlite3.Connection, table_name: str, column_name: str) -> bool:
+    """
+    Check if the given table has a column. Uses PRAGMA table_info for presence detection.
+    """
+    rows = conn.execute(f"PRAGMA table_info('{table_name}')").fetchall()
+    return any(row["name"] == column_name for row in rows)
 
 
 def _fetch_all(conn: sqlite3.Connection, query: str, params: Sequence[Any] = ()) -> List[sqlite3.Row]:
@@ -3031,7 +3039,7 @@ def get_pl_progress_summary(year: int = 2026, db_path: Path = DB_PATH) -> Dict[s
         "meta": {
             "unit": "억",
             "snapshot_version": payload.get("snapshot_version"),
-            "generated_at": datetime.utcnow().isoformat(),
+            "generated_at": datetime.now(timezone.utc).isoformat(),
             "excluded": payload.get("excluded", {}),
         },
     }
@@ -3146,20 +3154,34 @@ def get_rank_2025_top100_counterparty_dri(
     if cached is not None:
         return cached
 
-    conditions = [
-        '('
-        ' (d."계약 체결일" LIKE ? OR d."수주 예정일" LIKE ?)'
-        ' OR (d."계약 체결일" LIKE ? OR d."수주 예정일" LIKE ?)'
-        ')'
-    ]
-    params: List[Any] = ["2025%", "2025%", "2026%", "2026%"]
-    if size and size != "전체":
-        conditions.append('o."기업 규모" = ?')
-        params.append(size)
-
     online_set = sp.ONLINE_COURSE_FORMATS
 
     with _connect(db_path) as conn:
+        has_expected_close = _has_column(conn, "deal", "수주 예정일")
+        has_start_date = _has_column(conn, "deal", "수강시작일")
+        has_probability = _has_column(conn, "deal", "성사 가능성")
+        conditions: List[str] = []
+        params: List[Any] = []
+        if has_expected_close:
+            conditions.append(
+                '('
+                ' (d."계약 체결일" LIKE ? OR d."수주 예정일" LIKE ?)'
+                ' OR (d."계약 체결일" LIKE ? OR d."수주 예정일" LIKE ?)'
+                ')'
+            )
+            params.extend(["2025%", "2025%", "2026%", "2026%"])
+        else:
+            conditions.append('(d."계약 체결일" LIKE ? OR d."계약 체결일" LIKE ?)')
+            params.extend(["2025%", "2026%"])
+
+        if size and size != "전체":
+            conditions.append('o."기업 규모" = ?')
+            params.append(size)
+
+        expected_date_select = 'd."수주 예정일"' if has_expected_close else "NULL"
+        start_date_select = 'd."수강시작일"' if has_start_date else "NULL"
+        probability_select = 'd."성사 가능성"' if has_probability else "'확정'"
+
         top_orgs = _fetch_all(
             conn,
             'WITH org_sum AS ('
@@ -3197,9 +3219,9 @@ def get_rank_2025_top100_counterparty_dri(
             '  d."금액" AS amount, '
             '  d."예상 체결액" AS expected_amount, '
             '  d."계약 체결일" AS contract_date, '
-            '  d."수주 예정일" AS expected_date, '
-            '  d."수강시작일" AS start_date, '
-            '  d."성사 가능성" AS probability '
+            f"  {expected_date_select} AS expected_date, "
+            f"  {start_date_select} AS start_date, "
+            f"  {probability_select} AS probability "
             "FROM deal d "
             "LEFT JOIN organization o ON o.id = d.organizationId "
             "LEFT JOIN people p ON p.id = d.peopleId "

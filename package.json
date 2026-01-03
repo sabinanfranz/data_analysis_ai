@@ -1,0 +1,9 @@
+{
+  "name": "data_analysis_ai",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
+}

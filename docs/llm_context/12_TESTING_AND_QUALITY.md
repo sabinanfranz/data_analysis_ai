@@ -29,6 +29,7 @@ sync_source:
 ## 2) 프런트 테스트
 - 별도 패키지 매니저 스크립트는 없지만 Node 내장 테스트로 스모크를 돌릴 수 있다.
 - `org_tables_v2.html` 주요 렌더/StatePath/툴팁 동작을 `node --test tests/org_tables_v2_frontend.test.js`로 실행(로컬 Node 필요).
+- 최초 1회 `npm install`로 devDependencies(jsdom) 설치 후 실행해야 한다(Node v22+ 기준).
 
 ## 3) 테스트 커버리지(핵심 영역)
 - `test_won_groups_json.py`: 웹폼 날짜 매핑, 메모 정제 규칙 검증.

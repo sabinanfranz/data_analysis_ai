@@ -1,6 +1,6 @@
 ---
 title: 테스트 & QA (PJT2)
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - tests/test_deal_normalizer.py
   - tests/test_org_tier.py
@@ -47,4 +47,9 @@ sync_source:
 - 규칙 테스트 모두 통과: `PYTHONPATH=. python3 -m unittest tests.test_deal_normalizer tests.test_org_tier tests.test_counterparty_target tests.test_counterparty_risk_rule`.
 - 캐시 해시: memo/딜 내용이 동일하면 llm_input_hash도 동일, memo 1개 바뀌면 hash 변경됨을 확인(counterparty_llm.canonical_json).
 - API 스모크: `/api/report/counterparty-risk` 호출이 JSON 반환 + meta/db_version 존재. 재호출 시 캐시 적중 확인.
-- 프런트: 메뉴 클릭 시 요약/필터/섹션 테이블이 로드되고 오류/빈 화면 없이 동작하는지 수동 확인.***
+- 프런트: 메뉴 클릭 시 요약/필터/섹션 테이블이 로드되고 오류/빈 화면 없이 동작하는지 수동 확인.
+
+## Refactor-Planning Notes (Facts Only)
+- 테스트들은 salesmap_latest.db 내용에 따라 결과가 달라질 수 있는 통합 성격이 강하며, fixture 격리가 없어서 DB 교체 시 실패할 수 있다.
+- 프런트 자동 테스트가 부족해 메뉴/모달/정렬 변경은 수동 확인에 의존한다; 필요 시 node 테스트 추가가 요구된다.
+- LLM 테스트는 실제 OpenAI 호출을 사용하지 않고 폴백/해시 경로를 검증하므로 ENV 설정에 따라 분기되는 부분을 모킹 없이 유지한다.

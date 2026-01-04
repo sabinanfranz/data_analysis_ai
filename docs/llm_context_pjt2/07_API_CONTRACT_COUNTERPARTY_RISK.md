@@ -1,6 +1,6 @@
 ---
 title: API 계약 (PJT2) – /api/report/counterparty-risk
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/report_scheduler.py
@@ -21,7 +21,7 @@ sync_source:
 - GET `/api/report/counterparty-risk?date=YYYY-MM-DD`
   - date 생략 시 today(서버 로컬, 기본 KST).
   - 응답 JSON 필드(요약):  
-    - meta: `as_of`, `db_version`, `db_signature`(캐시 저장 시), `generated_at`, `generator_version`, `job_run_id`, optional `is_stale`.
+    - meta: `as_of`, `db_version`(db mtime iso), `generated_at`; 캐시 생성 시 `db_signature`(mtime-size), `generator_version`, `job_run_id`가 report_scheduler에서 추가됨, fallback 시 `is_stale`/`stale_reason` 가능.
     - summary: tier_groups(S0_P0_P1, P2 target/coverage/gap/coverage_ratio), counts(severe/normal/good/pipeline_zero).
     - data_quality: unknown_year_deals, unknown_amount_deals, uncategorized_counterparties.
     - counterparties: orgId/orgName/counterpartyName/tier/baseline/target/confirmed/expected/coverage/gap/coverage_ratio/pipeline_zero/risk_level_rule/risk_level_llm/top_blockers/evidence_bullets/recommended_actions/flags/counts.
@@ -48,3 +48,8 @@ sync_source:
   `curl -X POST "http://localhost:8000/api/report/counterparty-risk/recompute?date=2026-01-10"` → status SUCCESS/FAILED 확인.
 - status:  
   `curl "http://localhost:8000/api/report/counterparty-risk/status"` → last_success/last_run 필드 확인.
+
+## Refactor-Planning Notes (Facts Only)
+- get_cached_report는 캐시가 없으면 FileNotFoundError를 던지고 API 핸들러가 바로 run_daily_counterparty_risk_job(force=True)를 호출하므로 예외 흐름을 바꾸면 캐시 생성 루프가 깨질 수 있다.
+- meta 필드(db_version/db_signature/generator_version/job_run_id/is_stale)는 프런트 표시와 캐시 무효화에 사용되며 status.json도 동일 구조를 기대하므로 필드 변경 시 문서와 프런트를 함께 갱신해야 한다.
+- recompute는 force=True라도 파일 락(SKIPPED_LOCKED)으로 종료될 수 있으므로 배치/운영에서 재시도 전략이 필요하며 status.json을 확인해야 한다.

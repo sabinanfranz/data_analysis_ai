@@ -1,6 +1,6 @@
 ---
 title: LLM Context Pack (PJT2) 인덱스 – 카운터파티 리스크 리포트
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - docs/llm_context_pjt2/01_GLOSSARY.md
   - docs/llm_context_pjt2/02_ARCHITECTURE.md
@@ -48,7 +48,7 @@ sync_source:
 - 테스트 → 10_TESTING_AND_QA
 
 ## Invariants
-- last_synced는 작성일 기준(2026-01-10). sync_source는 실제 근거 파일만 기재한다.
+- last_synced는 작성일 기준(2026-01-06). sync_source는 실제 근거 파일만 기재한다.
 - 입력 DB: `salesmap_latest.db` PRAGMA 기준. TEMP 테이블/뷰는 코드 그대로(deal_norm/org_tier_runtime/counterparty_target_2026/tmp_counterparty_risk_rule).
 - 캐시: `report_cache/YYYY-MM-DD.json`, LLM 캐시 `report_cache/llm/{as_of}/{db_hash}/...`, 스냅샷 `report_work/salesmap_snapshot_<as_of>_<HHMMSS>.db`.
 - 스케줄러: APScheduler `REPORT_CRON`(기본 0 8 * * *, TZ=Asia/Seoul). `ENABLE_SCHEDULER=0`이면 미기동.
@@ -66,3 +66,8 @@ sync_source:
 ## Verification
 - 모든 하위 문서가 frontmatter와 필수 섹션을 갖추었는지 확인한다.
 - 문서에 언급된 파일/컬럼이 실제 레포/PRAGMA에 존재하는지 링크·grep·sqlite로 검증한다.
+
+## Refactor-Planning Notes (Facts Only)
+- 문서 구조 표준(필수 섹션 + frontmatter)은 본 파일에 서술된 대로 이미 모든 PJT2 문서에 적용되어야 하며, 누락 시 리팩토링 이전에 우선 보완해야 한다.
+- 카운터파티 리스크 팩은 salesmap_latest.db 스냅샷 의존성이 강하므로 DB 교체/경로 변경 시 02/06/09 문서도 함께 갱신이 필요하다.
+- 프롬프트·LLM·스케줄 관련 최신 사실은 08/09에, 규칙 SSOT는 05에 모여 있으므로 중복 서술을 피하고 해당 문서로 링크하는 것이 유지보수에 유리하다.

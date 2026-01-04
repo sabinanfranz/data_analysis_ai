@@ -1,6 +1,6 @@
 ---
 title: 규칙집 (PJT2) – 카운터파티 리스크 리포트 MVP
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
@@ -51,3 +51,8 @@ sync_source:
 - Convert/Lost 제외: deal_norm/pipeline 집계에서 포함되지 않는지 확인.
 - target/coverage/gap/risk_level_rule 계산이 문서 식과 일치하는지 `tests/test_counterparty_risk_rule.py` 실행.
 - 티어 산정이 S0~P2 임계값/삼성 제외를 지키는지 `tests/test_org_tier.py` 확인.
+
+## Refactor-Planning Notes (Facts Only)
+- 버킷/온라인/티어/리스크 룰이 프런트/백엔드/테스트에 모두 하드코딩되어 있어 상수 변경 시 세 계층과 문서를 동시에 수정해야 한다.
+- pipeline_zero, min_cov, severe_threshold 계산은 counterparty_llm 폴백에도 사용되므로 로직 분리 시 함수 공유 또는 동일 상수 주입이 필요하다.
+- 삼성전자 제외, online 3종 정의처럼 문자열 매칭 규칙이 다국어/공백 변화에 민감하므로 정규화 규칙 변경 시 회귀 테스트를 함께 추가하는 것이 안전하다.

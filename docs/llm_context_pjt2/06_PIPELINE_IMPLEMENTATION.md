@@ -1,6 +1,6 @@
 ---
 title: 구현 파이프라인 (PJT2) – D1~D7
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
@@ -48,3 +48,8 @@ sync_source:
 - 캐시 확인: `report_cache/YYYYMMDD.json` meta.as_of/db_signature 존재 여부, llm 캐시 폴더 생성 여부.
 - 단위테스트: `PYTHONPATH=. python3 -m unittest tests.test_deal_normalizer tests.test_org_tier tests.test_counterparty_target tests.test_counterparty_risk_rule`.
 - 스냅샷 사용 여부: report_work/salesmap_snapshot_* 존재 확인.
+
+## Refactor-Planning Notes (Facts Only)
+- build_counterparty_risk_report 내부에서 db_hash(sha256 mtime 16자) 계산·llm 병합·캐시 메타 작성이 모두 이루어져 있어 함수 분리 시 메타 누락 위험이 있다.
+- run_daily_counterparty_risk_job은 캐시 히트 시 빠르게 종료하므로 디버깅 시 force=True를 사용해야 전체 파이프라인이 실행된다.
+- TEMP 테이블은 커넥션 종료 시 사라지므로 외부 커넥션으로 재사용하려 하면 `no such table: deal_norm` 회귀가 발생할 수 있다.

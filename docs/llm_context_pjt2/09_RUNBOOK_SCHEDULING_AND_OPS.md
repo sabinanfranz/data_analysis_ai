@@ -1,10 +1,11 @@
 ---
 title: 운영 런북 (PJT2) – 스케줄링/로그/폴백
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - dashboard/server/report_scheduler.py
   - dashboard/server/org_tables_api.py
   - dashboard/server/deal_normalizer.py
+  - dashboard/server/main.py
 ---
 
 # 운영 런북 (PJT2) – 스케줄링/로그/폴백
@@ -32,11 +33,12 @@ sync_source:
 - API 재생성/상태: `dashboard/server/org_tables_api.py` (`/report/counterparty-risk`, `/recompute`, `/status`).
 - 리포트 생성 파이프라인: `dashboard/server/deal_normalizer.py`(build_counterparty_risk_report).
 
-## Edge Cases
+## Edge Cases & Failure Modes
 - DB 교체 직후(3분 미만) 스케줄 실행 → DB_UNSTABLE_OR_UPDATING 재시도 후 실패 가능. 실패해도 기존 캐시 유지, status=FAILED.
 - 캐시 쓰기 실패 → 기존 캐시 보존. status에 CACHE_WRITE_FAILED 기록 필요(추가 개선).
 - LLM 실패 → 폴백 evidence/actions로 채워 SUCCESS_WITH_FALLBACK 취급(전체 실패 아님).
 - 캐시 없음 + 생성 실패 → API에서 last_success 캐시로 폴백, meta.is_stale=true.
+- Windows에서도 file_lock이 msvcrt로 동작하며, lock 실패 시 SKIPPED_LOCKED.
 
 ## Verification
 - 강제 재생성:  
@@ -45,4 +47,9 @@ sync_source:
   `curl "http://localhost:8000/api/report/counterparty-risk"` → meta.as_of 오늘, 캐시 없으면 생성 후 반환.
 - 스냅샷 확인: `ls report_work/salesmap_snapshot_*` 생성 여부.
 - 락 동작: 두 번 동시에 run_daily 호출 시 하나는 SKIPPED_LOCKED 기록되는지 status 확인.
-- 스케줄러 기동: start_scheduler()가 호출되는지 배포 시 main 엔트리에서 확인(현재 수동 연결 필요).***
+- 스케줄러 기동: main.py startup 이벤트에서 start_scheduler() 호출 여부 확인, ENABLE_SCHEDULER=0이면 스킵.
+
+## Refactor-Planning Notes (Facts Only)
+- start_scheduler가 main.py startup에 직접 연결되어 있어 uvicorn --reload나 멀티프로세스 시 중복 실행 가드(락) 외 추가 제어가 필요할 수 있다.
+- file_lock은 로컬 파일 시스템을 전제로 하므로 NAS/클라우드 스토리지로 옮길 경우 msvcrt/fcntl 동작 보장이 떨어질 수 있다.
+- status.json은 retention 대상에서 제외되어 운영 상태 확인의 단일 소스가 되므로 필드 변경 시 API `/status`와 프런트 문서도 동시에 수정해야 한다.

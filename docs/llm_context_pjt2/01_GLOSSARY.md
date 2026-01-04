@@ -1,6 +1,6 @@
 ---
 title: 용어집 (PJT2)
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - salesmap_latest.db
   - dashboard/server/deal_normalizer.py
@@ -44,3 +44,7 @@ sync_source:
 ## Verification
 - PRAGMA에서 필요한 컬럼이 실제 존재하는지 확인: `PRAGMA table_info('deal'|'people'|'organization'|'memo')`.
 - 규칙집(05)과 구현(deal_normalizer.py)에서 용어 사용이 일치하는지 grep 확인.
+- `counterparty_llm.compute_llm_input_hash`가 동일 payload에서 재사용되는지, memo 변경 시 hash 변경되는지 확인.
+
+## Refactor-Planning Notes (Facts Only)
+- signals(lost_90d_count/last_contact_date)는 현재 집계되지 않고 payload 필드만 존재(counterparty_llm.py); 추후 집계 추가 시 문서/코드 동시 수정 필요.

@@ -75,6 +75,31 @@ def _has_column(conn: sqlite3.Connection, table_name: str, column_name: str) -> 
     return any(row["name"] == column_name for row in rows)
 
 
+def _pick_column(conn: sqlite3.Connection, table: str, candidates: Sequence[str]) -> Optional[str]:
+    """
+    Return the first existing column name among candidates for the given table.
+    """
+    rows = conn.execute(f"PRAGMA table_info('{table}')").fetchall()
+    cols = {row["name"] for row in rows}
+    for cand in candidates:
+        if cand in cols:
+            return cand
+    return None
+
+
+def _q(col: str) -> str:
+    return f'"{col}"'
+
+
+def _q_or_null(col: Optional[str]) -> str:
+    return _q(col) if col else "NULL"
+
+
+def _dq(col: Optional[str]) -> str:
+    """Deal table column reference with quoting."""
+    return f"d.{_q(col)}" if col else "NULL"
+
+
 def _fetch_all(conn: sqlite3.Connection, query: str, params: Sequence[Any] = ()) -> List[sqlite3.Row]:
     cur = conn.execute(query, params)
     return cur.fetchall()
@@ -146,6 +171,65 @@ def _dealcheck_members(team_key: str) -> Set[str]:
     members = {normalize_owner_name(n) for n in names if n}
     _DEALCHECK_MEMBER_CACHE[team_key] = members
     return members
+
+
+def _qc_members(team_key: str) -> Set[str]:
+    """
+    QC 전용 팀 구성원 반환. team_key가 'all'이면 모든 팀 합집합.
+    """
+    if team_key == "all":
+        members: Set[str] = set()
+        for tk in ("edu1", "edu2", "public"):
+            members.update(_qc_members(tk))
+        return members
+    if team_key == "public":
+        # 공공교육팀은 part 구조가 단일이므로 바로 normalize
+        raw = PART_STRUCTURE.get("공공교육팀", {})
+        names: List[str] = []
+        for arr in raw.values():
+            names.extend(arr or [])
+        return {normalize_owner_name(n) for n in names if n}
+    return _dealcheck_members(team_key)
+
+
+def _status_norm(raw: Any) -> str:
+    text = str(raw or "").strip().lower()
+    if not text:
+        return "other"
+    if "convert" in text:
+        return "convert"
+    if "won" in text or "확정" in text:
+        return "won"
+    if "lost" in text or "lose" in text or "패배" in text:
+        return "lost"
+    return "other"
+
+
+def _prob_norm(raw: Any, status_normed: str) -> str:
+    tokens = _prob_tokens(raw)
+    if status_normed == "lost":
+        return "LOST"
+    if "확정" in tokens:
+        return "확정"
+    if "높음" in tokens:
+        return "높음"
+    if not tokens:
+        return "미기재"
+    return next(iter(tokens))
+
+
+def _missing_str(val: Any) -> bool:
+    if val is None:
+        return True
+    text = str(val).strip().lower()
+    return text == "" or text in {"nan", "null", "nat", "<na>", "none"}
+
+
+def _missing_num(val: Any) -> bool:
+    return val is None
+
+
+_re_month = re.compile(r"(?:1[0-2]|[1-9])월")
 
 
 def _prob_is_high(val: Any) -> bool:
@@ -275,6 +359,9 @@ PART_STRUCTURE = {
         "2파트": ["정다혜", "임재우", "송승희", "손승완", "김윤지", "손지훈", "홍예진"],
         "온라인셀": ["강진우", "강다현", "이수빈"],
     },
+    "공공교육팀": {
+        "1파트": ["이준석", "김미송", "김다인", "채선영", "황인후"],
+    },
 }
 
 TEAM_CONFIG = {
@@ -286,9 +373,32 @@ TEAM_CONFIG = {
         "label": "교육 2팀 딜체크",
         "part_team_key": "기업교육 2팀",
     },
+    "public": {
+        "label": "공공교육팀",
+        "part_team_key": "공공교육팀",
+    },
 }
 
 _DEALCHECK_MEMBER_CACHE: Dict[str, Set[str]] = {}
+QC_RULES: List[Tuple[str, str]] = [
+    ("R1", "상태=won & 계약 체결일 없음"),
+    ("R2", "상태=won & 금액 결측"),
+    ("R3", "상태=won & 수강시작/종료일 결측"),
+    ("R4", "상태=won & 코스 ID 결측"),
+    ("R5", "상태=won & 성사 확정 아님"),
+    ("R6", "상태=lost & 성사 값 불일치"),
+    ("R7", "계약일>수강시작 & 연월 불일치"),
+    ("R8", "생성 7일 경과 & 카테고리 결측"),
+    ("R9", "생성 7일 경과 & 과정포맷 결측"),
+    ("R10", "성사=높음 & 수주 예정일 결측"),
+    ("R11", "상태=convert"),
+    ("R12", "성사=확정/높음 & 금액/예상액 모두 결측"),
+    ("R13", "상태=won & 고객사 담당 메타 결측"),
+    ("R14", "상태=won & 온라인 과정포맷 입과정보 결측"),
+    ("R15", "상태=won & 강사 정보 결측"),
+]
+QC_SINCE_DATE = date(2024, 10, 1)
+QC_TEAM_LABELS = {"edu1": "기업교육 1팀", "edu2": "기업교육 2팀", "public": "공공교육팀", "all": "전체"}
 
 
 def _clean_form_memo(text: str) -> Optional[Dict[str, str]]:
@@ -2212,6 +2322,303 @@ def get_edu1_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any
 
 def get_edu2_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
     return get_deal_check("edu2", db_path=db_path)
+
+
+def _qc_rule_labels() -> Dict[str, str]:
+    return {code: label for code, label in QC_RULES}
+
+
+def _qc_pick_columns(conn: sqlite3.Connection) -> Tuple[Dict[str, Optional[str]], List[str]]:
+    schema_missing: List[str] = []
+    def pick(cands: Sequence[str], name: str) -> Optional[str]:
+        col = _pick_column(conn, "deal", cands)
+        if col is None:
+            schema_missing.append(name)
+        return col
+
+    cols = {
+        "expected_close": pick(["수주 예정일", "수주 예정일(종합)"], "expected_close_date"),
+        "expected_amount": pick(["예상 체결액", "수주 예정액(종합)"], "expected_amount"),
+        "contract_signed": pick(["계약 체결일", "계약체결일"], "contract_signed_date"),
+        "start_date": pick(["수강시작일", "courseStartDate"], "course_start_date"),
+        "end_date": pick(["수강종료일", "courseEndDate"], "course_end_date"),
+        "course_format": pick(["과정포맷", "category1"], "course_format"),
+        "course_category": pick(["과정 카테고리", "카테고리"], "course_category"),
+        "course_id": pick(["코스 ID", "코스ID"], "course_id"),
+        "online_cycle": pick(["(온라인)입과 주기", "온라인 입과 주기"], "online_cycle"),
+        "online_first": pick(["(온라인)입과 첫 회차", "온라인 입과 첫 회차"], "online_first"),
+        "instructor_name1": pick(["강사 이름1", "강사1 이름"], "instructor_name1"),
+        "instructor_fee1": pick(["강사비1", "강사비"], "instructor_fee1"),
+        "probability": pick(["성사 가능성"], "probability"),
+        "created_at": pick(["생성 날짜", "createdAt", "created_at"], "created_at"),
+        "status": pick(["상태"], "status"),
+        "amount": pick(["금액"], "amount"),
+        "owner": pick(["담당자"], "owner"),
+        "deal_name": pick(["이름", "name"], "deal_name"),
+    }
+    return cols, schema_missing
+
+
+def _qc_team_for_owner(owner: str) -> Optional[str]:
+    norm = normalize_owner_name(owner)
+    for tk in ("edu1", "edu2", "public"):
+        if norm in _qc_members(tk):
+            return tk
+    return None
+
+
+def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+    if team not in {"all", "edu1", "edu2", "public"}:
+        raise ValueError(f"Unsupported team: {team}")
+
+    with _connect(db_path) as conn:
+        cols, schema_missing = _qc_pick_columns(conn)
+        select_fields = [
+            "d.id AS deal_id",
+            f"COALESCE({_dq(cols['deal_name'])}, d.id) AS deal_name",
+            f"{_dq(cols['owner'])} AS owner_json",
+            f"{_dq(cols['status'])} AS status_raw",
+            f"{_dq(cols['probability'])} AS probability_raw",
+            f"{_dq(cols['amount'])} AS amount_raw",
+            f"{_dq(cols['expected_amount'])} AS expected_amount_raw",
+            f"{_dq(cols['expected_close'])} AS expected_close_date",
+            f"{_dq(cols['contract_signed'])} AS contract_signed_date",
+            f"{_dq(cols['start_date'])} AS course_start_date",
+            f"{_dq(cols['end_date'])} AS course_end_date",
+            f"{_dq(cols['course_format'])} AS course_format",
+            f"{_dq(cols['course_category'])} AS course_category",
+            f"{_dq(cols['course_id'])} AS course_id",
+            f"{_dq(cols['online_cycle'])} AS online_cycle",
+            f"{_dq(cols['online_first'])} AS online_first",
+            f"{_dq(cols['instructor_name1'])} AS instructor_name1",
+            f"{_dq(cols['instructor_fee1'])} AS instructor_fee1",
+            f"{_dq(cols['created_at'])} AS created_at",
+            "d.organizationId AS org_id",
+            'COALESCE(o."이름", d.organizationId) AS org_name',
+            "d.peopleId AS people_id",
+            'COALESCE(p."이름", p.id) AS people_name',
+            'p."소속 상위 조직" AS upper_org',
+            'p."팀(명함/메일서명)" AS team_signature',
+            'p."직급(명함/메일서명)" AS title_signature',
+            'p."담당 교육 영역" AS edu_area',
+        ]
+        query = (
+            "SELECT "
+            + ", ".join(select_fields)
+            + " FROM deal d "
+              "LEFT JOIN people p ON p.id = d.peopleId "
+              "LEFT JOIN organization o ON o.id = COALESCE(d.organizationId, p.organizationId) "
+        )
+        rows = _fetch_all(conn, query)
+
+    allowed_members = _qc_members(team)
+    meta_dq = {
+        "excluded_not_in_team": 0,
+        "excluded_name_contains_nonrevenue": 0,
+        "excluded_before_since": 0,
+        "excluded_owner_empty": 0,
+    }
+    rules_map = _qc_rule_labels()
+    people_summary: Dict[str, Dict[str, Any]] = {}
+    details_by_owner: Dict[str, List[Dict[str, Any]]] = {}
+
+    for row in rows:
+        owner_list = _parse_owner_names(row["owner_json"])
+        owner_norms = _parse_owner_names_normalized(row["owner_json"])
+        owner_display = owner_list[0] if owner_list else ""
+        owner_norm = owner_norms[0] if owner_norms else ""
+        if not owner_norm:
+            meta_dq["excluded_owner_empty"] += 1
+            continue
+        owner_team = _qc_team_for_owner(owner_norm)
+        if not owner_team:
+            meta_dq["excluded_not_in_team"] += 1
+            continue
+        if team != "all" and owner_team != team:
+            meta_dq["excluded_not_in_team"] += 1
+            continue
+
+        deal_name = str(row["deal_name"] or "").strip()
+        if "비매출입과" in deal_name:
+            meta_dq["excluded_name_contains_nonrevenue"] += 1
+            continue
+
+        created_at = _parse_date(row["created_at"])
+        if created_at and created_at < QC_SINCE_DATE:
+            meta_dq["excluded_before_since"] += 1
+            continue
+
+        # 딜/담당자 예외 제거
+        if owner_display == "김민선" and deal_name in {"신세계백화점_직급별 생성형 AI", "우리은행_WLT II DT 평가과정"}:
+            continue
+        if owner_display == "김윤지" and deal_name.startswith("현대씨앤알_콘텐츠 임차_"):
+            continue
+
+        status_n = _status_norm(row["status_raw"])
+        prob_n = _prob_norm(row["probability_raw"], status_n)
+        amount_val = _to_number(row["amount_raw"])
+        expected_amount_val = _to_number(row["expected_amount_raw"])
+        contract_date = _parse_date(row["contract_signed_date"])
+        expected_close = _parse_date(row["expected_close_date"])
+        start_date = _parse_date(row["course_start_date"])
+        end_date = _parse_date(row["course_end_date"])
+        course_fmt = (row["course_format"] or "").strip()
+        course_category = (row["course_category"] or "").strip()
+        course_id = (row["course_id"] or "").strip()
+        online_cycle = (row["online_cycle"] or "").strip()
+        online_first = (row["online_first"] or "").strip()
+        instructor_name1 = (row["instructor_name1"] or "").strip()
+        instructor_fee1 = _to_number(row["instructor_fee1"])
+
+        issues: List[str] = []
+
+        if status_n == "won" and _missing_str(contract_date):
+            issues.append("R1")
+        if status_n == "won" and _missing_num(amount_val):
+            issues.append("R2")
+        if status_n == "won" and (_missing_str(start_date) or _missing_str(end_date)):
+            issues.append("R3")
+        if status_n == "won" and _missing_str(course_id):
+            issues.append("R4")
+        if status_n == "won" and prob_n != "확정":
+            issues.append("R5")
+        if status_n == "lost" and prob_n != "LOST":
+            issues.append("R6")
+        if contract_date and start_date and contract_date > start_date:
+            if (contract_date.year, contract_date.month) != (start_date.year, start_date.month):
+                exempt_r7 = False
+                if course_fmt in ONLINE_COURSE_FORMATS:
+                    exempt_r7 = True
+                if owner_display == "강진우" and (row["org_name"] or "") in {"홈앤서비스", "엔씨소프트", "엘지전자"}:
+                    exempt_r7 = True
+                if not exempt_r7:
+                    issues.append("R7")
+        if created_at and (date.today() - created_at).days >= 7 and _missing_str(course_category):
+            if cols["course_category"]:
+                issues.append("R8")
+        if created_at and (date.today() - created_at).days >= 7 and _missing_str(course_fmt):
+            if cols["course_format"]:
+                issues.append("R9")
+        if prob_n == "높음" and _missing_str(expected_close):
+            issues.append("R10")
+        if status_n == "convert":
+            issues.append("R11")
+        if prob_n in {"확정", "높음"} and _missing_num(amount_val) and _missing_num(expected_amount_val):
+            issues.append("R12")
+        if status_n == "won":
+            r13_exempt = False
+            if owner_display in {"김정은", "이은서"} and _re_month.search(deal_name):
+                r13_exempt = True
+            if not r13_exempt:
+                if any(
+                    _missing_str(val)
+                    for val in [row["upper_org"], row["team_signature"], row["title_signature"], row["edu_area"]]
+                ):
+                    issues.append("R13")
+        if status_n == "won" and course_fmt in ONLINE_COURSE_FORMATS and _missing_str(online_cycle):
+            if cols["online_cycle"]:
+                issues.append("R14")
+        if status_n == "won" and course_fmt and course_fmt not in ONLINE_COURSE_FORMATS:
+            r15_exempt = False
+            if owner_display in {"김정은", "이은서"} and _re_month.search(deal_name):
+                r15_exempt = True
+            if cols["instructor_name1"] and _missing_str(instructor_name1) and not r15_exempt:
+                issues.append("R15")
+
+        issue_count = len(issues)
+        if issue_count == 0:
+            continue
+
+        person_key = owner_norm
+        summary = people_summary.setdefault(
+            person_key,
+            {
+                "ownerName": owner_display or owner_norm,
+                "teamKey": owner_team,
+                "teamLabel": QC_TEAM_LABELS.get(owner_team, owner_team),
+                "totalIssues": 0,
+                "dealCount": 0,
+                "byRule": {code: 0 for code, _ in QC_RULES},
+            },
+        )
+        summary["totalIssues"] += issue_count
+        summary["dealCount"] += 1
+        for code in issues:
+            summary["byRule"][code] = summary["byRule"].get(code, 0) + 1
+
+        detail = {
+            "dealId": row["deal_id"],
+            "dealName": deal_name or row["deal_id"],
+            "organizationId": row["org_id"],
+            "organizationName": row["org_name"],
+            "peopleId": row["people_id"],
+            "peopleName": row["people_name"],
+            "createdAt": _date_only(row["created_at"]),
+            "status": row["status_raw"],
+            "probability": row["probability_raw"],
+            "expectedCloseDate": _date_only(row["expected_close_date"]),
+            "contractSignedDate": _date_only(row["contract_signed_date"]),
+            "courseStartDate": _date_only(row["course_start_date"]),
+            "courseEndDate": _date_only(row["course_end_date"]),
+            "expectedAmount": expected_amount_val,
+            "amount": amount_val,
+            "category": course_category,
+            "courseFormat": course_fmt,
+            "courseId": course_id,
+            "upperOrg": row["upper_org"],
+            "teamSignature": row["team_signature"],
+            "titleSignature": row["title_signature"],
+            "eduArea": row["edu_area"],
+            "onlineCycle": online_cycle,
+            "onlineFirst": online_first,
+            "instructorName1": instructor_name1,
+            "instructorFee1": instructor_fee1,
+            "issueCodes": issues,
+            "issueCount": issue_count,
+            "issueDescriptions": [f"{code}: {rules_map.get(code, '')}" for code in issues],
+        }
+        details_by_owner.setdefault(person_key, []).append(detail)
+
+    people_rows = list(people_summary.values())
+    people_rows.sort(key=lambda r: (-r["totalIssues"], -r["dealCount"], r["ownerName"]))
+
+    return {
+        "meta": {
+            "as_of": date.today().isoformat(),
+            "since": QC_SINCE_DATE.isoformat(),
+            "db_mtime": db_path.stat().st_mtime,
+            "team": team,
+            "schema_missing": schema_missing,
+            "dq": meta_dq,
+        },
+        "rules": [{"code": code, "label": label} for code, label in QC_RULES],
+        "people": people_rows,
+        "details_by_owner": details_by_owner,
+    }
+
+
+def get_qc_deal_errors_summary(team: str = "all", db_path: Path = DB_PATH) -> Dict[str, Any]:
+    result = _qc_compute(team, db_path=db_path)
+    # drop details for summary payload
+    result.pop("details_by_owner", None)
+    return result
+
+
+def get_qc_deal_errors_for_owner(team: str, owner: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
+    result = _qc_compute(team, db_path=db_path)
+    owner_norm = normalize_owner_name(owner)
+    details = result.pop("details_by_owner", {})
+    return {
+        "meta": result["meta"],
+        "rules": result["rules"],
+        "owner": {
+            "ownerName": owner,
+            "teamLabel": QC_TEAM_LABELS.get(team, team),
+        },
+        "items": details.get(owner_norm, []),
+    }
 
 
 def get_initial_dashboard_data(db_path: Path = DB_PATH) -> Dict[str, Any]:

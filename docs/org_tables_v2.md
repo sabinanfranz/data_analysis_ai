@@ -1,6 +1,6 @@
 ---
 title: org_tables_v2 동작 정리 (FastAPI 기반)
-last_synced: 2025-12-26
+last_synced: 2026-01-06
 sync_source:
   - org_tables_v2.html
   - dashboard/server/org_tables_api.py
@@ -9,58 +9,62 @@ sync_source:
   - dashboard/server/json_compact.py
   - tests/test_pl_progress_2026.py
   - tests/test_perf_monthly_contracts.py
+  - tests/test_api_counterparty_dri.py
+  - tests/test_counterparty_llm.py
 ---
 
 # org_tables_v2 동작 정리 (FastAPI 기반)
 
 ## Purpose
-- 정적 프런트 `org_tables_v2.html`와 FastAPI 백엔드(`/api`)가 제공하는 사업부 퍼포먼스/랭킹/StatePath/딜체크 UI의 현재 계약을 리팩터블하게 기록한다.
+- 정적 프런트 `org_tables_v2.html`와 FastAPI `/api` 백엔드가 제공하는 대시보드(사업부 퍼포먼스/랭킹/StatePath/검수/QC)의 현재 계약을 코드 기준으로 기록한다.
 
 ## Behavioral Contract
-- 메뉴(사이드바): 사업부 퍼포먼스 섹션은 `2026 P&L`(id `biz-perf-pl-progress-2026`) → `2026 월별 체결액`(id `biz-perf-monthly`) 순. 이후 `2026 Target Board` → `2025 카운터파티 DRI` → `2025 체결액 순위` → `조직/People/Deal 뷰어` → `교육 1팀 딜체크` → `교육 2팀 딜체크` → `StatePath 24→25` → (서브) `고객사 불일치`.
+- 사이드바 메뉴(최신 순서):
+  - **사업부 퍼포먼스**: `2026 P&L` → `2026 월별 체결액` → `2026 Daily Report`
+  - **운영 메뉴**: `2026 Target Board` → `2026 카운터파티 DRI` → 교육1/교육2 딜체크
+  - **분석 메뉴**: `StatePath 24→25` → `2025 체결액 순위` → `조직/People/Deal 뷰어` (+숨김: `2025 대기업 딜·People`, `업종별 매출`)
+  - **검수 메뉴**: `개인별 세일즈맵 누락/오류 딜`(id `deal-qc-r1r15`) → `고객사 불일치`
 - 2026 P&L (`renderBizPerfPlProgress2026`):
-  - API `/performance/pl-progress-2026/summary?year=2026` → 컬럼은 연간(T/E) 후 월별 2601~2612 T/E, 행은 매출/공헌비용/공헌이익/고정비/OP/영업이익률.
-  - 숫자 표기: 모든 값 소수 1자리 고정, 항목만 좌측 정렬·그 외 우측 정렬, 현재 월 컬럼 하이라이트. 연간 컬럼은 비활성, 월별 E(총/온라인/출강)만 버튼, 0이면 비활성 span.
-  - 드릴다운: `/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E`, 모달은 테이블만, 숫자 우측 정렬(tabular-nums).
+  - API `/performance/pl-progress-2026/summary?year=2026`. 컬럼: 연간(T/E) 후 2601~2612 T/E, 행: 매출/공헌비용/공헌이익/고정비/OP/영업이익률.
+  - 숫자 소수 1자리, 항목 좌정렬·나머지 우정렬, 현재 월 컬럼 하이라이트. 연간 컬럼 비활성, 월별 E(총/온라인/출강)만 버튼, 0이면 span. 드릴다운 `/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E`, 모달은 테이블-only 숫자 우정렬(tabular-nums).
 - 2026 월별 체결액 (`renderBizPerfMonthly`):
-  - API `/performance/monthly-amounts/summary?from=2025-01&to=2026-12`, 세그먼트 라벨 한글 유지. Rows TOTAL→CONTRACT→CONFIRMED→HIGH, 24개월(2501~2612) 고정, 금액 억 단위 1자리. 0은 비활성 span, 그 외 버튼 → `/performance/monthly-amounts/deals`.
-  - Drilldown 모달: 테이블만, 첫 4컬럼 좌측 정렬, 숫자 우측 정렬(tabular-nums), 합계 카드 없음.
-- StatePath 24→25: 헤더에 필터 CTA+칩+전체 해제 한 줄(타이틀 없음). 전체 해제 클릭 시 segment=전체로 리셋하고 `/statepath/portfolio-2425` 재호출. Snapshot 6타일 1행 고정(가로 스크롤).
-- 기타 화면: 랭킹/DRI/TargetBoard/Dealcheck/Org 뷰어/불일치 등은 `org_tables_v2.html` 동일 렌더러와 `org_tables_api.py`의 `/rank/*`, `/statepath/portfolio-2425`, `/orgs/*` API를 사용.
+  - API `/performance/monthly-amounts/summary?from=2025-01&to=2026-12`. Rows TOTAL→CONTRACT→CONFIRMED→HIGH, 24개월 고정, 억 단위 1자리. 0은 비활성 span, 버튼 클릭 시 `/performance/monthly-amounts/deals`.
+  - 드릴다운 모달: 테이블-only, 첫 4컬럼 좌정렬·숫자 우정렬, 합계 카드 없음.
+- StatePath 24→25: 헤더 1줄(필터 버튼+칩+전체 해제), segment=전체 기본. 전체 해제 시 segment 리셋 후 `/statepath/portfolio-2425` 재호출. 스냅샷 6타일 1행 가로 스크롤.
+- QC(개인별 세일즈맵 누락/오류 딜 `renderDealQcR1R15Screen`):
+  - 요약: 3분할 카드(교육1/교육2/공공), 컬럼=담당자/총이슈(내림차순), 데이터는 `/qc/deal-errors/summary?team=edu1|edu2|public`.
+  - 상세 모달: 행 클릭 시 `/qc/deal-errors/person?owner=...&team=...`. R1~R15 섹션만 표시(위배 없으면 섹션 미출력). Deal/Org/People 링크, table-layout fixed + colgroup 공통 폭. ESC/백드롭/X로 닫힘.
+- 기타 화면: DRI/랭킹/불일치/Dealcheck/Org 뷰어 등은 동일 렌더러와 `/rank/*`, `/orgs/*`, `/deal-check/*` 등 API 사용.
 
 ## Invariants (Must Not Break)
-- 메뉴 라벨/순서(최신):  
-  - **사업부 퍼포먼스**: 2026 P&L → 2026 월별 체결액 → 2026 Daily Report  
-  - **운영 메뉴**: 2026 Target Board → 2026 카운터파티 DRI → 교육1팀/교육2팀 딜체크  
-  - **분석 메뉴**: StatePath 24→25 → 2025 체결액 순위 → 조직/People/Deal 뷰어 (+숨김: 2025 대기업 딜·People, 업종별 매출)  
-  - **검수 메뉴**: 고객사 불일치
-- P&L 테이블: 컬럼 순서 연간T/E → 2601~2612 T/E; 숫자 1자리; 항목 좌/나머지 우 정렬; 현재 월 컬럼 하이라이트; 연간 컬럼 클릭 불가, 월별 E(총/온라인/출강)만 클릭 (renderBizPerfPlProgress2026).
-- P&L 온라인 판정 리스트: 구독제(온라인)/구독제 (온라인)/선택구매(온라인)/선택구매 (온라인)/포팅만 온라인 (database.py::_is_online_for_pnl). PL_2026_TARGET offline 값은 상수 그대로 사용.
-- 월별 체결액: rows TOTAL/CONTRACT/CONFIRMED/HIGH 고정, 24개월 모두 존재, 세그먼트 라벨 한국어 유지 (database.py:get_perf_monthly_amounts_summary).
-- 모달: 공유 DOM `#dealsModal*`, 테이블-only, 숫자 우측 정렬 tabular-nums, 폭 최대 min(96vw,1400px) 내부 스크롤, 카드/요약 없음 (org_tables_v2.html modal CSS/openBizPerfDealsModal/openPlProgressDealsModal).
-- StatePath: 전체 해제 시 segment=전체로 리셋 후 fetch; 헤더 CTA/칩/전체 해제 한 줄 유지 (org_tables_v2.html).
+- 메뉴 라벨·순서 위의 4섹션 구분 유지, id 불변(`biz-perf-pl-progress-2026`, `biz-perf-monthly`, `counterparty-risk-daily`, `deal-qc-r1r15`, 등).
+- P&L: 연간→월별 컬럼 순, 숫자 1자리, 현재 월 하이라이트, 월별 E 버튼만 활성, 온라인 판정 리스트(구독제/선택구매/포팅) 고정.
+- 월별 체결액: rows TOTAL/CONTRACT/CONFIRMED/HIGH, 24개월 키 모두 출력, 0은 비활성(span), 드릴다운 테이블-only.
+- 모달 공통: 테이블-only, 숫자 우정렬(tabular-nums), 가로 스크롤, ESC/백드롭/X 닫힘.
+- QC 요약: 팀별 3그리드, 총이슈 desc 기본, 15s 타임아웃 에러 노출. 상세: 위배 없는 룰 섹션 미출력, 위배 없으면 “위배된 규칙이 없습니다.”, colgroup 공통 폭 유지.
 
 ## Coupling Map
-- 프런트: `org_tables_v2.html` (renderers, CSS `.pnl-table`, `.mp-monthly-table`, `.deals-modal-wide`).
-- API: `dashboard/server/org_tables_api.py` (`/performance/pl-progress-2026/*`, `/performance/monthly-amounts/*`, `/rank/*`, `/statepath/portfolio-2425`).
-- DB/로직: `dashboard/server/database.py` (P&L progress calc, PL_2026_TARGET, monthly perf loader, segment labels), `dashboard/server/statepath_engine.py`.
-- 테스트: `tests/test_pl_progress_2026.py`, `tests/test_perf_monthly_contracts.py`.
+- 프런트: `org_tables_v2.html` (렌더러들: `renderBizPerfPlProgress2026`, `renderBizPerfMonthly`, `renderCounterpartyRiskDaily`, `renderRankCounterpartyDriScreen`, `renderDealQcR1R15Screen`, 등) + CSS(테이블/모달/그리드) + 링크 빌더(salesmap*Url).
+- API: `dashboard/server/org_tables_api.py` (`/performance/*`, `/rank/*`, `/statepath/portfolio-2425`, `/qc/deal-errors/*`, `/deal-check/*`, `/orgs/*`).
+- 로직/DB: `dashboard/server/database.py` (P&L/월별 집계, DRI, QC R1~R15 룰/예외, 온라인 포맷, 티어/확정액), `statepath_engine.py`, `json_compact.py`.
+- 테스트: `tests/test_pl_progress_2026.py`, `tests/test_perf_monthly_contracts.py`, `tests/test_api_counterparty_dri.py`, `tests/test_counterparty_llm.py`.
 
 ## Edge Cases & Failure Modes
-- P&L summary excludes deals with missing start/end, non-positive amount/expected, invalid range; counts in `meta.excluded`. Percent 연간 값은 총매출 0이면 null. Variant T drilldown 즉시 빈 리스트.
-- 월별 체결액 로더: month_key 없음 스킵; course_id 컬럼 없으면 fallback 쿼리로 재시도.
-- 모달 fetch 실패 시 muted 오류 메시지와 toast; 재시도 없음.
-- 메뉴 hash가 유효하지 않으면 DEFAULT_MENU_ID=`org-view`.
+- API 실패 시 `fetchJson` 예외 → 본문 오류 메시지 + 토스트, 모달도 오류 텍스트만.
+- 데이터 없음: 각 화면 “데이터가 없습니다.” 표시(표/카드 미렌더). 월별/DRI/QC 모두 동일.
+- P&L/월별: 쿼리 실패 시 muted 오류, 합계 0이면 퍼센트 null. 월별 course_id 없으면 fallback 쿼리.
+- QC: “비매출입과” 이름 포함/생성일<2024-10-01/팀 외 담당자/owner 없음은 meta.dq로 제외. 15s 타임아웃으로 지연 시 에러 표시. 위배 없는 룰 섹션은 숨김.
+- 메뉴 hash가 유효하지 않으면 `DEFAULT_MENU_ID`(`org-view`)로 이동.
 
 ## Verification
-- 사이드바: 사업부 퍼포먼스 내 라벨/순서가 2026 P&L → 2026 월별 체결액.
-- P&L 테이블: 연간 컬럼 먼저, 현재 월 컬럼 하이라이트, 숫자 1자리 우측 정렬, 연간 셀 비활성·월별 E 셀만 클릭, 타겟 offline 2608_T=21.6 확인.
-- P&L 모달: 헤더+X 버튼 상단, 테이블-only, 숫자 우측 정렬 tabular-nums, 가로 스크롤 정상.
-- 월별 체결액: rows 4개, 24개월 키 모두, 0 셀 비활성, 모달 테이블-only.
-- StatePath: 헤더 CTA+칩+전체 해제; 전체 해제 후 segment=전체로 fetch.
-- API 엔드포인트 확인: `/performance/pl-progress-2026/summary|deals`, `/performance/monthly-amounts/summary|deals`.
+- 사이드바 라벨/순서: 사업부 퍼포먼스→운영→분석→검수 섹션이 위 명칭/순서대로 노출.
+- P&L: `/performance/pl-progress-2026/summary` 호출 성공, 연간→월별 컬럼 순서·숫자 1자리, 현재월 하이라이트, 월별 E 버튼만 클릭 가능, 드릴다운 테이블-only.
+- 월별 체결액: `/performance/monthly-amounts/summary` 후 rows 4개·24개월, 0셀 비활성, 버튼 → `/performance/monthly-amounts/deals`.
+- QC 요약: `/qc/deal-errors/summary?team=edu1|edu2|public` 3건 완료, 담당자/총이슈 내림차순 표시, 행 클릭 시 상세 호출.
+- QC 상세: R1~R15 중 위배 있는 룰만 섹션 표시, Deal/Org/People 링크 정상, ESC/백드롭/X로 닫힘, 열 폭 균일(colgroup).
+- 기타: StatePath 필터/전체 해제 동작, 불일치/DRI/Dealcheck 화면 로드 시 콘솔 에러 없는지.
 
 ## Refactor-Planning Notes (Facts Only)
-- P&L 스타일/정렬/하이라이트 로직이 JS와 CSS 양쪽에 분산되어 있음 (`renderBizPerfPlProgress2026`, `.pnl-table`).
-- 모달 DOM/핸들(`state.rankPeopleModal`)을 여러 화면이 공유, 구조 변경 영향 범위 큼.
-- P&L 타겟/온라인 판정 상수는 백엔드에만, 포맷/하이라이트 규칙은 프런트에만 존재(규칙 중복/분산 가능성).
+- QC 룰 계산(`database.py::_qc_compute`)과 프런트 렌더(`renderDealQcR1R15Screen`)에 규칙/예외가 분산되어 있어 변경 시 양쪽 동시 수정 필요.
+- `org_tables_v2.html` 단일 파일에 다수 렌더러/CSS/모달이 혼재되어 영향 범위가 큼. 공통 모달 DOM을 공유하므로 구조 변경 시 다른 화면에도 영향 가능.
+- API_BASE는 origin+/api 기본, 로컬 기본값 `http://localhost:8000/api`; 배포 환경 변경 시 프런트 상수 수정 필요.

@@ -1,6 +1,6 @@
 ---
 title: 레포 지도 (PJT2) – 기능 ↔ 파일
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
@@ -42,3 +42,7 @@ sync_source:
 ## Verification
 - 각 파일에 존재하는 함수/라우트/메뉴 id가 문서에서 언급된 것과 일치하는지 `rg`/테스트로 확인.
 - PR 시 새로운 파일/라우트 추가되면 sync_source에 반영.
+
+## Refactor-Planning Notes (Facts Only)
+- 프런트가 단일 HTML 파일로 모든 렌더러/스타일을 포함하고 있어 기능별 분리 시 영향 범위가 큼(org_tables_v2.html).
+- 리포트 생성/캐시/스케줄/LLM이 파일별로 분리되어 있으나, 규칙 수정 시 deal_normalizer·counterparty_llm·org_tables_v2 모두 수정 필요.

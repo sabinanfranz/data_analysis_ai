@@ -1,6 +1,6 @@
 ---
 title: 아키텍처 (PJT2) – 카운터파티 리스크 리포트
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
@@ -46,6 +46,11 @@ sync_source:
 - 캐시 파일 생성/내용(meta.as_of/db_signature)이 리포트 JSON에 존재하는지 확인.
 - API 호출 시 캐시가 반환되는지, 캐시 없으면 생성 후 반환되는지 수동 호출로 검증.
 - LLM 캐시: 동일 입력으로 두 번 실행 시 `report_cache/llm/...`이 재사용되는지 해시 비교.
+
+## Refactor-Planning Notes (Facts Only)
+- FastAPI startup에서 `load_dotenv()`와 `start_scheduler()`를 호출하므로 배포 환경이 변하면 main.py 수정이 필요한 지점이다.
+- DB 해시는 report_scheduler에서 mtime 기반 문자열에 sha256을 적용해 16자 prefix로 쓰며, 캐시/LLM 폴더 구조가 이 값에 종속되어 있다.
+- TEMP 테이블(deal_norm 등)은 build_counterparty_risk_report 내부 커넥션 스코프에만 존재하므로 커넥션 분리/병렬화 시 스코프 누락 회귀에 주의해야 한다.
 
 ## Diagram
 ```mermaid

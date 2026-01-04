@@ -1,6 +1,6 @@
 ---
 title: 데이터 모델/조인 규칙 (PJT2) – 카운터파티 기준
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - salesmap_latest.db
   - dashboard/server/deal_normalizer.py
@@ -43,3 +43,8 @@ sync_source:
   `python - <<'PY'\nimport sqlite3;conn=sqlite3.connect('salesmap_latest.db');\nfor t in ['deal','people','organization','memo']:\n print(t, [r[1] for r in conn.execute(f\"PRAGMA table_info('{t}')\")]);\nPY`
 - counterparty 정규화가 `"미분류(카운터파티 없음)"`으로 통일되는지 deal_normalizer의 counterparty_missing_flag 로직을 확인.
 - 메모 연결: org/deal/people 경로에서 180일/20개, 중복 제거가 적용되는지 counterparty_llm.gather_memos 확인.
+
+## Refactor-Planning Notes (Facts Only)
+- signals(lost_90d_count/last_contact_date) 필드는 현재 집계되지 않고 payload에서 placeholder로 남아 있으므로 차후 추가 시 people/deal 컬럼 의존성이 필요하다.
+- PRAGMA 기준 컬럼 수(Deal 98, People 76, Org 43, Memo 14)는 스냅샷 버전에 따라 달라질 수 있어 새 DB 교체 시 문서·매핑 상수 동기화가 필요하다.
+- counterparty_name 정규화와 미분류 문자열은 백엔드/프런트/테스트에서 동일 상수를 사용하므로 값 변경 시 모든 계층을 함께 수정해야 한다.

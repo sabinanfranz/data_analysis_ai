@@ -253,6 +253,74 @@
       color: var(--success);
     }
 
+    /* QC modal/table */
+    .qc-modal .modal {
+      padding: 36px 24px;
+      max-height: calc(100vh - 2cm);
+      overflow: auto;
+    }
+    .qc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      table-layout: fixed;
+    }
+    .qc-table th,
+    .qc-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .qc-table thead th {
+      position: sticky;
+      top: 0;
+      background: var(--panel-2);
+      z-index: 1;
+      text-align: left;
+    }
+    .qc-table tbody tr:nth-child(even) {
+      background: rgba(0, 0, 0, 0.02);
+    }
+    .qc-table tbody tr:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .qc-table .num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .qc-deal-name {
+      max-width: 220px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .qc-guidance {
+      color: var(--muted-text, #666);
+    }
+    .qc-three-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .qc-table-wrap {
+      overflow-x: auto;
+    }
+    .qc-rule-section {
+      margin-bottom: 16px;
+    }
+    .qc-rule-section h4 {
+      margin: 0 0 6px 0;
+      font-size: 28px;
+    }
+    .qc-modal .modal-header {
+      position: relative;
+    }
+    .qc-modal .close-btn {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+    }
+
     .menu-item {
       width: 100%;
       text-align: left;
@@ -2173,7 +2241,10 @@
         sectionId: "qa",
         title: "검수 메뉴",
         defaultOpen: true,
-        items: [{ id: "mismatch-2025", label: "고객사 불일치" }],
+        items: [
+          { id: "deal-qc-r1r15", label: "개인별 세일즈맵 누락/오류 딜" },
+          { id: "mismatch-2025", label: "고객사 불일치" },
+        ],
       },
     ];
 
@@ -2185,6 +2256,7 @@
       "rank-2025-counterparty-dri": renderRankCounterpartyDriScreen,
       "target-2026": renderTarget2026Screen,
       "counterparty-risk-daily": renderCounterpartyRiskDaily,
+      "deal-qc-r1r15": renderDealQcR1R15Screen,
       "mismatch-2025": renderMismatch2025Screen,
       "industry-2025": renderIndustryMenu,
       "statepath-2425": renderStatePathMenu,
@@ -2268,6 +2340,15 @@
           search: "",
         },
         sectionOpen: { 심각: true, 보통: true, 양호: false },
+      },
+      dealQc: {
+        team: "all",
+        owner: "",
+        summary: null,
+        loading: false,
+        error: null,
+        detailLoading: false,
+        detailError: null,
       },
       statepath2425: {
         segment: "전체",
@@ -8530,6 +8611,249 @@
         bodyEl.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
         showToast(`2026 체결액 Target 조회 오류: ${err.message}`, "error");
       }
+    }
+
+    async function renderDealQcR1R15Screen(contentRoot) {
+      const modalId = "qcModalBackdrop";
+      let modal = document.getElementById(modalId);
+      if (!modal) {
+        modal = document.createElement("div");
+        modal.id = modalId;
+        modal.className = "modal-backdrop qc-modal";
+        modal.style.display = "none";
+        modal.innerHTML = `
+          <div class="modal xl" role="dialog" aria-modal="true">
+            <div class="modal-header">
+              <h3 id="qcModalTitle">담당자 상세</h3>
+              <button type="button" class="close-btn" aria-label="닫기">&times;</button>
+            </div>
+            <div class="modal-body" id="qcModalBody"></div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal || e.target.classList.contains("close-btn")) {
+            modal.style.display = "none";
+          }
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && modal.style.display === "flex") {
+            modal.style.display = "none";
+          }
+        });
+      }
+
+      contentRoot.innerHTML = `
+        <section class="card">
+          <div class="control-row">
+            <h2>개인별 세일즈맵 누락/오류 딜</h2>
+          </div>
+          <div class="muted" id="qcHint">since 2024-10-01 기준 · 총이슈 내림차순 (교육1/교육2/공공)</div>
+          <div id="qcSummaryBody" class="muted">불러오는 중...</div>
+        </section>
+      `;
+
+      const body = document.getElementById("qcSummaryBody");
+      const modalBody = document.getElementById("qcModalBody");
+      const modalTitle = document.getElementById("qcModalTitle");
+
+      const renderSummaryTable = (teamLabel, people, teamKey) => {
+        if (!people.length) return `<div class="muted">데이터가 없습니다.</div>`;
+        const rows = people
+          .map(
+            (p, idx) => `
+            <tr data-owner="${escapeHtml(p.ownerName)}" data-team="${teamKey}">
+              <td>${idx + 1}</td>
+              <td>${escapeHtml(p.ownerName)}</td>
+              <td class="num">${p.totalIssues}</td>
+            </tr>`
+          )
+          .join("");
+        return `
+          <div class="card" style="margin:0;">
+            <div class="control-row" style="margin-bottom:8px;">
+              <h3 style="margin:0;">${teamLabel}</h3>
+              <div class="spacer"></div>
+              <span class="muted">담당자 ${people.length}명</span>
+            </div>
+            <div class="qc-table-wrap">
+              <table class="qc-table sticky">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>담당자</th>
+                    <th class="num">총이슈</th>
+                  </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      };
+
+      const loadSummary = async () => {
+        body.textContent = "불러오는 중...";
+        state.dealQc.loading = true;
+        state.dealQc.error = null;
+        try {
+          const teams = [
+            { key: "edu1", label: "기업교육 1팀" },
+            { key: "edu2", label: "기업교육 2팀" },
+            { key: "public", label: "공공교육팀" },
+          ];
+          const timeout = (ms) =>
+            new Promise((_, rej) => setTimeout(() => rej(new Error("요약 조회가 지연되고 있습니다.")), ms));
+          const results = await Promise.race([
+            Promise.all(
+              teams.map(async (t) => {
+                const data = await fetchJson(`/qc/deal-errors/summary?team=${t.key}`);
+                const people = (data.people || []).slice().sort((a, b) => {
+                  if (b.totalIssues !== a.totalIssues) return b.totalIssues - a.totalIssues;
+                  return (a.ownerName || "").localeCompare(b.ownerName || "");
+                });
+                return { ...t, people };
+              })
+            ),
+            timeout(15000),
+          ]);
+          const grid = results
+            .map((r) => `<div>${renderSummaryTable(r.label, r.people, r.key)}</div>`)
+            .join("");
+          body.innerHTML = `<div class="qc-three-col">${grid}</div>`;
+          body.querySelectorAll("tbody tr").forEach((tr) => {
+            tr.addEventListener("click", async () => {
+              const owner = tr.getAttribute("data-owner") || "";
+              const teamKey = tr.getAttribute("data-team") || "all";
+              await openDetail(owner, teamKey);
+            });
+          });
+        } catch (err) {
+          state.dealQc.error = err;
+          body.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+          showToast(`QC 요약 불러오기 실패: ${err.message}`, "error");
+        } finally {
+          state.dealQc.loading = false;
+        }
+      };
+
+      const openDetail = async (owner, teamKey) => {
+        state.dealQc.owner = owner;
+        state.dealQc.team = teamKey;
+        state.dealQc.detailLoading = true;
+        state.dealQc.detailError = null;
+        modalTitle.textContent = `${owner} 상세`;
+        modalBody.innerHTML = `<div class="muted">불러오는 중...</div>`;
+        modal.style.display = "flex";
+        try {
+          const detail = await fetchJson(
+            `/qc/deal-errors/person?owner=${encodeURIComponent(owner)}&team=${encodeURIComponent(teamKey)}`
+          );
+          const items = detail.items || [];
+          if (!items.length) {
+            modalBody.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+            return;
+          }
+          const guidanceMap = {
+            R1: "계약 체결일 입력",
+            R2: "금액 입력",
+            R3: "수강 시작/종료일 입력",
+            R4: "코스 ID 입력",
+            R5: "성사 가능성=확정으로 보정",
+            R6: "상태=Lost이면 성사=LOST 보정",
+            R7: "계약/수강일 순서 확인",
+            R8: "카테고리 입력",
+            R9: "과정포맷 입력",
+            R10: "수주 예정일 입력",
+            R11: "Convert 상태 확인",
+            R12: "금액 또는 예상액 입력",
+            R13: "상위조직/팀/직급/교육영역 입력",
+            R14: "온라인 입과 주기/첫 회차 입력",
+            R15: "강사 이름/강사비 입력",
+          };
+          const orgMaxLen = Math.max(
+            0,
+            ...items.map((d) => ((d.organizationName || d.organizationId || "").toString().length))
+          );
+          const peopleMaxLen = Math.max(
+            0,
+            ...items.map((d) => ((d.peopleName || d.peopleId || "").toString().length))
+          );
+          const orgMinCh = Math.min(60, Math.max(12, orgMaxLen + 2));
+          const peopleMinCh = Math.min(60, Math.max(12, peopleMaxLen + 2));
+          const dealMinCh = 16;
+          const ruleOrder = ["R1","R2","R3","R4","R5","R6","R7","R8","R9","R10","R11","R12","R13","R14","R15"];
+          const byRule = {};
+          ruleOrder.forEach((r) => (byRule[r] = []));
+          items.forEach((d) => {
+            (d.issueCodes || []).forEach((code) => {
+              if (byRule[code]) byRule[code].push(d);
+            });
+          });
+          const sectionsArr = ruleOrder
+            .map((code) => {
+              const sectionItems = byRule[code] || [];
+              if (!sectionItems.length) return "";
+              const subtitle = guidanceMap[code] || "해당 규칙 확인";
+              const rows = sectionItems
+                .map((d) => {
+                  const dealLink = d.dealId
+                    ? `<a class="sm-link qc-deal-name qc-cell" href="${salesmapDealUrl(d.dealId)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(d.dealName || d.dealId)}">${escapeHtml(d.dealName || d.dealId)}</a>`
+                    : `<span class="qc-cell">${escapeHtml(d.dealName || d.dealId || "")}</span>`;
+                  const orgLink = d.organizationId
+                    ? `<a class="sm-link qc-cell" href="${salesmapOrgUrl(d.organizationId)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(d.organizationName || d.organizationId)}">${escapeHtml(d.organizationName || d.organizationId)}</a>`
+                    : `<span class="qc-cell">${escapeHtml(d.organizationName || d.organizationId || "")}</span>`;
+                  const peopleLink = d.peopleId
+                    ? `<a class="sm-link qc-cell" href="${salesmapPeopleUrl(d.peopleId)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(d.peopleName || d.peopleId)}">${escapeHtml(d.peopleName || d.peopleId)}</a>`
+                    : `<span class="qc-cell">${escapeHtml(d.peopleName || d.peopleId || "")}</span>`;
+                  return `
+                    <tr>
+                      <td>${dealLink}</td>
+                      <td>${orgLink}</td>
+                      <td>${peopleLink}</td>
+                    </tr>
+                  `;
+                })
+                .join("");
+              return `
+                <section class="qc-rule-section">
+                  <h4>${code} · ${subtitle}</h4>
+                  <div class="qc-table-wrap">
+                    <table class="qc-table sticky">
+                      <colgroup>
+                        <col style="min-width:${dealMinCh}ch;">
+                        <col style="min-width:${orgMinCh}ch;">
+                        <col style="min-width:${peopleMinCh}ch;">
+                      </colgroup>
+                      <thead>
+                        <tr>
+                          <th>Deal</th>
+                          <th>Organization</th>
+                          <th>People</th>
+                        </tr>
+                      </thead>
+                      <tbody>${rows}</tbody>
+                    </table>
+                  </div>
+                </section>
+              `;
+            })
+            .filter(Boolean);
+          if (!sectionsArr.length) {
+            modalBody.innerHTML = `<div class="muted">위배된 규칙이 없습니다.</div>`;
+          } else {
+            modalBody.innerHTML = sectionsArr.join("");
+          }
+        } catch (err) {
+          state.dealQc.detailError = err;
+          modalBody.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+          showToast(`QC 상세 불러오기 실패: ${err.message}`, "error");
+        } finally {
+          state.dealQc.detailLoading = false;
+        }
+      };
+
+      await loadSummary();
     }
 
     async function renderMismatch2025Screen(contentRoot) {

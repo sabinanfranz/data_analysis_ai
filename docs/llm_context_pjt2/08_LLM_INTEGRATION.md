@@ -1,6 +1,6 @@
 ---
 title: LLM 연동/캐시 (PJT2) – 31.6
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - dashboard/server/counterparty_llm.py
   - dashboard/server/deal_normalizer.py
@@ -144,3 +144,8 @@ sync_source:
 - 캐시 적중: 동일 payload 입력 시 counterparty_llm.load_cache가 llm_input_hash 일치 여부로 캐시 재사용하는지 확인.
 - 폴백: LLM 호출 제거 상태에서 report 생성 시 evidence_bullets 3개/actions 2~3개가 채워지는지 확인.
 - 해시 안정성: deal/memo 정렬 변경 시 hash가 바뀌는지, 동일 정렬이면 언어/OS 불문 동일 hash인지 확인.
+
+## Refactor-Planning Notes (Facts Only)
+- top_deals_2026와 memos 입력이 비어도 폴백 근거/액션은 생성되지만, signals는 현재 집계되지 않아 payload 변경 시 캐시 해시가 달라질 수 있다.
+- 프롬프트 파일이 없으면 코드 내 상수를 사용하므로 프롬프트만 교체하려면 `dashboard/server/prompts/*.txt` 배포가 필요하며 주석(`#`)을 제거하면 스키마 규약이 깨질 수 있다.
+- LLM_PROVIDER가 openai가 아니거나 키가 없으면 항상 폴백-only로 동작하므로 배포 환경에서 키 로딩 실패가 곧바로 리포트 실패로 이어지지 않도록 설계되어 있다.

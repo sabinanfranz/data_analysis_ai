@@ -1,6 +1,6 @@
 ---
 title: Open Questions / Assumptions (PJT2)
-last_synced: 2026-01-10
+last_synced: 2026-01-06
 sync_source:
   - docs/llm_context_pjt2/00_INDEX.md
 ---
@@ -17,3 +17,7 @@ sync_source:
 
 ## Verification
 - 위 항목이 해소되면 본 문서를 업데이트하고 인덱스(00_INDEX.md)의 sync_source를 최신화한다.
+
+## Refactor-Planning Notes (Facts Only)
+- status.json 확장/LLM 로깅/딜 모달 API 여부는 아직 결정되지 않았으며, 구현 시 07/08/09 문서와 프런트(org_tables_v2.html)를 동시에 업데이트해야 한다.
+- placeholder 딜 모달은 org_tables_v2.html에 존재하지만 실제 API 연동이 없으므로 기능 추가 시 새 엔드포인트 계약을 정의해야 한다.

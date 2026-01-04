@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "124478c7fdb6c44a",
+    "counterparty_key": {
+      "organizationId": "64f975aefb15689232a89c7d",
+      "counterpartyName": "경영지원실"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "0bfb047e7be32fc94f3ffdcae9121541346b7d416296257d4a1d747ae7d7dba5",
+    "created_at": "2026-01-04T20:41:35.036635",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 97,650,000원이며, 현재 확인된 금액은 0원이다.",
+      "현재 파이프라인이 전무하여 리스크가 높다.",
+      "규칙상 리스크는 심각으로 분류됨."
+    ],
+    "recommended_actions": [
+      "예산 확보를 위해 관련 부서와 협의하라.",
+      "의사결정자를 만나 프로젝트의 중요성을 강조하라."
+    ],
+    "fallback_used": false
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "364c0a76fba9dba7",
+    "counterparty_key": {
+      "organizationId": "c6c4ca5e-6399-4dc2-9cd6-9a1a1ed2d8bc",
+      "counterpartyName": "경력개발지원실"
+    },
+    "model": "offline-fallback",
+    "prompt_version": "v1",
+    "llm_input_hash": "5c3cbfae28fa468e28f2dd7d290c9268298540430d37706f96cb3a717f68c9d6",
+    "created_at": "2026-01-05T05:14:25.094874",
+    "used_cache": false
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO"
+    ],
+    "evidence_bullets": [
+      "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+      "현재 커버리지는 0.0%로 이번 달 최소 기대치(5.0%) 대비 부족합니다.",
+      "2026 확정/예상 파이프라인이 0으로 설정돼 있습니다."
+    ],
+    "recommended_actions": [
+      "의사결정자 맵핑",
+      "니즈 재발굴",
+      "시퀀스·세미나로 접점 생성"
+    ]
+  }
+}

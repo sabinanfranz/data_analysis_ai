@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "364c0a76fba9dba7",
+    "counterparty_key": {
+      "organizationId": "64fab2ab99804695b364441b",
+      "counterpartyName": "디지털혁신부문"
+    },
+    "model": "offline-fallback",
+    "prompt_version": "v1",
+    "llm_input_hash": "52091aa2bba97001ef624d0aa90204b8ea96605855d8da83956fb768810bdd38",
+    "created_at": "2026-01-05T05:14:20.989827",
+    "used_cache": false
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO"
+    ],
+    "evidence_bullets": [
+      "2026 타겟 0.8억 대비 확정 0.0억, 예상 0.0억으로 gap 0.8억이 남아 있습니다.",
+      "현재 커버리지는 0.0%로 이번 달 최소 기대치(5.0%) 대비 부족합니다.",
+      "2026 확정/예상 파이프라인이 0으로 설정돼 있습니다."
+    ],
+    "recommended_actions": [
+      "의사결정자 맵핑",
+      "니즈 재발굴",
+      "시퀀스·세미나로 접점 생성"
+    ]
+  }
+}

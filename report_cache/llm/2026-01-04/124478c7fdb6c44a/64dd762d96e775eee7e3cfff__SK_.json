@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "124478c7fdb6c44a",
+    "counterparty_key": {
+      "organizationId": "64dd762d96e775eee7e3cfff",
+      "counterpartyName": "SK아카데미"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "e5a0a7fbd91ab9733588f63681fc85f9623fb275e2d79a629b4830161cae50ab",
+    "created_at": "2026-01-04T20:41:04.815740",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "규칙상 리스크는 심각으로 분류됨.",
+      "현재 파이프라인이 전혀 없으며, 2026년 목표 금액은 72,270,000원이다.",
+      "고객사는 현재 기획 단계에 있으며, 예산 확인이 필요하다."
+    ],
+    "recommended_actions": [
+      "고객사와의 미팅을 요청하여 기획 단계의 진행 상황을 확인하라.",
+      "예산 관련 정보를 확보하기 위해 고객사에 직접 문의하라.",
+      "의사결정자를 확인하고, 그와의 소통을 강화하라."
+    ],
+    "fallback_used": false
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "364c0a76fba9dba7",
+    "counterparty_key": {
+      "organizationId": "64d3287b1750f5b1d531c516",
+      "counterpartyName": "삼성금융연수원 (원소속 삼성화재)"
+    },
+    "model": "offline-fallback",
+    "prompt_version": "v1",
+    "llm_input_hash": "5cf865f29f0add03b3806f46b8e5782086eeb5a847d5fba719f75a95df0af05f",
+    "created_at": "2026-01-05T05:14:07.113516",
+    "used_cache": false
+  },
+  "output": {
+    "risk_level": "양호",
+    "top_blockers": [
+      "SCHEDULE_RESOURCE",
+      "FIT_UNCLEAR",
+      "APPROVAL_DELAY"
+    ],
+    "evidence_bullets": [
+      "2026 타겟 0.4억 대비 확정 0.0억, 예상 0.1억으로 gap 0.4억이 남아 있습니다.",
+      "현재 커버리지는 12.4%로 이번 달 최소 기대치(5.0%) 대비 부족합니다.",
+      "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+    ],
+    "recommended_actions": [
+      "일정 후보 3개 제안",
+      "운영 리소스 사전 확보",
+      "니즈 인터뷰"
+    ]
+  }
+}

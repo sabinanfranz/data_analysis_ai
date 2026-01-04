@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "124478c7fdb6c44a",
+    "counterparty_key": {
+      "organizationId": "f3a32c00-ece9-45ee-889b-1ef13e45ba3f",
+      "counterpartyName": "에이치엘그룹 HR혁신실"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "dbc1c7c27d00eaf304b7f2e727eef24d321a90ecd0909ea97b6c55947a50d882",
+    "created_at": "2026-01-04T20:42:41.629886",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null
+  },
+  "output": {
+    "risk_level": "양호",
+    "top_blockers": [],
+    "evidence_bullets": [
+      "2026년 목표 매출은 5,015,000원이며, 현재 확인된 매출은 3,750,000원이다.",
+      "현재까지 90일 동안 손실된 거래는 없으며, 최근 연락은 2026년 1월 2일에 이루어졌다.",
+      "규칙상 리스크는 양호로 분류됨."
+    ],
+    "recommended_actions": [
+      "고객과의 미팅을 통해 제안 내용을 강화하라.",
+      "AI 교육 체계 수립에 대한 구체적인 계획을 제시하라."
+    ],
+    "fallback_used": false
+  }
+}

@@ -29,7 +29,11 @@ sync_source:
 - 기타 화면: 랭킹/DRI/TargetBoard/Dealcheck/Org 뷰어/불일치 등은 `org_tables_v2.html` 동일 렌더러와 `org_tables_api.py`의 `/rank/*`, `/statepath/portfolio-2425`, `/orgs/*` API를 사용.
 
 ## Invariants (Must Not Break)
-- 메뉴 라벨/순서: 사업부 퍼포먼스 = 2026 P&L → 2026 월별 체결액 (org_tables_v2.html: MENU_SECTIONS).
+- 메뉴 라벨/순서(최신):  
+  - **사업부 퍼포먼스**: 2026 P&L → 2026 월별 체결액 → 2026 Daily Report  
+  - **운영 메뉴**: 2026 Target Board → 2026 카운터파티 DRI → 교육1팀/교육2팀 딜체크  
+  - **분석 메뉴**: StatePath 24→25 → 2025 체결액 순위 → 조직/People/Deal 뷰어 (+숨김: 2025 대기업 딜·People, 업종별 매출)  
+  - **검수 메뉴**: 고객사 불일치
 - P&L 테이블: 컬럼 순서 연간T/E → 2601~2612 T/E; 숫자 1자리; 항목 좌/나머지 우 정렬; 현재 월 컬럼 하이라이트; 연간 컬럼 클릭 불가, 월별 E(총/온라인/출강)만 클릭 (renderBizPerfPlProgress2026).
 - P&L 온라인 판정 리스트: 구독제(온라인)/구독제 (온라인)/선택구매(온라인)/선택구매 (온라인)/포팅만 온라인 (database.py::_is_online_for_pnl). PL_2026_TARGET offline 값은 상수 그대로 사용.
 - 월별 체결액: rows TOTAL/CONTRACT/CONFIRMED/HIGH 고정, 24개월 모두 존재, 세그먼트 라벨 한국어 유지 (database.py:get_perf_monthly_amounts_summary).

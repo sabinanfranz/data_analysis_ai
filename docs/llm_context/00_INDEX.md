@@ -41,6 +41,8 @@ sync_source:
   - `json_logic.md`: 상위 조직 JSON 생성/compact 변환 규칙.
   - `org_tables_usage.md`: 정적 org_tables.html 사용법.
   - `daily_progress.md`, `error_log.md`, `study_material.md`: 작업 일지/장애 대응/학습 가이드.
+- **H. 별도 프로젝트 컨텍스트 팩**
+  - `docs/llm_context_pjt2/`: 카운터파티 리스크 리포트(PJT2) 전용 LLM 컨텍스트 팩(규칙/파이프라인/LLM/스케줄/운영).
 
 ## 질문 유형별 단축 안내
 - API 동작/엔드포인트 질문 → `docs/api_behavior.md`

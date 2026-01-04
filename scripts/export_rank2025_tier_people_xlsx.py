@@ -21,6 +21,7 @@ HEADERS = [
     "organization 이름",
     "people의 id",
     "people의 이름",
+    "people의 이메일",
     "people의 소속 상위 조직",
     "people의 팀(명함/메일서명)",
     "people의 직급(명함/메일서명)",
@@ -99,6 +100,7 @@ def _fetch_people_for_orgs(conn, org_ids: Sequence[str]) -> Dict[str, List[Dict[
         'SELECT id, organizationId, COALESCE("이름", id) AS name, '
         '"소속 상위 조직" AS upper_org, "팀(명함/메일서명)" AS team_signature, '
         '"직급(명함/메일서명)" AS title_signature, "담당 교육 영역" AS edu_area, '
+        '"이메일" AS email, '
         '"담당자" AS owner_json '
         "FROM people "
         f"WHERE organizationId IN ({placeholders})"
@@ -254,6 +256,7 @@ def export_rank2025_tier_people(db_path: Path, out_path: Path, size: str) -> Non
                 "organization 이름": org_name,
                 "people의 id": pid,
                 "people의 이름": _clean_text(person.get("name")),
+                "people의 이메일": _clean_text(person.get("email"), allow_empty=True, blank_if_missing=True),
                 "people의 소속 상위 조직": _clean_text(
                     person.get("upper_org"), blank_if_missing=True
                 ),

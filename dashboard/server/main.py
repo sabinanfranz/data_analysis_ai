@@ -1,9 +1,17 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv()
+    print("[env] .env loaded (if present)")
+except Exception:
+    print("[env] python-dotenv not available or .env missing; skipping")
+
 from .database import get_initial_dashboard_data
 from .org_tables_api import router as org_tables_router
-
+from .report_scheduler import start_scheduler
 from fastapi.responses import FileResponse
 
 app = FastAPI(title="Org Tables Dashboard API")
@@ -19,6 +27,11 @@ app.add_middleware(
 )
 
 app.include_router(org_tables_router)
+
+@app.on_event("startup")
+def startup_scheduler():
+    # Guarded inside start_scheduler to avoid duplicate starts under reload.
+    start_scheduler()
 
 @app.get("/", include_in_schema=False)
 def index():

@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "364c0a76fba9dba7",
+    "counterparty_key": {
+      "organizationId": "00025cce-4a83-4364-8b88-7ac79217e155",
+      "counterpartyName": "경영지원실"
+    },
+    "model": "offline-fallback",
+    "prompt_version": "v1",
+    "llm_input_hash": "64277e338347dd2949cec34f117a294a448a3816834e284ff9975a8c22383e70",
+    "created_at": "2026-01-05T05:14:04.400465",
+    "used_cache": false
+  },
+  "output": {
+    "risk_level": "양호",
+    "top_blockers": [
+      "SCHEDULE_RESOURCE",
+      "APPROVAL_DELAY",
+      "PRICE_TERM"
+    ],
+    "evidence_bullets": [
+      "2026 타겟 0.9억 대비 확정 0.0억, 예상 0.7억으로 gap 0.2억이 남아 있습니다.",
+      "현재 커버리지는 77.2%로 이번 달 최소 기대치(5.0%) 대비 부족합니다.",
+      "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+    ],
+    "recommended_actions": [
+      "일정 후보 3개 제안",
+      "운영 리소스 사전 확보",
+      "구매·법무 체크리스트 확보"
+    ]
+  }
+}

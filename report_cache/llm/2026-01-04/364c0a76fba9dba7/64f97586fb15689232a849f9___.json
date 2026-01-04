@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "364c0a76fba9dba7",
+    "counterparty_key": {
+      "organizationId": "64f97586fb15689232a849f9",
+      "counterpartyName": "인재혁신센터"
+    },
+    "model": "offline-fallback",
+    "prompt_version": "v1",
+    "llm_input_hash": "68fe81c6968d6f49d11d5f27f5851937ea1af89e1426f2181764b182a348fe4f",
+    "created_at": "2026-01-05T05:14:20.240296",
+    "used_cache": false
+  },
+  "output": {
+    "risk_level": "양호",
+    "top_blockers": [
+      "PRICE_TERM",
+      "SCHEDULE_RESOURCE",
+      "BUDGET"
+    ],
+    "evidence_bullets": [
+      "2026 타겟 0.8억 대비 확정 0.0억, 예상 0.1억으로 gap 0.8억이 남아 있습니다.",
+      "현재 커버리지는 6.2%로 이번 달 최소 기대치(5.0%) 대비 부족합니다.",
+      "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+    ],
+    "recommended_actions": [
+      "패키징/옵션 재구성",
+      "조건 재설계/분리 제안",
+      "일정 후보 3개 제안"
+    ]
+  }
+}

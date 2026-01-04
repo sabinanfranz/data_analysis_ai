@@ -21,6 +21,7 @@ sync_source:
 - `docs/org_tables_usage.md`: 정적 org_tables.html 생성/사용 가이드.
 - `docs/llm_context/`: LLM 컨텍스트 팩(아키텍처/계약/프런트/테스트 등 세부 문서).
 - `docs/llm_context/13_RAILWAY_AND_CI.md`: GitHub Actions(일 배포) → GitHub Release → Railway 재배포 + 컨테이너 start.sh DB 다운로드/uvicorn 기동 계약.
+- `docs/llm_context_pjt2/`: 카운터파티 리스크 리포트(PJT2) 전용 LLM 컨텍스트 팩(규칙/파이프라인/LLM/스케줄/운영).
 - 기타: `docs/error_log.md`(장애 대응), `docs/llm_context/12_TESTING_AND_QUALITY.md`(테스트 가이드).
 
 ## Verification

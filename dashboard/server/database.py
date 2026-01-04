@@ -3162,6 +3162,8 @@ def get_rank_2025_top100_counterparty_dri(
         has_probability = _has_column(conn, "deal", "성사 가능성")
         conditions: List[str] = []
         params: List[Any] = []
+        # 상태가 Lost/Convert인 딜은 상단 조직/카운터파티 계산에서 제외
+        conditions.append('d."상태" NOT IN (\'Lost\',\'Convert\')')
         if has_expected_close:
             conditions.append(
                 '('
@@ -3358,6 +3360,9 @@ def get_rank_2025_top100_counterparty_dri(
         org_entry = org_lookup.get(row["orgId"], {})
         row["orgOnline2025"] = org_entry.get("online", 0.0)
         row["orgOffline2025"] = org_entry.get("offline", 0.0)
+
+    # cpTotal2025가 0인 카운터파티는 노출하지 않음
+    rows = [r for r in rows if (r.get("cpTotal2025") or 0) > 0]
 
     rows.sort(key=lambda r: (-r["orgWon2025"], -r["cpTotal2025"]))
 

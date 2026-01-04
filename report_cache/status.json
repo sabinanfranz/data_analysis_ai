@@ -1,0 +1,13 @@
+{
+  "last_run": {
+    "generated_at": "2026-01-04T20:42:48.417032",
+    "result": "SUCCESS",
+    "as_of": "2026-01-04",
+    "db_signature": "1767557727-199733248"
+  },
+  "last_success": {
+    "generated_at": "2026-01-04T20:42:48.417032",
+    "as_of": "2026-01-04",
+    "db_signature": "1767557727-199733248"
+  }
+}

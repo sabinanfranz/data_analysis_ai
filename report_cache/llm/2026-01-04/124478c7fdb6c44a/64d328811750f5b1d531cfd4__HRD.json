@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "124478c7fdb6c44a",
+    "counterparty_key": {
+      "organizationId": "64d328811750f5b1d531cfd4",
+      "counterpartyName": "HRD"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "7817375449b537ffdde90eb36aa102f8f53e5451b21c21dff31ea452c2ec18ae",
+    "created_at": "2026-01-04T20:39:15.624358",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "DECISION_MAKER",
+      "NO_RESPONSE"
+    ],
+    "evidence_bullets": [
+      "현대오토에버의 2026년 목표 금액은 252,144,000원이며, 현재 확인된 금액은 0원이다.",
+      "현재 파이프라인이 전혀 없는 상태로, 거래 성사 가능성이 낮다.",
+      "담당자와의 연락이 두절된 상태로, 의사결정자가 불확실하다."
+    ],
+    "recommended_actions": [
+      "담당자와의 연락을 재시도하여 의사결정자를 확인하라.",
+      "예산 확보를 위해 현대오토에버의 필요 사항을 파악하라.",
+      "파이프라인을 구축하기 위한 전략을 수립하라."
+    ],
+    "fallback_used": false
+  }
+}

@@ -1,0 +1,5 @@
+# JSON 파싱 실패/스키마 위반 시 재시도용
+# 출력: risk_level/top_blockers/evidence_bullets/recommended_actions 4키만 가진 JSON 객체 1개
+너의 이전 출력은 유효한 JSON이 아니거나 스키마를 위반했다.
+설명/마크다운/코드블록 없이, 오직 스키마에 맞는 “순수 JSON 1개 객체”만 다시 출력하라.
+허용 키는 risk_level, top_blockers, evidence_bullets, recommended_actions 4개뿐이다.

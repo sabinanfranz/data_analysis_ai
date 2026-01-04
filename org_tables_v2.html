@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>조직/People/Deal 빠른 뷰어 (FastAPI)</title>
+  <title>2026 B2B Dashboard</title>
   <style>
     :root {
       --bg: #0b1220;
@@ -117,6 +117,140 @@
       color: var(--muted);
       font-size: 13px;
       letter-spacing: 0.01em;
+    }
+
+    /* Counterparty Risk (cpr-) */
+    .cpr-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cpr-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin: 10px 0 4px;
+    }
+    .cpr-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+    .cpr-card h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+    .cpr-kpi-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 13px;
+    }
+    .cpr-kpi {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.08);
+    }
+    .cpr-chip-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 6px 0 4px;
+    }
+    .cpr-chip {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .cpr-chip.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .cpr-filter-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 8px 0;
+    }
+    .cpr-section {
+      margin-top: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+    .cpr-section summary {
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cpr-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .cpr-table th,
+    .cpr-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cpr-table th {
+      background: var(--panel-2);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      text-align: left;
+    }
+    .cpr-table .num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .cpr-row-detail {
+      margin: 6px 0 10px;
+      padding: 10px;
+      border-radius: 10px;
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .cpr-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+    }
+    .cpr-pill.error {
+      border-color: var(--error);
+      color: var(--error);
+    }
+    .cpr-pill.warn {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .cpr-pill.success {
+      border-color: var(--success);
+      color: var(--success);
     }
 
     .menu-item {
@@ -2006,31 +2140,40 @@
         items: [
           { id: "biz-perf-pl-progress-2026", label: "2026 P&L" },
           { id: "biz-perf-monthly", label: "2026 월별 체결액" },
+          // ✅ 구 "카운터파티 리스크(일간)" → 2026 Daily Report (id 유지)
+          { id: "counterparty-risk-daily", label: "2026 Daily Report" },
         ],
       },
       {
-        sectionId: "main",
-        title: "메인 메뉴",
+        sectionId: "ops",
+        title: "운영 메뉴",
         defaultOpen: true,
         items: [
           { id: "target-2026", label: "2026 Target Board" },
-          { id: "rank-2025-counterparty-dri", label: "2025 카운터파티 DRI" },
-          { id: "rank-2025", label: "2025 체결액 순위" },
-          { id: "org-view", label: "조직/People/Deal 뷰어" },
+          // ✅ 구 "2025 카운터파티 DRI" → 2026 카운터파티 DRI (id 유지)
+          { id: "rank-2025-counterparty-dri", label: "2026 카운터파티 DRI" },
           { id: DEALCHECK_TEAMS.edu1.id, label: DEALCHECK_TEAMS.edu1.label },
           { id: DEALCHECK_TEAMS.edu2.id, label: DEALCHECK_TEAMS.edu2.label },
         ],
       },
       {
-        sectionId: "sub",
-        title: "서브 메뉴",
+        sectionId: "analysis",
+        title: "분석 메뉴",
         defaultOpen: true,
         items: [
           { id: "statepath-2425", label: "StatePath 24→25" },
-          { id: "rank-2025-people", label: "2025 대기업 딜·People", hidden: true }, // 화면 비노출
-          { id: "industry-2025", label: "업종별 매출", hidden: true }, // 화면 비노출
-          { id: "mismatch-2025", label: "고객사 불일치" },
+          { id: "rank-2025", label: "2025 체결액 순위" },
+          { id: "org-view", label: "조직/People/Deal 뷰어" },
+          // (선택) 기존 숨김 메뉴는 유지
+          { id: "rank-2025-people", label: "2025 대기업 딜·People", hidden: true },
+          { id: "industry-2025", label: "업종별 매출", hidden: true },
         ],
+      },
+      {
+        sectionId: "qa",
+        title: "검수 메뉴",
+        defaultOpen: true,
+        items: [{ id: "mismatch-2025", label: "고객사 불일치" }],
       },
     ];
 
@@ -2041,6 +2184,7 @@
       "rank-2025-people": renderRank2025PeopleScreen,
       "rank-2025-counterparty-dri": renderRankCounterpartyDriScreen,
       "target-2026": renderTarget2026Screen,
+      "counterparty-risk-daily": renderCounterpartyRiskDaily,
       "mismatch-2025": renderMismatch2025Screen,
       "industry-2025": renderIndustryMenu,
       "statepath-2425": renderStatePathMenu,
@@ -2110,6 +2254,20 @@
         close: null,
         title: null,
         body: null,
+      },
+      counterpartyRisk: {
+        cache: new Map(),
+        loading: false,
+        error: null,
+        data: null,
+        date: null,
+        filters: {
+          tiers: new Set(["S0", "P0", "P1", "P2"]),
+          risks: new Set(["심각", "보통", "양호"]),
+          pipelineOnly: false,
+          search: "",
+        },
+        sectionOpen: { 심각: true, 보통: true, 양호: false },
       },
       statepath2425: {
         segment: "전체",
@@ -6357,6 +6515,318 @@
       }
     }
 
+    // ===== Counterparty Risk Daily (D5) =====
+    function formatPercent(val) {
+      if (val === null || val === undefined || Number.isNaN(val)) return "–";
+      return (Number(val) * 100).toFixed(1) + "%";
+    }
+
+    function todayIso() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function fetchCounterpartyRiskReport(date, { force = false } = {}) {
+      const key = date || "today";
+      const cache = state.counterpartyRisk.cache;
+      if (!force && cache.has(key)) return cache.get(key);
+      const params = new URLSearchParams();
+      if (date) params.set("date", date);
+      const promise = fetchJson(`/report/counterparty-risk${params.toString() ? `?${params}` : ""}`);
+      cache.set(key, promise);
+      return promise;
+    }
+
+    function applyCounterpartyRiskFilters(items) {
+      const filters = state.counterpartyRisk.filters;
+      const search = (filters.search || "").toLowerCase();
+      return items.filter((row) => {
+        if (filters.tiers.size && !filters.tiers.has(row.tier)) return false;
+        if (filters.risks.size && !filters.risks.has(row.risk_level_rule)) return false;
+        if (filters.pipelineOnly && !row.pipeline_zero) return false;
+        if (search) {
+          const text = `${row.organizationName || ""} ${row.counterpartyName || ""}`.toLowerCase();
+          if (!text.includes(search)) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderCounterpartyRiskDaily(root) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "card";
+      wrapper.innerHTML = `
+        <div class="cpr-header">
+          <div>
+            <h2 style="margin:0;">2026 Daily Report</h2>
+            <div class="muted" style="font-size:12px;">(구: 카운터파티 리스크(일간)) · DB 교체 시 새로고침 필요(프런트 캐시 무효화 없음)</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <label class="pill muted">기준일
+              <input id="cprDateInput" type="date" style="background:transparent;border:1px solid var(--border);color:var(--text);padding:4px 6px;border-radius:8px;" />
+            </label>
+            <span id="cprDbVersion" class="pill muted"></span>
+            <button id="cprRefreshBtn" class="pill">새로고침</button>
+          </div>
+        </div>
+        <div id="cprSummary" class="cpr-summary-grid" style="margin-top:10px;"></div>
+        <div id="cprChips" class="cpr-chip-row"></div>
+        <div class="cpr-filter-row">
+          <label class="pill">티어
+            <select id="cprTierSelect" multiple size="4" style="min-width:110px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:4px;">
+              <option value="S0" selected>S0</option>
+              <option value="P0" selected>P0</option>
+              <option value="P1" selected>P1</option>
+              <option value="P2" selected>P2</option>
+            </select>
+          </label>
+          <label class="pill">리스크
+            <select id="cprRiskSelect" multiple size="3" style="min-width:100px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:4px;">
+              <option value="심각" selected>심각</option>
+              <option value="보통" selected>보통</option>
+              <option value="양호" selected>양호</option>
+            </select>
+          </label>
+          <label class="pill"><input id="cprPipelineOnly" type="checkbox" /> pipeline_zero만</label>
+          <input id="cprSearch" type="search" placeholder="고객사/카운터파티 검색" style="flex:1;min-width:160px;background:var(--panel-2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:10px;" />
+          <button id="cprClear" class="pill muted">필터 초기화</button>
+        </div>
+        <div id="cprBody" class="muted">불러오는 중...</div>
+        <div id="cprDQ" class="muted" style="margin-top:10px;"></div>
+      `;
+      root.innerHTML = "";
+      root.appendChild(wrapper);
+
+      const dateInput = wrapper.querySelector("#cprDateInput");
+      const refreshBtn = wrapper.querySelector("#cprRefreshBtn");
+      const chipRow = wrapper.querySelector("#cprChips");
+      const summaryEl = wrapper.querySelector("#cprSummary");
+      const bodyEl = wrapper.querySelector("#cprBody");
+      const dqEl = wrapper.querySelector("#cprDQ");
+      const tierSelect = wrapper.querySelector("#cprTierSelect");
+      const riskSelect = wrapper.querySelector("#cprRiskSelect");
+      const pipelineOnly = wrapper.querySelector("#cprPipelineOnly");
+      const searchInput = wrapper.querySelector("#cprSearch");
+      const clearBtn = wrapper.querySelector("#cprClear");
+      const dbVersionEl = wrapper.querySelector("#cprDbVersion");
+
+      const setFiltersFromInputs = () => {
+        const tiers = new Set(Array.from(tierSelect.selectedOptions).map((o) => o.value));
+        const risks = new Set(Array.from(riskSelect.selectedOptions).map((o) => o.value));
+        state.counterpartyRisk.filters.tiers = tiers;
+        state.counterpartyRisk.filters.risks = risks;
+        state.counterpartyRisk.filters.pipelineOnly = pipelineOnly.checked;
+        state.counterpartyRisk.filters.search = searchInput.value || "";
+      };
+
+      const resetFilters = () => {
+        ["S0", "P0", "P1", "P2"].forEach((v, idx) => (tierSelect.options[idx].selected = true));
+        ["심각", "보통", "양호"].forEach((v, idx) => (riskSelect.options[idx].selected = true));
+        pipelineOnly.checked = false;
+        searchInput.value = "";
+        setFiltersFromInputs();
+        renderData();
+      };
+
+      const renderSummary = (data) => {
+        const t1 = data.summary.tier_groups["S0_P0_P1"] || {};
+        const t2 = data.summary.tier_groups["P2"] || {};
+        const card = (title, g) => `
+          <div class="cpr-card">
+            <h3>${title}</h3>
+            <div class="cpr-kpi-row">
+              <span class="cpr-kpi">target ${formatAmount(g.target || 0)}</span>
+              <span class="cpr-kpi">coverage ${formatAmount(g.coverage || 0)}</span>
+              <span class="cpr-kpi">gap ${formatAmount(g.gap || 0)}</span>
+              <span class="cpr-kpi">cov ${formatPercent(g.coverage_ratio)}</span>
+            </div>
+          </div>
+        `;
+        summaryEl.innerHTML = card("S0~P1", t1) + card("P2", t2);
+      };
+
+      const renderChips = (data) => {
+        const counts = data.summary.counts || {};
+        const chips = [
+          { key: "심각", label: `심각 ${counts.severe || 0}` },
+          { key: "보통", label: `보통 ${counts.normal || 0}` },
+          { key: "양호", label: `양호 ${counts.good || 0}` },
+          { key: "pipeline", label: `pipeline_zero ${counts.pipeline_zero || 0}` },
+        ];
+        chipRow.innerHTML = chips
+          .map((c) => `<button class="cpr-chip ${c.key === "pipeline" ? (state.counterpartyRisk.filters.pipelineOnly ? "active" : "") : state.counterpartyRisk.filters.risks.has(c.key) ? "active" : ""}" data-key="${c.key}">${c.label}</button>`)
+          .join("");
+        chipRow.querySelectorAll(".cpr-chip").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const key = btn.getAttribute("data-key");
+            if (key === "pipeline") {
+              state.counterpartyRisk.filters.pipelineOnly = !state.counterpartyRisk.filters.pipelineOnly;
+            } else {
+              const set = state.counterpartyRisk.filters.risks;
+              if (set.has(key)) set.delete(key);
+              else set.add(key);
+            }
+            renderData();
+          });
+        });
+      };
+
+      const renderDQ = (data) => {
+        const dq = data.data_quality || {};
+        dqEl.innerHTML = `
+          <div class="pill muted">연도 미정 딜: ${dq.unknown_year_deals || 0}</div>
+          <div class="pill muted">금액 미정/파싱 실패: ${dq.unknown_amount_deals || 0}</div>
+          <div class="pill muted">미분류 카운터파티: ${dq.uncategorized_counterparties || 0}</div>
+        `;
+      };
+
+      const renderSections = (data) => {
+        const filtered = applyCounterpartyRiskFilters(data.counterparties || []);
+        const byRisk = { 심각: [], 보통: [], 양호: [] };
+        filtered.forEach((row) => {
+          if (byRisk[row.risk_level_rule]) byRisk[row.risk_level_rule].push(row);
+        });
+
+        const sectionOrder = ["심각", "보통", "양호"];
+        const section = (level) => {
+          const rows = byRisk[level] || [];
+          const open = state.counterpartyRisk.sectionOpen[level] ?? (level !== "양호");
+          const rowsHtml = rows
+            .map((row, idx) => {
+              const coveragePct = row.target_2026 > 0 ? formatPercent(row.coverage_2026 / row.target_2026) : "–";
+              const tier = row.tier || "-";
+              const pipelineBadge = row.pipeline_zero ? '<span class="cpr-pill error">pipeline_zero</span>' : "";
+              return `
+                <tr data-key="${row.organizationId}__${row.counterpartyName}" class="cpr-row">
+                  <td>${idx + 1}</td>
+                  <td>${row.organizationName || "-"}</td>
+                  <td>${row.counterpartyName}</td>
+                  <td>${tier}</td>
+                  <td class="num">${formatAmount(row.target_2026)}</td>
+                  <td class="num">${formatAmount(row.confirmed_2026)}</td>
+                  <td class="num">${formatAmount(row.expected_2026)}</td>
+                  <td class="num">${coveragePct}</td>
+                  <td class="num">${formatAmount(row.gap)}</td>
+                  <td>${pipelineBadge}</td>
+                  <td><button class="pill" data-action="toggle-detail">상세</button></td>
+                </tr>
+                <tr class="cpr-detail-row" style="display:none;">
+                  <td colspan="10">
+                    <div class="cpr-row-detail">
+                      <div>
+                        <div class="muted" style="font-size:12px;">근거</div>
+                        <ul>${(row.evidence_bullets && row.evidence_bullets.length ? row.evidence_bullets : ["(아직 생성 전)"]).map((t) => `<li>${t}</li>`).join("")}</ul>
+                      </div>
+                      <div>
+                        <div class="muted" style="font-size:12px;">추천 액션</div>
+                        <ul>${(row.recommended_actions && row.recommended_actions.length ? row.recommended_actions : ["(아직 생성 전)"]).map((t) => `<li>${t}</li>`).join("")}</ul>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              `;
+            })
+            .join("");
+
+          return `
+            <details class="cpr-section" ${open ? "open" : ""} data-level="${level}">
+              <summary>${level} (${rows.length})</summary>
+              <div class="table-wrap">
+                <table class="cpr-table">
+                  <thead>
+                    <tr>
+                      <th style="width:46px;">#</th>
+                      <th>고객사</th>
+                      <th>카운터파티</th>
+                      <th>티어</th>
+                      <th class="num">target</th>
+                      <th class="num">확정</th>
+                      <th class="num">예상</th>
+                      <th class="num">coverage%</th>
+                      <th class="num">gap</th>
+                      <th>플래그</th>
+                      <th>액션</th>
+                    </tr>
+                  </thead>
+                  <tbody>${rowsHtml || `<tr><td colspan="11" class="muted">데이터 없음</td></tr>`}</tbody>
+                </table>
+              </div>
+            </details>
+          `;
+        };
+
+        bodyEl.innerHTML = sectionOrder.map((lv) => section(lv)).join("");
+        bodyEl.querySelectorAll("details.cpr-section").forEach((el) => {
+          el.addEventListener("toggle", () => {
+            const lvl = el.getAttribute("data-level");
+            state.counterpartyRisk.sectionOpen[lvl] = el.open;
+          });
+        });
+        bodyEl.querySelectorAll('button[data-action="toggle-detail"]').forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const row = btn.closest("tr");
+            if (!row) return;
+            const detail = row.nextElementSibling;
+            if (!detail) return;
+            const isHidden = detail.style.display === "none";
+            detail.style.display = isHidden ? "table-row" : "none";
+          });
+        });
+      };
+
+      const renderData = () => {
+        const data = state.counterpartyRisk.data;
+        if (!data) return;
+        renderSummary(data);
+        renderChips(data);
+        renderSections(data);
+        renderDQ(data);
+        dbVersionEl.textContent = data.meta?.db_version ? `DB: ${data.meta.db_version}` : "";
+      };
+
+      const loadData = async (force = false) => {
+        state.counterpartyRisk.loading = true;
+        bodyEl.innerHTML = '<div class="muted">불러오는 중...</div>';
+        try {
+          const dateVal = dateInput.value || todayIso();
+          state.counterpartyRisk.date = dateVal;
+          const data = await fetchCounterpartyRiskReport(dateVal, { force });
+          state.counterpartyRisk.data = data;
+          state.counterpartyRisk.error = null;
+          renderData();
+        } catch (err) {
+          console.error(err);
+          state.counterpartyRisk.error = err;
+          bodyEl.innerHTML = `<div class="pill error">오류 발생: ${err}</div>`;
+        } finally {
+          state.counterpartyRisk.loading = false;
+        }
+      };
+
+      dateInput.value = state.counterpartyRisk.date || todayIso();
+      setFiltersFromInputs();
+      refreshBtn.addEventListener("click", () => loadData(true));
+      tierSelect.addEventListener("change", () => {
+        setFiltersFromInputs();
+        renderData();
+      });
+      riskSelect.addEventListener("change", () => {
+        setFiltersFromInputs();
+        renderData();
+      });
+      pipelineOnly.addEventListener("change", () => {
+        setFiltersFromInputs();
+        renderData();
+      });
+      searchInput.addEventListener("input", () => {
+        setFiltersFromInputs();
+        renderData();
+      });
+      clearBtn.addEventListener("click", resetFilters);
+      chipRow.innerHTML = "";
+
+      loadData();
+    }
+
     function sortDealCheckItems(items) {
       const list = Array.isArray(items) ? items.slice() : [];
       const num = (val) => (Number.isFinite(Number(val)) ? Number(val) : 0);
@@ -7478,7 +7948,8 @@
       contentRoot.innerHTML = `
         <section class="card compact">
           <div class="control-row">
-            <h2>2025 Top100 카운터파티 DRI</h2>
+            <h2>2026 카운터파티 DRI</h2>
+            <span class="muted" style="font-size:12px;">(구: 2025 카운터파티 DRI · 기준은 2025 체결 기반)</span>
             <div class="spacer"></div>
             <label class="muted">기업 규모</label>
             <select id="rankCounterpartySizeSelect"></select>

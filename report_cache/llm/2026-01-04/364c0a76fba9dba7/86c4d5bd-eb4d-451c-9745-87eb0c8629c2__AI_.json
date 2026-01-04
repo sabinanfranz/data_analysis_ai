@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "364c0a76fba9dba7",
+    "counterparty_key": {
+      "organizationId": "86c4d5bd-eb4d-451c-9745-87eb0c8629c2",
+      "counterpartyName": "AI변화추진"
+    },
+    "model": "offline-fallback",
+    "prompt_version": "v1",
+    "llm_input_hash": "3a898d3ba1aeda6db48dbf8d4244f2ce3d588ba0008074e4e8b89b49f6d36f1e",
+    "created_at": "2026-01-05T05:14:23.852066",
+    "used_cache": false
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO"
+    ],
+    "evidence_bullets": [
+      "2026 타겟 1.8억 대비 확정 0.0억, 예상 0.0억으로 gap 1.8억이 남아 있습니다.",
+      "현재 커버리지는 0.0%로 이번 달 최소 기대치(5.0%) 대비 부족합니다.",
+      "2026 확정/예상 파이프라인이 0으로 설정돼 있습니다."
+    ],
+    "recommended_actions": [
+      "의사결정자 맵핑",
+      "니즈 재발굴",
+      "시퀀스·세미나로 접점 생성"
+    ]
+  }
+}

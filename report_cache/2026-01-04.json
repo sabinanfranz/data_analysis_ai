@@ -1,0 +1,3524 @@
+{
+  "meta": {
+    "as_of": "2026-01-04",
+    "db_version": "2026-01-04T20:15:27.507043",
+    "generated_at": "2026-01-04T20:38:05.543194",
+    "db_signature": "1767557727-199733248",
+    "generator_version": "d7-v1",
+    "job_run_id": "20260104_203805"
+  },
+  "summary": {
+    "tier_groups": {
+      "S0_P0_P1": {
+        "target": 6896131965.3,
+        "coverage": 395618000.0,
+        "gap": 6500513965.3,
+        "coverage_ratio": 0.05736810171131775
+      },
+      "P2": {
+        "target": 1803766677.0,
+        "coverage": 314400000.0,
+        "gap": 1489366677.0,
+        "coverage_ratio": 0.17430192275361567
+      }
+    },
+    "counts": {
+      "severe": 45,
+      "normal": 0,
+      "good": 29,
+      "pipeline_zero": 45
+    }
+  },
+  "data_quality": {
+    "unknown_year_deals": 43,
+    "unknown_amount_deals": 1447,
+    "uncategorized_counterparties": 17
+  },
+  "counterparties": [
+    {
+      "organizationId": "64dd762a96e775eee7e3cab7",
+      "organizationName": "케이티",
+      "counterpartyName": "인재실",
+      "tier": "S0",
+      "baseline_2025": 1052600000,
+      "target_2026": 1578900000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 1578900000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현재 파이프라인이 전혀 없으며, 이는 리스크를 증가시킵니다.",
+        "2026년 목표 금액은 1,578,900,000원이지만, 현재 확인된 금액은 0원입니다.",
+        "규칙상 리스크는 심각으로 분류됨."
+      ],
+      "recommended_actions": [
+        "즉시 파이프라인을 구축하여 기회를 창출하라.",
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 찾아서 적극적으로 소통하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": [
+        {
+          "deal_id": "019ae6e7-45b6-777b-bfb1-1b0de422f913",
+          "deal_name": "KT(기술교육팀)_26년도 KT 신기술 기반 보안 및 AI개발 통합과정",
+          "status": "SQL",
+          "possibility": null,
+          "amount": 190000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-01-22",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64d328811750f5b1d531d07e",
+      "organizationName": "현대자동차",
+      "counterpartyName": "연구개발본부",
+      "tier": "P0",
+      "baseline_2025": 417680400,
+      "target_2026": 710056680.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 710056680.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현대자동차의 2026년 목표 금액은 710056680원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전무하여 진행이 어렵다.",
+        "내부 의사결정이 지연되고 있으며, 다음 주 중 검토 및 의사결정 마무리가 예상된다."
+      ],
+      "recommended_actions": [
+        "고객과의 후속 연락을 통해 의사결정 상황을 확인하라.",
+        "예산 확보 여부를 확인하고, 필요한 경우 대안을 제시하라.",
+        "내부 의사결정이 완료될 수 있도록 지원 방안을 마련하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "f3a32c00-ece9-45ee-889b-1ef13e45ba3f",
+      "organizationName": "에이치엘인재개발원",
+      "counterpartyName": "인재개발원",
+      "tier": "P0",
+      "baseline_2025": 370163300,
+      "target_2026": 629277610.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 629277610.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 629,277,610원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없으며, 이는 PIPELINE_ZERO 상태를 나타낸다.",
+        "최근 90일간의 손실 건수는 0건으로, 고객과의 접촉이 부족한 상황이다."
+      ],
+      "recommended_actions": [
+        "고객과의 미팅 일정을 조율하여 의사결정을 촉진하라.",
+        "예산 확보를 위해 관련 부서와 협의하여 필요한 자원을 요청하라.",
+        "파이프라인을 구축하기 위해 고객의 니즈를 파악하고 제안서를 준비하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d3287c1750f5b1d531c66d",
+      "organizationName": "삼성화재",
+      "counterpartyName": "경영지원실",
+      "tier": "P0",
+      "baseline_2025": 246490000,
+      "target_2026": 419033000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 419033000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "APPROVAL_DELAY"
+      ],
+      "evidence_bullets": [
+        "삼성화재의 2026년 목표 금액은 419,033,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없는 상태로, 리스크가 심각하게 평가되고 있다.",
+        "고객과의 최근 연락이 없으며, 의사결정이 지연되고 있는 상황이다."
+      ],
+      "recommended_actions": [
+        "고객과의 연락을 시도하여 의사결정 상황을 확인하라.",
+        "내부 승인 절차를 가속화하여 제안서 결정을 촉진하라.",
+        "추가적인 파이프라인을 확보하기 위한 전략을 수립하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64eeae468a014c50c927b103",
+      "organizationName": "대상",
+      "counterpartyName": "ESG경영실",
+      "tier": "P0",
+      "baseline_2025": 212780000,
+      "target_2026": 361726000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 361726000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "LOW_PRIORITY"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 361726000원이나, 현재 확인된 금액은 0원이다.",
+        "대상 측의 의사결정이 매우 느린 편이다.",
+        "현재 진행 중인 교육에 대한 관심이 높아, 공개교육이 더 적합할 것으로 보인다."
+      ],
+      "recommended_actions": [
+        "의사결정자를 대상으로 교육의 필요성을 강조하라.",
+        "현재 파이프라인을 점검하고 추가적인 기회를 발굴하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "019b2ab7-7f49-7556-b42e-45913c157b22",
+          "deal_name": "대상 주식회사_26년도 DT 교육",
+          "status": "SQL",
+          "possibility": "[\"낮음\"]",
+          "amount": 87560000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-01-22",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "0190fcfc-14ba-755f-9b3b-bdaaa6b994cc",
+      "organizationName": "홈앤서비스",
+      "counterpartyName": "경영지원실",
+      "tier": "P0",
+      "baseline_2025": 204848400,
+      "target_2026": 348242280.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 348242280.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 348,242,280원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없는 상태이다.",
+        "최근 90일 동안 잃어버린 거래는 없으며, 마지막 연락 날짜는 확인되지 않았다."
+      ],
+      "recommended_actions": [
+        "예산 확보를 위해 관련 부서와 논의하라.",
+        "의사결정자를 확인하고 직접 연락하라.",
+        "파이프라인을 구축하기 위한 전략을 수립하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d328811750f5b1d531d07e",
+      "organizationName": "현대자동차",
+      "counterpartyName": "경영지원",
+      "tier": "P0",
+      "baseline_2025": 5700000,
+      "target_2026": 9690000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 9690000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현대자동차와의 거래에서 2026년 목표 금액은 9,690만 원이나 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없는 상태로, 의사결정이 지연되고 있다.",
+        "고객과의 최근 연락이 없으며, 내부 의사결정이 아직 시작되지 않은 상황이다."
+      ],
+      "recommended_actions": [
+        "고객의 내부 의사결정 상황을 파악하고 후속 조치를 취하라.",
+        "예산 확보 여부를 확인하고, 교육 제안서를 재검토하라.",
+        "고객과의 연락을 통해 파이프라인을 구축할 수 있는 방안을 모색하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d328811750f5b1d531d07e",
+      "organizationName": "현대자동차",
+      "counterpartyName": "AVP본부",
+      "tier": "P0",
+      "baseline_2025": 4220000,
+      "target_2026": 7174000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 7174000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현대자동차와의 거래에서 2026년 목표 금액은 7174000.0이며, 현재 확인된 금액은 0.0이다.",
+        "현재 파이프라인이 전혀 없으며, 내부 의사결정이 지연되고 있다.",
+        "고객은 예산 부족으로 인해 교육 추진이 불가하다고 언급하였다."
+      ],
+      "recommended_actions": [
+        "고객의 내부 의사결정 상황을 파악하고 후속 조치를 취하라.",
+        "예산 확보를 위한 고객과의 논의를 진행하라.",
+        "제안서 및 견적서를 준비하여 고객에게 전달하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "654062483c32eb96748b2a90",
+      "organizationName": "현대모비스",
+      "counterpartyName": "R&D 부문",
+      "tier": "P1",
+      "baseline_2025": 171395000,
+      "target_2026": 291371500.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 291371500.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현대모비스의 2026년 목표 금액은 291371500원이며, 현재 확인된 금액은 0원입니다.",
+        "현재 파이프라인이 전무하여 리스크가 심각한 상황입니다.",
+        "고객과의 최근 연락이 없으며, 교육 관련 논의가 지연될 것으로 예상됩니다."
+      ],
+      "recommended_actions": [
+        "고객과의 연락을 통해 교육 필요성을 재확인하라.",
+        "예산 확보를 위해 고객의 내부 승인 절차를 파악하라.",
+        "의사결정자를 대상으로 교육 제안서를 준비하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "019a7098-2c6b-7ff7-a2f7-e7e2aea422c3",
+          "deal_name": "현대모비스_26년도 AI 직무 교육",
+          "status": "SQL",
+          "possibility": "[\"낮음\"]",
+          "amount": 20000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-02-05",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64d328801750f5b1d531cd2f",
+      "organizationName": "하나은행",
+      "counterpartyName": "IT시스템부",
+      "tier": "P1",
+      "baseline_2025": 166880000,
+      "target_2026": 283696000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 283696000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "LOW_PRIORITY"
+      ],
+      "evidence_bullets": [
+        "하나은행의 2026년 목표 금액은 283,696,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없는 상태로, 리스크가 심각하게 평가되고 있다.",
+        "최근 교육 관련 논의가 있었으나, 교육 니즈에 대한 혼선으로 인해 진행이 지연되고 있다."
+      ],
+      "recommended_actions": [
+        "하나은행의 교육 니즈를 명확히 파악하고, 관련 담당자와의 소통을 강화하라.",
+        "2026년 목표 달성을 위해 파이프라인을 확보할 수 있는 방안을 모색하라.",
+        "의사결정자를 대상으로 한 직접적인 접근 방식을 고려하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d328811750f5b1d531cfd4",
+      "organizationName": "현대오토에버",
+      "counterpartyName": "HRD",
+      "tier": "P1",
+      "baseline_2025": 148320000,
+      "target_2026": 252144000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 252144000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "NO_RESPONSE"
+      ],
+      "evidence_bullets": [
+        "현대오토에버의 2026년 목표 금액은 252,144,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없는 상태로, 거래 성사 가능성이 낮다.",
+        "담당자와의 연락이 두절된 상태로, 의사결정자가 불확실하다."
+      ],
+      "recommended_actions": [
+        "담당자와의 연락을 재시도하여 의사결정자를 확인하라.",
+        "예산 확보를 위해 현대오토에버의 필요 사항을 파악하라.",
+        "파이프라인을 구축하기 위한 전략을 수립하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "650039a82bf1018d3e254226",
+      "organizationName": "롯데웰푸드",
+      "counterpartyName": "경영전략부문",
+      "tier": "P1",
+      "baseline_2025": 136143000,
+      "target_2026": 231443100.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 231443100.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 231,443,100원이지만, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없는 상태이다.",
+        "고객과의 최근 연락이 없으며, 90일 이내에 잃은 거래는 없다."
+      ],
+      "recommended_actions": [
+        "고객과의 연락을 시도하여 의사결정자를 확인하라.",
+        "예산 확보를 위해 고객의 필요를 파악하라.",
+        "파이프라인을 구축하기 위한 전략을 수립하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "650cf38e6800532a8aeffefa",
+      "organizationName": "(사)한국정보통신진흥협회",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P1",
+      "baseline_2025": 131690909,
+      "target_2026": 223874545.29999998,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 223874545.29999998,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "규칙상 리스크는 심각으로 분류됨.",
+        "현재 파이프라인이 0으로 확인되어 리스크가 높음.",
+        "2026년 목표 금액은 223,874,545.30원이지만, 현재 확인된 금액은 0원임."
+      ],
+      "recommended_actions": [
+        "파이프라인을 확보하기 위한 전략을 수립하라.",
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 찾아 직접 소통하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd761396e775eee7e39777",
+      "organizationName": "에쓰오일",
+      "counterpartyName": "인사부문",
+      "tier": "P1",
+      "baseline_2025": 109900000,
+      "target_2026": 186830000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 186830000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "COMPETITOR",
+        "BUDGET"
+      ],
+      "evidence_bullets": [
+        "규칙상 리스크는 심각으로 분류됨.",
+        "현재 파이프라인이 전혀 없으며, 이는 비즈니스 기회가 없음을 나타냅니다.",
+        "2026년 목표 금액은 186830000.0이며, 현재 확인된 금액은 0.0입니다."
+      ],
+      "recommended_actions": [
+        "즉시 파이프라인을 구축하기 위한 전략을 수립하라.",
+        "경쟁사 분석을 통해 가격 경쟁력을 강화하라.",
+        "예산 확보를 위해 관련 부서와 협의하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "86c4d5bd-eb4d-451c-9745-87eb0c8629c2",
+      "organizationName": "에스케이마이써니",
+      "counterpartyName": "AI변화추진",
+      "tier": "P1",
+      "baseline_2025": 108350000,
+      "target_2026": 184195000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 184195000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 184,195,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없으며, 이는 리스크를 증가시킨다.",
+        "최근 90일 동안 잃은 거래는 없지만, 의사결정자가 불확실하다."
+      ],
+      "recommended_actions": [
+        "의사결정자를 확인하고 접근 방안을 마련하라.",
+        "예산 확보를 위한 논의를 즉시 시작하라.",
+        "파이프라인을 구축하기 위한 전략을 수립하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd760b96e775eee7e38823",
+      "organizationName": "엘지에너지솔루션",
+      "counterpartyName": "AI/빅데이터그룹",
+      "tier": "P1",
+      "baseline_2025": 106240000,
+      "target_2026": 180608000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 180608000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현재 파이프라인이 전혀 없는 상태로, 리스크가 심각하게 평가되고 있다.",
+        "2026년 목표 금액은 180,608,000원이지만, 현재 확정된 금액은 0원이다.",
+        "최근 90일 동안 잃은 거래는 없지만, 내부 의사결정이 지연되고 있는 상황이다."
+      ],
+      "recommended_actions": [
+        "의사결정자를 조속히 확인하고 접근하라.",
+        "예산 확보를 위한 논의를 즉시 시작하라.",
+        "파이프라인을 구축하기 위한 전략을 수립하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "65274a28069908689702cc2f",
+      "organizationName": "효성",
+      "counterpartyName": "효성인력개발원",
+      "tier": "P1",
+      "baseline_2025": 103582500,
+      "target_2026": 176090250.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 176090250.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "효성의 2026년 목표 금액은 176090250.0원이며, 현재 확인된 금액은 0.0원이다.",
+        "효성의 파이프라인이 현재 제로 상태로, 신규 딜이 없다.",
+        "최근 90일 동안 잃은 딜 수는 0건이다."
+      ],
+      "recommended_actions": [
+        "효성과의 파이프라인을 활성화하기 위한 전략을 수립하라.",
+        "예산 확보를 위해 효성과의 논의를 진행하라.",
+        "의사결정자를 확인하고 직접 소통하여 진행 상황을 점검하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "01997423-3ac8-7008-855a-ffb130fc0f7f",
+          "deal_name": "효성 2026 AI 교육",
+          "status": "SQL",
+          "possibility": "[\"낮음\"]",
+          "amount": 5000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-01-29",
+          "last_contact_date": null
+        },
+        {
+          "deal_id": "019afd5e-09fb-7aaf-a5f6-7cbf1b1c60f0",
+          "deal_name": "효성 승격자 AI과정",
+          "status": "SQL",
+          "possibility": "[\"낮음\"]",
+          "amount": 5000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": "2026-03-31",
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-03-01",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64ec00405d2f14d1a85010fb",
+      "organizationName": "씨제이올리브네트웍스",
+      "counterpartyName": "DT Academy",
+      "tier": "P1",
+      "baseline_2025": 100000000,
+      "target_2026": 170000000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 170000000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현재 파이프라인이 제로 상태이며, 이는 심각한 리스크를 나타냅니다.",
+        "2026년 목표 금액은 170,000,000원이지만, 현재 확인된 금액은 0입니다.",
+        "규칙상 리스크는 심각으로 분류됨."
+      ],
+      "recommended_actions": [
+        "즉시 파이프라인을 구축하여 거래를 활성화하라.",
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 확인하고, 빠른 피드백을 요청하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d3287f1750f5b1d531cc86",
+      "organizationName": "포스코디엑스",
+      "counterpartyName": "IT기획그룹",
+      "tier": "P1",
+      "baseline_2025": 97920000,
+      "target_2026": 166464000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 166464000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "APPROVAL_DELAY"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 166,464,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 다른 온라인 플랫폼을 이용 중이며, 가격 조정 요청이 있는 상황이다.",
+        "의사결정 절차가 복잡하여 1월 중순 이후에나 확정 가능하다고 보고되었다."
+      ],
+      "recommended_actions": [
+        "의사결정자를 조속히 확인하고 소통하라.",
+        "예산 조정 요청을 진행하여 협상 여지를 마련하라.",
+        "프로젝트 승인 절차를 간소화할 수 있는 방안을 모색하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd761396e775eee7e39777",
+      "organizationName": "에쓰오일",
+      "counterpartyName": "IT부문",
+      "tier": "P1",
+      "baseline_2025": 70000000,
+      "target_2026": 119000000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 119000000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "COMPETITOR",
+        "BUDGET"
+      ],
+      "evidence_bullets": [
+        "규칙상 리스크는 심각으로 분류됨.",
+        "2026년 목표 금액은 119,000,000원이지만, 현재 확인된 금액은 0원이다.",
+        "최근 90일 동안 수주 실패는 없지만, 경쟁사인 스파르타가 더 저렴한 가격으로 제안한 것으로 보인다."
+      ],
+      "recommended_actions": [
+        "파이프라인을 활성화하기 위한 전략을 수립하라.",
+        "경쟁사 분석을 통해 가격 경쟁력을 강화하라.",
+        "예산 확보를 위한 내부 협의를 진행하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d3287f1750f5b1d531cc86",
+      "organizationName": "포스코디엑스",
+      "counterpartyName": "경영지원실",
+      "tier": "P1",
+      "baseline_2025": 54500000,
+      "target_2026": 92650000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 92650000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "APPROVAL_DELAY"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 92,650,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 다른 온라인 플랫폼을 이용 중이며, 가격 조정 요청이 있는 상황이다.",
+        "의사결정 절차가 복잡하여 1월 중순 이후에나 확정 가능하다고 보고되었다."
+      ],
+      "recommended_actions": [
+        "의사결정자를 조속히 확인하고 접근하라.",
+        "승인 절차를 간소화할 수 있는 방안을 모색하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 3
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd761996e775eee7e3a704",
+      "organizationName": "삼성생명보험",
+      "counterpartyName": "디지털혁신실",
+      "tier": "P1",
+      "baseline_2025": 4400000,
+      "target_2026": 7480000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 7480000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "삼성생명보험의 2026년 목표 금액은 7,480만 원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없으며, 이는 PIPELINE_ZERO로 분류된다.",
+        "규칙상 리스크는 심각으로 분류됨."
+      ],
+      "recommended_actions": [
+        "즉시 파이프라인을 구축하기 위한 전략을 수립하라.",
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 대상으로 한 미팅을 조율하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "654062483c32eb96748b2a90",
+      "organizationName": "현대모비스",
+      "counterpartyName": "샤시모듈파트",
+      "tier": "P1",
+      "baseline_2025": 2300000,
+      "target_2026": 3910000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 3910000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현대모비스와의 거래에서 2026년 목표 금액은 3,910,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없으며, 이는 거래 성사에 큰 장애가 된다.",
+        "규칙상 리스크는 심각으로 분류됨."
+      ],
+      "recommended_actions": [
+        "고객과의 접촉을 통해 의사결정자를 확인하고 관계를 강화하라.",
+        "예산 확보를 위해 고객에게 필요한 자료를 요청하고 협의하라.",
+        "거래 파이프라인을 구축하기 위해 고객의 요구사항을 명확히 파악하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd761396e775eee7e39777",
+      "organizationName": "에쓰오일",
+      "counterpartyName": "경영전략본부",
+      "tier": "P1",
+      "baseline_2025": 1900000,
+      "target_2026": 3230000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 3230000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "COMPETITOR",
+        "BUDGET"
+      ],
+      "evidence_bullets": [
+        "규칙상 리스크는 심각으로 분류됨.",
+        "현재 파이프라인이 전혀 없으며, 이는 3230000.0의 갭을 초래하고 있다.",
+        "경쟁사인 스파르타가 가격 면에서 약간 더 저렴하여 수주 실패가 발생한 것으로 보인다."
+      ],
+      "recommended_actions": [
+        "파이프라인을 확보하기 위해 신규 기회를 발굴하라.",
+        "경쟁사 분석을 통해 가격 전략을 재검토하라.",
+        "예산 확보를 위해 경영진과 논의하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd75d296e775eee7e31939",
+      "organizationName": "우리은행",
+      "counterpartyName": "HR그룹",
+      "tier": "P2",
+      "baseline_2025": 96135000,
+      "target_2026": 144202500.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 144202500.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "LOW_PRIORITY"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 144,202,500원이지만 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없으며, 이는 PIPELINE_ZERO 상태를 나타낸다.",
+        "최근 미팅에서 상급자들이 커리큘럼 설명에 대한 구체적인 요구를 하고 있으나, 의사결정이 지연되고 있다."
+      ],
+      "recommended_actions": [
+        "의사결정자를 조속히 확보하여 커리큘럼 설명을 진행하라.",
+        "현재 파이프라인을 구축하기 위한 전략을 수립하라.",
+        "우선순위를 재조정하여 이 프로젝트에 대한 집중도를 높여라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": [
+        {
+          "deal_id": "019b11d1-abf0-7882-8eea-7d4fdddb8c5e",
+          "deal_name": "우리은행_2026년 우리은행 TECH 전문직무 연수업체  입찰",
+          "status": "SQL",
+          "possibility": "[\"낮음\"]",
+          "amount": 200000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-01-29",
+          "last_contact_date": null
+        },
+        {
+          "deal_id": "019a4382-ba38-7aae-add5-3d70a498f70b",
+          "deal_name": "우리은행_AX전문가(설계자,PM) 양성과정",
+          "status": "SQL",
+          "possibility": "[\"낮음\"]",
+          "amount": 0,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-02-26",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64d3287b1750f5b1d531c3c1",
+      "organizationName": "기아",
+      "counterpartyName": "경영지원본부",
+      "tier": "P2",
+      "baseline_2025": 94050000,
+      "target_2026": 141075000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 141075000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "APPROVAL_DELAY",
+        "LOW_PRIORITY"
+      ],
+      "evidence_bullets": [
+        "기아의 2026년 목표 금액은 141,075,000원이며, 현재 확인된 금액은 0원이다.",
+        "RFP는 2026년도 3월로 연기되었으며, 내부 사정으로 인해 협의가 지연되고 있다.",
+        "규칙상 리스크는 심각으로 분류됨."
+      ],
+      "recommended_actions": [
+        "RFP 일정에 대한 명확한 확인을 요청하라.",
+        "기아의 내부 승인 절차를 파악하여 진행 상황을 점검하라.",
+        "우선순위를 높이기 위해 기아의 경영진과의 접촉을 시도하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd762296e775eee7e3b986",
+      "organizationName": "웰컴저축은행",
+      "counterpartyName": "ICT기획팀",
+      "tier": "P2",
+      "baseline_2025": 83010000,
+      "target_2026": 124515000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 124515000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "규칙상 리스크는 심각으로 분류됨.",
+        "현재 파이프라인이 전무하여 리스크가 높음.",
+        "2026년 목표 금액은 124,515,000원이지만, 현재 확인된 금액은 0원임."
+      ],
+      "recommended_actions": [
+        "예산 확보를 위한 내부 논의를 진행하라.",
+        "의사결정자를 대상으로 한 커뮤니케이션을 강화하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "6535d5f67331063db116615d",
+      "organizationName": "현대카드",
+      "counterpartyName": "카드사업 지원본부",
+      "tier": "P2",
+      "baseline_2025": 76093300,
+      "target_2026": 114139950.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 114139950.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현대카드는 2026년 목표 금액이 114139950.0으로 설정되어 있으나, 현재까지 확인된 금액은 0.0이다.",
+        "현재 파이프라인이 전혀 없으며, 이는 PIPELINE_ZERO 상태를 나타낸다.",
+        "고객과의 최근 연락이 없으며, 최근 90일 동안 잃어버린 거래는 없다."
+      ],
+      "recommended_actions": [
+        "고객과의 연락을 통해 의사결정자를 확인하고 접근하라.",
+        "예산 확보를 위해 고객의 요구사항을 파악하고 제안서를 준비하라.",
+        "파이프라인을 구축하기 위해 고객의 관심을 유도할 수 있는 전략을 마련하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "c6c4ca5e-6399-4dc2-9cd6-9a1a1ed2d8bc",
+      "organizationName": "엘지유플러스",
+      "counterpartyName": "CTO 조직",
+      "tier": "P2",
+      "baseline_2025": 66080000,
+      "target_2026": 99120000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 99120000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 99,120,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없는 상태이다.",
+        "규칙상 리스크는 심각으로 분류됨."
+      ],
+      "recommended_actions": [
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 찾아서 직접 연락을 시도하라.",
+        "파이프라인을 구축하기 위한 전략을 수립하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 4
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd762996e775eee7e3c78c",
+      "organizationName": "에이치엘만도",
+      "counterpartyName": "Technology Innovation 센터",
+      "tier": "P2",
+      "baseline_2025": 65800000,
+      "target_2026": 98700000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 98700000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 98,700,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없으며, 이는 리스크를 증가시킨다.",
+        "최근 90일 동안 잃은 거래는 없지만, 연락이 이루어지지 않았다."
+      ],
+      "recommended_actions": [
+        "파이프라인을 구축하기 위한 전략을 마련하라.",
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 확인하고 접근 방안을 마련하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64f975aefb15689232a89c7d",
+      "organizationName": "풍산",
+      "counterpartyName": "경영지원실",
+      "tier": "P2",
+      "baseline_2025": 65100000,
+      "target_2026": 97650000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 97650000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 97,650,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전무하여 리스크가 높다.",
+        "규칙상 리스크는 심각으로 분류됨."
+      ],
+      "recommended_actions": [
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 만나 프로젝트의 중요성을 강조하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "58c6148a-2c22-464d-a0a2-969d8f0de874",
+      "organizationName": "글로벌핀테크산업진흥센터",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P2",
+      "baseline_2025": 61566818,
+      "target_2026": 92350227.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 92350227.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "규칙상 리스크는 심각으로 분류됨.",
+        "현재 파이프라인이 전혀 없으며, 갭은 92,350,227원이다.",
+        "최근 90일 동안 잃은 거래는 없으며, 연락이 없었다."
+      ],
+      "recommended_actions": [
+        "파이프라인을 구축하기 위한 전략을 수립하라.",
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 확인하고 접근 방안을 마련하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d328841750f5b1d531d56a",
+      "organizationName": "엘지전자",
+      "counterpartyName": "CTO 조직",
+      "tier": "P2",
+      "baseline_2025": 58900000,
+      "target_2026": 88350000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 88350000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "NO_RESPONSE"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 88,350,000원이지만 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없는 상태로, 리스크가 매우 높다.",
+        "최근 90일 동안 고객과의 연락이 없었으며, LOST 상태이다."
+      ],
+      "recommended_actions": [
+        "고객과의 의사결정을 촉진하기 위해 즉각적인 연락을 시도하라.",
+        "고객의 예산을 확인하고, 필요한 경우 예산 확보를 위한 방안을 모색하라.",
+        "고객의 요구사항을 명확히 파악하기 위해 추가 미팅을 요청하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64fab2ab99804695b364441b",
+      "organizationName": "우리금융그룹",
+      "counterpartyName": "디지털혁신부문",
+      "tier": "P2",
+      "baseline_2025": 55606000,
+      "target_2026": 83409000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 83409000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "APPROVAL_DELAY"
+      ],
+      "evidence_bullets": [
+        "규칙상 리스크는 심각으로 분류됨.",
+        "현재 파이프라인이 전혀 없으며, 목표 2026년 금액은 83,409,000원이다.",
+        "내부 의사결정이 지연되고 있으며, 7월 말에 현황 체크가 필요하다."
+      ],
+      "recommended_actions": [
+        "즉시 파이프라인을 구축하기 위한 전략을 마련하라.",
+        "내부 의사결정 상황을 지속적으로 모니터링하라.",
+        "결정 지연을 해소하기 위해 관련자와의 소통을 강화하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d3287b1750f5b1d531c516",
+      "organizationName": "삼성금융연수원",
+      "counterpartyName": "삼성금융연수원 (원소속 삼성카드)",
+      "tier": "P2",
+      "baseline_2025": 53800000,
+      "target_2026": 80700000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 80700000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "삼성금융연수원은 2026년 목표 금액이 80,700,000원이지만 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없는 상태로, 리스크가 심각하게 평가되고 있다.",
+        "최근 90일 동안 잃어버린 거래는 없지만, 마지막 연락 날짜는 확인되지 않았다."
+      ],
+      "recommended_actions": [
+        "즉시 파이프라인을 구축하기 위한 전략을 마련하라.",
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 확인하고, 미팅 일정을 조율하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "652bab812d4bf04cdb04e138",
+      "organizationName": "삼성물산",
+      "counterpartyName": "-",
+      "tier": "P2",
+      "baseline_2025": 53275000,
+      "target_2026": 79912500.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 79912500.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "삼성물산의 2026년 목표 금액은 79,912,500원이며, 현재 확인된 금액은 0원입니다.",
+        "현재 파이프라인이 전혀 없으며, 이는 PIPELINE_ZERO 상태입니다.",
+        "규칙상 리스크는 심각으로 분류됨."
+      ],
+      "recommended_actions": [
+        "고객과의 미팅을 통해 의사결정자를 확인하고 접근하라.",
+        "예산 확보를 위해 고객의 필요와 요구사항을 파악하라.",
+        "파이프라인을 구축하기 위한 전략을 수립하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd761c96e775eee7e3ac89",
+      "organizationName": "신한금융지주",
+      "counterpartyName": "디지털파트",
+      "tier": "P2",
+      "baseline_2025": 53200000,
+      "target_2026": 79800000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 79800000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "신한금융지주와의 거래에서 2026년 목표 금액은 79800000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 파이프라인이 전혀 없으며, 이는 PIPELINE_ZERO로 분류된다.",
+        "담당 프로의 변경으로 인해 RFP가 다른 담당자와 진행되고 있어 의사결정이 지연되고 있다."
+      ],
+      "recommended_actions": [
+        "신한금융지주와의 파이프라인을 확보하기 위한 전략을 수립하라.",
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 조속히 확인하고 소통을 강화하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd762d96e775eee7e3cfff",
+      "organizationName": "에스케이텔레콤",
+      "counterpartyName": "SK아카데미",
+      "tier": "P2",
+      "baseline_2025": 48180000,
+      "target_2026": 72270000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 72270000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "규칙상 리스크는 심각으로 분류됨.",
+        "현재 파이프라인이 전혀 없으며, 2026년 목표 금액은 72,270,000원이다.",
+        "고객사는 현재 기획 단계에 있으며, 예산 확인이 필요하다."
+      ],
+      "recommended_actions": [
+        "고객사와의 미팅을 요청하여 기획 단계의 진행 상황을 확인하라.",
+        "예산 관련 정보를 확보하기 위해 고객사에 직접 문의하라.",
+        "의사결정자를 확인하고, 그와의 소통을 강화하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd762996e775eee7e3c78c",
+      "organizationName": "에이치엘만도",
+      "counterpartyName": "Technology Strategy",
+      "tier": "P2",
+      "baseline_2025": 18450000,
+      "target_2026": 27675000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 27675000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "규칙상 리스크는 심각으로 분류됨.",
+        "현재 파이프라인이 전혀 없으며, 파이프라인 제로 상태입니다.",
+        "2026년 목표 금액은 27,675,000이며, 현재 확인된 금액은 0입니다."
+      ],
+      "recommended_actions": [
+        "예산 확보를 위해 관련 부서와 논의하라.",
+        "의사결정자를 확인하고 직접 연락하라.",
+        "파이프라인을 구축하기 위한 전략을 수립하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d328841750f5b1d531d56a",
+      "organizationName": "엘지전자",
+      "counterpartyName": "CHO부문",
+      "tier": "P2",
+      "baseline_2025": 16800000,
+      "target_2026": 25200000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 25200000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "NO_RESPONSE"
+      ],
+      "evidence_bullets": [
+        "현재 파이프라인이 전혀 없는 상태로, 리스크가 심각하다.",
+        "2026년 목표 금액은 25,200,000원이지만, 현재 확인된 금액은 0원이다.",
+        "최근 90일 동안 고객과의 연락이 없었던 기록이 있다."
+      ],
+      "recommended_actions": [
+        "고객과의 연락을 재개하여 의사결정을 촉진하라.",
+        "예산 확보를 위한 내부 논의를 진행하라.",
+        "고객의 니즈를 파악하기 위한 추가 미팅을 요청하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "c6c4ca5e-6399-4dc2-9cd6-9a1a1ed2d8bc",
+      "organizationName": "엘지유플러스",
+      "counterpartyName": "CHO 조직",
+      "tier": "P2",
+      "baseline_2025": 4900000,
+      "target_2026": 7350000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 7350000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현재 파이프라인이 전혀 없으며, 이는 PIPELINE_ZERO 상태를 나타냅니다.",
+        "2026년 목표 금액은 7,350만 원이지만, 현재 확인된 금액은 0원입니다.",
+        "규칙상 리스크는 심각으로 분류됨."
+      ],
+      "recommended_actions": [
+        "즉시 새로운 파이프라인을 구축하기 위한 전략을 수립하라.",
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 대상으로 한 미팅을 요청하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d3287b1750f5b1d531c516",
+      "organizationName": "삼성금융연수원",
+      "counterpartyName": "삼성금융연수원",
+      "tier": "P2",
+      "baseline_2025": 4760000,
+      "target_2026": 7140000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 7140000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "APPROVAL_DELAY"
+      ],
+      "evidence_bullets": [
+        "2026년 목표 금액은 7140000.0이며, 현재까지 확인된 금액은 0.0이다.",
+        "현재 파이프라인이 전혀 없는 상태로, 리스크가 심각하게 평가되고 있다.",
+        "최근 90일 동안 잃은 기회는 없지만, 마지막 연락 날짜는 확인되지 않았다."
+      ],
+      "recommended_actions": [
+        "의사결정자를 조속히 확인하고 연락하라.",
+        "승인 절차를 가속화하기 위한 방안을 마련하라.",
+        "파이프라인을 구축하기 위한 신규 기회를 발굴하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd762d96e775eee7e3cfff",
+      "organizationName": "에스케이텔레콤",
+      "counterpartyName": "역량육성팀",
+      "tier": "P2",
+      "baseline_2025": 4500000,
+      "target_2026": 6750000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 6750000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "규칙상 리스크는 심각으로 분류됨.",
+        "현재 파이프라인이 전혀 없으며, 목표 금액은 6,750만 원이다.",
+        "고객사와의 최근 연락이 없으며, 기획 단계에 있는 것으로 보인다."
+      ],
+      "recommended_actions": [
+        "고객사와의 미팅을 요청하여 기획 단계에서의 진행 상황을 확인하라.",
+        "예산을 확인하고, 필요한 경우 제안서를 준비하라.",
+        "의사결정자를 파악하여 후속 조치를 취하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "c6c4ca5e-6399-4dc2-9cd6-9a1a1ed2d8bc",
+      "organizationName": "엘지유플러스",
+      "counterpartyName": "경력개발지원실",
+      "tier": "P2",
+      "baseline_2025": 3230000,
+      "target_2026": 4845000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 4845000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "BUDGET",
+        "DECISION_MAKER"
+      ],
+      "evidence_bullets": [
+        "현재 파이프라인이 전혀 없으며, 이는 PIPELINE_ZERO로 분류됩니다.",
+        "2026년 목표 금액은 4,845만 달러이며, 현재 확인된 금액은 0입니다.",
+        "규칙상 리스크는 심각으로 분류됨."
+      ],
+      "recommended_actions": [
+        "즉시 파이프라인을 구축하기 위한 전략을 수립하라.",
+        "예산 확보를 위해 관련 부서와 협의하라.",
+        "의사결정자를 찾아서 직접 연락하여 진행 상황을 확인하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d328841750f5b1d531d56a",
+      "organizationName": "엘지전자",
+      "counterpartyName": "VS본부",
+      "tier": "P2",
+      "baseline_2025": 1400000,
+      "target_2026": 2100000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 2100000.0,
+      "coverage_ratio": 0.0,
+      "pipeline_zero": true,
+      "risk_level_rule": "심각",
+      "risk_level_llm": "심각",
+      "top_blockers": [
+        "PIPELINE_ZERO",
+        "DECISION_MAKER",
+        "NO_RESPONSE"
+      ],
+      "evidence_bullets": [
+        "현재 파이프라인이 전혀 없으며, 리스크가 심각한 상황이다.",
+        "2026년 목표 금액은 2,100,000원이지만, 현재 확인된 금액은 0원이다.",
+        "최근 90일 동안 고객과의 연락이 없었으며, LOST 상태이다."
+      ],
+      "recommended_actions": [
+        "고객과의 연락을 재개하여 의사결정을 촉진하라.",
+        "예산 확보를 위해 고객의 요구사항을 명확히 파악하라.",
+        "파이프라인을 구축하기 위한 전략을 수립하라."
+      ],
+      "rule_trigger": "PIPELINE_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd762a96e775eee7e3cab7",
+      "organizationName": "케이티",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "S0",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 3
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "f3a32c00-ece9-45ee-889b-1ef13e45ba3f",
+      "organizationName": "에이치엘인재개발원",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P0",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 300000000.0,
+      "coverage_2026": 300000000.0,
+      "gap": -300000000.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 3.0억으로 gap -3.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 1,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "0199083c-a42a-7224-9812-61f141502b46",
+          "deal_name": "L-T 에이치엘인재개발원_2026년 전사 직무교육체계 수립 및 운영",
+          "status": "SQL",
+          "possibility": "[\"높음\"]",
+          "amount": 300000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-01-30",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "f3a32c00-ece9-45ee-889b-1ef13e45ba3f",
+      "organizationName": "에이치엘인재개발원",
+      "counterpartyName": "에이치엘그룹 HR혁신실",
+      "tier": "P0",
+      "baseline_2025": 2950000,
+      "target_2026": 5015000.0,
+      "confirmed_2026": 3750000.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 3750000.0,
+      "gap": 1265000.0,
+      "coverage_ratio": 0.7477567298105683,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [],
+      "evidence_bullets": [
+        "2026년 목표 매출은 5,015,000원이며, 현재 확인된 매출은 3,750,000원이다.",
+        "현재까지 90일 동안 손실된 거래는 없으며, 최근 연락은 2026년 1월 2일에 이루어졌다.",
+        "규칙상 리스크는 양호로 분류됨."
+      ],
+      "recommended_actions": [
+        "고객과의 미팅을 통해 제안 내용을 강화하라.",
+        "AI 교육 체계 수립에 대한 구체적인 계획을 제시하라."
+      ],
+      "rule_trigger": "ON_TRACK",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 1,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "019ac9c1-6bc8-7000-830f-a5e63c7d6df1",
+          "deal_name": "에이치엘인재개발원_신입사원 입문교육",
+          "status": "SQL",
+          "possibility": "[\"확정\"]",
+          "amount": 3750000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": "2026-01-06",
+          "end_date": "2026-01-06",
+          "contract_date": null,
+          "expected_close_date": "2025-12-30",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64d328811750f5b1d531d07e",
+      "organizationName": "현대자동차",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P0",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 9
+      },
+      "deals_top": [
+        {
+          "deal_id": "019a0aa8-ba43-7000-9029-59ddd314bdd9",
+          "deal_name": "[L-T] 현대자동차 재경부분 AI/DT 교육",
+          "status": "SQL",
+          "possibility": "[\"낮음\"]",
+          "amount": 5000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-02-01",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64d328811750f5b1d531d07e",
+      "organizationName": "현대자동차",
+      "counterpartyName": "인재개발원",
+      "tier": "P0",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64eeae468a014c50c927b103",
+      "organizationName": "대상",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P0",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd761996e775eee7e3a704",
+      "organizationName": "삼성생명보험",
+      "counterpartyName": "인사팀",
+      "tier": "P1",
+      "baseline_2025": 144380000,
+      "target_2026": 245446000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 26560000.0,
+      "coverage_2026": 26560000.0,
+      "gap": 218886000.0,
+      "coverage_ratio": 0.10821117475941755,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [],
+      "evidence_bullets": [
+        "삼성생명의 2026년 목표 금액은 245,446,000원이며, 현재 확인된 금액은 0원이다.",
+        "2026년 예상 금액은 26,560,000원으로, 목표 대비 큰 차이가 있다.",
+        "최근 미팅에서 AI Intensive 과정과 해커톤을 고려 중이며, 구체화 희망이 있다고 언급되었다."
+      ],
+      "recommended_actions": [
+        "삼성생명과의 미팅을 통해 구체적인 요구사항을 파악하라.",
+        "2026년 목표 달성을 위해 추가적인 제안을 준비하라."
+      ],
+      "rule_trigger": "ON_TRACK",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 1,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "019afd5d-93d5-7000-8001-e3829e61897f",
+          "deal_name": "삼성생명 2026 미클래스",
+          "status": "SQL",
+          "possibility": "[\"높음\"]",
+          "amount": 26560000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": "2026-03-31",
+          "end_date": "2026-09-29",
+          "contract_date": null,
+          "expected_close_date": "2026-01-29",
+          "last_contact_date": null
+        },
+        {
+          "deal_id": "019a7bc3-c19d-7447-baaf-3864028591f9",
+          "deal_name": "삼성생명보험 디지털역량강화과정 (2026)",
+          "status": "SQL",
+          "possibility": "[\"낮음\"]",
+          "amount": 5000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-02-01",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64dd760b96e775eee7e38823",
+      "organizationName": "엘지에너지솔루션",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P1",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 60808000.0,
+      "coverage_2026": 60808000.0,
+      "gap": -60808000.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.6억으로 gap -0.6억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 1,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 2
+      },
+      "deals_top": [
+        {
+          "deal_id": "0199ff67-db2b-7cc5-8d9a-b106881a347d",
+          "deal_name": "LG에너지솔루션 26년 AX과정",
+          "status": "SQL",
+          "possibility": "[\"높음\"]",
+          "amount": 60808000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": true,
+          "start_date": "2026-03-01",
+          "end_date": "2026-12-30",
+          "contract_date": null,
+          "expected_close_date": "2026-03-01",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64ec00405d2f14d1a85010fb",
+      "organizationName": "씨제이올리브네트웍스",
+      "counterpartyName": "인사조직",
+      "tier": "P1",
+      "baseline_2025": 5050000,
+      "target_2026": 8585000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 4500000.0,
+      "coverage_2026": 4500000.0,
+      "gap": 4085000.0,
+      "coverage_ratio": 0.52417006406523,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [],
+      "evidence_bullets": [
+        "2026년 목표 매출은 8,585,000원이며, 현재 확인된 매출은 0원이다.",
+        "현재 커버리지 비율은 52.42%로, 목표 대비 40,850,000원의 갭이 존재한다.",
+        "최근 90일 동안 잃은 거래는 없으며, 고객과의 마지막 연락은 2026년 1월 2일이었다."
+      ],
+      "recommended_actions": [
+        "고객과의 지속적인 소통을 통해 거래 성사 가능성을 높여라.",
+        "목표 매출 달성을 위한 추가적인 제안서를 준비하라."
+      ],
+      "rule_trigger": "ON_TRACK",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 1,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "019a707f-a106-733b-b1f4-77ee9e9abdb6",
+          "deal_name": "씨제이 그룹사 교육",
+          "status": "SQL",
+          "possibility": "[\"낮음\"]",
+          "amount": 5000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-02-26",
+          "last_contact_date": null
+        },
+        {
+          "deal_id": "019ac963-8084-7000-92d9-a97bafe1a370",
+          "deal_name": "씨제이올리브네트웍스_신입사원 대상 생성형 AI 특강",
+          "status": "SQL",
+          "possibility": "[\"높음\"]",
+          "amount": 4500000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": "2026-02-03",
+          "end_date": "2026-02-03",
+          "contract_date": null,
+          "expected_close_date": "2026-01-29",
+          "last_contact_date": null
+        },
+        {
+          "deal_id": "019ac964-207c-7000-92b6-f391f23f484f",
+          "deal_name": "씨제이올리브네트웍스_마케팅 직무 AI 워크숍",
+          "status": "SQL",
+          "possibility": null,
+          "amount": 0,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-01-29",
+          "last_contact_date": null
+        },
+        {
+          "deal_id": "019ac964-7323-7bbc-b688-2a57fab112cc",
+          "deal_name": "씨제이올리브네트웍스_재무회계 AI 워크숍",
+          "status": "SQL",
+          "possibility": null,
+          "amount": 0,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-01-29",
+          "last_contact_date": null
+        },
+        {
+          "deal_id": "019ac964-cb20-7000-92fd-f08a8a78ea1a",
+          "deal_name": "씨제이올리브네트웍스_기획직무 AI 워크숍_추가",
+          "status": "SQL",
+          "possibility": null,
+          "amount": 0,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-01-29",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64d328801750f5b1d531cd2f",
+      "organizationName": "하나은행",
+      "counterpartyName": "HR지원그룹",
+      "tier": "P1",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd761396e775eee7e39777",
+      "organizationName": "에쓰오일",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P1",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 2
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd761996e775eee7e3a704",
+      "organizationName": "삼성생명보험",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P1",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64ec00405d2f14d1a85010fb",
+      "organizationName": "씨제이올리브네트웍스",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P1",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "86c4d5bd-eb4d-451c-9745-87eb0c8629c2",
+      "organizationName": "에스케이마이써니",
+      "counterpartyName": "Digital Tech.",
+      "tier": "P1",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "86c4d5bd-eb4d-451c-9745-87eb0c8629c2",
+      "organizationName": "에스케이마이써니",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P1",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd761c96e775eee7e3ac89",
+      "organizationName": "신한금융지주",
+      "counterpartyName": "AX/디지털부문",
+      "tier": "P2",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 170000000.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 170000000.0,
+      "gap": -170000000.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 1.7억, 예상 0.0억으로 gap -1.7억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 1,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "019ae206-febc-7aa2-b9fc-d2e469a7f84b",
+          "deal_name": "신한금융지주_26년 AX 추진팀 교육",
+          "status": "Won",
+          "possibility": "[\"확정\"]",
+          "amount": 170000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": "2026-01-30",
+          "end_date": "2026-04-24",
+          "contract_date": "2026-01-12",
+          "expected_close_date": "2026-01-12",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64dd762596e775eee7e3c02f",
+      "organizationName": "하나금융티아이",
+      "counterpartyName": "하나금융그룹 디지털부문(CDO)",
+      "tier": "P2",
+      "baseline_2025": 76125000,
+      "target_2026": 114187500.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 14400000.0,
+      "coverage_2026": 14400000.0,
+      "gap": 99787500.0,
+      "coverage_ratio": 0.12610837438423644,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [],
+      "evidence_bullets": [
+        "하나금융그룹 디지털부문(CDO)의 2026년 목표 매출은 114,187,500원이다.",
+        "현재까지 확인된 2026년 매출은 0원으로, 목표 대비 99,787,500원의 격차가 있다.",
+        "최근 90일 동안 잃은 거래는 없으며, 마지막 연락 날짜는 기록되어 있지 않다."
+      ],
+      "recommended_actions": [
+        "2026년 목표 매출 달성을 위해 추가적인 영업 활동을 강화하라.",
+        "고객과의 연락을 재개하여 진행 상황을 확인하라."
+      ],
+      "rule_trigger": "ON_TRACK",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 1,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 2
+      },
+      "deals_top": [
+        {
+          "deal_id": "019b0727-0679-7bb3-8d2a-9c851c4a55b0",
+          "deal_name": "하나금융(카드)_26년 AI 정기특강",
+          "status": "SQL",
+          "possibility": "[\"높음\"]",
+          "amount": 14400000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-01-29",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64f97586fb15689232a849f9",
+      "organizationName": "빙그레",
+      "counterpartyName": "인재혁신센터",
+      "tier": "P2",
+      "baseline_2025": 54200000,
+      "target_2026": 81300000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 5000000.0,
+      "coverage_2026": 5000000.0,
+      "gap": 76300000.0,
+      "coverage_ratio": 0.06150061500615006,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [],
+      "evidence_bullets": [
+        "빙그레의 2026년 목표 금액은 81,300,000원이며, 현재 확인된 금액은 0원이다.",
+        "현재 진행 중인 주요 딜은 2026년도 사내 AI 전문가 육성 프로그램으로, 예상 금액은 5,000,000원이다.",
+        "규칙상 리스크는 양호로 분류됨."
+      ],
+      "recommended_actions": [
+        "고객과의 소통을 강화하여 진행 상황을 점검하라.",
+        "확정된 교육 흐름에 따라 일정 관리를 철저히 하라."
+      ],
+      "rule_trigger": "ON_TRACK",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 1,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "019a2f03-dd3b-7009-95e0-8f8ac2c4cbb1",
+          "deal_name": "[L-T] 빙그레 26년도 사내 AI 전문가 육성 프로그램",
+          "status": "SQL",
+          "possibility": "[\"높음\"]",
+          "amount": 5000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": "2026-02-01",
+          "end_date": "2026-04-29",
+          "contract_date": null,
+          "expected_close_date": "2026-01-29",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64d328841750f5b1d531d56a",
+      "organizationName": "엘지전자",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P2",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 50000000.0,
+      "coverage_2026": 50000000.0,
+      "gap": -50000000.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.5억으로 gap -0.5억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 2,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 6
+      },
+      "deals_top": [
+        {
+          "deal_id": "0199e680-18b7-7002-bc08-2db466828a02",
+          "deal_name": "LG전자_AI Agent 구축 과정",
+          "status": "SQL",
+          "possibility": "[\"높음\"]",
+          "amount": 30000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-02-27",
+          "last_contact_date": null
+        },
+        {
+          "deal_id": "019a0984-271b-7000-8451-de568cdabd78",
+          "deal_name": "엘지전자_AX Starter 온라인 과정",
+          "status": "SQL",
+          "possibility": "[\"높음\"]",
+          "amount": 20000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-01-30",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64d3287b1750f5b1d531c516",
+      "organizationName": "삼성금융연수원",
+      "counterpartyName": "삼성금융연수원 (원소속 삼성화재)",
+      "tier": "P2",
+      "baseline_2025": 26900000,
+      "target_2026": 40350000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 5000000.0,
+      "coverage_2026": 5000000.0,
+      "gap": 35350000.0,
+      "coverage_ratio": 0.12391573729863693,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [],
+      "evidence_bullets": [
+        "삼성금융연수원의 2026년 목표 금액은 40,350,000원이며, 현재 확인된 금액은 0원입니다.",
+        "현재까지 90일 동안 잃은 거래는 없으며, 마지막 연락 날짜는 기록되어 있지 않습니다.",
+        "규칙상 리스크는 양호로 분류됨."
+      ],
+      "recommended_actions": [
+        "고객과의 미팅 일정을 조율하여 진행 상황을 확인하라.",
+        "신규 과정에 대한 논의를 지속적으로 진행하라."
+      ],
+      "rule_trigger": "ON_TRACK",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 1,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "019b2afb-c34e-7556-b546-f54ac59038e8",
+          "deal_name": "삼성금융연수원_26년 신규 SQL,SQLP,데이터과정",
+          "status": "SQL",
+          "possibility": "[\"높음\"]",
+          "amount": 5000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-03-05",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "00025cce-4a83-4364-8b88-7ac79217e155",
+      "organizationName": "앰코테크놀로지코리아",
+      "counterpartyName": "경영지원실",
+      "tier": "P2",
+      "baseline_2025": 60450000,
+      "target_2026": 90675000.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 70000000.0,
+      "coverage_2026": 70000000.0,
+      "gap": 20675000.0,
+      "coverage_ratio": 0.7719878687620623,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [],
+      "evidence_bullets": [
+        "2026년 목표 금액은 90,675,000원이며, 현재까지 확인된 금액은 0원이다.",
+        "현재 커버리지는 77.2%로 양호한 상태이다.",
+        "최근 90일 동안 잃은 거래는 없으며, 마지막 연락은 2025년 12월 16일에 이루어졌다."
+      ],
+      "recommended_actions": [
+        "고객과의 지속적인 소통을 유지하라.",
+        "2026년 교육 커리큘럼을 조속히 확정하라."
+      ],
+      "rule_trigger": "ON_TRACK",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 1,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": [
+        {
+          "deal_id": "019ae2ae-c3cd-7bbd-b09a-5fd581646555",
+          "deal_name": "앰코테크놀로지코리아_26년 IT 교육",
+          "status": "SQL",
+          "possibility": "[\"높음\"]",
+          "amount": 70000000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-03-30",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64d3287b1750f5b1d531c3c1",
+      "organizationName": "기아",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P2",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": [
+        {
+          "deal_id": "019a76f2-58e7-7335-968b-185e255e71ba",
+          "deal_name": "[L-T]기아_26년도 제조 신기술 교육(비전 AI)",
+          "status": "SQL",
+          "possibility": "[\"낮음\"]",
+          "amount": 4200000,
+          "is_nononline": true,
+          "deal_year": 2026,
+          "course_id_exists": false,
+          "start_date": null,
+          "end_date": null,
+          "contract_date": null,
+          "expected_close_date": "2026-03-30",
+          "last_contact_date": null
+        }
+      ]
+    },
+    {
+      "organizationId": "64d3287b1750f5b1d531c516",
+      "organizationName": "삼성금융연수원",
+      "counterpartyName": "금융HRD센터",
+      "tier": "P2",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64d328841750f5b1d531d56a",
+      "organizationName": "엘지전자",
+      "counterpartyName": "한국영업본부",
+      "tier": "P2",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd75d296e775eee7e31939",
+      "organizationName": "우리은행",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P2",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd761c96e775eee7e3ac89",
+      "organizationName": "신한금융지주",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P2",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd762996e775eee7e3c78c",
+      "organizationName": "에이치엘만도",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P2",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 1
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "64dd762d96e775eee7e3cfff",
+      "organizationName": "에스케이텔레콤",
+      "counterpartyName": "커스터머사업부",
+      "tier": "P2",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": false,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    },
+    {
+      "organizationId": "652bab812d4bf04cdb04e138",
+      "organizationName": "삼성물산",
+      "counterpartyName": "미분류(카운터파티 없음)",
+      "tier": "P2",
+      "baseline_2025": 0,
+      "target_2026": 0.0,
+      "confirmed_2026": 0.0,
+      "expected_2026": 0.0,
+      "coverage_2026": 0.0,
+      "gap": 0.0,
+      "coverage_ratio": null,
+      "pipeline_zero": false,
+      "risk_level_rule": "양호",
+      "risk_level_llm": "양호",
+      "top_blockers": [
+        "FIT_UNCLEAR"
+      ],
+      "evidence_bullets": [
+        "2026 타겟 0.0억 대비 확정 0.0억, 예상 0.0억으로 gap 0.0억이 남아 있습니다.",
+        "타겟이 0이거나 커버리지 계산 불가하여 gap 중심으로 판단해야 합니다.",
+        "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+      ],
+      "recommended_actions": [
+        "니즈 인터뷰",
+        "맞춤 커리큘럼/파일럿 제안"
+      ],
+      "rule_trigger": "TARGET_ZERO",
+      "min_cov_current_month": 0.05,
+      "severe_threshold": 0.025,
+      "excluded_by_quality": true,
+      "counts": {
+        "cnt_confirmed_deals_2026": 0,
+        "cnt_expected_deals_2026": 0,
+        "cnt_amount_zero_deals_2026": 0,
+        "dq_amount_parse_fail_cnt_2026": 0,
+        "dq_year_unknown_cnt": 0
+      },
+      "deals_top": []
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "124478c7fdb6c44a",
+    "counterparty_key": {
+      "organizationId": "c6c4ca5e-6399-4dc2-9cd6-9a1a1ed2d8bc",
+      "counterpartyName": "CTO 조직"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "3f62b0f3d9ffc60f581a4cfe25f39a1bb2e0cbf5810d72866e22ad58ed100328",
+    "created_at": "2026-01-04T20:42:28.876718",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 99,120,000원이며, 현재 확인된 금액은 0원이다.",
+      "현재 파이프라인이 전혀 없는 상태이다.",
+      "규칙상 리스크는 심각으로 분류됨."
+    ],
+    "recommended_actions": [
+      "예산 확보를 위해 관련 부서와 협의하라.",
+      "의사결정자를 찾아서 직접 연락을 시도하라.",
+      "파이프라인을 구축하기 위한 전략을 수립하라."
+    ],
+    "fallback_used": false
+  }
+}

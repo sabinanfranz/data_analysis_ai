@@ -1,8 +1,10 @@
 from fastapi import APIRouter, HTTPException, Query
+from datetime import datetime
 
 from . import database as db
 from .json_compact import compact_won_groups_json
 from .statepath_engine import build_statepath
+from .report_scheduler import run_daily_counterparty_risk_job, get_cached_report, _load_status
 
 router = APIRouter(prefix="/api")
 
@@ -207,6 +209,44 @@ def get_pl_progress_deals(
         raise HTTPException(status_code=400, detail=str(exc))
     except FileNotFoundError as exc:
         raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/report/counterparty-risk")
+def get_counterparty_risk_report(
+    date: str | None = Query(None, description="YYYY-MM-DD (없으면 today)"),
+) -> dict:
+    try:
+        if date:
+            # Validate date format early for clear 400
+            datetime.fromisoformat(date)
+        try:
+            return get_cached_report(as_of=date)
+        except FileNotFoundError:
+            run_daily_counterparty_risk_job(as_of_date=date, force=True)
+            return get_cached_report(as_of=date)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid date format: {exc}")
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.post("/report/counterparty-risk/recompute")
+def recompute_counterparty_risk_report(
+    date: str | None = Query(None, description="YYYY-MM-DD (없으면 today)"),
+) -> dict:
+    try:
+        if date:
+            datetime.fromisoformat(date)
+        return run_daily_counterparty_risk_job(as_of_date=date, force=True)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=f"Invalid date format: {exc}")
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/report/counterparty-risk/status")
+def get_counterparty_risk_status() -> dict:
+    return _load_status()
 
 
 @router.get("/rank/2025-deals-people")

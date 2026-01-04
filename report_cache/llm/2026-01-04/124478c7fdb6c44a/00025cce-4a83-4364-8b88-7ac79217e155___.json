@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "124478c7fdb6c44a",
+    "counterparty_key": {
+      "organizationId": "00025cce-4a83-4364-8b88-7ac79217e155",
+      "counterpartyName": "경영지원실"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "64277e338347dd2949cec34f117a294a448a3816834e284ff9975a8c22383e70",
+    "created_at": "2026-01-04T20:38:20.209794",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null
+  },
+  "output": {
+    "risk_level": "양호",
+    "top_blockers": [],
+    "evidence_bullets": [
+      "2026년 목표 금액은 90,675,000원이며, 현재까지 확인된 금액은 0원이다.",
+      "현재 커버리지는 77.2%로 양호한 상태이다.",
+      "최근 90일 동안 잃은 거래는 없으며, 마지막 연락은 2025년 12월 16일에 이루어졌다."
+    ],
+    "recommended_actions": [
+      "고객과의 지속적인 소통을 유지하라.",
+      "2026년 교육 커리큘럼을 조속히 확정하라."
+    ],
+    "fallback_used": false
+  }
+}

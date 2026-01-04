@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "364c0a76fba9dba7",
+    "counterparty_key": {
+      "organizationId": "64dd761996e775eee7e3a704",
+      "counterpartyName": "인사팀"
+    },
+    "model": "offline-fallback",
+    "prompt_version": "v1",
+    "llm_input_hash": "d9ceccf6d9316b37c9a4e372549b90247b1d994cee64458339b11594f10aa332",
+    "created_at": "2026-01-05T05:14:15.110638",
+    "used_cache": false
+  },
+  "output": {
+    "risk_level": "양호",
+    "top_blockers": [
+      "SCHEDULE_RESOURCE",
+      "APPROVAL_DELAY",
+      "PRICE_TERM"
+    ],
+    "evidence_bullets": [
+      "2026 타겟 2.5억 대비 확정 0.0억, 예상 0.3억으로 gap 2.2억이 남아 있습니다.",
+      "현재 커버리지는 10.8%로 이번 달 최소 기대치(5.0%) 대비 부족합니다.",
+      "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+    ],
+    "recommended_actions": [
+      "일정 후보 3개 제안",
+      "운영 리소스 사전 확보",
+      "구매·법무 체크리스트 확보"
+    ]
+  }
+}

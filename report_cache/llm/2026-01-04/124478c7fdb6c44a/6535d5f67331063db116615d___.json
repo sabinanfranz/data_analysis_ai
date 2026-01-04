@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "124478c7fdb6c44a",
+    "counterparty_key": {
+      "organizationId": "6535d5f67331063db116615d",
+      "counterpartyName": "카드사업 지원본부"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "e4a1f5fc7b142694e2ed16285be8b9b10db99bb9e3b6512fe2ff2f4384d5e605",
+    "created_at": "2026-01-04T20:42:04.703629",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "현대카드는 2026년 목표 금액이 114139950.0으로 설정되어 있으나, 현재까지 확인된 금액은 0.0이다.",
+      "현재 파이프라인이 전혀 없으며, 이는 PIPELINE_ZERO 상태를 나타낸다.",
+      "고객과의 최근 연락이 없으며, 최근 90일 동안 잃어버린 거래는 없다."
+    ],
+    "recommended_actions": [
+      "고객과의 연락을 통해 의사결정자를 확인하고 접근하라.",
+      "예산 확보를 위해 고객의 요구사항을 파악하고 제안서를 준비하라.",
+      "파이프라인을 구축하기 위해 고객의 관심을 유도할 수 있는 전략을 마련하라."
+    ],
+    "fallback_used": false
+  }
+}

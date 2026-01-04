@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "124478c7fdb6c44a",
+    "counterparty_key": {
+      "organizationId": "64dd762996e775eee7e3c78c",
+      "counterpartyName": "Technology Innovation 센터"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "0e0bf0a99385127cb5b10999bceb131324890468df0543d750c32ddad9b6819c",
+    "created_at": "2026-01-04T20:40:48.931634",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 98,700,000원이며, 현재 확인된 금액은 0원이다.",
+      "현재 파이프라인이 전혀 없으며, 이는 리스크를 증가시킨다.",
+      "최근 90일 동안 잃은 거래는 없지만, 연락이 이루어지지 않았다."
+    ],
+    "recommended_actions": [
+      "파이프라인을 구축하기 위한 전략을 마련하라.",
+      "예산 확보를 위해 관련 부서와 협의하라.",
+      "의사결정자를 확인하고 접근 방안을 마련하라."
+    ],
+    "fallback_used": false
+  }
+}

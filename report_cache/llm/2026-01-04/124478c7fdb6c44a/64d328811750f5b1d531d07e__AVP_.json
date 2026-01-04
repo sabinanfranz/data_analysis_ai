@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-04",
+    "db_hash": "124478c7fdb6c44a",
+    "counterparty_key": {
+      "organizationId": "64d328811750f5b1d531d07e",
+      "counterpartyName": "AVP본부"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "67b450930335009c48481887d42ef5e686ac3be0a506a827a752321e4028a746",
+    "created_at": "2026-01-04T20:39:21.245000",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "현대자동차와의 거래에서 2026년 목표 금액은 7174000.0이며, 현재 확인된 금액은 0.0이다.",
+      "현재 파이프라인이 전혀 없으며, 내부 의사결정이 지연되고 있다.",
+      "고객은 예산 부족으로 인해 교육 추진이 불가하다고 언급하였다."
+    ],
+    "recommended_actions": [
+      "고객의 내부 의사결정 상황을 파악하고 후속 조치를 취하라.",
+      "예산 확보를 위한 고객과의 논의를 진행하라.",
+      "제안서 및 견적서를 준비하여 고객에게 전달하라."
+    ],
+    "fallback_used": false
+  }
+}

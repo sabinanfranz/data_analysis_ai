@@ -48,6 +48,7 @@ def _build_db(path: Path) -> None:
       ("d-6", "p-3", "org-3", "딜6", "Convert", "확정", "800000000", "0", "2025-05-01", "2025-04-01", "집합", '{"name":"담당자C"}'),
       # org-1, 확정/높음이 아닌 딜(총액 크더라도 cpTotal은 0으로 필터)
       ("d-7", "p-1", "org-1", "딜7", "Open", "낮음", "700000000", "0", "2025-06-01", "2025-05-01", "집합", '{"name":"담당자A"}'),
+      ("d-8", "p-1", "org-1", "딜8", "Won", "확정", "400000000", "0", "2026-01-10", "2025-12-15", "구독제(온라인)", '{"name":"딜담당자A"}'),
   ]
   conn.executemany('INSERT INTO deal VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', deals)
   conn.commit()
@@ -76,6 +77,8 @@ class CounterpartyDriApiTest(unittest.TestCase):
         self.assertAlmostEqual(target["cpOnline2025"], 100000000)
         self.assertAlmostEqual(target["cpOffline2025"], 500000000)
         self.assertAlmostEqual(target["cpTotal2025"], target["cpOnline2025"] + target["cpOffline2025"])
+        self.assertAlmostEqual(target["cpOnline2026"], 400000000)
+        self.assertAlmostEqual(target["cpOffline2026"], 0)
         self.assertEqual(set(target["owners2025"]), {"최예인"})
 
       # org tier present, fallback to 미입력 if missing
@@ -99,6 +102,7 @@ class CounterpartyDriApiTest(unittest.TestCase):
       self.assertIsNotNone(bu)
       if bu:
         self.assertIn("딜담당자B", bu["owners2025"])
+        self.assertAlmostEqual(bu["cpOnline2026"], 0)
 
   def test_offset_limit(self) -> None:
     with tempfile.TemporaryDirectory() as tmpdir:

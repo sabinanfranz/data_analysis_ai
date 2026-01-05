@@ -8167,12 +8167,18 @@
             const tp = computeTeamPartSummary(row.owners2025 || []);
             const ownersText = owners === "미입력" ? "미입력" : owners.split(",").map((s) => s.trim()).join(", ");
             const tier = row.orgTier || "미입력";
+            const online2025 = Number(row.cpOnline2025 || 0);
             const offline2025 = Number(row.cpOffline2025 || 0);
-            const offline2026 = Number(row.cpOffline2026 || 0);
+            const online26 = Number(row.cpOnline2026 || 0);
+            const offline26 = Number(row.cpOffline2026 || 0);
             const target26 = (row.cpOffline2025 || 0) * tierMultiplier(tier);
+            const target26Online = online2025; // multiplier 1.0
+            const fmtOnline25 = formatEok(online2025 / 1e8);
             const fmtOffline25 = formatEok(offline2025 / 1e8);
+            const fmtTarget26Online = formatEok(target26Online / 1e8);
             const fmtTarget26 = formatEok(target26 / 1e8);
-            const fmtOffline26 = formatEok(offline2026 / 1e8);
+            const fmtOnline26 = formatEok(online26 / 1e8);
+            const fmtOffline26 = formatEok(offline26 / 1e8);
             return `
               <tr data-idx="${idx}">
                 <td>${tier}</td>
@@ -8184,6 +8190,9 @@
                 <td>${fmtOffline25}</td>
                 <td>${fmtTarget26}</td>
                 <td>${fmtOffline26}</td>
+                <td>${fmtOnline25}</td>
+                <td>${fmtTarget26Online}</td>
+                <td>${fmtOnline26}</td>
               </tr>
             `;
           })
@@ -8202,7 +8211,9 @@
                   <th>25 비온라인</th>
                   <th>26 비온라인 타겟</th>
                   <th>26 비온라인 체결</th>
-                </tr>
+                  <th>25 온라인</th>
+                  <th>26 온라인 타겟</th>
+                  <th>26 온라인 체결</th>
           </thead>
           <tbody>${htmlRows}</tbody>
         </table>
@@ -8473,6 +8484,17 @@
             return isHighProb(d.probability, d.status) && year === "2025" && isOffline(d.course_format) && startYear !== "2026";
           });
 
+          const online26 = detail.online26_deals || deals.filter((d) => {
+            const year = yearFromDates(d.contract_date, d.expected_date);
+            const startYear = parseYear(d.start_date);
+            const isHigh = isHighProb(d.probability, d.status);
+            const amt = pickAmount(d);
+            if (!amt || !isOnline(d.course_format)) return false;
+            if (isHigh && year === "2026") return true;
+            if (isHigh && year === "2025" && startYear === "2026") return true;
+            return false;
+          });
+
           const offline26 = detail.offline26_deals || deals.filter((d) => {
             const year = yearFromDates(d.contract_date, d.expected_date);
             const startYear = parseYear(d.start_date);
@@ -8551,9 +8573,10 @@
               <span><strong>팀&파트:</strong> ${tp.teamPartText || "-"}</span>
               <span><strong>DRI:</strong> <span style="font-weight:700; color:${tp.dri === "O" ? "var(--success)" : "var(--error)"};">${tp.dri || "X"}</span></span>
             </div>
-            ${renderDealTable("25 온라인 (비집계 소스)", onlineDeals2025)}
-            ${renderDealTable("25 비온라인 (집계 소스)", offlineDeals2025)}
-            ${renderDealTable("26 비온라인 체결 (집계 소스)", offline26)}
+            ${renderDealTable("25 비온라인", offlineDeals2025)}
+            ${renderDealTable("26 비온라인 체결", offline26)}
+            ${renderDealTable("25 온라인", onlineDeals2025)}
+            ${renderDealTable("26 온라인 체결", online26)}
           `;
           if (modal) modal.style.display = "flex";
         } catch (err) {

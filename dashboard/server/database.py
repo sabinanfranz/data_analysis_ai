@@ -1756,6 +1756,7 @@ def get_rank_2025_counterparty_detail(
     team_map: Dict[str, Dict[str, Any]] = {}
     offline25_deals: List[Dict[str, Any]] = []
     offline26_deals: List[Dict[str, Any]] = []
+    online26_deals: List[Dict[str, Any]] = []
     for d in deal_rows:
         if _norm_upper(d["upper_org"]) != upper_norm:
             continue
@@ -1793,18 +1794,18 @@ def get_rank_2025_counterparty_detail(
             }
         )
         # offline sources
-        if amt > 0 and _is_offline(fmt):
-            if _is_high(d["probability"], d["status"]) and year == "2025" and start_year != "2026":
-                offline25_deals.append(entry["deals"][-1])
-            if (
-                _is_high(d["probability"], d["status"])
-                and year == "2026"
-            ) or (
-                _is_high(d["probability"], d["status"])
-                and year == "2025"
-                and start_year == "2026"
-            ):
-                offline26_deals.append(entry["deals"][-1])
+        if amt > 0:
+            is_high = _is_high(d["probability"], d["status"])
+            if _is_offline(fmt):
+                if is_high and year == "2025" and start_year != "2026":
+                    offline25_deals.append(entry["deals"][-1])
+                if (is_high and year == "2026") or (is_high and year == "2025" and start_year == "2026"):
+                    offline26_deals.append(entry["deals"][-1])
+            else:
+                if is_high and year == "2025" and start_year == "2026":
+                    online26_deals.append(entry["deals"][-1])
+                if is_high and year == "2026":
+                    online26_deals.append(entry["deals"][-1])
 
     # sort deals by contract_date desc then created_at desc for readability
     for entry in team_map.values():
@@ -1818,6 +1819,7 @@ def get_rank_2025_counterparty_detail(
         )
     offline25_deals.sort(key=lambda x: (x.get("contract_date") or "", x.get("created_at") or ""), reverse=True)
     offline26_deals.sort(key=lambda x: (x.get("contract_date") or "", x.get("created_at") or ""), reverse=True)
+    online26_deals.sort(key=lambda x: (x.get("contract_date") or "", x.get("created_at") or ""), reverse=True)
 
     summary = {
         "online": sum(t["online"] for t in team_map.values()),
@@ -1837,6 +1839,7 @@ def get_rank_2025_counterparty_detail(
         "deals": all_deals,
         "offline25_deals": offline25_deals,
         "offline26_deals": offline26_deals,
+        "online26_deals": online26_deals,
     }
 
 
@@ -3664,6 +3667,7 @@ def get_rank_2025_top100_counterparty_dri(
                 "upperOrg": upper,
                 "cpOnline2025": 0.0,
                 "cpOffline2025": 0.0,
+                "cpOnline2026": 0.0,
                 "cpTotal2025": 0.0,
                 "cpOffline2026": 0.0,
                 "owners2025": set(),
@@ -3686,15 +3690,20 @@ def get_rank_2025_top100_counterparty_dri(
                 entry["cpOffline2025"] += amount
                 entry["cpTotal2025"] += amount
                 entry["dealCount2025"] += 1
-            elif not is_offline:
+            elif not is_offline and start_year != "2026":
                 entry["cpOnline2025"] += amount
                 entry["cpTotal2025"] += amount
                 entry["dealCount2025"] += 1
-            # 2025 + start 2026 오프라인 → 26 가산
+            # 2025 + start 2026 오프라인/온라인 → 26 가산
             if is_offline and start_year == "2026":
                 entry["cpOffline2026"] += amount
-        if prob_high and year == "2026" and is_offline:
-            entry["cpOffline2026"] += amount
+            if not is_offline and start_year == "2026":
+                entry["cpOnline2026"] += amount
+        if prob_high and year == "2026":
+            if is_offline:
+                entry["cpOffline2026"] += amount
+            else:
+                entry["cpOnline2026"] += amount
 
     # owners: fetch minimal rows for top orgs only
     owner_rows: List[sqlite3.Row] = []
@@ -3765,6 +3774,7 @@ def get_rank_2025_top100_counterparty_dri(
                 "cpOnline2025": cp["cpOnline2025"],
                 "cpOffline2025": cp["cpOffline2025"],
                 "cpTotal2025": cp["cpTotal2025"],
+                "cpOnline2026": cp.get("cpOnline2026", 0.0),
                 "cpOffline2026": cp.get("cpOffline2026", 0.0),
                 "owners2025": sorted(cp["owners2025"]) if cp.get("owners2025") else [],
                 "dealCount2025": cp["dealCount2025"],

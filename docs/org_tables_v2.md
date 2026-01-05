@@ -23,7 +23,7 @@ sync_source:
   - **사업부 퍼포먼스**: `2026 P&L` → `2026 월별 체결액` → `2026 Daily Report`
   - **운영 메뉴**: `2026 Target Board` → `2026 카운터파티 DRI` → 교육1/교육2 딜체크
   - **분석 메뉴**: `StatePath 24→25` → `2025 체결액 순위` → `조직/People/Deal 뷰어` (+숨김: `2025 대기업 딜·People`, `업종별 매출`)
-  - **검수 메뉴**: `개인별 세일즈맵 누락/오류 딜`(id `deal-qc-r1r15`) → `고객사 불일치`
+- **검수 메뉴**: `개인별 세일즈맵 검수`(id `deal-qc-r1r15`) → `고객사 불일치`
 - 2026 P&L (`renderBizPerfPlProgress2026`):
   - API `/performance/pl-progress-2026/summary?year=2026`. 컬럼: 연간(T/E) 후 2601~2612 T/E, 행: 매출/공헌비용/공헌이익/고정비/OP/영업이익률.
   - 숫자 소수 1자리, 항목 좌정렬·나머지 우정렬, 현재 월 컬럼 하이라이트. 연간 컬럼 비활성, 월별 E(총/온라인/출강)만 버튼, 0이면 span. 드릴다운 `/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E`, 모달은 테이블-only 숫자 우정렬(tabular-nums).
@@ -31,7 +31,7 @@ sync_source:
   - API `/performance/monthly-amounts/summary?from=2025-01&to=2026-12`. Rows TOTAL→CONTRACT→CONFIRMED→HIGH, 24개월 고정, 억 단위 1자리. 0은 비활성 span, 버튼 클릭 시 `/performance/monthly-amounts/deals`.
   - 드릴다운 모달: 테이블-only, 첫 4컬럼 좌정렬·숫자 우정렬, 합계 카드 없음.
 - StatePath 24→25: 헤더 1줄(필터 버튼+칩+전체 해제), segment=전체 기본. 전체 해제 시 segment 리셋 후 `/statepath/portfolio-2425` 재호출. 스냅샷 6타일 1행 가로 스크롤.
-- QC(개인별 세일즈맵 누락/오류 딜 `renderDealQcR1R15Screen`):
+- QC(개인별 세일즈맵 검수 `renderDealQcR1R15Screen`):
   - 요약: 3분할 카드(교육1/교육2/공공), 컬럼=담당자/총이슈(내림차순), 데이터는 `/qc/deal-errors/summary?team=edu1|edu2|public`.
   - 상세 모달: 행 클릭 시 `/qc/deal-errors/person?owner=...&team=...`. R1~R15 섹션만 표시(위배 없으면 섹션 미출력). Deal/Org/People 링크, table-layout fixed + colgroup 공통 폭. ESC/백드롭/X로 닫힘.
 - 기타 화면: DRI/랭킹/불일치/Dealcheck/Org 뷰어 등은 동일 렌더러와 `/rank/*`, `/orgs/*`, `/deal-check/*` 등 API 사용.

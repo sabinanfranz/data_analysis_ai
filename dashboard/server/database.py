@@ -3699,9 +3699,12 @@ def get_rank_2025_top100_counterparty_dri(
     # owners: fetch minimal rows for top orgs only
     owner_rows: List[sqlite3.Row] = []
     with _connect(db_path) as conn:
+        has_people_owner = _has_column(conn, "people", "담당자")
+        people_owner_select = 'p."담당자"' if has_people_owner else "NULL"
         owner_rows = _fetch_all(
             conn,
-            'SELECT d.organizationId AS orgId, COALESCE(p."소속 상위 조직","미입력") AS upper_org, d."담당자" AS owner_json '
+            f'SELECT d.organizationId AS orgId, COALESCE(p."소속 상위 조직","미입력") AS upper_org, '
+            f'{people_owner_select} AS people_owner_json, d."담당자" AS deal_owner_json '
             "FROM deal d "
             "LEFT JOIN people p ON p.id = d.peopleId "
             f"WHERE d.\"상태\" = 'Won' AND d.\"계약 체결일\" LIKE '2025%' AND d.organizationId IN ({placeholders})",
@@ -3727,6 +3730,15 @@ def get_rank_2025_top100_counterparty_dri(
             names.append(data.strip())
         return names
 
+    def _extract_preferred_owner_names(row: sqlite3.Row) -> List[str]:
+        people_names = _parse_owner_names(row["people_owner_json"])
+        if people_names:
+            return people_names
+        deal_names = _parse_owner_names(row["deal_owner_json"])
+        if deal_names:
+            return deal_names
+        return ["미입력"]
+
     for row in owner_rows:
         org_id = row["orgId"]
         upper = _norm_text(row["upper_org"])
@@ -3734,12 +3746,9 @@ def get_rank_2025_top100_counterparty_dri(
         if key not in cp_map:
             continue
         entry = cp_map[key]
-        owner_names = _parse_owner_names(row["owner_json"])
-        if owner_names:
-            for name in owner_names:
-                entry["owners2025"].add(name)
-        else:
-            entry["owners2025"].add("미입력")
+        owner_names = _extract_preferred_owner_names(row)
+        for name in owner_names:
+            entry["owners2025"].add(name)
 
     rows: List[Dict[str, Any]] = []
     for (org_id, upper), cp in cp_map.items():

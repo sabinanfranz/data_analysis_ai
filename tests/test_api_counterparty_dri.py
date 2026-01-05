@@ -11,7 +11,7 @@ def _build_db(path: Path) -> None:
   conn.executescript(
       """
         CREATE TABLE organization (id TEXT, "이름" TEXT, "기업 규모" TEXT);
-        CREATE TABLE people (id TEXT, organizationId TEXT, "이름" TEXT, "소속 상위 조직" TEXT);
+        CREATE TABLE people (id TEXT, organizationId TEXT, "이름" TEXT, "소속 상위 조직" TEXT, "담당자" TEXT);
         CREATE TABLE deal (
           id TEXT,
           peopleId TEXT,
@@ -31,16 +31,18 @@ def _build_db(path: Path) -> None:
   conn.execute('INSERT INTO organization VALUES ("org-1","알파","대기업")')
   conn.execute('INSERT INTO organization VALUES ("org-2","베타","대기업")')
   conn.execute('INSERT INTO organization VALUES ("org-3","감마","대기업")')
-  conn.execute('INSERT INTO people VALUES ("p-1","org-1","담당자A","HRD본부")')
-  conn.execute('INSERT INTO people VALUES ("p-2","org-2","담당자B","BU본부")')
-  conn.execute('INSERT INTO people VALUES ("p-3","org-3","담당자C","전략본부")')
+  conn.execute(
+      'INSERT INTO people VALUES ("p-1","org-1","담당자A","HRD본부", \'{"id":"64d1cce2d92185a53be6bd09","name":"최예인"}\')'
+  )
+  conn.execute('INSERT INTO people VALUES ("p-2","org-2","담당자B","BU본부", NULL)')
+  conn.execute('INSERT INTO people VALUES ("p-3","org-3","담당자C","전략본부", NULL)')
   deals = [
       # org-1, upper_org HRD본부
-      ("d-1", "p-1", "org-1", "딜1", "Won", "확정", "100000000", "0", "2025-01-01", "2024-12-20", "포팅", '{"name":"담당자A"}'),
-      ("d-2", "p-1", "org-1", "딜2", "Won", "확정", "200000000", "0", "2025-02-01", "2025-01-10", "포팅/SCORM", '{"name":"담당자A"}'),
-      ("d-3", "p-1", "org-1", "딜3", "Won", "확정", "300000000", "0", "2025-03-01", "2025-02-10", "집합", '{"name":"담당자C"}'),
+      ("d-1", "p-1", "org-1", "딜1", "Won", "확정", "100000000", "0", "2025-01-01", "2024-12-20", "포팅", '{"name":"딜담당자A"}'),
+      ("d-2", "p-1", "org-1", "딜2", "Won", "확정", "200000000", "0", "2025-02-01", "2025-01-10", "포팅/SCORM", '{"name":"딜담당자B"}'),
+      ("d-3", "p-1", "org-1", "딜3", "Won", "확정", "300000000", "0", "2025-03-01", "2025-02-10", "집합", '{"name":"딜담당자C"}'),
       # org-2, smaller total
-      ("d-4", "p-2", "org-2", "딜4", "Won", "확정", "50000000", "0", "2025-01-05", "2024-12-31", "구독제(온라인)", '{"name":"담당자B"}'),
+      ("d-4", "p-2", "org-2", "딜4", "Won", "확정", "50000000", "0", "2025-01-05", "2024-12-31", "구독제(온라인)", '{"name":"딜담당자B"}'),
       # org-3, large but Lost/Convert should be excluded
       ("d-5", "p-3", "org-3", "딜5", "Lost", "확정", "900000000", "0", "2025-04-01", "2025-03-01", "집합", '{"name":"담당자C"}'),
       ("d-6", "p-3", "org-3", "딜6", "Convert", "확정", "800000000", "0", "2025-05-01", "2025-04-01", "집합", '{"name":"담당자C"}'),
@@ -74,11 +76,29 @@ class CounterpartyDriApiTest(unittest.TestCase):
         self.assertAlmostEqual(target["cpOnline2025"], 100000000)
         self.assertAlmostEqual(target["cpOffline2025"], 500000000)
         self.assertAlmostEqual(target["cpTotal2025"], target["cpOnline2025"] + target["cpOffline2025"])
-        self.assertIn("담당자A", target["owners2025"])
-        self.assertIn("담당자C", target["owners2025"])
+        self.assertEqual(set(target["owners2025"]), {"최예인"})
 
       # org tier present, fallback to 미입력 if missing
       self.assertTrue(all("orgTier" in r for r in rows))
+
+  def test_people_owner_preferred_over_deal_owner(self) -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+      db_path = Path(tmpdir) / "db.sqlite"
+      _build_db(db_path)
+
+      res = db.get_rank_2025_top100_counterparty_dri(size="대기업", db_path=db_path)
+      rows = res["rows"]
+
+      hrd = next((r for r in rows if r["orgId"] == "org-1" and r["upperOrg"] == "HRD본부"), None)
+      self.assertIsNotNone(hrd)
+      if hrd:
+        self.assertEqual(set(hrd["owners2025"]), {"최예인"})
+        self.assertNotIn("딜담당자A", hrd["owners2025"])
+
+      bu = next((r for r in rows if r["orgId"] == "org-2" and r["upperOrg"] == "BU본부"), None)
+      self.assertIsNotNone(bu)
+      if bu:
+        self.assertIn("딜담당자B", bu["owners2025"])
 
   def test_offset_limit(self) -> None:
     with tempfile.TemporaryDirectory() as tmpdir:

@@ -140,6 +140,39 @@
       padding: 12px;
       box-shadow: var(--shadow);
     }
+    /* Global numeric alignment utility */
+    th.num,
+    td.num {
+      text-align: right !important;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    /* Global DRI alignment utility */
+    th.dri,
+    td.dri {
+      text-align: center !important;
+      white-space: nowrap;
+    }
+    /* DRI table horizontal scroll wrapper */
+    .table-scroll-x {
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    /* Prevent wrapping in headers/cells inside scrollable tables */
+    .table-scroll-x table th,
+    .table-scroll-x table td {
+      white-space: nowrap;
+    }
+    .table-scroll-x table td {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* Global DRI alignment utility */
+    th.dri,
+    td.dri {
+      text-align: center !important;
+      white-space: nowrap;
+    }
     .cpr-card h3 {
       margin: 0 0 6px;
       font-size: 16px;
@@ -1140,11 +1173,13 @@
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
       -webkit-appearance: none;
+      appearance: none;
       margin: 0;
     }
 
     input[type="number"] {
       -moz-appearance: textfield;
+      appearance: textfield;
     }
 
     .pnl-assump-actions {
@@ -2208,8 +2243,8 @@
         items: [
           { id: "biz-perf-pl-progress-2026", label: "2026 P&L" },
           { id: "biz-perf-monthly", label: "2026 월별 체결액" },
-          // ✅ 구 "카운터파티 리스크(일간)" → 2026 Daily Report (id 유지)
-          { id: "counterparty-risk-daily", label: "2026 Daily Report" },
+          // ✅ 구 "카운터파티 리스크(일간)" → 2026 Daily Report(WIP) (id 유지)
+          { id: "counterparty-risk-daily", label: "2026 Daily Report(WIP)" },
         ],
       },
       {
@@ -2627,11 +2662,9 @@
       let teamPartText = "";
       if (displayCombos.length === 1) {
         teamPartText = displayCombos[0];
-      } else if (displayCombos.length === 2) {
-        teamPartText = `${displayCombos[0]} / ${displayCombos[1]}`;
       } else {
-        const extra = displayCombos.length - 2;
-        teamPartText = `${displayCombos[0]} / ${displayCombos[1]} 외 ${extra}`;
+        const extra = displayCombos.length - 1;
+        teamPartText = `${displayCombos[0]} 외 ${extra}개`;
       }
 
       const dri = displayCombos.length === 1 ? "O" : "X";
@@ -2803,7 +2836,7 @@
         <section class="card">
           <h3>연도별 요약</h3>
           <div class="table-wrap full">
-            <table>
+            <table class="cpr-table">
               <thead><tr><th>연도</th><th>총액(억)</th><th>온라인(억)</th><th>오프라인(억)</th><th>HRD(억)</th><th>BU(억)</th></tr></thead>
               <tbody>${rowsYear}</tbody>
             </table>
@@ -5110,6 +5143,65 @@
       return text === "미입력" ? "" : text;
     }
 
+    function clampValue(n, min, max) {
+      return Math.max(min, Math.min(max, n));
+    }
+
+    function debounce(fn, wait = 80) {
+      let t = null;
+      return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), wait);
+      };
+    }
+
+    let _metricResizeBound = false;
+    const applyEqualMetricColWidthsDebounced = debounce(() => {
+      const tableEl = document.getElementById("rankCounterpartyDriTable");
+      applyEqualMetricColWidths(tableEl);
+    }, 80);
+
+    function bindMetricResizeOnce() {
+      if (_metricResizeBound) return;
+      _metricResizeBound = true;
+      window.addEventListener("resize", applyEqualMetricColWidthsDebounced);
+    }
+
+    function applyEqualMetricColWidths(tableEl) {
+      if (!tableEl) return;
+      const wrapper = tableEl.closest(".table-scroll-x") || tableEl.parentElement;
+      if (!wrapper) return;
+      const metricCols = tableEl.querySelectorAll("colgroup col[data-metric='1']");
+      const metricThs = tableEl.querySelectorAll("thead th[data-metric='1']");
+      if (metricCols.length !== 6 || metricThs.length !== 6) return;
+      const ths = tableEl.querySelectorAll("thead th");
+      if (!ths.length) return;
+
+      const containerW = wrapper.clientWidth || tableEl.clientWidth;
+      let nonMetricW = 0;
+      ths.forEach((th) => {
+        if (th.getAttribute("data-metric") === "1") return;
+        nonMetricW += th.offsetWidth;
+      });
+
+      const MIN_W = 84;
+      const MAX_W = 160;
+      const remaining = containerW - nonMetricW;
+      const ideal = Math.floor(remaining / 6);
+      const w = clampValue(ideal, MIN_W, MAX_W);
+
+      const needMinTotal = nonMetricW + 6 * MIN_W;
+      if (containerW < needMinTotal) {
+        tableEl.style.minWidth = `${needMinTotal}px`;
+      } else {
+        tableEl.style.minWidth = "";
+      }
+
+      metricCols.forEach((col) => {
+        col.style.width = `${w}px`;
+      });
+    }
+
     function buildSalesmapLink(type, id) {
       if (!id || !SALESMAP_WORKSPACE_PATH) return null;
       const base = `https://salesmap.kr/${SALESMAP_WORKSPACE_PATH.replace(/^\/+/, "").replace(/\/+$/, "")}`;
@@ -6638,7 +6730,7 @@
       wrapper.innerHTML = `
         <div class="cpr-header">
           <div>
-            <h2 style="margin:0;">2026 Daily Report</h2>
+            <h2 style="margin:0;">2026 Daily Report(WIP)</h2>
             <div class="muted" style="font-size:12px;">(구: 카운터파티 리스크(일간)) · DB 교체 시 새로고침 필요(프런트 캐시 무효화 없음)</div>
           </div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -8020,6 +8112,7 @@
         btnMultiplier.addEventListener("click", () => openMultiplierModal(() => refresh()));
       }
 
+      bindMetricResizeOnce();
       await refresh();
     }
 
@@ -8163,7 +8256,14 @@
         }
             const htmlRows = rows
           .map((row, idx) => {
-            const owners = Array.isArray(row.owners2025) && row.owners2025.length ? row.owners2025.join(", ") : "미입력";
+            const ownerList = Array.isArray(row.owners2025) ? row.owners2025.map((s) => (s || "").trim()).filter(Boolean) : [];
+            const owners = ownerList.length ? ownerList.join(", ") : "미입력";
+            const ownersDisplay =
+              ownerList.length >= 3 ? `${ownerList[0]} 외 ${ownerList.length - 1}명` : ownerList.join(", ") || "미입력";
+            const upperRaw = row.upperOrg || "미입력";
+            const isAsciiUpper = /^[A-Za-z0-9\s]+$/.test(upperRaw);
+            const upperLimit = isAsciiUpper ? 20 : 12;
+            const upperDisplay = upperRaw.length > upperLimit ? `${upperRaw.slice(0, upperLimit)}...` : upperRaw;
             const tp = computeTeamPartSummary(row.owners2025 || []);
             const ownersText = owners === "미입력" ? "미입력" : owners.split(",").map((s) => s.trim()).join(", ");
             const tier = row.orgTier || "미입력";
@@ -8183,42 +8283,60 @@
               <tr data-idx="${idx}">
                 <td>${tier}</td>
                 <td><span class="org-link" data-org-link="${idx}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${row.orgName || row.orgId || "-"}</span></td>
-                <td>${row.upperOrg || "미입력"}</td>
-                <td class="nowrap-ellipsis" title="${owners}">${ownersText}</td>
+                <td title="${upperRaw}">${upperDisplay}</td>
+                <td class="nowrap-ellipsis" title="${owners}">${ownersDisplay}</td>
                 <td>${tp.teamPartText || "-"}</td>
-                <td>${tp.dri || "X"}</td>
-                <td>${fmtOffline25}</td>
-                <td>${fmtTarget26}</td>
-                <td>${fmtOffline26}</td>
-                <td>${fmtOnline25}</td>
-                <td>${fmtTarget26Online}</td>
-                <td>${fmtOnline26}</td>
+                <td class="dri">${tp.dri || "X"}</td>
+                <td class="num">${fmtOffline25}</td>
+                <td class="num">${fmtTarget26}</td>
+                <td class="num">${fmtOffline26}</td>
+                <td class="num">${fmtOnline25}</td>
+                <td class="num">${fmtTarget26Online}</td>
+                <td class="num">${fmtOnline26}</td>
               </tr>
             `;
           })
           .join("");
         tableWrap.innerHTML = `
-          <div class="table-wrap full">
-            <table>
+          <div class="table-wrap full table-scroll-x">
+            <table class="cpr-table" id="rankCounterpartyDriTable">
+              <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col data-metric="1">
+                <col data-metric="1">
+                <col data-metric="1">
+                <col data-metric="1">
+                <col data-metric="1">
+                <col data-metric="1">
+              </colgroup>
               <thead>
                 <tr>
                   <th>티어</th>
                   <th>기업명</th>
                   <th>카운터파티</th>
-                  <th>25 담당자</th>
+                  <th>담당자</th>
                   <th>팀&파트</th>
-                  <th>DRI 가능</th>
-                  <th>25 비온라인</th>
-                  <th>26 비온라인 타겟</th>
-                  <th>26 비온라인 체결</th>
-                  <th>25 온라인</th>
-                  <th>26 온라인 타겟</th>
-                  <th>26 온라인 체결</th>
-          </thead>
-          <tbody>${htmlRows}</tbody>
-        </table>
+                  <th class="dri">DRI</th>
+                  <th class="num" data-metric="1">25 출강</th>
+                  <th class="num" data-metric="1">26 출강 타겟</th>
+                  <th class="num" data-metric="1">26 출강 체결</th>
+                  <th class="num" data-metric="1">25 온라인</th>
+                  <th class="num" data-metric="1">26 온라인 타겟</th>
+                  <th class="num" data-metric="1">26 온라인 체결</th>
+                </tr>
+              </thead>
+              <tbody>${htmlRows}</tbody>
+            </table>
           </div>
         `;
+        requestAnimationFrame(() => {
+          applyEqualMetricColWidths(document.getElementById("rankCounterpartyDriTable"));
+        });
         tableWrap.querySelectorAll("tr[data-idx]").forEach((tr) => {
           tr.addEventListener("click", () => {
             const idx = Number(tr.getAttribute("data-idx"));
@@ -8573,8 +8691,8 @@
               <span><strong>팀&파트:</strong> ${tp.teamPartText || "-"}</span>
               <span><strong>DRI:</strong> <span style="font-weight:700; color:${tp.dri === "O" ? "var(--success)" : "var(--error)"};">${tp.dri || "X"}</span></span>
             </div>
-            ${renderDealTable("25 비온라인", offlineDeals2025)}
-            ${renderDealTable("26 비온라인 체결", offline26)}
+            ${renderDealTable("25 출강", offlineDeals2025)}
+            ${renderDealTable("26 출강 체결", offline26)}
             ${renderDealTable("25 온라인", onlineDeals2025)}
             ${renderDealTable("26 온라인 체결", online26)}
           `;
@@ -8595,8 +8713,8 @@
       contentRoot.innerHTML = `
         <section class="card target2026-wrap">
           <div class="target2026-header">
-            <div class="target2026-title">2026 비온라인 체결액 Target</div>
-            <div class="target2026-sub">26 비온라인 체결 / 26 비온라인 타겟 (억)</div>
+            <div class="target2026-title">2026 출강 체결액 Target</div>
+            <div class="target2026-sub">26 출강 체결 / 26 출강 타겟 (억)</div>
           </div>
           <div id="target2026Body" class="target2026-grid-wrap"><div class="target2026-grid"></div></div>
         </section>

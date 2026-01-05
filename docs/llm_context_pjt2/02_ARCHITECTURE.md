@@ -34,7 +34,7 @@ sync_source:
 - LLM payload/canonical/hash/폴백: `dashboard/server/counterparty_llm.py` + 프롬프트 파일.
 - Cache/Snapshot/Scheduler: `dashboard/server/report_scheduler.py` (+ start_scheduler in `main.py`).
 - API: `dashboard/server/org_tables_api.py` (`/report/counterparty-risk`, `/recompute`, `/status`).
-- 프런트: `org_tables_v2.html` 메뉴/렌더(`counterparty-risk-daily` → “2026 Daily Report”).
+- 프런트: `org_tables_v2.html` 메뉴/렌더(`counterparty-risk-daily` → “2026 Daily Report(WIP)”).
 
 ## Edge Cases
 - DB 교체 직후(3분 이내) 스케줄 실행 시 재시도 후 실패 가능 → status에 FAILED, 캐시는 최근 성공본 유지.
@@ -60,7 +60,7 @@ flowchart LR
   GEN --> CACHE[report_cache/YYYY-MM-DD.json]
   GEN --> LLMC[report_cache/llm/{as_of}/{db_hash}/...]
   CACHE --> API[/api/report/counterparty-risk/]
-  API --> FRONT[org_tables_v2.html<br/>counterparty-risk-daily<br/>\"2026 Daily Report\"]
+  API --> FRONT[org_tables_v2.html<br/>counterparty-risk-daily<br/>\"2026 Daily Report(WIP)\"]
   subgraph Scheduler
     CRON[cron 08:00 KST<br/>ENABLE_SCHEDULER=1] --> GEN
   end

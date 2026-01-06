@@ -1,62 +1,52 @@
 ---
 title: 테스트 & 품질 가이드
-last_synced: 2025-12-24
+last_synced: 2026-01-06
 sync_source:
+  - tests/test_perf_monthly_contracts.py
+  - tests/test_pl_progress_2026.py
+  - tests/test_api_counterparty_dri.py
   - tests/test_won_groups_json.py
-  - tests/test_salesmap_first_page_snapshot.py
-  - tests/test_deal_check_edu1.py
-  - tests/org_tables_v2_frontend.test.js
   - org_tables_v2.html
 ---
 
-# 테스트 & 품질 가이드
+## Purpose
+- 주요 기능을 보호하는 테스트 커버리지와 실행 방법을 요약해 리팩토링 시 안전망을 확보한다.
 
-## 1) Python 테스트
-- 실행 전: `PYTHONPATH=.` 설정이 필요하다(루트 기준).
-- unittest 예시:  
-  ```bash
-  PYTHONPATH=. python3 -m unittest discover -s tests
-  ```
-- 단일 파일:  
-  ```bash
-  PYTHONPATH=. python3 -m unittest tests.test_won_groups_json
-  ```
-- pytest를 쓸 경우(로컬 venv에 설치 시):  
-  ```bash
-  PYTHONPATH=. pytest
-  ```
+## Behavioral Contract
+- 파이썬 단위 테스트는 `python -m unittest discover -s tests` 또는 `PYTHONPATH=. python -m unittest tests/<file>.py`로 실행한다. Node 기반 프런트 테스트는 없음(프런트는 정적 HTML).
+- 핵심 테스트 역할:
+  - `tests/test_perf_monthly_contracts.py`: `/performance/monthly-amounts/summary|deals` 집계/세그먼트/row 순서/코스 ID fallback 검증.
+  - `tests/test_pl_progress_2026.py`: `/performance/pl-progress-2026/summary|deals` Target/Expected 합산, excluded 카운트, 정렬/recognizedAmount 검증.
+  - `tests/test_api_counterparty_dri.py`: `/rank/2025-top100-counterparty-dri` 온라인 판정, owners 우선순위, Lost/Convert 제외, 정렬, offset/limit 검증.
+  - `tests/test_won_groups_json.py`: won-groups-json 메모/웹폼 정제, compact 변환, schema_version/summary/deal_defaults 검증.
+  - 기타: deal-check/StatePath/LLM 등 관련 테스트는 없으나 API/프런트 계약이 해당 테스트에 의해 간접 보호된다.
 
-## 2) 프런트 테스트
-- 별도 패키지 매니저 스크립트는 없지만 Node 내장 테스트로 스모크를 돌릴 수 있다.
-- `org_tables_v2.html` 주요 렌더/StatePath/툴팁 동작을 `node --test tests/org_tables_v2_frontend.test.js`로 실행(로컬 Node 필요).
-- 최초 1회 `npm install`로 devDependencies(jsdom) 설치 후 실행해야 한다(Node v22+ 기준).
+## Invariants (Must Not Break)
+- 테스트는 SQLite 임시 DB를 생성해 함수 단위로 호출하며, DB_PATH를 오염시키지 않는다.
+- `test_perf_monthly_contracts`는 세그먼트 row 순서(TOTAL→CONTRACT→CONFIRMED→HIGH)와 24개월 키를 고정적으로 검증한다.
+- `test_pl_progress_2026`는 Target 값(예: 2601_T=5.8, 2605_T=12.4)과 excluded 카운트(missing_dates, missing_amount)를 검증한다.
+- `test_api_counterparty_dri`는 ONLINE 판정 리스트와 People.owner_json 우선 owners 추출을 전제한다.
+- `test_won_groups_json`은 webform id 비노출, 날짜 매핑, cleanText 규칙을 전제로 한다.
 
-## 3) 테스트 커버리지(핵심 영역)
-- `test_won_groups_json.py`: 웹폼 날짜 매핑, 메모 정제 규칙 검증.
-- `test_salesmap_first_page_snapshot.py`: 스냅샷 파이프라인 동작(체크포인트/백업 등) 검증.
-- `test_mismatched_deals_2025.py`, `test_rank_2025_deals_people.py`, `test_won_totals_by_size.py`: 랭킹/집계 로직 검증.
-- `test_build_org_tables.py`, `test_build_org_mindmap.py`: 정적 HTML/마인드맵 생성 로직 검증.
-- `org_tables_v2_frontend.test.js`: 프런트 렌더/StatePath 메뉴/용어 모달 스모크(node --test).
-- `test_deal_check_edu1.py`: 교육1팀 딜체크 리텐션/owners 필터/정렬/memoCount 검증.
-- `test_statepath_engine.py`: StatePath 버킷/경로/추천 로직 및 딜 폴백 검증.
-- `test_api_statepath_portfolio.py`: `/api/statepath/portfolio-2425` 응답 스키마/필터/금액 유형 검증.
-- `test_won_summary.py`: `/won-summary`의 owners2025 포함 여부 검증.
+## Coupling Map
+- 테스트 → 대상 코드:
+  - perf/pl: `dashboard/server/database.py` (`get_perf_monthly_amounts_summary/deals`, `get_pl_progress_summary/deals`)
+  - DRI: `database.get_rank_2025_top100_counterparty_dri`
+  - won JSON: `database.get_won_groups_json`, `json_compact.compact_won_groups_json`
+  - 프런트 의존: `org_tables_v2.html`는 위 API 계약을 렌더링/드릴다운에 사용한다.
 
-## 4) 변경 유형별 권장 실행
-- **API/쿼리/정제 로직 변경**: `PYTHONPATH=. python3 -m unittest tests.test_won_groups_json tests.test_won_totals_by_size tests.test_mismatched_deals_2025 tests.test_rank_2025_deals_people`
-- **스냅샷 파이프라인 변경**: `PYTHONPATH=. python3 -m unittest tests.test_salesmap_first_page_snapshot`
-- **정적 HTML 생성 변경**: `PYTHONPATH=. python3 -m unittest tests.test_build_org_tables tests.test_build_org_mindmap`
-- **프런트 로직 변경**: 수동 브라우저 검증 + (Node 환경이 있다면) `node --test tests/org_tables_v2_frontend.test.js`
-- **교육1팀 딜체크 변경**: `PYTHONPATH=. python3 -m unittest tests.test_deal_check_edu1`
-
-## 5) 수동 품질 체크리스트
-- DB 교체 후 프런트 새로고침(캐시 무효화 없음).
-- 조직 목록 정렬/필터 확인: People/Deal 연결 없는 조직이 목록에 보이지 않는지, 2025 Won desc 정렬 유지되는지.
-- 상위 조직 JSON/웹폼 모달: 날짜/이름 표시, 버튼 활성 조건 확인.
-- 스냅샷 실패 시: `backups/`, `logs/checkpoints/`, `logs/run_info/manifest` 유무 확인 후 `--resume` 여부 판단.
+## Edge Cases & Failure Modes
+- 로컬 DB 스키마가 테스트 기대와 다르면(컬럼 누락 등) 테스트가 실패하거나 fallback 경로를 통과해 결과가 달라질 수 있다.
+- 환경에 따라 `PYTHONPATH=.` 세팅 없이 실행하면 모듈 import 에러가 날 수 있다.
+- Node 기반 프런트 테스트가 없으므로 DOM/CSS 회귀는 수동 확인이 필요하다.
 
 ## Verification
-- `PYTHONPATH=. python3 -m unittest tests.test_deal_check_edu1`가 리텐션/owners/정렬/memoCount 시나리오를 통과하는지 확인한다.
-- Node 환경에서 `node --test tests/org_tables_v2_frontend.test.js`가 실행되고 주요 렌더 스모크가 통과하는지 확인한다.
-- 스냅샷/랭킹/StatePath 관련 테스트(test_salesmap_first_page_snapshot, test_won_groups_json, test_rank_*, test_statepath_engine 등)가 모두 통과하는지 확인한다.
-- 프런트 수동 점검 시 조직 목록 정렬(2025 Won desc)과 edu1 테이블 nowrap/colgroup 폭/메모 버튼 활성화 상태를 확인한다.
+- `PYTHONPATH=. python -m unittest tests/test_perf_monthly_contracts.py`가 통과하고 months 24개/row 순서가 유지되는지 확인한다.
+- `PYTHONPATH=. python -m unittest tests/test_pl_progress_2026.py` 실행 시 Target/Expected/recognizedAmount/ excluded 카운트 검증이 통과하는지 확인한다.
+- `PYTHONPATH=. python -m unittest tests/test_api_counterparty_dri.py`가 ONLINE 판정/owners 우선/정렬/offset/limit 케이스를 통과하는지 확인한다.
+- `PYTHONPATH=. python -m unittest tests/test_won_groups_json.py`가 webform 날짜/cleanText/compact 규칙을 통과하는지 확인한다.
+
+## Refactor-Planning Notes (Facts Only)
+- 프런트 UI/UX, 캐시, 모달 동작을 직접 커버하는 자동화 테스트가 없어 API 계약이 맞더라도 렌더링/DOM 회귀는 놓칠 수 있다.
+- 테스트가 모두 임시 SQLite를 사용하므로 실제 대용량/실데이터 성능은 별도 검증이 필요하다.
+- 캐시/프로세스 재시작 동작은 테스트에 포함되지 않아 mtime 기반 캐시 갱신 문제를 잡지 못한다.

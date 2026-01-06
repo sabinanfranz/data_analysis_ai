@@ -1,68 +1,81 @@
 ---
 title: 핵심 조회 API 계약 (org_tables_v2.html 사용)
-last_synced: 2025-12-24
+last_synced: 2026-01-06
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py
   - dashboard/server/json_compact.py
   - org_tables_v2.html
+  - tests/test_perf_monthly_contracts.py
+  - tests/test_pl_progress_2026.py
+  - tests/test_api_counterparty_dri.py
 ---
 
-# 핵심 조회 API 계약 (org_tables_v2.html 사용)
+## Purpose
+- org_tables_v2 프런트가 의존하는 핵심 FastAPI 엔드포인트의 파라미터/정렬/응답 스키마/캐시 규칙을 최신 코드 기준으로 명세한다.
 
-## 공통 규칙
-- 기본 DB 경로: 루트 `salesmap_latest.db`. 파일이 없으면 500 오류를 반환한다.
-- 금액/날짜 포맷: DB에는 TEXT로 저장, 백엔드에서 그대로 전달(금액은 필요 시 `_to_number`로 변환). 프런트는 표시 시 1e8으로 나눠 억 단위 표기하며, 날짜는 화면별 규칙에 맞춰 `YYYY-MM-DD` 또는 `YYMMDD`로 포맷한다(edu1 딜체크는 `YYMMDD`).
-- 정렬/필터: 엔드포인트별로 명시(아래 표). 조직 목록은 “People 또는 Deal 연결 있음 + 2025년 Won 합계 내림차순”.
-- 캐시: 프런트(JS Map)에만 존재, 무효화 없음. 새 DB로 교체하면 브라우저 새로고침 필요(`docs/org_tables_v2.md` 참고).
-- StatePath 계열 응답(`/statepath/*`) 금액은 이미 억 단위(amount_eok)다. 프런트는 `formatEok`로 바로 표시하며 추가 나눗셈을 하지 않는다.
+## Behavioral Contract
+- 공통: DB_PATH 기본 `salesmap_latest.db`, 부재 시 대부분 500. 금액/날짜는 원본 TEXT를 그대로 전달하며 포맷은 프런트가 처리한다. 프런트 캐시는 JS Map으로만 존재해 새로고침 전까지 유지된다.
+- 조직/기본 조회:
+  - `GET /api/sizes` → `SIZE_GROUPS` 순(`대기업`…`기타/미입력`).
+  - `GET /api/orgs?size=전체&search=&limit=200&offset=0` → People 또는 Deal이 1건 이상 있는 조직만, won2025 desc→name asc 정렬.
+  - `GET /api/orgs/{id}` 404 on missing.
+  - `GET /api/orgs/{id}/people?hasDeal=true|false|null` → name asc.
+  - `GET /api/orgs/{id}/memos`/`/people/{id}/memos`/`/deals/{id}/memos` → createdAt desc, limit ≤500.
+- Won JSON:
+  - `GET /api/orgs/{id}/won-groups-json` → organization(id/name/size/industry/industry_major/mid + memos) + groups(upper_org/team별 people/deals). webforms `{name,date}`(id 숨김, webform_history 매핑) 포함, 폼 메모는 `_clean_form_memo`로 정제해 `cleanText`.
+  - `GET /api/orgs/{id}/won-groups-json-compact` → schema_version `won-groups-json/compact-v1`, deal_defaults(>=80% 반복 필드) 추출, Won 요약(summary) 누적, memos/webforms 제거.
+  - `GET /api/orgs/{id}/won-summary` → 상위 조직별 Won 합계(2023/2024/2025) + owners/owners2025/dealCount.
+- 랭킹/DRI/StatePath:
+  - `GET /api/rank/2025/summary-by-size?exclude_org_name=삼성전자&years=2025,2026` → Won 합계 규모별, 캐시 키 `snapshot_version=db_mtime:<int>`.
+  - `GET /api/rank/2025-deals`, `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary` → DB 조회 결과 그대로 반환.
+  - `GET /api/rank/2025-top100-counterparty-dri?size=대기업&limit=100&offset=0` → Lost/Convert 제외, 2025/2026 계약/예상 딜 중 확정/높음/Won만 집계, orgWon2025 desc→cpTotal2025 desc 정렬, owners는 People.owner_json 우선.
+  - `GET /api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...` → 해당 org/upper_org 딜 상세(people_id/people_name/upper_org 포함).
+  - `GET /api/statepath/portfolio-2425` → segment/search/정렬/패턴/리스크 필터 반영된 요약+아이템(금액은 억 단위). `GET /api/orgs/{id}/statepath-2425`는 단건 버전.
+  - `GET /api/orgs/{id}/statepath` → compact JSON 기반 statepath_engine 결과(2024/2025 상태·Path·추천, 금액은 억 단위) 반환.
+- 사업부 퍼포먼스:
+  - `GET /api/performance/monthly-amounts/summary?from=2025-01&to=2026-12` → months=YYMM 24개, segment 11종, rows=TOTAL→CONTRACT→CONFIRMED→HIGH. 금액 원 단위, TOTAL은 나머지 합. snapshot_version 포함.
+  - `GET /api/performance/monthly-amounts/deals?segment=...&row=TOTAL|CONTRACT|CONFIRMED|HIGH&month=YYMM` → row=TOTAL은 3버킷 합집합 dedupe, totalAmount=amount>0 else expectedAmount 합산, items 정렬은 프런트가 수행.
+  - `GET /api/performance/pl-progress-2026/summary` → Target(T) 열은 `PL_2026_TARGET`, Expected(E)는 기간 비율로 분배한 recognized_by_month 합계(억 단위 소수 4자리). OP_MARGIN은 연간 OP/REV. 캐시 키 `_PL_PROGRESS_SUMMARY_CACHE`.
+  - `GET /api/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E` → recognizedAmount desc→amountUsed desc→dealName asc 정렬. variant T는 빈 리스트 반환.
+- 딜체크/QC:
+  - `GET /api/deal-check?team=edu1|edu2` → `상태='SQL'` 딜 중 팀 구성원 포함 건만, orgWon2025Total desc→createdAt asc→dealId asc, memoCount join. isRetention은 2025 Won 금액 파싱 성공 여부.
+  - `GET /api/deal-check/edu1|edu2` → 위 래퍼.
+  - `GET /api/qc/deal-errors/summary?team=all|edu1|edu2|public` → QC_RULES(R1~R15) 위배 수 집계. `GET /api/qc/deal-errors/person?owner=...&team=...` → 담당자별 위배 리스트.
+- 카운터파티 리스크:
+  - `GET /api/report/counterparty-risk?date=YYYY-MM-DD` → 캐시 없으면 `report_scheduler.run_daily_counterparty_risk_job` 실행 후 반환. `POST /api/report/counterparty-risk/recompute`는 강제 재계산, `GET /api/report/counterparty-risk/status`는 status.json 반환.
 
-## 엔드포인트별 계약
-| 메서드/경로 | 목적 | 파라미터 | 정렬/필터 | 응답 스켈레톤 |
-| --- | --- | --- | --- | --- |
-| GET `/api/sizes` | 조직 규모 목록 조회 | 없음 | DISTINCT, 이름순 | `{ "sizes": ["대기업", ...] }` |
-| GET `/api/orgs` | 조직 목록(드롭다운) | `size`(기본 전체), `search`, `limit`(1~500, 기본 200), `offset` | size 필터, People/Deal 1건 이상, 2025 Won 합계 desc, name asc | `{ "items": [ { "id", "name", "size", "team", "owner" } ] }` |
-| GET `/api/orgs/{org_id}` | 조직 단건 조회 | path org_id | id 일치 | `{ "item": { "id", "name", "size", "team", "owner" } }` (없으면 404) |
-| GET `/api/orgs/{org_id}/memos` | 조직 메모(딜/사람 미연결) | `limit`(1~500, 기본 100) | createdAt desc | `{ "items": [ { "id","text","ownerId","ownerName","createdAt",... } ] }` |
-| GET `/api/orgs/{org_id}/people` | 조직 People 리스트 | `hasDeal`(true/false/null) | name asc | `{ "items": [ { "id","organizationId","name","upper_org","team_signature","title_signature","edu_area","email","phone","deal_count" } ] }` |
-| GET `/api/people/{person_id}/deals` | 특정 People의 Deal | path person_id | 계약일 desc, NULL 마지막 → 생성일 desc | `{ "items": [ { "id","peopleId","organizationId","name","status","amount","expected_amount","contract_date","owner_json","created_at" } ] }` |
-| GET `/api/people/{person_id}/memos` | 특정 People 메모 | `limit`(1~500, 기본 200) | createdAt desc | `{ "items": [ { "id","text","ownerId","ownerName","createdAt",... } ] }` |
-| GET `/api/deals/{deal_id}/memos` | 특정 Deal 메모 | `limit`(1~500, 기본 200) | createdAt desc | `{ "items": [ { "id","text","ownerId","ownerName","createdAt",... } ] }` |
-| GET `/api/orgs/{org_id}/won-summary` | 상위 조직별 Won 합계(23/24/25) | path org_id | 상위 조직별 그룹, Won 상태 & 계약연도 23/24/25만 합산 | `{ "items": [ { "upper_org","won2023","won2024","won2025","contacts":[...], "owners":[...], "owners2025":[...], "dealCount" } ] }` |
-| GET `/api/rank/2025/summary-by-size` | 규모별 25/26 Won 합계(삼성전자 제외) | `exclude_org_name`(기본 삼성전자), `years`(콤마 리스트 기본 2025,2026) | 상태 Won + 계약연도 기준 합계, 조직명이 제외값과 정확히 일치하면 제외, DB mtime 기반 캐시(`snapshot_version=db_mtime:<int>`) | `{ "snapshot_version":"db_mtime:<int>", "excluded_org_names":[...], "years":[2025,2026], "by_size": { "대기업": {"sum_2025":...,"sum_2026":...}, ... }, "totals": {"sum_2025":...,"sum_2026":...} }` |
-| GET `/api/orgs/{org_id}/won-groups-json` | 상위 조직별 People/Deal JSON | path org_id | 23/24/25 Won 있는 상위 조직만 포함 | `{ "organization": {...}, "groups": [ { "upper_org","team","people":[...], "deals":[...] } ] }` (세부 정제 규칙은 `docs/json_logic.md`) |
-| GET `/api/orgs/{org_id}/won-groups-json-compact` | won-groups-json 축약본(LLM용) | path org_id | 원본 그룹 구조를 compact 변환 | `{ "schema_version": "...", "organization": {...,"summary":...}, "groups": [ { "upper_org","team","deal_defaults", "counterparty_summary", "people":[...], "deals":[...] } ] }` |
-| GET `/api/orgs/{org_id}/statepath` | 2024/2025 StatePath + 추천 | path org_id | won-groups-json-compact 기반으로 StatePath/추천을 산출 | `{ "item": { "company_name": "...", "year_states": {...}, "path_2024_to_2025": {...}, "ops_reco": {...}, "qa": {...} } }` |
-| GET `/api/statepath/portfolio-2425` | 24→25 StatePath 포트폴리오 | `segment`(기본 전체), `search`, `sort`(won2025_desc/delta_desc/bucket_up_desc/risk_first/name_asc), `limit`(≤2000), `offset`, 리스크/패턴 필터(riskOnly/hasOpen/hasScaleUp/companyDir/seed/rail/railDir/companyFrom/companyTo/cell/cellEvent) | DB Won 딜을 org×year×rail×upper_org로 합산 → lane/rail/4셀 금액·버킷 산출 → Python 필터/정렬 → pagination | `{ "summary": {accountCount,sum2024Eok,sum2025Eok,companyTransitionMatrix,cellEventMatrix,railChangeSummary,seedCounts,topPatterns,segmentComparison}, "items": [ {org_id/name, size_raw, segment, company_total_eok_2024/2025, company_bucket_2024/2025, online/offline bucket, cells_2024/2025(4셀 amt+bucket), seed, eventCounts...} ], "meta": {...} }` |
-| GET `/api/orgs/{org_id}/statepath-2425` | 24→25 StatePath 상세(포트폴리오와 일관) | path org_id | DB Won 딜을 단일 org 단위로 집계 | `{ "item": { "org": {id,name,sizeRaw,sizeGroup}, "year_states": {"2024": {...}, "2025": {...}}, "path_2024_to_2025": {...}, "qa": {...} } }` |
-| GET `/api/deal-check` | 팀별 딜체크(SQL 딜) | `team`(edu1\|edu2) | orgWon2025Total desc → createdAt asc → dealId asc | `{ "items": [ {dealId, orgId, orgName, orgWon2025Total, isRetention, createdAt, dealName, courseFormat, owners, probability, expectedCloseDate, expectedAmount, memoCount, upperOrg, teamSignature, personId, personName} ] }` |
-| GET `/api/deal-check/edu1` | 교육 1팀 딜체크(SQL 딜, legacy wrapper) | 없음 | orgWon2025Total desc → createdAt asc → dealId asc | 위 `/api/deal-check?team=edu1`과 동일 |
-| GET `/api/deal-check/edu2` | 교육 2팀 딜체크(SQL 딜, legacy wrapper) | 없음 | orgWon2025Total desc → createdAt asc → dealId asc | 위 `/api/deal-check?team=edu2`과 동일 |
-| GET `/api/performance/monthly-amounts/summary` | 2025-01~2026-12 월별 체결액 세그먼트 요약 | `from`(YYYY-MM, 기본 2025-01), `to`(기본 2026-12) | 세그먼트 key 유지, label은 기업/공공/온라인/비온라인(삼전 제외) 표기로 반환. rows=TOTAL→CONTRACT→CONFIRMED→HIGH, month 키=YYMM 24개 모두 포함 | `{ "months":[...], "segments":[ { "key","label","rows":[ { "key","label","byMonth":{"2501":0.0,...},"dealCountByMonth":{"2501":0,...}}, ... ] } ], "meta":{"snapshot_version": "..."} }` |
-| GET `/api/performance/monthly-amounts/deals` | 월별 체결액 딜 목록(요약 셀 클릭용) | `segment`(세그먼트 key), `row`(TOTAL\|CONTRACT\|CONFIRMED\|HIGH), `month`(YYMM) | row=TOTAL은 CONTRACT/CONFIRMED/HIGH 합집합 dedupe. 응답 totalAmount=amount>0 else expectedAmount 합계 | `{ "segment":{"key","label"}, "row":{"key","label"}, "month":"2501", "totalAmount":..., "dealCount":..., "items":[ {orgName,upperOrg,customerPersonName,dealId,dealName,courseFormat,day1OwnerNames,status,probability,expectedCloseDate,expectedAmount,startDate,endDate,courseId,contractDate,amount,amountUsed} ], "meta":{"snapshot_version": "..."} }` |
+## Invariants (Must Not Break)
+- `/api/orgs` 정렬: won2025 desc → name asc, People/Deal 둘 다 0이면 제외.
+- Won JSON 그룹: 2023/2024/2025 Won upper_org만 포함, webform id 미노출, webform 날짜는 `"날짜 확인 불가"`/단일/리스트 형태.
+- 월별 체결액: months 24개, rows TOTAL→CONTRACT→CONFIRMED→HIGH 고정, segment label은 `_perf_segments` 정의(삼성/기업/공공/온라인/비온라인) 그대로 반환.
+- P&L: columns 연간(T/E) → 월별(T/E) 순, Expected만 드릴다운 지원, Target 값은 `PL_2026_TARGET` 딕셔너리 그대로 사용.
+- DRI: Lost/Convert 제외, prob 확정/높음/Won만 카운터파티 합산, owners는 People.owner_json을 우선 사용한다.
+- 딜체크: memoCount left join, isRetention은 2025 Won 금액 파싱 성공 기준(예상 체결액 미사용).
+- 캐시 키: DB mtime을 포함하는 메모리 캐시(`_COUNTERPARTY_DRI_CACHE`, `_PERF_MONTHLY_*`, `_PL_PROGRESS_*`, `_RANK_2025_SUMMARY_CACHE`)가 있어 프로세스 재시작 전까지 새 DB가 반영되지 않을 수 있다.
 
-## 엔드포인트 설명/예시
-- `/api/orgs`: People/Deal 연결이 없는 조직은 제외. 2025년 Won 합계 내림차순으로 정렬 후 이름 순으로 보조 정렬.
-- `/api/orgs/{id}/won-groups-json`: webform id 미노출, 날짜 매핑(`"날짜 확인 불가"`/단일/리스트), 메모 정제(전화/동의/utm 제거, 특정 문구/정보 부족 시 제외). “고객 마케팅 수신 동의”만 있어도 정제를 시도하며 ATD/SkyHive/제3자 동의 키도 제거한다. 전체 구조/정제 규칙은 `docs/json_logic.md` 참고.
-- `/api/orgs/{id}/won-groups-json-compact`: 위 JSON을 LLM 입력용으로 축약(people_id 참조, deal_defaults 추출, summary 블록 추가, 공백/null/빈 배열 제거).
-- `/api/orgs/{id}/won-summary`: `상태='Won'`이고 `계약 체결일`이 2023/2024/2025인 금액만 합산. 상위 조직 비어 있으면 `미입력` 그룹에 포함.
-- `/api/people/{id}/deals`: 계약일이 NULL인 건은 뒤로 보내고, 그 외 계약일 desc → 생성일 desc.
-- `/api/statepath/portfolio-2425`: segment/search/정렬/패턴 필터를 모두 Query로 받고, Won 딜을 24/25 + HRD/BU × ONLINE/OFFLINE으로 집계해 회사/셀 버킷·이벤트·전이 매트릭스·Top patterns·세그먼트 비교를 함께 반환한다(금액은 억 단위).
-- `/api/orgs/{id}/statepath-2425`: 동일 집계 로직을 단일 org에 적용해 year_states/path/qa/sizeGroup을 반환한다. 포트폴리오와 숫자가 최대한 일치하도록 summary/compact JSON을 거치지 않는다.
-- `/api/deal-check/edu1`: `deal."상태"='SQL'` + owners에 교육 1팀 멤버 1명 이상. 2025 Won 금액 파싱 성공(>=0) 조직은 `isRetention=true`, 금액 파싱 실패/NULL 제외, 예상 체결액은 판정/합산에 미사용. `memoCount`는 메모 테이블 COUNT를 left join한다.
-- `/api/performance/monthly-amounts/summary`: 세그먼트 label이 `기업 고객(삼성 제외)`, `공공 고객`, `온라인(삼성 제외)`, `온라인(기업 고객(삼전 제외))`, `온라인(공공 고객)`, `비온라인(삼성 제외)`, `비온라인(기업 고객(삼전 제외))`, `비온라인(공공 고객)`으로 노출되고 rows가 TOTAL→CONTRACT→CONFIRMED→HIGH 순서로 24개월 YYMM 키를 포함한다.
-- `/api/performance/monthly-amounts/deals`: row=TOTAL은 CONTRACT/CONFIRMED/HIGH 합집합을 반환하며, `totalAmount`는 amount>0 else expectedAmount 합계다. 프런트는 금액>0 우선, 없으면 예상 체결액으로 정렬해 표시한다.
+## Coupling Map
+- 라우터: `dashboard/server/org_tables_api.py` ↔ DB 로직 `dashboard/server/database.py` ↔ 보조 모듈(`json_compact.py`, `statepath_engine.py`, `report_scheduler.py`).
+- 프런트: `org_tables_v2.html` fetch 래퍼가 모든 `/api/*`를 호출해 화면 렌더/모달/캐시를 담당.
+- 테스트: `tests/test_perf_monthly_contracts.py`, `tests/test_pl_progress_2026.py`, `tests/test_api_counterparty_dri.py`, `tests/test_won_groups_json.py`, `tests/test_deal_check_edu1.py` 등으로 계약 검증.
 
-## 오류/에러 처리
-- DB 파일이 없거나 열 수 없으면 500.
-- `/api/orgs/{org_id}`는 미존재 시 404, 그 외 대부분 엔드포인트는 조회 실패 시 500.
-- 프런트 캐시 무효화 없음: API가 최신 DB를 읽더라도 프런트는 새로고침 전까지 이전 캐시를 사용할 수 있다(`docs/org_tables_v2.md` 참고).
+## Edge Cases & Failure Modes
+- DB 없음/잠금 시 500. 캐시가 활성화된 엔드포인트는 DB 교체 후에도 이전 snapshot_version으로 응답할 수 있다.
+- 월/segment/row/rail 등 파라미터가 잘못되면 400을 반환한다.
+- webform_history 테이블이 없거나 비어 있으면 webforms date가 `"날짜 확인 불가"`로 채워진다.
+- P&L summary는 start/end/amount 누락 딜을 meta.excluded에 집계 후 제외한다; variant T는 드릴다운이 빈 결과다.
+- 카운터파티 리포트는 DB_STABLE_WINDOW_SEC 내에 DB 수정 중이면 실패하고 status.json에 `DB_UNSTABLE_OR_UPDATING`이 기록된다.
 
 ## Verification
-- `/api/deal-check/edu1` 응답에 personId/personName, memoCount, orgWon2025Total, isRetention이 포함되고 정렬이 orgWon2025Total DESC → createdAt ASC → dealId ASC인지 샘플 DB로 확인한다.
-- `/api/orgs/{id}/won-groups-json` 결과에 industry_major/mid와 webforms 날짜 매핑, 메모 정제 규칙이 적용됐는지 확인한다.
-- `/api/orgs/{id}/won-groups-json-compact`에서 memos/webforms가 제거되고 summary/deal_defaults가 포함되는지 확인한다.
-- `/api/orgs/{id}/won-summary`가 Won 상태 + 23/24/25 계약연도만 합산하고 상위 조직 비어 있으면 `미입력`으로 묶는지 확인한다.
-- `/api/statepath/portfolio-2425` 금액이 억 단위이고 segment/search/정렬/패턴 필터가 모두 반영되는지 실제 호출로 점검한다.
-- `/api/performance/monthly-amounts/summary`가 세그먼트 label/row 순서/YYMM 24개 키를 모두 포함하는지 확인한다.
-- `/api/performance/monthly-amounts/deals`가 row=TOTAL에서도 세 버킷 합집합을 반환하고 totalAmount가 amount>0 else expectedAmount 합계인지 확인한다.
+- `/api/orgs`가 won2025 desc→name asc이고 People/Deal 0건 조직이 제외되는지 샘플 DB로 확인한다.
+- `/api/orgs/{id}/won-groups-json`에 industry_major/mid, webforms `{name,date}`, cleanText 메모가 포함되고 upper_org가 Won 존재 조직만 있는지 확인한다.
+- `/api/performance/monthly-amounts/summary`가 24개월·4개 row·11세그먼트를 포함하고 `/performance/monthly-amounts/deals` row=TOTAL이 3버킷 합집합인지 검증한다.
+- `/api/performance/pl-progress-2026/summary`가 연간/월별 T/E 컬럼을 포함하고 current YYMM E 셀 클릭 시 `/performance/pl-progress-2026/deals`가 recognizedAmount desc 정렬인지 확인한다.
+- `/api/rank/2025-top100-counterparty-dri`가 Lost/Convert 제외, orgWon2025 desc→cpTotal2025 desc 정렬이며 owners가 People.owner_json 우선으로 채워지는지 테스트 대비 확인한다.
+- `/api/deal-check?team=edu1|edu2`가 orgWon2025 desc→createdAt asc→dealId asc 정렬이며 memoCount/personId/personName/orgWon2025Total을 포함하는지 확인한다.
+- `/api/report/counterparty-risk` 호출 시 캐시 생성/재사용, status.json 업데이트가 정상인지 확인한다.
+
+## Refactor-Planning Notes (Facts Only)
+- 캐시가 DB mtime 기반 메모리에만 존재해 프로세스 재시작 전까지 새 DB가 반영되지 않는다.
+- 온라인 판정/PL_2026_TARGET 등 상수가 `database.py`와 프런트에 중복돼 있어 수정 시 양방향 반영이 필요하다.
+- 딜체크/DRI/StatePath/월별/PL 등 다양한 기능이 모두 `database.py`에 집중되어 변경 영향 범위가 크다.

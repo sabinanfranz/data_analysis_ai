@@ -1,59 +1,54 @@
 ---
-title: 스냅샷 파이프라인 운영 계약
-last_synced: 2025-12-24
+title: 스냅샷 파이프라인 계약
+last_synced: 2026-01-06
 sync_source:
   - salesmap_first_page_snapshot.py
-  - docs/snapshot_pipeline.md
   - logs/run_history.jsonl
+  - docs/snapshot_pipeline.md
   - docs/error_log.md
 ---
 
-# 스냅샷 파이프라인 운영 계약
+## Purpose
+- `salesmap_first_page_snapshot.py` 스냅샷 파이프라인의 실행 흐름, 체크포인트/백업/웹폼 후처리 계약을 요약한다.
 
-## 1) 목적 & 입력
-- 목적: Salesmap API 데이터를 받아 `salesmap_latest.db`(SQLite) 스냅샷을 생성/교체하고, 웹폼 제출 내역을 `webform_history`에 적재한다.
-- 입력/옵션:
-  - 환경변수: `SALESMAP_API_BASE`(기본 `https://salesmap.kr/api/v2`), `SALESMAP_TOKEN`(필수).
-  - CLI: `--db-path`(기본 `salesmap_latest.db`), `--backup-dir`(기본 `backups`), `--log-dir`(기본 `logs`), `--checkpoint-dir`(기본 `logs/checkpoints`), `--checkpoint-interval`(기본 50), `--keep-backups`(기본 30), `--resume`, `--resume-run-tag`, `--webform-only` 등.
+## Behavioral Contract
+- CLI 옵션: `--db-path`(기본 `salesmap_latest.db`), `--log-dir`(`logs`), `--checkpoint-dir`(`logs/checkpoints`), `--backup-dir`(`backups`), `--keep-backups`(기본 30), `--checkpoint-interval`(기본 50), `--resume`/`--resume-run-tag`, `--webform-only`, `--base-url`(기본 `https://salesmap.kr/api/v2`), `--token`(미지정 시 env `SALESMAP_TOKEN` 필수).
+- 실행 흐름:
+  1) 로깅 초기화(`setup_logging`).
+  2) 기존 DB 백업(`maybe_backup_existing_db`) 후 temp DB 준비. resume 시 checkpoint에 기록된 temp 경로 사용.
+  3) 페이지네이션 엔드포인트(`/organization`, `/people`, `/deal`, `/lead`, `/memo`)를 `capture_paginated`로 수집하며 N페이지마다 체크포인트 저장; `/user`, `/team`은 단건.
+  4) manifest/run_info를 temp DB에 기록 후 WAL 체크포인트/optimize(`finalize_sqlite_connection`).
+  5) tmp→최종 DB 교체(`replace_file_with_retry` 최대 5회, 실패 시 `<stem>_<run_tag>.db` 폴백).
+  6) webform_history 후처리(`update_webform_history`)로 허용 People ID만 `/v2/webForm/<id>/submit`에서 수집.
+  7) 실행 결과를 `logs/run_history.jsonl`에 append.
+- 재시도/백오프: `SalesmapClient`가 요청 전 최소 0.12s 간격을 보장, 429는 `Retry-After` 또는 지수(10s) 백오프, 5xx/네트워크 오류도 지수 백오프 후 최대 3회 시도.
 
-## 2) 실행 단계
-1. **백업 준비**: 기존 DB를 백업 디렉터리로 보존(keep N=30 기본).
-2. **수집**: Salesmap API 호출로 organization/people/deal/lead/… 테이블 데이터를 수집.
-3. **체크포인트**: `checkpoint_dir`에 주기(`checkpoint_interval`)마다 중간 DB/메타를 저장.
-4. **finalize**: manifest(테이블 행/컬럼 카운트, 에러)와 run_info(실행 메타) 작성.
-5. **파일 교체**: 임시 DB → `replace_file_with_retry`로 최종 DB 교체(잠금 시 재시도 후 rename/copy 폴백까지 수행).
-6. **webform_history 후처리**: 웹폼 제출 내역을 peopleId/webFormId 기준으로 적재(페이지네이션 처리).
+## Invariants (Must Not Break)
+- `SALESMAP_TOKEN` 없으면 즉시 종료; webform-only 실행도 토큰 필수.
+- 체크포인트는 `.json.tmp`에 저장 후 rename, 실패 시 최대 3회 재시도 후 tmp→복사 폴백을 수행한다.
+- DB 교체는 최대 5회 `os.replace`; 모두 실패하면 rename/copy 폴백 파일 경로를 로그/run_history에 남긴다.
+- run_history.jsonl에는 `run_tag`, `final_db_path`, `backup_path`, 테이블별 row/col, 오류 개수가 항상 기록된다.
+- webform_history 적재는 peopleId/webFormId가 비어 있으면 건너뛰며 dropped_* 카운트를 로그에 남긴다.
 
-## 3) 재시도/백오프 정책
-- 요청 기본: `MAX_RETRIES=3`, `MIN_INTERVAL=0.12s`(호출 간 최소 간격).
-- 429 대응: `BACKOFF_429=10s`를 시도 횟수에 곱해 `MAX_BACKOFF=60s`까지 지수 백오프. `Retry-After` 헤더가 있으면 우선 적용.
-- 네트워크/RequestException: 같은 백오프 로직으로 재시도. 5xx는 코드에 명시적 처리 없음 → 실패 시 예외(필요 시 TODO).
+## Coupling Map
+- 스크립트: `salesmap_first_page_snapshot.py`(SalesmapClient, TableWriter, CheckpointManager, replace_file_with_retry, update_webform_history).
+- 로그/산출물: `logs/`(run_history.jsonl, 개별 로그), `logs/checkpoints/`, `backups/`, 최종 DB.
+- 소비: FastAPI/프런트(`dashboard/server/*`, `org_tables_v2.html`)가 생성된 DB를 직접 읽는다.
+- 문서: `docs/snapshot_pipeline.md`, `docs/error_log.md`가 실행/장애 사례를 보완한다.
 
-## 4) 체크포인트/재개 계약
-- 옵션: `--resume`(최신 체크포인트에서 재개), `--resume-run-tag`(특정 run_tag 체크포인트에서 재개).
-- 체크포인트 내용: 중간 DB 파일 + 테이블별 진행 상태를 `checkpoint_dir`에 저장.
-- 재개 시 마지막 체크포인트를 불러와 이어서 수집 후 finalize/교체를 진행한다.
-- 포맷/경로: `logs/checkpoints/<run_tag>/...` (rename 실패 시 tmp→본 파일 복사 폴백이 자동으로 적용됨).
-
-## 5) 파일 교체 계약
-- 함수: `replace_file_with_retry(src, dest, attempts=5, delay=0.5)`.
-- 동작: 임시 파일을 최종 DB 경로로 이동. 잠금/권한 이슈가 있으면 최대 5회 재시도 → rename 시도 → 그래도 안 되면 `shutil.copyfile` 폴백(로그에 경고).
-- 백업: 교체 전 기존 DB는 `--backup-dir` 아래에 보존(최근 N개 유지).
-
-## 6) webform_history 후처리 계약
-- 대상: 웹폼 제출 이벤트. `peopleId/webFormId/organizationId/dealId/leadId/createdAt/contents`를 저장.
-- 허용 ID: peopleId 기준으로 매핑하며, 빈 값은 dropped_missing, 허용 목록 외는 dropped_not_allowed로 건너뛴다(로그에 카운트).
-- 페이지네이션: Salesmap API 페이지 단위로 모든 제출을 순회(코드에서 반복 호출). 실패 시 재시도 로직 공유.
-
-## 7) 실패 시 데이터 잔존 체크리스트
-- 백업: `--backup-dir` 내 이전 DB가 남아 있는지 확인.
-- 체크포인트: `logs/checkpoints/`에 중간 DB/메타가 있는지 확인(재개 가능).
-- 임시 파일: 교체 직전 tmp/중간 DB가 `logs` 또는 작업 디렉터리에 남았는지 확인.
-- manifest/run_info: 마지막 실행 메타가 생성됐는지 확인(없으면 finalize 이전에 실패한 것).
-- 웹폼: webform_history가 비어 있으면 후처리 실패/미수행 가능성. 필요한 경우 `--webform-only`로 재수집.
+## Edge Cases & Failure Modes
+- DB 교체 잠금(WinError 32 등) → 폴백 DB가 생성되고 원본이 유지된다; 잠금 해제 후 수동 교체 필요.
+- 체크포인트 rename 권한 오류(WinError 5 등) → `.tmp` 복사 폴백으로 저장되며 resume 가능.
+- 429/5xx 반복 → `max_retries_exceeded`로 중단되고 manifest/errors에 기록된다.
+- resume 시 체크포인트 row_count와 실제 테이블 row_count가 다르면 경고만 출력하고 계속 진행한다.
 
 ## Verification
-- `salesmap_first_page_snapshot.py` 실행 로그에 backup/replace_file_with_retry/rename→copy 폴백 메시지가 출력되는지 확인한다.
-- 체크포인트가 `logs/checkpoints/<run_tag>/`에 저장되고 rename 실패 시에도 `.json`이 생성되는지 확인한다.
-- webform_history 적재 시 dropped_missing/dropped_not_allowed 카운트가 로그에 기록되는지 확인한다.
-- 실패 후 `--resume --resume-run-tag <tag>`로 재개할 때 checkpoint를 불러와 이어서 실행되는지 확인한다.
+- `$env:SALESMAP_TOKEN="..."; python salesmap_first_page_snapshot.py --db-path salesmap_latest.db --log-dir logs` 실행 후 run_history.jsonl에 final_db_path/backup_path가 기록되는지 확인한다.
+- temp DB 교체 실패를 유발해 폴백 파일이 생성되고 로그에 경고가 남는지 확인한다.
+- 체크포인트 `.json`이 주기적으로 생성되고 rename 실패 시 `.tmp` 복사본이 남는지, `--resume --resume-run-tag`로 재개 가능한지 확인한다.
+- webform-only 실행이 기존 테이블을 변경하지 않고 webform_history만 갱신하는지 spot-check한다.
+
+## Refactor-Planning Notes (Facts Only)
+- 백업/로그/체크포인트 경로와 파일명이 코드 상수로 중복되어 환경별 설정 분리가 어렵다.
+- webform 후처리가 스냅샷 완료 후에만 실행되고 실패 시 경고만 남겨 최신성이 보장되지 않는다.
+- replace_file_with_retry/CheckpointManager의 잠금 대응 로직이 다른 파이프라인에 공유되지 않는다.

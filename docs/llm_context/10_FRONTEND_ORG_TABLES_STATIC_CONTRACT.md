@@ -1,48 +1,47 @@
 ---
-title: org_tables (정적) 계약 – build_org_tables.py 버전
-last_synced: 2025-12-24
+title: 정적 org_tables.html 프런트 계약
+last_synced: 2026-01-06
 sync_source:
   - build_org_tables.py
   - org_tables.html
   - docs/org_tables_usage.md
-  - docs/daily_progress.md
 ---
 
-# org_tables (정적) 계약 – build_org_tables.py 버전
+## Purpose
+- `build_org_tables.py`가 생성하는 정적 HTML(org_tables.html) 버전의 UI/데이터 계약을 명세한다.
 
-> 이 문서는 정적 HTML(`org_tables.html`) 버전에 대한 UI/상태 계약을 분리해 설명합니다. 실시간 API를 쓰는 `org_tables_v2.html`과 혼동하지 않도록 주의하세요.
+## Behavioral Contract
+- 생성: `python build_org_tables.py --db-path salesmap_latest.db --output org_tables.html`로 실행하며, `--org-id` 또는 `--org-name`(LIKE) 필터, `--limit-orgs` 옵션을 지원한다. DB가 없으면 종료한다.
+- 데이터 로드: organization/people/deal/memo를 모두 메모리에 적재하고, People/Deal 없는 조직은 제외한다. `_deal_count`를 사람에 부여해 딜 있음/없음 세트를 구분한다.
+- UI/흐름:
+  - 상단 필터: `기업 규모` 드롭다운(기본 `대기업`이 존재하면 대기업, 없으면 첫 항목/전체) → 조직 드롭다운(필터 결과 중 첫 조직 자동 선택).
+  - 레이아웃: 3×3 그리드. 좌측=회사 메모, 중앙(딜 있음)=People→Deal→People 메모→Deal 메모, 우측(딜 없음)=People→(빈)Deal→People 메모→Deal 메모.
+  - 선택 동작: 조직 변경 시 stateWith/stateWithout personId/dealId를 모두 리셋하고 모든 테이블 재렌더. People 클릭 시 해당 세트의 Deal/메모 리셋, Deal 클릭 시 Deal 메모만 갱신. Breadcrumb(org/person/deal)이 현재 선택을 표시한다.
+  - 포맷: 금액은 1e8 나눠 소수 2자리 `xx.xx억`, 날짜는 문자열에서 날짜 부분만 추출해 표시한다.
 
-## 생성 방법/입력
-- 스크립트: `build_org_tables.py`
-- 입력 DB: `salesmap_latest.db`(SQLite 스냅샷)
-- 실행 예시: `python build_org_tables.py --output org_tables.html` (옵션은 `docs/org_tables_usage.md` 참고)
-- API 호출 없음: 생성 시점의 DB 내용을 그대로 HTML에 내장한다.
+## Invariants (Must Not Break)
+- 규모 필터 목록은 DB에서 가져온 size만 사용하며 알파벳 순 + 맨 앞에 `전체`를 추가한다. 기본 선택은 `대기업` 또는 첫 값.
+- People “딜 있음” 목록은 `_deal_count > 0`만, “딜 없음”은 `_deal_count == 0`만 표시한다.
+- 조직 선택 시 stateWith/stateWithout의 personId/dealId는 항상 null로 초기화되어야 한다.
+- 금액 표시는 억 단위 소수 2자리, 데이터 없음은 `-`를 표시한다.
+- HTML은 외부 API 호출 없이 임베드된 JSON 데이터만 사용한다.
 
-## UI 레이아웃 (정적 3×3)
-- 딜 있음/딜 없음 두 세트를 좌우로 배치. 각 세트는 3×3 스택(또는 3단)으로 People/Deal/메모 테이블을 구성한다.
-- 상단: People 테이블(딜 있음/딜 없음 각각)
-- 중간: Deal 테이블(딜 있음 세트만 의미 있음)
-- 하단: People 메모(좌), Deal 메모(우)
+## Coupling Map
+- 생성 스크립트: `build_org_tables.py`(load_data, build_maps, render_html).
+- 산출물: `org_tables.html`(인라인 데이터 + 내장 JS/스타일).
+- 참조 문서: `docs/org_tables_usage.md`(생성/사용 가이드).
 
-## 상호작용/상태
-- 상태 분리: `stateWith`(딜 있는 People), `stateWithout`(딜 없는 People)로 독립적으로 선택/렌더.
-- People 행 클릭 → 해당 세트의 선택 인덱스 갱신 → Deal/메모 테이블 갱신.
-- Deal 행 클릭(딜 있는 세트) → Deal 메모 테이블 갱신.
-- 조직/People/Deal 이름 클릭 시 브레드크럼/선택이 반영되지만, 네트워크 요청은 발생하지 않는다(데이터는 모두 내장).
-
-## 포맷 규칙
-- 금액: 억 단위(1e8)로 나누어 소수 2자리 표기.
-- 날짜: `YYYY-MM-DD` 포맷으로 표시(시간은 잘라냄).
-- 텍스트: 메모 등 긴 텍스트는 미리보기 형태로 잘려 보여줄 수 있음(툴팁/타이틀로 전체 확인).
-
-## 관련 파일
-- 생성 스크립트: `build_org_tables.py`
-- 결과 HTML: `org_tables.html`
-- 사용 가이드/옵션: `docs/org_tables_usage.md`
-- 변경 이력(정적 UI 개편): `docs/daily_progress.md` 참고
+## Edge Cases & Failure Modes
+- 규모 필터 결과가 없으면 조직 드롭다운에 “해당 규모 회사 없음”을 표시하고 테이블을 모두 비운다.
+- `_deal_count`가 없는 People은 기본 0으로 처리되어 “딜 없음”에 표시된다.
+- DB가 업데이트돼도 HTML은 자동 갱신되지 않으므로 재생성이 필요하다.
 
 ## Verification
-- `python build_org_tables.py --output org_tables.html` 실행 시 API 호출 없이 HTML이 생성되는지 확인한다.
-- 생성된 `org_tables.html`에서 딜 있음/없음 두 세트가 독립적으로 선택/렌더되는지 확인한다.
-- 금액이 억 단위 소수 2자리, 날짜가 `YYYY-MM-DD`로 표시되는지 표에서 확인한다.
-- People/Deal 선택 시 네트워크 요청이 발생하지 않는지 DevTools Network로 확인한다.
+- `python build_org_tables.py --output org_tables.html` 실행 후 파일이 생성되고 stdout에 경로가 출력되는지 확인한다.
+- HTML을 열어 규모 필터 기본 선택이 예상대로 설정되고, 조직/People/Deal/메모 클릭 시 breadcrumb와 테이블이 동기화되는지 확인한다.
+- People “딜 있음/딜 없음”이 `_deal_count` 기준으로 정확히 분리되고 금액이 억 단위 소수 2자리로 표시되는지 확인한다.
+- 규모 필터 결과가 0건일 때 안내 문구와 초기화 동작이 발생하는지 확인한다.
+
+## Refactor-Planning Notes (Facts Only)
+- 규모 필터/기본 선택/테이블 렌더링 로직이 내장 JS에만 존재해 다른 UI와 공유되지 않는다.
+- 데이터가 HTML에 인라인으로 포함돼 파일 크기가 조직 수에 비례해 증가하며, 데이터 변경 시 재생성이 필수다.

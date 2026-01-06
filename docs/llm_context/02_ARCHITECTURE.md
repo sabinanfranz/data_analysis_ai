@@ -1,6 +1,6 @@
 ---
 title: 아키텍처 개요
-last_synced: 2025-12-24
+last_synced: 2026-01-06
 sync_source:
   - salesmap_first_page_snapshot.py
   - dashboard/server/main.py
@@ -9,52 +9,40 @@ sync_source:
   - org_tables_v2.html
 ---
 
-# 아키텍처 개요
+## Purpose
+- 스냅샷 → FastAPI → 프런트 → 테스트까지 전반 아키텍처와 책임 분리를 최신 코드 기준으로 요약한다.
 
-## 1) 시스템 개요
-- Salesmap API에서 조직/People/Deal/웹폼 데이터를 가져와 **스냅샷(SQLite)** 으로 저장한다.
-- FastAPI 서버(`dashboard/server`)가 스냅샷 DB를 읽어 API(`/api/...`)를 제공한다.
-- 프런트(`org_tables_v2.html`)가 API를 호출해 조직/People/Deal/상위 조직 JSON/StatePath/교육1팀 딜체크를 렌더링한다.
-- 캐시는 프런트(JS Map) 단에서만 사용하며, 백엔드는 무상태로 DB를 직접 읽는다.
-- 기본 DB 경로는 `salesmap_latest.db`이며, 존재하지 않으면 500 에러로 응답한다.
+## Behavioral Contract
+- 데이터 수집: `salesmap_first_page_snapshot.py`가 Salesmap API에서 조직/People/Deal/메모/웹폼 제출을 SQLite(`salesmap_latest.db`)에 적재하고, 완료 후 webform_history를 후처리한다.
+- 백엔드: `dashboard/server/main.py`가 FastAPI를 기동해 `/api/*` 라우트를 `org_tables_api.py`에 위임하고, CORS와 `/api/initial-data` 초기 데이터 로드, `/` 정적 파일(`org_tables_v2.html`) 제공을 담당한다.
+- DB/집계: `dashboard/server/database.py`가 모든 조회/집계/정렬을 수행하며, P&L/월별 체결액/StatePath/랭킹/딜체크/QC/DRI 로직과 캐시를 포함한다. JSON compact 변환은 `json_compact.py`, StatePath 계산은 `statepath_engine.py`가 수행한다.
+- 프런트: `org_tables_v2.html`이 정적 HTML로 API fetch→렌더/모달/캐시를 담당하며, 사이드바 메뉴로 사업부 퍼포먼스/운영/분석/검수 화면을 전환한다.
+- 테스트: `tests/test_perf_monthly_contracts.py`, `tests/test_pl_progress_2026.py`, `tests/test_api_counterparty_dri.py` 등에서 월별/P&L/DRI 계약을 검증한다.
 
-## 2) 컴포넌트 책임 분리
-| 컴포넌트 | 역할/책임 | 주요 파일 |
-| --- | --- | --- |
-| 스냅샷 스크립트 | Salesmap API 호출 → SQLite 스냅샷 적재, 웹폼 제출 내역(webform_history) 후처리 | `salesmap_first_page_snapshot.py`, `snapshot_pipeline.md` |
-| SQLite DB | 조직/People/Deal/메모/웹폼/히스토리 저장. FastAPI가 직접 읽음 | `salesmap_latest.db` |
-| FastAPI 서버 | DB 조회/집계/StatePath/교육1팀 딜체크 API 제공(`/api`) | `dashboard/server/main.py`, `org_tables_api.py`, `database.py`, `json_compact.py`, `statepath_engine.py` |
-| 프런트(정적 HTML) | API fetch → 표/모달/JSON/StatePath/교육1팀 딜체크 렌더, 클라이언트 캐시(Map) | `org_tables_v2.html`, `org_tables_v2.md` |
-| LLM 컨텍스트 문서 | 동작/계약/흐름을 요약해 외부 LLM에 전달 | `docs/llm_context/*.md` |
+## Invariants (Must Not Break)
+- 기본 DB 경로는 모든 컴포넌트에서 `salesmap_latest.db`(또는 `DB_PATH` env)로 통일된다(`start.sh`, `database.py`, 프런트 API_BASE 가정).
+- 프런트 캐시는 클라이언트 메모리(Map)에만 존재하고 무효화가 없으므로, DB 교체 시 새로고침이 필수이다(`org_tables_v2.html` fetchJson).
+- FastAPI는 무상태이며, 모든 집계/정렬 로직은 `database.py`에 단일 책임으로 모여 있다.
+- 스냅샷 교체는 tmp→final 원자 교체(잠금 시 폴백)를 전제로 하며, DB 스키마가 변해도 백엔드는 SQLite를 직접 읽는다.
 
-## 3) 데이터 흐름
-```mermaid
-flowchart LR
-  A[Salesmap API] --> B[스냅샷 스크립트<br/>salesmap_first_page_snapshot.py]
-  B -->|SQLite 저장| C[salesmap_latest.db]
-  C --> D[FastAPI 서버<br/>/api/*]
-  D --> E[프런트 org_tables_v2.html<br/>(fetch/render)]
-  E -->|요청/응답| D
-```
+## Coupling Map
+- 데이터/파이프라인: `salesmap_first_page_snapshot.py` → SQLite(`salesmap_latest.db`).
+- API: FastAPI(`main.py` → `org_tables_api.py`) → DB 집계(`database.py`, `statepath_engine.py`, `json_compact.py`).
+- 프런트: `org_tables_v2.html` fetch → `/api/*` → 렌더/모달, 캐시 공유.
+- 테스트: `tests/*`가 DB 집계/정렬/포맷 계약을 검증해 프런트·백엔드 동작을 보호.
 
-### 단계별 설명
-1. 스냅샷 스크립트가 Salesmap API를 호출해 조직/People/Deal/웹폼 제출 내역을 수집하고 `salesmap_latest.db`에 기록한다.
-2. FastAPI(`dashboard/server/main.py`)가 기동되면 DB를 직접 읽어 `/api` 엔드포인트를 제공한다(예: `/api/orgs`, `/api/orgs/{id}/won-groups-json` 등).
-3. 프런트(`org_tables_v2.html`)는 API Base(기본 `http://localhost:8000/api`, origin에 따라 자동 설정)로 fetch를 보내고, 응답을 표/모달/JSON/StatePath로 렌더링하며 클라이언트 캐시(Map)에 저장한다.
-4. 캐시는 프런트에만 존재한다. DB 교체 시 프런트를 새로고침해야 최신 상태를 본다.
-
-## 4) 운영 상 중요한 계약
-- 기본 DB 경로: `salesmap_latest.db`(루트). 없으면 500 오류.
-- API Base: 기본 `http://localhost:8000/api` (origin 사용 시 `/api` 접미).
-- 조직 목록(`/api/orgs`): People 또는 Deal이 1건 이상 있는 조직만 반환, 2025년 Won 합계 내림차순 정렬(이름 순 보조).
-- 상위 조직 JSON(`/api/orgs/{id}/won-groups-json`): webform id 미노출, 날짜 매핑, 메모 정제(전화/동의/utm 제거 등) 적용.
-- StatePath(`/api/orgs/{id}/statepath`): won-groups-json-compact를 기반으로 2024/2025 상태·이벤트·Seed·추천을 계산해 억 단위 금액으로 반환.
-- 교육 1팀 딜체크(`/api/deal-check/edu1`): `상태='SQL'` 딜 중 교육1팀 owners 포함 건만 반환, 2025 Won 금액 파싱 성공 조직은 `isRetention=true`, 정렬은 orgWon2025Total DESC → createdAt ASC → dealId ASC.
-- 프런트 캐시 무효화 없음: 새 DB로 교체 시 브라우저 새로고침 필요.
-- 자동 선택 없음: 초기/리셋 시 회사는 자동으로 선택되지 않으며 사용자가 선택해야 데이터 로드.
+## Edge Cases & Failure Modes
+- DB 부재/잠금 시 대부분의 API가 500을 반환하고, 스냅샷 교체 실패 시 폴백 DB가 생성된다.
+- 프런트 캐시가 남은 상태로 DB가 교체되면 UI는 오래된 데이터를 표시한다(새로고침 필요).
+- 스냅샷 스키마 변경(컬럼 추가/누락) 시 `_detect_course_id_column`, `_pick_column` 등 백엔드가 유연하게 대체 컬럼을 선택하지만, 일부 집계는 건너뛸 수 있다.
 
 ## Verification
-- `uvicorn dashboard.server.main:app` 기동 시 `/api`가 열리고 기본 DB 경로가 `salesmap_latest.db`인지 확인한다.
-- `/api/deal-check/edu1`가 SQL 딜을 교육1팀 필터와 정렬 규칙대로 반환하는지 샘플 호출로 확인한다.
-- org_tables_v2.html이 origin 기반으로 API_BASE를 설정하고, 캐시(Map)가 존재해 재호출이 줄어드는지 DevTools Network로 확인한다.
-- 상위 조직 JSON(`/api/orgs/{id}/won-groups-json`) 응답에 webforms/memos 정제가 적용되어 있는지 확인한다.
+- `uvicorn dashboard.server.main:app --reload` 실행 후 `/api/health`가 ok, `/api/sizes`가 SIZE_GROUPS 순으로 반환되는지 확인한다.
+- 스냅샷 실행 후 `salesmap_latest.db`가 생성되고 `/api/orgs`/`/api/performance/*` 호출이 성공하는지 확인한다.
+- 프런트(`org_tables_v2.html`)를 열어 사이드바 메뉴 전환, 캐시 동작(fetch 후 재호출 없음), 모달 렌더링이 정상인지 확인한다.
+- 주요 테스트(`tests/test_perf_monthly_contracts.py`, `tests/test_pl_progress_2026.py`, `tests/test_api_counterparty_dri.py`)가 통과하는지 실행한다.
+
+## Refactor-Planning Notes (Facts Only)
+- 데이터 집계/캐시/정렬 로직이 `database.py` 단일 파일에 집중되어 있어 기능 분리 없이 변경 시 충돌 위험이 크다.
+- 프런트는 정적 HTML 단일 파일로 모든 렌더러와 스타일을 포함해 영향 범위가 넓다.
+- 스냅샷 스크립트의 체크포인트/교체/백업 로직이 다른 파이프라인에서 재사용되지 않고 단독 구현돼 있다.

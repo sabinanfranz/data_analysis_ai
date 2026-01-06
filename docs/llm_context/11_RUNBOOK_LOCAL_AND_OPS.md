@@ -1,65 +1,54 @@
 ---
-title: Runbook: 로컬 실행 & 운영(스냅샷/복구)
-last_synced: 2025-12-24
+title: 로컬/운영 런북
+last_synced: 2026-01-06
 sync_source:
-  - salesmap_first_page_snapshot.py
+  - dashboard/server/main.py
+  - start.sh
   - org_tables_v2.html
   - docs/user_guide.md
-  - docs/snapshot_pipeline.md
-  - logs/run_history.jsonl
+  - salesmap_first_page_snapshot.py
 ---
 
-# Runbook: 로컬 실행 & 운영(스냅샷/복구)
+## Purpose
+- 로컬 개발 및 운영 시 필요한 기동/환경 변수/캐시 동작을 코드 기준으로 정리한다.
 
-## 1) 로컬 실행 (백엔드/프런트)
-- 백엔드(FastAPI):  
-  ```powershell
-  .\.venv\Scripts\python.exe -m uvicorn dashboard.server.main:app --host 0.0.0.0 --port 8000 --reload
-  ```
-- 프런트(정적 서버) 또는 파일 직접 열기:  
-  ```powershell
-  python -m http.server 8001
-  Start-Process "http://localhost:8001/org_tables_v2.html"
-  ```  
-  또는 `Start-Process .\org_tables_v2.html` (API 기본 `http://localhost:8000/api`).
-  - StatePath 확인: 조직 선택 후 `StatePath 보기` 버튼으로 `/api/orgs/{id}/statepath` 응답을 모달로 확인(억 단위 금액 그대로 표시).
-  - 교육1팀 딜체크 확인: 사이드바 4번째 메뉴에서 `/api/deal-check/edu1` 데이터를 로드하고 리텐션/신규 테이블이 분리되는지 확인.
+## Behavioral Contract
+- 로컬 실행:
+  - 백엔드: `python -m uvicorn dashboard.server.main:app --host 0.0.0.0 --port 8000 --reload`. `main.py`는 `DB_PATH`(기본 `salesmap_latest.db`)가 없으면 500을 반환한다.
+  - 프런트: `python -m http.server 8001` 후 `http://localhost:8001/org_tables_v2.html` 열기(또는 파일 직접 열기). API_BASE는 origin+/api 또는 `http://localhost:8000/api`.
+  - 가상환경: `python -m venv .venv && .venv\Scripts\pip install -r requirements.txt`.
+- 컨테이너/운영(start.sh):
+  - 환경 변수: `DB_URL`(필수, 50MB 미만은 실패), `DB_ALWAYS_REFRESH`(기본 1), `PORT`(기본 8000).
+  - 동작: DB 미존재 또는 항상 새로고침 시 Python 다운로더로 DB를 tmp→`/app/data/salesmap_latest.db` 저장 후 `/app/salesmap_latest.db`에 심볼릭 링크, `DB_PATH`를 세팅하고 `uvicorn dashboard.server.main:app` 실행.
+- 스냅샷:
+  - `salesmap_first_page_snapshot.py`로 DB 생성/교체, run_history.jsonl 기록, webform_history 후처리. `SALESMAP_TOKEN` 필수.
+- 프런트 캐시: org_tables_v2는 fetch 결과를 Map에 저장하며 무효화가 없으므로 DB 교체 후 새로고침 필요.
 
-## 2) 스냅샷 실행 (전체 수집)
-- 필수: `SALESMAP_TOKEN` 설정.
-- 기본 예시:  
-  ```powershell
-  $env:SALESMAP_TOKEN="<토큰>"; python .\salesmap_first_page_snapshot.py --db-path .\salesmap_latest.db --log-dir .\logs --checkpoint-dir .\logs\checkpoints --backup-dir .\backups --keep-backups 30
-  ```
-- 옵션: `--resume`(최근 체크포인트 재개), `--resume-run-tag`(특정 run_tag 재개), `--checkpoint-interval`(기본 50), `--webform-only`(아래 3).
+## Invariants (Must Not Break)
+- DB 경로는 백엔드/프런트/컨테이너 모두 `salesmap_latest.db`를 기본으로 사용해야 한다.
+- start.sh는 DB 다운로드 크기가 50MB 미만이면 오류로 중단한다.
+- API_BASE 계산은 origin+/api 또는 `http://localhost:8000/api`로 고정이며, 포트/경로가 변경되면 HTML 수정을 동반한다.
+- 스냅샷 실행은 토큰 미설정 시 종료하며, 교체 실패 시 폴백 DB 경로를 로그/run_history에 남긴다.
 
-## 3) 웹폼만 실행
-- 기존 DB에서 웹폼 제출 내역만 재수집/적재:  
-  ```powershell
-  $env:SALESMAP_TOKEN="<토큰>"; python .\salesmap_first_page_snapshot.py --webform-only --db-path .\salesmap_latest.db --log-dir .\logs
-  ```
+## Coupling Map
+- 서버: `dashboard/server/main.py`, `dashboard/server/org_tables_api.py`, `dashboard/server/database.py`.
+- 컨테이너: `start.sh`(DB 다운로드/링크/uvicorn).
+- 프런트: `org_tables_v2.html`(API_BASE/캐시).
+- 파이프라인: `salesmap_first_page_snapshot.py`(DB 생성/교체).
+- 문서: `docs/user_guide.md`, `docs/snapshot_pipeline.md`, `docs/error_log.md`.
 
-## 4) 장애 복구 시나리오
-- **DB 잠금으로 교체 실패**  
-  - 흔한 원인: Windows에서 DB를 연 프로그램(브라우저/SQLite 뷰어 등) 잠금.  
-  - 조치: 잠금 프로세스 종료 → `backups/`에 남은 이전 DB 확인 → 필요 시 `logs/checkpoints/`의 체크포인트 DB로 수동 교체.  
-  - `replace_file_with_retry`가 최대 5회 재시도 후 폴백하므로 로그(`logs/…`)에서 교체 실패 여부 확인.
-- **체크포인트 rename 권한 거부**  
-  - 증상: `.tmp` 파일만 남고 최종 `.json`/DB로 rename 실패.  
-  - 조치: `.tmp`를 수동으로 `.json`(또는 DB) 이름으로 복사/덮어쓰기 후 `--resume`으로 재개.
-- **실패 시 데이터 잔존 위치**  
-  - `backups/` : 마지막 성공본.  
-  - `logs/checkpoints/` : 중간 진행분(재개 가능).  
-  - `logs/` : manifest/run_info, 에러 로그.
-
-## 5) 실행 전 점검 체크리스트
-- DB/로그/백업/체크포인트 경로에 쓰기 권한 확인.
-- DB를 여는 다른 프로그램(뷰어, 브라우저 플러그인 등) 닫기 → 잠금 방지.
-- 디스크 여유 공간 확인(체크포인트/백업 유지).
-- 네트워크/토큰 준비: `SALESMAP_TOKEN` 설정, API Base 기본 `https://salesmap.kr/api/v2`(변경 시 `SALESMAP_API_BASE`).
+## Edge Cases & Failure Modes
+- DB 잠금/부재 시 `/api/*`가 500을 반환한다. start.sh는 DB가 없으면 다운로드 후에도 실패 시 종료한다.
+- 프런트를 파일로 직접 열면 origin이 null이라 API_BASE가 `http://localhost:8000/api`로 강제된다.
+- Windows에서 체크포인트/DB 교체 rename이 실패하면 폴백 파일이 남아 FastAPI가 이전 DB를 계속 읽을 수 있다.
 
 ## Verification
-- FastAPI/프런트 기동 후 사이드바 메뉴(특히 교육1팀 딜체크)가 정상 표시되고 API 호출이 성공하는지 확인한다.
-- 스냅샷 실행 시 logs/run_history.jsonl에 final_db_path와 run_info/manifest가 기록되는지 확인한다.
-- DB 잠금/체크포인트 rename 실패 시 로그에 retry/폴백 메시지가 남고 tmp→복사로 해결 가능한지 테스트한다.
-- `--resume` 또는 `--resume-run-tag`로 중단 지점에서 재개되는지 체크포인트를 사용해 확인한다.
+- 로컬에서 uvicorn 기동 후 `/api/health`가 ok, `/api/orgs` 호출이 성공하는지 확인한다.
+- start.sh 실행 시 DB 다운로드가 50MB 이상이고 `/app/salesmap_latest.db` 심볼릭 링크가 생성되는지 확인한다.
+- 스냅샷 실행 후 run_history.jsonl에 final_db_path가 기록되고 FastAPI가 해당 DB를 읽는지 확인한다.
+- 프런트에서 메뉴 전환 시 `/api/*` 호출이 정상이고, 새 DB 교체 후 새로고침을 해야 최신 데이터가 표시되는지 확인한다.
+
+## Refactor-Planning Notes (Facts Only)
+ - DB 경로/API_BASE/포트가 코드 곳곳에 상수로 박혀 있어 운영 환경을 바꾸려면 start.sh, main.py, 프런트 HTML을 동시에 수정해야 한다.
+ - 프런트 캐시 무효화가 없으므로 배포 시 사용자가 새로고침하지 않으면 이전 데이터를 볼 수 있다.
+ - 스냅샷 교체 실패/체크포인트 실패 시 수동 조치가 필요하지만 자동 알림/모니터링은 없다.

@@ -2235,6 +2235,20 @@
       },
     };
 
+    const DEALCHECK_MENU_DEFS = [
+      { id: DEALCHECK_TEAMS.edu1.id, label: DEALCHECK_TEAMS.edu1.label, teamKey: "edu1", partFilter: null, parentId: null },
+      { id: "edu1-dealcheck-part1", label: "교육 1팀 1파트 딜체크", teamKey: "edu1", partFilter: "part1", parentId: DEALCHECK_TEAMS.edu1.id },
+      { id: "edu1-dealcheck-part2", label: "교육 1팀 2파트 딜체크", teamKey: "edu1", partFilter: "part2", parentId: DEALCHECK_TEAMS.edu1.id },
+      { id: DEALCHECK_TEAMS.edu2.id, label: DEALCHECK_TEAMS.edu2.label, teamKey: "edu2", partFilter: null, parentId: null },
+      { id: "edu2-dealcheck-part1", label: "교육 2팀 1파트 딜체크", teamKey: "edu2", partFilter: "part1", parentId: DEALCHECK_TEAMS.edu2.id },
+      { id: "edu2-dealcheck-part2", label: "교육 2팀 2파트 딜체크", teamKey: "edu2", partFilter: "part2", parentId: DEALCHECK_TEAMS.edu2.id },
+      { id: "edu2-dealcheck-online", label: "교육 2팀 온라인셀 딜체크", teamKey: "edu2", partFilter: "online", parentId: DEALCHECK_TEAMS.edu2.id },
+    ];
+
+    function menuLabelWithArrow(def) {
+      return def.parentId ? `↳ ${def.label}` : def.label;
+    }
+
     const MENU_SECTIONS = [
       {
         sectionId: "perf",
@@ -2255,8 +2269,7 @@
           { id: "target-2026", label: "2026 Target Board" },
           // ✅ 구 "2025 카운터파티 DRI" → 2026 카운터파티 DRI (id 유지)
           { id: "rank-2025-counterparty-dri", label: "2026 카운터파티 DRI" },
-          { id: DEALCHECK_TEAMS.edu1.id, label: DEALCHECK_TEAMS.edu1.label },
-          { id: DEALCHECK_TEAMS.edu2.id, label: DEALCHECK_TEAMS.edu2.label },
+          ...DEALCHECK_MENU_DEFS.map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
         ],
       },
       {
@@ -2296,9 +2309,12 @@
       "industry-2025": renderIndustryMenu,
       "statepath-2425": renderStatePathMenu,
       "org-view": renderOrgScreen,
-      [DEALCHECK_TEAMS.edu1.id]: (root) => renderDealCheckScreen("edu1", root),
-      [DEALCHECK_TEAMS.edu2.id]: (root) => renderDealCheckScreen("edu2", root),
     };
+
+    DEALCHECK_MENU_DEFS.forEach((def) => {
+      MENU_RENDERERS[def.id] = (root) =>
+        renderDealCheckScreen(def.teamKey, root, { label: def.label, partFilter: def.partFilter });
+    });
 
     const MENU_ITEMS = MENU_SECTIONS.flatMap((section) => section.items);
     const MENU_IDS = new Set(MENU_ITEMS.map((item) => item.id));
@@ -2593,6 +2609,21 @@
       };
       PART_LOOKUP_CACHE[teamKey] = lookup;
       return lookup;
+    }
+
+    function matchDealCheckPartFilter(teamKey, owners, partFilter) {
+      if (!partFilter) return true;
+      const names = Array.isArray(owners) ? owners : [];
+      if (!names.length) return false;
+      const lookup = getDealCheckPartLookup(teamKey);
+      for (const name of names) {
+        const normalized = normalizeOwnerName(name);
+        if (!normalized) continue;
+        if (partFilter === "part1" && lookup.part1.has(normalized)) return true;
+        if (partFilter === "part2" && lookup.part2.has(normalized)) return true;
+        if (partFilter === "online" && lookup.online.has(normalized)) return true;
+      }
+      return false;
     }
 
     function resolveOwnerTeamPart(name) {
@@ -6540,21 +6571,32 @@
       `;
     }
 
-    async function renderDealCheckScreen(teamKey, contentRoot) {
+    async function renderDealCheckScreen(teamKey, contentRoot, options = {}) {
       const cfg = DEALCHECK_TEAMS[teamKey];
       if (!cfg) {
         contentRoot.innerHTML = `<div class="muted">알 수 없는 팀(${teamKey})입니다.</div>`;
         return;
       }
+      const displayLabel = options.label || (cfg ? cfg.label : `${teamKey} 딜체크`);
+      const partFilter = options.partFilter || null;
+      const partFilterLabel =
+        partFilter === "part1"
+          ? "1파트"
+          : partFilter === "part2"
+          ? "2파트"
+          : partFilter === "online"
+          ? "온라인셀"
+          : "";
+      const partFilterHint = partFilterLabel ? ` · 추가 필터: ${partFilterLabel}` : "";
       contentRoot.innerHTML = `
         <div class="dealcheck-screen" data-team="${teamKey}">
         <section class="card" id="${teamKey}SummaryCard">
           <div class="control-row">
-            <h2>${cfg.label}</h2>
+            <h2>${displayLabel}</h2>
             <div class="spacer"></div>
             <span class="pill muted" id="${teamKey}SummaryCount">R(S0~P2-비온라인) 0 / R(S0~P2-온라인) 0 / N(온라인) 0 / R(P3~P5-온라인) 0 / R(P3~P5-비온라인) 0 / N(비온라인) 0</span>
           </div>
-          <div class="muted">상태=SQL이며 딜 담당자 중 ${cfg.partTeamKey} 담당자가 포함된 딜만 노출됩니다.</div>
+          <div class="muted">상태=SQL이며 딜 담당자 중 ${cfg.partTeamKey} 담당자가 포함된 딜만 노출됩니다.${partFilterHint}</div>
         </section>
         <section class="card" id="${teamKey}RetHighOfflineCard">
           <div class="control-row">
@@ -6720,8 +6762,11 @@
       };
 
       try {
-        const items = await loadDealCheck(teamKey);
-        renderAll(items);
+        const rawItems = await loadDealCheck(teamKey);
+        const filteredItems = Array.isArray(rawItems)
+          ? rawItems.filter((row) => matchDealCheckPartFilter(teamKey, row.owners, partFilter))
+          : [];
+        renderAll(filteredItems);
       } catch (err) {
         console.error(err);
         const bodies = [

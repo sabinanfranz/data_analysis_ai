@@ -6552,17 +6552,25 @@
           <div class="control-row">
             <h2>${cfg.label}</h2>
             <div class="spacer"></div>
-            <span class="pill muted" id="${teamKey}SummaryCount">리텐션 0건 / 신규 0건</span>
+            <span class="pill muted" id="${teamKey}SummaryCount">R(S0~P2-비온라인) 0 / R(S0~P2-온라인) 0 / N(온라인) 0 / R(P3~P5-온라인) 0 / R(P3~P5-비온라인) 0 / N(비온라인) 0</span>
           </div>
           <div class="muted">상태=SQL이며 딜 담당자 중 ${cfg.partTeamKey} 담당자가 포함된 딜만 노출됩니다.</div>
         </section>
-        <section class="card" id="${teamKey}RetHighCard">
+        <section class="card" id="${teamKey}RetHighOfflineCard">
           <div class="control-row">
-            <h2 class="dealcheck-retention-title">리텐션 고객 - S0/P0/P1/P2</h2>
+            <h2 class="dealcheck-retention-title">리텐션 고객 - S0/P0/P1/P2 - 비온라인</h2>
             <div class="spacer"></div>
-            <span class="muted" id="${teamKey}RetHighCount">0건</span>
+            <span class="muted" id="${teamKey}RetHighOfflineCount">0건</span>
           </div>
-          <div id="${teamKey}RetHighBody" class="muted">불러오는 중...</div>
+          <div id="${teamKey}RetHighOfflineBody" class="muted">불러오는 중...</div>
+        </section>
+        <section class="card" id="${teamKey}RetHighOnlineCard">
+          <div class="control-row">
+            <h2 class="dealcheck-retention-title">리텐션 고객 - S0/P0/P1/P2 - 온라인</h2>
+            <div class="spacer"></div>
+            <span class="muted" id="${teamKey}RetHighOnlineCount">0건</span>
+          </div>
+          <div id="${teamKey}RetHighOnlineBody" class="muted">불러오는 중...</div>
         </section>
         <section class="card" id="${teamKey}NewOnlineCard">
           <div class="control-row">
@@ -6572,13 +6580,21 @@
           </div>
           <div id="${teamKey}NewOnlineBody" class="muted">불러오는 중...</div>
         </section>
-        <section class="card" id="${teamKey}RetLowCard">
+        <section class="card" id="${teamKey}RetLowOnlineCard">
           <div class="control-row">
-            <h2 class="dealcheck-retention-title">리텐션 고객 - P3/P4/P5</h2>
+            <h2 class="dealcheck-retention-title">리텐션 고객 - P3/P4/P5 - 온라인</h2>
             <div class="spacer"></div>
-            <span class="muted" id="${teamKey}RetLowCount">0건</span>
+            <span class="muted" id="${teamKey}RetLowOnlineCount">0건</span>
           </div>
-          <div id="${teamKey}RetLowBody" class="muted">불러오는 중...</div>
+          <div id="${teamKey}RetLowOnlineBody" class="muted">불러오는 중...</div>
+        </section>
+        <section class="card" id="${teamKey}RetLowOfflineCard">
+          <div class="control-row">
+            <h2 class="dealcheck-retention-title">리텐션 고객 - P3/P4/P5 - 비온라인</h2>
+            <div class="spacer"></div>
+            <span class="muted" id="${teamKey}RetLowOfflineCount">0건</span>
+          </div>
+          <div id="${teamKey}RetLowOfflineBody" class="muted">불러오는 중...</div>
         </section>
         <section class="card" id="${teamKey}NewOfflineCard">
           <div class="control-row">
@@ -6592,13 +6608,17 @@
       `;
 
       const summaryCount = document.getElementById(`${teamKey}SummaryCount`);
-      const retHighCount = document.getElementById(`${teamKey}RetHighCount`);
+      const retHighOfflineCount = document.getElementById(`${teamKey}RetHighOfflineCount`);
+      const retHighOnlineCount = document.getElementById(`${teamKey}RetHighOnlineCount`);
       const newOnlineCount = document.getElementById(`${teamKey}NewOnlineCount`);
-      const retLowCount = document.getElementById(`${teamKey}RetLowCount`);
+      const retLowOnlineCount = document.getElementById(`${teamKey}RetLowOnlineCount`);
+      const retLowOfflineCount = document.getElementById(`${teamKey}RetLowOfflineCount`);
       const newOfflineCount = document.getElementById(`${teamKey}NewOfflineCount`);
-      const retHighBody = document.getElementById(`${teamKey}RetHighBody`);
+      const retHighOfflineBody = document.getElementById(`${teamKey}RetHighOfflineBody`);
+      const retHighOnlineBody = document.getElementById(`${teamKey}RetHighOnlineBody`);
       const newOnlineBody = document.getElementById(`${teamKey}NewOnlineBody`);
-      const retLowBody = document.getElementById(`${teamKey}RetLowBody`);
+      const retLowOnlineBody = document.getElementById(`${teamKey}RetLowOnlineBody`);
+      const retLowOfflineBody = document.getElementById(`${teamKey}RetLowOfflineBody`);
       const newOfflineBody = document.getElementById(`${teamKey}NewOfflineBody`);
 
       const attachHandlers = (container) => {
@@ -6618,13 +6638,27 @@
         const retentionItems = sortDealCheckItems(items.filter((row) => row.isRetention));
         const newItems = sortDealCheckItems(items.filter((row) => !row.isRetention));
 
-        const retentionHigh = [];
-        const retentionLow = [];
+        const retentionHighAll = [];
+        const retentionLowAll = [];
         retentionItems.forEach((row) => {
           const tier = computeTierFromWon2025Total(row.orgWon2025Total);
           row._tier = tier;
-          if (["S0", "P0", "P1", "P2"].includes(tier)) retentionHigh.push(row);
-          else retentionLow.push(row);
+          if (["S0", "P0", "P1", "P2"].includes(tier)) retentionHighAll.push(row);
+          else retentionLowAll.push(row);
+        });
+
+        const retHighOffline = [];
+        const retHighOnline = [];
+        retentionHighAll.forEach((row) => {
+          if (isOnlineCourseFormat(row.courseFormat)) retHighOnline.push(row);
+          else retHighOffline.push(row);
+        });
+
+        const retLowOnline = [];
+        const retLowOffline = [];
+        retentionLowAll.forEach((row) => {
+          if (isOnlineCourseFormat(row.courseFormat)) retLowOnline.push(row);
+          else retLowOffline.push(row);
         });
 
         const newOnline = [];
@@ -6634,23 +6668,29 @@
           else newOffline.push(row);
         });
 
-        summaryCount.textContent = `R(S0~P2) ${retentionHigh.length} / N(온라인) ${newOnline.length} / R(P3~P5) ${retentionLow.length} / N(비온라인) ${newOffline.length}`;
-        retHighCount.textContent = `${retentionHigh.length}건`;
+        summaryCount.textContent = `R(S0~P2-비온라인) ${retHighOffline.length} / R(S0~P2-온라인) ${retHighOnline.length} / N(온라인) ${newOnline.length} / R(P3~P5-온라인) ${retLowOnline.length} / R(P3~P5-비온라인) ${retLowOffline.length} / N(비온라인) ${newOffline.length}`;
+        retHighOfflineCount.textContent = `${retHighOffline.length}건`;
+        retHighOnlineCount.textContent = `${retHighOnline.length}건`;
         newOnlineCount.textContent = `${newOnline.length}건`;
-        retLowCount.textContent = `${retentionLow.length}건`;
+        retLowOnlineCount.textContent = `${retLowOnline.length}건`;
+        retLowOfflineCount.textContent = `${retLowOffline.length}건`;
         newOfflineCount.textContent = `${newOffline.length}건`;
 
         const sections = [
-          { key: "ret-high", items: retentionHigh, includeTier: true, body: retHighBody },
+          { key: "ret-high-offline", items: retHighOffline, includeTier: true, body: retHighOfflineBody },
+          { key: "ret-high-online", items: retHighOnline, includeTier: true, body: retHighOnlineBody },
           { key: "new-online", items: newOnline, includeTier: false, body: newOnlineBody },
-          { key: "ret-low", items: retentionLow, includeTier: true, body: retLowBody },
+          { key: "ret-low-online", items: retLowOnline, includeTier: true, body: retLowOnlineBody },
+          { key: "ret-low-offline", items: retLowOffline, includeTier: true, body: retLowOfflineBody },
           { key: "new-offline", items: newOffline, includeTier: false, body: newOfflineBody },
         ];
 
         // Clear containers
-        retHighBody.innerHTML = "";
+        retHighOfflineBody.innerHTML = "";
+        retHighOnlineBody.innerHTML = "";
         newOnlineBody.innerHTML = "";
-        retLowBody.innerHTML = "";
+        retLowOnlineBody.innerHTML = "";
+        retLowOfflineBody.innerHTML = "";
         newOfflineBody.innerHTML = "";
 
         const renderSection = (section) => {
@@ -6683,8 +6723,19 @@
         const items = await loadDealCheck(teamKey);
         renderAll(items);
       } catch (err) {
-        retentionBody.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
-        newBody.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        console.error(err);
+        const bodies = [
+          retHighOfflineBody,
+          retHighOnlineBody,
+          newOnlineBody,
+          retLowOnlineBody,
+          retLowOfflineBody,
+          newOfflineBody,
+        ];
+        bodies.forEach((el) => {
+          if (el) el.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        });
+        if (summaryCount) summaryCount.textContent = "딜체크 데이터를 불러오는 중 오류가 발생했습니다.";
       }
     }
 

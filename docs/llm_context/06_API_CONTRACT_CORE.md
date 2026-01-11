@@ -17,14 +17,14 @@ sync_source:
 ## Behavioral Contract
 - 공통: DB_PATH 기본 `salesmap_latest.db`, 부재 시 대부분 500. 금액/날짜는 원본 TEXT를 그대로 전달하며 포맷은 프런트가 처리한다. 프런트 캐시는 JS Map으로만 존재해 새로고침 전까지 유지된다.
 - 조직/기본 조회:
-  - `GET /api/sizes` → `SIZE_GROUPS` 순(`대기업`…`기타/미입력`).
+  - `GET /api/sizes` → organization 규모를 알파벳 오름차순으로 반환(프런트가 `"전체"`를 prepend).
   - `GET /api/orgs?size=전체&search=&limit=200&offset=0` → People 또는 Deal이 1건 이상 있는 조직만, won2025 desc→name asc 정렬.
   - `GET /api/orgs/{id}` 404 on missing.
   - `GET /api/orgs/{id}/people?hasDeal=true|false|null` → name asc.
   - `GET /api/orgs/{id}/memos`/`/people/{id}/memos`/`/deals/{id}/memos` → createdAt desc, limit ≤500.
 - Won JSON:
   - `GET /api/orgs/{id}/won-groups-json` → organization(id/name/size/industry/industry_major/mid + memos) + groups(upper_org/team별 people/deals). webforms `{name,date}`(id 숨김, webform_history 매핑) 포함, 폼 메모는 `_clean_form_memo`로 정제해 `cleanText`.
-  - `GET /api/orgs/{id}/won-groups-json-compact` → schema_version `won-groups-json/compact-v1`, deal_defaults(>=80% 반복 필드) 추출, Won 요약(summary) 누적, memos/webforms 제거.
+  - `GET /api/orgs/{id}/won-groups-json-compact` → schema_version `won-groups-json/compact-v1`, deal_defaults(>=80% 반복 필드) 추출, Won 요약(summary) 누적. **현재 구현은 memos/webforms를 compact 결과에 그대로 보존**한다.
   - `GET /api/orgs/{id}/won-summary` → 상위 조직별 Won 합계(2023/2024/2025) + owners/owners2025/dealCount.
 - 랭킹/DRI/StatePath:
   - `GET /api/rank/2025/summary-by-size?exclude_org_name=삼성전자&years=2025,2026` → Won 합계 규모별, 캐시 키 `snapshot_version=db_mtime:<int>`.
@@ -37,7 +37,7 @@ sync_source:
   - `GET /api/performance/monthly-amounts/summary?from=2025-01&to=2026-12` → months=YYMM 24개, segment 11종, rows=TOTAL→CONTRACT→CONFIRMED→HIGH. 금액 원 단위, TOTAL은 나머지 합. snapshot_version 포함.
   - `GET /api/performance/monthly-amounts/deals?segment=...&row=TOTAL|CONTRACT|CONFIRMED|HIGH&month=YYMM` → row=TOTAL은 3버킷 합집합 dedupe, totalAmount=amount>0 else expectedAmount 합산, items 정렬은 프런트가 수행.
   - `GET /api/performance/pl-progress-2026/summary` → Target(T) 열은 `PL_2026_TARGET`, Expected(E)는 기간 비율로 분배한 recognized_by_month 합계(억 단위 소수 4자리). OP_MARGIN은 연간 OP/REV. 캐시 키 `_PL_PROGRESS_SUMMARY_CACHE`.
-  - `GET /api/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E` → recognizedAmount desc→amountUsed desc→dealName asc 정렬. variant T는 빈 리스트 반환.
+  - `GET /api/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E` → recognizedAmount desc→amountUsed desc→dealName desc 정렬. variant T는 빈 리스트 반환.
 - 딜체크/QC:
   - `GET /api/deal-check?team=edu1|edu2` → `상태='SQL'` 딜 중 팀 구성원 포함 건만, orgWon2025Total desc→createdAt asc→dealId asc, memoCount join. isRetention은 2025 Won 금액 파싱 성공 여부.
   - `GET /api/deal-check/edu1|edu2` → 위 래퍼.
@@ -70,7 +70,7 @@ sync_source:
 - `/api/orgs`가 won2025 desc→name asc이고 People/Deal 0건 조직이 제외되는지 샘플 DB로 확인한다.
 - `/api/orgs/{id}/won-groups-json`에 industry_major/mid, webforms `{name,date}`, cleanText 메모가 포함되고 upper_org가 Won 존재 조직만 있는지 확인한다.
 - `/api/performance/monthly-amounts/summary`가 24개월·4개 row·11세그먼트를 포함하고 `/performance/monthly-amounts/deals` row=TOTAL이 3버킷 합집합인지 검증한다.
-- `/api/performance/pl-progress-2026/summary`가 연간/월별 T/E 컬럼을 포함하고 current YYMM E 셀 클릭 시 `/performance/pl-progress-2026/deals`가 recognizedAmount desc 정렬인지 확인한다.
+- `/api/performance/pl-progress-2026/summary`가 연간/월별 T/E 컬럼을 포함하고 current YYMM E 셀 클릭 시 `/performance/pl-progress-2026/deals`가 recognizedAmount desc→amountUsed desc→dealName desc 정렬인지 확인한다.
 - `/api/rank/2025-top100-counterparty-dri`가 Lost/Convert 제외, orgWon2025 desc→cpTotal2025 desc 정렬이며 owners가 People.owner_json 우선으로 채워지는지 테스트 대비 확인한다.
 - `/api/deal-check?team=edu1|edu2`가 orgWon2025 desc→createdAt asc→dealId asc 정렬이며 memoCount/personId/personName/orgWon2025Total을 포함하는지 확인한다.
 - `/api/report/counterparty-risk` 호출 시 캐시 생성/재사용, status.json 업데이트가 정상인지 확인한다.

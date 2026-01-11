@@ -19,7 +19,7 @@ sync_source:
 - 2026 P&L (`renderBizPerfPlProgress2026`):
   - `/performance/pl-progress-2026/summary` → 연간(T/E) 후 2601~2612 T/E 컬럼을 렌더. 현재 월 헤더/셀에 `is-current-month-group`/`is-current-month` 클래스 부여.
   - assumptions 바(공헌이익률 온라인/출강, 월 제작/마케팅/인건비) 입력 → `applyAssumptionsToPnlData`로 즉시 재계산. `pnlAssumpInfoBtn`은 meta.excluded·snapshot_version·가정을 모달로 표시, `pnlResetAssumptionsBtn`은 기본값으로 복구.
-  - 월별 E 열(REV_TOTAL/REV_ONLINE/REV_OFFLINE)만 클릭 가능, `/performance/pl-progress-2026/deals` 결과를 recognizedAmount desc→amountUsed desc→dealName asc 정렬해 모달 테이블로 표시.
+  - 월별 E 열(REV_TOTAL/REV_ONLINE/REV_OFFLINE)만 클릭 가능, `/performance/pl-progress-2026/deals` 결과를 recognizedAmount desc→amountUsed desc→dealName desc 정렬해 모달 테이블로 표시.
 - 2026 월별 체결액 (`renderBizPerfMonthly`):
   - `/performance/monthly-amounts/summary` → YYMM 24개월, rows TOTAL→CONTRACT→CONFIRMED→HIGH, segment 11종. 값은 `formatEok1`로 억 1자리, dealCount=0이면 `<span class="mp-cell-btn is-zero">` 비활성.
   - 셀 클릭 시 `/performance/monthly-amounts/deals`, amount>0 우선→expectedAmount→dealName asc 정렬 후 모달 테이블(15열, colgroup 고정) 표시.
@@ -38,7 +38,7 @@ sync_source:
 - P&L 테이블: 연간(T/E) → 월별(T/E) 순, 현재 월 하이라이트, 월별 E만 클릭 가능, 숫자 우측 정렬(tabular-nums), 0은 버튼 대신 span.
 - 월별 체결액: rows 4개·YYMM 24개 전부 출력, dealCount=0 셀은 비활성 span, 금액은 `formatEok1`(원→억) 사용.
 - 모달 공유 DOM(`#rankPeopleModal*`, `#dealQcModal`, JSON/StatePath 모달)을 재사용하며 ESC/백드롭/X로 닫혀야 한다.
-- 캐시: fetchJson이 path별 Map에 저장, 무효화 없음 → DB 교체/포트 변경 시 새로고침 필수. 딜체크 7개 메뉴는 모두 `DEALCHECK_MENU_DEFS`에서 파생된 동일 renderer를 사용해야 하며, 메뉴 추가 시 config 1곳만 수정하면 사이드바/renderer가 함께 반영돼야 한다.
+- 캐시: 공통 fetchJson은 캐시를 두지 않으며 화면별로 Map 캐시(state/cache 객체)를 개별 보관한다. DB 교체/포트 변경 시 새로고침 전에는 각 화면 캐시가 무효화되지 않는다. 딜체크 7개 메뉴는 모두 `DEALCHECK_MENU_DEFS`에서 파생된 동일 renderer를 사용해야 하며, 메뉴 추가 시 config 1곳만 수정하면 사이드바/renderer가 함께 반영돼야 한다.
 
 ## Coupling Map
 - 프런트: `org_tables_v2.html` 렌더러/상수(`MENU_SECTIONS`, `DEFAULT_MENU_ID`, `PART_STRUCTURE`, `COUNTERPARTY_ONLINE_FORMATS` 등).
@@ -53,7 +53,7 @@ sync_source:
 
 ## Verification
  - 사이드바 라벨/순서가 계약대로인지, 잘못된 hash 시 조직 뷰어가 열리는지 확인한다.
-- `/performance/pl-progress-2026/summary` 응답으로 연간→월별 T/E 헤더와 현재 월 하이라이트가 표시되고, 월별 E 셀 클릭 시 `/performance/pl-progress-2026/deals` 모달이 recognizedAmount desc 정렬인지 확인한다.
+- `/performance/pl-progress-2026/summary` 응답으로 연간→월별 T/E 헤더와 현재 월 하이라이트가 표시되고, 월별 E 셀 클릭 시 `/performance/pl-progress-2026/deals` 모달이 recognizedAmount desc→amountUsed desc→dealName desc 정렬인지 확인한다.
 - `/performance/monthly-amounts/summary`가 24개월·4개 row를 모두 포함하고 0 셀이 비활성화되며, 모달 정렬이 amount>0→expectedAmount→dealName asc인지 확인한다.
 - `/rank/2025-top100-counterparty-dri` 호출 후 검색/DRI/팀&파트/정렬 필터가 즉시 반영되고 행 클릭 시 `/rank/2025-counterparty-dri/detail` 모달이 열리는지 확인한다.
 - 딜체크 메뉴 7개가 모두 표시되고, `/deal-check?team=edu1|edu2` 결과가 orgWon2025Total desc→createdAt asc→dealId asc 정렬인지 확인한다. 자식 메뉴(파트/온라인셀)는 owners 기반 partFilter가 적용돼 카운트/목록이 달라지는지 검증한다.

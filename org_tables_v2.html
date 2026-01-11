@@ -2449,8 +2449,6 @@
         detail: null,
         search: "",
         dri: "all",
-        hideMissingUpper: false,
-        sort: "default",
         page: 0,
         offset: 0,
         teamPart: "all",
@@ -8236,13 +8234,6 @@
             </select>
             <label class="muted">팀&파트</label>
             <select id="rankCounterpartyTeamPartFilter"></select>
-            <label><input type="checkbox" id="rankCounterpartyHideMissing" /> 미입력 upper_org 숨김</label>
-            <label class="muted">정렬</label>
-            <select id="rankCounterpartySort">
-              <option value="default">기업총액↓ → CP총액↓(기본)</option>
-              <option value="cp_online_desc">CP 온라인↓</option>
-              <option value="cp_offline_desc">CP 비온라인↓</option>
-            </select>
           </div>
         </section>
         <section class="card">
@@ -8271,22 +8262,37 @@
       const searchInput = document.getElementById("rankCounterpartySearch");
       const driSelect = document.getElementById("rankCounterpartyDriFilter");
       const teamPartSelect = document.getElementById("rankCounterpartyTeamPartFilter");
-      const hideMissingChk = document.getElementById("rankCounterpartyHideMissing");
-      const sortSelect = document.getElementById("rankCounterpartySort");
+
+      const rebuildTeamPartOptions = () => {
+        const opts = new Set(["all"]);
+        (stateDri.rows || []).forEach((row) => {
+          const tp = computeTeamPartSummary(row.owners2025 || []);
+          const label = tp.teamPartText || "-";
+          opts.add(label);
+        });
+        stateDri.teamPartOptions = Array.from(opts);
+        if (teamPartSelect) {
+          const currentVal = stateDri.teamPart || "all";
+          const html = stateDri.teamPartOptions
+            .map((opt) => `<option value="${opt}">${opt === "all" ? "전체" : opt}</option>`)
+            .join("");
+          teamPartSelect.innerHTML = html;
+          if (!stateDri.teamPartOptions.includes(currentVal)) {
+            stateDri.teamPart = "all";
+            teamPartSelect.value = "all";
+          } else {
+            teamPartSelect.value = currentVal;
+          }
+        }
+      };
 
       const applyFilters = () => {
         const rows = stateDri.rows || [];
         const term = (stateDri.search || "").trim();
         const driFilter = stateDri.dri || "all";
-        const hideMissing = stateDri.hideMissingUpper;
-        const sort = stateDri.sort || "default";
         const teamPartFilter = stateDri.teamPart || "all";
 
         let filtered = rows.filter((r) => {
-          if (hideMissing && (!r.upperOrg || normalizeUpperOrg(r.upperOrg) === "미입력")) return false;
-          return true;
-        });
-        filtered = filtered.filter((r) => {
           if (driFilter !== "all") {
             const tp = computeTeamPartSummary(r.owners2025 || []);
             if (tp.dri !== driFilter) return false;
@@ -8309,16 +8315,10 @@
             );
           });
         }
-        if (sort === "cp_online_desc") {
-          filtered.sort((a, b) => (b.cpOnline2025 || 0) - (a.cpOnline2025 || 0));
-        } else if (sort === "cp_offline_desc") {
-          filtered.sort((a, b) => (b.cpOffline2025 || 0) - (a.cpOffline2025 || 0));
-        } else {
-          filtered.sort((a, b) => {
-            if ((b.orgWon2025 || 0) !== (a.orgWon2025 || 0)) return (b.orgWon2025 || 0) - (a.orgWon2025 || 0);
-            return (b.cpTotal2025 || 0) - (a.cpTotal2025 || 0);
-          });
-        }
+        filtered.sort((a, b) => {
+          if ((b.orgWon2025 || 0) !== (a.orgWon2025 || 0)) return (b.orgWon2025 || 0) - (a.orgWon2025 || 0);
+          return (b.cpTotal2025 || 0) - (a.cpTotal2025 || 0);
+        });
         return filtered;
       };
 
@@ -8330,27 +8330,7 @@
           tableWrap.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
           return;
         }
-        const tpOptions = new Set(["all"]);
-        rows.forEach((row) => {
-          const tp = computeTeamPartSummary(row.owners2025 || []);
-          const label = tp.teamPartText || "-";
-          tpOptions.add(label);
-        });
-        stateDri.teamPartOptions = Array.from(tpOptions);
-        if (teamPartSelect) {
-          const opts = stateDri.teamPartOptions
-            .map((opt) => `<option value="${opt}">${opt === "all" ? "전체" : opt}</option>`)
-            .join("");
-          const currentVal = teamPartSelect.value || "all";
-          teamPartSelect.innerHTML = opts;
-          if (!stateDri.teamPartOptions.includes(currentVal)) {
-            stateDri.teamPart = "all";
-            teamPartSelect.value = "all";
-          } else {
-            teamPartSelect.value = currentVal;
-          }
-        }
-            const htmlRows = rows
+        const htmlRows = rows
           .map((row, idx) => {
             const ownerList = Array.isArray(row.owners2025) ? row.owners2025.map((s) => (s || "").trim()).filter(Boolean) : [];
             const owners = ownerList.length ? ownerList.join(", ") : "미입력";
@@ -8462,6 +8442,7 @@
           const data = await loadCounterpartyRows(stateDri.size || "대기업", stateDri.offset || 0, ORG_PAGE_SIZE);
           stateDri.rows = data.rows || [];
           stateDri.meta = data.meta || {};
+          rebuildTeamPartOptions();
           statusEl.textContent = `${stateDri.size || "대기업"} / org ${data.meta?.orgCount ?? "-"}개 · row ${data.meta?.rowCount ?? "-"} · offset ${(stateDri.offset || 0) + 1}`;
           renderTable();
           detailWrap.textContent = "행을 클릭하면 상세를 표시합니다.";
@@ -8529,20 +8510,6 @@
       if (teamPartSelect) {
         teamPartSelect.addEventListener("change", () => {
           stateDri.teamPart = teamPartSelect.value || "all";
-          renderTable();
-        });
-      }
-      if (hideMissingChk) {
-        hideMissingChk.checked = !!stateDri.hideMissingUpper;
-        hideMissingChk.addEventListener("change", () => {
-          stateDri.hideMissingUpper = hideMissingChk.checked;
-          renderTable();
-        });
-      }
-      if (sortSelect) {
-        sortSelect.value = stateDri.sort || "default";
-        sortSelect.addEventListener("change", () => {
-          stateDri.sort = sortSelect.value || "default";
           renderTable();
         });
       }

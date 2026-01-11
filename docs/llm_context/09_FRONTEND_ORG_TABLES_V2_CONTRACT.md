@@ -24,7 +24,7 @@ sync_source:
   - `/performance/monthly-amounts/summary` → YYMM 24개월, rows TOTAL→CONTRACT→CONFIRMED→HIGH, segment 11종. 값은 `formatEok1`로 억 1자리, dealCount=0이면 `<span class="mp-cell-btn is-zero">` 비활성.
   - 셀 클릭 시 `/performance/monthly-amounts/deals`, amount>0 우선→expectedAmount→dealName asc 정렬 후 모달 테이블(15열, colgroup 고정) 표시.
 - 카운터파티 DRI (`renderRankCounterpartyDriScreen`):
-  - `/rank/2025-top100-counterparty-dri`를 캐시 후 검색/DRI(O/X/all)/팀&파트/미입력 upper_org 숨김/정렬(default|cp_online_desc|cp_offline_desc) 필터를 클라이언트에서 적용. 행 클릭 시 `/rank/2025-counterparty-dri/detail`.
+  - `/rank/2025-top100-counterparty-dri`를 캐시 후 검색/DRI(O/X/all)/팀&파트 필터를 클라이언트에서 적용하며, 정렬은 고정(orgWon2025 desc → cpTotal2025 desc). 행 클릭 시 `/rank/2025-counterparty-dri/detail`.
 - 딜체크/QC:
   - `renderDealCheckScreen(teamKey, options)` 한 곳에서 7개 딜체크 메뉴를 공통 렌더하며, `/deal-check?team=edu1|edu2` 결과를 orgWon2025Total desc→createdAt asc→dealId asc로 렌더, memoCount=0이면 “메모 없음” 비활성 버튼. 부모 메뉴는 필터 없이 팀 전체를, 자식 메뉴는 `partFilter`(1/2파트/온라인셀)를 받아 owners→`getDealCheckPartLookup` 룩업 기반으로 클라이언트 필터를 적용한다. 섹션은 공통 6분할(리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인) 순서를 유지한다.
   - `renderDealQcR1R15Screen`은 `/qc/deal-errors/summary` 카드(팀별 총이슈 desc) + `/qc/deal-errors/person` 상세 모달(R1~R15 위배만 표시) 제공.
@@ -55,7 +55,7 @@ sync_source:
  - 사이드바 라벨/순서가 계약대로인지, 잘못된 hash 시 조직 뷰어가 열리는지 확인한다.
 - `/performance/pl-progress-2026/summary` 응답으로 연간→월별 T/E 헤더와 현재 월 하이라이트가 표시되고, 월별 E 셀 클릭 시 `/performance/pl-progress-2026/deals` 모달이 recognizedAmount desc→amountUsed desc→dealName desc 정렬인지 확인한다.
 - `/performance/monthly-amounts/summary`가 24개월·4개 row를 모두 포함하고 0 셀이 비활성화되며, 모달 정렬이 amount>0→expectedAmount→dealName asc인지 확인한다.
-- `/rank/2025-top100-counterparty-dri` 호출 후 검색/DRI/팀&파트/정렬 필터가 즉시 반영되고 행 클릭 시 `/rank/2025-counterparty-dri/detail` 모달이 열리는지 확인한다.
+- `/rank/2025-top100-counterparty-dri` 호출 후 검색/DRI/팀&파트 필터가 즉시 반영되고 행 클릭 시 `/rank/2025-counterparty-dri/detail` 모달이 열리는지 확인한다.
 - 딜체크 메뉴 7개가 모두 표시되고, `/deal-check?team=edu1|edu2` 결과가 orgWon2025Total desc→createdAt asc→dealId asc 정렬인지 확인한다. 자식 메뉴(파트/온라인셀)는 owners 기반 partFilter가 적용돼 카운트/목록이 달라지는지 검증한다.
 - 상위 조직 JSON 카드에서 선택 없을 때 버튼 비활성+안내, 선택 후 전체/선택 JSON/compact 모달이 올바른 데이터를 표시하는지 확인한다.
 

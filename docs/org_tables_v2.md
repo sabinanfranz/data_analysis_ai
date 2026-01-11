@@ -25,7 +25,7 @@ sync_source:
   - `/performance/monthly-amounts/summary`를 호출해 YYMM 24개월 고정, row `TOTAL→CONTRACT→CONFIRMED→HIGH`를 세그먼트별 카드로 렌더한다. 값은 원 단위를 `formatEok1`로 1e8 나눠 표시하며 dealCount가 0이면 `<span class="is-zero">`로 비활성화된다.
   - 셀 클릭 시 `/performance/monthly-amounts/deals`로 드릴다운하고, amount>0 우선→expectedAmount→dealName asc로 정렬해 모달 테이블(15열, colgroup 고정 폭)로 보여준다.
 - **카운터파티 DRI** (`renderRankCounterpartyDriScreen`):
-  - `/rank/2025-top100-counterparty-dri?size=...&limit=100&offset=...` 데이터를 캐시에 보관하고, 검색/DRI(O/X/all)/팀&파트/미입력 upper_org 숨김/정렬(default|cp_online_desc|cp_offline_desc) 필터를 모두 클라이언트에서 적용한다.
+  - `/rank/2025-top100-counterparty-dri?size=...&limit=100&offset=...` 데이터를 캐시에 보관하고, 검색/DRI(O/X/all)/팀&파트 필터를 클라이언트에서 적용한다(정렬은 고정: orgWon2025 desc → cpTotal2025 desc).
   - 행 클릭 시 `/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...`로 모달을 열어 딜 리스트를 표시한다. 페이지당 100개 조직, offset 단위 이동.
 - **딜체크·QC**:
   - `renderDealCheckScreen(teamKey, options)` 한 곳에서 7개 딜체크 메뉴를 공통 렌더하며, `/deal-check?team=edu1|edu2` 결과를 orgWon2025Total desc→createdAt asc→dealId asc로 테이블 렌더한다. memoCount=0이면 “메모 없음” 비활성 버튼을 보여준다. 부모 메뉴는 필터 없이 팀 전체를, 자식 메뉴는 `partFilter`(1/2파트/온라인셀)를 받아 owners→`getDealCheckPartLookup` 룩업 기반으로 클라이언트 필터를 적용한다. 화면 섹션은 공통 6분할(리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인) 순서를 사용한다.
@@ -61,7 +61,7 @@ sync_source:
 - 사이드바에 사업부 퍼포먼스→운영→분석→검수 순으로 라벨이 노출되고, 잘못된 hash 진입 시 조직 뷰어가 기본으로 열리는지 확인한다.
 - `/performance/pl-progress-2026/summary` 응답으로 연간(T/E)→월별(T/E) 헤더, 현재 월 하이라이트, 월별 E 셀 클릭 시 `/performance/pl-progress-2026/deals` 모달이 recognizedAmount desc→amountUsed desc→dealName desc 정렬로 뜨는지 확인한다.
 - `/performance/monthly-amounts/summary`가 24개월·4개 row를 모두 포함하고 값 0인 셀은 버튼이 비활성화되는지, 셀 클릭 시 deals 모달이 amount>0→expectedAmount 순으로 정렬되는지 확인한다.
-- `/rank/2025-top100-counterparty-dri` 호출 후 검색/DRI/팀&파트/정렬 필터가 즉시 테이블에 반영되고 행 클릭 시 `/rank/2025-counterparty-dri/detail` 모달이 열리는지 확인한다.
+- `/rank/2025-top100-counterparty-dri` 호출 후 검색/DRI/팀&파트 필터가 즉시 테이블에 반영되고 행 클릭 시 `/rank/2025-counterparty-dri/detail` 모달이 열리는지 확인한다.
 - 딜체크 메뉴 7개가 모두 표시되고, `/deal-check?team=edu1|edu2` 응답을 기반으로 orgWon2025Total desc→createdAt asc→dealId asc 정렬이 유지되며 memoCount 0일 때 버튼이 비활성화되는지 확인한다. 자식 메뉴(파트/온라인셀)는 owners 기반 partFilter가 적용돼 목록/카운트가 달라지는지 확인한다.
 - `/orgs/{id}/won-groups-json` 호출 후 상위 조직을 선택해야만 “선택 상위 조직 JSON” 버튼이 활성화되고 compact 버튼이 `/won-groups-json-compact`를 사용해 schema_version을 포함하는지 확인한다.
 

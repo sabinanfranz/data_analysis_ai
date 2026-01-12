@@ -31,7 +31,7 @@ _PERF_MONTHLY_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] 
 _PL_PROGRESS_PAYLOAD_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
 _PL_PROGRESS_SUMMARY_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
 
-PL_2026_TARGET: Dict[str, Dict[str, float]] = {
+PL_2026_TARGET_DEFAULT: Dict[str, Dict[str, float]] = {
     "2601": {"online": 3.7, "offline": 2.1},
     "2602": {"online": 4.0, "offline": 2.1},
     "2603": {"online": 4.3, "offline": 8.6},
@@ -45,6 +45,251 @@ PL_2026_TARGET: Dict[str, Dict[str, float]] = {
     "2611": {"online": 5.6, "offline": 14.6},
     "2612": {"online": 5.6, "offline": 13.6},
 }
+
+# Full target table hardcoded from resources/2026 PnL target.txt (T values only)
+PL_2026_TARGET_FULL: Dict[str, Dict[str, Dict[str, float]]] = {
+    "REV_TOTAL": {
+        "2026": {"T": 210.0},
+        "2601": {"T": 5.8},
+        "2602": {"T": 6.1},
+        "2603": {"T": 12.9},
+        "2604": {"T": 13.7},
+        "2605": {"T": 17.3},
+        "2606": {"T": 20.4},
+        "2607": {"T": 23.5},
+        "2608": {"T": 27.1},
+        "2609": {"T": 23.5},
+        "2610": {"T": 20.3},
+        "2611": {"T": 20.2},
+        "2612": {"T": 19.2},
+    },
+    "REV_ONLINE": {
+        "2026": {"T": 60.1},
+        "2601": {"T": 3.7},
+        "2602": {"T": 4.0},
+        "2603": {"T": 4.3},
+        "2604": {"T": 4.6},
+        "2605": {"T": 4.9},
+        "2606": {"T": 5.3},
+        "2607": {"T": 5.5},
+        "2608": {"T": 5.5},
+        "2609": {"T": 5.5},
+        "2610": {"T": 5.6},
+        "2611": {"T": 5.6},
+        "2612": {"T": 5.6},
+    },
+    "REV_OFFLINE": {
+        "2026": {"T": 149.9},
+        "2601": {"T": 2.1},
+        "2602": {"T": 2.1},
+        "2603": {"T": 8.6},
+        "2604": {"T": 9.1},
+        "2605": {"T": 12.4},
+        "2606": {"T": 15.1},
+        "2607": {"T": 18.0},
+        "2608": {"T": 21.6},
+        "2609": {"T": 18.0},
+        "2610": {"T": 14.7},
+        "2611": {"T": 14.6},
+        "2612": {"T": 13.6},
+    },
+    "COST_CONTRIB_TOTAL": {
+        "2026": {"T": 76.5},
+        "2601": {"T": 1.5},
+        "2602": {"T": 1.5},
+        "2603": {"T": 4.5},
+        "2604": {"T": 4.8},
+        "2605": {"T": 6.3},
+        "2606": {"T": 7.6},
+        "2607": {"T": 8.9},
+        "2608": {"T": 10.5},
+        "2609": {"T": 8.9},
+        "2610": {"T": 7.5},
+        "2611": {"T": 7.4},
+        "2612": {"T": 7.0},
+    },
+    "COST_CONTRIB_ONLINE": {
+        "2026": {"T": 9.0},
+        "2601": {"T": 0.6},
+        "2602": {"T": 0.6},
+        "2603": {"T": 0.6},
+        "2604": {"T": 0.7},
+        "2605": {"T": 0.7},
+        "2606": {"T": 0.8},
+        "2607": {"T": 0.8},
+        "2608": {"T": 0.8},
+        "2609": {"T": 0.8},
+        "2610": {"T": 0.8},
+        "2611": {"T": 0.8},
+        "2612": {"T": 0.8},
+    },
+    "COST_CONTRIB_OFFLINE": {
+        "2026": {"T": 67.5},
+        "2601": {"T": 0.9},
+        "2602": {"T": 0.9},
+        "2603": {"T": 3.9},
+        "2604": {"T": 4.1},
+        "2605": {"T": 5.6},
+        "2606": {"T": 6.8},
+        "2607": {"T": 8.1},
+        "2608": {"T": 9.7},
+        "2609": {"T": 8.1},
+        "2610": {"T": 6.6},
+        "2611": {"T": 6.6},
+        "2612": {"T": 6.1},
+    },
+    "PROFIT_CONTRIB_TOTAL": {
+        "2026": {"T": 133.5},
+        "2601": {"T": 4.3},
+        "2602": {"T": 4.6},
+        "2603": {"T": 8.4},
+        "2604": {"T": 8.9},
+        "2605": {"T": 11.0},
+        "2606": {"T": 12.8},
+        "2607": {"T": 14.6},
+        "2608": {"T": 16.6},
+        "2609": {"T": 14.6},
+        "2610": {"T": 12.8},
+        "2611": {"T": 12.8},
+        "2612": {"T": 12.2},
+    },
+    "PROFIT_CONTRIB_ONLINE": {
+        "2026": {"T": 51.1},
+        "2601": {"T": 3.1},
+        "2602": {"T": 3.4},
+        "2603": {"T": 3.7},
+        "2604": {"T": 3.9},
+        "2605": {"T": 4.2},
+        "2606": {"T": 4.5},
+        "2607": {"T": 4.7},
+        "2608": {"T": 4.7},
+        "2609": {"T": 4.7},
+        "2610": {"T": 4.8},
+        "2611": {"T": 4.8},
+        "2612": {"T": 4.8},
+    },
+    "PROFIT_CONTRIB_OFFLINE": {
+        "2026": {"T": 82.4},
+        "2601": {"T": 1.2},
+        "2602": {"T": 1.2},
+        "2603": {"T": 4.7},
+        "2604": {"T": 5.0},
+        "2605": {"T": 6.8},
+        "2606": {"T": 8.3},
+        "2607": {"T": 9.9},
+        "2608": {"T": 11.9},
+        "2609": {"T": 9.9},
+        "2610": {"T": 8.1},
+        "2611": {"T": 8.0},
+        "2612": {"T": 7.5},
+    },
+    "COST_FIXED_TOTAL": {
+        "2026": {"T": 111.8},
+        "2601": {"T": 8.5},
+        "2602": {"T": 8.5},
+        "2603": {"T": 8.8},
+        "2604": {"T": 8.9},
+        "2605": {"T": 9.0},
+        "2606": {"T": 9.2},
+        "2607": {"T": 9.3},
+        "2608": {"T": 9.5},
+        "2609": {"T": 9.3},
+        "2610": {"T": 9.1},
+        "2611": {"T": 9.1},
+        "2612": {"T": 9.1},
+    },
+    "COST_FIXED_PROD": {
+        "2026": {"T": 2.4},
+        "2601": {"T": 0.2},
+        "2602": {"T": 0.2},
+        "2603": {"T": 0.2},
+        "2604": {"T": 0.2},
+        "2605": {"T": 0.2},
+        "2606": {"T": 0.2},
+        "2607": {"T": 0.2},
+        "2608": {"T": 0.2},
+        "2609": {"T": 0.2},
+        "2610": {"T": 0.2},
+        "2611": {"T": 0.2},
+        "2612": {"T": 0.2},
+    },
+    "COST_FIXED_MKT": {
+        "2026": {"T": 3.6},
+        "2601": {"T": 0.3},
+        "2602": {"T": 0.3},
+        "2603": {"T": 0.3},
+        "2604": {"T": 0.3},
+        "2605": {"T": 0.3},
+        "2606": {"T": 0.3},
+        "2607": {"T": 0.3},
+        "2608": {"T": 0.3},
+        "2609": {"T": 0.3},
+        "2610": {"T": 0.3},
+        "2611": {"T": 0.3},
+        "2612": {"T": 0.3},
+    },
+    "COST_FIXED_LABOR": {
+        "2026": {"T": 75.0},
+        "2601": {"T": 6.3},
+        "2602": {"T": 6.3},
+        "2603": {"T": 6.3},
+        "2604": {"T": 6.3},
+        "2605": {"T": 6.3},
+        "2606": {"T": 6.3},
+        "2607": {"T": 6.3},
+        "2608": {"T": 6.3},
+        "2609": {"T": 6.3},
+        "2610": {"T": 6.3},
+        "2611": {"T": 6.3},
+        "2612": {"T": 6.3},
+    },
+    "COST_FIXED_RENT": {
+        "2026": {"T": 11.3},
+        "2601": {"T": 0.9},
+        "2602": {"T": 0.9},
+        "2603": {"T": 0.9},
+        "2604": {"T": 0.9},
+        "2605": {"T": 0.9},
+        "2606": {"T": 0.9},
+        "2607": {"T": 0.9},
+        "2608": {"T": 0.9},
+        "2609": {"T": 0.9},
+        "2610": {"T": 0.9},
+        "2611": {"T": 0.9},
+        "2612": {"T": 0.9},
+    },
+    "COST_FIXED_OTHER": {
+        "2026": {"T": 19.5},
+        "2601": {"T": 1.1},
+        "2602": {"T": 1.1},
+        "2603": {"T": 1.4},
+        "2604": {"T": 1.5},
+        "2605": {"T": 1.6},
+        "2606": {"T": 1.8},
+        "2607": {"T": 1.9},
+        "2608": {"T": 2.1},
+        "2609": {"T": 1.9},
+        "2610": {"T": 1.7},
+        "2611": {"T": 1.7},
+        "2612": {"T": 1.7},
+    },
+    "OP": {
+        "2026": {"T": 21.8},
+        "2601": {"T": -4.2},
+        "2602": {"T": -4.0},
+        "2603": {"T": -0.4},
+        "2604": {"T": 0.1},
+        "2605": {"T": 2.0},
+        "2606": {"T": 3.7},
+        "2607": {"T": 5.3},
+        "2608": {"T": 7.1},
+        "2609": {"T": 5.3},
+        "2610": {"T": 3.7},
+        "2611": {"T": 3.7},
+        "2612": {"T": 3.2},
+    },
+}
+
 
 
 def _date_only(val: Any) -> str:
@@ -3190,9 +3435,20 @@ def get_perf_monthly_amounts_deals(
 
 
 def _pl_target_for_year(year: int) -> Dict[str, Dict[str, float]]:
-    if year == 2026:
-        return PL_2026_TARGET
-    return {}
+    if year != 2026:
+        return {}
+
+    # For T variant we fully override with hardcoded table (억 단위)
+    months = _month_keys_for_year(year)
+    result: Dict[str, Dict[str, float]] = {m: {"online": 0.0, "offline": 0.0} for m in months}
+    for month in months:
+        online = PL_2026_TARGET_FULL.get("REV_ONLINE", {}).get(month, {}).get("T")
+        offline = PL_2026_TARGET_FULL.get("REV_OFFLINE", {}).get(month, {}).get("T")
+        if online is not None:
+            result[month]["online"] = float(online)
+        if offline is not None:
+            result[month]["offline"] = float(offline)
+    return result
 
 
 def _round2(val: Optional[float]) -> Optional[float]:
@@ -3358,6 +3614,17 @@ def get_pl_progress_summary(year: int = 2026, db_path: Path = DB_PATH) -> Dict[s
             data_variant[variant][month][key] += float(amt)
 
     def compute_rows_for_variant(variant: str) -> Dict[str, Dict[str, float]]:
+        # For T: directly use PL_2026_TARGET_FULL values (억 단위) when available
+        if variant == "T" and year == 2026:
+            rows: Dict[str, Dict[str, float]] = {key: {} for key, _, _, _ in _PL_PROGRESS_ROWS}
+            for key, _, _, fmt in _PL_PROGRESS_ROWS:
+                table = PL_2026_TARGET_FULL.get(key, {})
+                for month in months:
+                    val = table.get(month, {}).get("T")
+                    rows[key][month] = _round2(val) if val is not None else 0.0
+            return rows
+
+        # E (and any non-T) uses computed values from deals
         rows: Dict[str, Dict[str, float]] = {key: {} for key, _, _, _ in _PL_PROGRESS_ROWS}
         for month in months:
             online_rev = data_variant[variant][month]["online"]
@@ -3436,7 +3703,10 @@ def get_pl_progress_summary(year: int = 2026, db_path: Path = DB_PATH) -> Dict[s
             values[year_key_t] = _round2(op_t / rev_t * 100.0) if rev_t > 0 else None
             values[year_key_e] = _round2(op_e / rev_e * 100.0) if rev_e > 0 else None
         else:
-            values[year_key_t] = totals_by_variant["T"].get(key, 0.0)
+            if key in PL_2026_TARGET_FULL and year == 2026:
+                values[year_key_t] = PL_2026_TARGET_FULL[key].get(str(year), {}).get("T", totals_by_variant["T"].get(key, 0.0))
+            else:
+                values[year_key_t] = totals_by_variant["T"].get(key, 0.0)
             values[year_key_e] = totals_by_variant["E"].get(key, 0.0)
 
         rows_out.append({"key": key, "label": label, "level": level, "format": fmt, "values": values})

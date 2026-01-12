@@ -3,7 +3,7 @@ import json
 import os
 import re
 import sqlite3
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
@@ -25,6 +25,7 @@ ONLINE_PNL_FORMATS = {
 }
 SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타/미입력"]
 PUBLIC_KEYWORDS = ["공단", "공사", "진흥원", "재단", "협회", "청", "시청", "도청", "구청", "교육청", "원"]
+_KST_TZ = timezone(timedelta(hours=9))
 _COUNTERPARTY_DRI_CACHE: Dict[Tuple[Path, float, str, int, str], Dict[str, Any]] = {}
 _COUNTERPARTY_DRI_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] = {}
 _RANK_2025_SUMMARY_CACHE: Dict[Tuple[Path, float, str, Tuple[int, ...]], Dict[str, Any]] = {}
@@ -534,7 +535,30 @@ def _prob_equals(val: Any, target: str) -> bool:
 
 
 def _parse_date(val: Any) -> Optional[date]:
-    text = _date_only(val)
+    """
+    Parse a date or datetime-ish value.
+    - If ISO8601 with timezone (Z or +HH:MM), convert to KST and take the date to avoid day rollover.
+    - Otherwise, normalize to YYYY-MM-DD and parse as naive date.
+    """
+    if val is None:
+        return None
+    text_raw = str(val).strip()
+    if not text_raw:
+        return None
+
+    # Try timezone-aware ISO first to avoid off-by-one day due to UTC storage
+    if "T" in text_raw:
+        iso_text = text_raw
+        if iso_text.endswith("Z"):
+            iso_text = iso_text[:-1] + "+00:00"
+        try:
+            dt = datetime.fromisoformat(iso_text)
+            if dt.tzinfo is not None:
+                return dt.astimezone(_KST_TZ).date()
+        except Exception:
+            pass
+
+    text = _date_only(text_raw)
     if not text:
         return None
     try:

@@ -25,13 +25,16 @@ sync_source:
   - 셀 클릭 시 `/performance/monthly-amounts/deals`, amount>0 우선→expectedAmount→dealName asc 정렬 후 모달 테이블(15열, colgroup 고정) 표시.
 - 카운터파티 DRI (`renderRankCounterpartyDriScreen`):
   - `/rank/2025-top100-counterparty-dri`를 호출해 규모별 **전체 리스트**를 캐싱하고 검색/DRI(O/X/all)/팀&파트 필터를 클라이언트에서 적용하며, 정렬은 고정(orgWon2025 desc → cpTotal2025 desc). Prev/Next 페이징 없이 전체를 한 번에 렌더하며, 행 클릭 시 `/rank/2025-counterparty-dri/detail`.
+- 2026 Target Board: `/rank/2025-top100-counterparty-dri` 결과를 대/중견/중소 3그룹으로 불러와 티어별 출강 타겟 KPI 카드(26 출강 체결/타겟, 억 단위)를 렌더한다. 데이터가 없으면 “DRI 데이터 없음”을 표시한다.
 - 딜체크/QC:
   - `renderDealCheckScreen(teamKey, options)` 한 곳에서 7개 딜체크 메뉴를 공통 렌더하며, `/deal-check?team=edu1|edu2` 결과를 orgWon2025Total desc→createdAt asc→dealId asc로 렌더, memoCount=0이면 “메모 없음” 비활성 버튼. 부모 메뉴는 필터 없이 팀 전체를, 자식 메뉴는 `partFilter`(1/2파트/온라인셀)를 받아 owners→`getDealCheckPartLookup` 룩업 기반으로 클라이언트 필터를 적용한다. 섹션은 공통 6분할(리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인) 순서를 유지한다.
   - `renderDealQcR1R15Screen`은 `/qc/deal-errors/summary` 카드(팀별 총이슈 desc) + `/qc/deal-errors/person` 상세 모달(R1~R15 위배만 표시) 제공.
 - 조직/People/Deal 뷰어:
   - `getSizes`→`/orgs`로 조직 목록 로드, 선택 시 `/orgs/{id}/people`→사람 선택→`/people/{id}/deals`/`/people/{id}/memos`/`/deals/{id}/memos`.
   - 상위 조직 JSON 카드: `/orgs/{id}/won-groups-json` 캐시 → 선택 upper_org가 없으면 JSON 버튼 비활성+안내, 선택 시 전체/선택 JSON 모달, compact 버튼은 `/won-groups-json-compact`.
-- StatePath 24→25: `/statepath/portfolio-2425` 결과를 필터 칩+요약 카드+테이블로 렌더, “전체 해제” 버튼이 segment/search/필터를 초기화해 재호출.
+- StatePath 24→25: 서버 호출은 `segment/sort/limit`만 전달하며, 필터는 모두 클라이언트 드로어(규모 라디오, 2024 티어 프리셋/체크박스, Quick Filters, 패턴 필터 전이/셀/rail)에서 즉시 적용된다. Snapshot/Pattern Explorer/테이블/브레드크럼이 공유 상태를 사용하고 “전체 해제” 버튼이 클라이언트 필터를 리셋한다.
+- 2026 Daily Report(WIP, Counterparty Risk): 날짜 선택+새로고침 버튼, tier/risk 멀티셀렉트, pipeline_zero 토글, 검색, 리스크 칩을 제공한다. `/report/counterparty-risk` 응답의 summary.tier_groups/summary.counts/data_quality와 counterparties[*](`target_2026/coverage_2026/expected_2026/gap/coverage_ratio/pipeline_zero/evidence_bullets/recommended_actions`)를 표시하며, 섹션별 details 토글이 evidence/추천 액션을 노출한다. DB 버전 배지를 표시하고 필터 상태는 메모리 캐시(Map)로 유지된다.
+- 2025 체결액 순위: 규모 셀렉터 + 등급 가이드/배수 설정 모달을 갖추고, 테이블에 26 타겟/온라인/비온라인 컬럼을 함께 렌더한다(프런트에서 `computeTargets`로 계산, 삼성 S0는 50억 고정).
 
 ## Invariants (Must Not Break)
 - 메뉴 섹션/라벨/순서/ID는 `MENU_SECTIONS` 정의와 일치해야 하며, 잘못된 hash 시 org-view로 이동해야 한다.
@@ -39,6 +42,10 @@ sync_source:
 - 월별 체결액: rows 4개·YYMM 24개 전부 출력, dealCount=0 셀은 비활성 span, 금액은 `formatEok1`(원→억) 사용.
 - 모달 공유 DOM(`#rankPeopleModal*`, `#dealQcModal`, JSON/StatePath 모달)을 재사용하며 ESC/백드롭/X로 닫혀야 한다.
 - 캐시: 공통 fetchJson은 캐시를 두지 않으며 화면별로 Map 캐시(state/cache 객체)를 개별 보관한다. DB 교체/포트 변경 시 새로고침 전에는 각 화면 캐시가 무효화되지 않는다. 딜체크 7개 메뉴는 모두 `DEALCHECK_MENU_DEFS`에서 파생된 동일 renderer를 사용해야 하며, 메뉴 추가 시 config 1곳만 수정하면 사이드바/renderer가 함께 반영돼야 한다.
+- StatePath 필터 드로어의 토글/싱글 선택(전이/셀/rail/seed/회사 방향/위험 등)은 서버 재호출 없이 클라이언트 필터만 변경해야 하며, Snapshot/Pattern/테이블이 즉시 동기화된다.
+- Counterparty Risk 화면은 tier/risk/pipeline_zero/search 필터를 모두 프런트에서 적용하고, summary(티어별 target/coverage/gap/coverage%)와 evidence/추천 액션 토글을 표시해야 한다.
+- DRI 테이블은 target26(오프라인/온라인) 컬럼과 override 강조 클래스를 렌더해야 하며, 팀&파트 옵션은 owners2025 기반으로 재계산된다.
+- 2025 체결액 순위 테이블에는 26년 타겟/온라인/비온라인 컬럼과 등급 배수/가이드 모달 버튼이 포함돼야 한다. Target Board 카드 그룹은 DRI 원본을 기반으로 티어별 합계를 보여야 한다.
 
 ## Coupling Map
 - 프런트: `org_tables_v2.html` 렌더러/상수(`MENU_SECTIONS`, `DEFAULT_MENU_ID`, `PART_STRUCTURE`, `COUNTERPARTY_ONLINE_FORMATS` 등).
@@ -50,6 +57,8 @@ sync_source:
  - 캐시로 인해 DB 교체 후 새로고침 전까지 이전 데이터가 남는다.
  - hash가 숨김 메뉴 id(`rank-2025-people`, `industry-2025`)일 때도 렌더는 되지만 사이드바에 표시되지 않는다.
  - 선택 초기화 시 People/Deal/메모/JSON 상태가 모두 리셋되어야 하며, 누락 시 이전 데이터가 잔류할 수 있다.
+ - Counterparty Risk는 evidence/recommendations가 없을 때 placeholder를 보여주며, DB 교체 후 새로고침하지 않으면 이전 캐시를 계속 사용한다.
+ - StatePath는 segment만 서버에 전달하고 나머지 필터는 프런트 상태에만 존재하므로, DB 교체 시 새로고침을 하지 않으면 구 데이터를 계속 필터링할 수 있다.
 
 ## Verification
  - 사이드바 라벨/순서가 계약대로인지, 잘못된 hash 시 조직 뷰어가 열리는지 확인한다.
@@ -58,8 +67,12 @@ sync_source:
 - `/rank/2025-top100-counterparty-dri` 호출 후 검색/DRI/팀&파트 필터가 즉시 반영되고 행 클릭 시 `/rank/2025-counterparty-dri/detail` 모달이 열리는지 확인한다.
 - 딜체크 메뉴 7개가 모두 표시되고, `/deal-check?team=edu1|edu2` 결과가 orgWon2025Total desc→createdAt asc→dealId asc 정렬인지 확인한다. 자식 메뉴(파트/온라인셀)는 owners 기반 partFilter가 적용돼 카운트/목록이 달라지는지 검증한다.
 - 상위 조직 JSON 카드에서 선택 없을 때 버튼 비활성+안내, 선택 후 전체/선택 JSON/compact 모달이 올바른 데이터를 표시하는지 확인한다.
+ - StatePath: 필터 드로어(규모/티어/Quick Filters/패턴)가 Snapshot/Pattern/테이블에 즉시 반영되고 “전체 해제”가 클라이언트 필터를 모두 리셋하는지 확인한다.
+ - Counterparty Risk Daily: tier/risk/pipeline_zero/search 필터가 리스트에 적용되고 summary/DQ 배지와 evidence/추천 액션 토글이 표시되는지, DB 버전 배지가 나타나는지 확인한다.
+ - 랭킹: 등급 가이드/배수 모달이 열리고 26 타겟/온라인/비온라인 컬럼이 렌더되는지, Target Board가 DRI 기반 KPI 카드를 그리는지 확인한다.
 
 ## Refactor-Planning Notes (Facts Only)
  - `org_tables_v2.html` 단일 파일에 메뉴/렌더러/모달/CSS가 모두 포함되어 구조 변경 시 전 화면에 영향이 퍼진다.
  - 모달 DOM과 fetch 캐시를 여러 화면이 공유해 상태 충돌 위험이 있으며, 정리되지 않은 상태가 다른 화면에 잔류할 수 있다.
  - 온라인 판정/타겟 상수 등이 백엔드와 중복돼 있어 규칙 변경 시 JS/파이썬 양쪽을 동시에 수정해야 한다.
+ - Counterparty Risk/StatePath/Target Board 등 신규 화면은 클라이언트 필터/계산 의존도가 높아, 서버 파라미터를 추가할 때 프런트 상태 모델을 함께 조정해야 한다.

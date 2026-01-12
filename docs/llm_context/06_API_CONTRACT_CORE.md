@@ -31,7 +31,7 @@ sync_source:
   - `GET /api/rank/2025-deals`, `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary` → DB 조회 결과 그대로 반환.
   - `GET /api/rank/2025-top100-counterparty-dri?size=대기업` → Lost/Convert 제외, 2025/2026 계약/예상 딜 중 확정/높음/Won만 집계, orgWon2025 desc→cpTotal2025 desc 정렬, owners는 People.owner_json 우선. 기본은 규모별 **전체** 반환이며 limit/offset은 선택 사항.
   - `GET /api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...` → 해당 org/upper_org 딜 상세(people_id/people_name/upper_org 포함).
-  - `GET /api/statepath/portfolio-2425` → segment/search/정렬/패턴/리스크 필터 반영된 요약+아이템(금액은 억 단위). `GET /api/orgs/{id}/statepath-2425`는 단건 버전.
+- `GET /api/statepath/portfolio-2425` → segment/search/정렬/패턴/리스크 필터(OPEN/ScaleUp/회사 전이/셀 이벤트/rail 등)와 limit/offset을 Query로 받아 요약+아이템(금액은 억 단위)을 반환한다. 현재 프런트는 segment/sort/limit만 서버에 전달하고 나머지 필터는 클라이언트 상태로 처리한다. `GET /api/orgs/{id}/statepath-2425`는 단건 버전.
   - `GET /api/orgs/{id}/statepath` → compact JSON 기반 statepath_engine 결과(2024/2025 상태·Path·추천, 금액은 억 단위) 반환.
 - 사업부 퍼포먼스:
   - `GET /api/performance/monthly-amounts/summary?from=2025-01&to=2026-12` → months=YYMM 24개, segment 11종, rows=TOTAL→CONTRACT→CONFIRMED→HIGH. 금액 원 단위, TOTAL은 나머지 합. snapshot_version 포함.
@@ -43,7 +43,7 @@ sync_source:
   - `GET /api/deal-check/edu1|edu2` → 위 래퍼.
   - `GET /api/qc/deal-errors/summary?team=all|edu1|edu2|public` → QC_RULES(R1~R15) 위배 수 집계. `GET /api/qc/deal-errors/person?owner=...&team=...` → 담당자별 위배 리스트.
 - 카운터파티 리스크:
-  - `GET /api/report/counterparty-risk?date=YYYY-MM-DD` → 캐시 없으면 `report_scheduler.run_daily_counterparty_risk_job` 실행 후 반환. `POST /api/report/counterparty-risk/recompute`는 강제 재계산, `GET /api/report/counterparty-risk/status`는 status.json 반환.
+  - `GET /api/report/counterparty-risk?date=YYYY-MM-DD` → 캐시 없으면 `report_scheduler.run_daily_counterparty_risk_job` 실행 후 반환. summary(`tier_groups`, `counts`), `counterparties[]`(`target_2026/coverage_2026/expected_2026/gap/coverage_ratio/pipeline_zero/tier/evidence_bullets/recommended_actions`)와 `meta.db_version`/`data_quality`를 포함한다. `POST /api/report/counterparty-risk/recompute`는 강제 재계산, `GET /api/report/counterparty-risk/status`는 status.json 반환.
 
 ## Invariants (Must Not Break)
 - `/api/orgs` 정렬: won2025 desc → name asc, People/Deal 둘 다 0이면 제외.

@@ -19,14 +19,15 @@ sync_source:
 - `GET /api/rank/won-yearly-totals`: Won 상태, 계약연도 2023/2024/2025. 규모별 합계 `won2023/2024/2025`, 정렬 합계 desc.
 - `GET /api/rank/won-industry-summary`: Won 상태, 계약연도 2023/2024/2025, 선택 규모 필터. 업종 구분(대)별 합계/조직 수.
 - `GET /api/rank/2025/summary-by-size?exclude_org_name=삼성전자&years=2025,2026`: Won 상태, 계약연도 years. exclude_org_name 정확히 일치 시 제외. 반환 `by_size{size:sum_2025,sum_2026}`, totals, snapshot_version=`db_mtime:<int>`.
-- `GET /api/rank/2025-top100-counterparty-dri?size=대기업`: Lost/Convert 제외. 2025/2026 계약/예상일이 있는 확정/높음/Won 딜만 집계. ONLINE 판정=`statepath_engine.ONLINE_COURSE_FORMATS`. owners2025는 People.owner_json 우선, 없으면 deal.owner_json. 필드 `orgId/orgName/sizeRaw/orgTier/orgWon2025/upperOrg/cpOnline2025/cpOffline2025/cpOnline2026/cpOffline2026/owners2025/dealCount2025`. 정렬 orgWon2025 desc → cpTotal2025 desc. 기본은 규모별 **전체** 반환이며 limit/offset은 선택 사항(meta에 offset/limit/orgCount/rowCount 포함).
+- `GET /api/rank/2025-top100-counterparty-dri?size=대기업`: Lost/Convert 제외. 2025/2026 계약/예상일이 있는 확정/높음/Won 딜만 집계. ONLINE 판정=`statepath_engine.ONLINE_COURSE_FORMATS`. owners2025는 People.owner_json 우선, 없으면 deal.owner_json. 필드 `orgId/orgName/sizeRaw/orgTier/orgWon2025/upperOrg/cpOnline2025/cpOffline2025/cpOnline2026/cpOffline2026/owners2025/dealCount2025` + 선택적 `target26Offline/target26Online`(override 여부는 `target26OfflineIsOverride/target26OnlineIsOverride`). 정렬 orgWon2025 desc → cpTotal2025 desc. 기본은 규모별 **전체** 반환이며 limit/offset은 선택 사항(meta에 offset/limit/orgCount/rowCount 포함).
+- `GET /api/rank/2025-top100-counterparty-dri/targets-summary?size=대기업` → 규모별 DRI 행을 받아 티어 그룹별 target26/coverage/expected 합계와 DB snapshot 정보를 제공한다(프런트 Target Board 계산에 사용).
 - `GET /api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...`: 해당 org/upper_org 딜 상세, `deals[]`에 `people_id/people_name/upper_org` 포함.
 
 ## Invariants (Must Not Break)
 - ONLINE 포맷은 정확히 `구독제(온라인)`, `선택구매(온라인)`, `포팅`만 인정한다(`statepath_engine.ONLINE_COURSE_FORMATS`).
 - `/rank/2025-deals` 등 Won 기반 집계는 계약연도 2025만 포함하며 상태가 Won이 아닌 딜은 제외된다.
 - `/rank/2025-deals-people`는 상위 조직/팀이 모두 미입력인 행을 제외하고 won2025 desc 정렬을 유지한다.
-- 카운터파티 DRI는 Lost/Convert 제외, 확정/높음/Won만 포함하며 owners는 People.owner_json을 우선 사용한다(`tests/test_api_counterparty_dri.py`).
+- 카운터파티 DRI는 Lost/Convert 제외, 확정/높음/Won만 포함하며 owners는 People.owner_json을 우선 사용한다(`tests/test_api_counterparty_dri.py`). target26 필드는 API에서 제공되면 override 플래그를 함께 내려야 하고, 없으면 프런트가 티어별 multiplier로 계산한다.
 - summary-by-size는 exclude_org_name 기본값 “삼성전자”이며 snapshot_version이 DB mtime을 포함해야 한다.
 
 ## Coupling Map

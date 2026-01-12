@@ -30,11 +30,16 @@ class DealColumns:
     deal_id: str
     owner: str
     status: str
+    deal_name: Optional[str]
+    probability: Optional[str]
+    expected_close: Optional[str]
     created_at: Optional[str]
     contract_date: Optional[str]
     amount: Optional[str]
     course_format: Optional[str]
     net_percent: Optional[str]
+    net_candidates: List[str]
+    owner_raw: Optional[str]
     org_id: Optional[str]
     org_name: Optional[str]
     org_table_id: Optional[str]
@@ -155,17 +160,23 @@ def _detect_columns(conn: sqlite3.Connection) -> DealColumns:
     def pick_org(cands: Sequence[str], required: bool, label: str) -> Optional[str]:
         return _pick_column(org_cols, cands, required=required, label=label) if org_cols else None
 
+    net_candidates_list = [
+        "netPercent",
+        "net",
+        "NET",
+        "net%",
+        "NET%",
+        "net(%)",
+        "NET(%)",
+        "net (%)",
+        "NET (%)",
+        "공헌이익률",
+        "공헌이익률(%)",
+        "공헌이익률 %",
+    ]
+
     net_col = pick_deal(
-        [
-            "netPercent",
-            "net",
-            "NET",
-            "net%",
-            "NET%",
-            "공헌이익률",
-            "공헌이익률(%)",
-            "공헌이익률 %",
-        ],
+        net_candidates_list,
         required=False,
         label="netPercent",
     )
@@ -174,6 +185,9 @@ def _detect_columns(conn: sqlite3.Connection) -> DealColumns:
         deal_id=pick_deal(["dealId", "deal_id", "id", "dealID"], required=True, label="dealId"),
         owner=pick_deal(["담당자", "owner", "Owner", "담당자명", "담당"], required=True, label="owner"),
         status=pick_deal(["상태", "status", "Status"], required=True, label="status"),
+        deal_name=pick_deal(["이름", "dealName", "deal_name"], required=False, label="dealName"),
+        probability=pick_deal(["성사 가능성", "probability", "Probability"], required=False, label="probability"),
+        expected_close=pick_deal(["수주 예정일", "expected_date", "expectedDate", "expected_close_date"], required=False, label="expectedCloseDate"),
         created_at=pick_deal(["생성 날짜", "createdAt", "created_at", "생성날짜"], required=False, label="createdAt"),
         contract_date=pick_deal(
             ["계약 체결일", "계약체결일", "contractDate", "contract_date", "계약일"], required=False, label="contractDate"
@@ -181,6 +195,8 @@ def _detect_columns(conn: sqlite3.Connection) -> DealColumns:
         amount=pick_deal(["금액", "amount", "Amount"], required=False, label="amount"),
         course_format=pick_deal(["과정포맷", "category1", "course_format", "courseFormat"], required=False, label="courseFormat"),
         net_percent=net_col,
+        net_candidates=[c for c in deal_cols if "net" in c.lower()],
+        owner_raw=pick_deal(["담당자", "owner", "Owner", "담당자명", "담당"], required=False, label="ownerRaw"),
         org_id=pick_deal(["organizationId", "orgId", "organization_id", "조직ID", "회사ID"], required=False, label="organizationId"),
         org_name=pick_org(["이름", "name", "Name", "조직명"], required=False, label="organization.name"),
         org_table_id=pick_org(["id", "organizationId", "orgId"], required=False, label="organization.id"),
@@ -212,7 +228,11 @@ def _load_deals(conn: sqlite3.Connection, cols: DealColumns) -> List[Dict[str, A
     select_parts = [
         f'{_col_expr("d", cols.deal_id)} AS deal_id',
         f'{_col_expr("d", cols.owner)} AS owner_name',
+        f'{_col_expr("d", cols.owner_raw)} AS owner_raw',
         f'{_col_expr("d", cols.status)} AS status',
+        f'{_col_expr("d", cols.deal_name)} AS deal_name',
+        f'{_col_expr("d", cols.probability)} AS probability',
+        f'{_col_expr("d", cols.expected_close)} AS expected_close',
         f'{_col_expr("d", cols.created_at)} AS created_at',
         f'{_col_expr("d", cols.contract_date)} AS contract_date',
         f'{_col_expr("d", cols.amount)} AS amount',
@@ -297,6 +317,10 @@ def build_payload(
             {
                 "dealId": item.get("deal_id"),
                 "ownerName": owner_name,
+                "ownerRaw": item.get("owner_raw"),
+                "dealName": item.get("deal_name"),
+                "probability": item.get("probability"),
+                "expectedCloseDate": item.get("expected_close"),
                 "orgName": item.get("org_name") or item.get("deal_id"),
                 "status": item.get("status"),
                 "createdAt": item.get("created_at"),
@@ -322,6 +346,7 @@ def build_payload(
             "dealCountAfterYearFilter": deal_count_after_year_filter,
             "uniqueOwnerCount": len(owner_set),
             "netPercentColumn": cols.net_percent if cols.net_percent else "__NONE__",
+            "netPercentCandidates": cols.net_candidates if not cols.net_percent else None,
             "yearParseFailuresCreatedAt": year_parse_fail_created,
             "yearParseFailuresContractDate": year_parse_fail_contract,
         },

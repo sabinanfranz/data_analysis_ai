@@ -343,7 +343,12 @@
     }
     .qc-rule-section h4 {
       margin: 0 0 6px 0;
-      font-size: 28px;
+      font-size: 18px;
+    }
+    .qc-guidance {
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
     }
     .qc-modal .modal-header {
       position: relative;
@@ -3115,6 +3120,45 @@
       const max = 140;
       const finalWidth = Math.max(min, Math.min(max, base + buffer));
       col.style.width = `${finalWidth}px`;
+    }
+
+    function applyDealNameMinWidth(tableEl, minChars = 15) {
+      if (!tableEl) return;
+      const canvas =
+        applyDealNameMinWidth._canvas || (applyDealNameMinWidth._canvas = document.createElement("canvas"));
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.font = window.getComputedStyle(tableEl).font || "12px sans-serif";
+      const measure = (text) => ctx.measureText(text || "").width || 0;
+      const chPx = measure("0") || 8;
+      const CELL_PAD_X = 16;
+      const BUFFER = 12;
+      const ellipsisPx = measure("…") || measure("...");
+      const widestSample = Math.max(
+        measure("가".repeat(minChars)),
+        measure("W".repeat(minChars)),
+        measure("0".repeat(minChars))
+      );
+      const minDealNamePx = Math.ceil(widestSample + ellipsisPx + CELL_PAD_X + BUFFER);
+
+      let otherPx = 0;
+      tableEl.querySelectorAll('colgroup col[data-col]').forEach((col) => {
+        const key = col.getAttribute("data-col");
+        if (key === "dealName") return;
+        const widthStyle = (col.style && (col.style.width || col.style.minWidth || col.style.maxWidth)) || "";
+        if (widthStyle.endsWith("px")) {
+          otherPx += parseFloat(widthStyle) || 0;
+        } else if (widthStyle.endsWith("ch")) {
+          otherPx += (parseFloat(widthStyle) || 0) * chPx;
+        } else if (widthStyle) {
+          otherPx += parseFloat(widthStyle) || 0;
+        } else {
+          otherPx += col.getBoundingClientRect().width || 0;
+        }
+      });
+
+      const needMinTotal = Math.ceil(otherPx + minDealNamePx);
+      tableEl.style.minWidth = `${needMinTotal}px`;
     }
 
     function closeDealsModal() {
@@ -6768,6 +6812,7 @@
           if (tableEl && sectItems.length) {
             fitColumnsToContent(tableEl, sectItems, { inferPartFn, includeTier });
             applyMemoColumnWidth(tableEl);
+            applyDealNameMinWidth(tableEl, 15);
             tableEl.id = idSuffix;
             tableEl.querySelectorAll('button[data-action="deal-memo"]').forEach((btn) => {
               if (btn.disabled) return;
@@ -9036,6 +9081,68 @@
         modalBody.innerHTML = `<div class="muted">불러오는 중...</div>`;
         modal.style.display = "flex";
         try {
+          const QC_RULE_GUIDANCE = {
+            R1: {
+              title: "Won & 계약체결일 없음",
+              action: "계약 체결일을 입력하거나 잘못된 컬럼 매핑을 바로잡아 주세요.",
+            },
+            R2: {
+              title: "Won & 금액 NaN(0은 허용)",
+              action: "금액을 숫자로 채우거나 소스 금액 컬럼 매핑을 확인하세요.",
+            },
+            R3: {
+              title: "Won & 수강시작일 또는 수강종료일 없음",
+              action: "수강 시작일과 종료일을 입력해 주세요.",
+            },
+            R4: {
+              title: "Won & 코스 ID 결측",
+              action: "코스 ID를 채우고 공백/문자열 결측을 제거하세요.",
+            },
+            R5: {
+              title: "Won & 성사≠확정",
+              action: "실제 상태를 확인해 성사 가능성을 ‘확정’으로 수정하세요.",
+            },
+            R6: {
+              title: "Lost & 성사≠LOST",
+              action: "성사 가능성을 ‘LOST’로 수정하세요.",
+            },
+            R7: {
+              title: "계약체결일이 수강시작일보다 늦고 연·월이 다름",
+              action: "계약/수강 날짜를 바로잡거나 온라인 예외(구독제/선택구매/포팅 등) 여부를 확인하세요.",
+            },
+            R8: {
+              title: "생성 7일 경과 & 카테고리 없음",
+              action: "카테고리(대) 값을 채워 주세요.",
+            },
+            R9: {
+              title: "생성 7일 경과 & 과정포맷 없음",
+              action: "과정포맷(대) 값을 채워 주세요.",
+            },
+            R10: {
+              title: "성사=높음 & 수주 예정일 없음",
+              action: "수주 예정일(종합)을 입력하세요.",
+            },
+            R11: {
+              title: "상태=Convert",
+              action: "파이프라인 상태를 실제 상태(won/lost 등)로 정정하세요.",
+            },
+            R12: {
+              title: "성사=높음/확정 & 금액·예상 체결액 모두 없음",
+              action: "금액 또는 예상 체결액 중 최소 하나를 입력하세요.",
+            },
+            R13: {
+              title: "Won & 고객사 담당자 메타 결측",
+              action: "소속 상위 조직/팀/직급/교육영역 4개 필드를 모두 채워 주세요.",
+            },
+            R14: {
+              title: "Won & 온라인 포맷인데 입과 정보 누락",
+              action: "구독제(온라인)/선택구매(온라인)/포팅이면 입과 주기(필수)와 첫 회차 정보도 함께 확인하세요.",
+            },
+            R15: {
+              title: "Won & 오프라인/비온라인 포맷인데 강사 정보 결측",
+              action: "강사 이름1을 채우고 강사료1도 함께 확인하세요.",
+            },
+          };
           const detail = await fetchJson(
             `/qc/deal-errors/person?owner=${encodeURIComponent(owner)}&team=${encodeURIComponent(teamKey)}`
           );
@@ -9044,23 +9151,6 @@
             modalBody.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
             return;
           }
-          const guidanceMap = {
-            R1: "계약 체결일 입력",
-            R2: "금액 입력",
-            R3: "수강 시작/종료일 입력",
-            R4: "코스 ID 입력",
-            R5: "성사 가능성=확정으로 보정",
-            R6: "상태=Lost이면 성사=LOST 보정",
-            R7: "계약/수강일 순서 확인",
-            R8: "카테고리 입력",
-            R9: "과정포맷 입력",
-            R10: "수주 예정일 입력",
-            R11: "Convert 상태 확인",
-            R12: "금액 또는 예상액 입력",
-            R13: "상위조직/팀/직급/교육영역 입력",
-            R14: "온라인 입과 주기/첫 회차 입력",
-            R15: "강사 이름/강사비 입력",
-          };
           const orgMaxLen = Math.max(
             0,
             ...items.map((d) => ((d.organizationName || d.organizationId || "").toString().length))
@@ -9084,9 +9174,8 @@
             .map((code) => {
               const sectionItems = byRule[code] || [];
               if (!sectionItems.length) return "";
-              const subtitle = guidanceMap[code] || "해당 규칙 확인";
               const rows = sectionItems
-                .map((d) => {
+              .map((d) => {
                   const dealLink = d.dealId
                     ? `<a class="sm-link qc-deal-name qc-cell" href="${salesmapDealUrl(d.dealId)}" target="_blank" rel="noopener noreferrer" title="${escapeHtml(d.dealName || d.dealId)}">${escapeHtml(d.dealName || d.dealId)}</a>`
                     : `<span class="qc-cell">${escapeHtml(d.dealName || d.dealId || "")}</span>`;
@@ -9105,9 +9194,11 @@
                   `;
                 })
                 .join("");
+              const guidance = QC_RULE_GUIDANCE[code] || { title: "해당 규칙 확인", action: "" };
               return `
                 <section class="qc-rule-section">
-                  <h4>${code} · ${subtitle}</h4>
+                  <h4>${code} · ${escapeHtml(guidance.title)}</h4>
+                  ${guidance.action ? `<div class="qc-guidance" style="margin-top:-4px;margin-bottom:6px;">${escapeHtml(guidance.action)}</div>` : ""}
                   <div class="qc-table-wrap">
                     <table class="qc-table sticky">
                       <colgroup>

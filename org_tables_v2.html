@@ -842,6 +842,11 @@
       text-align: center;
     }
 
+    .mp-monthly-summary-table th.mp-kind,
+    .mp-monthly-summary-table td.mp-kind {
+      text-align: left !important;
+    }
+
     .mp-monthly-table .mp-cell-btn {
       display: inline-flex;
       align-items: center;
@@ -7486,7 +7491,7 @@
       if (!rows || !rows.length || !months.length) {
         return `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
       }
-      const headerCells = months.map((m) => `<th>${m}</th>`).join("");
+      const headerCells = months.map((m) => `<th class="num">${m}</th>`).join("");
       const bodyRows = rows
         .map((row) => {
           return `
@@ -7515,7 +7520,7 @@
             <table class="perf-table mp-monthly-table mp-monthly-summary-table">
               <thead>
                 <tr>
-                  <th class="sticky-col mp-kind align-left">구분</th>
+              <th class="sticky-col mp-kind align-left">구분</th>
                   ${headerCells}
                 </tr>
               </thead>

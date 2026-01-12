@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from . import statepath_engine as sp
+from .counterparty_targets_2026 import load_counterparty_targets_2026
 
 DB_PATH_ENV = os.getenv("DB_PATH", "salesmap_latest.db")
 print(f"[db] Using DB_PATH={DB_PATH_ENV}")
@@ -24,7 +25,8 @@ ONLINE_PNL_FORMATS = {
 }
 SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타/미입력"]
 PUBLIC_KEYWORDS = ["공단", "공사", "진흥원", "재단", "협회", "청", "시청", "도청", "구청", "교육청", "원"]
-_COUNTERPARTY_DRI_CACHE: Dict[Tuple[Path, float, str, int], Dict[str, Any]] = {}
+_COUNTERPARTY_DRI_CACHE: Dict[Tuple[Path, float, str, int, str], Dict[str, Any]] = {}
+_COUNTERPARTY_DRI_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] = {}
 _RANK_2025_SUMMARY_CACHE: Dict[Tuple[Path, float, str, Tuple[int, ...]], Dict[str, Any]] = {}
 _PERF_MONTHLY_DATA_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
 _PERF_MONTHLY_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] = {}
@@ -1443,6 +1445,31 @@ def _amount_fallback(amount: Any, expected: Any) -> float:
     if num_exp is not None and num_exp > 0:
         return num_exp
     return 0.0
+
+
+def _tier_multiplier(tier: str | None) -> float:
+    t = (tier or "").upper()
+    if t == "S0":
+        return 1.5
+    if t in {"P0", "P1"}:
+        return 1.7
+    if t == "P2":
+        return 1.5
+    if t in {"P3", "P4", "P5"}:
+        return 1.0
+    return 1.0
+
+
+def _normalize_counterparty_upper(val: Any) -> str:
+    text = (val or "").strip()
+    if not text or text in {"-", "–", "—"}:
+        return "미입력"
+    return text
+
+
+def _norm_text(val: Any) -> str:
+    text = (val or "").strip()
+    return text if text else "미입력"
 
 
 def _compute_grade(total_amount: float) -> str:
@@ -3814,27 +3841,16 @@ def get_pl_progress_deals(
     }
 
 
-def get_rank_2025_top100_counterparty_dri(
-    size: str = "대기업", limit: int = 100, offset: int = 0, db_path: Path = DB_PATH
-) -> Dict[str, Any]:
-    """
-    Top organizations by 2025 Won (size-filtered) with counterparty(upper_org) breakdown and owners list.
-    - Online formats: 구독제(온라인)/선택구매(온라인)/포팅 (exact match)
-    - Offline: others
-    - Sorting: orgWon2025 desc, then cpTotal2025 desc
-    """
-    if not db_path.exists():
-        raise FileNotFoundError(f"Database not found at {db_path}")
-
-    limit = max(1, min(limit or 100, 200))
-    offset = max(0, offset or 0)
-
-    cache_key = (db_path, db_path.stat().st_mtime, size or "대기업", limit, offset)
-    cached = _COUNTERPARTY_DRI_CACHE.get(cache_key)
-    if cached is not None:
-        return cached
-
+def _compute_counterparty_dri_rows(
+    size: str,
+    org_limit: int,
+    org_offset: int,
+    db_path: Path,
+    offline_targets: Dict[Tuple[str, str], float],
+    online_targets: Dict[Tuple[str, str], float],
+) -> Tuple[List[Dict[str, Any]], Dict[str, Any], int]:
     online_set = sp.ONLINE_COURSE_FORMATS
+    snapshot_version = f"db_mtime:{int(db_path.stat().st_mtime)}"
 
     with _connect(db_path) as conn:
         has_expected_close = _has_column(conn, "deal", "수주 예정일")
@@ -3876,18 +3892,13 @@ def get_rank_2025_top100_counterparty_dri(
             '), ranked AS ('
             "  SELECT * FROM org_sum ORDER BY totalAmount DESC LIMIT ? OFFSET ?"
             ") SELECT * FROM ranked",
-            params + [limit, offset],
+            params + [org_limit, org_offset],
         )
 
         top_ids = {row["orgId"] for row in top_orgs}
         if not top_ids:
-            return {
-                "size": size or "대기업",
-                "limit": limit,
-                "offset": offset,
-                "rows": [],
-                "meta": {"orgCount": 0, "rowCount": 0, "offset": offset, "limit": limit},
-            }
+            meta = {"orgCount": 0, "rowCount": 0, "offset": org_offset, "limit": org_limit, "snapshot_version": snapshot_version}
+            return [], meta, 0
 
         placeholders = ",".join(["?"] * len(top_ids))
         counterparty_rows = _fetch_all(
@@ -3911,10 +3922,6 @@ def get_rank_2025_top100_counterparty_dri(
             params + list(top_ids),
         )
 
-    def _norm_text(val: Any) -> str:
-        text = (val or "").strip()
-        return text if text else "미입력"
-
     org_lookup = {
         row["orgId"]: {
             "orgId": row["orgId"],
@@ -3928,7 +3935,7 @@ def get_rank_2025_top100_counterparty_dri(
     cp_map: Dict[Tuple[str, str], Dict[str, Any]] = {}
     for row in counterparty_rows:
         org_id = row["orgId"]
-        upper = _norm_text(row["upper_org"])
+        upper = _normalize_counterparty_upper(row["upper_org"])
         key = (org_id, upper)
         entry = cp_map.setdefault(
             key,
@@ -4020,7 +4027,7 @@ def get_rank_2025_top100_counterparty_dri(
 
     for row in owner_rows:
         org_id = row["orgId"]
-        upper = _norm_text(row["upper_org"])
+        upper = _normalize_counterparty_upper(row["upper_org"])
         key = (org_id, upper)
         if key not in cp_map:
             continue
@@ -4032,15 +4039,24 @@ def get_rank_2025_top100_counterparty_dri(
     rows: List[Dict[str, Any]] = []
     for (org_id, upper), cp in cp_map.items():
         org_entry = org_lookup.get(org_id, {})
+        org_tier = _compute_grade(org_entry.get("total", 0.0))
+        org_name = (cp.get("orgName") or "").strip()
+        upper_norm = _normalize_counterparty_upper(upper)
+        target_key = (org_name, upper_norm)
+        offline_override = target_key in offline_targets
+        online_override = target_key in online_targets
+        target_offline = offline_targets.get(target_key, cp["cpOffline2025"] * _tier_multiplier(org_tier))
+        target_online = online_targets.get(target_key, cp["cpOnline2025"])
+
         rows.append(
             {
                 "orgId": org_id,
-                "orgName": cp.get("orgName", org_id),
-                "orgTier": _compute_grade(org_entry.get("total", 0.0)),
+                "orgName": org_name or org_id,
+                "orgTier": org_tier,
                 "orgWon2025": org_entry.get("total", 0.0),
-                "orgOnline2025": 0.0 if org_id not in org_lookup else None,  # populated below
-                "orgOffline2025": 0.0 if org_id not in org_lookup else None,
-                "upperOrg": upper,
+                "orgOnline2025": org_entry.get("online", 0.0),
+                "orgOffline2025": org_entry.get("offline", 0.0),
+                "upperOrg": upper_norm,
                 "cpOnline2025": cp["cpOnline2025"],
                 "cpOffline2025": cp["cpOffline2025"],
                 "cpTotal2025": cp["cpTotal2025"],
@@ -4048,26 +4064,118 @@ def get_rank_2025_top100_counterparty_dri(
                 "cpOffline2026": cp.get("cpOffline2026", 0.0),
                 "owners2025": sorted(cp["owners2025"]) if cp.get("owners2025") else [],
                 "dealCount2025": cp["dealCount2025"],
+                "target26Offline": target_offline,
+                "target26Online": target_online,
+                "target26OfflineIsOverride": offline_override,
+                "target26OnlineIsOverride": online_override,
             }
         )
 
-    # set org online/offline from org_lookup
-    for row in rows:
-        org_entry = org_lookup.get(row["orgId"], {})
-        row["orgOnline2025"] = org_entry.get("online", 0.0)
-        row["orgOffline2025"] = org_entry.get("offline", 0.0)
-
-    # cpTotal2025가 0인 카운터파티는 노출하지 않음
     rows = [r for r in rows if (r.get("cpTotal2025") or 0) > 0]
-
     rows.sort(key=lambda r: (-r["orgWon2025"], -r["cpTotal2025"]))
+
+    meta = {
+        "orgCount": len(top_orgs),
+        "rowCount": len(rows),
+        "offset": org_offset,
+        "limit": org_limit,
+        "snapshot_version": snapshot_version,
+    }
+    return rows, meta, len(top_orgs)
+
+
+def get_rank_2025_top100_counterparty_dri(
+    size: str = "대기업", limit: int = 100, offset: int = 0, db_path: Path = DB_PATH
+) -> Dict[str, Any]:
+    """
+    Top organizations by 2025 Won (size-filtered) with counterparty(upper_org) breakdown and owners list.
+    - Online formats: 구독제(온라인)/선택구매(온라인)/포팅 (exact match)
+    - Offline: others
+    - Sorting: orgWon2025 desc, then cpTotal2025 desc
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    limit = max(1, min(limit or 100, 200))
+    offset = max(0, offset or 0)
+
+    offline_targets, online_targets, targets_version = load_counterparty_targets_2026()
+    stat = db_path.stat()
+    cache_key = (db_path, stat.st_mtime, size or "대기업", limit, offset, targets_version)
+    cached = _COUNTERPARTY_DRI_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    rows, meta, org_count = _compute_counterparty_dri_rows(
+        size=size,
+        org_limit=limit,
+        org_offset=offset,
+        db_path=db_path,
+        offline_targets=offline_targets,
+        online_targets=online_targets,
+    )
 
     result = {
         "size": size or "대기업",
         "limit": limit,
         "offset": offset,
         "rows": rows,
-        "meta": {"orgCount": len(top_orgs), "rowCount": len(rows), "offset": offset, "limit": limit},
+        "meta": {**meta, "targetsVersion": targets_version},
     }
     _COUNTERPARTY_DRI_CACHE[cache_key] = result
+    return result
+
+
+def get_rank_2025_counterparty_dri_targets_summary(size: str = "대기업", db_path: Path = DB_PATH) -> Dict[str, Any]:
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    offline_targets, online_targets, targets_version = load_counterparty_targets_2026()
+    stat = db_path.stat()
+    cache_key = (db_path, stat.st_mtime, size or "대기업", targets_version)
+    cached = _COUNTERPARTY_DRI_SUMMARY_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    rows, meta, _ = _compute_counterparty_dri_rows(
+        size=size,
+        org_limit=200000,
+        org_offset=0,
+        db_path=db_path,
+        offline_targets=offline_targets,
+        online_targets=online_targets,
+    )
+
+    totals = {
+        "cpOffline2025": 0.0,
+        "target26Offline": 0.0,
+        "cpOffline2026": 0.0,
+        "cpOnline2025": 0.0,
+        "target26Online": 0.0,
+        "cpOnline2026": 0.0,
+        "overrideAppliedOffline": 0,
+        "overrideAppliedOnline": 0,
+    }
+    for row in rows:
+        totals["cpOffline2025"] += row.get("cpOffline2025") or 0.0
+        totals["target26Offline"] += row.get("target26Offline") or 0.0
+        totals["cpOffline2026"] += row.get("cpOffline2026") or 0.0
+        totals["cpOnline2025"] += row.get("cpOnline2025") or 0.0
+        totals["target26Online"] += row.get("target26Online") or 0.0
+        totals["cpOnline2026"] += row.get("cpOnline2026") or 0.0
+        if row.get("target26OfflineIsOverride"):
+            totals["overrideAppliedOffline"] += 1
+        if row.get("target26OnlineIsOverride"):
+            totals["overrideAppliedOnline"] += 1
+
+    result = {
+        "meta": {
+            "size": size or "대기업",
+            "rowCount": len(rows),
+            "snapshot_version": meta.get("snapshot_version"),
+            "targets_version": targets_version,
+        },
+        "totals": totals,
+    }
+    _COUNTERPARTY_DRI_SUMMARY_CACHE[cache_key] = result
     return result

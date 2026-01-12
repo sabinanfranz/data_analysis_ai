@@ -847,6 +847,10 @@
       text-align: left !important;
     }
 
+    .is-target-override {
+      color: #f2c94c;
+    }
+
     .mp-monthly-table .mp-cell-btn {
       display: inline-flex;
       align-items: center;
@@ -2756,7 +2760,7 @@
         const orgName = (row.orgName || "").trim();
         const offline25 = Number(row.cpOffline2025 || 0) || 0;
         const offline26 = Number(row.cpOffline2026 || 0) || 0;
-        const target26 = offline25 * tierMultiplier(tier);
+        const target26 = Number(row.target26Offline ?? (offline25 * tierMultiplier(tier)));
         return { tier, orgName, offline25, offline26, target26 };
       };
 
@@ -3577,6 +3581,17 @@
       const result = { rows: data.rows || [], meta: data.meta || {} };
       state.rankCounterpartyCache[key] = result;
       return result;
+    }
+
+    const counterpartyDriTargetsSummaryCache = new Map();
+    async function fetchCounterpartyDriTargetsSummary(size = "대기업") {
+      const key = size || "대기업";
+      if (counterpartyDriTargetsSummaryCache.has(key)) return counterpartyDriTargetsSummaryCache.get(key);
+      const params = new URLSearchParams();
+      params.set("size", size || "대기업");
+      const data = await fetchJson(`/rank/2025-top100-counterparty-dri/targets-summary?${params.toString()}`);
+      counterpartyDriTargetsSummaryCache.set(key, data);
+      return data;
     }
 
     async function loadTarget2026SourceRows() {
@@ -8449,14 +8464,16 @@
             const offline2025 = Number(row.cpOffline2025 || 0);
             const online26 = Number(row.cpOnline2026 || 0);
             const offline26 = Number(row.cpOffline2026 || 0);
-            const target26 = (row.cpOffline2025 || 0) * tierMultiplier(tier);
-            const target26Online = online2025; // multiplier 1.0
+            const target26 = Number(row.target26Offline ?? (offline2025 * tierMultiplier(tier)));
+            const target26Online = Number(row.target26Online ?? online2025); // multiplier 1.0 fallback
             const fmtOnline25 = formatEok(online2025 / 1e8);
             const fmtOffline25 = formatEok(offline2025 / 1e8);
             const fmtTarget26Online = formatEok(target26Online / 1e8);
             const fmtTarget26 = formatEok(target26 / 1e8);
             const fmtOnline26 = formatEok(online26 / 1e8);
             const fmtOffline26 = formatEok(offline26 / 1e8);
+            const offlineCls = row.target26OfflineIsOverride === true ? "num is-target-override" : "num";
+            const onlineCls = row.target26OnlineIsOverride === true ? "num is-target-override" : "num";
             return `
               <tr data-idx="${idx}">
                 <td>${tier}</td>
@@ -8466,10 +8483,10 @@
                 <td>${tp.teamPartText || "-"}</td>
                 <td class="dri">${tp.dri || "X"}</td>
                 <td class="num">${fmtOffline25}</td>
-                <td class="num">${fmtTarget26}</td>
+                <td class="${offlineCls}">${fmtTarget26}</td>
                 <td class="num">${fmtOffline26}</td>
                 <td class="num">${fmtOnline25}</td>
-                <td class="num">${fmtTarget26Online}</td>
+                <td class="${onlineCls}">${fmtTarget26Online}</td>
                 <td class="num">${fmtOnline26}</td>
               </tr>
             `;

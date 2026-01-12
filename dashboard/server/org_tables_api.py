@@ -299,6 +299,16 @@ def get_rank_counterparty_dri_detail(orgId: str = Query(...), upperOrg: str = Qu
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/rank/2025-top100-counterparty-dri/targets-summary")
+def get_rank_counterparty_dri_targets_summary(
+    size: str = Query("대기업", description='조직 규모 필터 (예: "대기업", "전체")')
+) -> dict:
+    try:
+        return db.get_rank_2025_counterparty_dri_targets_summary(size=size)
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/rank/won-industry-summary")
 def get_rank_won_industry_summary(
     size: str = Query("전체", description='조직 규모 필터 (예: "대기업", "중견기업", "전체")')

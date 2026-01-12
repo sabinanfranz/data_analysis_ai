@@ -80,6 +80,10 @@ class CounterpartyDriApiTest(unittest.TestCase):
         self.assertAlmostEqual(target["cpOnline2026"], 400000000)
         self.assertAlmostEqual(target["cpOffline2026"], 0)
         self.assertEqual(set(target["owners2025"]), {"최예인"})
+        self.assertIn("target26Offline", target)
+        self.assertIn("target26Online", target)
+        self.assertFalse(target.get("target26OfflineIsOverride", False))
+        self.assertFalse(target.get("target26OnlineIsOverride", False))
 
       # org tier present, fallback to 미입력 if missing
       self.assertTrue(all("orgTier" in r for r in rows))
@@ -141,6 +145,18 @@ class CounterpartyDriApiTest(unittest.TestCase):
       # org-1/upper_org from d-7 has prob not high -> cpTotal2025 remains 0 and should be filtered out
       zero_total = [r for r in rows if r["orgId"] == "org-1" and r["upperOrg"] == "HRD본부" and r["cpTotal2025"] == 0]
       self.assertEqual(zero_total, [])
+
+  def test_targets_summary(self) -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+      db_path = Path(tmpdir) / "db.sqlite"
+      _build_db(db_path)
+
+      res = db.get_rank_2025_counterparty_dri_targets_summary(size="대기업", db_path=db_path)
+      self.assertIn("totals", res)
+      totals = res["totals"]
+      self.assertGreater(totals["cpOffline2025"], 0)
+      self.assertGreater(totals["target26Offline"], 0)
+      self.assertGreater(totals["cpOnline2025"], 0)
 
 
 if __name__ == "__main__":

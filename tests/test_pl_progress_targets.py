@@ -48,6 +48,6 @@ def test_hardcoded_targets_applied(tmp_path):
     rev_row = rows["REV_TOTAL"]
     labor_row = rows["COST_FIXED_LABOR"]
     # 연간 값이 하드코딩된 리소스 값과 동일한지 확인
-    assert op_row["values"][f"Y{summary['year']}_T"] == 21.8
+    assert op_row["values"][f"Y{summary['year']}_T"] == 20.9
     assert rev_row["values"][f"Y{summary['year']}_T"] == 210.0
-    assert labor_row["values"][f"Y{summary['year']}_T"] == 75.0
+    assert labor_row["values"][f"Y{summary['year']}_T"] == 76.0

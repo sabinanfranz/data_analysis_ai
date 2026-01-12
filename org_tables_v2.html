@@ -7447,6 +7447,87 @@
       `;
     }
 
+    function buildPerfMonthlySummaryRows(data) {
+      const months = (data && data.months) || [];
+      if (!months.length) return [];
+      const segMap = new Map();
+      (data.segments || []).forEach((seg) => {
+        segMap.set(seg.key, seg);
+      });
+      const findRow = (segKey, rowKey) => {
+        const seg = segMap.get(segKey);
+        if (!seg) return null;
+        return (seg.rows || []).find((r) => r.key === rowKey) || null;
+      };
+      const fillByMonth = (row) => {
+        const byMonth = {};
+        months.forEach((m) => {
+          byMonth[m] = (row && row.byMonth && row.byMonth[m]) || 0;
+        });
+        return byMonth;
+      };
+      const defs = [
+        { label: "전체 합산", seg: "ALL", row: "TOTAL" },
+        { label: "삼성전자 합산", seg: "SAMSUNG", row: "TOTAL" },
+        { label: "온라인 합산", seg: "NON_SAMSUNG_ONLINE", row: "TOTAL" },
+        { label: "└ 온라인(기업)", seg: "NON_SAMSUNG_ONLINE_MAJOR_SIZE", row: "TOTAL" },
+        { label: "└ 온라인(공공)", seg: "ONLINE_NON_MAJOR_SIZE", row: "TOTAL" },
+        { label: "비온라인 합산", seg: "NON_SAMSUNG_OFFLINE", row: "TOTAL" },
+        { label: "└ 비온라인(기업)", seg: "NON_SAMSUNG_OFFLINE_MAJOR_SIZE", row: "TOTAL" },
+        { label: "└ 비온라인(공공)", seg: "OFFLINE_NON_MAJOR_SIZE", row: "TOTAL" },
+      ];
+      return defs.map(({ label, seg, row }) => {
+        const rowData = findRow(seg, row);
+        return { label, byMonth: fillByMonth(rowData) };
+      });
+    }
+
+    function renderPerfMonthlySummaryTable(rows, months = []) {
+      if (!rows || !rows.length || !months.length) {
+        return `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
+      }
+      const headerCells = months.map((m) => `<th>${m}</th>`).join("");
+      const bodyRows = rows
+        .map((row) => {
+          return `
+            <tr>
+              <td class="sticky-col mp-kind align-left">${row.label}</td>
+              ${months
+                .map((m) => {
+                  const v = (row.byMonth || {})[m] || 0;
+                  return `<td class="num">${formatEok1(v)}</td>`;
+                })
+                .join("")}
+            </tr>
+          `;
+        })
+        .join("");
+      const rangeLabel =
+        months.length > 0 ? `${formatPerfMonthLabel(months[0])} ~ ${formatPerfMonthLabel(months[months.length - 1])}` : "";
+      return `
+        <section class="card">
+          <div class="control-row">
+            <h3>요약</h3>
+            <div class="spacer"></div>
+            ${rangeLabel ? `<span class="pill muted">${rangeLabel}</span>` : ""}
+          </div>
+          <div class="table-wrap full perf-table-wrap">
+            <table class="perf-table mp-monthly-table mp-monthly-summary-table">
+              <thead>
+                <tr>
+                  <th class="sticky-col mp-kind align-left">구분</th>
+                  ${headerCells}
+                </tr>
+              </thead>
+              <tbody>
+                ${bodyRows}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
     function renderBizPerfCard(segment, months = []) {
       const headerCells = months.map((m) => `<th>${m}</th>`).join("");
       const bodyRows =
@@ -7618,6 +7699,9 @@
             <span class="pill muted">2025-01 ~ 2026-12</span>
           </div>
         </section>
+        <div id="perfMonthlySummary">
+          <div class="muted card" style="padding: 12px;">불러오는 중...</div>
+        </div>
         <div id="perfMonthlyCards" style="display:flex; flex-direction:column; gap:12px;">
           <div class="muted">불러오는 중...</div>
         </div>
@@ -7625,6 +7709,7 @@
 
       const cardsRoot = document.getElementById("perfMonthlyCards");
       const metaEl = document.getElementById("perfMonthlyMeta");
+      const summaryRoot = document.getElementById("perfMonthlySummary");
 
       const attachCellHandlers = () => {
         cardsRoot.querySelectorAll("[data-perf-cell]").forEach((btn) => {
@@ -7650,11 +7735,23 @@
         attachCellHandlers();
       };
 
+      const renderSummary = (data) => {
+        if (!summaryRoot) return;
+        if (!data || !data.months || !data.months.length) {
+          summaryRoot.innerHTML = `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
+          return;
+        }
+        const rows = buildPerfMonthlySummaryRows(data);
+        summaryRoot.innerHTML = renderPerfMonthlySummaryTable(rows, data.months);
+      };
+
       try {
         const data = await loadBizPerfSummary();
+        renderSummary(data);
         renderCards(data);
       } catch (err) {
         state.perfMonthly.error = err;
+        if (summaryRoot) summaryRoot.innerHTML = `<div class="card"><div class="muted">오류: ${err.message}</div></div>`;
         if (cardsRoot) cardsRoot.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
         showToast(`월별 체결액을 불러오지 못했습니다: ${err.message}`, "error");
       } finally {

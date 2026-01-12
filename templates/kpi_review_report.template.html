@@ -313,6 +313,32 @@
         return Number.isFinite(parsed) ? parsed : 0;
       }
 
+      function tryParseJson(s) {
+        try { return JSON.parse(s); } catch (_) { return null; }
+      }
+
+      function parseOwnerName(v) {
+        if (v === null || v === undefined) return "";
+        const s = String(v).trim();
+        if (!s) return "";
+
+        if ((s.startsWith("{") && s.endsWith("}")) || (s.startsWith("[") && s.endsWith("]"))) {
+          const obj = tryParseJson(s);
+          if (obj && typeof obj === "object") {
+            if (Array.isArray(obj) && obj.length) {
+              const first = obj[0];
+              if (first && typeof first === "object") {
+                return String(first.name || first.ownerName || first.displayName || first.label || "").trim() || s;
+              }
+            } else if (!Array.isArray(obj)) {
+              return String(obj.name || obj.ownerName || obj.displayName || obj.label || "").trim() || s;
+            }
+          }
+        }
+
+        return s;
+      }
+
       function yearFromDateString(s) {
         if (!s) return null;
         const match = String(s).match(/^(\d{4})/);
@@ -324,6 +350,7 @@
       function preprocessDeals(rawDeals) {
         const out = [];
         for (const d of rawDeals) {
+          const ownerName = parseOwnerName(d.ownerName);
           const status = (d.status || "").trim();
           if (status.toLowerCase() === "convert") continue;
           const orgName = d.orgName || "";
@@ -338,6 +365,7 @@
           const amountParsed = parseAmount(d.amount);
           out.push({
             ...d,
+            ownerName,
             orgKey,
             isExisting,
             leadYear,
@@ -353,7 +381,7 @@
       }
 
       const computedDeals = preprocessDeals(data.deals);
-      const owners = Array.from(new Set(computedDeals.map((d) => d.ownerName || ""))).filter(Boolean).sort();
+      const owners = Array.from(new Set(computedDeals.map((d) => (d.ownerName || "").trim()))).filter(Boolean).sort();
       owners.unshift("ALL");
 
       const state = {
@@ -539,7 +567,13 @@
 
       function renderOwnerSelect() {
         const sel = document.getElementById("owner-select");
-        sel.innerHTML = owners.map((o) => `<option value="${o}">${o === "ALL" ? "ALL (전체)" : o}</option>`).join("");
+        sel.innerHTML = "";
+        for (const o of owners) {
+          const opt = document.createElement("option");
+          opt.value = o;
+          opt.textContent = o === "ALL" ? "ALL (전체)" : o;
+          sel.appendChild(opt);
+        }
         sel.value = state.owner;
         sel.onchange = () => {
           state.owner = sel.value;

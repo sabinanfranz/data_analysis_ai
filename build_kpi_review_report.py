@@ -59,6 +59,38 @@ def _parse_years(years_str: str) -> List[int]:
     return years
 
 
+def parse_owner_name(value: Any) -> Optional[str]:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        value = str(value)
+    text = str(value).strip()
+    if not text:
+        return None
+
+    if text.startswith("{") or text.startswith("["):
+        try:
+            parsed = json.loads(text)
+            if isinstance(parsed, list) and parsed:
+                candidate = parsed[0]
+                if isinstance(candidate, dict):
+                    name_val = candidate.get("name") or candidate.get("ownerName") or candidate.get("displayName") or candidate.get("label")
+                    if isinstance(name_val, str):
+                        name_val = name_val.strip()
+                        if name_val:
+                            return name_val
+            if isinstance(parsed, dict):
+                name_val = parsed.get("name") or parsed.get("ownerName") or parsed.get("displayName") or parsed.get("label")
+                if isinstance(name_val, str):
+                    name_val = name_val.strip()
+                    if name_val:
+                        return name_val
+        except Exception:
+            pass
+
+    return text
+
+
 def _normalize_org_key(name: str) -> str:
     text = name.lower()
     for token in ("주식회사", "(주)", "㈜"):
@@ -252,16 +284,19 @@ def build_payload(
         if (lead_year in years) or (contract_year in years):
             filtered_deals.append(item)
 
-    owner_set = {str(item.get("owner_name")) for item in filtered_deals if item.get("owner_name")}
     deal_count_after_year_filter = len(filtered_deals)
 
     # Project to the JSON schema expected by the template
     deals_payload: List[Dict[str, Any]] = []
+    owner_set: set[str] = set()
     for item in filtered_deals:
+        owner_name = parse_owner_name(item.get("owner_name")) or ""
+        if owner_name:
+            owner_set.add(owner_name)
         deals_payload.append(
             {
                 "dealId": item.get("deal_id"),
-                "ownerName": item.get("owner_name"),
+                "ownerName": owner_name,
                 "orgName": item.get("org_name") or item.get("deal_id"),
                 "status": item.get("status"),
                 "createdAt": item.get("created_at"),

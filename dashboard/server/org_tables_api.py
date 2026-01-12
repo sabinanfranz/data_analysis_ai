@@ -283,8 +283,13 @@ def get_rank_2025_deals_people(
 @router.get("/rank/2025-top100-counterparty-dri")
 def get_rank_2025_top100_counterparty_dri(
     size: str = Query("대기업", description='조직 규모 필터 (예: "대기업", "전체")'),
-    limit: int = Query(100, ge=1, le=200),
-    offset: int = Query(0, ge=0, description="org 목록 offset (limit 단위)"),
+    limit: int | None = Query(
+        None,
+        ge=1,
+        le=200_000,
+        description="최대 반환 수 (미지정 시 전체 반환)",
+    ),
+    offset: int = Query(0, ge=0, description="org 목록 offset (limit 단위, limit 미지정 시 무시)"),
 ) -> dict:
     try:
         return db.get_rank_2025_top100_counterparty_dri(size=size, limit=limit, offset=offset)

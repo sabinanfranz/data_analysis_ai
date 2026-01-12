@@ -2458,8 +2458,6 @@
         detail: null,
         search: "",
         dri: "all",
-        page: 0,
-        offset: 0,
         teamPart: "all",
         teamPartOptions: ["all"],
       },
@@ -3568,15 +3566,21 @@
       return data;
     }
 
-    async function loadCounterpartyRows(size = "대기업", offset = 0, limit = 100) {
-      const key = `${size || "대기업"}|${offset}|${limit}`;
+    async function loadCounterpartyRows(size = "대기업", options = null) {
+      const opts = options || {};
+      const limit = opts.limit;
+      const offset = opts.offset || 0;
+      const limitKey = limit ?? "all";
+      const key = `${size || "대기업"}|${limitKey}|${offset}`;
       if (state.rankCounterpartyCache[key]) {
         return state.rankCounterpartyCache[key];
       }
       const params = new URLSearchParams();
       params.set("size", size || "대기업");
-      params.set("limit", limit);
-      params.set("offset", offset);
+      if (limit !== undefined && limit !== null) {
+        params.set("limit", limit);
+        params.set("offset", offset);
+      }
       const data = await fetchJson(`/rank/2025-top100-counterparty-dri?${params.toString()}`);
       const result = { rows: data.rows || [], meta: data.meta || {} };
       state.rankCounterpartyCache[key] = result;
@@ -3610,9 +3614,9 @@
       const sizeMid = pickSize("중견");
       const sizeSmall = pickSize("중소");
       const [big, mid, small] = await Promise.all([
-        loadCounterpartyRows(sizeBig, 0, 100),
-        loadCounterpartyRows(sizeMid, 0, 100),
-        loadCounterpartyRows(sizeSmall, 0, 100),
+        loadCounterpartyRows(sizeBig, { limit: 100, offset: 0 }),
+        loadCounterpartyRows(sizeMid, { limit: 100, offset: 0 }),
+        loadCounterpartyRows(sizeSmall, { limit: 100, offset: 0 }),
       ]);
       target2026Cache = { big: big.rows || [], mid: mid.rows || [], small: small.rows || [] };
       console.debug("[target2026] source rows", {
@@ -8329,7 +8333,6 @@
 
     async function renderRankCounterpartyDriScreen(contentRoot) {
       const stateDri = state.rankCounterpartyDri;
-      const ORG_PAGE_SIZE = 100;
       contentRoot.innerHTML = `
         <section class="card compact">
           <div class="control-row">
@@ -8355,7 +8358,6 @@
         </section>
         <section class="card">
           <div id="rankCounterpartyStatus" class="muted">불러오는 중...</div>
-          <div id="rankCounterpartyOrgPager"></div>
           <div id="rankCounterpartyTable"></div>
         </section>
         <div class="modal-backdrop" id="counterpartyModal" style="display:none;">
@@ -8558,11 +8560,12 @@
         statusEl.textContent = "불러오는 중...";
         tableWrap.innerHTML = "";
         try {
-          const data = await loadCounterpartyRows(stateDri.size || "대기업", stateDri.offset || 0, ORG_PAGE_SIZE);
+          const data = await loadCounterpartyRows(stateDri.size || "대기업");
           stateDri.rows = data.rows || [];
           stateDri.meta = data.meta || {};
           rebuildTeamPartOptions();
-          statusEl.textContent = `${stateDri.size || "대기업"} / org ${data.meta?.orgCount ?? "-"}개 · row ${data.meta?.rowCount ?? "-"} · offset ${(stateDri.offset || 0) + 1}`;
+          const rowCount = data.meta?.rowCount ?? stateDri.rows.length ?? 0;
+          statusEl.textContent = `${stateDri.size || "대기업"} · org ${rowCount}개`;
           renderTable();
           detailWrap.textContent = "행을 클릭하면 상세를 표시합니다.";
           stateDri.selected = null;
@@ -8588,9 +8591,7 @@
 
       sizeSelect.addEventListener("change", async (e) => {
         stateDri.size = e.target.value || "대기업";
-        stateDri.offset = 0;
         await loadData();
-        renderOrgPager();
       });
 
       const closeCounterpartyModal = () => {
@@ -8632,40 +8633,6 @@
           renderTable();
         });
       }
-
-      // Org-level pagination (fetch next 100 orgs)
-      const renderOrgPager = () => {
-        const pager = document.getElementById("rankCounterpartyOrgPager");
-        if (!pager) return;
-        const offset = stateDri.offset || 0;
-        const meta = stateDri.meta || {};
-        const hasPrev = offset > 0;
-        const hasNext = (meta.orgCount || 0) >= ORG_PAGE_SIZE; // optimistic when total unknown
-        pager.innerHTML = `
-          <div class="control-row" style="margin-top:6px;">
-            <div class="muted">Org ${offset + 1} ~ ${offset + (meta.orgCount || stateDri.rows.length || 0)}</div>
-            <div class="spacer"></div>
-            <button type="button" id="rankCpOrgPrev" ${hasPrev ? "" : "disabled"}>Prev 100</button>
-            <button type="button" id="rankCpOrgNext" ${hasNext ? "" : "disabled"}>Next 100</button>
-          </div>
-        `;
-        const prevBtn = document.getElementById("rankCpOrgPrev");
-        const nextBtn = document.getElementById("rankCpOrgNext");
-        if (prevBtn) {
-          prevBtn.addEventListener("click", async () => {
-            stateDri.offset = Math.max(0, offset - ORG_PAGE_SIZE);
-            await loadData();
-            renderOrgPager();
-          });
-        }
-        if (nextBtn) {
-          nextBtn.addEventListener("click", async () => {
-            stateDri.offset = offset + ORG_PAGE_SIZE;
-            await loadData();
-            renderOrgPager();
-          });
-        }
-      };
 
       const loadCounterpartyDetail = async (row) => {
         if (!detailWrap) return;

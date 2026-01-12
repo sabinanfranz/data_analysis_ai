@@ -24,7 +24,7 @@ sync_source:
   - `/performance/monthly-amounts/summary` → YYMM 24개월, rows TOTAL→CONTRACT→CONFIRMED→HIGH, segment 11종. 값은 `formatEok1`로 억 1자리, dealCount=0이면 `<span class="mp-cell-btn is-zero">` 비활성.
   - 셀 클릭 시 `/performance/monthly-amounts/deals`, amount>0 우선→expectedAmount→dealName asc 정렬 후 모달 테이블(15열, colgroup 고정) 표시.
 - 카운터파티 DRI (`renderRankCounterpartyDriScreen`):
-  - `/rank/2025-top100-counterparty-dri`를 캐시 후 검색/DRI(O/X/all)/팀&파트 필터를 클라이언트에서 적용하며, 정렬은 고정(orgWon2025 desc → cpTotal2025 desc). 행 클릭 시 `/rank/2025-counterparty-dri/detail`.
+  - `/rank/2025-top100-counterparty-dri`를 호출해 규모별 **전체 리스트**를 캐싱하고 검색/DRI(O/X/all)/팀&파트 필터를 클라이언트에서 적용하며, 정렬은 고정(orgWon2025 desc → cpTotal2025 desc). Prev/Next 페이징 없이 전체를 한 번에 렌더하며, 행 클릭 시 `/rank/2025-counterparty-dri/detail`.
 - 딜체크/QC:
   - `renderDealCheckScreen(teamKey, options)` 한 곳에서 7개 딜체크 메뉴를 공통 렌더하며, `/deal-check?team=edu1|edu2` 결과를 orgWon2025Total desc→createdAt asc→dealId asc로 렌더, memoCount=0이면 “메모 없음” 비활성 버튼. 부모 메뉴는 필터 없이 팀 전체를, 자식 메뉴는 `partFilter`(1/2파트/온라인셀)를 받아 owners→`getDealCheckPartLookup` 룩업 기반으로 클라이언트 필터를 적용한다. 섹션은 공통 6분할(리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인) 순서를 유지한다.
   - `renderDealQcR1R15Screen`은 `/qc/deal-errors/summary` 카드(팀별 총이슈 desc) + `/qc/deal-errors/person` 상세 모달(R1~R15 위배만 표시) 제공.

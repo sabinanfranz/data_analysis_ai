@@ -19,7 +19,7 @@ sync_source:
 - `GET /api/rank/won-yearly-totals`: Won 상태, 계약연도 2023/2024/2025. 규모별 합계 `won2023/2024/2025`, 정렬 합계 desc.
 - `GET /api/rank/won-industry-summary`: Won 상태, 계약연도 2023/2024/2025, 선택 규모 필터. 업종 구분(대)별 합계/조직 수.
 - `GET /api/rank/2025/summary-by-size?exclude_org_name=삼성전자&years=2025,2026`: Won 상태, 계약연도 years. exclude_org_name 정확히 일치 시 제외. 반환 `by_size{size:sum_2025,sum_2026}`, totals, snapshot_version=`db_mtime:<int>`.
-- `GET /api/rank/2025-top100-counterparty-dri?size=대기업&limit=100&offset=0`: Lost/Convert 제외. 2025/2026 계약/예상일이 있는 확정/높음/Won 딜만 집계. ONLINE 판정=`statepath_engine.ONLINE_COURSE_FORMATS`. owners2025는 People.owner_json 우선, 없으면 deal.owner_json. 필드 `orgId/orgName/sizeRaw/orgTier/orgWon2025/upperOrg/cpOnline2025/cpOffline2025/cpOnline2026/cpOffline2026/owners2025/dealCount2025`. 정렬 orgWon2025 desc → cpTotal2025 desc. meta offset/limit/orgCount/rowCount.
+- `GET /api/rank/2025-top100-counterparty-dri?size=대기업`: Lost/Convert 제외. 2025/2026 계약/예상일이 있는 확정/높음/Won 딜만 집계. ONLINE 판정=`statepath_engine.ONLINE_COURSE_FORMATS`. owners2025는 People.owner_json 우선, 없으면 deal.owner_json. 필드 `orgId/orgName/sizeRaw/orgTier/orgWon2025/upperOrg/cpOnline2025/cpOffline2025/cpOnline2026/cpOffline2026/owners2025/dealCount2025`. 정렬 orgWon2025 desc → cpTotal2025 desc. 기본은 규모별 **전체** 반환이며 limit/offset은 선택 사항(meta에 offset/limit/orgCount/rowCount 포함).
 - `GET /api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...`: 해당 org/upper_org 딜 상세, `deals[]`에 `people_id/people_name/upper_org` 포함.
 
 ## Invariants (Must Not Break)

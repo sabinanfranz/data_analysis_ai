@@ -3843,7 +3843,7 @@ def get_pl_progress_deals(
 
 def _compute_counterparty_dri_rows(
     size: str,
-    org_limit: int,
+    org_limit: int | None,
     org_offset: int,
     db_path: Path,
     offline_targets: Dict[Tuple[str, str], float],
@@ -3880,6 +3880,7 @@ def _compute_counterparty_dri_rows(
         start_date_select = 'd."수강시작일"' if has_start_date else "NULL"
         probability_select = 'd."성사 가능성"' if has_probability else "'확정'"
 
+        limit_clause = "LIMIT ? OFFSET ?" if org_limit is not None else ""
         top_orgs = _fetch_all(
             conn,
             'WITH org_sum AS ('
@@ -3890,9 +3891,9 @@ def _compute_counterparty_dri_rows(
             f"  WHERE {' AND '.join(conditions)} "
             "  GROUP BY d.organizationId, orgName, sizeRaw "
             '), ranked AS ('
-            "  SELECT * FROM org_sum ORDER BY totalAmount DESC LIMIT ? OFFSET ?"
+            f"  SELECT * FROM org_sum ORDER BY totalAmount DESC {limit_clause}"
             ") SELECT * FROM ranked",
-            params + [org_limit, org_offset],
+            params + ([org_limit, org_offset] if org_limit is not None else []),
         )
 
         top_ids = {row["orgId"] for row in top_orgs}
@@ -4085,7 +4086,7 @@ def _compute_counterparty_dri_rows(
 
 
 def get_rank_2025_top100_counterparty_dri(
-    size: str = "대기업", limit: int = 100, offset: int = 0, db_path: Path = DB_PATH
+    size: str = "대기업", limit: int | None = None, offset: int = 0, db_path: Path = DB_PATH
 ) -> Dict[str, Any]:
     """
     Top organizations by 2025 Won (size-filtered) with counterparty(upper_org) breakdown and owners list.
@@ -4096,12 +4097,16 @@ def get_rank_2025_top100_counterparty_dri(
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
 
-    limit = max(1, min(limit or 100, 200))
-    offset = max(0, offset or 0)
+    max_limit = 200_000
+    if limit is not None:
+        limit = max(1, min(limit or 1, max_limit))
+        offset = max(0, offset or 0)
+    else:
+        offset = 0
 
     offline_targets, online_targets, targets_version = load_counterparty_targets_2026()
     stat = db_path.stat()
-    cache_key = (db_path, stat.st_mtime, size or "대기업", limit, offset, targets_version)
+    cache_key = (db_path, stat.st_mtime, size or "대기업", limit or "all", offset, targets_version)
     cached = _COUNTERPARTY_DRI_CACHE.get(cache_key)
     if cached is not None:
         return cached

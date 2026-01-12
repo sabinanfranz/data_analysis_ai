@@ -29,7 +29,7 @@ sync_source:
 - 랭킹/DRI/StatePath:
   - `GET /api/rank/2025/summary-by-size?exclude_org_name=삼성전자&years=2025,2026` → Won 합계 규모별, 캐시 키 `snapshot_version=db_mtime:<int>`.
   - `GET /api/rank/2025-deals`, `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary` → DB 조회 결과 그대로 반환.
-  - `GET /api/rank/2025-top100-counterparty-dri?size=대기업&limit=100&offset=0` → Lost/Convert 제외, 2025/2026 계약/예상 딜 중 확정/높음/Won만 집계, orgWon2025 desc→cpTotal2025 desc 정렬, owners는 People.owner_json 우선.
+  - `GET /api/rank/2025-top100-counterparty-dri?size=대기업` → Lost/Convert 제외, 2025/2026 계약/예상 딜 중 확정/높음/Won만 집계, orgWon2025 desc→cpTotal2025 desc 정렬, owners는 People.owner_json 우선. 기본은 규모별 **전체** 반환이며 limit/offset은 선택 사항.
   - `GET /api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...` → 해당 org/upper_org 딜 상세(people_id/people_name/upper_org 포함).
   - `GET /api/statepath/portfolio-2425` → segment/search/정렬/패턴/리스크 필터 반영된 요약+아이템(금액은 억 단위). `GET /api/orgs/{id}/statepath-2425`는 단건 버전.
   - `GET /api/orgs/{id}/statepath` → compact JSON 기반 statepath_engine 결과(2024/2025 상태·Path·추천, 금액은 억 단위) 반환.

@@ -1,0 +1,1129 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>2025 성과평가용 개인 KPI 검수 리포트</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f6f7fb;
+      color: #1f2933;
+    }
+    header {
+      padding: 20px 24px 12px 24px;
+      position: sticky;
+      top: 0;
+      background: rgba(246,247,251,0.96);
+      backdrop-filter: blur(6px);
+      z-index: 10;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    h1 {
+      margin: 0 0 6px 0;
+      font-size: 22px;
+    }
+    .subtitle {
+      color: #4a5568;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .select {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      min-width: 180px;
+      font-size: 14px;
+    }
+    .badge {
+      background: #eef2ff;
+      color: #4338ca;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid #c7d2fe;
+    }
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .btn {
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.15s ease;
+    }
+    .btn.primary {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+      box-shadow: 0 6px 14px rgba(37,99,235,0.25);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    main {
+      padding: 12px 24px 32px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(15,23,42,0.04);
+      margin-bottom: 16px;
+    }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .tab-btn {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .tab-btn.active {
+      background: #1d4ed8;
+      color: #fff;
+      border-color: #1d4ed8;
+      box-shadow: 0 6px 14px rgba(37,99,235,0.3);
+    }
+    .tab-btn[disabled] {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 8px 6px;
+      text-align: center;
+    }
+    th {
+      background: #f8fafc;
+      font-weight: 700;
+    }
+    td.label {
+      text-align: left;
+      font-weight: 700;
+      background: #f8fafc;
+      width: 180px;
+    }
+    .muted {
+      color: #64748b;
+      font-size: 12px;
+    }
+    .note {
+      font-size: 12px;
+      color: #475569;
+      margin-top: 6px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 12px;
+      border: 1px solid #cbd5e1;
+      margin-right: 8px;
+    }
+    .year-toggle {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .ghost-btn {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .ghost-btn.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+    }
+    details {
+      margin-top: 12px;
+    }
+    pre {
+      background: #0b1021;
+      color: #d6deff;
+      padding: 12px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 12px;
+      line-height: 1.45;
+      border: 1px solid #1f2a48;
+      margin-top: 8px;
+    }
+    .error {
+      color: #b91c1c;
+      background: #fef2f2;
+      border: 1px solid #fecdd3;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 12px 0;
+    }
+    .table-note {
+      margin: 6px 0;
+      color: #475569;
+      font-size: 12px;
+    }
+    .pill.warn {
+      background: #fff7ed;
+      border-color: #fed7aa;
+      color: #c2410c;
+    }
+    .row-muted {
+      background: #f1f5f9;
+      color: #6b7280;
+    }
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .file-input {
+      display: none;
+    }
+    .checkbox-cell {
+      width: 48px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>2025 성과평가용 개인 KPI 검수 리포트</h1>
+    <div class="subtitle">담당자 필터 + 제외/저장/내보내기까지 포함한 최종 검수용 (Chunk 3)</div>
+    <div class="toolbar">
+      <select id="owner-select" class="select"></select>
+      <span class="badge">Convert 상태 딜은 전 지표에서 제외합니다.</span>
+      <span class="badge">체결률은 리드연도(생성일) 기준, (Won 딜 수)/(전체 딜 수)</span>
+      <span class="badge">체결액/공헌이익률/리텐션/업셀은 체결연도 기준, Won만 반영</span>
+      <span class="badge">공헌이익률(비온라인)=net% 단순 평균, 온라인 100%</span>
+    </div>
+    <div class="toolbar-actions">
+      <button id="btn-export-csv" class="btn primary">요약 CSV 내보내기</button>
+      <button id="btn-export-json" class="btn">제외내역 JSON 내보내기</button>
+      <button id="btn-import-json" class="btn">제외내역 가져오기</button>
+      <input type="file" id="import-file" class="file-input" accept="application/json">
+      <button id="btn-reset" class="btn">초기화(제외 전부 복구)</button>
+      <span class="pill warn">ALL은 제외내역 union 표시(편집은 개별 담당자에서)</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="kpi">탭 1: KPI 요약</button>
+      <button class="tab-btn" data-tab="format">탭 2: 과정포맷 분석</button>
+      <button class="tab-btn" data-tab="list">탭 3: 딜 리스트(검수/제외)</button>
+      <button class="tab-btn" data-tab="exclude">탭 4: 제외 내역 & 내보내기</button>
+    </div>
+
+    <section id="tab-kpi" class="card"></section>
+    <section id="tab-format" class="card" style="display:none;"></section>
+    <section id="tab-list" class="card" style="display:none;"></section>
+    <section id="tab-exclude" class="card" style="display:none;"></section>
+
+    <details class="card">
+      <summary>디버그 정보 (데이터 적재 확인)</summary>
+      <div id="debug-summary" class="note"></div>
+      <pre id="sample-json"></pre>
+      <pre id="meta-json"></pre>
+    </details>
+  </main>
+
+  <script>
+    // Inline data injection
+    window.__DATA__ = __DATA_JSON__;
+
+    (function () {
+      const data = window.__DATA__;
+      if (!data || !Array.isArray(data.deals)) {
+        document.body.innerHTML = '<div class="error">window.__DATA__.deals 가 없습니다. 빌더 출력을 확인하세요.</div>';
+        return;
+      }
+
+      const onlineFormats = new Set(data.onlineFormats || []);
+      const existingKeys = new Set(data.existingOrgKeys || []);
+      const years = (data.years || []).map(Number).filter((y) => !Number.isNaN(y)).sort();
+      const year2024 = years.find((y) => y === 2024) ?? years[0];
+      const year2025 = years.find((y) => y === 2025) ?? years[years.length - 1];
+      const storageVersion = data.dataGeneratedAt || data.generatedAt || "unknown";
+
+      function normalizeOrgName(name) {
+        if (!name) return "";
+        let text = String(name).toLowerCase();
+        ["주식회사", "(주)", "㈜"].forEach((token) => { text = text.replaceAll(token, ""); });
+        text = text.replace(/\s+/g, "");
+        text = text.replace(/[\(\)\-\_,\.]/g, "");
+        return text;
+      }
+
+      function parseNet(v) {
+        if (v === null || v === undefined || v === "") return null;
+        let num = v;
+        if (typeof v === "string") {
+          num = v.replace(/[%\s,]/g, "");
+        }
+        const parsed = Number(num);
+        if (!Number.isFinite(parsed)) return null;
+        if (parsed >= 0 && parsed <= 1) return parsed;
+        if (parsed >= 1 && parsed <= 100) return parsed / 100;
+        return null;
+      }
+
+      function parseAmount(v) {
+        if (v === null || v === undefined || v === "") return 0;
+        if (typeof v === "number" && Number.isFinite(v)) return v;
+        const text = String(v).replace(/,/g, "").trim();
+        const parsed = Number(text);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+
+      function yearFromDateString(s) {
+        if (!s) return null;
+        const match = String(s).match(/^(\d{4})/);
+        if (!match) return null;
+        const yr = Number(match[1]);
+        return Number.isFinite(yr) ? yr : null;
+      }
+
+      function preprocessDeals(rawDeals) {
+        const out = [];
+        for (const d of rawDeals) {
+          const status = (d.status || "").trim();
+          if (status.toLowerCase() === "convert") continue;
+          const orgName = d.orgName || "";
+          const orgKey = normalizeOrgName(orgName);
+          const isExisting = orgKey ? existingKeys.has(orgKey) : false;
+          const leadYear = yearFromDateString(d.createdAt);
+          const contractYear = yearFromDateString(d.contractDate);
+          const isOnline = onlineFormats.has(d.courseFormat || "");
+          const segment = isOnline ? "online" : "offline";
+          const net = parseNet(d.netPercent);
+          const cmRateDeal = isOnline ? 1.0 : (net !== null ? net : null);
+          const amountParsed = parseAmount(d.amount);
+          out.push({
+            ...d,
+            orgKey,
+            isExisting,
+            leadYear,
+            contractYear,
+            isOnline,
+            segment,
+            net,
+            cmRateDeal,
+            amountValue: amountParsed,
+          });
+        }
+        return out;
+      }
+
+      const computedDeals = preprocessDeals(data.deals);
+      const owners = Array.from(new Set(computedDeals.map((d) => d.ownerName || ""))).filter(Boolean).sort();
+      owners.unshift("ALL");
+
+      const state = {
+        owner: "ALL",
+        activeTab: "kpi",
+        formatYear: year2025 ?? years[0],
+        excludedSet: new Set(),
+        lastStats: null,
+      };
+
+      function storageKey(owner) {
+        return `kpi_review::2024_2025::${storageVersion}::excludedDealIds::${owner}`;
+      }
+
+      function loadExcluded(owner) {
+        if (owner === "ALL") return loadUnionExcluded();
+        try {
+          const raw = localStorage.getItem(storageKey(owner));
+          if (!raw) return new Set();
+          const arr = JSON.parse(raw);
+          return new Set(Array.isArray(arr) ? arr : []);
+        } catch (e) {
+          console.warn("Failed to load excludedSet", e);
+          return new Set();
+        }
+      }
+
+      function loadUnionExcluded() {
+        const union = new Set();
+        for (const owner of owners) {
+          if (owner === "ALL") continue;
+          loadExcluded(owner).forEach((id) => union.add(id));
+        }
+        return union;
+      }
+
+      function saveExcluded(owner, set) {
+        if (owner === "ALL") return; // union view only
+        const arr = Array.from(set);
+        localStorage.setItem(storageKey(owner), JSON.stringify(arr));
+      }
+
+      function clearExcluded(owner) {
+        if (owner === "ALL") return;
+        localStorage.removeItem(storageKey(owner));
+      }
+
+      function getDealsForOwnerRaw(owner) {
+        if (owner === "ALL") return computedDeals;
+        return computedDeals.filter((d) => d.ownerName === owner);
+      }
+
+      function getIncludedDeals(owner) {
+        const base = getDealsForOwnerRaw(owner);
+        return base.filter((d) => !state.excludedSet.has(d.dealId));
+      }
+
+      function fmtNumber(v) {
+        if (v === null || v === undefined) return "—";
+        return new Intl.NumberFormat("ko-KR").format(Math.round(v));
+      }
+
+      function fmtAmount(v) {
+        if (v === null || v === undefined) return "—";
+        return new Intl.NumberFormat("ko-KR").format(Math.round(v));
+      }
+
+      function fmtPercent(v) {
+        if (v === null || v === undefined) return "—";
+        return (v * 100).toFixed(1) + "%";
+      }
+
+      function fmtDelta(v, isPercent) {
+        if (v === null || v === undefined) return "—";
+        const sign = v > 0 ? "+" : v < 0 ? "" : "";
+        const base = isPercent ? (v * 100).toFixed(1) + "pp" : new Intl.NumberFormat("ko-KR").format(Math.round(v));
+        return sign + base;
+      }
+
+      function aggBySegment(baseDeals, segment) {
+        if (segment === "all") return baseDeals;
+        return baseDeals.filter((d) => d.segment === segment);
+      }
+
+      function computeKpi(deals, yearsList) {
+        const segments = ["all", "online", "offline"];
+        const perYear = {};
+
+        for (const year of yearsList) {
+          perYear[year] = {};
+          for (const seg of segments) {
+            const segDeals = aggBySegment(deals, seg);
+            const leadDeals = segDeals.filter((d) => d.leadYear === year);
+            const contractWon = segDeals.filter((d) => d.contractYear === year && d.status === "Won");
+
+            const leadCount = leadDeals.length;
+            const wonLead = leadDeals.filter((d) => d.status === "Won").length;
+
+            const newLead = leadDeals.filter((d) => d.isExisting === false);
+            const existingLead = leadDeals.filter((d) => d.isExisting === true);
+            const winRateNew = newLead.length ? newLead.filter((d) => d.status === "Won").length / newLead.length : null;
+            const winRateExisting = existingLead.length
+              ? existingLead.filter((d) => d.status === "Won").length / existingLead.length
+              : null;
+
+            const amountSum = contractWon.reduce((acc, cur) => acc + (cur.amountValue || 0), 0);
+            const cmPool = contractWon.map((d) => d.cmRateDeal).filter((v) => v !== null && v !== undefined);
+            const cmRateAvg = cmPool.length ? cmPool.reduce((a, b) => a + b, 0) / cmPool.length : null;
+
+            const missingContractDateWonCount = segDeals.filter(
+              (d) => d.status === "Won" && d.contractYear === null && d.leadYear === year
+            ).length;
+            const offlineDeals = segDeals.filter((d) => d.segment === "offline");
+            const netMissingWonCount = offlineDeals.filter(
+              (d) => d.contractYear === year && d.status === "Won" && (d.net === null || d.net === undefined)
+            ).length;
+
+            const wonContract = segDeals.filter((d) => d.contractYear === year && d.status === "Won");
+            const newOrgSet = new Set();
+            const existingOrgSet = new Set();
+            for (const d of wonContract) {
+              if (!d.orgKey) continue;
+              if (d.isExisting) existingOrgSet.add(d.orgKey);
+              else newOrgSet.add(d.orgKey);
+            }
+
+            perYear[year][seg] = {
+              leadCount,
+              winRate: leadCount ? wonLead / leadCount : null,
+              winRateNew,
+              winRateExisting,
+              amountSum,
+              cmRateAvg,
+              newOrgCount: newOrgSet.size,
+              existingOrgCount: existingOrgSet.size,
+              missingContractDateWonCount,
+              netMissingWonCount,
+            };
+          }
+        }
+
+        function computeRetention(segment) {
+          const base = aggBySegment(deals, segment);
+          const base2024 = new Set(
+            base.filter((d) => d.contractYear === 2024 && d.status === "Won" && d.isExisting === true).map((d) => d.orgKey)
+          );
+          const base2025 = new Set(
+            base.filter((d) => d.contractYear === 2025 && d.status === "Won" && d.isExisting === true).map((d) => d.orgKey)
+          );
+          const retention = new Set([...base2024].filter((k) => base2025.has(k)));
+          const denom = base2024.size;
+          const retentionRate = denom ? retention.size / denom : null;
+
+          const amt2024 = new Map();
+          const amt2025 = new Map();
+          for (const d of base) {
+            if (d.status !== "Won" || !d.orgKey) continue;
+            if (d.contractYear === 2024) {
+              amt2024.set(d.orgKey, (amt2024.get(d.orgKey) || 0) + (d.amountValue || 0));
+            } else if (d.contractYear === 2025) {
+              amt2025.set(d.orgKey, (amt2025.get(d.orgKey) || 0) + (d.amountValue || 0));
+            }
+          }
+          let upsellCount = 0;
+          for (const org of retention) {
+            const a24 = amt2024.get(org) || 0;
+            const a25 = amt2025.get(org) || 0;
+            if (a25 > a24) upsellCount += 1;
+          }
+          const upsellRate = retention.size ? upsellCount / retention.size : null;
+
+          return { retentionRate, upsellRate };
+        }
+
+        const retention = {
+          all: computeRetention("all"),
+          online: computeRetention("online"),
+          offline: computeRetention("offline"),
+        };
+
+        return { perYear, retention };
+      }
+
+      function renderOwnerSelect() {
+        const sel = document.getElementById("owner-select");
+        sel.innerHTML = owners.map((o) => `<option value="${o}">${o === "ALL" ? "ALL (전체)" : o}</option>`).join("");
+        sel.value = state.owner;
+        sel.onchange = () => {
+          state.owner = sel.value;
+          state.excludedSet = loadExcluded(state.owner);
+          renderAll();
+        };
+      }
+
+      function buildKpiTable(stats) {
+        const y1 = year2024;
+        const y2 = year2025;
+        const segments = ["all", "online", "offline"];
+
+        function val(year, seg, key) {
+          return stats.perYear?.[year]?.[seg]?.[key] ?? null;
+        }
+
+        const rows = [
+          { id: "leadCount", label: "리드 수", type: "number" },
+          { id: "winRate", label: "체결률", type: "percent" },
+          { id: "winRateNew", label: "신규 체결률", type: "percent" },
+          { id: "winRateExisting", label: "기고객 체결률", type: "percent" },
+          { id: "amountSum", label: "총 체결액", type: "amount" },
+          { id: "cmRateAvg", label: "공헌이익률", type: "percent" },
+          { id: "newOrgCount", label: "신규 고객사 수", type: "number" },
+          { id: "existingOrgCount", label: "기고객 고객사 수", type: "number" },
+          { id: "retentionRate", label: "리텐션율 (2025)", type: "percent", only2025: true },
+          { id: "upsellRate", label: "업셀링율 (2025)", type: "percent", only2025: true },
+          {
+            id: "missingContractDateWonCount",
+            label: "(품질) 계약일 누락 Won 딜 수",
+            type: "number",
+            note: "leadYear 기준",
+          },
+          {
+            id: "netMissingWonCount",
+            label: "(품질) net% 누락 Won 딜 수(비온라인)",
+            type: "number",
+          },
+        ];
+
+        function formatter(type) {
+          if (type === "percent") return fmtPercent;
+          if (type === "amount") return fmtAmount;
+          return fmtNumber;
+        }
+
+        function cellValue(row, year, seg) {
+          if (row.id === "retentionRate") return stats.retention[seg]?.retentionRate ?? null;
+          if (row.id === "upsellRate") return stats.retention[seg]?.upsellRate ?? null;
+          return val(year, seg, row.id);
+        }
+
+        function delta(row, seg) {
+          const v2024 = row.only2025 ? null : cellValue(row, y1, seg);
+          const v2025 = cellValue(row, y2, seg);
+          if (v2024 === null || v2025 === null || v2024 === undefined || v2025 === undefined) return null;
+          return v2025 - v2024;
+        }
+
+        let html = `
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+            <div>
+              <strong>KPI 요약</strong>
+              <span class="muted">(${y1} / ${y2} × 전체/온라인/비온라인 + Δ)</span>
+            </div>
+          </div>
+          <div class="note" style="margin-bottom:8px;">체결률 분모는 전체 딜, 금액/공헌이익률은 Won+체결연도 기준입니다.</div>
+          <table>
+            <thead>
+              <tr>
+                <th rowspan="2">지표</th>
+                <th colspan="3">${y1}</th>
+                <th colspan="3">${y2}</th>
+                <th colspan="3">Δ (${y2}-${y1})</th>
+              </tr>
+              <tr>
+                <th>전체</th><th>온라인</th><th>비온라인</th>
+                <th>전체</th><th>온라인</th><th>비온라인</th>
+                <th>전체</th><th>온라인</th><th>비온라인</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        for (const row of rows) {
+          const fmt = formatter(row.type);
+          html += "<tr>";
+          html += `<td class="label">${row.label}${row.note ? `<div class="muted">${row.note}</div>` : ""}</td>`;
+          for (const seg of segments) {
+            const v = row.only2025 ? null : cellValue(row, y1, seg);
+            html += `<td>${row.only2025 ? "—" : fmt(v)}</td>`;
+          }
+          for (const seg of segments) {
+            const v = cellValue(row, y2, seg);
+            html += `<td>${fmt(v)}</td>`;
+          }
+          for (const seg of segments) {
+            const d = delta(row, seg);
+            const isPercent = row.type === "percent";
+            html += `<td>${fmtDelta(d, isPercent)}</td>`;
+          }
+          html += "</tr>";
+        }
+
+        html += "</tbody></table>";
+        return html;
+      }
+
+      function computeFormatAnalysis(deals, year) {
+        const byFormat = new Map();
+        for (const d of deals) {
+          const key = d.courseFormat || "(미입력)";
+          if (!byFormat.has(key)) {
+            byFormat.set(key, {
+              key,
+              isOnlineFormat: onlineFormats.has(d.courseFormat || ""),
+              leadCount: 0,
+              leadWon: 0,
+              contractWonAmount: 0,
+              netValues: [],
+              netMissingWon: 0,
+            });
+          }
+          const bucket = byFormat.get(key);
+          if (d.leadYear === year) {
+            bucket.leadCount += 1;
+            if (d.status === "Won") bucket.leadWon += 1;
+          }
+          if (d.contractYear === year && d.status === "Won") {
+            bucket.contractWonAmount += d.amountValue || 0;
+            if (!bucket.isOnlineFormat) {
+              if (d.net !== null && d.net !== undefined) bucket.netValues.push(d.net);
+              else bucket.netMissingWon += 1;
+            }
+          }
+        }
+
+        const rows = Array.from(byFormat.values()).map((row) => {
+          const winRate = row.leadCount ? row.leadWon / row.leadCount : null;
+          let cmRate = null;
+          if (row.isOnlineFormat) {
+            cmRate = row.contractWonAmount > 0 ? 1.0 : null;
+          } else {
+            cmRate = row.netValues.length ? row.netValues.reduce((a, b) => a + b, 0) / row.netValues.length : null;
+          }
+          return {
+            ...row,
+            winRate,
+            cmRate,
+          };
+        });
+
+        rows.sort((a, b) => {
+          if (b.contractWonAmount !== a.contractWonAmount) return b.contractWonAmount - a.contractWonAmount;
+          return b.leadCount - a.leadCount;
+        });
+        return rows;
+      }
+
+      function renderFormatTab(deals) {
+        const container = document.getElementById("tab-format");
+        const year = state.formatYear;
+        const rows = computeFormatAnalysis(deals, year);
+        const fmtOnlineList = Array.from(onlineFormats);
+
+        let html = `
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <strong>과정포맷 분석</strong>
+              <span class="muted">(리드/체결 연도별 과정포맷 성과)</span>
+              <div class="note">온라인 포맷: ${fmtOnlineList.join(", ") || "없음"}</div>
+            </div>
+            <div class="year-toggle">
+              ${years
+                .map(
+                  (y) =>
+                    `<button class="ghost-btn ${y === year ? "active" : ""}" data-year="${y}">${y}</button>`
+                )
+                .join("")}
+            </div>
+          </div>
+          <table style="margin-top:10px;">
+            <thead>
+              <tr>
+                <th>과정포맷</th>
+                <th>딜 수 (리드연도)</th>
+                <th>Won 딜 수 (리드연도)</th>
+                <th>체결률</th>
+                <th>Won 체결액 합 (체결연도)</th>
+                <th>공헌이익률</th>
+                <th>net% 누락 건수 (비온라인, 체결연도)</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        for (const row of rows) {
+          html += `
+            <tr>
+              <td style="text-align:left;">${row.key} ${row.isOnlineFormat ? '<span class="pill">온라인</span>' : ""}</td>
+              <td>${fmtNumber(row.leadCount)}</td>
+              <td>${fmtNumber(row.leadWon)}</td>
+              <td>${fmtPercent(row.winRate)}</td>
+              <td>${fmtAmount(row.contractWonAmount)}</td>
+              <td>${row.isOnlineFormat ? (row.contractWonAmount > 0 ? "100.0%" : "—") : fmtPercent(row.cmRate)}</td>
+              <td>${row.isOnlineFormat ? "0" : fmtNumber(row.netMissingWon)}</td>
+            </tr>
+          `;
+        }
+
+        if (!rows.length) {
+          html += `<tr><td colspan="7" class="muted">선택한 연도에 데이터가 없습니다.</td></tr>`;
+        }
+
+        html += "</tbody></table>";
+        container.innerHTML = html;
+
+        container.querySelectorAll(".ghost-btn").forEach((btn) => {
+          btn.onclick = () => {
+            state.formatYear = Number(btn.getAttribute("data-year"));
+            renderFormatTab(deals);
+          };
+        });
+      }
+
+      function renderDebug(deals) {
+        const meta = data.meta || {};
+        const summary = document.getElementById("debug-summary");
+        summary.textContent = `Loaded deals: ${deals.length} / Unique owners: ${owners.length - 1} / Years: ${years.join(", ")} / netPercent column: ${meta.netPercentColumn || "__NONE__"}`;
+        document.getElementById("sample-json").textContent = JSON.stringify(deals.slice(0, 5), null, 2);
+        document.getElementById("meta-json").textContent = JSON.stringify(meta, null, 2);
+      }
+
+      function renderDealList(dealsForOwner) {
+        const container = document.getElementById("tab-list");
+        const editingDisabled = state.owner === "ALL";
+        const sorted = [...dealsForOwner].sort((a, b) => {
+          const a2025 = (a.contractYear === 2025 || a.leadYear === 2025) ? 1 : 0;
+          const b2025 = (b.contractYear === 2025 || b.leadYear === 2025) ? 1 : 0;
+          if (a2025 !== b2025) return b2025 - a2025;
+          if ((b.amountValue || 0) !== (a.amountValue || 0)) return (b.amountValue || 0) - (a.amountValue || 0);
+          const aCreated = a.createdAt || "";
+          const bCreated = b.createdAt || "";
+          return bCreated.localeCompare(aCreated);
+        });
+
+        let html = `
+          <div class="flex-between">
+            <div>
+              <strong>딜 리스트 (검수/제외)</strong>
+              <div class="note">owner=${state.owner} / ALL은 union 보기이며 체크박스 편집이 비활성화됩니다.</div>
+            </div>
+          </div>
+          <table style="margin-top:10px;">
+            <thead>
+              <tr>
+                <th class="checkbox-cell">제외</th>
+                <th>생성일</th>
+                <th>계약일</th>
+                <th>고객사</th>
+                <th>상태</th>
+                <th>과정포맷</th>
+                <th>금액(Won만)</th>
+                <th>net%</th>
+                <th>dealId</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        for (const d of sorted) {
+          const isExcluded = state.excludedSet.has(d.dealId);
+          const rowClass = isExcluded ? "row-muted" : "";
+          const badgeExisting = d.isExisting ? '<span class="pill">기고객</span>' : '<span class="pill">신규</span>';
+          const badgeSegment = d.segment === "online"
+            ? '<span class="pill">온라인</span>'
+            : '<span class="pill">비온라인</span>';
+          html += `
+            <tr class="${rowClass}">
+              <td class="checkbox-cell">
+                <input type="checkbox" data-dealid="${d.dealId}" ${isExcluded ? "checked" : ""} ${editingDisabled ? "disabled" : ""}>
+                ${isExcluded ? '<div class="muted">제외됨</div>' : ""}
+              </td>
+              <td>${d.createdAt || "—"}</td>
+              <td>${d.contractDate || "—"}</td>
+              <td style="text-align:left;">${d.orgName || "—"} ${badgeExisting}</td>
+              <td>${d.status || "—"}</td>
+              <td>${d.courseFormat || "(미입력)"} ${badgeSegment}</td>
+              <td>${d.status === "Won" ? fmtAmount(d.amountValue) : "—"}</td>
+              <td>${d.segment === "offline" ? fmtPercent(d.net) : "—"}</td>
+              <td style="font-family:monospace;">${d.dealId}</td>
+            </tr>
+          `;
+        }
+
+        if (!sorted.length) {
+          html += `<tr><td colspan="9" class="muted">표시할 딜이 없습니다.</td></tr>`;
+        }
+
+        html += "</tbody></table>";
+        container.innerHTML = html;
+
+        if (!editingDisabled) {
+          container.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+            cb.onchange = () => {
+              const id = cb.getAttribute("data-dealid");
+              if (cb.checked) state.excludedSet.add(id);
+              else state.excludedSet.delete(id);
+              saveExcluded(state.owner, state.excludedSet);
+              renderAll();
+            };
+          });
+        }
+      }
+
+      function renderExcludedTab(dealsForOwner) {
+        const container = document.getElementById("tab-exclude");
+        const excludedDeals = dealsForOwner.filter((d) => state.excludedSet.has(d.dealId));
+        const editingDisabled = state.owner === "ALL";
+        let html = `
+          <div class="flex-between">
+            <div>
+              <strong>제외 내역</strong>
+              <div class="note">owner=${state.owner} / JSON은 감사용 백업. reason/note는 현재 빈 문자열로 저장됩니다.</div>
+            </div>
+          </div>
+          <div class="table-note">JSON 내보내기: 상단 버튼 사용. 가져오기는 현재 owner와 동일한 파일만 적용됩니다.</div>
+          <table style="margin-top:10px;">
+            <thead>
+              <tr>
+                <th>dealId</th>
+                <th>orgName</th>
+                <th>status</th>
+                <th>createdAt</th>
+                <th>contractDate</th>
+                <th>reason</th>
+                <th>note</th>
+                <th>복구</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        for (const d of excludedDeals) {
+          html += `
+            <tr>
+              <td style="font-family:monospace;">${d.dealId}</td>
+              <td>${d.orgName || "—"}</td>
+              <td>${d.status || "—"}</td>
+              <td>${d.createdAt || "—"}</td>
+              <td>${d.contractDate || "—"}</td>
+              <td><input type="text" value="" disabled class="select" style="min-width:120px;"></td>
+              <td><input type="text" value="" disabled class="select" style="min-width:120px;"></td>
+              <td><button class="btn" data-restore="${d.dealId}" ${editingDisabled ? "disabled" : ""}>복구</button></td>
+            </tr>
+          `;
+        }
+
+        if (!excludedDeals.length) {
+          html += `<tr><td colspan="8" class="muted">제외된 딜이 없습니다.</td></tr>`;
+        }
+
+        html += "</tbody></table>";
+        html += `<div class="note" style="margin-top:8px;">제외내역 JSON은 검수/감사 근거로 보관하세요. (현재 reason/note는 빈 문자열로 저장)</div>`;
+        container.innerHTML = html;
+
+        if (!editingDisabled) {
+          container.querySelectorAll("button[data-restore]").forEach((btn) => {
+            btn.onclick = () => {
+              const id = btn.getAttribute("data-restore");
+              state.excludedSet.delete(id);
+              saveExcluded(state.owner, state.excludedSet);
+              renderAll();
+            };
+          });
+        }
+      }
+
+      function bindTabs() {
+        const tabs = document.querySelectorAll(".tab-btn");
+        tabs.forEach((btn) => {
+          btn.onclick = () => {
+            state.activeTab = btn.dataset.tab;
+            tabs.forEach((b) => b.classList.toggle("active", b === btn));
+            document.getElementById("tab-kpi").style.display = btn.dataset.tab === "kpi" ? "block" : "none";
+            document.getElementById("tab-format").style.display = btn.dataset.tab === "format" ? "block" : "none";
+            document.getElementById("tab-list").style.display = btn.dataset.tab === "list" ? "block" : "none";
+            document.getElementById("tab-exclude").style.display = btn.dataset.tab === "exclude" ? "block" : "none";
+          };
+        });
+      }
+
+      function renderAll() {
+        const dealsForOwner = getDealsForOwnerRaw(state.owner);
+        const dealsIncluded = getIncludedDeals(state.owner);
+        const stats = computeKpi(dealsIncluded, [year2024, year2025]);
+        state.lastStats = stats;
+
+        const kpiContainer = document.getElementById("tab-kpi");
+        kpiContainer.innerHTML = buildKpiTable(stats);
+        renderFormatTab(dealsIncluded);
+        renderDealList(dealsForOwner);
+        renderExcludedTab(dealsForOwner);
+        renderDebug(computedDeals);
+      }
+
+      function currentDateTag() {
+        const d = new Date();
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        return `${yyyy}${mm}${dd}`;
+      }
+
+      function downloadBlob(content, filename, mime) {
+        const blob = new Blob([content], { type: mime });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      function exportCsv() {
+        if (!state.lastStats) return;
+        const stats = state.lastStats;
+        const y1 = year2024;
+        const y2 = year2025;
+        const segments = ["all", "online", "offline"];
+        const rows = [
+          { id: "leadCount", label: "리드 수", type: "count" },
+          { id: "winRate", label: "체결률", type: "rate" },
+          { id: "winRateNew", label: "신규 체결률", type: "rate" },
+          { id: "winRateExisting", label: "기고객 체결률", type: "rate" },
+          { id: "amountSum", label: "총 체결액", type: "amount" },
+          { id: "cmRateAvg", label: "공헌이익률", type: "rate" },
+          { id: "newOrgCount", label: "신규 고객사 수", type: "count" },
+          { id: "existingOrgCount", label: "기고객 고객사 수", type: "count" },
+          { id: "retentionRate", label: "리텐션율 (2025)", type: "rate", only2025: true },
+          { id: "upsellRate", label: "업셀링율 (2025)", type: "rate", only2025: true },
+          { id: "missingContractDateWonCount", label: "(품질) 계약일 누락 Won 딜 수", type: "count" },
+          { id: "netMissingWonCount", label: "(품질) net% 누락 Won 딜 수(비온라인)", type: "count" },
+        ];
+
+        function val(year, seg, key) {
+          if (key === "retentionRate") return stats.retention[seg]?.retentionRate ?? null;
+          if (key === "upsellRate") return stats.retention[seg]?.upsellRate ?? null;
+          return stats.perYear?.[year]?.[seg]?.[key] ?? null;
+        }
+
+        function toCsvValue(v, type) {
+          if (v === null || v === undefined) return "";
+          if (type === "rate") return (v * 100).toFixed(2);
+          return String(v);
+        }
+
+        const header = [
+          "metric_key",
+          "metric_label",
+          `${y1}_all`,
+          `${y1}_online`,
+          `${y1}_offline`,
+          `${y2}_all`,
+          `${y2}_online`,
+          `${y2}_offline`,
+          "delta_all",
+          "delta_online",
+          "delta_offline",
+          "unit",
+        ];
+
+        const lines = [header.join(",")];
+        for (const row of rows) {
+          const cells = [];
+          cells.push(row.id);
+          cells.push(`"${row.label.replace(/"/g, '""')}"`);
+          for (const seg of segments) {
+            const v = row.only2025 ? null : val(y1, seg, row.id);
+            cells.push(toCsvValue(v, row.type));
+          }
+          for (const seg of segments) {
+            const v = val(y2, seg, row.id);
+            cells.push(toCsvValue(v, row.type));
+          }
+          for (const seg of segments) {
+            const v1 = row.only2025 ? null : val(y1, seg, row.id);
+            const v2 = val(y2, seg, row.id);
+            const delta = v1 === null || v1 === undefined || v2 === null || v2 === undefined ? "" : (row.type === "rate" ? (v2 - v1) * 100 : v2 - v1);
+            cells.push(delta === "" ? "" : delta.toString());
+          }
+          cells.push(row.type);
+          lines.push(cells.join(","));
+        }
+
+        const bom = "\ufeff";
+        const filename = `kpi_summary_${state.owner}_${currentDateTag()}.csv`;
+        downloadBlob(bom + lines.join("\n"), filename, "text/csv;charset=utf-8");
+      }
+
+      function exportExclusionsJson() {
+        const nowIso = new Date().toISOString();
+        const payload = {
+          report: "2025성과평가_개인KPI",
+          ownerName: state.owner,
+          generatedAt: nowIso.split("T")[0],
+          excluded: Array.from(state.excludedSet).map((dealId) => ({
+            dealId,
+            reason: "",
+            note: "",
+            ts: nowIso,
+          })),
+        };
+        const filename = `exclusions_${state.owner}_${currentDateTag()}.json`;
+        downloadBlob(JSON.stringify(payload, null, 2), filename, "application/json");
+      }
+
+      function handleImportJson(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const parsed = JSON.parse(e.target.result);
+            if (parsed.report !== "2025성과평가_개인KPI") {
+              alert("report 필드가 올바르지 않습니다.");
+              return;
+            }
+            if (parsed.ownerName !== state.owner) {
+              alert(`ownerName이 현재 선택(${state.owner})과 다릅니다. 동일 owner에서만 가져올 수 있습니다.`);
+              return;
+            }
+            if (!Array.isArray(parsed.excluded)) {
+              alert("excluded 배열이 없습니다.");
+              return;
+            }
+            const ids = parsed.excluded.map((item) => item.dealId).filter(Boolean);
+            state.excludedSet = new Set(ids);
+            saveExcluded(state.owner, state.excludedSet);
+            renderAll();
+            alert(`가져오기 완료: ${ids.length}건 적용`);
+          } catch (err) {
+            alert("JSON 파싱에 실패했습니다.");
+            console.error(err);
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      function bindActions() {
+        document.getElementById("btn-export-csv").onclick = exportCsv;
+        document.getElementById("btn-export-json").onclick = exportExclusionsJson;
+        const fileInput = document.getElementById("import-file");
+        document.getElementById("btn-import-json").onclick = () => {
+          if (state.owner === "ALL") {
+            alert("ALL에서는 가져오기를 적용할 수 없습니다. 개별 담당자를 선택하세요.");
+            return;
+          }
+          fileInput.value = "";
+          fileInput.click();
+        };
+        fileInput.onchange = (e) => {
+          const file = e.target.files?.[0];
+          if (file) handleImportJson(file);
+        };
+        document.getElementById("btn-reset").onclick = () => {
+          if (state.owner === "ALL") {
+            alert("ALL에서는 초기화를 지원하지 않습니다. 개별 담당자에서 실행하세요.");
+            return;
+          }
+          state.excludedSet.clear();
+          clearExcluded(state.owner);
+          renderAll();
+        };
+      }
+
+      renderOwnerSelect();
+      state.excludedSet = loadExcluded(state.owner);
+      bindTabs();
+      bindActions();
+      renderAll();
+      renderDebug(computedDeals);
+    })();
+  </script>
+</body>
+</html>

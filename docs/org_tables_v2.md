@@ -25,8 +25,8 @@ sync_source:
   - `/performance/monthly-amounts/summary`를 호출해 YYMM 24개월 고정, row `TOTAL→CONTRACT→CONFIRMED→HIGH`를 세그먼트별 카드로 렌더한다. 값은 원 단위를 `formatEok1`로 1e8 나눠 표시하며 dealCount가 0이면 `<span class="is-zero">`로 비활성화된다.
   - 셀 클릭 시 `/performance/monthly-amounts/deals`로 드릴다운하고, amount>0 우선→expectedAmount→dealName asc로 정렬해 모달 테이블(15열, colgroup 고정 폭)로 보여준다.
 - **카운터파티 DRI** (`renderRankCounterpartyDriScreen`):
-  - `/rank/2025-top100-counterparty-dri?size=...&limit=100&offset=...` 데이터를 캐시에 보관하고, 검색/DRI(O/X/all)/팀&파트 필터를 클라이언트에서 적용한다(정렬은 고정: orgWon2025 desc → cpTotal2025 desc).
-  - 행 클릭 시 `/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...`로 모달을 열어 딜 리스트를 표시한다. 페이지당 100개 조직, offset 단위 이동.
+  - `/rank/2025-top100-counterparty-dri?size=...`로 규모별 **전체 조직**을 한 번에 불러와 캐시에 보관하고, 검색/DRI(O/X/all)/팀&파트 필터를 클라이언트에서 적용한다(정렬은 고정: orgWon2025 desc → cpTotal2025 desc). Prev/Next 페이징 없이 전체 리스트를 한 화면에서 필터링한다.
+  - 행 클릭 시 `/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...`로 모달을 열어 딜 리스트를 표시한다.
 - **딜체크·QC**:
   - `renderDealCheckScreen(teamKey, options)` 한 곳에서 7개 딜체크 메뉴를 공통 렌더하며, `/deal-check?team=edu1|edu2` 결과를 orgWon2025Total desc→createdAt asc→dealId asc로 테이블 렌더한다. memoCount=0이면 “메모 없음” 비활성 버튼을 보여준다. 부모 메뉴는 필터 없이 팀 전체를, 자식 메뉴는 `partFilter`(1/2파트/온라인셀)를 받아 owners→`getDealCheckPartLookup` 룩업 기반으로 클라이언트 필터를 적용한다. 화면 섹션은 공통 6분할(리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인) 순서를 사용한다.
   - `renderDealQcR1R15Screen`은 `/qc/deal-errors/summary?team=edu1|edu2|public` 카드 3개(담당자/총이슈 desc)와 `/qc/deal-errors/person` 상세 모달(R1~R15 섹션만 노출)을 제공한다.

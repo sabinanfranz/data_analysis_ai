@@ -1038,7 +1038,9 @@
           return html;
         }
 
-        container.innerHTML = `<div class="full-bleed">${renderTable("기고객 딜", existingDeals)}${renderTable("신규 딜", newDeals)}</div>`;
+        const renderedExisting = renderTable("기고객 딜", existingDeals);
+        const renderedNew = renderTable("신규 딜", newDeals);
+        container.innerHTML = `<div class="full-bleed">${renderedExisting}${renderedNew}</div>`;
 
         if (!editingDisabled) {
           container.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
@@ -1129,10 +1131,6 @@
       }
 
       function renderAll() {
-        const rosterInfo = document.getElementById("roster-filter-info");
-        if (rosterInfo) {
-          rosterInfo.textContent = `Filtered out (outside roster): ${meta.filteredByOrgMapCount || 0}`;
-        }
         const allDeals = allDealsForCurrentSelection();
         const dealsIncluded = baseDealsForCurrentSelection();
         const stats = computeKpi(dealsIncluded, [year2024, year2025]);

@@ -1,4 +1,5 @@
 import calendar
+import itertools
 import json
 import os
 import re
@@ -4062,6 +4063,8 @@ def _compute_counterparty_dri_rows(
             entry["owners2025"].add(name)
 
     rows: List[Dict[str, Any]] = []
+    used_offline_overrides: Set[Tuple[str, str]] = set()
+    used_online_overrides: Set[Tuple[str, str]] = set()
     for (org_id, upper), cp in cp_map.items():
         org_entry = org_lookup.get(org_id, {})
         org_tier = _compute_grade(org_entry.get("total", 0.0))
@@ -4072,6 +4075,10 @@ def _compute_counterparty_dri_rows(
         online_override = target_key in online_targets
         target_offline = offline_targets.get(target_key, cp["cpOffline2025"] * _tier_multiplier(org_tier))
         target_online = online_targets.get(target_key, cp["cpOnline2025"])
+        if offline_override:
+            used_offline_overrides.add(target_key)
+        if online_override:
+            used_online_overrides.add(target_key)
 
         rows.append(
             {
@@ -4098,6 +4105,23 @@ def _compute_counterparty_dri_rows(
 
     rows = [r for r in rows if (r.get("cpTotal2025") or 0) > 0]
     rows.sort(key=lambda r: (-r["orgWon2025"], -r["cpTotal2025"]))
+
+    unused_offline = set(offline_targets.keys()) - used_offline_overrides
+    unused_online = set(online_targets.keys()) - used_online_overrides
+    if unused_offline:
+        sample = list(itertools.islice(sorted(unused_offline), 5))
+        logging.warning(
+            "[counterparty_targets_2026] unused offline overrides not matched to DRI data: count=%d sample=%s",
+            len(unused_offline),
+            sample,
+        )
+    if unused_online:
+        sample = list(itertools.islice(sorted(unused_online), 5))
+        logging.warning(
+            "[counterparty_targets_2026] unused online overrides not matched to DRI data: count=%d sample=%s",
+            len(unused_online),
+            sample,
+        )
 
     meta = {
         "orgCount": len(top_orgs),

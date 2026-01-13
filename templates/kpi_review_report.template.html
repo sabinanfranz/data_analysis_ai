@@ -137,6 +137,12 @@
       background: #f8fafc;
       width: 180px;
     }
+    #tab-list.card {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
     .full-bleed {
       width: 100vw;
       margin-left: calc(50% - 50vw);
@@ -399,13 +405,13 @@
         const s = String(v).trim();
         if (!s) return "-";
 
-        const m1 = s.match(/^(\\d{4}-\\d{2}-\\d{2})/);
+        const m1 = s.match(/^(\d{4}-\d{2}-\d{2})/);
         if (m1) return m1[1];
 
-        const m2 = s.match(/^(\\d{4})\\.(\\d{2})\\.(\\d{2})/);
+        const m2 = s.match(/^(\d{4})\.(\d{2})\.(\d{2})/);
         if (m2) return `${m2[1]}-${m2[2]}-${m2[3]}`;
 
-        const m3 = s.match(/^(\\d{4})(\\d{2})(\\d{2})/);
+        const m3 = s.match(/^(\d{4})(\d{2})(\d{2})/);
         if (m3) return `${m3[1]}-${m3[2]}-${m3[3]}`;
 
         const t = Date.parse(s);
@@ -414,11 +420,20 @@
           const yyyy = d.getFullYear();
           const mm = String(d.getMonth() + 1).padStart(2, "0");
           const dd = String(d.getDate()).padStart(2, "0");
-        return `${yyyy}-${mm}-${dd}`;
+          return `${yyyy}-${mm}-${dd}`;
+        }
+        return "-";
       }
 
       function fmtNetPercent(d) {
-        const raw = d.netPercent ?? d["net(%)"] ?? d["NET(%)"];
+        const raw =
+          d.netPercent ??
+          d["net(%)"] ??
+          d["NET(%)"] ??
+          d["Net(%)"] ??
+          d.netPercentRaw ??
+          d.net;
+
         if (raw !== null && raw !== undefined && String(raw).trim() !== "") {
           const s = String(raw).replace("%", "").trim();
           const n = Number(s);
@@ -430,8 +445,6 @@
         if (typeof d.net === "number" && Number.isFinite(d.net)) {
           return `${(d.net * 100).toFixed(1)}%`;
         }
-        return "-";
-      }
         return "-";
       }
 
@@ -963,6 +976,11 @@
         const existingDeals = filtered.filter((d) => d.isExisting);
         const newDeals = filtered.filter((d) => !d.isExisting);
 
+        if (!filtered.length) {
+          container.innerHTML = `<div class="full-bleed"><div class="muted">표시할 딜이 없습니다.</div></div>`;
+          return;
+        }
+
         function sortDeals(arr) {
           return [...arr].sort((a, b) => {
             const amtA = parseAmountKRW(a.amount);
@@ -1121,13 +1139,19 @@
         tabs.forEach((btn) => {
           btn.onclick = () => {
             state.activeTab = btn.dataset.tab;
-            tabs.forEach((b) => b.classList.toggle("active", b === btn));
-            document.getElementById("tab-kpi").style.display = btn.dataset.tab === "kpi" ? "block" : "none";
-            document.getElementById("tab-format").style.display = btn.dataset.tab === "format" ? "block" : "none";
-            document.getElementById("tab-list").style.display = btn.dataset.tab === "list" ? "block" : "none";
-            document.getElementById("tab-exclude").style.display = btn.dataset.tab === "exclude" ? "block" : "none";
+            applyActiveTab();
+            renderAll();
           };
         });
+      }
+
+      function applyActiveTab() {
+        const tabs = document.querySelectorAll(".tab-btn");
+        tabs.forEach((b) => b.classList.toggle("active", b.dataset.tab === state.activeTab));
+        document.getElementById("tab-kpi").style.display = state.activeTab === "kpi" ? "block" : "none";
+        document.getElementById("tab-format").style.display = state.activeTab === "format" ? "block" : "none";
+        document.getElementById("tab-list").style.display = state.activeTab === "list" ? "block" : "none";
+        document.getElementById("tab-exclude").style.display = state.activeTab === "exclude" ? "block" : "none";
       }
 
       function renderAll() {
@@ -1139,8 +1163,21 @@
         const kpiContainer = document.getElementById("tab-kpi");
         kpiContainer.innerHTML = buildKpiTable(stats);
         renderFormatTab(dealsIncluded);
-        renderDealList(allDeals);
-        renderExcludedTab(allDeals);
+        try {
+          renderDealList(allDeals);
+        } catch (e) {
+          console.error("[tab-list render error]", e);
+          const el = document.getElementById("tab-list");
+          if (el) el.innerHTML = `<div class="note">탭 3(딜 리스트) 렌더링 중 오류가 발생했습니다. (개발자 콘솔 확인)</div>`;
+        }
+        try {
+          renderExcludedTab(allDeals);
+        } catch (e) {
+          console.error("[tab-exclude render error]", e);
+          const el = document.getElementById("tab-exclude");
+          if (el) el.innerHTML = `<div class="note">탭 4(제외 내역) 렌더링 중 오류가 발생했습니다. (개발자 콘솔 확인)</div>`;
+        }
+        applyActiveTab();
       }
 
       function currentDateTag() {
@@ -1171,6 +1208,7 @@
       state.excludedSet = loadExcluded("ALL");
       bindTabs();
       bindActions();
+      applyActiveTab();
       renderAll();
     })();
   </script>

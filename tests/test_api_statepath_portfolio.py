@@ -91,14 +91,13 @@ class StatepathPortfolioTest(unittest.TestCase):
       _build_db(db_path)
 
       # patch DB_PATH-dependent call via wrapper
+      original_fn = db.get_statepath_portfolio
       def _wrapped(**kwargs):
-        return db.get_statepath_portfolio(db_path=db_path, **kwargs)
+        return original_fn(db_path=db_path, **kwargs)
 
       client = TestClient(app)
       # monkeypatch router-level reference
       import dashboard.server.org_tables_api as api_module
-
-      original_fn = api_module.db.get_statepath_portfolio
       api_module.db.get_statepath_portfolio = _wrapped  # type: ignore
       try:
         resp = client.get("/api/statepath/portfolio-2425", params={"segment": "대기업", "limit": 10})

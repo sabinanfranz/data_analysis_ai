@@ -406,6 +406,13 @@
         return `${eok.toFixed(1)}억`;
       }
 
+      function fmtEok2(v) {
+        const n = parseAmountKRW(v);
+        if (n === null) return "—";
+        const eok = n / 100000000;
+        return `${eok.toFixed(2)}억`;
+      }
+
       function fmtDateYMD(v) {
         if (v === null || v === undefined) return "-";
         const s = String(v).trim();
@@ -592,6 +599,16 @@
         localStorage.removeItem(storageKey(person));
       }
 
+      function applyExcludedBundle(bundle) {
+        state.excludedSet = bundle?.set || new Set();
+        state.excludedReasons = bundle?.reasons || {};
+      }
+
+      function reloadExcludedForSelection() {
+        const bundle = state.person === "ALL" ? loadUnionExcludedBundle() : loadExcludedBundle(state.person);
+        applyExcludedBundle(bundle);
+      }
+
       function fmtNumber(v) {
         if (v === null || v === undefined) return "—";
         return new Intl.NumberFormat("ko-KR").format(Math.round(v));
@@ -731,11 +748,11 @@
         sel.onchange = () => {
           state.team = sel.value;
           const units = listUnits(state.team);
-          state.unit = units[0];
+          state.unit = units[0] || "";
           state.person = "ALL";
-          state.excludedSet = loadExcluded("ALL");
           renderUnitSelect();
           renderPersonSelect();
+          reloadExcludedForSelection();
           renderAll();
         };
       }
@@ -755,8 +772,8 @@
         sel.onchange = () => {
           state.unit = sel.value;
           state.person = "ALL";
-          state.excludedSet = loadExcluded("ALL");
           renderPersonSelect();
+          reloadExcludedForSelection();
           renderAll();
         };
       }
@@ -802,7 +819,7 @@
           { id: "winRate", label: "체결률", type: "percent" },
           { id: "winRateNew", label: "신규 체결률", type: "percent" },
           { id: "winRateExisting", label: "기고객 체결률", type: "percent" },
-          { id: "amountSum", label: "총 체결액", type: "amount" },
+          { id: "amountSum", label: "총 체결액", type: "amountEok2" },
           { id: "cmRateAvg", label: "공헌이익률", type: "percent" },
           { id: "newOrgCount", label: "신규 고객사 수", type: "number" },
           { id: "existingOrgCount", label: "기고객 고객사 수", type: "number" },
@@ -824,6 +841,7 @@
         function formatter(type) {
           if (type === "percent") return fmtPercent;
           if (type === "amount") return fmtAmount;
+          if (type === "amountEok2") return fmtEok2;
           return fmtNumber;
         }
 
@@ -970,7 +988,7 @@
               <td>${fmtNumber(row.leadCount)}</td>
               <td>${fmtNumber(row.leadWon)}</td>
               <td>${fmtPercent(row.winRate)}</td>
-              <td>${fmtAmount(row.contractWonAmount)}</td>
+              <td>${fmtEok2(row.contractWonAmount)}</td>
               <td>${row.isOnlineFormat ? (row.contractWonAmount > 0 ? "100.0%" : "—") : fmtPercent(row.cmRate)}</td>
               <td>${row.isOnlineFormat ? "0" : fmtNumber(row.netMissingWon)}</td>
             </tr>

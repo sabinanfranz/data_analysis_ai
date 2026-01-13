@@ -30,6 +30,7 @@ PUBLIC_KEYWORDS = ["공단", "공사", "진흥원", "재단", "협회", "청", "
 _KST_TZ = timezone(timedelta(hours=9))
 _COUNTERPARTY_DRI_CACHE: Dict[Tuple[Path, float, str, int, str], Dict[str, Any]] = {}
 _COUNTERPARTY_DRI_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] = {}
+_COUNTERPARTY_TARGET_WARNED: Set[Tuple[float, str]] = set()
 _RANK_2025_SUMMARY_CACHE: Dict[Tuple[Path, float, str, Tuple[int, ...]], Dict[str, Any]] = {}
 _PERF_MONTHLY_DATA_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
 _PERF_MONTHLY_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] = {}
@@ -3903,9 +3904,11 @@ def _compute_counterparty_dri_rows(
     db_path: Path,
     offline_targets: Dict[Tuple[str, str], float],
     online_targets: Dict[Tuple[str, str], float],
+    targets_version: str,
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any], int]:
     online_set = sp.ONLINE_COURSE_FORMATS
-    snapshot_version = f"db_mtime:{int(db_path.stat().st_mtime)}"
+    db_stat = db_path.stat()
+    snapshot_version = f"db_mtime:{int(db_stat.st_mtime)}"
 
     with _connect(db_path) as conn:
         has_expected_close = _has_column(conn, "deal", "수주 예정일")
@@ -4095,6 +4098,28 @@ def _compute_counterparty_dri_rows(
     rows: List[Dict[str, Any]] = []
     used_offline_overrides: Set[Tuple[str, str]] = set()
     used_online_overrides: Set[Tuple[str, str]] = set()
+
+    # Collect org/upper universe for unused override diagnostics
+    all_org_names: Set[str] = set()
+    all_org_upper_pairs: Set[Tuple[str, str]] = set()
+    with _connect(db_path) as conn:
+        org_rows = _fetch_all(conn, 'SELECT id, COALESCE("이름", id) AS name FROM organization')
+        org_name_lookup = {row["id"]: _norm_text(row["name"]) for row in org_rows}
+        all_org_names.update(org_name_lookup.values())
+        has_people_upper = _has_column(conn, "people", "소속 상위 조직")
+        if has_people_upper:
+            people_rows = _fetch_all(
+                conn,
+                'SELECT organizationId, "소속 상위 조직" AS upper_org FROM people WHERE organizationId IS NOT NULL',
+            )
+            for prow in people_rows:
+                org_name = org_name_lookup.get(prow["organizationId"], "").strip()
+                if not org_name:
+                    continue
+                upper_norm = _normalize_counterparty_upper(prow["upper_org"])
+                all_org_upper_pairs.add((org_name, upper_norm))
+        # Fallback: if people table absent, at least ensure org names set is populated.
+    # Add cp_map will also add pairs below, but we want full-universe upper pairs when possible.
     for (org_id, upper), cp in cp_map.items():
         org_entry = org_lookup.get(org_id, {})
         org_tier = _compute_grade(org_entry.get("total", 0.0))
@@ -4138,18 +4163,39 @@ def _compute_counterparty_dri_rows(
 
     unused_offline = set(offline_targets.keys()) - used_offline_overrides
     unused_online = set(online_targets.keys()) - used_online_overrides
-    if unused_offline:
-        logging.warning(
-            "[counterparty_targets_2026] unused offline overrides not matched to DRI data: count=%d keys=%s",
-            len(unused_offline),
-            sorted(unused_offline),
-        )
-    if unused_online:
-        logging.warning(
-            "[counterparty_targets_2026] unused online overrides not matched to DRI data: count=%d keys=%s",
-            len(unused_online),
-            sorted(unused_online),
-        )
+    # classify unused: org missing vs upper missing (org exists)
+    def _classify(unused_keys: Set[Tuple[str, str]]) -> Tuple[Set[Tuple[str, str]], Set[Tuple[str, str]]]:
+        org_missing = set()
+        upper_missing = set()
+        for org_name, upper in unused_keys:
+            if org_name not in all_org_names:
+                org_missing.add((org_name, upper))
+            elif (org_name, upper) not in all_org_upper_pairs:
+                upper_missing.add((org_name, upper))
+        return org_missing, upper_missing
+
+    offline_org_missing, offline_upper_missing = _classify(unused_offline)
+    online_org_missing, online_upper_missing = _classify(unused_online)
+
+    warn_key = (db_stat.st_mtime, targets_version)
+    if warn_key not in _COUNTERPARTY_TARGET_WARNED:
+        _COUNTERPARTY_TARGET_WARNED.add(warn_key)
+
+        def _log_unused(label: str, keys: Set[Tuple[str, str]]) -> None:
+            if not keys:
+                return
+            lines = "\n  - " + "\n  - ".join(f"{org} | {upper}" for org, upper in sorted(keys))
+            logging.warning(
+                "[counterparty_targets_2026] %s: count=%d%s",
+                label,
+                len(keys),
+                lines,
+            )
+
+        _log_unused("unused offline overrides (org missing in DB)", offline_org_missing)
+        _log_unused("unused offline overrides (org present but upper missing)", offline_upper_missing)
+        _log_unused("unused online overrides (org missing in DB)", online_org_missing)
+        _log_unused("unused online overrides (org present but upper missing)", online_upper_missing)
 
     meta = {
         "orgCount": len(top_orgs),
@@ -4194,6 +4240,7 @@ def get_rank_2025_top100_counterparty_dri(
         db_path=db_path,
         offline_targets=offline_targets,
         online_targets=online_targets,
+        targets_version=targets_version,
     )
 
     result = {
@@ -4225,6 +4272,7 @@ def get_rank_2025_counterparty_dri_targets_summary(size: str = "대기업", db_p
         db_path=db_path,
         offline_targets=offline_targets,
         online_targets=online_targets,
+        targets_version=targets_version,
     )
 
     totals = {

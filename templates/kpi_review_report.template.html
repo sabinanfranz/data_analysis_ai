@@ -143,6 +143,12 @@
       box-shadow: none;
       padding: 0;
     }
+    #tab-exclude.card {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
     .full-bleed {
       width: 100vw;
       margin-left: calc(50% - 50vw);
@@ -511,6 +517,7 @@
         activeTab: "kpi",
         formatYear: year2025 ?? years[0],
         excludedSet: new Set(),
+        excludedReasons: {},
         lastStats: null,
       };
 
@@ -538,31 +545,46 @@
         return `kpi_review::2024_2025::${storageVersion}::excludedDealIds::${person}`;
       }
 
-      function loadExcluded(person) {
-        if (person === "ALL") return loadUnionExcluded();
+      function loadExcludedBundle(person) {
+        if (person === "ALL") return loadUnionExcludedBundle();
         try {
           const raw = localStorage.getItem(storageKey(person));
-          if (!raw) return new Set();
-          const arr = JSON.parse(raw);
-          return new Set(Array.isArray(arr) ? arr : []);
+          if (!raw) return { set: new Set(), reasons: {} };
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed)) {
+            return { set: new Set(parsed), reasons: {} };
+          }
+          if (parsed && typeof parsed === "object") {
+            const ids = Array.isArray(parsed.excludedDealIds) ? parsed.excludedDealIds : [];
+            const reasons = parsed.reasons && typeof parsed.reasons === "object" ? parsed.reasons : {};
+            return { set: new Set(ids), reasons };
+          }
         } catch (e) {
-          console.warn("Failed to load excludedSet", e);
-          return new Set();
+          console.warn("Failed to load excluded bundle", e);
         }
+        return { set: new Set(), reasons: {} };
       }
 
-      function loadUnionExcluded() {
-        const union = new Set();
+      function loadUnionExcludedBundle() {
+        const unionSet = new Set();
+        const unionReasons = {};
         for (const p of peopleInCurrentUnit()) {
-          loadExcluded(p).forEach((id) => union.add(id));
+          const b = loadExcludedBundle(p);
+          b.set.forEach((id) => unionSet.add(id));
+          for (const [id, reason] of Object.entries(b.reasons || {})) {
+            if (reason && !unionReasons[id]) unionReasons[id] = reason;
+          }
         }
-        return union;
+        return { set: unionSet, reasons: unionReasons };
       }
 
-      function saveExcluded(person, set) {
+      function saveExcludedBundle(person, set, reasons) {
         if (person === "ALL") return; // union view only
-        const arr = Array.from(set);
-        localStorage.setItem(storageKey(person), JSON.stringify(arr));
+        const payload = {
+          excludedDealIds: Array.from(set),
+          reasons: reasons || {},
+        };
+        localStorage.setItem(storageKey(person), JSON.stringify(payload));
       }
 
       function clearExcluded(person) {
@@ -751,18 +773,20 @@
           const opt = document.createElement("option");
           opt.value = p;
           opt.textContent = p;
-          sel.appendChild(opt);
-        }
-        if (state.person !== "ALL" && !people.includes(state.person)) {
-          state.person = "ALL";
-        }
-        sel.value = state.person;
-        sel.onchange = () => {
-          state.person = sel.value;
-          state.excludedSet = loadExcluded(state.person);
-          renderAll();
-        };
+        sel.appendChild(opt);
       }
+      if (state.person !== "ALL" && !people.includes(state.person)) {
+        state.person = "ALL";
+      }
+      sel.value = state.person;
+      sel.onchange = () => {
+        state.person = sel.value;
+        const bundle = loadExcludedBundle(state.person);
+        state.excludedSet = bundle.set;
+        state.excludedReasons = bundle.reasons;
+        renderAll();
+      };
+    }
 
       function buildKpiTable(stats) {
         const y1 = year2024;
@@ -1064,9 +1088,14 @@
           container.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
             cb.onchange = () => {
               const id = cb.getAttribute("data-dealid");
-              if (cb.checked) state.excludedSet.add(id);
-              else state.excludedSet.delete(id);
-              saveExcluded(state.person, state.excludedSet);
+              if (cb.checked) {
+                state.excludedSet.add(id);
+                if (!(id in state.excludedReasons)) state.excludedReasons[id] = "";
+              } else {
+                state.excludedSet.delete(id);
+                delete state.excludedReasons[id];
+              }
+              saveExcludedBundle(state.person, state.excludedSet, state.excludedReasons);
               renderAll();
             };
           });
@@ -1078,48 +1107,70 @@
         const excludedDeals = dealsForOwner.filter((d) => state.excludedSet.has(d.dealId));
         const editingDisabled = state.person === "ALL";
         let html = `
-          <div class="flex-between">
-            <div>
-              <strong>제외 내역</strong>
-              <div class="note">팀=${state.team}, 파트/셀=${state.unit}, person=${state.person} / ALL에서는 읽기 전용입니다.</div>
+          <div class="full-bleed">
+            <div class="flex-between">
+              <div>
+                <strong>제외 내역</strong>
+                <div class="note">팀=${state.team}, 파트/셀=${state.unit}, person=${state.person} / ALL에서는 읽기 전용입니다.</div>
+              </div>
             </div>
-          </div>
-          <table style="margin-top:10px;">
-            <thead>
-              <tr>
-                <th>dealId</th>
-                <th>orgName</th>
-                <th>status</th>
-                <th>createdAt</th>
-                <th>contractDate</th>
-                <th>reason</th>
-                <th>note</th>
-                <th>복구</th>
-              </tr>
-            </thead>
-            <tbody>
+            <div class="table-scroll">
+              <table class="deals-table" style="margin-top:10px;">
+                <thead>
+                  <tr>
+                    <th>생성일</th>
+                    <th>기업명</th>
+                    <th>딜 이름</th>
+                    <th>과정포맷</th>
+                    <th>데이원</th>
+                    <th>가능성</th>
+                    <th>수주 예정일</th>
+                    <th>예상 체결액</th>
+                    <th>Net(%)</th>
+                    <th>reason</th>
+                    <th>복구</th>
+                  </tr>
+                </thead>
+                <tbody>
         `;
 
         for (const d of excludedDeals) {
+          const createdRaw = d.createdAt ?? d.createdAtRaw ?? d.created_at ?? d["생성 날짜"];
+          const expectedRaw = d.expectedCloseDate ?? d.expectedCloseDateRaw ?? d.expected_close_date ?? d.closeDate ?? d["수주 예정일"];
+          const reasonVal = state.excludedReasons[d.dealId] || "";
           html += `
             <tr>
-              <td style="font-family:monospace;">${d.dealId}</td>
+              <td>${fmtDateYMD(createdRaw)}</td>
               <td>${d.orgName || "—"}</td>
-              <td>${d.status || "—"}</td>
-              <td>${d.createdAt || "—"}</td>
-              <td>${d.contractDate || "—"}</td>
-              <td><input type="text" value="" disabled class="select" style="min-width:120px;"></td>
-              <td><input type="text" value="" disabled class="select" style="min-width:120px;"></td>
+              <td>${d.dealName || "—"}</td>
+              <td>${d.courseFormat || "—"}</td>
+              <td>${d.ownerName || "—"}</td>
+              <td>${d.probability || "—"}</td>
+              <td>${fmtDateYMD(expectedRaw)}</td>
+              <td>${fmtEok(d.amount)}</td>
+              <td>${fmtNetPercent(d)}</td>
+              <td>
+                ${
+                  editingDisabled
+                    ? `<span class="muted">${reasonVal || "—"}</span>`
+                    : `<input type="text" class="select" data-reason-dealid="${d.dealId}" value="${reasonVal.replace(/"/g, "&quot;")}" style="min-width:140px;">`
+                }
+              </td>
               <td><button class="btn" data-restore="${d.dealId}" ${editingDisabled ? "disabled" : ""}>복구</button></td>
             </tr>
           `;
         }
 
         if (!excludedDeals.length) {
-          html += `<tr><td colspan="8" class="muted">제외된 딜이 없습니다.</td></tr>`;
+          html += `<tr><td colspan="11" class="muted">제외된 딜이 없습니다.</td></tr>`;
         }
 
-        html += "</tbody></table>";
+        html += `
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
         container.innerHTML = html;
 
         if (!editingDisabled) {
@@ -1127,8 +1178,16 @@
             btn.onclick = () => {
               const id = btn.getAttribute("data-restore");
               state.excludedSet.delete(id);
-              saveExcluded(state.person, state.excludedSet);
+              delete state.excludedReasons[id];
+              saveExcludedBundle(state.person, state.excludedSet, state.excludedReasons);
               renderAll();
+            };
+          });
+          container.querySelectorAll("input[data-reason-dealid]").forEach((inp) => {
+            inp.oninput = () => {
+              const id = inp.getAttribute("data-reason-dealid");
+              state.excludedReasons[id] = inp.value;
+              saveExcludedBundle(state.person, state.excludedSet, state.excludedReasons);
             };
           });
         }
@@ -1205,7 +1264,9 @@
       renderTeamSelect();
       renderUnitSelect();
       renderPersonSelect();
-      state.excludedSet = loadExcluded("ALL");
+      const initialBundle = loadExcludedBundle("ALL");
+      state.excludedSet = initialBundle.set;
+      state.excludedReasons = initialBundle.reasons;
       bindTabs();
       bindActions();
       applyActiveTab();

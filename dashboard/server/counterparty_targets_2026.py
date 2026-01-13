@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, Tuple
 
 import openpyxl
+import re
 
 RESOURCE_PATH = Path(__file__).parent / "resources" / "counterparty_targets_2026.xlsx"
 
@@ -12,14 +13,14 @@ _CACHE: Dict[str, Any] = {"mtime": None, "offline": {}, "online": {}}
 
 
 def _normalize_name(val: Any) -> str:
-    text = (val or "").strip()
+    text = re.sub(r"\s+", " ", str(val or "")).strip()
     if not text:
         return ""
     return text
 
 
 def _normalize_upper(val: Any) -> str:
-    text = (val or "").strip()
+    text = re.sub(r"\s+", " ", str(val or "")).strip()
     if not text or text in {"-", "–", "—"}:
         return "미입력"
     return text

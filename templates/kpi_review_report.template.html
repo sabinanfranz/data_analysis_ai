@@ -168,6 +168,15 @@
       color: #475569;
       margin-top: 6px;
     }
+    tr.subrow td:first-child {
+      padding-left: 18px;
+      color: #64748b;
+      font-size: 12px;
+    }
+    tr.subrow td:first-child::before {
+      content: "↳ ";
+      color: #94a3b8;
+    }
     .pill {
       display: inline-block;
       padding: 6px 10px;
@@ -279,6 +288,7 @@
       }
 
       const onlineFormats = new Set(data.onlineFormats || []);
+      const MONTHLY_EXCLUDE_FORMATS = new Set(["구독제(온라인)", "선택구매(온라인)", "포팅"]);
       const existingKeys = new Set(data.existingOrgKeys || []);
       const years = (data.years || []).map(Number).filter((y) => !Number.isNaN(y)).sort();
       const year2024 = years.find((y) => y === 2024) ?? years[0];
@@ -336,6 +346,19 @@
         if (!Number.isFinite(parsed)) return null;
         if (parsed >= 0 && parsed <= 1) return parsed;
         if (parsed >= 1 && parsed <= 100) return parsed / 100;
+        return null;
+      }
+
+      function parseTriBool(v) {
+        if (v === true || v === false) return v;
+        if (v === 1 || v === "1") return true;
+        if (v === 0 || v === "0") return false;
+        if (v == null) return null;
+        if (typeof v === "string") {
+          const s = v.trim().toLowerCase();
+          if (["true", "t", "yes", "y"].includes(s)) return true;
+          if (["false", "f", "no", "n"].includes(s)) return false;
+        }
         return null;
       }
 
@@ -492,6 +515,7 @@
           const net = parseNet(d.netPercent);
           const cmRateDeal = isOnline ? 1.0 : (net !== null ? net : null);
           const amountParsed = parseAmount(d.amount);
+          const onlineFirstEntry = parseTriBool(d.onlineFirstEntry);
           out.push({
             ...d,
             ownerName,
@@ -505,6 +529,7 @@
             net,
             cmRateDeal,
             amountValue: amountParsed,
+            onlineFirstEntry,
           });
         }
         return out;
@@ -523,6 +548,7 @@
         person: "ALL",
         activeTab: "kpi",
         formatYear: year2025 ?? years[0],
+        dealListYear: year2025 ?? years[0],
         excludedSet: new Set(),
         excludedReasons: {},
         lastStats: null,
@@ -645,16 +671,28 @@
           for (const seg of segments) {
             const segDeals = aggBySegment(deals, seg);
             const leadDeals = segDeals.filter((d) => d.leadYear === year);
+            const leadDealsMonthly = leadDeals.filter((d) => d.onlineFirstEntry !== false);
             const contractWon = segDeals.filter((d) => d.contractYear === year && d.status === "Won");
 
             const leadCount = leadDeals.length;
             const wonLead = leadDeals.filter((d) => d.status === "Won").length;
+            const leadCountMonthly = leadDealsMonthly.length;
+            const wonLeadMonthly = leadDealsMonthly.filter((d) => d.status === "Won").length;
 
             const newLead = leadDeals.filter((d) => d.isExisting === false);
             const existingLead = leadDeals.filter((d) => d.isExisting === true);
+            const newLeadMonthly = leadDealsMonthly.filter((d) => d.isExisting === false);
+            const existingLeadMonthly = leadDealsMonthly.filter((d) => d.isExisting === true);
             const winRateNew = newLead.length ? newLead.filter((d) => d.status === "Won").length / newLead.length : null;
             const winRateExisting = existingLead.length
               ? existingLead.filter((d) => d.status === "Won").length / existingLead.length
+              : null;
+            const winRateMonthlyExcl = leadCountMonthly ? wonLeadMonthly / leadCountMonthly : null;
+            const winRateNewMonthlyExcl = newLeadMonthly.length
+              ? newLeadMonthly.filter((d) => d.status === "Won").length / newLeadMonthly.length
+              : null;
+            const winRateExistingMonthlyExcl = existingLeadMonthly.length
+              ? existingLeadMonthly.filter((d) => d.status === "Won").length / existingLeadMonthly.length
               : null;
 
             const amountSum = contractWon.reduce((acc, cur) => acc + (cur.amountValue || 0), 0);
@@ -681,8 +719,11 @@
             perYear[year][seg] = {
               leadCount,
               winRate: leadCount ? wonLead / leadCount : null,
+              winRateMonthlyExcl,
               winRateNew,
+              winRateNewMonthlyExcl,
               winRateExisting,
+              winRateExistingMonthlyExcl,
               amountSum,
               cmRateAvg,
               newOrgCount: newOrgSet.size,
@@ -790,20 +831,18 @@
           const opt = document.createElement("option");
           opt.value = p;
           opt.textContent = p;
-        sel.appendChild(opt);
+          sel.appendChild(opt);
+        }
+        if (state.person !== "ALL" && !people.includes(state.person)) {
+          state.person = "ALL";
+        }
+        sel.value = state.person;
+        sel.onchange = () => {
+          state.person = sel.value;
+          reloadExcludedForSelection();
+          renderAll();
+        };
       }
-      if (state.person !== "ALL" && !people.includes(state.person)) {
-        state.person = "ALL";
-      }
-      sel.value = state.person;
-      sel.onchange = () => {
-        state.person = sel.value;
-        const bundle = loadExcludedBundle(state.person);
-        state.excludedSet = bundle.set;
-        state.excludedReasons = bundle.reasons;
-        renderAll();
-      };
-    }
 
       function buildKpiTable(stats) {
         const y1 = year2024;
@@ -817,8 +856,11 @@
         const rows = [
           { id: "leadCount", label: "리드 수", type: "number" },
           { id: "winRate", label: "체결률", type: "percent" },
+          { id: "winRateMonthlyExcl", label: "체결률(월별입과 제외)", type: "percent", sub: true },
           { id: "winRateNew", label: "신규 체결률", type: "percent" },
+          { id: "winRateNewMonthlyExcl", label: "신규 체결률(월별입과 제외)", type: "percent", sub: true },
           { id: "winRateExisting", label: "기고객 체결률", type: "percent" },
+          { id: "winRateExistingMonthlyExcl", label: "기고객 체결률(월별입과 제외)", type: "percent", sub: true },
           { id: "amountSum", label: "총 체결액", type: "amountEok2" },
           { id: "cmRateAvg", label: "공헌이익률", type: "percent" },
           { id: "newOrgCount", label: "신규 고객사 수", type: "number" },
@@ -876,8 +918,9 @@
 
         for (const row of rows) {
           const fmt = formatter(row.type);
+          const labelStyle = row.sub ? ' style="padding-left:16px;color:#64748b;font-size:12px;"' : "";
           html += "<tr>";
-          html += `<td class="label">${row.label}${row.note ? `<div class="muted">${row.note}</div>` : ""}</td>`;
+          html += `<td class="label"${labelStyle}>${row.label}${row.note ? `<div class="muted">${row.note}</div>` : ""}</td>`;
           for (const seg of segments) {
             const v = row.only2025 ? null : cellValue(row, y1, seg);
             html += `<td>${row.only2025 ? "—" : fmt(v)}</td>`;
@@ -891,6 +934,36 @@
 
         html += "</tbody></table>";
         return html;
+      }
+
+      function isMonthlyExcludedDeal(d) {
+        const fmt = d.courseFormat || "(미입력)";
+        if (!MONTHLY_EXCLUDE_FORMATS.has(fmt)) return false;
+        return d.onlineFirstEntry === false;
+      }
+
+      function computeMonthlyExcludedSubRow(deals, year, fmtKey) {
+        const subset = deals.filter((d) => {
+          const fmt = d.courseFormat || "(미입력)";
+          if (fmt !== fmtKey) return false;
+          if (d.leadYear !== year) return false;
+          if (isMonthlyExcludedDeal(d)) return false;
+          return true;
+        });
+        const leadCount = subset.length;
+        const leadWon = subset.filter((d) => d.status === "Won").length;
+        const winRate = leadCount ? leadWon / leadCount : null;
+        return {
+          key: `${fmtKey}-월별입과 제외`,
+          isOnlineFormat: true,
+          leadCount,
+          leadWon,
+          winRate,
+          contractWonAmount: null,
+          cmRate: null,
+          netMissingWon: null,
+          _isSubRow: true,
+        };
       }
 
       function computeFormatAnalysis(deals, year) {
@@ -947,7 +1020,14 @@
       function renderFormatTab(deals) {
         const container = document.getElementById("tab-format");
         const year = state.formatYear;
-        const rows = computeFormatAnalysis(deals, year);
+        const baseRows = computeFormatAnalysis(deals, year);
+        const rows = [];
+        for (const row of baseRows) {
+          rows.push(row);
+          if (MONTHLY_EXCLUDE_FORMATS.has(row.key)) {
+            rows.push(computeMonthlyExcludedSubRow(deals, year, row.key));
+          }
+        }
         const fmtOnlineList = Array.from(onlineFormats);
 
         let html = `
@@ -982,15 +1062,22 @@
         `;
 
         for (const row of rows) {
+          const trClass = row._isSubRow ? ' class="subrow"' : "";
+          const netMissingCell =
+            row.netMissingWon === null || row.netMissingWon === undefined
+              ? "—"
+              : row.isOnlineFormat
+              ? "0"
+              : fmtNumber(row.netMissingWon);
           html += `
-            <tr>
+            <tr${trClass}>
               <td style="text-align:left;">${row.key} ${row.isOnlineFormat ? '<span class="pill">온라인</span>' : ""}</td>
               <td>${fmtNumber(row.leadCount)}</td>
               <td>${fmtNumber(row.leadWon)}</td>
               <td>${fmtPercent(row.winRate)}</td>
               <td>${fmtEok2(row.contractWonAmount)}</td>
               <td>${row.isOnlineFormat ? (row.contractWonAmount > 0 ? "100.0%" : "—") : fmtPercent(row.cmRate)}</td>
-              <td>${row.isOnlineFormat ? "0" : fmtNumber(row.netMissingWon)}</td>
+              <td>${netMissingCell}</td>
             </tr>
           `;
         }
@@ -1014,27 +1101,114 @@
       function renderDealList(dealsForOwner) {
         const container = document.getElementById("tab-list");
         const editingDisabled = state.person === "ALL";
-        const filtered = dealsForOwner.filter((d) => d.status !== "Convert" && currentPeopleSet().has(d.ownerName));
+        const yearFilter = Number(state.dealListYear);
+        const filtered = dealsForOwner
+          .filter((d) => d.status !== "Convert" && currentPeopleSet().has(d.ownerName))
+          .filter((d) => d.leadYear === yearFilter || d.contractYear === yearFilter);
         const existingDeals = filtered.filter((d) => d.isExisting);
         const newDeals = filtered.filter((d) => !d.isExisting);
 
         if (!filtered.length) {
-          container.innerHTML = `<div class="full-bleed"><div class="muted">표시할 딜이 없습니다.</div></div>`;
+          container.innerHTML = `
+            <div class="full-bleed">
+              <div class="flex-between" style="margin-bottom:10px;">
+                <div>
+                  <strong>딜 리스트</strong>
+                  <div class="note">연도 필터: leadYear 또는 contractYear가 선택 연도와 일치하는 딜만 표시</div>
+                </div>
+                <div class="year-toggle" role="tablist" aria-label="딜 리스트 연도 선택">
+                  ${years
+                    .map(
+                      (y) =>
+                        `<button class="ghost-btn ${y === yearFilter ? "active" : ""}" data-year="${y}" aria-pressed="${y === yearFilter}">${y}</button>`
+                    )
+                    .join("")}
+                </div>
+              </div>
+              <div class="muted">표시할 딜이 없습니다.</div>
+            </div>`;
+          container.querySelectorAll(".year-toggle .ghost-btn").forEach((btn) => {
+            btn.onclick = () => {
+              state.dealListYear = Number(btn.getAttribute("data-year"));
+              renderDealList(dealsForOwner);
+            };
+          });
           return;
+        }
+
+        const TAB3_FORMAT_PRIORITY = new Map([
+          ["구독제(온라인)", 0],
+          ["선택구매(온라인)", 1],
+          ["포팅", 2],
+        ]);
+
+        function normFmt(v) {
+          const s = (v == null ? "" : String(v)).trim();
+          return s || "(미입력)";
+        }
+
+        function tab3CreatedAtTs(d) {
+          const raw =
+            d.createdAt ?? d.created_at ?? d.createdDate ?? d.created_date ?? d.created ?? d["생성 날짜"];
+          if (raw == null) return Number.POSITIVE_INFINITY;
+          const s = String(raw).trim();
+          if (!s) return Number.POSITIVE_INFINITY;
+
+          const m1 = s.match(/^(\d{4}-\d{2}-\d{2})/);
+          if (m1) {
+            const t = Date.parse(m1[1]);
+            if (Number.isFinite(t)) return t;
+          }
+          const m2 = s.match(/^(\d{4})\.(\d{2})\.(\d{2})/);
+          if (m2) {
+            const t = Date.parse(`${m2[1]}-${m2[2]}-${m2[3]}`);
+            if (Number.isFinite(t)) return t;
+          }
+          const m3 = s.match(/^(\d{4})(\d{2})(\d{2})/);
+          if (m3) {
+            const t = Date.parse(`${m3[1]}-${m3[2]}-${m3[3]}`);
+            if (Number.isFinite(t)) return t;
+          }
+          const t = Date.parse(s);
+          return Number.isFinite(t) ? t : Number.POSITIVE_INFINITY;
+        }
+
+        function formatRank(fmt) {
+          const f = normFmt(fmt);
+          if (TAB3_FORMAT_PRIORITY.has(f)) return TAB3_FORMAT_PRIORITY.get(f);
+          return 3;
+        }
+
+        function formatNameKey(fmt) {
+          const f = normFmt(fmt);
+          if (f === "(미입력)") return "힣힣힣(미입력)";
+          return f;
         }
 
         function sortDeals(arr) {
           return [...arr].sort((a, b) => {
-            const amtA = parseAmountKRW(a.amount);
-            const amtB = parseAmountKRW(b.amount);
-            if (amtA !== amtB) {
-              if (amtA === null) return 1;
-              if (amtB === null) return -1;
-              return amtB - amtA;
+            const fa = normFmt(a.courseFormat);
+            const fb = normFmt(b.courseFormat);
+
+            const ra = formatRank(fa);
+            const rb = formatRank(fb);
+            if (ra !== rb) return ra - rb;
+
+            if (ra === 3) {
+              const na = formatNameKey(fa);
+              const nb = formatNameKey(fb);
+              const c = na.localeCompare(nb, "ko-KR");
+              if (c !== 0) return c;
+            } else {
+              const c = fa.localeCompare(fb, "ko-KR");
+              if (c !== 0) return c;
             }
-            const aCreated = a.createdAt || "";
-            const bCreated = b.createdAt || "";
-            return bCreated.localeCompare(aCreated);
+
+            const ta = tab3CreatedAtTs(a);
+            const tb = tab3CreatedAtTs(b);
+            if (ta !== tb) return ta - tb;
+
+            return String(a.dealId || "").localeCompare(String(b.dealId || ""));
           });
         }
 
@@ -1100,7 +1274,31 @@
 
         const renderedExisting = renderTable("기고객 딜", existingDeals);
         const renderedNew = renderTable("신규 딜", newDeals);
-        container.innerHTML = `<div class="full-bleed">${renderedExisting}${renderedNew}</div>`;
+        container.innerHTML = `
+          <div class="full-bleed">
+            <div class="flex-between" style="margin-bottom:10px;">
+              <div>
+                <strong>딜 리스트</strong>
+                <div class="note">연도 필터: leadYear 또는 contractYear가 선택 연도와 일치하는 딜만 표시</div>
+              </div>
+              <div class="year-toggle" role="tablist" aria-label="딜 리스트 연도 선택">
+                ${years
+                  .map(
+                    (y) =>
+                      `<button class="ghost-btn ${y === yearFilter ? "active" : ""}" data-year="${y}" aria-pressed="${y === yearFilter}">${y}</button>`
+                  )
+                  .join("")}
+              </div>
+            </div>
+            ${renderedExisting}${renderedNew}
+          </div>`;
+
+        container.querySelectorAll(".year-toggle .ghost-btn").forEach((btn) => {
+          btn.onclick = () => {
+            state.dealListYear = Number(btn.getAttribute("data-year"));
+            renderDealList(dealsForOwner);
+          };
+        });
 
         if (!editingDisabled) {
           container.querySelectorAll('input[type="checkbox"]').forEach((cb) => {

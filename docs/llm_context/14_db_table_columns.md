@@ -1,0 +1,379 @@
+# DB Table Columns (salesmap_latest.db)
+## deal
+- id — TEXT
+- peopleId — TEXT
+- organizationId — TEXT
+- (온라인)입과 주기 — TEXT
+- (온라인)최초 입과 여부 — TEXT
+- LOST 확정일 — TEXT
+- Net(%) — TEXT
+- RecordId — TEXT
+- SDR (AE 배정 후) — TEXT
+- SQL 전환일 — TEXT
+- utm_campaign — TEXT
+- utm_content — TEXT
+- utm_medium — TEXT
+- utm_source — TEXT
+- 강사 이름1 — TEXT
+- 강사 이름2 — TEXT
+- 강사 이름3 — TEXT
+- 강사 이름4 — TEXT
+- 강사 이름5 — TEXT
+- 강사료1 — TEXT
+- 강사료2 — TEXT
+- 강사료3 — TEXT
+- 강사료4 — TEXT
+- 강사료5 — TEXT
+- 계약 체결일 — TEXT
+- 과정포맷 — TEXT
+- 교육 시작월(예상) — TEXT
+- 교육 주제 — TEXT
+- 구독 시작 유형 — TEXT
+- 구독 시작일 — TEXT
+- 구독 종료 유형 — TEXT
+- 구독 종료일 — TEXT
+- 금액 — TEXT
+- 기업 니즈 — TEXT
+- 누적 시퀀스 등록수 — TEXT
+- 다음 TODO 날짜 — TEXT
+- 다음 연락일 — TEXT
+- 담당 파트 — TEXT
+- 담당자 — TEXT
+- 등록된 시퀀스 목록 — TEXT
+- 딜 전환 유형 — TEXT
+- 리드 목록 — TEXT
+- 마감일 — TEXT
+- 메인 견적 상품 리스트 — TEXT
+- 문의 주제 (최초) — TEXT
+- 문의 주제 (후속) — TEXT
+- 미완료 TODO — TEXT
+- 방문 경로 — TEXT
+- 상담 문의 내용 — TEXT
+- 상태 — TEXT
+- 생성 날짜 — TEXT
+- 서비스 유형 (최초) — TEXT
+- 서비스 유형 (후속) — TEXT
+- 성사 가능성 — TEXT
+- 소스 — TEXT
+- 수강시작일 — TEXT
+- 수강종료일 — TEXT
+- 수료 조건 (온라인) — TEXT
+- 수정 날짜 — TEXT
+- 수주 예정일 — TEXT
+- 수주 예정일(지연) — TEXT
+- 실제 수주액 — TEXT
+- 실패 사유 — TEXT
+- 실패 상세 사유 — TEXT
+- 업로드 제안서명 — TEXT
+- 예상 교육 인원 — TEXT
+- 예상 교육 일정 — TEXT
+- 예상 입금일자 — TEXT
+- 예상 체결액 — TEXT
+- 완료 TODO — TEXT
+- 운영 담당자 — TEXT
+- 운영 담당자 (사용X) — TEXT
+- 월 구독 금액 — TEXT
+- 이름 — TEXT
+- 이탈 사유 — TEXT
+- 입과자 (온라인) — TEXT
+- 입찰/PT 여부 — TEXT
+- 전체 TODO — TEXT
+- 제안서 발송일 — TEXT
+- 제안서 작성 여부 — TEXT
+- 참여자 — TEXT
+- 최근 노트 작성일 — TEXT
+- 최근 노트 작성자 — TEXT
+- 최근 등록한 시퀀스 — TEXT
+- 최근 시퀀스 등록일 — TEXT
+- 최근 연락일 — TEXT
+- 최근 웹폼 제출 날짜 — TEXT
+- 최근 작성된 노트 — TEXT
+- 최근 제출된 웹폼 — TEXT
+- 최근 파이프라인 단계 수정 날짜 — TEXT
+- 최근 파이프라인 수정 날짜 — TEXT
+- 카테고리 — TEXT
+- 코스 ID — TEXT
+- 팀 — TEXT
+- 파이프라인 — TEXT
+- 파이프라인 단계 — TEXT
+- 팔로워 — TEXT
+- 현재 진행중인 시퀀스 여부 — TEXT
+
+## lead
+- id — TEXT
+- peopleId — TEXT
+- organizationId — TEXT
+- (온라인)입과 주기 — TEXT
+- (온라인)최초 입과 여부 — TEXT
+- LOST 확정일 — TEXT
+- Net(%) — TEXT
+- RecordId — TEXT
+- SDR (AE 배정 후) — TEXT
+- SQL 전환일 — TEXT
+- 강사 이름1 — TEXT
+- 강사 이름2 — TEXT
+- 강사 이름3 — TEXT
+- 강사료1 — TEXT
+- 강사료2 — TEXT
+- 강사료3 — TEXT
+- 계약 체결일 — TEXT
+- 공개 교육 결제 방식 — TEXT
+- 공개 교육 과정 이름 — TEXT
+- 공개 교육 단체 인원 — TEXT
+- 공개 교육 상품유형 — TEXT
+- 공개 교육 수강일 - B2B 영업 — TEXT
+- 공개 교육 수강일 - MD 상품기획 — TEXT
+- 공개 교육 수강일 - R&D 기획 — TEXT
+- 공개 교육 수강일 - 비즈니스 기획 — TEXT
+- 공개 교육 수강일 - 엑셀 데이터 분석 — TEXT
+- 공개 교육 수강일 - 엑셀 업무 자동화 — TEXT
+- 공개 교육 환불 여부 — TEXT
+- 과정포맷 — TEXT
+- 교육 시작월(예상) — TEXT
+- 금액 — TEXT
+- 누적 시퀀스 등록수 — TEXT
+- 다음 TODO 날짜 — TEXT
+- 다음 연락일 — TEXT
+- 담당 파트 — TEXT
+- 담당자 — TEXT
+- 등록된 시퀀스 목록 — TEXT
+- 딜 목록 — TEXT
+- 딜 전환 유형 — TEXT
+- 리드 그룹 — TEXT
+- 메인 견적 상품 리스트 — TEXT
+- 문의 주제 (최초) — TEXT
+- 문의 주제 (후속) — TEXT
+- 미완료 TODO — TEXT
+- 방문 경로 — TEXT
+- 보류 사유 — TEXT
+- 보류 상세 사유 — TEXT
+- 상태 — TEXT
+- 생성 날짜 — TEXT
+- 서비스 유형 (최초) — TEXT
+- 서비스 유형 (후속) — TEXT
+- 성사 가능성 — TEXT
+- 소스 — TEXT
+- 수강시작일 — TEXT
+- 수강종료일 — TEXT
+- 수료 조건 (온라인) — TEXT
+- 수정 날짜 — TEXT
+- 수주 예정일 — TEXT
+- 수주 예정일(지연) — TEXT
+- 실제 수주액 — TEXT
+- 업로드 제안서명 — TEXT
+- 예상 교육 인원 — TEXT
+- 예상 교육 일정 — TEXT
+- 예상 입금일자 — TEXT
+- 예상 체결액 — TEXT
+- 완료 TODO — TEXT
+- 운영 담당자 — TEXT
+- 운영 담당자 (사용X) — TEXT
+- 유형 — TEXT
+- 이름 — TEXT
+- 이탈 사유 — TEXT
+- 입과자 (온라인) — TEXT
+- 입찰/PT 여부 — TEXT
+- 전체 TODO — TEXT
+- 제안서 발송일 — TEXT
+- 제안서 작성 여부 — TEXT
+- 참여자 — TEXT
+- 총 매출 — TEXT
+- 최근 노트 작성일 — TEXT
+- 최근 노트 작성자 — TEXT
+- 최근 등록한 시퀀스 — TEXT
+- 최근 딜의 파이프라인 단계 — TEXT
+- 최근 시퀀스 등록일 — TEXT
+- 최근 연락일 — TEXT
+- 최근 웹폼 제출 날짜 — TEXT
+- 최근 작성된 노트 — TEXT
+- 최근 제출된 웹폼 — TEXT
+- 최근 파이프라인 단계 수정 날짜 — TEXT
+- 최근 파이프라인 수정 날짜 — TEXT
+- 카테고리 — TEXT
+- 코스 ID — TEXT
+- 팀 — TEXT
+- 파이프라인 — TEXT
+- 파이프라인 단계 — TEXT
+- 팔로워 — TEXT
+- 현재 진행중인 시퀀스 여부 — TEXT
+
+## manifest
+- table — TEXT
+- endpoint — TEXT
+- row_count — INTEGER
+- column_count — INTEGER
+- errors — TEXT
+
+## memo
+- id — TEXT
+- cursorId — TEXT
+- text — TEXT
+- dealId — TEXT
+- leadId — TEXT
+- peopleId — TEXT
+- organizationId — TEXT
+- productId — TEXT
+- quoteId — TEXT
+- todoId — TEXT
+- parentId — TEXT
+- ownerId — TEXT
+- updatedAt — TEXT
+- createdAt — TEXT
+
+## organization
+- id — TEXT
+- LMS 교체일 — TEXT
+- Label — TEXT
+- RecordId — TEXT
+- 공개교육 수강 — TEXT
+- 관리 상태 — TEXT
+- 기업 규모 — TEXT
+- 기업 순위 — TEXT
+- 기업집단명 — TEXT
+- 다음 TODO 날짜 — TEXT
+- 담당자 — TEXT
+- 딜 개수 — TEXT
+- 리드 개수 — TEXT
+- 링크드인 — TEXT
+- 미완료 TODO — TEXT
+- 사업자등록번호 — TEXT
+- 생성 날짜 — TEXT
+- 성사된 딜 개수 — TEXT
+- 소스 — TEXT
+- 수정 날짜 — TEXT
+- 실패된 딜 개수 — TEXT
+- 업종 — TEXT
+- 업종 구분(대) — TEXT
+- 업종 구분(중) — TEXT
+- 업종 세부 — TEXT
+- 완료 TODO — TEXT
+- 웹 주소 — TEXT
+- 이름 — TEXT
+- 이메일 — TEXT
+- 전체 TODO — TEXT
+- 전화 — TEXT
+- 제출된 웹폼 목록 — TEXT
+- 주소 — TEXT
+- 직원수 — TEXT
+- 진행중 딜 개수 — TEXT
+- 총 매출 — TEXT
+- 최근 노트 작성일 — TEXT
+- 최근 노트 작성자 — TEXT
+- 최근 웹폼 제출 날짜 — TEXT
+- 최근 작성된 노트 — TEXT
+- 최근 제출된 웹폼 — TEXT
+- 팀 — TEXT
+- 프로필 사진 — TEXT
+
+## people
+- id — TEXT
+- organizationId — TEXT
+- AI 교육 니즈 — TEXT
+- Label — TEXT
+- RecordId — TEXT
+- utm_campaign — TEXT
+- utm_content — TEXT
+- utm_medium — TEXT
+- utm_source — TEXT
+- 고객 그룹 — TEXT
+- 고객 상태 — TEXT
+- 고객 여정 단계 — TEXT
+- 공개형 교육 — TEXT
+- 관리 여부 — TEXT
+- 관심사 — TEXT
+- 누적 시퀀스 등록수 — TEXT
+- 뉴스레터 — TEXT
+- 다음 TODO 날짜 — TEXT
+- 담당 교육 영역 — TEXT
+- 담당 업무 — TEXT
+- 담당자 — TEXT
+- 등록된 시퀀스 목록 — TEXT
+- 딜 개수 — TEXT
+- 리드 개수 — TEXT
+- 리텐션 관리 여부 — TEXT
+- 링크드인 — TEXT
+- 마케팅 수신 동의 — TEXT
+- 미완료 TODO — TEXT
+- 비즈레터 구독(사용X) — TEXT
+- 생성 날짜 — TEXT
+- 성사된 딜 개수 — TEXT
+- 세미나참석 — TEXT
+- 세일즈 유관 고객 관리 — TEXT
+- 소속 상위 조직 — TEXT
+- 소스 — TEXT
+- 수신 거부 사유 — TEXT
+- 수신 거부 여부 — TEXT
+- 수정 날짜 — TEXT
+- 숨참 — TEXT
+- 신규 MQL — TEXT
+- 실패된 딜 개수 — TEXT
+- 연락처 이슈 — TEXT
+- 온라인TF 관리 중 — TEXT
+- 완료 TODO — TEXT
+- 웨비나 — TEXT
+- 이름 — TEXT
+- 이메일 — TEXT
+- 전체 TODO — TEXT
+- 전화 — TEXT
+- 제출된 웹폼 목록 — TEXT
+- 직급(명함/메일서명) — TEXT
+- 직급/직책 — TEXT
+- 진행중 딜 개수 — TEXT
+- 참여자 (딜) — TEXT
+- 참여자 (리드) — TEXT
+- 총 매출 — TEXT
+- 최근 고객 활동일 — TEXT
+- 최근 노트 작성일 — TEXT
+- 최근 노트 작성자 — TEXT
+- 최근 등록한 시퀀스 — TEXT
+- 최근 시퀀스 등록일 — TEXT
+- 최근 연락일 — TEXT
+- 최근 웹폼 제출 날짜 — TEXT
+- 최근 유선 연락일 — TEXT
+- 최근 이메일 받은 날짜 — TEXT
+- 최근 이메일 보낸 날짜 — TEXT
+- 최근 이메일 연락일 — TEXT
+- 최근 이메일 오픈일 — TEXT
+- 최근 작성된 노트 — TEXT
+- 최근 제출된 웹폼 — TEXT
+- 콘텐츠/행사 신청 배경 — TEXT
+- 팀 — TEXT
+- 팀(명함/메일서명) — TEXT
+- 포지션 — TEXT
+- 프로필 사진 — TEXT
+- 현재 진행중인 시퀀스 여부 — TEXT
+
+## run_info
+- run_tag — TEXT
+- captured_at_utc — TEXT
+- base_url — TEXT
+- endpoints — TEXT
+- note — TEXT
+- checkpoint_path — TEXT
+- final_db_path — TEXT
+
+## team
+- id — TEXT
+- name — TEXT
+- description — TEXT
+- teammateList — TEXT
+
+## user
+- id — TEXT
+- name — TEXT
+- status — TEXT
+- email — TEXT
+- role — TEXT
+- createdAt — TEXT
+- updatedAt — TEXT
+
+## webform_history
+- id — TEXT
+- peopleId — TEXT
+- organizationId — TEXT
+- dealId — TEXT
+- leadId — TEXT
+- contents — TEXT
+- createdAt — TEXT
+- webFormId — TEXT
+

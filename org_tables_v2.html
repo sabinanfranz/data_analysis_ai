@@ -738,7 +738,7 @@
     .json-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
       align-items: start;
     }
 
@@ -758,11 +758,17 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       background: #0c182c;
-      padding: 10px;
+      padding: 8px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      min-height: 120px;
+      gap: 6px;
+    }
+
+    /* Tighten upper-org JSON card height */
+    #wonGroupJsonCardCombined {
+      min-height: auto;
+      padding: 8px 10px;
+      gap: 6px;
     }
 
     th,
@@ -1576,22 +1582,26 @@
 
     .toast {
       position: fixed;
-      bottom: 18px;
-      right: 18px;
-      background: #111827;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(17, 24, 39, 0.9);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px 14px;
+      border-radius: 12px;
+      padding: 18px 22px;
       box-shadow: var(--shadow);
-      min-width: 220px;
-      max-width: 340px;
-      font-size: 13px;
+      min-width: 260px;
+      max-width: 420px;
+      font-size: 19px;
       color: var(--text);
       display: none;
+      z-index: 1200;
+      text-align: center;
+      line-height: 1.4;
     }
 
     .toast.error {
-      border-color: rgba(248, 113, 113, 0.4);
+      border-color: rgba(248, 113, 113, 0.6);
       color: var(--error);
     }
 
@@ -2570,7 +2580,7 @@
       clearTimeout(showToast._timer);
       showToast._timer = setTimeout(() => {
         el.style.display = "none";
-      }, 3200);
+      }, 1000);
     }
 
     function buildNameToTeamPartIndex(structure) {
@@ -6317,26 +6327,25 @@
           <div class="json-grid">
             <div class="json-box">
               <div class="control-row">
-                <h3 class="muted">전체</h3>
+                <h3 class="muted" style="color:#fff; font-size: 1.125em;">회사 데이터 복사</h3>
                 <div class="spacer"></div>
-                <button id="viewWonGroupJsonAllBtn" type="button">JSON 확인</button>
-                <button id="copyWonGroupJsonAllBtn" type="button">JSON 복사</button>
+                <button id="viewWonGroupJsonAllBtn" type="button" style="display:none;">JSON 확인</button>
+                <button id="copyWonGroupJsonAllBtn" type="button" style="display:none;">JSON 복사</button>
                 <button id="viewWonGroupJsonAllCompactBtn" type="button">간소화 JSON</button>
                 <button id="copyWonGroupJsonAllCompactBtn" type="button">간소화 ver 복사</button>
               </div>
-              <div class="muted" id="wonGroupJsonHintAll">회사를 선택하세요.</div>
+              <div class="muted" id="wonGroupJsonHintAll" style="color:#fff; font-size:15px; font-weight:700;">회사를 선택하세요.</div>
             </div>
             <div class="json-box">
               <div class="control-row">
-                <h3 class="muted">선택 상위 조직</h3>
+                <h3 class="muted" style="color:#fff; font-size: 1.125em;">선택 상위 조직의 데이터 복사</h3>
                 <div class="spacer"></div>
-                <button id="viewWonGroupJsonFilteredBtn" type="button">JSON 확인</button>
-                <button id="copyWonGroupJsonFilteredBtn" type="button">JSON 복사</button>
+                <button id="viewWonGroupJsonFilteredBtn" type="button" style="display:none;">JSON 확인</button>
+                <button id="copyWonGroupJsonFilteredBtn" type="button" style="display:none;">JSON 복사</button>
                 <button id="viewWonGroupJsonFilteredCompactBtn" type="button">간소화 JSON</button>
                 <button id="copyWonGroupJsonFilteredCompactBtn" type="button">간소화 ver 복사</button>
               </div>
-              <div class="muted" id="wonGroupJsonSelectedUpper"></div>
-              <div class="muted" id="wonGroupJsonHintFiltered">상위 조직을 선택하세요.</div>
+              <div class="muted" id="wonGroupJsonHintFiltered" style="color:#fff; font-size:15px; font-weight:700;">상위 조직을 선택하세요.</div>
             </div>
           </div>
         </section>
@@ -9130,11 +9139,11 @@
             },
             R8: {
               title: "생성 7일 경과 & 카테고리 없음",
-              action: "카테고리(대) 값을 채워 주세요.",
+              action: "카테고리 값을 채워주세요.",
             },
             R9: {
               title: "생성 7일 경과 & 과정포맷 없음",
-              action: "과정포맷(대) 값을 채워 주세요.",
+              action: "과정포맷 값을 채워주세요.",
             },
             R10: {
               title: "성사=높음 & 수주 예정일 없음",
@@ -9160,6 +9169,10 @@
               title: "Won & 오프라인/비온라인 포맷인데 강사 정보 결측",
               action: "강사 이름1을 채우고 강사료1도 함께 확인하세요.",
             },
+            R16: {
+              title: "생성형AI(대기업·오프라인) 제안서 미작성/미업로드",
+              action: "2025-01-01 이후 생성된 생성형AI 오프라인 딜이면 제안서 작성 여부와 업로드 이름을 채워 주세요.",
+            },
           };
           const detail = await fetchJson(
             `/qc/deal-errors/person?owner=${encodeURIComponent(owner)}&team=${encodeURIComponent(teamKey)}`
@@ -9180,7 +9193,7 @@
           const orgMinCh = Math.min(60, Math.max(12, orgMaxLen + 2));
           const peopleMinCh = Math.min(60, Math.max(12, peopleMaxLen + 2));
           const dealMinCh = 16;
-          const ruleOrder = ["R1","R2","R3","R4","R5","R6","R7","R8","R9","R10","R11","R12","R13","R14","R15"];
+          const ruleOrder = ["R1","R2","R3","R4","R5","R6","R7","R8","R9","R10","R11","R12","R13","R14","R15","R16"];
           const byRule = {};
           ruleOrder.forEach((r) => (byRule[r] = []));
           items.forEach((d) => {

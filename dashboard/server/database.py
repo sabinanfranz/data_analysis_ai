@@ -675,9 +675,10 @@ QC_RULES: List[Tuple[str, str]] = [
     ("R10", "성사=높음 & 수주 예정일 결측"),
     ("R11", "상태=convert"),
     ("R12", "성사=확정/높음 & 금액/예상액 모두 결측"),
-    ("R13", "상태=won & 고객사 담당 메타 결측"),
+    ("R13", "고객사 담당자 정보 결측"),
     ("R14", "상태=won & 온라인 과정포맷 입과정보 결측"),
     ("R15", "상태=won & 강사 정보 결측"),
+    ("R16", "생성형AI(대기업·오프라인) 제안서 미작성/미업로드"),
 ]
 QC_SINCE_DATE = date(2024, 10, 1)
 QC_TEAM_LABELS = {"edu1": "기업교육 1팀", "edu2": "기업교육 2팀", "public": "공공교육팀", "all": "전체"}
@@ -2672,6 +2673,8 @@ def _qc_pick_columns(conn: sqlite3.Connection) -> Tuple[Dict[str, Optional[str]]
         "online_first": pick(["(온라인)입과 첫 회차", "온라인 입과 첫 회차"], "online_first"),
         "instructor_name1": pick(["강사 이름1", "강사1 이름"], "instructor_name1"),
         "instructor_fee1": pick(["강사비1", "강사비"], "instructor_fee1"),
+        "proposal_written": pick(["제안서 작성 여부"], "proposal_written"),
+        "proposal_upload": pick(["업로드 제안서명"], "proposal_upload"),
         "probability": pick(["성사 가능성"], "probability"),
         "created_at": pick(["생성 날짜", "createdAt", "created_at"], "created_at"),
         "status": pick(["상태"], "status"),
@@ -2717,9 +2720,12 @@ def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
             f"{_dq(cols['online_first'])} AS online_first",
             f"{_dq(cols['instructor_name1'])} AS instructor_name1",
             f"{_dq(cols['instructor_fee1'])} AS instructor_fee1",
+            f"{_dq(cols['proposal_written'])} AS proposal_written",
+            f"{_dq(cols['proposal_upload'])} AS proposal_upload",
             f"{_dq(cols['created_at'])} AS created_at",
             "d.organizationId AS org_id",
             'COALESCE(o."이름", d.organizationId) AS org_name',
+            'o."기업 규모" AS org_size_raw',
             "d.peopleId AS people_id",
             'COALESCE(p."이름", p.id) AS people_name',
             'p."소속 상위 조직" AS upper_org',
@@ -2794,6 +2800,7 @@ def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
         online_first = (row["online_first"] or "").strip()
         instructor_name1 = (row["instructor_name1"] or "").strip()
         instructor_fee1 = _to_number(row["instructor_fee1"])
+        org_size_group = infer_size_group(row["org_name"], row["org_size_raw"])
 
         issues: List[str] = []
 
@@ -2830,7 +2837,8 @@ def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
             issues.append("R11")
         if prob_n in {"확정", "높음"} and _missing_num(amount_val) and _missing_num(expected_amount_val):
             issues.append("R12")
-        if status_n == "won":
+        size_group = infer_size_group(row["org_name"], row["org_size_raw"])
+        if status_n != "convert" and size_group in {"대기업", "중견기업"}:
             r13_exempt = False
             if owner_display in {"김정은", "이은서"} and _re_month.search(deal_name):
                 r13_exempt = True
@@ -2849,6 +2857,20 @@ def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
                 r15_exempt = True
             if cols["instructor_name1"] and _missing_str(instructor_name1) and not r15_exempt:
                 issues.append("R15")
+        # R16: 2025-01-01 이후, 비온라인, 카테고리=생성형AI, 조직 규모=대기업, Won 상태
+        if status_n == "won":
+            created_at_dt = _parse_date(row["created_at"])
+            is_target_date = created_at_dt is not None and created_at_dt >= date(2025, 1, 1)
+            is_offline = course_fmt not in ONLINE_COURSE_FORMATS
+            is_genai = course_category == "생성형AI"
+            is_major = org_size_group == "대기업"
+            if is_target_date and is_offline and is_genai and is_major:
+                proposal_written = str(row["proposal_written"] or "").strip()
+                proposal_upload = str(row["proposal_upload"] or "").strip()
+                if _missing_str(proposal_written):
+                    issues.append("R16")
+                elif proposal_written != "X" and _missing_str(proposal_upload):
+                    issues.append("R16")
 
         issue_count = len(issues)
         if issue_count == 0:
@@ -2893,11 +2915,13 @@ def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
             "upperOrg": row["upper_org"],
             "teamSignature": row["team_signature"],
             "titleSignature": row["title_signature"],
-            "eduArea": row["edu_area"],
-            "onlineCycle": online_cycle,
-            "onlineFirst": online_first,
-            "instructorName1": instructor_name1,
-            "instructorFee1": instructor_fee1,
+                "eduArea": row["edu_area"],
+                "onlineCycle": online_cycle,
+                "onlineFirst": online_first,
+                "instructorName1": instructor_name1,
+                "instructorFee1": instructor_fee1,
+                "proposalWritten": row["proposal_written"],
+                "proposalUpload": row["proposal_upload"],
             "issueCodes": issues,
             "issueCount": issue_count,
             "issueDescriptions": [f"{code}: {rules_map.get(code, '')}" for code in issues],

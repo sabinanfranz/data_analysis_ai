@@ -32,6 +32,7 @@ class DealColumns:
     status: str
     deal_name: Optional[str]
     probability: Optional[str]
+    online_first_entry: Optional[str]
     expected_close: Optional[str]
     created_at: Optional[str]
     contract_date: Optional[str]
@@ -191,6 +192,8 @@ def _detect_columns(conn: sqlite3.Connection) -> DealColumns:
         "공헌이익률 %",
     ]
 
+    online_first_entry_candidates = ["(온라인)최초 입과 여부", "(온라인)최초입과여부", "온라인최초입과여부"]
+
     net_col = pick_deal(
         net_candidates_list,
         required=False,
@@ -203,6 +206,7 @@ def _detect_columns(conn: sqlite3.Connection) -> DealColumns:
         status=pick_deal(["상태", "status", "Status"], required=True, label="status"),
         deal_name=pick_deal(["이름", "dealName", "deal_name"], required=False, label="dealName"),
         probability=pick_deal(["성사 가능성", "probability", "Probability"], required=False, label="probability"),
+        online_first_entry=pick_deal(online_first_entry_candidates, required=False, label="onlineFirstEntry"),
         expected_close=pick_deal(["수주 예정일", "expected_date", "expectedDate", "expected_close_date"], required=False, label="expectedCloseDate"),
         created_at=pick_deal(["생성 날짜", "createdAt", "created_at", "생성날짜"], required=False, label="createdAt"),
         contract_date=pick_deal(
@@ -248,6 +252,7 @@ def _load_deals(conn: sqlite3.Connection, cols: DealColumns) -> List[Dict[str, A
         f'{_col_expr("d", cols.status)} AS status',
         f'{_col_expr("d", cols.deal_name)} AS deal_name',
         f'{_col_expr("d", cols.probability)} AS probability',
+        f'{_col_expr("d", cols.online_first_entry)} AS online_first_entry',
         f'{_col_expr("d", cols.expected_close)} AS expected_close',
         f'{_col_expr("d", cols.created_at)} AS created_at',
         f'{_col_expr("d", cols.contract_date)} AS contract_date',
@@ -347,6 +352,7 @@ def build_payload(
                 "ownerRaw": item.get("owner_raw"),
                 "dealName": item.get("deal_name"),
                 "probability": item.get("probability"),
+                "onlineFirstEntry": item.get("online_first_entry"),
                 "expectedCloseDate": item.get("expected_close"),
                 "orgName": item.get("org_name") or item.get("deal_id"),
                 "status": item.get("status"),

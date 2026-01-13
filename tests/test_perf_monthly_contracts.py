@@ -98,6 +98,90 @@ def _init_db(path: Path, with_course_id: bool = True) -> None:
     conn.close()
 
 
+def _init_db_with_team_filter(path: Path) -> None:
+    conn = sqlite3.connect(path)
+    conn.executescript(
+        """
+        CREATE TABLE organization (id TEXT PRIMARY KEY, "이름" TEXT, "기업 규모" TEXT);
+        CREATE TABLE people (id TEXT PRIMARY KEY, organizationId TEXT, "이름" TEXT, "소속 상위 조직" TEXT);
+        CREATE TABLE deal (
+            id TEXT PRIMARY KEY,
+            peopleId TEXT,
+            organizationId TEXT,
+            "이름" TEXT,
+            "상태" TEXT,
+            "금액" REAL,
+            "예상 체결액" REAL,
+            "계약 체결일" TEXT,
+            "수주 예정일" TEXT,
+            "수강시작일" TEXT,
+            "수강종료일" TEXT,
+            "성사 가능성" TEXT,
+            "과정포맷" TEXT,
+            "코스 ID" TEXT,
+            "담당자" TEXT
+        );
+        """
+    )
+    conn.executemany(
+        'INSERT INTO organization (id, "이름", "기업 규모") VALUES (?, ?, ?)',
+        [
+            ("org-1", "A사", "대기업"),
+            ("org-2", "B사", "대기업"),
+        ],
+    )
+    conn.executemany(
+        'INSERT INTO people (id, organizationId, "이름", "소속 상위 조직") VALUES (?, ?, ?, ?)',
+        [
+            ("p-1", "org-1", "담당1", "본부1"),
+            ("p-2", "org-2", "담당2", "본부2"),
+        ],
+    )
+    conn.executemany(
+        'INSERT INTO deal (id, peopleId, organizationId, "이름", "상태", "금액", "예상 체결액", "계약 체결일", "수주 예정일", "수강시작일", "수강종료일", "성사 가능성", "과정포맷", "코스 ID", "담당자") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+            # edu1 담당자(김솔이)
+            (
+                "d-edu1",
+                "p-1",
+                "org-1",
+                "딜-edu1",
+                "Won",
+                100.0,
+                None,
+                "2025-01-10",
+                None,
+                "2025-01-05",
+                "2025-01-20",
+                "확정",
+                "집합",
+                "COURSE-EDU1",
+                '["김솔이"]',
+            ),
+            # edu2 담당자(강진우)
+            (
+                "d-edu2",
+                "p-2",
+                "org-2",
+                "딜-edu2",
+                "Won",
+                200.0,
+                None,
+                "2025-01-12",
+                None,
+                "2025-01-06",
+                "2025-01-25",
+                "확정",
+                "집합",
+                "COURSE-EDU2",
+                '["강진우"]',
+            ),
+        ],
+    )
+    conn.commit()
+    conn.close()
+
+
 class PerfMonthlyContractsTest(unittest.TestCase):
     def test_summary_and_deals_alignment(self) -> None:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as tmp:
@@ -174,6 +258,41 @@ class PerfMonthlyContractsTest(unittest.TestCase):
             all_rows = {row["key"]: row for row in seg_map["ALL"]["rows"]}
             # Row1 should still accept when course id column is missing (treated as unknown, not crash)
             self.assertEqual(all_rows["CONTRACT"]["byMonth"]["2501"], 100.0)
+        finally:
+            db_path.unlink(missing_ok=True)
+
+    def test_team_filtering(self) -> None:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as tmp:
+            db_path = Path(tmp.name)
+        _init_db_with_team_filter(db_path)
+        try:
+            summary_all = db.get_perf_monthly_amounts_summary(db_path=db_path)
+            seg_map = {seg["key"]: seg for seg in summary_all["segments"]}
+            all_total = {row["key"]: row for row in seg_map["ALL"]["rows"]}["TOTAL"]
+            self.assertEqual(all_total["byMonth"]["2501"], 300.0)
+            self.assertEqual(all_total["dealCountByMonth"]["2501"], 2)
+
+            summary_edu1 = db.get_perf_monthly_amounts_summary(db_path=db_path, team="edu1")
+            seg_map1 = {seg["key"]: seg for seg in summary_edu1["segments"]}
+            total1 = {row["key"]: row for row in seg_map1["ALL"]["rows"]}["TOTAL"]
+            self.assertEqual(total1["byMonth"]["2501"], 100.0)
+            self.assertEqual(total1["dealCountByMonth"]["2501"], 1)
+
+            summary_edu2 = db.get_perf_monthly_amounts_summary(db_path=db_path, team="edu2")
+            seg_map2 = {seg["key"]: seg for seg in summary_edu2["segments"]}
+            total2 = {row["key"]: row for row in seg_map2["ALL"]["rows"]}["TOTAL"]
+            self.assertEqual(total2["byMonth"]["2501"], 200.0)
+            self.assertEqual(total2["dealCountByMonth"]["2501"], 1)
+
+            deals1 = db.get_perf_monthly_amounts_deals(segment="ALL", row="TOTAL", month="2501", team="edu1", db_path=db_path)
+            self.assertEqual(deals1["dealCount"], 1)
+            self.assertEqual(deals1["items"][0]["dealId"], "d-edu1")
+            self.assertAlmostEqual(deals1["totalAmount"], 100.0)
+
+            deals2 = db.get_perf_monthly_amounts_deals(segment="ALL", row="TOTAL", month="2501", team="edu2", db_path=db_path)
+            self.assertEqual(deals2["dealCount"], 1)
+            self.assertEqual(deals2["items"][0]["dealId"], "d-edu2")
+            self.assertAlmostEqual(deals2["totalAmount"], 200.0)
         finally:
             db_path.unlink(missing_ok=True)
 

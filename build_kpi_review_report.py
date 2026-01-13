@@ -135,9 +135,24 @@ def _table_columns(conn: sqlite3.Connection, table: str) -> List[str]:
 
 
 def _pick_column(columns: Sequence[str], candidates: Sequence[str], *, required: bool, label: str) -> Optional[str]:
+    col_set = set(columns)
+
+    # Exact match first
     for cand in candidates:
-        if cand in columns:
+        if cand in col_set:
             return cand
+
+    # Case-insensitive match fallback
+    lower_map: Dict[str, str] = {}
+    for col in columns:
+        key = col.lower()
+        if key not in lower_map:
+            lower_map[key] = col
+    for cand in candidates:
+        hit = lower_map.get(cand.lower())
+        if hit:
+            return hit
+
     if required:
         raise FriendlySchemaError(
             f"Missing required column for '{label}'. Tried: {', '.join(candidates)}. "
@@ -167,6 +182,7 @@ def _detect_columns(conn: sqlite3.Connection) -> DealColumns:
         "net%",
         "NET%",
         "net(%)",
+        "Net(%)",
         "NET(%)",
         "net (%)",
         "NET (%)",
@@ -279,6 +295,17 @@ def build_payload(
     with _connect(db_path) as conn:
         cols = _detect_columns(conn)
         all_deals = _load_deals(conn, cols)
+
+    print(f"[build] Selected net% column: {cols.net_percent or 'NONE'}")
+    if cols.net_percent:
+        non_null_net = sum(
+            1
+            for item in all_deals
+            if item.get("net_percent") not in (None, "", " ")
+        )
+        print(f"[build] deals with netPercent != null: {non_null_net}")
+    else:
+        print("[build] deals with netPercent != null: 0 (no column detected)")
 
     total_before = len(all_deals)
     deals_after_convert: List[Dict[str, Any]] = []

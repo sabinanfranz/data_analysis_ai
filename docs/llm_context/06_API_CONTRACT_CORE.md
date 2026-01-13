@@ -34,8 +34,8 @@ sync_source:
 - `GET /api/statepath/portfolio-2425` → segment/search/정렬/패턴/리스크 필터(OPEN/ScaleUp/회사 전이/셀 이벤트/rail 등)와 limit/offset을 Query로 받아 요약+아이템(금액은 억 단위)을 반환한다. 현재 프런트는 segment/sort/limit만 서버에 전달하고 나머지 필터는 클라이언트 상태로 처리한다. `GET /api/orgs/{id}/statepath-2425`는 단건 버전.
   - `GET /api/orgs/{id}/statepath` → compact JSON 기반 statepath_engine 결과(2024/2025 상태·Path·추천, 금액은 억 단위) 반환.
 - 사업부 퍼포먼스:
-  - `GET /api/performance/monthly-amounts/summary?from=2025-01&to=2026-12` → months=YYMM 24개, segment 11종, rows=TOTAL→CONTRACT→CONFIRMED→HIGH. 금액 원 단위, TOTAL은 나머지 합. snapshot_version 포함.
-  - `GET /api/performance/monthly-amounts/deals?segment=...&row=TOTAL|CONTRACT|CONFIRMED|HIGH&month=YYMM` → row=TOTAL은 3버킷 합집합 dedupe, totalAmount=amount>0 else expectedAmount 합산, items 정렬은 프런트가 수행.
+- `GET /api/performance/monthly-amounts/summary?from=2025-01&to=2026-12&team=edu1|edu2(opt)` → months=YYMM 24개, segment 11종, rows=TOTAL→CONTRACT→CONFIRMED→HIGH. 금액 원 단위, TOTAL은 나머지 합. team 지정 시 day1OwnerNames가 해당 팀 구성원인 딜만 포함. snapshot_version 포함.
+- `GET /api/performance/monthly-amounts/deals?segment=...&row=TOTAL|CONTRACT|CONFIRMED|HIGH&month=YYMM&team=edu1|edu2(opt)` → row=TOTAL은 3버킷 합집합 dedupe, totalAmount=amount>0 else expectedAmount 합산, team 지정 시 동일 필터 적용. items 정렬은 프런트가 수행.
   - `GET /api/performance/pl-progress-2026/summary` → Target(T) 열은 `PL_2026_TARGET`, Expected(E)는 기간 비율로 분배한 recognized_by_month 합계(억 단위 소수 4자리). OP_MARGIN은 연간 OP/REV. 캐시 키 `_PL_PROGRESS_SUMMARY_CACHE`.
   - `GET /api/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E` → recognizedAmount desc→amountUsed desc→dealName desc 정렬. variant T는 빈 리스트 반환.
 - 딜체크/QC:
@@ -69,7 +69,7 @@ sync_source:
 ## Verification
 - `/api/orgs`가 won2025 desc→name asc이고 People/Deal 0건 조직이 제외되는지 샘플 DB로 확인한다.
 - `/api/orgs/{id}/won-groups-json`에 industry_major/mid, webforms `{name,date}`, cleanText 메모가 포함되고 upper_org가 Won 존재 조직만 있는지 확인한다.
-- `/api/performance/monthly-amounts/summary`가 24개월·4개 row·11세그먼트를 포함하고 `/performance/monthly-amounts/deals` row=TOTAL이 3버킷 합집합인지 검증한다.
+- `/api/performance/monthly-amounts/summary`가 24개월·4개 row·11세그먼트를 포함하고 `/performance/monthly-amounts/deals` row=TOTAL이 3버킷 합집합인지 검증한다. team 파라미터 적용 시 day1OwnerNames 기준 필터가 동작하는지 확인한다.
 - `/api/performance/pl-progress-2026/summary`가 연간/월별 T/E 컬럼을 포함하고 current YYMM E 셀 클릭 시 `/performance/pl-progress-2026/deals`가 recognizedAmount desc→amountUsed desc→dealName desc 정렬인지 확인한다.
 - `/api/rank/2025-top100-counterparty-dri`가 Lost/Convert 제외, orgWon2025 desc→cpTotal2025 desc 정렬이며 owners가 People.owner_json 우선으로 채워지는지 테스트 대비 확인한다.
 - `/api/deal-check?team=edu1|edu2`가 orgWon2025 desc→createdAt asc→dealId asc 정렬이며 memoCount/personId/personName/orgWon2025Total을 포함하는지 확인한다.

@@ -2258,6 +2258,11 @@
       { id: "edu2-dealcheck-part2", label: "교육 2팀 2파트 딜체크", teamKey: "edu2", partFilter: "part2", parentId: DEALCHECK_TEAMS.edu2.id },
       { id: "edu2-dealcheck-online", label: "교육 2팀 온라인셀 딜체크", teamKey: "edu2", partFilter: "online", parentId: DEALCHECK_TEAMS.edu2.id },
     ];
+    const PERF_MONTHLY_MENU_DEFS = [
+      { id: "biz-perf-monthly", label: "2026 월별 체결액", teamKey: null, parentId: null },
+      { id: "biz-perf-monthly-edu1", label: "2026 1팀 월별 체결액", teamKey: "edu1", parentId: "biz-perf-monthly" },
+      { id: "biz-perf-monthly-edu2", label: "2026 2팀 월별 체결액", teamKey: "edu2", parentId: "biz-perf-monthly" },
+    ];
 
     function menuLabelWithArrow(def) {
       return def.parentId ? `↳ ${def.label}` : def.label;
@@ -2270,7 +2275,7 @@
         defaultOpen: true,
         items: [
           { id: "biz-perf-pl-progress-2026", label: "2026 P&L" },
-          { id: "biz-perf-monthly", label: "2026 월별 체결액" },
+          ...PERF_MONTHLY_MENU_DEFS.map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
           // ✅ 구 "카운터파티 리스크(일간)" → 2026 Daily Report(WIP) (id 유지)
           { id: "counterparty-risk-daily", label: "2026 Daily Report(WIP)" },
         ],
@@ -2311,7 +2316,6 @@
     ];
 
     const MENU_RENDERERS = {
-      "biz-perf-monthly": renderBizPerfMonthly,
       "biz-perf-pl-progress-2026": renderBizPerfPlProgress2026,
       "rank-2025": renderRank2025Screen,
       "rank-2025-people": renderRank2025PeopleScreen,
@@ -2328,6 +2332,9 @@
     DEALCHECK_MENU_DEFS.forEach((def) => {
       MENU_RENDERERS[def.id] = (root) =>
         renderDealCheckScreen(def.teamKey, root, { label: def.label, partFilter: def.partFilter });
+    });
+    PERF_MONTHLY_MENU_DEFS.forEach((def) => {
+      MENU_RENDERERS[def.id] = (root) => renderBizPerfMonthly(root, { teamKey: def.teamKey, label: def.label });
     });
 
     const MENU_ITEMS = MENU_SECTIONS.flatMap((section) => section.items);
@@ -2470,7 +2477,7 @@
       perfMonthly: {
         loading: false,
         error: null,
-        data: null,
+        summaryCache: new Map(),
       },
       perfPlProgress2026: {
         loading: false,
@@ -3569,18 +3576,26 @@
 
     let target2026Cache = null;
     let pnlAssumptionTimer = null;
-    async function loadBizPerfSummary() {
-      if (state.perfMonthly.data) return state.perfMonthly.data;
-      const data = await fetchJson(`/performance/monthly-amounts/summary?from=2025-01&to=2026-12`);
-      state.perfMonthly.data = data;
+    async function loadBizPerfSummary({ teamKey = null } = {}) {
+      const cacheKey = teamKey || "all";
+      if (state.perfMonthly.summaryCache.has(cacheKey)) {
+        return state.perfMonthly.summaryCache.get(cacheKey);
+      }
+      const params = new URLSearchParams();
+      params.set("from", "2025-01");
+      params.set("to", "2026-12");
+      if (teamKey) params.set("team", teamKey);
+      const data = await fetchJson(`/performance/monthly-amounts/summary?${params.toString()}`);
+      state.perfMonthly.summaryCache.set(cacheKey, data);
       return data;
     }
 
-    async function loadBizPerfDeals(segmentKey, rowKey, monthKey) {
+    async function loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey = null } = {}) {
       const params = new URLSearchParams();
       params.set("segment", segmentKey);
       params.set("row", rowKey);
       params.set("month", monthKey);
+      if (teamKey) params.set("team", teamKey);
       return fetchJson(`/performance/monthly-amounts/deals?${params.toString()}`);
     }
 
@@ -7658,7 +7673,8 @@
       return text;
     }
 
-    async function openBizPerfDealsModal(segmentKey, rowKey, monthKey) {
+    async function openBizPerfDealsModal(segmentKey, rowKey, monthKey, options = {}) {
+      const teamKey = options.teamKey || null;
       bindGlobalModalsOnce();
       if (!state.rankPeopleModal.backdrop || !state.rankPeopleModal.title || !state.rankPeopleModal.body) {
         showToast("딜 모달을 초기화할 수 없습니다.", "error");
@@ -7669,7 +7685,7 @@
       if (state.rankPeopleModal.subtitle) state.rankPeopleModal.subtitle.textContent = "";
       state.rankPeopleModal.body.innerHTML = `<div class="muted" style="padding:12px;">불러오는 중...</div>`;
       try {
-        const data = await loadBizPerfDeals(segmentKey, rowKey, monthKey);
+        const data = await loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey });
         const titleLabel = `${(data.segment && data.segment.label) || segmentKey} · ${formatPerfMonthLabel(data.month)} · ${(data.row && data.row.label) || rowKey}`;
         state.rankPeopleModal.title.textContent = `월별 체결액 - ${titleLabel}`;
         if (state.rankPeopleModal.subtitle) state.rankPeopleModal.subtitle.textContent = `${formatPerfMonthLabel(data.month)} · ${(data.segment && data.segment.label) || segmentKey} · ${(data.row && data.row.label) || rowKey}`;
@@ -7754,14 +7770,16 @@
       }
     }
 
-    async function renderBizPerfMonthly(contentRoot) {
+    async function renderBizPerfMonthly(contentRoot, options = {}) {
+      const teamKey = options.teamKey || null;
+      const titleText = options.label || "월별 체결액";
       state.perfMonthly.loading = true;
       state.perfMonthly.error = null;
       contentRoot.innerHTML = `
         <section class="card compact-header">
           <div class="control-row">
             <div>
-              <h1>월별 체결액</h1>
+              <h1>${escapeHtml(titleText)}</h1>
               <div class="muted" id="perfMonthlyMeta">단위: 억(표기 생략) / 클릭 시 딜 목록 표시</div>
             </div>
             <div class="spacer"></div>
@@ -7786,7 +7804,7 @@
             const segment = e.currentTarget.getAttribute("data-segment");
             const row = e.currentTarget.getAttribute("data-row");
             const month = e.currentTarget.getAttribute("data-month");
-            await openBizPerfDealsModal(segment, row, month);
+            await openBizPerfDealsModal(segment, row, month, { teamKey });
           });
         });
       };
@@ -7815,7 +7833,7 @@
       };
 
       try {
-        const data = await loadBizPerfSummary();
+        const data = await loadBizPerfSummary({ teamKey });
         renderSummary(data);
         renderCards(data);
       } catch (err) {

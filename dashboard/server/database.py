@@ -423,6 +423,14 @@ def _dealcheck_members(team_key: str) -> Set[str]:
     return members
 
 
+def _dealcheck_team_members(team_key: Optional[str]) -> Optional[Set[str]]:
+    if team_key is None:
+        return None
+    if team_key not in {"edu1", "edu2"}:
+        raise ValueError(f"Unknown teamKey: {team_key}")
+    return _dealcheck_members(team_key)
+
+
 def _qc_members(team_key: str) -> Set[str]:
     """
     QC 전용 팀 구성원 반환. team_key가 'all'이면 모든 팀 합집합.
@@ -624,16 +632,16 @@ def normalize_owner_name(name: str) -> str:
 
 PART_STRUCTURE = {
     "기업교육 1팀": {
-        "1파트": ["김솔이", "황초롱", "김정은", "김동찬", "정태윤", "서정연", "오진선"],
-        "2파트": ["강지선", "정하영", "박범규", "하승민", "이은서", "김세연"],
+        "1파트": ["김솔이", "황초롱", "김정은", "김동찬", "정태윤", "서정연", "오진선", "공새봄"],
+        "2파트": ["강지선", "정하영", "박범규", "하승민", "이은서", "김세연", "이주연"],
     },
     "기업교육 2팀": {
-        "1파트": ["권노을", "이윤지B", "이현진", "김민선", "강연정", "방신우", "홍제환"],
+        "1파트": ["권노을", "이윤지", "이현진", "김민선", "강연정", "방신우", "홍제환"],
         "2파트": ["정다혜", "임재우", "송승희", "손승완", "김윤지", "손지훈", "홍예진"],
         "온라인셀": ["강진우", "강다현", "이수빈"],
     },
     "공공교육팀": {
-        "1파트": ["이준석", "김미송", "김다인", "채선영", "황인후"],
+        "1파트": ["이준석", "김미송", "김다인", "채선영", "황인후", "서민정"],
     },
 }
 
@@ -1461,6 +1469,19 @@ def _month_range_keys(from_ym: str, to_ym: str) -> List[str]:
             month = 1
             year += 1
     return keys
+
+
+def _owners_match_team(owners: Any, allowed: Optional[Set[str]]) -> bool:
+    if not allowed:
+        return True
+    owner_list = _parse_owner_names(owners)
+    if not owner_list:
+        return False
+    for name in owner_list:
+        norm = normalize_owner_name(name)
+        if norm and norm in allowed:
+            return True
+    return False
 
 
 def _amount_fallback(amount: Any, expected: Any) -> float:
@@ -3356,6 +3377,7 @@ _PL_PROGRESS_ROWS = [
 def get_perf_monthly_amounts_summary(
     from_month: str = "2025-01",
     to_month: str = "2026-12",
+    team: Optional[str] = None,
     db_path: Path = DB_PATH,
 ) -> Dict[str, Any]:
     """
@@ -3368,13 +3390,16 @@ def get_perf_monthly_amounts_summary(
         raise ValueError("from/to month range is empty")
 
     payload = _load_perf_monthly_data(db_path)
+    team_members = _dealcheck_team_members(team)
     stat = db_path.stat()
-    cache_key = (db_path, stat.st_mtime, from_month, to_month)
+    cache_key = (db_path, stat.st_mtime, from_month, to_month, team or "all")
     cached = _PERF_MONTHLY_SUMMARY_CACHE.get(cache_key)
     if cached is not None:
         return cached
 
     rows_data = [row for row in payload["rows"] if row["month"] in month_set]
+    if team_members is not None:
+        rows_data = [row for row in rows_data if _owners_match_team(row.get("day1_owner_names"), team_members)]
     segments_result: List[Dict[str, Any]] = []
     for seg in _perf_segments():
         bucket_data: Dict[str, Dict[str, Any]] = {}
@@ -3410,7 +3435,7 @@ def get_perf_monthly_amounts_summary(
     result = {
         "months": months,
         "segments": segments_result,
-        "meta": {"snapshot_version": payload.get("snapshot_version")},
+        "meta": {"snapshot_version": payload.get("snapshot_version"), "team": team},
     }
     _PERF_MONTHLY_SUMMARY_CACHE[cache_key] = result
     return result
@@ -3420,6 +3445,7 @@ def get_perf_monthly_amounts_deals(
     segment: str,
     row: str,
     month: str,
+    team: Optional[str] = None,
     db_path: Path = DB_PATH,
 ) -> Dict[str, Any]:
     """
@@ -3437,6 +3463,7 @@ def get_perf_monthly_amounts_deals(
         raise ValueError(f"Unknown row: {row}")
 
     payload = _load_perf_monthly_data(db_path)
+    team_members = _dealcheck_team_members(team)
     seg_def = seg_defs[segment]
     items: List[Dict[str, Any]] = []
     buckets_for_row: Set[str] = {"CONTRACT", "CONFIRMED", "HIGH"} if row == "TOTAL" else {row}
@@ -3445,6 +3472,8 @@ def get_perf_monthly_amounts_deals(
         if deal["month"] != month_key:
             continue
         if deal["bucket"] not in buckets_for_row:
+            continue
+        if team_members is not None and not _owners_match_team(deal.get("day1_owner_names"), team_members):
             continue
         if not seg_def["predicate"](deal):
             continue
@@ -3483,7 +3512,7 @@ def get_perf_monthly_amounts_deals(
         "dealCount": len(items),
         "items": items,
         "note": "성사 확정/높음은 금액이 없으면 예상 체결액을 합산합니다.",
-        "meta": {"snapshot_version": payload.get("snapshot_version")},
+        "meta": {"snapshot_version": payload.get("snapshot_version"), "team": team},
     }
 
 
@@ -4110,18 +4139,16 @@ def _compute_counterparty_dri_rows(
     unused_offline = set(offline_targets.keys()) - used_offline_overrides
     unused_online = set(online_targets.keys()) - used_online_overrides
     if unused_offline:
-        sample = list(itertools.islice(sorted(unused_offline), 5))
         logging.warning(
-            "[counterparty_targets_2026] unused offline overrides not matched to DRI data: count=%d sample=%s",
+            "[counterparty_targets_2026] unused offline overrides not matched to DRI data: count=%d keys=%s",
             len(unused_offline),
-            sample,
+            sorted(unused_offline),
         )
     if unused_online:
-        sample = list(itertools.islice(sorted(unused_online), 5))
         logging.warning(
-            "[counterparty_targets_2026] unused online overrides not matched to DRI data: count=%d sample=%s",
+            "[counterparty_targets_2026] unused online overrides not matched to DRI data: count=%d keys=%s",
             len(unused_online),
-            sample,
+            sorted(unused_online),
         )
 
     meta = {

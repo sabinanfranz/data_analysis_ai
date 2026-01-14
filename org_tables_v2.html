@@ -6273,6 +6273,8 @@
       const copyAllCompact = document.getElementById("copyWonGroupJsonAllCompactBtn");
       const viewFilteredCompact = document.getElementById("viewWonGroupJsonFilteredCompactBtn");
       const copyFilteredCompact = document.getElementById("copyWonGroupJsonFilteredCompactBtn");
+      const agentLinkAllBtn = document.getElementById("agentLinkAllBtn");
+      const agentLinkFilteredBtn = document.getElementById("agentLinkFilteredBtn");
       if (viewAll) viewAll.addEventListener("click", () => openJsonModal("상위 조직별 JSON (전체)", state.wonGroupJson));
       if (copyAll) copyAll.addEventListener("click", () => copyJsonData(state.wonGroupJson));
       if (viewFiltered) viewFiltered.addEventListener("click", () => openJsonModal("선택 상위 조직 JSON", state.filteredWonGroupJson));
@@ -6281,6 +6283,8 @@
       if (copyAllCompact) copyAllCompact.addEventListener("click", () => copyJsonData(state.wonGroupJsonCompact));
       if (viewFilteredCompact) viewFilteredCompact.addEventListener("click", () => openJsonModal("선택 상위 조직 간소화 JSON", state.filteredWonGroupJsonCompact));
       if (copyFilteredCompact) copyFilteredCompact.addEventListener("click", () => copyJsonData(state.filteredWonGroupJsonCompact));
+      if (agentLinkAllBtn) agentLinkAllBtn.addEventListener("click", () => window.open("https://gemini.google.com/gem/1iH4jAlauCVyc-Kp9Tfb1LysS5X6SemZO?usp=sharing", "_blank", "noopener,noreferrer"));
+      if (agentLinkFilteredBtn) agentLinkFilteredBtn.addEventListener("click", () => window.open("https://gemini.google.com/gem/1Bbf9opz_tuTIQfg09N5O9vzhXQ5OpI9H?usp=sharing", "_blank", "noopener,noreferrer"));
       await loadSizes();
       const sizeSelect = document.getElementById("sizeSelect");
       if (sizeSelect) sizeSelect.value = state.size;
@@ -6333,6 +6337,7 @@
                 <button id="copyWonGroupJsonAllBtn" type="button" style="display:none;">JSON 복사</button>
                 <button id="viewWonGroupJsonAllCompactBtn" type="button">간소화 JSON</button>
                 <button id="copyWonGroupJsonAllCompactBtn" type="button">간소화 ver 복사</button>
+                <button id="agentLinkAllBtn" type="button">에이전트 링크</button>
               </div>
               <div class="muted" id="wonGroupJsonHintAll" style="color:#fff; font-size:15px; font-weight:700;">회사를 선택하세요.</div>
             </div>
@@ -6344,6 +6349,7 @@
                 <button id="copyWonGroupJsonFilteredBtn" type="button" style="display:none;">JSON 복사</button>
                 <button id="viewWonGroupJsonFilteredCompactBtn" type="button">간소화 JSON</button>
                 <button id="copyWonGroupJsonFilteredCompactBtn" type="button">간소화 ver 복사</button>
+                <button id="agentLinkFilteredBtn" type="button">에이전트 링크</button>
               </div>
               <div class="muted" id="wonGroupJsonHintFiltered" style="color:#fff; font-size:15px; font-weight:700;">상위 조직을 선택하세요.</div>
             </div>

@@ -1,6 +1,6 @@
 ---
 title: 메모/웹폼 정제 규칙
-last_synced: 2026-01-06
+last_synced: 2026-12-11
 sync_source:
   - dashboard/server/database.py
   - dashboard/server/json_compact.py

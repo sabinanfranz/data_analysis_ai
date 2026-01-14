@@ -1,6 +1,6 @@
 ---
 title: 랭킹/집계/이상치 API 계약
-last_synced: 2026-01-06
+last_synced: 2026-12-11
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py
@@ -22,6 +22,7 @@ sync_source:
 - `GET /api/rank/2025-top100-counterparty-dri?size=대기업`: Lost/Convert 제외. 2025/2026 계약/예상일이 있는 확정/높음/Won 딜만 집계. ONLINE 판정=`statepath_engine.ONLINE_COURSE_FORMATS`. owners2025는 People.owner_json 우선, 없으면 deal.owner_json. 필드 `orgId/orgName/sizeRaw/orgTier/orgWon2025/upperOrg/cpOnline2025/cpOffline2025/cpOnline2026/cpOffline2026/owners2025/dealCount2025` + 선택적 `target26Offline/target26Online`(override 여부는 `target26OfflineIsOverride/target26OnlineIsOverride`). 정렬 orgWon2025 desc → cpTotal2025 desc. 기본은 규모별 **전체** 반환이며 limit/offset은 선택 사항(meta에 offset/limit/orgCount/rowCount 포함).
 - `GET /api/rank/2025-top100-counterparty-dri/targets-summary?size=대기업` → 규모별 DRI 행을 받아 티어 그룹별 target26/coverage/expected 합계와 DB snapshot 정보를 제공한다(프런트 Target Board 계산에 사용).
 - `GET /api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...`: 해당 org/upper_org 딜 상세, `deals[]`에 `people_id/people_name/upper_org` 포함.
+- 프런트 랭킹 화면은 `/api/rank/2025-deals`만 사용해 26년 타겟(온라인/비온라인)을 클라이언트에서 계산하며, summary-by-size 응답은 UI에서 직접 사용하지 않는다.
 
 ## Invariants (Must Not Break)
 - ONLINE 포맷은 정확히 `구독제(온라인)`, `선택구매(온라인)`, `포팅`만 인정한다(`statepath_engine.ONLINE_COURSE_FORMATS`).

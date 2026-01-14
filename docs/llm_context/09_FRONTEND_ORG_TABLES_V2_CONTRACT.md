@@ -1,6 +1,6 @@
 ---
 title: org_tables_v2 프런트 계약
-last_synced: 2026-01-06
+last_synced: 2026-12-11
 sync_source:
   - org_tables_v2.html
   - dashboard/server/org_tables_api.py
@@ -8,33 +8,34 @@ sync_source:
   - dashboard/server/statepath_engine.py
   - tests/test_pl_progress_2026.py
   - tests/test_perf_monthly_contracts.py
+  - docs/org_tables_v2.md
 ---
 
 ## Purpose
 - 정적 프런트 `org_tables_v2.html`의 메뉴/상태/렌더/캐시/모달 계약을 코드 기준으로 명세한다.
 
 ## Behavioral Contract
-- 사이드바: `MENU_SECTIONS` 정의 순서로 사업부 퍼포먼스(2026 P&L → 2026 월별 체결액 → 2026 Daily Report(WIP)) → 운영(2026 Target Board, 2026 카운터파티 DRI, 딜체크 7개 메뉴) → 분석(StatePath 24→25, 2025 체결액 순위, 조직/People/Deal 뷰어, 숨김: 2025 대기업 딜·People/업종별 매출) → 검수(개인별 세일즈맵 검수, 고객사 불일치). 해시가 유효하지 않으면 `DEFAULT_MENU_ID="org-view"`. 딜체크 메뉴는 단일 config(`DEALCHECK_MENU_DEFS`)에서 부모 2개(교육1/교육2)와 자식 5개(교육1: 1/2파트, 교육2: 1/2파트/온라인셀)를 정의하며, 사이드바에서는 부모/자식 모두 동일 정렬로 보여주되 자식 라벨에만 `↳ ` 접두어를 추가한다.
+- 사이드바: `MENU_SECTIONS` 순서로 사업부 퍼포먼스(2026 P&L → 2026 월별 체결액 → 2026 Daily Report(WIP)) → 운영(2026 Target Board, 2026 카운터파티 DRI, 딜체크 7개 메뉴) → 분석(StatePath 24→25, 2025 체결액 순위, 조직/People/Deal 뷰어, 숨김: 2025 대기업 딜·People/업종별 매출) → 검수(개인별 세일즈맵 검수, 고객사 불일치). 해시가 유효하지 않으면 `DEFAULT_MENU_ID="org-view"`. 딜체크 메뉴는 단일 config(`DEALCHECK_MENU_DEFS`)에서 부모 2개(교육1/교육2)와 자식 5개(교육1: 1/2파트, 교육2: 1/2파트/온라인셀)를 정의하며, 자식 라벨에만 `↳ ` 접두어를 추가한다. 월별 체결액도 동일 패턴으로 부모 `biz-perf-monthly` 아래 하위 메뉴 2개(교육1/교육2)가 있으며 `team` 파라미터를 전달한다.
 - API_BASE: origin이 있으면 `<origin>/api`, 아니면 `http://localhost:8000/api`.
 - 2026 P&L (`renderBizPerfPlProgress2026`):
   - `/performance/pl-progress-2026/summary` → 연간(T/E) 후 2601~2612 T/E 컬럼을 렌더. 현재 월 헤더/셀에 `is-current-month-group`/`is-current-month` 클래스 부여.
   - assumptions 바(공헌이익률 온라인/출강, 월 제작/마케팅/인건비) 입력 → `applyAssumptionsToPnlData`로 즉시 재계산. `pnlAssumpInfoBtn`은 meta.excluded·snapshot_version·가정을 모달로 표시, `pnlResetAssumptionsBtn`은 기본값으로 복구.
   - 월별 E 열(REV_TOTAL/REV_ONLINE/REV_OFFLINE)만 클릭 가능, `/performance/pl-progress-2026/deals` 결과를 recognizedAmount desc→amountUsed desc→dealName desc 정렬해 모달 테이블로 표시.
 - 2026 월별 체결액 (`renderBizPerfMonthly`):
-  - `/performance/monthly-amounts/summary` → YYMM 24개월, rows TOTAL→CONTRACT→CONFIRMED→HIGH, segment 11종. 값은 `formatEok1`로 억 1자리, dealCount=0이면 `<span class="mp-cell-btn is-zero">` 비활성.
-  - 셀 클릭 시 `/performance/monthly-amounts/deals`, amount>0 우선→expectedAmount→dealName asc 정렬 후 모달 테이블(15열, colgroup 고정) 표시.
+  - `/performance/monthly-amounts/summary` → YYMM 24개월, rows TOTAL→CONTRACT→CONFIRMED→HIGH, segment 11종. 값은 `formatEok1`로 억 1자리, dealCount=0이면 `<span class="mp-cell-btn is-zero">` 비활성. 하위 메뉴(교육1/교육2)는 `team=edu1|edu2`를 함께 전달한다.
+  - 셀 클릭 시 `/performance/monthly-amounts/deals`, amount>0 우선→expectedAmount→dealName asc 정렬 후 모달 테이블(15열, colgroup 고정) 표시. 팀별 메뉴는 동일한 team 파라미터를 사용한다.
 - 카운터파티 DRI (`renderRankCounterpartyDriScreen`):
   - `/rank/2025-top100-counterparty-dri`를 호출해 규모별 **전체 리스트**를 캐싱하고 검색/DRI(O/X/all)/팀&파트 필터를 클라이언트에서 적용하며, 정렬은 고정(orgWon2025 desc → cpTotal2025 desc). Prev/Next 페이징 없이 전체를 한 번에 렌더하며, 행 클릭 시 `/rank/2025-counterparty-dri/detail`.
 - 2026 Target Board: `/rank/2025-top100-counterparty-dri` 결과를 대/중견/중소 3그룹으로 불러와 티어별 출강 타겟 KPI 카드(26 출강 체결/타겟, 억 단위)를 렌더한다. 데이터가 없으면 “DRI 데이터 없음”을 표시한다.
 - 딜체크/QC:
-  - `renderDealCheckScreen(teamKey, options)` 한 곳에서 7개 딜체크 메뉴를 공통 렌더하며, `/deal-check?team=edu1|edu2` 결과를 orgWon2025Total desc→createdAt asc→dealId asc로 렌더, memoCount=0이면 “메모 없음” 비활성 버튼. 부모 메뉴는 필터 없이 팀 전체를, 자식 메뉴는 `partFilter`(1/2파트/온라인셀)를 받아 owners→`getDealCheckPartLookup` 룩업 기반으로 클라이언트 필터를 적용한다. 섹션은 공통 6분할(리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인) 순서를 유지한다.
+  - `renderDealCheckScreen(teamKey, options)` 한 곳에서 7개 딜체크 메뉴를 공통 렌더하며, `/deal-check/edu1`·`/deal-check/edu2`(또는 `/deal-check?team=`) 결과를 orgWon2025Total desc→createdAt asc→dealId asc로 렌더, memoCount=0이면 “메모 없음” 비활성 버튼. 부모 메뉴는 필터 없이 팀 전체를, 자식 메뉴는 `partFilter`(1/2파트/온라인셀)를 받아 owners→`getDealCheckPartLookup` 룩업 기반으로 클라이언트 필터를 적용한다. 섹션은 공통 6분할(리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인) 순서를 유지한다.
   - `renderDealQcR1R15Screen`은 `/qc/deal-errors/summary` 카드(팀별 총이슈 desc) + `/qc/deal-errors/person` 상세 모달(R1~R15 위배만 표시) 제공.
 - 조직/People/Deal 뷰어:
   - `getSizes`→`/orgs`로 조직 목록 로드, 선택 시 `/orgs/{id}/people`→사람 선택→`/people/{id}/deals`/`/people/{id}/memos`/`/deals/{id}/memos`.
   - 상위 조직 JSON 카드: `/orgs/{id}/won-groups-json` 캐시 → 선택 upper_org가 없으면 JSON 버튼 비활성+안내, 선택 시 전체/선택 JSON 모달, compact 버튼은 `/won-groups-json-compact`.
-- StatePath 24→25: 서버 호출은 `segment/sort/limit`만 전달하며, 필터는 모두 클라이언트 드로어(규모 라디오, 2024 티어 프리셋/체크박스, Quick Filters, 패턴 필터 전이/셀/rail)에서 즉시 적용된다. Snapshot/Pattern Explorer/테이블/브레드크럼이 공유 상태를 사용하고 “전체 해제” 버튼이 클라이언트 필터를 리셋한다.
+- StatePath 24→25: 서버 호출은 `segment/sort/limit`만 전달하며, 필터는 모두 클라이언트 드로어(규모 라디오, 2024 티어 프리셋/체크박스, Quick Filters, 패턴 필터 전이/셀/rail)에서 즉시 적용된다. Snapshot/Pattern Explorer/테이블/브레드크럼이 공유 상태를 사용하고 “전체 해제” 버튼이 클라이언트 필터를 리셋한다. Glossary/Legend 모달과 Core JSON 복사 버튼(StatePath 상세)이 포함돼 필터 기준과 복사 스키마를 안내한다.
 - 2026 Daily Report(WIP, Counterparty Risk): 날짜 선택+새로고침 버튼, tier/risk 멀티셀렉트, pipeline_zero 토글, 검색, 리스크 칩을 제공한다. `/report/counterparty-risk` 응답의 summary.tier_groups/summary.counts/data_quality와 counterparties[*](`target_2026/coverage_2026/expected_2026/gap/coverage_ratio/pipeline_zero/evidence_bullets/recommended_actions`)를 표시하며, 섹션별 details 토글이 evidence/추천 액션을 노출한다. DB 버전 배지를 표시하고 필터 상태는 메모리 캐시(Map)로 유지된다.
-- 2025 체결액 순위: 규모 셀렉터 + 등급 가이드/배수 설정 모달을 갖추고, 테이블에 26 타겟/온라인/비온라인 컬럼을 함께 렌더한다(프런트에서 `computeTargets`로 계산, 삼성 S0는 50억 고정).
+- 2025 체결액 순위: 규모 셀렉터 + 등급 가이드/배수 설정 모달을 갖추고, `/rank/2025-deals`만 호출해 받은 데이터를 프런트에서 `computeTargets`로 재계산해 26 타겟/온라인/비온라인 컬럼을 렌더한다(삼성 S0는 50억 고정). `/rank/2025/summary-by-size`는 UI에서 사용하지 않는다.
 
 ## Invariants (Must Not Break)
 - 메뉴 섹션/라벨/순서/ID는 `MENU_SECTIONS` 정의와 일치해야 하며, 잘못된 hash 시 org-view로 이동해야 한다.
@@ -46,6 +47,7 @@ sync_source:
 - Counterparty Risk 화면은 tier/risk/pipeline_zero/search 필터를 모두 프런트에서 적용하고, summary(티어별 target/coverage/gap/coverage%)와 evidence/추천 액션 토글을 표시해야 한다.
 - DRI 테이블은 target26(오프라인/온라인) 컬럼과 override 강조 클래스를 렌더해야 하며, 팀&파트 옵션은 owners2025 기반으로 재계산된다.
 - 2025 체결액 순위 테이블에는 26년 타겟/온라인/비온라인 컬럼과 등급 배수/가이드 모달 버튼이 포함돼야 한다. Target Board 카드 그룹은 DRI 원본을 기반으로 티어별 합계를 보여야 한다.
+- StatePath 도움말(Glossary/Legend)과 Core JSON 복사 버튼은 렌더/작동해야 하며, 서버 재호출 없이 클라이언트 상태만 업데이트해야 한다.
 
 ## Coupling Map
 - 프런트: `org_tables_v2.html` 렌더러/상수(`MENU_SECTIONS`, `DEFAULT_MENU_ID`, `PART_STRUCTURE`, `COUNTERPARTY_ONLINE_FORMATS` 등).

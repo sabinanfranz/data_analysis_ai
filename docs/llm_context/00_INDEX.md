@@ -1,6 +1,6 @@
 ---
 title: LLM Context Pack 인덱스
-last_synced: 2026-01-06
+last_synced: 2026-12-11
 sync_source:
   - docs/api_behavior.md
   - docs/org_tables_v2.md
@@ -8,6 +8,9 @@ sync_source:
   - docs/snapshot_pipeline.md
   - docs/user_guide.md
   - docs/org_tables_usage.md
+  - docs/llm_context/06_API_CONTRACT_CORE.md
+  - docs/llm_context/07_API_CONTRACT_RANKINGS.md
+  - docs/llm_context/09_FRONTEND_ORG_TABLES_V2_CONTRACT.md
 ---
 
 ## Purpose
@@ -21,7 +24,7 @@ sync_source:
 ## Invariants (Must Not Break)
 - front matter에 last_synced/sync_source가 존재해야 하며, 맵에 포함된 문서들은 모두 필수 섹션(Purpose~Verification)을 갖춘 상태여야 한다.
 - 문서 카테고리(A~H)와 링크가 실제 파일 경로와 일치해야 한다.
-- 최신 변경은 docs 루트 문서들과 동일한 기준 날짜(2026-01-06)를 반영해야 한다.
+- 최신 변경은 docs 루트 문서들과 동일한 기준 날짜(2026-12-11)를 반영해야 한다.
 
 ## Coupling Map
 - 코드/문서: `docs/api_behavior.md`(API), `docs/org_tables_v2.md`(프런트/UX), `docs/json_logic.md`(won-groups JSON), `docs/snapshot_pipeline.md`(스냅샷), `docs/user_guide.md`(로컬 실행), `docs/org_tables_usage.md`(정적 HTML).

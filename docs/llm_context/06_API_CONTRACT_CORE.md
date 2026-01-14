@@ -1,6 +1,6 @@
 ---
 title: 핵심 조회 API 계약 (org_tables_v2.html 사용)
-last_synced: 2026-01-06
+last_synced: 2026-12-11
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py
@@ -31,6 +31,7 @@ sync_source:
   - `GET /api/rank/2025-deals`, `/api/rank/2025-deals-people`, `/api/rank/mismatched-deals`, `/api/rank/won-yearly-totals`, `/api/rank/won-industry-summary` → DB 조회 결과 그대로 반환.
   - `GET /api/rank/2025-top100-counterparty-dri?size=대기업` → Lost/Convert 제외, 2025/2026 계약/예상 딜 중 확정/높음/Won만 집계, orgWon2025 desc→cpTotal2025 desc 정렬, owners는 People.owner_json 우선. 기본은 규모별 **전체** 반환이며 limit/offset은 선택 사항.
   - `GET /api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...` → 해당 org/upper_org 딜 상세(people_id/people_name/upper_org 포함).
+  - 프런트 랭킹 화면은 `/api/rank/2025-deals` 결과만 사용해 26년 타겟을 클라이언트 계산하며, summary-by-size는 별도 캐시 요약용이다.
 - `GET /api/statepath/portfolio-2425` → segment/search/정렬/패턴/리스크 필터(OPEN/ScaleUp/회사 전이/셀 이벤트/rail 등)와 limit/offset을 Query로 받아 요약+아이템(금액은 억 단위)을 반환한다. 현재 프런트는 segment/sort/limit만 서버에 전달하고 나머지 필터는 클라이언트 상태로 처리한다. `GET /api/orgs/{id}/statepath-2425`는 단건 버전.
   - `GET /api/orgs/{id}/statepath` → compact JSON 기반 statepath_engine 결과(2024/2025 상태·Path·추천, 금액은 억 단위) 반환.
 - 사업부 퍼포먼스:

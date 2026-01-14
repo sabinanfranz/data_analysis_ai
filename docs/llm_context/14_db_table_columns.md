@@ -1,4 +1,14 @@
 # DB Table Columns (salesmap_latest.db)
+---
+title: salesmap_latest.db 테이블 컬럼 목록
+last_synced: 2026-12-11
+sync_source:
+  - salesmap_latest.db
+  - dashboard/server/database.py
+---
+
+# DB Table Columns (salesmap_latest.db)
+
 ## deal
 - id — TEXT
 - peopleId — TEXT
@@ -376,4 +386,3 @@
 - contents — TEXT
 - createdAt — TEXT
 - webFormId — TEXT
-

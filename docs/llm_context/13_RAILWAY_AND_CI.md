@@ -1,6 +1,6 @@
 ---
 title: CI/CD & Railway 배포 계약
-last_synced: 2026-01-06
+last_synced: 2026-12-11
 sync_source:
   - .github/workflows/salesmap_db_daily.yml
   - start.sh

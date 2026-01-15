@@ -7546,6 +7546,21 @@
       `;
     }
 
+    const TARGET_EOK_2026 = {
+      "2601": 12.8,
+      "2602": 14.3,
+      "2603": 16.9,
+      "2604": 18.5,
+      "2605": 18.3,
+      "2606": 19.8,
+      "2607": 14.7,
+      "2608": 13.9,
+      "2609": 12.8,
+      "2610": 12.1,
+      "2611": 10.0,
+      "2612": 11.0,
+    };
+
     function buildPerfMonthlySummaryRows(data) {
       const months = (data && data.months) || [];
       if (!months.length) return [];
@@ -7565,6 +7580,23 @@
         });
         return byMonth;
       };
+      const buildTargetRow = () => {
+        const byMonth = {};
+        months.forEach((m) => {
+          const key = String(m || "");
+          if (key.startsWith("25")) {
+            byMonth[m] = null;
+            return;
+          }
+          if (key.startsWith("26")) {
+            const eok = TARGET_EOK_2026[key];
+            byMonth[m] = Math.round((eok || 0) * 1e8);
+            return;
+          }
+          byMonth[m] = 0;
+        });
+        return { label: "목표 체결액", byMonth };
+      };
       const defs = [
         { label: "전체 합산", seg: "ALL", row: "TOTAL" },
         { label: "삼성전자 합산", seg: "SAMSUNG", row: "TOTAL" },
@@ -7575,10 +7607,12 @@
         { label: "└ 비온라인(기업)", seg: "NON_SAMSUNG_OFFLINE_MAJOR_SIZE", row: "TOTAL" },
         { label: "└ 비온라인(공공)", seg: "OFFLINE_NON_MAJOR_SIZE", row: "TOTAL" },
       ];
-      return defs.map(({ label, seg, row }) => {
+      const rows = defs.map(({ label, seg, row }) => {
         const rowData = findRow(seg, row);
         return { label, byMonth: fillByMonth(rowData) };
       });
+      rows.unshift(buildTargetRow());
+      return rows;
     }
 
     function renderPerfMonthlySummaryTable(rows, months = []) {
@@ -7593,8 +7627,9 @@
               <td class="sticky-col mp-kind align-left">${row.label}</td>
               ${months
                 .map((m) => {
-                  const v = (row.byMonth || {})[m] || 0;
-                  return `<td class="num">${formatEok1(v)}</td>`;
+                  const raw = (row.byMonth || {})[m];
+                  if (raw === null) return `<td class="num">-</td>`;
+                  return `<td class="num">${formatEok1(raw || 0)}</td>`;
                 })
                 .join("")}
             </tr>

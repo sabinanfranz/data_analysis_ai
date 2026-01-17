@@ -2570,6 +2570,7 @@
         edu2: null,
       },
     };
+    const DEALCHECK_OWNER_FILTER_BY_MENU = new Map();
     const NAME_TO_TEAM_PART = buildNameToTeamPartIndex(PART_STRUCTURE);
 
     function showToast(message, tone = "info") {
@@ -2638,6 +2639,19 @@
       return lookup;
     }
 
+    function getDealCheckRosterNames(teamKey, partFilter) {
+      const lookup = getDealCheckPartLookup(teamKey) || {};
+      const toArr = (set) => Array.from(set || []);
+      let names = [];
+      if (partFilter === "part1") names = toArr(lookup.part1);
+      else if (partFilter === "part2") names = toArr(lookup.part2);
+      else if (partFilter === "online") names = toArr(lookup.online);
+      else names = [...toArr(lookup.part1), ...toArr(lookup.part2), ...toArr(lookup.online)];
+      const deduped = Array.from(new Set(names.filter(Boolean)));
+      deduped.sort((a, b) => a.localeCompare(b));
+      return deduped;
+    }
+
     function matchDealCheckPartFilter(teamKey, owners, partFilter) {
       if (!partFilter) return true;
       const names = Array.isArray(owners) ? owners : [];
@@ -2649,6 +2663,16 @@
         if (partFilter === "part1" && lookup.part1.has(normalized)) return true;
         if (partFilter === "part2" && lookup.part2.has(normalized)) return true;
         if (partFilter === "online" && lookup.online.has(normalized)) return true;
+      }
+      return false;
+    }
+
+    function matchDealCheckOwnerFilter(owners, ownerFilterNormalized) {
+      if (!ownerFilterNormalized || ownerFilterNormalized === "ALL") return true;
+      const names = Array.isArray(owners) ? owners : [];
+      if (!names.length) return false;
+      for (const name of names) {
+        if (normalizeOwnerName(name) === ownerFilterNormalized) return true;
       }
       return false;
     }
@@ -6675,15 +6699,21 @@
       }
       const displayLabel = options.label || (cfg ? cfg.label : `${teamKey} 딜체크`);
       const partFilter = options.partFilter || null;
-      const partFilterLabel =
-        partFilter === "part1"
-          ? "1파트"
-          : partFilter === "part2"
-          ? "2파트"
-          : partFilter === "online"
-          ? "온라인셀"
-          : "";
-      const partFilterHint = partFilterLabel ? ` · 추가 필터: ${partFilterLabel}` : "";
+      const menuKey = `${teamKey}::${partFilter || "ALLPART"}`;
+      const ownerRoster = getDealCheckRosterNames(teamKey, partFilter);
+      let ownerFilter = DEALCHECK_OWNER_FILTER_BY_MENU.get(menuKey) || "ALL";
+      if (ownerFilter !== "ALL" && !ownerRoster.includes(ownerFilter)) {
+        ownerFilter = "ALL";
+        DEALCHECK_OWNER_FILTER_BY_MENU.set(menuKey, ownerFilter);
+      }
+      const ownerFilterOptions = [
+        `<option value="ALL"${ownerFilter === "ALL" ? " selected" : ""}>전체</option>`,
+        ...ownerRoster.map((name) => {
+          const esc = escapeHtml(name);
+          const selectedAttr = ownerFilter === name ? " selected" : "";
+          return `<option value="${esc}"${selectedAttr}>${esc}</option>`;
+        }),
+      ].join("");
       contentRoot.innerHTML = `
         <div class="dealcheck-screen" data-team="${teamKey}">
         <section class="card" id="${teamKey}SummaryCard">
@@ -6692,7 +6722,11 @@
             <div class="spacer"></div>
             <span class="pill muted" id="${teamKey}SummaryCount">R(S0~P2-비온라인) 0 / R(S0~P2-온라인) 0 / N(온라인) 0 / R(P3~P5-온라인) 0 / R(P3~P5-비온라인) 0 / N(비온라인) 0</span>
           </div>
-          <div class="muted">상태=SQL이며 딜 담당자 중 ${cfg.partTeamKey} 담당자가 포함된 딜만 노출됩니다.${partFilterHint}</div>
+          <div class="control-row" style="gap: 8px; margin-top: 8px;">
+            <label class="muted" for="${teamKey}OwnerFilterSelect">데이원 구성원</label>
+            <select id="${teamKey}OwnerFilterSelect">${ownerFilterOptions}</select>
+            <span class="muted" id="${teamKey}OwnerFilterStatus"></span>
+          </div>
         </section>
         <section class="card" id="${teamKey}RetHighOfflineCard">
           <div class="control-row">
@@ -6758,6 +6792,31 @@
       const retLowOnlineBody = document.getElementById(`${teamKey}RetLowOnlineBody`);
       const retLowOfflineBody = document.getElementById(`${teamKey}RetLowOfflineBody`);
       const newOfflineBody = document.getElementById(`${teamKey}NewOfflineBody`);
+
+      const ownerFilterSelect = document.getElementById(`${teamKey}OwnerFilterSelect`);
+      const ownerFilterStatus = document.getElementById(`${teamKey}OwnerFilterStatus`);
+      const updateOwnerFilterStatus = (val) => {
+        if (!ownerFilterStatus) return;
+        ownerFilterStatus.textContent = val === "ALL" ? "필터: 전체" : `필터: ${val}`;
+      };
+      let latestRawItems = null;
+      const applyFiltersAndRender = (items) => {
+        const itemsAfterPart = Array.isArray(items)
+          ? items.filter((row) => matchDealCheckPartFilter(teamKey, row.owners, partFilter))
+          : [];
+        const ownerFiltered = itemsAfterPart.filter((row) => matchDealCheckOwnerFilter(row.owners, ownerFilter));
+        renderAll(ownerFiltered);
+      };
+      updateOwnerFilterStatus(ownerFilter);
+      if (ownerFilterSelect) {
+        ownerFilterSelect.value = ownerFilter;
+        ownerFilterSelect.addEventListener("change", (e) => {
+          ownerFilter = e.target.value || "ALL";
+          DEALCHECK_OWNER_FILTER_BY_MENU.set(menuKey, ownerFilter);
+          updateOwnerFilterStatus(ownerFilter);
+          if (latestRawItems) applyFiltersAndRender(latestRawItems);
+        });
+      }
 
       const attachHandlers = (container) => {
         container.querySelectorAll('button[data-action="deal-memo"]').forEach((btn) => {
@@ -6860,10 +6919,8 @@
 
       try {
         const rawItems = await loadDealCheck(teamKey);
-        const filteredItems = Array.isArray(rawItems)
-          ? rawItems.filter((row) => matchDealCheckPartFilter(teamKey, row.owners, partFilter))
-          : [];
-        renderAll(filteredItems);
+        latestRawItems = rawItems;
+        applyFiltersAndRender(rawItems);
       } catch (err) {
         console.error(err);
         const bodies = [

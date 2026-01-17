@@ -6697,7 +6697,6 @@
         contentRoot.innerHTML = `<div class="muted">알 수 없는 팀(${teamKey})입니다.</div>`;
         return;
       }
-      const displayLabel = options.label || (cfg ? cfg.label : `${teamKey} 딜체크`);
       const partFilter = options.partFilter || null;
       const menuKey = `${teamKey}::${partFilter || "ALLPART"}`;
       const ownerRoster = getDealCheckRosterNames(teamKey, partFilter);
@@ -6717,15 +6716,13 @@
       contentRoot.innerHTML = `
         <div class="dealcheck-screen" data-team="${teamKey}">
         <section class="card" id="${teamKey}SummaryCard">
-          <div class="control-row">
-            <h2>${displayLabel}</h2>
+          <div class="control-row" style="gap: 8px; align-items: center;">
+            <div class="dealcheck-owner-filter" style="display:flex; gap:6px; align-items:center;">
+              <label class="muted" for="${teamKey}OwnerFilterSelect">데이원 구성원</label>
+              <select id="${teamKey}OwnerFilterSelect">${ownerFilterOptions}</select>
+            </div>
             <div class="spacer"></div>
-            <span class="pill muted" id="${teamKey}SummaryCount">R(S0~P2-비온라인) 0 / R(S0~P2-온라인) 0 / N(온라인) 0 / R(P3~P5-온라인) 0 / R(P3~P5-비온라인) 0 / N(비온라인) 0</span>
-          </div>
-          <div class="control-row" style="gap: 8px; margin-top: 8px;">
-            <label class="muted" for="${teamKey}OwnerFilterSelect">데이원 구성원</label>
-            <select id="${teamKey}OwnerFilterSelect">${ownerFilterOptions}</select>
-            <span class="muted" id="${teamKey}OwnerFilterStatus"></span>
+            <span class="pill muted" style="white-space: nowrap;" id="${teamKey}SummaryCount">R(S0~P2-비온라인) 0 / R(S0~P2-온라인) 0 / N(온라인) 0 / R(P3~P5-온라인) 0 / R(P3~P5-비온라인) 0 / N(비온라인) 0</span>
           </div>
         </section>
         <section class="card" id="${teamKey}RetHighOfflineCard">
@@ -6794,11 +6791,6 @@
       const newOfflineBody = document.getElementById(`${teamKey}NewOfflineBody`);
 
       const ownerFilterSelect = document.getElementById(`${teamKey}OwnerFilterSelect`);
-      const ownerFilterStatus = document.getElementById(`${teamKey}OwnerFilterStatus`);
-      const updateOwnerFilterStatus = (val) => {
-        if (!ownerFilterStatus) return;
-        ownerFilterStatus.textContent = val === "ALL" ? "필터: 전체" : `필터: ${val}`;
-      };
       let latestRawItems = null;
       const applyFiltersAndRender = (items) => {
         const itemsAfterPart = Array.isArray(items)
@@ -6807,13 +6799,11 @@
         const ownerFiltered = itemsAfterPart.filter((row) => matchDealCheckOwnerFilter(row.owners, ownerFilter));
         renderAll(ownerFiltered);
       };
-      updateOwnerFilterStatus(ownerFilter);
       if (ownerFilterSelect) {
         ownerFilterSelect.value = ownerFilter;
         ownerFilterSelect.addEventListener("change", (e) => {
           ownerFilter = e.target.value || "ALL";
           DEALCHECK_OWNER_FILTER_BY_MENU.set(menuKey, ownerFilter);
-          updateOwnerFilterStatus(ownerFilter);
           if (latestRawItems) applyFiltersAndRender(latestRawItems);
         });
       }

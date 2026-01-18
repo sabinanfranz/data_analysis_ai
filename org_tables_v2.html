@@ -8595,6 +8595,9 @@
           });
         }
         filtered.sort((a, b) => {
+          const aN = ((a.orgTier || "").toUpperCase() === "N");
+          const bN = ((b.orgTier || "").toUpperCase() === "N");
+          if (aN !== bN) return aN ? 1 : -1;
           if ((b.orgWon2025 || 0) !== (a.orgWon2025 || 0)) return (b.orgWon2025 || 0) - (a.orgWon2025 || 0);
           return (b.cpTotal2025 || 0) - (a.cpTotal2025 || 0);
         });

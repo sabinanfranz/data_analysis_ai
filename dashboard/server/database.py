@@ -1516,6 +1516,15 @@ def _normalize_counterparty_upper(val: Any) -> str:
     return text
 
 
+def _row_get(row: Any, key: str, default: Any = None) -> Any:
+    try:
+        if hasattr(row, "keys"):
+            return row[key] if key in row.keys() else default
+        return row.get(key, default)
+    except Exception:
+        return default
+
+
 def _norm_text(val: Any) -> str:
     text = (val or "").strip()
     return text if text else "미입력"
@@ -4182,7 +4191,170 @@ def _compute_counterparty_dri_rows(
             }
         )
 
-    rows = [r for r in rows if (r.get("cpTotal2025") or 0) > 0]
+    existing_keys: Set[Tuple[str, str]] = set()
+    for r in rows:
+        org_name_norm = (r.get("orgName") or "").strip()
+        upper_norm = _normalize_counterparty_upper(r.get("upperOrg"))
+        if org_name_norm:
+            existing_keys.add((org_name_norm, upper_norm))
+
+    candidate_keys: Set[Tuple[str, str]] = set()
+    candidate_keys.update({(org, _normalize_counterparty_upper(upper)) for org, upper in offline_targets.keys()})
+    candidate_keys.update({(org, _normalize_counterparty_upper(upper)) for org, upper in online_targets.keys()})
+
+    if candidate_keys:
+        with _connect(db_path) as conn:
+            org_rows_all = _fetch_all(
+                conn,
+                'SELECT id, COALESCE("이름", id) AS name, "기업 규모" AS sizeRaw FROM organization',
+            )
+            org_by_name: Dict[str, Dict[str, Any]] = {}
+            org_name_dupes: Set[str] = set()
+            for row in org_rows_all:
+                name = (row["name"] or "").strip()
+                if not name:
+                    continue
+                if name in org_by_name:
+                    org_name_dupes.add(name)
+                org_by_name.setdefault(name, row)
+
+            candidate_org_ids: Set[str] = set()
+            candidate_org_names: Set[str] = {name for name, _ in candidate_keys}
+            for name in candidate_org_names:
+                if name in org_name_dupes:
+                    logging.warning("[counterparty_targets_2026] duplicate organization name, skip excel match: %s", name)
+                    continue
+                entry = org_by_name.get(name)
+                if entry:
+                    candidate_org_ids.add(entry["id"])
+
+            people_upper_by_org: Dict[str, Set[str]] = {}
+            if candidate_org_ids:
+                placeholders = ",".join("?" * len(candidate_org_ids))
+                people_rows = _fetch_all(
+                    conn,
+                    f'SELECT organizationId, "소속 상위 조직" AS upper_org FROM people WHERE organizationId IN ({placeholders})',
+                    list(candidate_org_ids),
+                )
+                for prow in people_rows:
+                    org_id = prow["organizationId"]
+                    upper_norm = _normalize_counterparty_upper(prow["upper_org"])
+                    people_upper_by_org.setdefault(org_id, set()).add(upper_norm)
+
+            org_total_lookup: Dict[str, float] = {row["orgId"]: row.get("total", 0.0) for row in org_lookup.values()}
+            missing_totals: Set[str] = set(candidate_org_ids) - set(org_total_lookup.keys())
+            if missing_totals:
+                cond_sql = " AND ".join(conditions)
+                placeholders = ",".join("?" * len(missing_totals))
+                total_rows = _fetch_all(
+                    conn,
+                    f'SELECT d.organizationId AS orgId, SUM(CAST(d."금액" AS REAL)) AS totalAmount '
+                    "FROM deal d "
+                    "LEFT JOIN organization o ON o.id = d.organizationId "
+                    f"WHERE {cond_sql} AND d.organizationId IN ({placeholders}) "
+                    "GROUP BY d.organizationId",
+                    params + list(missing_totals),
+                )
+                for trow in total_rows:
+                    org_total_lookup[trow["orgId"]] = _to_number(trow["totalAmount"]) or 0.0
+
+            owners_by_org: Dict[str, Set[str]] = {}
+            for r in rows:
+                org_id = r.get("orgId")
+                if not org_id:
+                    continue
+                owners_by_org.setdefault(org_id, set()).update(r.get("owners2025") or [])
+
+            owners_needed = [org_id for org_id in candidate_org_ids if not owners_by_org.get(org_id)]
+            if owners_needed:
+                has_people_owner = _has_column(conn, "people", "담당자")
+                people_owner_select = 'p."담당자"' if has_people_owner else "NULL"
+                placeholders = ",".join("?" * len(owners_needed))
+                owner_rows_extra = _fetch_all(
+                    conn,
+                    f'SELECT d.organizationId AS orgId, COALESCE(p."소속 상위 조직","미입력") AS upper_org, '
+                    f'{people_owner_select} AS people_owner_json, d."담당자" AS deal_owner_json '
+                    "FROM deal d "
+                    "LEFT JOIN people p ON p.id = d.peopleId "
+                    "WHERE d.\"상태\" = \'Won\' AND d.\"계약 체결일\" LIKE \'2025%\' AND d.organizationId IN ("
+                    f"{placeholders})",
+                    list(owners_needed),
+                )
+                for orow in owner_rows_extra:
+                    owners_by_org.setdefault(orow["orgId"], set()).update(_extract_preferred_owner_names(orow))
+
+        org_meta_by_id: Dict[str, Dict[str, Any]] = {}
+        for row in rows:
+            org_id = row.get("orgId")
+            if not org_id or org_id in org_meta_by_id:
+                continue
+            org_meta_by_id[org_id] = {
+                "orgWon2025": row.get("orgWon2025") or 0.0,
+                "sizeRaw": row.get("sizeRaw"),
+            }
+
+        for org_name_raw, upper_raw in sorted(candidate_keys):
+            org_name = (org_name_raw or "").strip()
+            upper_norm = _normalize_counterparty_upper(upper_raw)
+            if not org_name:
+                continue
+            if (org_name, upper_norm) in existing_keys:
+                continue
+
+            if org_name in org_name_dupes:
+                continue
+            org_entry = org_by_name.get(org_name)
+            if not org_entry:
+                continue
+            org_size = _row_get(org_entry, "sizeRaw")
+            if size and size != "전체" and org_size != size:
+                continue
+            org_id = org_entry["id"]
+            upper_set = people_upper_by_org.get(org_id, set())
+            if upper_norm not in upper_set:
+                continue
+
+            org_won = org_meta_by_id.get(org_id, {}).get("orgWon2025")
+            if org_won is None:
+                org_won = org_total_lookup.get(org_id, 0.0)
+            owners_list = sorted(owners_by_org.get(org_id, set()))
+
+            offline_override = offline_targets.get((org_name, upper_norm))
+            online_override = online_targets.get((org_name, upper_norm))
+            if offline_override is not None:
+                used_offline_overrides.add((org_name, upper_norm))
+            if online_override is not None:
+                used_online_overrides.add((org_name, upper_norm))
+
+            rows.append(
+                {
+                    "orgId": org_id,
+                    "orgName": org_name,
+                    "orgTier": "N",
+                    "orgWon2025": org_won or 0.0,
+                    "orgOnline2025": 0.0,
+                    "orgOffline2025": 0.0,
+                    "upperOrg": upper_norm,
+                    "cpOnline2025": 0.0,
+                    "cpOffline2025": 0.0,
+                    "cpTotal2025": 0.0,
+                    "cpOnline2026": 0.0,
+                    "cpOffline2026": 0.0,
+                    "owners2025": owners_list,
+                    "dealCount2025": 0,
+                    "target26Offline": offline_override if offline_override is not None else 0.0,
+                    "target26Online": online_override if online_override is not None else 0.0,
+                    "target26OfflineIsOverride": offline_override is not None,
+                    "target26OnlineIsOverride": online_override is not None,
+                }
+            )
+            existing_keys.add((org_name, upper_norm))
+
+    rows = [
+        r
+        for r in rows
+        if (r.get("cpTotal2025") or 0) > 0 or ((r.get("orgTier") or "").upper() == "N")
+    ]
     rows.sort(key=lambda r: (-r["orgWon2025"], -r["cpTotal2025"]))
 
     unused_offline = set(offline_targets.keys()) - used_offline_overrides

@@ -2297,7 +2297,8 @@
         title: "운영 메뉴",
         defaultOpen: true,
         items: [
-          { id: "target-2026", label: "2026 Target Board" },
+          { id: "target-2026", label: "2026 Target Dashboard(출강)" },
+          { id: "target-2026-online", label: "2026 Target Dashboard(온라인)" },
           // ✅ 구 "2025 카운터파티 DRI" → 2026 카운터파티 DRI (id 유지)
           { id: "rank-2025-counterparty-dri", label: "2026 카운터파티 DRI" },
           ...DEALCHECK_MENU_DEFS.map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
@@ -2333,6 +2334,7 @@
       "rank-2025-people": renderRank2025PeopleScreen,
       "rank-2025-counterparty-dri": renderRankCounterpartyDriScreen,
       "target-2026": renderTarget2026Screen,
+      "target-2026-online": (root) => renderTarget2026DashboardScreen(root, "online"),
       "counterparty-risk-daily": renderCounterpartyRiskDaily,
       "deal-qc-r1r15": renderDealQcR1R15Screen,
       "mismatch-2025": renderMismatch2025Screen,
@@ -2794,11 +2796,11 @@
       return 0;
     }
 
-    function buildTarget2026KpisFiltered(source, filterFn) {
+    function buildTarget2026KpisByMode(source, modeKey, extraRowFilterFn) {
+      const cfg = TARGET2026_MODE_CONFIG[modeKey] || TARGET2026_MODE_CONFIG.offline;
       const big = source?.big || [];
       const mid = source?.mid || [];
       const small = source?.small || [];
-      const safeFilter = typeof filterFn === "function" ? filterFn : () => true;
       const parseRow = (row, sizeKey) => {
         const tier = (row.orgTier || "").toUpperCase();
         const orgName = (row.orgName || "").trim();
@@ -2807,20 +2809,19 @@
         const upperOrg = normalizeUpperOrg(upperOrgRaw);
         const owners = Array.isArray(row.owners2025) ? row.owners2025.filter(Boolean) : [];
         const tp = computeTeamPartSummary(owners);
-        const offline25 = Number(row.cpOffline2025 || 0) || 0;
-        const offline26 = Number(row.cpOffline2026 || 0) || 0;
-        const target26 = Number(row.target26Offline ?? (offline25 * tierMultiplier(tier)));
-        const isOverride = row.target26OfflineIsOverride === true;
-        const overrideTarget26 = isOverride ? Number(row.target26Offline || 0) : 0;
+        const won26 = Number(row[cfg.wonKey] || 0) || 0;
+        const target26 = Number(row[cfg.targetKey] || 0) || 0;
+        const isOverride = row[cfg.overrideKey] === true;
+        const overrideTarget26 = isOverride ? target26 : 0;
         return {
+          modeKey: cfg.modeKey,
           tier,
           orgName,
           orgId,
           upperOrg,
           owners2025: owners,
           teamPartText: tp.teamPartText || "-",
-          offline25,
-          offline26,
+          won26,
           target26,
           isOverride,
           overrideTarget26,
@@ -2828,23 +2829,28 @@
         };
       };
 
-      const bigParsed = (big || []).map((r) => parseRow(r, "big"));
-      const midParsed = (mid || []).map((r) => parseRow(r, "mid"));
-      const smallParsed = (small || []).map((r) => parseRow(r, "small"));
-      const allParsed = [...bigParsed, ...midParsed, ...smallParsed];
+      const allParsed = [
+        ...(big || []).map((r) => parseRow(r, "big")),
+        ...(mid || []).map((r) => parseRow(r, "mid")),
+        ...(small || []).map((r) => parseRow(r, "small")),
+      ];
       console.debug("[target2026] rows", allParsed.length, allParsed[0] || {});
 
       const isSamsung = (r) => r.tier === "S0" && r.orgName === "삼성전자";
       const isTalentDev = (r) => normalizeUpperOrg(r.upperOrg) === "Talent Development";
       const excludeFromS0 = (r) => isSamsung(r) && isTalentDev(r);
+      const applyFilters = (r) => {
+        if (r.tier === "S0" && excludeFromS0(r)) return false;
+        if (cfg.includeRow && !cfg.includeRow(r)) return false;
+        if (typeof extraRowFilterFn === "function" && !extraRowFilterFn(r)) return false;
+        return true;
+      };
       const sumOverrideBySize = (rows, sizeKey) =>
         rows.reduce((acc, r) => acc + (r.sizeKey === sizeKey ? r.overrideTarget26 : 0), 0);
 
       const makeTierKpi = (tier, rowClass) => {
-        const base = allParsed.filter(
-          (r) => r.tier === tier && !(tier === "S0" && excludeFromS0(r)) && safeFilter(r)
-        );
-        const won26 = base.reduce((acc, r) => acc + r.offline26, 0);
+        const base = allParsed.filter((r) => r.tier === tier && applyFilters(r));
+        const won26 = base.reduce((acc, r) => acc + r.won26, 0);
         const target26 = base.reduce((acc, r) => acc + r.target26, 0);
         const overrideBase = base.filter((r) => r.isOverride === true);
         const override = {
@@ -2854,7 +2860,7 @@
         };
         override.total = override.big + override.mid + override.small;
         override.count = overrideBase.length;
-        return { title: tier, rowClass, won26, target26, override, rowsUsed: base };
+        return { title: tier, rowClass, won26, target26, override, rowsUsed: base, modeKey: cfg.modeKey };
       };
 
       const topTiers = ["S0", "P0", "P1", "P2"];
@@ -2866,6 +2872,10 @@
       return groups;
     }
 
+    function buildTarget2026KpisFiltered(source, filterFn) {
+      return buildTarget2026KpisByMode(source, "offline", filterFn);
+    }
+
     function openTarget2026KpiModal(kpi) {
       bindGlobalModalsOnce();
       const modal = state.rankPeopleModal;
@@ -2873,9 +2883,10 @@
         showToast("팝업 초기화 오류(모달 연결 실패)", "error");
         return;
       }
+      const cfg = TARGET2026_MODE_CONFIG[kpi?.modeKey] || TARGET2026_MODE_CONFIG.offline;
       const rows = Array.isArray(kpi?.rowsUsed) ? kpi.rowsUsed.slice() : [];
       rows.sort((a, b) => {
-        const diff = (Number(b.offline26) || 0) - (Number(a.offline26) || 0);
+        const diff = (Number(b.won26) || 0) - (Number(a.won26) || 0);
         if (diff) return diff;
         const orgDiff = String(a.orgName || "").localeCompare(String(b.orgName || ""));
         if (orgDiff) return orgDiff;
@@ -2889,8 +2900,10 @@
           const org = escapeHtml(orgRaw);
           const upper = escapeHtml(r.upperOrg || "미입력");
           const tp = escapeHtml(r.teamPartText || "-");
-          const won26 = formatEok((Number(r.offline26 || 0)) / 1e8);
-          const tgt26 = formatEok((Number(r.target26 || 0)) / 1e8);
+          const wonVal = Number(r.won26 || 0);
+          const tgtVal = Number(r.target26 || 0);
+          const won26 = formatEok(wonVal / 1e8);
+          const tgt26 = formatEok(tgtVal / 1e8);
           const orgCell =
             r.orgId && String(r.orgId).trim()
               ? `<span class="org-link" data-org-id="${escapeHtml(r.orgId)}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${org}</span>`
@@ -2920,8 +2933,8 @@
                 <th>기업명</th>
                 <th>카운터파티</th>
                 <th>팀&파트</th>
-                <th class="num">26 출강 체결</th>
-                <th class="num">26 출강 타겟</th>
+                <th class="num">${cfg.wonLabel}</th>
+                <th class="num">${cfg.targetLabel}</th>
               </tr>
             </thead>
             <tbody>${bodyRows}</tbody>
@@ -3913,14 +3926,39 @@
       return value.toFixed(1);
     }
 
-    const TARGET2026_OFFLINE_SUBTITLE = "26 출강 체결 / 26 출강 타겟 (억)";
-    const TARGET2026_SECTION_DEFS_OFFLINE = [
-      { key: "all", title: "2026 출강 체결액 Target", teamPart: null },
-      { key: "edu1_p1", title: "기업교육 1팀 1파트", teamPart: "기업교육 1팀 1파트" },
-      { key: "edu1_p2", title: "기업교육 1팀 2파트", teamPart: "기업교육 1팀 2파트" },
-      { key: "edu2_p1", title: "기업교육 2팀 1파트", teamPart: "기업교육 2팀 1파트" },
-      { key: "edu2_p2", title: "기업교육 2팀 2파트", teamPart: "기업교육 2팀 2파트" },
-      { key: "edu2_online", title: "기업교육 2팀 온라인셀", teamPart: "기업교육 2팀 온라인셀" },
+    const TARGET2026_MODE_CONFIG = {
+      offline: {
+        modeKey: "offline",
+        menuLabel: "2026 Target Dashboard(출강)",
+        headerTitle: "2026 Target Dashboard(출강)",
+        headerSub: "26 출강 체결 / 26 출강 타겟 (억)",
+        wonKey: "cpOffline2026",
+        targetKey: "target26Offline",
+        overrideKey: "target26OfflineIsOverride",
+        includeRow: (parsedRow) => parsedRow.isOverride === true,
+        wonLabel: "26 출강 체결",
+        targetLabel: "26 출강 타겟",
+      },
+      online: {
+        modeKey: "online",
+        menuLabel: "2026 Target Dashboard(온라인)",
+        headerTitle: "2026 Target Dashboard(온라인)",
+        headerSub: "26 온라인 체결 / 26 온라인 타겟 (억)",
+        wonKey: "cpOnline2026",
+        targetKey: "target26Online",
+        overrideKey: "target26OnlineIsOverride",
+        includeRow: () => true,
+        wonLabel: "26 온라인 체결",
+        targetLabel: "26 온라인 타겟",
+      },
+    };
+
+    const TARGET2026_ORG_SECTIONS = [
+      { id: "edu1-p1", title: "기업교육 1팀 1파트", teamKey: "edu1", partFilter: "part1" },
+      { id: "edu1-p2", title: "기업교육 1팀 2파트", teamKey: "edu1", partFilter: "part2" },
+      { id: "edu2-p1", title: "기업교육 2팀 1파트", teamKey: "edu2", partFilter: "part1" },
+      { id: "edu2-p2", title: "기업교육 2팀 2파트", teamKey: "edu2", partFilter: "part2" },
+      { id: "edu2-on", title: "기업교육 2팀 온라인셀", teamKey: "edu2", partFilter: "online" },
     ];
 
     function matchTeamPartText(rowTeamPartText, expected) {
@@ -3934,7 +3972,7 @@
         <section class="card target2026-wrap" data-target2026-section="${def.key}">
           <div class="target2026-header">
             <div class="target2026-title">${def.title}</div>
-            <div class="target2026-sub">${TARGET2026_OFFLINE_SUBTITLE}</div>
+            <div class="target2026-sub">${def.subtitle || ""}</div>
           </div>
           <div class="target2026-grid-wrap">
             <div class="target2026-grid"><div class="muted">불러오는 중.</div></div>
@@ -9179,7 +9217,11 @@
       const activate = (cardEl) => {
         const section = cardEl.getAttribute("data-kpi-section");
         const idx = Number(cardEl.getAttribute("data-kpi-idx"));
-        const kpis = state.target2026KpisBySection?.[section] || [];
+        const kpiMap =
+          (state.target2026KpisBySection && state.target2026KpisBySection.sections) ||
+          state.target2026KpisBySection ||
+          {};
+        const kpis = kpiMap?.[section] || [];
         const kpi = kpis[idx];
         if (!kpi) return;
         openTarget2026KpiModal(kpi);
@@ -9200,11 +9242,22 @@
       });
     }
 
-    async function renderTarget2026Screen(contentRoot) {
+    async function renderTarget2026DashboardScreen(contentRoot, modeKey = "offline") {
       bindGlobalModalsOnce();
+      const cfg = TARGET2026_MODE_CONFIG[modeKey] || TARGET2026_MODE_CONFIG.offline;
+      const sectionDefs = [
+        { key: `${modeKey}-all`, title: cfg.headerTitle, subtitle: cfg.headerSub, filter: null },
+        ...TARGET2026_ORG_SECTIONS.map((s) => ({
+          key: `${modeKey}-${s.id}`,
+          title: s.title,
+          subtitle: cfg.headerSub,
+          filter: (r) => matchDealCheckPartFilter(s.teamKey, r.owners2025, s.partFilter),
+        })),
+      ];
+
       contentRoot.innerHTML = `
         <div class="target2026-stack">
-          ${TARGET2026_SECTION_DEFS_OFFLINE.map(buildTarget2026SectionSkeleton).join("")}
+          ${sectionDefs.map(buildTarget2026SectionSkeleton).join("")}
         </div>
       `;
       bindTarget2026CardClicksOnce(contentRoot);
@@ -9221,26 +9274,29 @@
         }
 
         const kpisBySection = {};
-        TARGET2026_SECTION_DEFS_OFFLINE.forEach((def) => {
+        sectionDefs.forEach((def) => {
           const grid = contentRoot.querySelector(
             `[data-target2026-section="${def.key}"] .target2026-grid`
           );
           if (!grid) return;
-          const filterFn = (r) => matchTeamPartText(r.teamPartText, def.teamPart);
-          const kpis = buildTarget2026KpisFiltered(source, filterFn);
+          const kpis = buildTarget2026KpisByMode(source, modeKey, def.filter);
           kpis.forEach((k) => {
             k.sectionTitle = def.title;
           });
           kpisBySection[def.key] = kpis;
           grid.innerHTML = renderTarget2026CardsHtml(kpis, def.key);
         });
-        state.target2026KpisBySection = kpisBySection;
+        state.target2026KpisBySection = { mode: modeKey, sections: kpisBySection };
       } catch (err) {
         contentRoot.querySelectorAll(".target2026-grid").forEach((el) => {
           el.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
         });
         showToast(`2026 체결액 Target 조회 오류: ${err.message}`, "error");
       }
+    }
+
+    async function renderTarget2026Screen(contentRoot) {
+      return renderTarget2026DashboardScreen(contentRoot, "offline");
     }
 
     async function renderDealQcR1R15Screen(contentRoot) {

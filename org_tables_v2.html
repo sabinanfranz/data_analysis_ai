@@ -577,6 +577,8 @@
     .target2026-card:hover { transform: translateY(-1px); transition: 120ms; }
     @media (max-width: 1100px) { .target2026-grid { grid-template-columns: repeat(2, 1fr);} }
     @media (max-width: 640px) { .target2026-grid { grid-template-columns: 1fr;} }
+    /* Online Retention: table host should NOT be a multi-column KPI grid */
+    .online-retention-table-host { width: 100%; display: block; }
 
     .btn-memo--active:focus {
       outline: 2px solid rgba(52, 211, 153, 0.45);
@@ -2301,6 +2303,7 @@
           { id: "target-2026-online", label: "2026 Targetboard(온라인)" },
           // ✅ 구 "2025 카운터파티 DRI" → 2026 카운터파티 DRI (id 유지)
           { id: "rank-2025-counterparty-dri", label: "2026 카운터파티 DRI" },
+          { id: "ops-2026-online-retention", label: "2026 온라인 리텐션" },
           ...DEALCHECK_MENU_DEFS.map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
         ],
       },
@@ -2335,6 +2338,7 @@
       "rank-2025-counterparty-dri": renderRankCounterpartyDriScreen,
       "target-2026": renderTarget2026Screen,
       "target-2026-online": (root) => renderTarget2026DashboardScreen(root, "online"),
+      "ops-2026-online-retention": renderOnlineRetention2026Screen,
       "counterparty-risk-daily": renderCounterpartyRiskDaily,
       "deal-qc-r1r15": renderDealQcR1R15Screen,
       "mismatch-2025": renderMismatch2025Screen,
@@ -2573,6 +2577,7 @@
         edu1: null,
         edu2: null,
       },
+      onlineRetention2026: null,
     };
     const DEALCHECK_OWNER_FILTER_BY_MENU = new Map();
     const NAME_TO_TEAM_PART = buildNameToTeamPartIndex(PART_STRUCTURE);
@@ -3163,8 +3168,7 @@
       if (!tableEl) return;
       const inferPartFn = typeof options.inferPartFn === "function" ? options.inferPartFn : () => "-";
       const includeTier = Boolean(options.includeTier);
-      const keys = [
-        ...(includeTier ? ["tier"] : []),
+      const baseKeys = [
         "courseFormat",
         "createdAt",
         "part",
@@ -3172,7 +3176,15 @@
         "probability",
         "expectedCloseDate",
         "expectedAmount",
+        "amount",
+        "onlineCycle",
+        "onlineFirst",
+        "startDate",
+        "endDate",
       ];
+      const extraKeys =
+        Array.isArray(options.dynamicCols) && options.dynamicCols.length ? options.dynamicCols : [];
+      const keys = [...(includeTier ? ["tier"] : []), ...baseKeys, ...extraKeys];
       const canvas = fitColumnsToContent._canvas || (fitColumnsToContent._canvas = document.createElement("canvas"));
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
@@ -3187,6 +3199,26 @@
         if (key === "tier") {
           const min = 44;
           const max = 72;
+          return Math.max(min, Math.min(max, width));
+        }
+        if (key === "onlineCycle") {
+          const min = 84;
+          const max = 220;
+          return Math.max(min, Math.min(max, width));
+        }
+        if (key === "onlineFirst") {
+          const min = 72;
+          const max = 120;
+          return Math.max(min, Math.min(max, width));
+        }
+        if (key === "startDate" || key === "endDate") {
+          const min = 92;
+          const max = 140;
+          return Math.max(min, Math.min(max, width));
+        }
+        if (key === "amount") {
+          const min = 88;
+          const max = 160;
           return Math.max(min, Math.min(max, width));
         }
         if (key === "createdAt" || key === "expectedCloseDate") {
@@ -3214,6 +3246,11 @@
           probability: formatProbability(row.probability),
           expectedCloseDate: formatDateYYMMDD(row.expectedCloseDate),
           expectedAmount: formatAmount(row.expectedAmount),
+          amount: formatAmount(row.amount),
+          onlineCycle: row.onlineCycle || "",
+          onlineFirst: typeof formatOnlineFirstToOX === "function" ? formatOnlineFirstToOX(row.onlineFirst) : row.onlineFirst || "",
+          startDate: formatDateYYMMDD(row.startDate),
+          endDate: formatDateYYMMDD(row.endDate),
         };
         keys.forEach((k) => {
           const text = values[k] || "";
@@ -3999,6 +4036,28 @@
       if (!list.length) return "미입력";
       if (list.length === 1) return list[0];
       return `${list[0]} 외 ${list.length - 1}명`;
+    }
+
+    function inferPartGenericFromOwners(owners) {
+      const names = Array.isArray(owners) ? owners : [];
+      const parts = new Set();
+      names.forEach((name) => {
+        const resolved = resolveOwnerTeamPart(name);
+        if (resolved && resolved.part) parts.add(resolved.part);
+      });
+      const ordered = ["1파트", "2파트", "온라인셀"].filter((p) => parts.has(p));
+      if (!ordered.length) return "미매핑";
+      return ordered.join("+");
+    }
+
+    function toShortTeamPartText(teamPartText) {
+      const raw = String(teamPartText || "-").trim();
+      if (!raw || raw === "-") return "-";
+      if (raw.startsWith("미확인(")) return raw;
+      const parts = raw.split(" 외 ");
+      const head = parts[0].replace(/^기업교육\s*/g, "");
+      if (parts.length > 1) return `${head} 외 ${parts.slice(1).join(" 외 ")}`;
+      return head;
     }
 
     function buildTarget2026SectionSkeleton(def) {
@@ -9325,6 +9384,208 @@
 
     async function renderTarget2026Screen(contentRoot) {
       return renderTarget2026DashboardScreen(contentRoot, "offline");
+    }
+
+    let onlineRetention2026Cache = null;
+    async function loadOnlineRetention2026() {
+      if (onlineRetention2026Cache) return onlineRetention2026Cache;
+      const data = await fetchJson(`/ops/2026-online-retention`);
+      const items = data.items || [];
+      onlineRetention2026Cache = items;
+      state.onlineRetention2026 = items;
+      return items;
+    }
+
+    function buildOnlineRetentionMonthKeys() {
+      const keys = [];
+      const start = new Date(Date.UTC(2025, 11, 1)); // 2025-12
+      const end = new Date(Date.UTC(2027, 11, 1)); // 2027-12
+      for (let d = new Date(start); d <= end; d.setUTCMonth(d.getUTCMonth() + 1)) {
+        const y = d.getUTCFullYear();
+        const m = String(d.getUTCMonth() + 1).padStart(2, "0");
+        keys.push(`${y}-${m}`);
+      }
+      return keys;
+    }
+
+    function formatOnlineFirstToOX(value) {
+      if (value === true) return "O";
+      if (value === false) return "X";
+      const v = String(value ?? "").trim().toLowerCase();
+      if (!v) return "-";
+      if (v === "true" || v === "y" || v === "yes" || v === "o" || v === "예") return "O";
+      if (v === "false" || v === "n" || v === "no" || v === "x" || v === "아니오") return "X";
+      return v.length <= 8 ? v.toUpperCase() : "-";
+    }
+
+    function renderOnlineRetentionTable(items) {
+      if (!items.length) return `<div class="muted">해당 딜 없음</div>`;
+      const rows = items
+        .map((row) => {
+          const owners = Array.isArray(row.owners) ? row.owners.filter(Boolean) : [];
+          const ownersText = owners.length ? owners.join(", ") : "-";
+          const tp = computeTeamPartSummary(owners);
+          const teamPartText = toShortTeamPartText(tp.teamPartText);
+          const dealNameEsc = escapeHtml(row.dealName || "-");
+          const dealCell =
+            row.dealId && String(row.dealId).trim()
+              ? `<a class="sm-link dealcheck-deal-name" href="${salesmapDealUrl(row.dealId)}" target="_blank" rel="noopener noreferrer" title="${dealNameEsc}">${dealNameEsc}</a>`
+              : `<span class="dealcheck-deal-name" title="${dealNameEsc}">${dealNameEsc}</span>`;
+          const memoCell =
+            row.memoCount && row.memoCount > 0
+              ? `<button type="button" class="btn-memo btn-memo--active" data-action="deal-memo" data-deal-id="${row.dealId}">메모 확인</button>`
+              : `<button type="button" class="btn-memo btn-memo--disabled" disabled aria-disabled="true" tabindex="-1">메모 없음</button>`;
+          const orgLabel = row.orgName || row.orgId || "-";
+          const orgCell =
+            row.orgId && String(row.orgId).trim()
+              ? `<a class="sm-link" href="${salesmapOrgUrl(row.orgId)}" target="_blank" rel="noopener noreferrer">${orgLabel}</a>`
+              : orgLabel;
+          const customerCell =
+            row.personId && row.personId.trim()
+              ? `<a class="sm-link" href="${salesmapPeopleUrl(row.personId)}" target="_blank" rel="noopener noreferrer">${row.personName || row.personId}</a>`
+              : row.personName || "-";
+          return `
+            <tr>
+              <td data-col="orgName">${orgCell}</td>
+              <td data-col="upperOrg">${row.upperOrg || "-"}</td>
+              <td data-col="teamSignature">${row.teamSignature || "-"}</td>
+              <td data-col="personName">${customerCell}</td>
+              <td data-col="createdAt">${formatDateYYMMDD(row.createdAt)}</td>
+              <td data-col="dealName">${dealCell}</td>
+              <td data-col="courseFormat">${row.courseFormat || "-"}</td>
+              <td data-col="part">${escapeHtml(teamPartText)}</td>
+              <td data-col="owners">${ownersText || "-"}</td>
+              <td data-col="amount">${formatAmount(row.amount)}</td>
+              <td data-col="onlineCycle">${row.onlineCycle || "-"}</td>
+              <td data-col="onlineFirst">${formatOnlineFirstToOX(row.onlineFirst)}</td>
+              <td data-col="startDate">${formatDateYYMMDD(row.startDate)}</td>
+              <td data-col="endDate">${formatDateYYMMDD(row.endDate)}</td>
+              <td data-col="memo">${memoCell}</td>
+            </tr>
+          `;
+        })
+        .join("");
+      return `
+        <div class="table-wrap full dealcheck-table-wrap">
+          <table class="dealcheck-table">
+            <colgroup>
+              <col data-col="orgName" style="width:15ch; min-width:15ch; max-width:15ch;" />
+              <col data-col="upperOrg" style="width:15ch; min-width:15ch; max-width:15ch;" />
+              <col data-col="teamSignature" style="width:15ch; min-width:15ch; max-width:15ch;" />
+              <col data-col="personName" style="width:8ch; min-width:8ch; max-width:8ch;" />
+              <col data-col="createdAt" />
+              <col data-col="dealName" />
+              <col data-col="courseFormat" />
+              <col data-col="part" />
+              <col data-col="owners" />
+              <col data-col="amount" />
+              <col data-col="onlineCycle" />
+              <col data-col="onlineFirst" />
+              <col data-col="startDate" />
+              <col data-col="endDate" />
+              <col data-col="memo" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>기업명</th>
+                <th>소속 상위 조직</th>
+                <th>팀(명함/메일서명)</th>
+                <th>담당자</th>
+                <th>생성 날짜</th>
+                <th>딜 이름</th>
+                <th>과정포맷</th>
+                <th>팀&파트</th>
+                <th>데이원</th>
+                <th>금액</th>
+                <th>입과 주기</th>
+                <th>최초 입과</th>
+                <th>수강시작일</th>
+                <th>수강종료일</th>
+                <th>메모</th>
+              </tr>
+            </thead>
+            <tbody>${rows || ""}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    async function renderOnlineRetention2026Screen(contentRoot) {
+      bindGlobalModalsOnce();
+      const months = buildOnlineRetentionMonthKeys();
+      const monthSections = months
+        .map((m) => {
+          const [y, mm] = m.split("-");
+          const label = `${y}년 ${Number(mm)}월 수강 종료된 딜`;
+          return `
+            <section class="card" data-online-ret-month="${m}">
+              <div class="control-row">
+                <h3>${label}</h3>
+              </div>
+              <div class="online-retention-table-host"><div class="muted">로딩 중...</div></div>
+            </section>
+          `;
+        })
+        .join("");
+
+      contentRoot.innerHTML = `
+        <div class="dealcheck-screen online-retention-screen">
+          <section class="card target2026-wrap">
+            <div class="target2026-header">
+              <div class="target2026-title">2026 온라인 리텐션</div>
+              <div class="target2026-sub">조건: 생성일 ≥ 2024-01-01, 상태=Won, 금액/수강시작일/수강종료일/코스ID 존재, 과정포맷=온라인(3종)</div>
+            </div>
+          </section>
+          <div class="target2026-stack">
+            ${monthSections}
+          </div>
+        </div>
+      `;
+
+      const allGrids = contentRoot.querySelectorAll("[data-online-ret-month] .online-retention-table-host");
+      allGrids.forEach((g) => (g.innerHTML = `<div class="muted">로딩 중...</div>`));
+
+      try {
+        const items = await loadOnlineRetention2026();
+        const byMonth = new Map();
+        months.forEach((m) => byMonth.set(m, []));
+        (items || []).forEach((row) => {
+          const endDate = String(row.endDate || "");
+          const key = endDate.slice(0, 7);
+          if (byMonth.has(key)) byMonth.get(key).push(row);
+        });
+        byMonth.forEach((list, key) => {
+          const grid = contentRoot.querySelector(`[data-online-ret-month="${key}"] .online-retention-table-host`);
+          if (!grid) return;
+          grid.innerHTML = renderOnlineRetentionTable(list);
+          const tableEl = grid.querySelector("table.dealcheck-table");
+          if (tableEl) {
+            fitColumnsToContent(tableEl, list, {
+              inferPartFn: (owners) => {
+                const tp = computeTeamPartSummary(Array.isArray(owners) ? owners : []);
+                return toShortTeamPartText(tp.teamPartText);
+              },
+              includeTier: false,
+              dynamicCols: ["amount", "onlineCycle", "onlineFirst", "startDate", "endDate"],
+            });
+            applyMemoColumnWidth(tableEl);
+            applyDealNameMinWidth(tableEl, 15);
+          }
+          grid.querySelectorAll('button[data-action="deal-memo"]').forEach((btn) => {
+            if (btn.disabled) return;
+            btn.addEventListener("click", async () => {
+              const dealId = btn.getAttribute("data-deal-id");
+              if (!dealId) return;
+              await openDealMemoModal(dealId, btn);
+            });
+          });
+        });
+      } catch (err) {
+        contentRoot.querySelectorAll(".online-retention-table-host").forEach((el) => {
+          el.innerHTML = `<div class="muted">데이터를 불러오지 못했습니다: ${err.message}</div>`;
+        });
+        showToast(`온라인 리텐션 로드 오류: ${err.message}`, "error");
+      }
     }
 
     async function renderDealQcR1R15Screen(contentRoot) {

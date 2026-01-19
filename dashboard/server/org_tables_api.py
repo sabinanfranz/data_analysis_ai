@@ -108,6 +108,16 @@ def get_edu2_deal_check() -> dict:
         raise HTTPException(status_code=400, detail=str(exc))
 
 
+@router.get("/ops/2026-online-retention")
+def get_ops_2026_online_retention() -> dict:
+    try:
+        return db.get_ops_2026_online_retention()
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+
 @router.get("/qc/deal-errors/summary")
 def get_qc_deal_errors_summary(team: str = Query("all", description="all|edu1|edu2|public")) -> dict:
     try:

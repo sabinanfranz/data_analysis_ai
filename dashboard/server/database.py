@@ -432,6 +432,16 @@ def _dealcheck_team_members(team_key: Optional[str]) -> Optional[Set[str]]:
     return _dealcheck_members(team_key)
 
 
+def _parse_owner_names_preferred(deal_owner_json: Any, people_owner_json: Any) -> List[str]:
+    """
+    Prefer deal.owner_json if present, else fallback to people.owner_json. Returns deduped string list.
+    """
+    owners = _parse_owner_names(deal_owner_json)
+    if not owners:
+        owners = _parse_owner_names(people_owner_json)
+    return owners
+
+
 def _qc_members(team_key: str) -> Set[str]:
     """
     QC 전용 팀 구성원 반환. team_key가 'all'이면 모든 팀 합집합.
@@ -2655,6 +2665,109 @@ def get_edu1_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any
 
 def get_edu2_deal_check_sql_deals(db_path: Path = DB_PATH) -> List[Dict[str, Any]]:
     return get_deal_check("edu2", db_path=db_path)
+
+
+def get_ops_2026_online_retention(db_path: Path = DB_PATH) -> Dict[str, Any]:
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    with _connect(db_path) as conn:
+        start_col = _pick_column(conn, "deal", ["수강시작일", "수강 시작일"])
+        end_col = _pick_column(conn, "deal", ["수강종료일", "수강 종료일"])
+        course_id_col = _pick_column(conn, "deal", ["코스 ID", "코스ID", "courseId", "course_id"])
+        online_cycle_col = _pick_column(conn, "deal", ["(온라인)입과 주기", "온라인 입과 주기", "온라인입과주기"])
+        online_first_col = _pick_column(conn, "deal", ["(온라인)최초 입과 여부", "온라인 최초 입과 여부", "온라인 최초입과 여부"])
+
+        conditions: List[str] = ['d."상태" = \'Won\'', 'd."생성 날짜" >= \'2024-01-01\'']
+        params: List[Any] = []
+        conditions.append('d."과정포맷" IN (?, ?, ?)')
+        params.extend(list(ONLINE_COURSE_FORMATS))
+        if start_col:
+            conditions.append(f'{_dq(start_col)} IS NOT NULL AND TRIM({_dq(start_col)}) <> \'\'')
+        if end_col:
+            conditions.append(f'{_dq(end_col)} IS NOT NULL AND TRIM({_dq(end_col)}) <> \'\'')
+            conditions.append(f'{_dq(end_col)} >= ? AND {_dq(end_col)} <= ?')
+            params.extend(["2024-10-01", "2027-12-31"])
+        if course_id_col:
+            conditions.append(f'{_dq(course_id_col)} IS NOT NULL AND TRIM({_dq(course_id_col)}) <> \'\'')
+
+        memo_subquery = """
+          SELECT dealId, COUNT(*) AS memoCount
+          FROM memo
+          WHERE dealId IS NOT NULL AND TRIM(dealId) <> ''
+          GROUP BY dealId
+        """
+        query = f"""
+          SELECT
+            d.id AS deal_id,
+            d.organizationId AS org_id,
+            COALESCE(o."이름", d.organizationId) AS org_name,
+            p."소속 상위 조직" AS upper_org,
+            p."팀(명함/메일서명)" AS team_signature,
+            p.id AS person_id,
+            p."이름" AS person_name,
+            d."생성 날짜" AS created_at,
+            d."이름" AS deal_name,
+            d."과정포맷" AS course_format,
+            d."상태" AS status,
+            d."금액" AS amount,
+            {_dq(online_cycle_col)} AS online_cycle,
+            {_dq(online_first_col)} AS online_first,
+            {_dq(start_col)} AS start_date,
+            {_dq(end_col)} AS end_date,
+            d."담당자" AS deal_owner_json,
+            p."담당자" AS people_owner_json,
+            mc.memoCount AS memo_count
+          FROM deal d
+          LEFT JOIN people p ON p.id = d.peopleId
+          LEFT JOIN organization o ON o.id = COALESCE(d.organizationId, p.organizationId)
+          LEFT JOIN ({memo_subquery}) mc ON mc.dealId = d.id
+          WHERE {' AND '.join(conditions)}
+          ORDER BY {_dq(end_col) if end_col else 'd."생성 날짜"'}, org_name, d.id
+        """
+        rows = _fetch_all(conn, query, params)
+
+    items: List[Dict[str, Any]] = []
+    for row in rows:
+        amount = _to_number(row["amount"])
+        if amount is None:
+            continue
+        start_date = _date_only(row["start_date"]) if "start_date" in row.keys() else ""
+        end_date = _date_only(row["end_date"]) if "end_date" in row.keys() else ""
+        if not start_date or not end_date:
+            continue
+        owners = _parse_owner_names_preferred(row["deal_owner_json"], row["people_owner_json"])
+        items.append(
+            {
+                "dealId": row["deal_id"],
+                "orgId": row["org_id"],
+                "orgName": row["org_name"],
+                "upperOrg": row["upper_org"],
+                "teamSignature": row["team_signature"],
+                "personId": row["person_id"],
+                "personName": row["person_name"],
+                "createdAt": row["created_at"],
+                "dealName": row["deal_name"],
+                "courseFormat": row["course_format"],
+                "owners": owners,
+                "status": row["status"],
+                "amount": amount,
+                "onlineCycle": row["online_cycle"],
+                "onlineFirst": row["online_first"],
+                "startDate": start_date,
+                "endDate": end_date,
+                "memoCount": int(row["memo_count"] or 0),
+            }
+        )
+
+    items.sort(key=lambda r: (r.get("endDate") or "", r.get("orgName") or "", r.get("dealId") or ""))
+    db_version = None
+    try:
+        stat = db_path.stat()
+        db_version = f"db_mtime:{int(stat.st_mtime)}"
+    except Exception:
+        db_version = None
+    return {"items": items, "meta": {"db_version": db_version, "rowCount": len(items)}}
 
 
 def _qc_rule_labels() -> Dict[str, str]:

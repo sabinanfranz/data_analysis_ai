@@ -2297,8 +2297,8 @@
         title: "운영 메뉴",
         defaultOpen: true,
         items: [
-          { id: "target-2026", label: "2026 Target Dashboard(출강)" },
-          { id: "target-2026-online", label: "2026 Target Dashboard(온라인)" },
+          { id: "target-2026", label: "2026 Targetboard(출강)" },
+          { id: "target-2026-online", label: "2026 Targetboard(온라인)" },
           // ✅ 구 "2025 카운터파티 DRI" → 2026 카운터파티 DRI (id 유지)
           { id: "rank-2025-counterparty-dri", label: "2026 카운터파티 DRI" },
           ...DEALCHECK_MENU_DEFS.map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
@@ -2813,6 +2813,7 @@
         const target26 = Number(row[cfg.targetKey] || 0) || 0;
         const isOverride = row[cfg.overrideKey] === true;
         const overrideTarget26 = isOverride ? target26 : 0;
+        const ownerText = ownersToDisplayText(owners);
         return {
           modeKey: cfg.modeKey,
           tier,
@@ -2821,6 +2822,7 @@
           upperOrg,
           owners2025: owners,
           teamPartText: tp.teamPartText || "-",
+          ownerText,
           won26,
           target26,
           isOverride,
@@ -2847,11 +2849,19 @@
       };
       const sumOverrideBySize = (rows, sizeKey) =>
         rows.reduce((acc, r) => acc + (r.sizeKey === sizeKey ? r.overrideTarget26 : 0), 0);
+      const sumTargetBySize = (rows, sizeKey) =>
+        rows.reduce((acc, r) => acc + (r.sizeKey === sizeKey ? Number(r.target26 || 0) : 0), 0);
 
       const makeTierKpi = (tier, rowClass) => {
         const base = allParsed.filter((r) => r.tier === tier && applyFilters(r));
         const won26 = base.reduce((acc, r) => acc + r.won26, 0);
         const target26 = base.reduce((acc, r) => acc + r.target26, 0);
+        const targetBySize = {
+          big: sumTargetBySize(base, "big"),
+          mid: sumTargetBySize(base, "mid"),
+          small: sumTargetBySize(base, "small"),
+        };
+        targetBySize.total = targetBySize.big + targetBySize.mid + targetBySize.small;
         const overrideBase = base.filter((r) => r.isOverride === true);
         const override = {
           big: sumOverrideBySize(overrideBase, "big"),
@@ -2860,7 +2870,16 @@
         };
         override.total = override.big + override.mid + override.small;
         override.count = overrideBase.length;
-        return { title: tier, rowClass, won26, target26, override, rowsUsed: base, modeKey: cfg.modeKey };
+        return {
+          title: tier,
+          rowClass,
+          won26,
+          target26,
+          override,
+          targetBySize,
+          rowsUsed: base,
+          modeKey: cfg.modeKey,
+        };
       };
 
       const topTiers = ["S0", "P0", "P1", "P2"];
@@ -2893,18 +2912,19 @@
         return String(a.upperOrg || "").localeCompare(String(b.upperOrg || ""));
       });
 
-      const bodyRows = rows
-        .map((r, idx) => {
-          const tier = escapeHtml(r.tier || "-");
-          const orgRaw = r.orgName || "-";
-          const org = escapeHtml(orgRaw);
-          const upper = escapeHtml(r.upperOrg || "미입력");
-          const tp = escapeHtml(r.teamPartText || "-");
-          const wonVal = Number(r.won26 || 0);
-          const tgtVal = Number(r.target26 || 0);
-          const won26 = formatEok(wonVal / 1e8);
-          const tgt26 = formatEok(tgtVal / 1e8);
-          const orgCell =
+        const bodyRows = rows
+          .map((r, idx) => {
+            const tier = escapeHtml(r.tier || "-");
+            const orgRaw = r.orgName || "-";
+            const org = escapeHtml(orgRaw);
+            const upper = escapeHtml(r.upperOrg || "미입력");
+            const tp = escapeHtml(r.teamPartText || "-");
+            const owner = escapeHtml(r.ownerText || "미입력");
+            const wonVal = Number(r.won26 || 0);
+            const tgtVal = Number(r.target26 || 0);
+            const won26 = formatEok(wonVal / 1e8);
+            const tgt26 = formatEok(tgtVal / 1e8);
+            const orgCell =
             r.orgId && String(r.orgId).trim()
               ? `<span class="org-link" data-org-id="${escapeHtml(r.orgId)}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${org}</span>`
               : org;
@@ -2914,6 +2934,7 @@
               <td>${orgCell}</td>
               <td>${upper}</td>
               <td>${tp}</td>
+              <td>${owner}</td>
               <td class="num">${won26}</td>
               <td class="num">${tgt26}</td>
             </tr>
@@ -2933,6 +2954,7 @@
                 <th>기업명</th>
                 <th>카운터파티</th>
                 <th>팀&파트</th>
+                <th>담당자</th>
                 <th class="num">${cfg.wonLabel}</th>
                 <th class="num">${cfg.targetLabel}</th>
               </tr>
@@ -3965,6 +3987,18 @@
       const tp = String(rowTeamPartText || "").trim();
       if (!expected) return true;
       return tp === expected || tp.startsWith(expected + " 외 ");
+    }
+
+    function ownersToDisplayText(owners) {
+      const list = Array.isArray(owners)
+        ? owners
+            .map((s) => (typeof s === "string" ? s : s?.name || s?.id || ""))
+            .map((s) => (s || "").trim())
+            .filter(Boolean)
+        : [];
+      if (!list.length) return "미입력";
+      if (list.length === 1) return list[0];
+      return `${list[0]} 외 ${list.length - 1}명`;
     }
 
     function buildTarget2026SectionSkeleton(def) {
@@ -9182,15 +9216,9 @@
         .map((kpi, idx) => {
           const wonText = `${formatEokNumberOnly1(kpi.won26 / 1e8)}억`;
           const tgtText = `${formatEokNumberOnly1(kpi.target26 / 1e8)}억`;
-          const override = kpi.override || {};
-          const fmtOverride = (val) => `${formatEokNumberOnly((Number(val) || 0) / 1e8)}억`;
-          const overrideTotal = Number(override.total || 0);
-          const overrideLine =
-            overrideTotal > 0
-              ? `override target(억): 대 ${fmtOverride(override.big)} / 중견 ${fmtOverride(
-                  override.mid
-                )} / 중소 ${fmtOverride(override.small)}`
-              : "override target(억): -";
+          const fmt1 = (val) => `${formatEokNumberOnly1((Number(val) || 0) / 1e8)}억`;
+          const t = kpi.targetBySize || { big: 0, mid: 0, small: 0 };
+          const subLine = `target(억): 대 ${fmt1(t.big)} / 중견 ${fmt1(t.mid)} / 중소 ${fmt1(t.small)}`;
           return `
             <div
               class="target2026-card ${kpi.rowClass}"
@@ -9203,7 +9231,7 @@
             >
               <div class="target2026-card-title">${kpi.title}</div>
               <div class="target2026-card-metric">${wonText} / ${tgtText}</div>
-              <div class="target2026-card-sub">${overrideLine}</div>
+              <div class="target2026-card-sub">${subLine}</div>
             </div>
           `;
         })

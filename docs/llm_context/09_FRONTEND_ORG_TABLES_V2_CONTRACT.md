@@ -15,7 +15,7 @@ sync_source:
 - 정적 프런트 `org_tables_v2.html`의 메뉴/상태/렌더/캐시/모달 계약을 코드 기준으로 명세한다.
 
 ## Behavioral Contract
-- 사이드바: `MENU_SECTIONS` 순서로 사업부 퍼포먼스(2026 P&L → 2026 월별 체결액 → 2026 Daily Report(WIP)) → 운영(2026 Target Board, 2026 카운터파티 DRI, 딜체크 7개 메뉴) → 분석(StatePath 24→25, 2025 체결액 순위, 조직/People/Deal 뷰어, 숨김: 2025 대기업 딜·People/업종별 매출) → 검수(개인별 세일즈맵 검수, 고객사 불일치). 해시가 유효하지 않으면 `DEFAULT_MENU_ID="org-view"`. 딜체크 메뉴는 단일 config(`DEALCHECK_MENU_DEFS`)에서 부모 2개(교육1/교육2)와 자식 5개(교육1: 1/2파트, 교육2: 1/2파트/온라인셀)를 정의하며, 자식 라벨에만 `↳ ` 접두어를 추가한다. 월별 체결액도 동일 패턴으로 부모 `biz-perf-monthly` 아래 하위 메뉴 2개(교육1/교육2)가 있으며 `team` 파라미터를 전달한다.
+- 사이드바: `MENU_SECTIONS` 순서로 사업부 퍼포먼스(2026 P&L → 2026 월별 체결액 → 2026 Daily Report(WIP)) → 운영(2026 Targetboard(출강), 2026 Targetboard(온라인), 2026 카운터파티 DRI, 딜체크 7개 메뉴) → 분석(StatePath 24→25, 2025 체결액 순위, 조직/People/Deal 뷰어, 숨김: 2025 대기업 딜·People/업종별 매출) → 검수(개인별 세일즈맵 검수, 고객사 불일치). 해시가 유효하지 않으면 `DEFAULT_MENU_ID="org-view"`. 딜체크 메뉴는 단일 config(`DEALCHECK_MENU_DEFS`)에서 부모 2개(교육1/교육2)와 자식 5개(교육1: 1/2파트, 교육2: 1/2파트/온라인셀)를 정의하며, 자식 라벨에만 `↳ ` 접두어를 추가한다. 월별 체결액도 동일 패턴으로 부모 `biz-perf-monthly` 아래 하위 메뉴 2개(교육1/교육2)가 있으며 `team` 파라미터를 전달한다.
 - API_BASE: origin이 있으면 `<origin>/api`, 아니면 `http://localhost:8000/api`.
 - 2026 P&L (`renderBizPerfPlProgress2026`):
   - `/performance/pl-progress-2026/summary` → 연간(T/E) 후 2601~2612 T/E 컬럼을 렌더. 현재 월 헤더/셀에 `is-current-month-group`/`is-current-month` 클래스 부여.
@@ -26,7 +26,7 @@ sync_source:
   - 셀 클릭 시 `/performance/monthly-amounts/deals`, amount>0 우선→expectedAmount→dealName asc 정렬 후 모달 테이블(15열, colgroup 고정) 표시. 팀별 메뉴는 동일한 team 파라미터를 사용한다.
 - 카운터파티 DRI (`renderRankCounterpartyDriScreen`):
   - `/rank/2025-top100-counterparty-dri`를 호출해 규모별 **전체 리스트**를 캐싱하고 검색/DRI(O/X/all)/팀&파트 필터를 클라이언트에서 적용하며, 정렬은 고정(orgWon2025 desc → cpTotal2025 desc). Prev/Next 페이징 없이 전체를 한 번에 렌더하며, 행 클릭 시 `/rank/2025-counterparty-dri/detail`.
-- 2026 Target Board: `/rank/2025-top100-counterparty-dri` 결과를 대/중견/중소 3그룹으로 불러와 티어별 출강 타겟 KPI 카드(26 출강 체결/타겟, 억 단위)를 렌더한다. 데이터가 없으면 “DRI 데이터 없음”을 표시한다.
+- 2026 Targetboard(출강/온라인): `/rank/2025-top100-counterparty-dri`를 한 번만 불러와 클라이언트에서 카드 KPI를 계산한다. 섹션은 전체 + 조직별 5개(기업교육 1팀 1/2파트, 2팀 1/2파트, 2팀 온라인셀) 스택으로 렌더하며, 각 섹션마다 티어별 8카드(S0/P0/P1/P2/P3/P4/P5/N)를 출력한다. 출강 모드는 override row만 포함, 온라인 모드는 모든 row 포함. 카드 메트릭은 소수점 1자리 억 단위(won/target), 서브라인은 규모별 target 합계를 소수점 1자리로 표기한다. 카드 클릭/Enter/Space 시 모달이 뜨며 컬럼은 티어/기업명/카운터파티/팀&파트/담당자/26 체결/26 타겟이고, 타이틀은 “섹션명 · 카드명”으로 표시된다(담당자는 DRI 화면과 동일 포맷: 1명→이름, 2명 이상→“첫번째 외 N명”, 없으면 “미입력”).
 - 딜체크/QC:
   - `renderDealCheckScreen(teamKey, options)` 한 곳에서 7개 딜체크 메뉴를 공통 렌더하며, `/deal-check/edu1`·`/deal-check/edu2`(또는 `/deal-check?team=`) 결과를 orgWon2025Total desc→createdAt asc→dealId asc로 렌더, memoCount=0이면 “메모 없음” 비활성 버튼. 부모 메뉴는 필터 없이 팀 전체를, 자식 메뉴는 `partFilter`(1/2파트/온라인셀)를 받아 owners→`getDealCheckPartLookup` 룩업 기반으로 클라이언트 필터를 적용한다. 섹션은 공통 6분할(리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인) 순서를 유지한다.
   - `renderDealQcR1R15Screen`은 `/qc/deal-errors/summary` 카드(팀별 총이슈 desc) + `/qc/deal-errors/person` 상세 모달(R1~R15 위배만 표시) 제공.

@@ -569,13 +569,14 @@
     .target2026-grid { width: 100%; min-width: 960px; display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; justify-items: stretch; align-items: stretch; }
     .target2026-card { padding: 14px; min-height: 120px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; background: rgba(255,255,255,0.06); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.08); backdrop-filter: blur(4px); width: auto; }
     .target2026-card-title { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
-    .target2026-card-metric { font-size: 28px; font-weight: 900; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+    .target2026-card-metric { font-size: 24px; font-weight: 900; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
     .target2026-card-sub { margin-top: 8px; font-size: 12px; opacity: 0.75; line-height: 1.35; }
+    .target2026-stack { display:flex; flex-direction:column; gap:14px; }
     .target2026-card.top { border: 1px solid rgba(52,211,153,0.25); }
     .target2026-card.bottom { border: 1px solid rgba(251,191,36,0.25); }
     .target2026-card:hover { transform: translateY(-1px); transition: 120ms; }
     @media (max-width: 1100px) { .target2026-grid { grid-template-columns: repeat(2, 1fr);} }
-    @media (max-width: 640px) { .target2026-grid { grid-template-columns: 1fr;} .target2026-card-metric { font-size: 24px; } }
+    @media (max-width: 640px) { .target2026-grid { grid-template-columns: 1fr;} }
 
     .btn-memo--active:focus {
       outline: 2px solid rgba(52, 211, 153, 0.45);
@@ -2793,21 +2794,38 @@
       return 0;
     }
 
-    function buildTarget2026Kpis(source) {
+    function buildTarget2026KpisFiltered(source, filterFn) {
       const big = source?.big || [];
       const mid = source?.mid || [];
       const small = source?.small || [];
+      const safeFilter = typeof filterFn === "function" ? filterFn : () => true;
       const parseRow = (row, sizeKey) => {
         const tier = (row.orgTier || "").toUpperCase();
         const orgName = (row.orgName || "").trim();
+        const orgId = row.orgId || row.org_id || "";
         const upperOrgRaw = row.upperOrg || row.upper_org || row.counterparty || "";
         const upperOrg = normalizeUpperOrg(upperOrgRaw);
+        const owners = Array.isArray(row.owners2025) ? row.owners2025.filter(Boolean) : [];
+        const tp = computeTeamPartSummary(owners);
         const offline25 = Number(row.cpOffline2025 || 0) || 0;
         const offline26 = Number(row.cpOffline2026 || 0) || 0;
         const target26 = Number(row.target26Offline ?? (offline25 * tierMultiplier(tier)));
         const isOverride = row.target26OfflineIsOverride === true;
         const overrideTarget26 = isOverride ? Number(row.target26Offline || 0) : 0;
-        return { tier, orgName, upperOrg, offline25, offline26, target26, isOverride, overrideTarget26, sizeKey };
+        return {
+          tier,
+          orgName,
+          orgId,
+          upperOrg,
+          owners2025: owners,
+          teamPartText: tp.teamPartText || "-",
+          offline25,
+          offline26,
+          target26,
+          isOverride,
+          overrideTarget26,
+          sizeKey,
+        };
       };
 
       const bigParsed = (big || []).map((r) => parseRow(r, "big"));
@@ -2823,7 +2841,9 @@
         rows.reduce((acc, r) => acc + (r.sizeKey === sizeKey ? r.overrideTarget26 : 0), 0);
 
       const makeTierKpi = (tier, rowClass) => {
-        const base = allParsed.filter((r) => r.tier === tier && !(tier === "S0" && excludeFromS0(r)));
+        const base = allParsed.filter(
+          (r) => r.tier === tier && !(tier === "S0" && excludeFromS0(r)) && safeFilter(r)
+        );
         const won26 = base.reduce((acc, r) => acc + r.offline26, 0);
         const target26 = base.reduce((acc, r) => acc + r.target26, 0);
         const overrideBase = base.filter((r) => r.isOverride === true);
@@ -2834,7 +2854,7 @@
         };
         override.total = override.big + override.mid + override.small;
         override.count = overrideBase.length;
-        return { title: tier, rowClass, won26, target26, override };
+        return { title: tier, rowClass, won26, target26, override, rowsUsed: base };
       };
 
       const topTiers = ["S0", "P0", "P1", "P2"];
@@ -2844,6 +2864,78 @@
         ...bottomTiers.map((t) => makeTierKpi(t, "bottom")),
       ];
       return groups;
+    }
+
+    function openTarget2026KpiModal(kpi) {
+      bindGlobalModalsOnce();
+      const modal = state.rankPeopleModal;
+      if (!modal.backdrop || !modal.title || !modal.body) {
+        showToast("팝업 초기화 오류(모달 연결 실패)", "error");
+        return;
+      }
+      const rows = Array.isArray(kpi?.rowsUsed) ? kpi.rowsUsed.slice() : [];
+      rows.sort((a, b) => {
+        const diff = (Number(b.offline26) || 0) - (Number(a.offline26) || 0);
+        if (diff) return diff;
+        const orgDiff = String(a.orgName || "").localeCompare(String(b.orgName || ""));
+        if (orgDiff) return orgDiff;
+        return String(a.upperOrg || "").localeCompare(String(b.upperOrg || ""));
+      });
+
+      const bodyRows = rows
+        .map((r, idx) => {
+          const tier = escapeHtml(r.tier || "-");
+          const orgRaw = r.orgName || "-";
+          const org = escapeHtml(orgRaw);
+          const upper = escapeHtml(r.upperOrg || "미입력");
+          const tp = escapeHtml(r.teamPartText || "-");
+          const won26 = formatEok((Number(r.offline26 || 0)) / 1e8);
+          const tgt26 = formatEok((Number(r.target26 || 0)) / 1e8);
+          const orgCell =
+            r.orgId && String(r.orgId).trim()
+              ? `<span class="org-link" data-org-id="${escapeHtml(r.orgId)}" style="cursor:pointer; color: var(--accent); text-decoration: underline;">${org}</span>`
+              : org;
+          return `
+            <tr data-row-idx="${idx}">
+              <td>${tier}</td>
+              <td>${orgCell}</td>
+              <td>${upper}</td>
+              <td>${tp}</td>
+              <td class="num">${won26}</td>
+              <td class="num">${tgt26}</td>
+            </tr>
+          `;
+        })
+        .join("");
+
+      const prefix = kpi?.sectionTitle || "2026 Target Board";
+      modal.title.textContent = `${prefix} · ${kpi?.title || "-"}`;
+      if (modal.subtitle) modal.subtitle.textContent = `rows ${rows.length}개`;
+      modal.body.innerHTML = `
+        <div class="table-wrap full table-scroll-x">
+          <table class="cpr-table">
+            <thead>
+              <tr>
+                <th>티어</th>
+                <th>기업명</th>
+                <th>카운터파티</th>
+                <th>팀&파트</th>
+                <th class="num">26 출강 체결</th>
+                <th class="num">26 출강 타겟</th>
+              </tr>
+            </thead>
+            <tbody>${bodyRows}</tbody>
+          </table>
+        </div>
+      `;
+      modal.body.querySelectorAll("[data-org-id]").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const orgId = el.getAttribute("data-org-id");
+          if (orgId) navigateToOrg(orgId);
+        });
+      });
+      modal.backdrop.style.display = "flex";
     }
 
     function openStatePathModal(item) {
@@ -3812,6 +3904,43 @@
       const value = Number(num);
       if (!Number.isFinite(value)) return "0.00";
       return value.toFixed(2);
+    }
+
+    function formatEokNumberOnly1(num) {
+      if (num === null || num === undefined || Number.isNaN(num)) return "0.0";
+      const value = Number(num);
+      if (!Number.isFinite(value)) return "0.0";
+      return value.toFixed(1);
+    }
+
+    const TARGET2026_OFFLINE_SUBTITLE = "26 출강 체결 / 26 출강 타겟 (억)";
+    const TARGET2026_SECTION_DEFS_OFFLINE = [
+      { key: "all", title: "2026 출강 체결액 Target", teamPart: null },
+      { key: "edu1_p1", title: "기업교육 1팀 1파트", teamPart: "기업교육 1팀 1파트" },
+      { key: "edu1_p2", title: "기업교육 1팀 2파트", teamPart: "기업교육 1팀 2파트" },
+      { key: "edu2_p1", title: "기업교육 2팀 1파트", teamPart: "기업교육 2팀 1파트" },
+      { key: "edu2_p2", title: "기업교육 2팀 2파트", teamPart: "기업교육 2팀 2파트" },
+      { key: "edu2_online", title: "기업교육 2팀 온라인셀", teamPart: "기업교육 2팀 온라인셀" },
+    ];
+
+    function matchTeamPartText(rowTeamPartText, expected) {
+      const tp = String(rowTeamPartText || "").trim();
+      if (!expected) return true;
+      return tp === expected || tp.startsWith(expected + " 외 ");
+    }
+
+    function buildTarget2026SectionSkeleton(def) {
+      return `
+        <section class="card target2026-wrap" data-target2026-section="${def.key}">
+          <div class="target2026-header">
+            <div class="target2026-title">${def.title}</div>
+            <div class="target2026-sub">${TARGET2026_OFFLINE_SUBTITLE}</div>
+          </div>
+          <div class="target2026-grid-wrap">
+            <div class="target2026-grid"><div class="muted">불러오는 중.</div></div>
+          </div>
+        </section>
+      `;
     }
 
     function formatEokMax2(num) {
@@ -9010,59 +9139,106 @@
       renderOrgPager();
     }
 
+    function renderTarget2026CardsHtml(kpis, sectionKey) {
+      return kpis
+        .map((kpi, idx) => {
+          const wonText = `${formatEokNumberOnly1(kpi.won26 / 1e8)}억`;
+          const tgtText = `${formatEokNumberOnly1(kpi.target26 / 1e8)}억`;
+          const override = kpi.override || {};
+          const fmtOverride = (val) => `${formatEokNumberOnly((Number(val) || 0) / 1e8)}억`;
+          const overrideTotal = Number(override.total || 0);
+          const overrideLine =
+            overrideTotal > 0
+              ? `override target(억): 대 ${fmtOverride(override.big)} / 중견 ${fmtOverride(
+                  override.mid
+                )} / 중소 ${fmtOverride(override.small)}`
+              : "override target(억): -";
+          return `
+            <div
+              class="target2026-card ${kpi.rowClass}"
+              data-kpi-section="${sectionKey}"
+              data-kpi-idx="${idx}"
+              role="button"
+              tabindex="0"
+              aria-label="상세 보기: ${kpi.title}"
+              style="cursor:pointer;"
+            >
+              <div class="target2026-card-title">${kpi.title}</div>
+              <div class="target2026-card-metric">${wonText} / ${tgtText}</div>
+              <div class="target2026-card-sub">${overrideLine}</div>
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function bindTarget2026CardClicksOnce(contentRoot) {
+      if (!contentRoot || contentRoot.dataset.target2026Bound === "1") return;
+      contentRoot.dataset.target2026Bound = "1";
+
+      const activate = (cardEl) => {
+        const section = cardEl.getAttribute("data-kpi-section");
+        const idx = Number(cardEl.getAttribute("data-kpi-idx"));
+        const kpis = state.target2026KpisBySection?.[section] || [];
+        const kpi = kpis[idx];
+        if (!kpi) return;
+        openTarget2026KpiModal(kpi);
+      };
+
+      contentRoot.addEventListener("click", (e) => {
+        const card = e.target.closest?.(".target2026-card[data-kpi-section][data-kpi-idx]");
+        if (!card) return;
+        activate(card);
+      });
+
+      contentRoot.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        const card = e.target.closest?.(".target2026-card[data-kpi-section][data-kpi-idx]");
+        if (!card) return;
+        e.preventDefault();
+        activate(card);
+      });
+    }
+
     async function renderTarget2026Screen(contentRoot) {
       bindGlobalModalsOnce();
-      const sizes = ["대기업", "중견기업", "중소기업"];
       contentRoot.innerHTML = `
-        <section class="card target2026-wrap">
-          <div class="target2026-header">
-            <div class="target2026-title">2026 출강 체결액 Target</div>
-            <div class="target2026-sub">26 출강 체결 / 26 출강 타겟 (억)</div>
-          </div>
-          <div id="target2026Body" class="target2026-grid-wrap"><div class="target2026-grid"></div></div>
-        </section>
+        <div class="target2026-stack">
+          ${TARGET2026_SECTION_DEFS_OFFLINE.map(buildTarget2026SectionSkeleton).join("")}
+        </div>
       `;
-      const bodyEl = document.getElementById("target2026Body");
-      if (!bodyEl) return;
-      bodyEl.innerHTML = `<div class="muted">불러오는 중...</div>`;
+      bindTarget2026CardClicksOnce(contentRoot);
+
       try {
         const source = await loadTarget2026SourceRows();
         const allRows = [...(source.big || []), ...(source.mid || []), ...(source.small || [])];
+        const grids = contentRoot.querySelectorAll(".target2026-grid");
         if (!allRows.length) {
-          bodyEl.innerHTML = `<div class="muted">데이터가 없습니다. (DRI 데이터 없음)</div>`;
+          grids.forEach((el) => {
+            el.innerHTML = `<div class="muted">데이터가 없습니다. (DRI 데이터 없음)</div>`;
+          });
           return;
         }
-        const kpis = buildTarget2026Kpis(source);
-        const cards = kpis
-          .map((kpi) => {
-            const wonText = `${formatEokNumberOnly(kpi.won26 / 1e8)}억`;
-            const tgtText = `${formatEokNumberOnly(kpi.target26 / 1e8)}억`;
-            const override = kpi.override || {};
-            const fmtOverride = (val) => `${formatEokNumberOnly((Number(val) || 0) / 1e8)}억`;
-            const overrideTotal = Number(override.total || 0);
-            const overrideLine =
-              overrideTotal > 0
-                ? `override target(억): 대 ${fmtOverride(override.big)} / 중견 ${fmtOverride(
-                    override.mid
-                  )} / 중소 ${fmtOverride(override.small)}`
-                : "override target(억): -";
-            return `
-              <div class="target2026-card ${kpi.rowClass}">
-                <div class="target2026-card-title">${kpi.title}</div>
-                <div class="target2026-card-metric">${wonText} / ${tgtText}</div>
-                <div class="target2026-card-sub">${overrideLine}</div>
-              </div>
-            `;
-          })
-          .join("");
-        const grid = bodyEl.querySelector(".target2026-grid");
-        if (grid) {
-          grid.innerHTML = cards;
-        } else {
-          bodyEl.innerHTML = `<div class="target2026-grid">${cards}</div>`;
-        }
+
+        const kpisBySection = {};
+        TARGET2026_SECTION_DEFS_OFFLINE.forEach((def) => {
+          const grid = contentRoot.querySelector(
+            `[data-target2026-section="${def.key}"] .target2026-grid`
+          );
+          if (!grid) return;
+          const filterFn = (r) => matchTeamPartText(r.teamPartText, def.teamPart);
+          const kpis = buildTarget2026KpisFiltered(source, filterFn);
+          kpis.forEach((k) => {
+            k.sectionTitle = def.title;
+          });
+          kpisBySection[def.key] = kpis;
+          grid.innerHTML = renderTarget2026CardsHtml(kpis, def.key);
+        });
+        state.target2026KpisBySection = kpisBySection;
       } catch (err) {
-        bodyEl.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        contentRoot.querySelectorAll(".target2026-grid").forEach((el) => {
+          el.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        });
         showToast(`2026 체결액 Target 조회 오류: ${err.message}`, "error");
       }
     }

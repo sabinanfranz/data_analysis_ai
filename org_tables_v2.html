@@ -570,6 +570,7 @@
     .target2026-card { padding: 14px; min-height: 120px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; background: rgba(255,255,255,0.06); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.08); backdrop-filter: blur(4px); width: auto; }
     .target2026-card-title { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
     .target2026-card-metric { font-size: 28px; font-weight: 900; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+    .target2026-card-sub { margin-top: 8px; font-size: 12px; opacity: 0.75; line-height: 1.35; }
     .target2026-card.top { border: 1px solid rgba(52,211,153,0.25); }
     .target2026-card.bottom { border: 1px solid rgba(251,191,36,0.25); }
     .target2026-card:hover { transform: translateY(-1px); transition: 120ms; }
@@ -2796,61 +2797,51 @@
       const big = source?.big || [];
       const mid = source?.mid || [];
       const small = source?.small || [];
-      const rowsAll = [...big, ...mid, ...small];
-      console.debug("[target2026] rows", rowsAll.length, rowsAll[0] || {});
-
-      const parseRow = (row) => {
+      const parseRow = (row, sizeKey) => {
         const tier = (row.orgTier || "").toUpperCase();
         const orgName = (row.orgName || "").trim();
+        const upperOrgRaw = row.upperOrg || row.upper_org || row.counterparty || "";
+        const upperOrg = normalizeUpperOrg(upperOrgRaw);
         const offline25 = Number(row.cpOffline2025 || 0) || 0;
         const offline26 = Number(row.cpOffline2026 || 0) || 0;
         const target26 = Number(row.target26Offline ?? (offline25 * tierMultiplier(tier)));
-        return { tier, orgName, offline25, offline26, target26 };
+        const isOverride = row.target26OfflineIsOverride === true;
+        const overrideTarget26 = isOverride ? Number(row.target26Offline || 0) : 0;
+        return { tier, orgName, upperOrg, offline25, offline26, target26, isOverride, overrideTarget26, sizeKey };
       };
 
-      const parseList = (rows) => rows.map(parseRow);
-      const bigParsed = parseList(big);
-      const midParsed = parseList(mid);
-      const smallParsed = parseList(small);
+      const bigParsed = (big || []).map((r) => parseRow(r, "big"));
+      const midParsed = (mid || []).map((r) => parseRow(r, "mid"));
+      const smallParsed = (small || []).map((r) => parseRow(r, "small"));
+      const allParsed = [...bigParsed, ...midParsed, ...smallParsed];
+      console.debug("[target2026] rows", allParsed.length, allParsed[0] || {});
 
-      const isSamsungS0 = (r) => r.tier === "S0" && r.orgName === "삼성전자";
+      const isSamsung = (r) => r.tier === "S0" && r.orgName === "삼성전자";
+      const isTalentDev = (r) => normalizeUpperOrg(r.upperOrg) === "Talent Development";
+      const excludeFromS0 = (r) => isSamsung(r) && isTalentDev(r);
+      const sumOverrideBySize = (rows, sizeKey) =>
+        rows.reduce((acc, r) => acc + (r.sizeKey === sizeKey ? r.overrideTarget26 : 0), 0);
 
-      const sumGroup = (list, pred) => {
-        const filtered = list.filter(pred);
-        const won26 = filtered.reduce((acc, r) => acc + r.offline26, 0);
-        const target26 = filtered.reduce((acc, r) => acc + r.target26, 0);
-        return { won26, target26, count: filtered.length };
+      const makeTierKpi = (tier, rowClass) => {
+        const base = allParsed.filter((r) => r.tier === tier && !(tier === "S0" && excludeFromS0(r)));
+        const won26 = base.reduce((acc, r) => acc + r.offline26, 0);
+        const target26 = base.reduce((acc, r) => acc + r.target26, 0);
+        const overrideBase = base.filter((r) => r.isOverride === true);
+        const override = {
+          big: sumOverrideBySize(overrideBase, "big"),
+          mid: sumOverrideBySize(overrideBase, "mid"),
+          small: sumOverrideBySize(overrideBase, "small"),
+        };
+        override.total = override.big + override.mid + override.small;
+        override.count = overrideBase.length;
+        return { title: tier, rowClass, won26, target26, override };
       };
 
-      const g1 = sumGroup(bigParsed, (r) => ["S0", "P0", "P1"].includes(r.tier) && !isSamsungS0(r));
-      const g2 = sumGroup(bigParsed, (r) => r.tier === "P2");
-      const g3 = sumGroup(bigParsed, (r) => ["P3", "P4", "P5"].includes(r.tier));
-      const g4 = sumGroup([...midParsed, ...smallParsed], () => true);
-      const g5 = sumGroup(bigParsed, (r) => r.tier === "S0" && !isSamsungS0(r));
-      const g6 = sumGroup(bigParsed, (r) => r.tier === "P0");
-      const g7 = sumGroup(bigParsed, (r) => r.tier === "P1");
-      const g8 = sumGroup(bigParsed, (r) => r.tier === "P2");
-
-      console.debug("[target2026] groupCounts", {
-        g1: g1.count,
-        g2: g2.count,
-        g3: g3.count,
-        g4: g4.count,
-        g5: g5.count,
-        g6: g6.count,
-        g7: g7.count,
-        g8: g8.count,
-      });
-
+      const topTiers = ["S0", "P0", "P1", "P2"];
+      const bottomTiers = ["P3", "P4", "P5", "N"];
       const groups = [
-        { title: "대기업 S0/P0/P1", ...g1, rowClass: "top" },
-        { title: "대기업 P2", ...g2, rowClass: "top" },
-        { title: "대기업 P3/P4/P5", ...g3, rowClass: "top" },
-        { title: "중견/중소", ...g4, rowClass: "top" },
-        { title: "대기업 S0", ...g5, rowClass: "bottom" },
-        { title: "대기업 P0", ...g6, rowClass: "bottom" },
-        { title: "대기업 P1", ...g7, rowClass: "bottom" },
-        { title: "대기업 P2", ...g8, rowClass: "bottom" },
+        ...topTiers.map((t) => makeTierKpi(t, "top")),
+        ...bottomTiers.map((t) => makeTierKpi(t, "bottom")),
       ];
       return groups;
     }
@@ -9046,10 +9037,20 @@
           .map((kpi) => {
             const wonText = `${formatEokNumberOnly(kpi.won26 / 1e8)}억`;
             const tgtText = `${formatEokNumberOnly(kpi.target26 / 1e8)}억`;
+            const override = kpi.override || {};
+            const fmtOverride = (val) => `${formatEokNumberOnly((Number(val) || 0) / 1e8)}억`;
+            const overrideTotal = Number(override.total || 0);
+            const overrideLine =
+              overrideTotal > 0
+                ? `override target(억): 대 ${fmtOverride(override.big)} / 중견 ${fmtOverride(
+                    override.mid
+                  )} / 중소 ${fmtOverride(override.small)}`
+                : "override target(억): -";
             return `
               <div class="target2026-card ${kpi.rowClass}">
                 <div class="target2026-card-title">${kpi.title}</div>
                 <div class="target2026-card-metric">${wonText} / ${tgtText}</div>
+                <div class="target2026-card-sub">${overrideLine}</div>
               </div>
             `;
           })

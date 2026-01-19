@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "64d328811750f5b1d531d07e",
+      "counterpartyName": "연구개발본부"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "241f5befe03a1d9d87b149fa977464cda0065b9d199e0cb794abb01a373e58ee",
+    "created_at": "2026-01-19",
+    "used_cache": false,
+    "fallback_used": false,
+    "mode": "offline",
+    "agent": "counterparty_card",
+    "agent_version": "v1"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 710억 원이며, 현재까지 확인된 금액은 0원이다.",
+      "현재 파이프라인이 전혀 없는 상태이다.",
+      "내부 의사결정이 아직 시작되지 않았으며, 다음 주 중 검토 및 의사결정이 마무리될 예정이다."
+    ],
+    "recommended_actions": [
+      "고객사와의 의사결정을 촉진하기 위해 후속 연락을 진행하라.",
+      "예산 조정을 위해 고객사와의 협의를 강화하라.",
+      "제안서 검토를 위한 내부 회의를 조속히 진행하라."
+    ],
+    "fallback_used": false
+  }
+}

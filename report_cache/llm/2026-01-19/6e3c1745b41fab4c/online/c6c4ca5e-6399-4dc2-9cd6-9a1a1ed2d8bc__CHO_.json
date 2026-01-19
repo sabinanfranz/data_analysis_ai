@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "c6c4ca5e-6399-4dc2-9cd6-9a1a1ed2d8bc",
+      "counterpartyName": "CHO 조직"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "38db662fd3bed84073d6ca71460bb8709188daca00be05449d07c434c73aa29b",
+    "created_at": "2026-01-19T12:19:58.750740",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null,
+    "mode": "online"
+  },
+  "output": {
+    "risk_level": "보통",
+    "top_blockers": [
+      "BUDGET",
+      "DECISION_MAKER",
+      "LOW_PRIORITY"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 295,575,000원이며, 현재 확인된 금액은 11,850,000원이다.",
+      "현재 진행 중인 주요 거래는 2026년 1월 13일부터 2월 12일까지의 기간에 해당한다.",
+      "규칙상 리스크는 보통으로 분류됨."
+    ],
+    "recommended_actions": [
+      "예산 확보를 위해 관련 부서와 협의하라.",
+      "의사결정자를 대상으로 한 미팅을 조율하라.",
+      "우선순위 직무에 대한 명확한 정의를 요청하라."
+    ],
+    "fallback_used": false
+  }
+}

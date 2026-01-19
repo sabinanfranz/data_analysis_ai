@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "64eeae468a014c50c927b103",
+      "counterpartyName": "ESG경영실"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "454725fbb30f33836b66d85dbd8b394145571e58db94a459c89ece539a3452db",
+    "created_at": "2026-01-19T12:19:36.534927",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null,
+    "mode": "online"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "DECISION_MAKER",
+      "LOW_PRIORITY"
+    ],
+    "evidence_bullets": [
+      "현재 파이프라인이 전혀 없으며, 이는 리스크를 증가시킵니다.",
+      "2026년 목표 금액은 14,688,000원이지만, 현재 확인된 금액은 0원입니다.",
+      "대상 측의 의사결정이 매우 느린 편이라는 피드백이 있었습니다."
+    ],
+    "recommended_actions": [
+      "의사결정자를 조속히 확인하고 접근 방안을 마련하라.",
+      "현재 파이프라인을 구축하기 위한 전략을 수립하라.",
+      "우선순위를 재조정하여 이 프로젝트에 대한 관심을 높여라."
+    ],
+    "fallback_used": false
+  }
+}

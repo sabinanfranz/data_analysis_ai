@@ -1,0 +1,19 @@
+아래는 1개 카운터파티의 입력 payload(JSON)이다. 이 JSON에 없는 사실을 절대 만들지 말고, 오직 아래 출력 스키마에 맞는 “순수 JSON”만 출력하라. payload.report_mode는 online이다.
+
+[입력 payload]
+{{PAYLOAD_JSON}}
+
+[출력 스키마(키 고정)]
+{
+  "risk_level": "양호|보통|심각",
+  "top_blockers": ["PIPELINE_ZERO|BUDGET|DECISION_MAKER|APPROVAL_DELAY|LOW_PRIORITY|COMPETITOR|FIT_UNCLEAR|NO_RESPONSE|PRICE_TERM|SCHEDULE_RESOURCE"],
+  "evidence_bullets": ["...", "...", "..."],
+  "recommended_actions": ["...", "..."]
+}
+
+[생성 규칙]
+- evidence_bullets는 정확히 3개, 각 1문장. 최소 1개는 수치 근거를 포함하라.
+- 가능하면 evidence_bullets 중 1개는 memos/signals(lost_90d, last_contact_date)을 요약해 반영하라(직접 인용 금지).
+- recommended_actions는 2~3개, 각 1문장(명령형/행동형).
+- top_blockers는 최대 3개. 반드시 10개 라벨 중에서만 선택.
+- action은 blocker에 정합적으로 매핑하라(힌트: PIPELINE_ZERO/예산/승인/의사결정/경쟁/응답없음/가격/일정·리소스/우선순위/fit).

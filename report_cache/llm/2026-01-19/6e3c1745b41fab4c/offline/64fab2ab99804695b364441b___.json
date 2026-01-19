@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "64fab2ab99804695b364441b",
+      "counterpartyName": "디지털혁신부문"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "f25997c3bda6efed7b94605b77c06f325bb7ce109f7096f80947c5f19e45fa8f",
+    "created_at": "2026-01-19",
+    "used_cache": false,
+    "fallback_used": false,
+    "mode": "offline",
+    "agent": "counterparty_card",
+    "agent_version": "v1"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 83,409,000원이며, 현재 파이프라인이 없습니다.",
+      "현재까지 확인된 2026년 거래는 없습니다.",
+      "최근 90일 동안 잃어버린 거래는 없지만, 마지막 연락 날짜는 없습니다."
+    ],
+    "recommended_actions": [
+      "파이프라인을 구축하기 위한 전략을 수립하라.",
+      "예산 확보를 위해 관련 부서와 협의하라.",
+      "의사결정자를 확인하고 연락을 시도하라."
+    ],
+    "fallback_used": false
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "64dd762996e775eee7e3c78c",
+      "counterpartyName": "Technology Innovation 센터"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "ce04a5c619a097f877fd454e51595aff4c20e82e478b5d88a09311696158aba4",
+    "created_at": "2026-01-19",
+    "used_cache": false,
+    "fallback_used": true,
+    "mode": "offline",
+    "agent": "counterparty_card",
+    "agent_version": "v1"
+  },
+  "output": {
+    "risk_level": "양호",
+    "top_blockers": [
+      "SCHEDULE_RESOURCE",
+      "FIT_UNCLEAR",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026 타겟 1.0억 대비 확정 0.0억, 예상 0.6억으로 gap 0.4억이 남아 있습니다.",
+      "현재 커버리지는 60.8%로 이번 달 최소 기대치(5.0%) 대비 부족합니다.",
+      "데이터 품질·연락/메모 근거는 추가 생성 예정입니다."
+    ],
+    "recommended_actions": [
+      "일정 후보 3개 제안",
+      "운영 리소스 사전 확보",
+      "니즈 인터뷰"
+    ],
+    "fallback_used": true
+  }
+}

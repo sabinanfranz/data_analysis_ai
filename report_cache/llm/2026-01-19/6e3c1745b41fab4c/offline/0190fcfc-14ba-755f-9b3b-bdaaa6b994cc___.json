@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "0190fcfc-14ba-755f-9b3b-bdaaa6b994cc",
+      "counterpartyName": "경영지원실"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "890b2728d2532a193e7aa6ec2ae7039cfc489c7a271faf373e0b0c5c2a25ea3d",
+    "created_at": "2026-01-19",
+    "used_cache": false,
+    "fallback_used": false,
+    "mode": "offline",
+    "agent": "counterparty_card",
+    "agent_version": "v1"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 348,242,280원이며, 현재 파이프라인이 없습니다.",
+      "최근 90일 동안 잃어버린 거래는 없으며, 마지막 연락 날짜는 기록되어 있지 않습니다.",
+      "규칙상 리스크는 심각으로 분류됨."
+    ],
+    "recommended_actions": [
+      "파이프라인을 구축하기 위한 전략을 수립하라.",
+      "예산 확보를 위해 관련 부서와 협의하라.",
+      "의사결정자를 확인하고 접근 방안을 마련하라."
+    ],
+    "fallback_used": false
+  }
+}

@@ -2295,8 +2295,9 @@
         items: [
           { id: "biz-perf-pl-progress-2026", label: "2026 P&L" },
           ...PERF_MONTHLY_MENU_DEFS.map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
-          // ✅ 구 "카운터파티 리스크(일간)" → 2026 Daily Report(WIP) (id 유지)
-          { id: "counterparty-risk-daily", label: "2026 Daily Report(WIP)" },
+          // ✅ 구 "카운터파티 리스크(일간)" → 2026 Daily Report(출강) (id 유지)
+          { id: "counterparty-risk-daily", label: "2026 Daily Report(출강)" },
+          { id: "counterparty-risk-daily-online", label: "2026 Daily Report(온라인)" },
         ],
       },
       {
@@ -2344,7 +2345,8 @@
       "target-2026": renderTarget2026Screen,
       "target-2026-online": (root) => renderTarget2026DashboardScreen(root, "online"),
       "ops-2026-online-retention": renderOnlineRetention2026Screen,
-      "counterparty-risk-daily": renderCounterpartyRiskDaily,
+      "counterparty-risk-daily": (root) => renderCounterpartyRiskDaily(root, "offline"),
+      "counterparty-risk-daily-online": (root) => renderCounterpartyRiskDaily(root, "online"),
       "deal-qc-r1r15": renderDealQcR1R15Screen,
       "mismatch-2025": renderMismatch2025Screen,
       "industry-2025": renderIndustryMenu,
@@ -2428,6 +2430,7 @@
         error: null,
         data: null,
         date: null,
+        modeKey: "offline",
         filters: {
           tiers: new Set(["S0", "P0", "P1", "P2"]),
           risks: new Set(["심각", "보통", "양호"]),
@@ -7202,12 +7205,13 @@
       return new Date().toISOString().slice(0, 10);
     }
 
-    function fetchCounterpartyRiskReport(date, { force = false } = {}) {
-      const key = date || "today";
+    function fetchCounterpartyRiskReport(date, modeKey = "offline", { force = false } = {}) {
+      const key = `${modeKey || "offline"}::${date || "today"}`;
       const cache = state.counterpartyRisk.cache;
       if (!force && cache.has(key)) return cache.get(key);
       const params = new URLSearchParams();
       if (date) params.set("date", date);
+      if (modeKey) params.set("mode", modeKey);
       const promise = fetchJson(`/report/counterparty-risk${params.toString() ? `?${params}` : ""}`);
       cache.set(key, promise);
       return promise;
@@ -7228,14 +7232,18 @@
       });
     }
 
-    function renderCounterpartyRiskDaily(root) {
+    function renderCounterpartyRiskDaily(root, modeKey = "offline") {
+      const mode = modeKey === "online" ? "online" : "offline";
+      state.counterpartyRisk.modeKey = mode;
       const wrapper = document.createElement("div");
       wrapper.className = "card";
+      const title = mode === "online" ? "2026 Daily Report(온라인)" : "2026 Daily Report(출강)";
+      const subtitle = mode === "online" ? "온라인 딜 기준" : "비온라인(출강) 딜 기준";
       wrapper.innerHTML = `
         <div class="cpr-header">
           <div>
-            <h2 style="margin:0;">2026 Daily Report(WIP)</h2>
-            <div class="muted" style="font-size:12px;">(구: 카운터파티 리스크(일간)) · DB 교체 시 새로고침 필요(프런트 캐시 무효화 없음)</div>
+            <h2 style="margin:0;">${title}</h2>
+            <div class="muted" style="font-size:12px;">${subtitle} · (구: 카운터파티 리스크(일간)) · DB 교체 시 새로고침 필요(프런트 캐시 무효화 없음)</div>
           </div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
             <label class="pill muted">기준일
@@ -7466,7 +7474,7 @@
         try {
           const dateVal = dateInput.value || todayIso();
           state.counterpartyRisk.date = dateVal;
-          const data = await fetchCounterpartyRiskReport(dateVal, { force });
+          const data = await fetchCounterpartyRiskReport(dateVal, mode, { force });
           state.counterpartyRisk.data = data;
           state.counterpartyRisk.error = null;
           renderData();

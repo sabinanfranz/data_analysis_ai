@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "64d3287f1750f5b1d531cc86",
+      "counterpartyName": "IT기획그룹"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "09b8552180eb8ccd87c97ee0d13c4a838843a2f56e5b2a76a23f0fdd15d4816b",
+    "created_at": "2026-01-19",
+    "used_cache": false,
+    "fallback_used": false,
+    "mode": "offline",
+    "agent": "counterparty_card",
+    "agent_version": "v1"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 166,464,000원이다.",
+      "현재 파이프라인이 제로 상태이며, 이는 리스크를 증가시킨다.",
+      "의사결정 절차가 복잡하여 1월 중순 이후에나 확정 가능하다."
+    ],
+    "recommended_actions": [
+      "즉시 의사결정자를 확인하고 접근하라.",
+      "예산 조정 요청을 준비하라.",
+      "파이프라인을 구축하기 위한 전략을 마련하라."
+    ],
+    "fallback_used": false
+  }
+}

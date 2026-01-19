@@ -9,6 +9,11 @@ from pathlib import Path
 from typing import Any, Dict, List, Sequence, Tuple
 
 from . import counterparty_llm as cllm
+from .agents.core.artifacts import ArtifactStore
+from .agents.core.types import AgentContext, LLMConfig
+from .agents.core.orchestrator import Orchestrator
+from .agents.registry import get_agent_chain, REPORT_ID_COUNTERPARTY_RISK_DAILY
+from .report.composer import merge_counterparty_card_outputs
 
 DB_PATH_ENV = os.getenv("DB_PATH", "salesmap_latest.db")
 DB_PATH = Path(DB_PATH_ENV)
@@ -44,6 +49,9 @@ MIN_COVERAGE_BY_MONTH: Dict[int, float] = {
     11: 0.90,
     12: 1.00,
 }
+MODE_OFFLINE = "offline"
+MODE_ONLINE = "online"
+ALLOWED_MODES = {MODE_OFFLINE, MODE_ONLINE}
 
 # 원본 스키마 → 표준 컬럼명 매핑(후속 단계에서 재사용할 수 있도록 상수로 유지)
 SCHEMA_MAP: Dict[str, Dict[str, str]] = {
@@ -70,6 +78,14 @@ SCHEMA_MAP: Dict[str, Dict[str, str]] = {
         "organization_name": '"이름"',
     },
 }
+
+
+def _normalize_mode_key(mode_key: str | None) -> str:
+    mode = (mode_key or MODE_OFFLINE).lower()
+    if mode not in ALLOWED_MODES:
+        raise ValueError(f"Invalid mode_key: {mode_key}")
+    return mode
+
 
 # sqlite 연결 유틸: DB_PATH 기본, 외부 스냅샷 경로도 허용
 def _connect(db_path: str | Path | None = None) -> sqlite3.Connection:
@@ -635,13 +651,16 @@ def build_counterparty_target_2026(
     deal_norm_table: str = "deal_norm",
     org_tier_table: str = "org_tier_runtime",
     output_table: str = "counterparty_target_2026",
+    mode_key: str = MODE_OFFLINE,
 ) -> Dict[str, Any]:
     """
     카운터파티별 2025 확정 비온라인 금액(baseline_2025)을 집계하고
     고객사 티어 multiplier로 target_2026을 계산한다.
-    - universe: 2025/2026 비온라인 딜에 등장한 모든 (org, counterparty) for tiered orgs
-    - baseline: 2025, pipeline_bucket in CONFIRMED_* only, amount_value sum
+    - universe: 모드별(offline=비온라인, online=온라인) 2025/2026 딜에 등장한 모든 (org, counterparty) for tiered orgs
+    - baseline: 2025, pipeline_bucket in CONFIRMED_* only, amount_value sum, 모드별 필터 적용
     """
+    mode = _normalize_mode_key(mode_key)
+    mode_condition = "d.is_nononline = 1" if mode == MODE_OFFLINE else "d.is_online = 1"
     conn.row_factory = sqlite3.Row
 
     conn.execute('DROP TABLE IF EXISTS "tmp_counterparty_universe"')
@@ -657,7 +676,7 @@ def build_counterparty_target_2026(
             COALESCE(NULLIF(TRIM(d.counterparty_name), ''), '{COUNTERPARTY_UNKNOWN}') AS counterparty_name
         FROM "{deal_norm_table}" d
         JOIN "{org_tier_table}" t ON t.organization_id = d.organization_id
-        WHERE d.is_nononline = 1
+        WHERE {mode_condition}
           AND d.deal_year IN (2025, 2026)
           AND t.tier IS NOT NULL
         """
@@ -674,7 +693,7 @@ def build_counterparty_target_2026(
             COUNT(*) AS baseline_2025_deal_count,
             SUM(CASE WHEN d.amount_parse_failed = 1 THEN 1 ELSE 0 END) AS baseline_2025_amount_issue_count
         FROM "{deal_norm_table}" d
-        WHERE d.is_nononline = 1
+        WHERE {mode_condition}
           AND d.deal_year = 2025
           AND d.pipeline_bucket IN ('{BUCKET_CONFIRMED_CONTRACT}','{BUCKET_CONFIRMED_COMMIT}')
           AND (d.status IS NULL OR d.status != 'Convert')
@@ -800,17 +819,20 @@ def build_counterparty_risk_rule(
     org_tier_table: str = "org_tier_runtime",
     counterparty_target_table: str = "counterparty_target_2026",
     output_table: str = "tmp_counterparty_risk_rule",
+    mode_key: str = MODE_OFFLINE,
 ) -> Dict[str, Any]:
     """
     D4: 2026 확정/예상 집계 → gap/coverage → 규칙 리스크 레벨 계산.
     - 대상: tier(S0~P2) 조직의 카운터파티 (target 기반 + 2026 deal 기반 union)
-    - coverage: 2026 비온라인, status!='Convert', pipeline bucket confirmed/expected
+    - coverage: 2026 모드별(offline=비온라인, online=온라인) 딜, status!='Convert', pipeline bucket confirmed/expected
     - risk: 월별 min_cov 기준 + pipeline_zero 우선 + target=0 예외
     """
     as_of = _parse_as_of_date(as_of_date)
+    mode = _normalize_mode_key(mode_key)
     current_month = as_of.month
     min_cov = MIN_COVERAGE_BY_MONTH.get(current_month, 1.0)
     severe_threshold = 0.5 * min_cov
+    mode_condition = "d.is_nononline = 1" if mode == MODE_OFFLINE else "d.is_online = 1"
 
     conn.row_factory = sqlite3.Row
     conn.execute(f'DROP TABLE IF EXISTS "{output_table}"')
@@ -853,7 +875,7 @@ def build_counterparty_risk_rule(
             END AS agg_bucket
         FROM "{deal_norm_table}" d
         JOIN tiered_orgs t ON t.organization_id = d.organization_id
-        WHERE d.is_nononline = 1
+        WHERE {mode_condition}
           AND d.deal_year = 2026
           AND d.status NOT IN ('Convert','Lost')
         """
@@ -886,7 +908,7 @@ def build_counterparty_risk_rule(
             COUNT(*) AS dq_year_unknown_cnt
         FROM "{deal_norm_table}" d
         JOIN tiered_orgs t ON t.organization_id = d.organization_id
-        WHERE d.is_nononline = 1
+        WHERE {mode_condition}
           AND d.deal_year IS NULL
         GROUP BY d.organization_id, d.counterparty_name
         """
@@ -1066,15 +1088,18 @@ def _tier_rank(tier: str | None) -> int:
 def build_counterparty_risk_report(
     as_of_date: str | None = None,
     db_path: Path = DB_PATH,
+    mode_key: str = MODE_OFFLINE,
 ) -> Dict[str, Any]:
     """
     Orchestrates D1~D4 and returns a JSON-ready counterparty risk report.
     - Builds deal_norm -> org_tier -> counterparty_target_2026 -> tmp_counterparty_risk_rule
-    - Computes summary/counts and sorts counterparties by severity/pipeline_zero/tier/gap.
+    - Runs agent chain (D6) via orchestrator + registry
+    - Composes outputs into final counterparties list
     """
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
 
+    mode = _normalize_mode_key(mode_key)
     as_of = _parse_as_of_date(as_of_date)
     generated_at = datetime.now().isoformat()
     db_mtime = datetime.fromtimestamp(db_path.stat().st_mtime).isoformat()
@@ -1083,8 +1108,8 @@ def build_counterparty_risk_report(
     with _connect(db_path) as conn:
         dq_metrics = build_deal_norm(conn)
         org_tier = build_org_tier(conn, as_of_date=as_of.isoformat())
-        build_counterparty_target_2026(conn)
-        risk_info = build_counterparty_risk_rule(conn, as_of_date=as_of.isoformat())
+        build_counterparty_target_2026(conn, mode_key=mode)
+        risk_info = build_counterparty_risk_rule(conn, as_of_date=as_of.isoformat(), mode_key=mode)
 
         rows = conn.execute(
             f"""
@@ -1094,10 +1119,11 @@ def build_counterparty_risk_report(
         ).fetchall()
         # 카운터파티별 2026 상위 딜(금액 desc) 확보: deal_norm이 존재하는 동일 커넥션에서 계산
         top_deals_map: Dict[Tuple[str, str], List[Dict[str, Any]]] = {}
+        deals_mode_condition = "is_nononline = 1" if mode == MODE_OFFLINE else "is_online = 1"
         for r in rows:
             key = (r["organization_id"], r["counterparty_name"])
             deals = conn.execute(
-                """
+                f"""
                 SELECT
                     deal_id,
                     deal_name,
@@ -1115,7 +1141,7 @@ def build_counterparty_risk_report(
                 WHERE organization_id = ?
                   AND counterparty_name = ?
                   AND deal_year = 2026
-                  AND is_nononline = 1
+                  AND {deals_mode_condition}
                   AND status NOT IN ('Convert','Lost')
                 ORDER BY CAST(amount_value AS INTEGER) DESC, deal_id ASC
                 LIMIT ?
@@ -1160,11 +1186,25 @@ def build_counterparty_risk_report(
             -(row["target_2026"] or 0),
         )
 
-    # 메모 조회를 위해 별도 커넥션을 사용하되, 딜 리스트는 rows_data에 포함된 값을 재사용
-    with _connect(db_path) as conn_for_llm:
-        llm_cards = cllm.generate_llm_cards(conn_for_llm, rows_data, as_of, db_hash)
+    # Agent orchestration (D6)
+    artifacts = ArtifactStore()
+    artifacts.set("base.counterparty_rows", rows_data)
+    ctx = AgentContext(
+        report_id=REPORT_ID_COUNTERPARTY_RISK_DAILY,
+        mode_key=mode,
+        as_of_date=as_of,
+        db_hash=db_hash,
+        snapshot_db_path=db_path,
+        cache_root=Path("report_cache/llm"),
+        llm=LLMConfig.from_env(),
+    )
+    agents = get_agent_chain(REPORT_ID_COUNTERPARTY_RISK_DAILY, mode)
+    orchestrator = Orchestrator()
+    with _connect(db_path) as conn_for_agents:
+        agent_outputs = orchestrator.run(REPORT_ID_COUNTERPARTY_RISK_DAILY, mode, ctx, artifacts, agents, conn=conn_for_agents)
+    card_outputs = artifacts.get("agent.counterparty_card.outputs") or agent_outputs.get("counterparty_card", {}) or {}
+    merged_rows = merge_counterparty_card_outputs(sorted(rows_data, key=sort_key), card_outputs, mode, REPORT_ID_COUNTERPARTY_RISK_DAILY)
 
-    counterparties: List[Dict[str, Any]] = []
     counts = {"severe": 0, "normal": 0, "good": 0, "pipeline_zero": 0}
     tier_group_summary = {
         "S0_P0_P1": {"target": 0, "coverage": 0, "gap": 0},
@@ -1176,7 +1216,7 @@ def build_counterparty_risk_report(
         "uncategorized_counterparties": 0,
     }
 
-    for row in sorted(rows_data, key=sort_key):
+    for row in merged_rows:
         severity = row["risk_level_rule"]
         if severity == "심각":
             counts["severe"] += 1
@@ -1186,9 +1226,9 @@ def build_counterparty_risk_report(
             counts["good"] += 1
         if row["pipeline_zero"]:
             counts["pipeline_zero"] += 1
-        if row["dq_year_unknown_cnt"]:
+        if row.get("dq_year_unknown_cnt"):
             dq_quality["unknown_year_deals"] += row["dq_year_unknown_cnt"]
-        if row["excluded_by_quality"]:
+        if row.get("excluded_by_quality"):
             dq_quality["uncategorized_counterparties"] += 1
 
         tier_key = "S0_P0_P1" if row["tier"] in {"S0", "P0", "P1"} else ("P2" if row["tier"] == "P2" else None)
@@ -1198,54 +1238,6 @@ def build_counterparty_risk_report(
             tier_group_summary[tier_key]["target"] += tgt
             tier_group_summary[tier_key]["coverage"] += cov
             tier_group_summary[tier_key]["gap"] += tgt - cov
-
-        coverage_ratio = row["coverage_ratio"] if row["coverage_ratio"] is not None else None
-
-        llm_res = llm_cards.get((row["organization_id"], row["counterparty_name"]))
-        if llm_res is None:
-            blockers = cllm.fallback_blockers(bool(row["pipeline_zero"]), "")
-            evidence = cllm.fallback_evidence(row, blockers)
-            actions = cllm.fallback_actions(blockers)
-            risk_level_llm = row["risk_level_rule"]
-        else:
-            blockers = llm_res.get("top_blockers", [])
-            evidence = llm_res.get("evidence_bullets", [])
-            actions = llm_res.get("recommended_actions", [])
-            risk_level_llm = llm_res.get("risk_level_llm") or llm_res.get("risk_level") or row["risk_level_rule"]
-
-        counterparties.append(
-            {
-                "organizationId": row["organization_id"],
-                "organizationName": row["organization_name"],
-                "counterpartyName": row["counterparty_name"],
-                "tier": row["tier"],
-                "baseline_2025": row["baseline_2025_confirmed"],
-                "target_2026": row["target_2026"],
-                "confirmed_2026": row["confirmed_2026"],
-                "expected_2026": row["expected_2026"],
-                "coverage_2026": row["coverage_2026"],
-                "gap": row["gap"],
-                "coverage_ratio": coverage_ratio,
-                "pipeline_zero": bool(row["pipeline_zero"]),
-                "risk_level_rule": row["risk_level_rule"],
-                "risk_level_llm": risk_level_llm,
-                "top_blockers": blockers,
-                "evidence_bullets": evidence,
-                "recommended_actions": actions,
-                "rule_trigger": row["rule_trigger"],
-                "min_cov_current_month": row["min_cov_current_month"],
-                "severe_threshold": row["severe_threshold"],
-                "excluded_by_quality": bool(row["excluded_by_quality"]),
-                "counts": {
-                    "cnt_confirmed_deals_2026": row["cnt_confirmed_deals_2026"],
-                    "cnt_expected_deals_2026": row["cnt_expected_deals_2026"],
-                    "cnt_amount_zero_deals_2026": row["cnt_amount_zero_deals_2026"],
-                    "dq_amount_parse_fail_cnt_2026": row["dq_amount_parse_fail_cnt_2026"],
-                    "dq_year_unknown_cnt": row["dq_year_unknown_cnt"],
-                },
-                "deals_top": row.get("top_deals_2026", [])[: cllm.PAYLOAD_DEALS_LIMIT],
-            }
-        )
 
     def summarize_group(data: Dict[str, int | float]) -> Dict[str, Any]:
         target = data["target"]
@@ -1274,10 +1266,46 @@ def build_counterparty_risk_report(
             "as_of": as_of.isoformat(),
             "db_version": db_mtime,
             "generated_at": generated_at,
+            "mode": mode,
+            "report_id": REPORT_ID_COUNTERPARTY_RISK_DAILY,
         },
         "summary": summary,
         "data_quality": dq_quality,
-        "counterparties": counterparties,
+        "counterparties": [
+            {
+                "organizationId": row["organization_id"],
+                "organizationName": row["organization_name"],
+                "counterpartyName": row["counterparty_name"],
+                "tier": row["tier"],
+                "baseline_2025": row["baseline_2025_confirmed"],
+                "target_2026": row["target_2026"],
+                "confirmed_2026": row["confirmed_2026"],
+                "expected_2026": row["expected_2026"],
+                "coverage_2026": row["coverage_2026"],
+                "gap": row["gap"],
+                "coverage_ratio": row["coverage_ratio"] if row["coverage_ratio"] is not None else None,
+                "pipeline_zero": bool(row["pipeline_zero"]),
+                "risk_level_rule": row["risk_level_rule"],
+                "risk_level_llm": row.get("risk_level_llm", row["risk_level_rule"]),
+                "top_blockers": row["top_blockers"],
+                "evidence_bullets": row["evidence_bullets"],
+                "recommended_actions": row["recommended_actions"],
+                "rule_trigger": row["rule_trigger"],
+                "min_cov_current_month": row["min_cov_current_month"],
+                "severe_threshold": row["severe_threshold"],
+                "excluded_by_quality": bool(row["excluded_by_quality"]),
+                "counts": {
+                    "cnt_confirmed_deals_2026": row["cnt_confirmed_deals_2026"],
+                    "cnt_expected_deals_2026": row["cnt_expected_deals_2026"],
+                    "cnt_amount_zero_deals_2026": row["cnt_amount_zero_deals_2026"],
+                    "dq_amount_parse_fail_cnt_2026": row["dq_amount_parse_fail_cnt_2026"],
+                    "dq_year_unknown_cnt": row["dq_year_unknown_cnt"],
+                },
+                "deals_top": row.get("top_deals_2026", [])[: cllm.PAYLOAD_DEALS_LIMIT],
+                "llm_meta": row.get("llm_meta", {}),
+            }
+            for row in merged_rows
+        ],
     }
 
     return report

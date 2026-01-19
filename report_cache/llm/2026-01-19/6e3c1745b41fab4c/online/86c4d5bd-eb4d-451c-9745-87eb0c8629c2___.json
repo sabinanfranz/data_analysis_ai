@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "86c4d5bd-eb4d-451c-9745-87eb0c8629c2",
+      "counterpartyName": "매니지먼트 컬리지"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "20eedc9811ebd4629bcaa4e2b9be03961f98873d9b8ffa373a48d7cf1b28a5ac",
+    "created_at": "2026-01-19T12:19:52.902522",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null,
+    "mode": "online"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "현재 파이프라인이 전무하여 리스크가 심각하다.",
+      "2026년 목표 금액은 36,450,000원이지만, 현재 확인된 금액은 0원이다.",
+      "최근 90일 동안 잃은 기회는 없지만, 의사결정이 지연되고 있다."
+    ],
+    "recommended_actions": [
+      "파이프라인을 구축하기 위한 전략을 마련하라.",
+      "예산 확보를 위해 관련 부서와 협의하라.",
+      "의사결정자를 조속히 확인하고 소통하라."
+    ],
+    "fallback_used": false
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "64d328811750f5b1d531d07e",
+      "counterpartyName": "AVP본부"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "54b46e644d4fc8c17272a9eaa4bed34b424ff85592edbeb186d38647be68b91a",
+    "created_at": "2026-01-19",
+    "used_cache": false,
+    "fallback_used": false,
+    "mode": "offline",
+    "agent": "counterparty_card",
+    "agent_version": "v1"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 7,174만 원으로 설정되어 있으나, 현재 파이프라인이 존재하지 않아 리스크가 심각하다.",
+      "고객사와의 최근 연락이 없으며, 90일 이내에 잃어버린 건수는 0건이다.",
+      "내부 의사결정이 지연되고 있으며, 다음 주 중 검토 및 의사결정 마무리가 예상된다."
+    ],
+    "recommended_actions": [
+      "고객사와의 연락을 통해 내부 의사결정 상황을 확인하라.",
+      "예산 조정이 필요하므로 고객사에 적절한 견적을 제시하라.",
+      "의사결정자를 대상으로 한 후속 조치를 신속히 진행하라."
+    ],
+    "fallback_used": false
+  }
+}

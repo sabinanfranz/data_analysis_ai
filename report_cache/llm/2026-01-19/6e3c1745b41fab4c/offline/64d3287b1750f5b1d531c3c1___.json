@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "64d3287b1750f5b1d531c3c1",
+      "counterpartyName": "경영지원본부"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "ef396f86d141e212ffecada6cdf15f0a0d140a15128816e0000813ef0cd58795",
+    "created_at": "2026-01-19",
+    "used_cache": false,
+    "fallback_used": false,
+    "mode": "offline",
+    "agent": "counterparty_card",
+    "agent_version": "v1"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 141,075,000원이며, 현재 파이프라인이 존재하지 않습니다.",
+      "2026년 예상 금액은 0원으로, 리스크가 심각하게 평가되고 있습니다.",
+      "최근 90일 동안 잃어버린 기회는 없지만, 고객과의 마지막 접촉이 없었습니다."
+    ],
+    "recommended_actions": [
+      "고객과의 접촉을 시도하여 현재 상황을 파악하라.",
+      "예산 확보를 위해 내부 논의를 진행하라.",
+      "의사결정자를 확인하고, 그들과의 미팅을 요청하라."
+    ],
+    "fallback_used": false
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "64d328801750f5b1d531cd2f",
+      "counterpartyName": "IT시스템부"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "7bdaa62d12e24c07ccdfc860c5bc081cf4249b77b277fb8590db898a4dd2917d",
+    "created_at": "2026-01-19",
+    "used_cache": false,
+    "fallback_used": false,
+    "mode": "offline",
+    "agent": "counterparty_card",
+    "agent_version": "v1"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "2026년 목표 금액은 283,696,000원이며, 현재 파이프라인이 제로 상태입니다.",
+      "최근 90일 동안 잃어버린 거래는 없으며, 마지막 연락 날짜는 확인되지 않았습니다.",
+      "규칙상 리스크는 심각으로 분류됨."
+    ],
+    "recommended_actions": [
+      "즉시 파이프라인을 구축하기 위한 전략을 수립하라.",
+      "예산 확보를 위해 관련 부서와 협의하라.",
+      "의사결정자를 대상으로 교육 및 정보 제공을 강화하라."
+    ],
+    "fallback_used": false
+  }
+}

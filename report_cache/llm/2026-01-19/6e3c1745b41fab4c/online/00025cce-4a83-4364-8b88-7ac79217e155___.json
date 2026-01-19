@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "00025cce-4a83-4364-8b88-7ac79217e155",
+      "counterpartyName": "경영지원실"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "aa91248f2def008b233ac9b0753644633592b87e509201887eb071125f18bae9",
+    "created_at": "2026-01-19T12:18:48.386936",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null,
+    "mode": "online"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "앰코테크놀로지코리아의 2026년 목표 금액은 30,000,000원이며, 현재 확정된 금액은 0원이다.",
+      "현재 파이프라인이 전혀 없는 상태로, 리스크가 심각하게 평가되고 있다.",
+      "최근 90일 동안 잃어버린 거래는 없지만, 고객과의 마지막 연락 날짜는 확인되지 않았다."
+    ],
+    "recommended_actions": [
+      "고객과의 연락을 통해 의사결정자를 확인하고 접근하라.",
+      "예산 편성을 위해 고객의 필요와 요구사항을 명확히 파악하라.",
+      "파이프라인을 구축하기 위한 전략을 수립하고 실행하라."
+    ],
+    "fallback_used": false
+  }
+}

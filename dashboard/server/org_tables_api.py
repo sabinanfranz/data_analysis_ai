@@ -248,16 +248,19 @@ def get_pl_progress_deals(
 @router.get("/report/counterparty-risk")
 def get_counterparty_risk_report(
     date: str | None = Query(None, description="YYYY-MM-DD (없으면 today)"),
+    mode: str = Query("offline", description='리포트 모드 ("offline"|"online")'),
 ) -> dict:
     try:
         if date:
             # Validate date format early for clear 400
             datetime.fromisoformat(date)
+        if mode not in {"offline", "online"}:
+            raise HTTPException(status_code=400, detail="Invalid mode")
         try:
-            return get_cached_report(as_of=date)
+            return get_cached_report(as_of=date, mode=mode)
         except FileNotFoundError:
-            run_daily_counterparty_risk_job(as_of_date=date, force=True)
-            return get_cached_report(as_of=date)
+            run_daily_counterparty_risk_job(as_of_date=date, force=True, mode=mode)
+            return get_cached_report(as_of=date, mode=mode)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=f"Invalid date format: {exc}")
     except FileNotFoundError as exc:
@@ -267,11 +270,14 @@ def get_counterparty_risk_report(
 @router.post("/report/counterparty-risk/recompute")
 def recompute_counterparty_risk_report(
     date: str | None = Query(None, description="YYYY-MM-DD (없으면 today)"),
+    mode: str = Query("offline", description='리포트 모드 ("offline"|"online")'),
 ) -> dict:
     try:
         if date:
             datetime.fromisoformat(date)
-        return run_daily_counterparty_risk_job(as_of_date=date, force=True)
+        if mode not in {"offline", "online"}:
+            raise HTTPException(status_code=400, detail="Invalid mode")
+        return run_daily_counterparty_risk_job(as_of_date=date, force=True, mode=mode)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=f"Invalid date format: {exc}")
     except FileNotFoundError as exc:
@@ -279,8 +285,18 @@ def recompute_counterparty_risk_report(
 
 
 @router.get("/report/counterparty-risk/status")
-def get_counterparty_risk_status() -> dict:
-    return _load_status()
+def get_counterparty_risk_status(
+    mode: str | None = Query(None, description='리포트 모드 ("offline"|"online"), 없으면 전체 반환'),
+) -> dict:
+    if mode is None:
+        return {
+            "offline": _load_status(mode="offline"),
+            "online": _load_status(mode="online"),
+            "modes_available": ["offline", "online"],
+        }
+    if mode not in {"offline", "online"}:
+        raise HTTPException(status_code=400, detail="Invalid mode")
+    return _load_status(mode=mode)
 
 
 @router.get("/rank/2025-deals-people")

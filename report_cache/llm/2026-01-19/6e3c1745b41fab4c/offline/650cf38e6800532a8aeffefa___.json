@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "650cf38e6800532a8aeffefa",
+      "counterpartyName": "미분류(카운터파티 없음)"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "56211bd6a5ff78254ef18ddca40506be0ff8493939468e49a6021d27a6c32a66",
+    "created_at": "2026-01-19",
+    "used_cache": false,
+    "fallback_used": false,
+    "mode": "offline",
+    "agent": "counterparty_card",
+    "agent_version": "v1"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "BUDGET",
+      "DECISION_MAKER"
+    ],
+    "evidence_bullets": [
+      "규칙상 리스크는 심각으로 분류됨.",
+      "현재 파이프라인이 제로 상태이며, 이는 거래 성사에 큰 장애가 된다.",
+      "2026년 목표 금액은 223874545.3으로 설정되어 있다."
+    ],
+    "recommended_actions": [
+      "예산 확보를 위해 관련 부서와 논의하라.",
+      "의사결정자를 확인하고, 직접 연락하여 진행 상황을 파악하라."
+    ],
+    "fallback_used": false
+  }
+}

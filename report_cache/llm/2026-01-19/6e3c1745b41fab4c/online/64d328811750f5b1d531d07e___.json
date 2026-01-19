@@ -1,0 +1,42 @@
+{
+  "meta": {
+    "as_of_date": "2026-01-19",
+    "db_hash": "6e3c1745b41fab4c",
+    "counterparty_key": {
+      "organizationId": "64d328811750f5b1d531d07e",
+      "counterpartyName": "미분류(카운터파티 없음)"
+    },
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "base_url_configured": false,
+    "timeout": 15.0,
+    "max_tokens": 1024,
+    "temperature": 0.2,
+    "prompt_version": "v1",
+    "llm_input_hash": "bdf425891cbeb2049a44ccce20f1332c6ffc3497ac8ac5ae666b528d278619f7",
+    "created_at": "2026-01-19T12:19:01.770214",
+    "used_cache": false,
+    "fallback_used": false,
+    "error": null,
+    "mode": "online"
+  },
+  "output": {
+    "risk_level": "심각",
+    "top_blockers": [
+      "PIPELINE_ZERO",
+      "DECISION_MAKER",
+      "APPROVAL_DELAY"
+    ],
+    "evidence_bullets": [
+      "현재 파이프라인이 전혀 없는 상태로, 리스크가 심각하게 평가되고 있다.",
+      "2026년 목표 금액은 22,399,200원이지만, 현재 확인된 금액은 0원이다.",
+      "내부 의사결정이 진행되지 않고 있으며, 다음 주 중 검토 및 의사결정 마무리가 예상된다."
+    ],
+    "recommended_actions": [
+      "고객사와의 의사결정을 촉진하기 위해 후속 연락을 진행하라.",
+      "예산 조정 및 승인 절차를 신속히 진행할 수 있도록 고객사에 요청하라.",
+      "파이프라인을 구축하기 위한 전략을 마련하고 고객사에 제안하라."
+    ],
+    "fallback_used": false
+  }
+}

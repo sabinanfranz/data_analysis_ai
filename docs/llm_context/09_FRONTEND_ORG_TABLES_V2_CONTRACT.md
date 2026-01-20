@@ -15,7 +15,7 @@ sync_source:
 - 정적 프런트 `org_tables_v2.html`의 메뉴/상태/렌더/캐시/모달 계약을 코드 기준으로 명세한다.
 
 ## Behavioral Contract
-- 사이드바: `MENU_SECTIONS` 순서로 사업부 퍼포먼스(2026 P&L → 2026 월별 체결액 → 2026 Daily Report(WIP)) → 운영(2026 Targetboard(출강), 2026 Targetboard(온라인), 2026 카운터파티 DRI, 딜체크 7개 메뉴) → 분석(StatePath 24→25, 2025 체결액 순위, 조직/People/Deal 뷰어, 숨김: 2025 대기업 딜·People/업종별 매출) → 검수(개인별 세일즈맵 검수, 고객사 불일치). 해시가 유효하지 않으면 `DEFAULT_MENU_ID="org-view"`. 딜체크 메뉴는 단일 config(`DEALCHECK_MENU_DEFS`)에서 부모 2개(교육1/교육2)와 자식 5개(교육1: 1/2파트, 교육2: 1/2파트/온라인셀)를 정의하며, 자식 라벨에만 `↳ ` 접두어를 추가한다. 월별 체결액도 동일 패턴으로 부모 `biz-perf-monthly` 아래 하위 메뉴 2개(교육1/교육2)가 있으며 `team` 파라미터를 전달한다.
+- 사이드바: `MENU_SECTIONS` 순서로 사업부 퍼포먼스(2026 P&L → 2026 월별 체결액 → 2026 Daily Report(WIP)) → 운영(2026 Targetboard(출강), 2026 Targetboard(온라인), 2026 카운터파티 DRI, 딜체크 7개 메뉴) → 분석(StatePath 24→25, 2025 체결액 순위, 조직/People/Deal 뷰어, 숨김: 2025 대기업 딜·People/업종별 매출) → 검수(개인별 세일즈맵 검수, 고객사 불일치). 해시가 유효하지 않으면 `DEFAULT_MENU_ID="target-2026"`. 딜체크 메뉴는 단일 config(`DEALCHECK_MENU_DEFS`)에서 부모 2개(교육1/교육2)와 자식 5개(교육1: 1/2파트, 교육2: 1/2파트/온라인셀)를 정의하며, 자식 라벨에만 `↳ ` 접두어를 추가한다. 월별 체결액도 동일 패턴으로 부모 `biz-perf-monthly` 아래 하위 메뉴 2개(교육1/교육2)가 있으며 `team` 파라미터를 전달한다.
 - API_BASE: origin이 있으면 `<origin>/api`, 아니면 `http://localhost:8000/api`.
 - 2026 P&L (`renderBizPerfPlProgress2026`):
   - `/performance/pl-progress-2026/summary` → 연간(T/E) 후 2601~2612 T/E 컬럼을 렌더. 현재 월 헤더/셀에 `is-current-month-group`/`is-current-month` 클래스 부여.
@@ -34,6 +34,7 @@ sync_source:
 - 조직/People/Deal 뷰어:
   - `getSizes`→`/orgs`로 조직 목록 로드, 선택 시 `/orgs/{id}/people`→사람 선택→`/people/{id}/deals`/`/people/{id}/memos`/`/deals/{id}/memos`.
   - 상위 조직 JSON 카드: `/orgs/{id}/won-groups-json` 캐시 → 선택 upper_org가 없으면 JSON 버튼 비활성+안내, 선택 시 전체/선택 JSON 모달, compact 버튼은 `/won-groups-json-compact`.
+  - 메모 표시: `htmlBody`가 있으면 sanitizer를 거쳐 서식 유지 렌더(DIV/테이블/thead/tbody/tr/th/td/링크 허용, href 검증 + `_blank`/`noopener` 강제), 없으면 text를 `white-space: pre-wrap`으로 표시한다. 딜체크 “메모 확인” 모달 포함 모든 모달이 이 규칙을 사용한다.
 - StatePath 24→25: 서버 호출은 `segment/sort/limit`만 전달하며, 필터는 모두 클라이언트 드로어(규모 라디오, 2024 티어 프리셋/체크박스, Quick Filters, 패턴 필터 전이/셀/rail)에서 즉시 적용된다. Snapshot/Pattern Explorer/테이블/브레드크럼이 공유 상태를 사용하고 “전체 해제” 버튼이 클라이언트 필터를 리셋한다. Glossary/Legend 모달과 Core JSON 복사 버튼(StatePath 상세)이 포함돼 필터 기준과 복사 스키마를 안내한다.
 - 2026 Daily Report(WIP, Counterparty Risk): 날짜 선택+새로고침 버튼, tier/risk 멀티셀렉트, pipeline_zero 토글, 검색, 리스크 칩을 제공한다. `/report/counterparty-risk` 응답의 summary.tier_groups/summary.counts/data_quality와 counterparties[*](`target_2026/coverage_2026/expected_2026/gap/coverage_ratio/pipeline_zero/evidence_bullets/recommended_actions`)를 표시하며, 섹션별 details 토글이 evidence/추천 액션을 노출한다. DB 버전 배지를 표시하고 필터 상태는 메모리 캐시(Map)로 유지된다.
 - 2025 체결액 순위: 규모 셀렉터 + 등급 가이드/배수 설정 모달을 갖추고, `/rank/2025-deals`만 호출해 받은 데이터를 프런트에서 `computeTargets`로 재계산해 26 타겟/온라인/비온라인 컬럼을 렌더한다(삼성 S0는 50억 고정). `/rank/2025/summary-by-size`는 UI에서 사용하지 않는다.

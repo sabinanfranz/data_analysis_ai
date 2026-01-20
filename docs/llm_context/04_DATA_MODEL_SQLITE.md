@@ -20,7 +20,7 @@ sync_source:
 - organization: `"이름"`, `"기업 규모"`, `"업종"`, `"업종 구분(대)"`, `"업종 구분(중)"`, `"팀"`, `"담당자"`, `"전화"` 필드를 사용하며, `"이름"`이 비면 id로 대체한다.
 - people: `"이름"`, `"소속 상위 조직"`, `"팀(명함/메일서명)"`, `"직급(명함/메일서명)"`, `"담당 교육 영역"`, `"제출된 웹폼 목록"`을 사용한다. 공백 upper_org/team은 `"미입력"`으로 정규화된다.
 - deal: `"상태"`, `"금액"`, `"예상 체결액"`, `"계약 체결일"`, `"수주 예정일"`, `"수강시작일"`, `"수강종료일"`, `"과정포맷"`, `"카테고리"`, `"담당자"`, `"생성 날짜"`, `"LOST 확정일"`, `"이탈 사유"`, `"코스 ID"`(있을 경우)를 사용한다.
-- memo: `organizationId`/`peopleId`/`dealId`, `text`, `ownerId`, `createdAt`/`updatedAt` 필드를 사용하며, `_get_owner_lookup`으로 ownerId→name 매핑한다.
+- memo: `organizationId`/`peopleId`/`dealId`, `text`, `ownerId`, `createdAt`/`updatedAt` 필드를 사용하며, `_get_owner_lookup`으로 ownerId→name 매핑한다. `htmlBody` 컬럼이 존재할 수 있으며, 존재 시 메모 조회/원본 won-groups-json에서 함께 노출되지만 compact 변환에서는 제거된다.
 - webform_history(후처리): `peopleId`, `webFormId`, `createdAt`를 사용해 webform 제출 날짜를 매핑한다.
 
 ## Coupling Map

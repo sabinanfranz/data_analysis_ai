@@ -20,19 +20,22 @@ sync_source:
 - 메모 적용:
   - 조직 메모(memo.organizationId only)는 organization.memos 배열에 추가.
   - People/Deal 메모는 각 엔티티의 memos 배열에 추가, `cleanText==""`는 제외.
+  - memo에 `htmlBody`가 있을 수 있으며, won-groups-json에서는 그대로 포함되지만 compact에서는 제거된다(아래 참조).
 - 웹폼 정제:
   - People.`"제출된 웹폼 목록"`을 `_safe_json_load` 후 `{id,name}` 배열로 변환.
   - webform_history 테이블에서 (peopleId, webFormId)별 제출 날짜를 조회해 `date`에 단일/리스트를 채우고, 없으면 `"날짜 확인 불가"`.
   - won-groups-json 응답에서는 webform id를 노출하지 않는다.
 - compact 변환(`json_compact.py`):
-  - memos/webforms 필드를 **현재 그대로 유지**하며 날짜만 YYYY-MM-DD로 정규화한다.
+  - memos/webforms를 유지하되 `htmlBody`는 전역적으로 제거한다. text가 비었거나 품질이 낮으면 `htmlBody`를 Markdown으로 변환해 memo.text를 보강한다(표/줄바꿈/리스트 구조 유지, 1열→2열 변환 금지).
   - people가 deal.people_id 참조만 남고 누락된 인물은 stub로 people 배열에 추가된다.
+- 프런트 렌더:
+  - 메모 상세/딜체크 모달은 `htmlBody`가 있으면 sanitizer(화이트리스트)로 안전하게 렌더하고, 없으면 text를 `pre-wrap`으로 표시한다. sanitizer는 DIV/Table/thead/tbody/tr/th/td/caption까지 허용해 블록/표 구조를 유지하고, 링크는 href 검증 + `_blank`/`noopener`를 강제한다.
 
 ## Invariants (Must Not Break)
 - 폼 메모 정제 트리거는 utm_source 또는 “고객 마케팅 수신 동의” 존재 여부에만 의존하며, 다른 문자열로는 정제가 실행되지 않는다.
 - 드롭 키/특수 문구/정보 부족 조건을 만족하면 메모는 결과에서 제외된다.
 - webform id는 응답에 포함되지 않으며, date는 `"날짜 확인 불가"`/단일/리스트 3형식 중 하나다.
-- compact 변환은 memos/webforms를 유지하므로 개인정보 제거 용도로 사용할 수 없다.
+- compact 변환은 memos/webforms를 유지하지만 htmlBody는 제거된다. text 보강은 compact에 한정되며 일반 메모 조회 API는 원본 text/htmlBody를 그대로 노출한다.
 
 ## Coupling Map
  - 백엔드: `dashboard/server/database.py` (`_clean_form_memo`, `get_won_groups_json`), webform 날짜 조회 `_build_history_index`.

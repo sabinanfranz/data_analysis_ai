@@ -16,7 +16,7 @@ sync_source:
 - 정적 프런트 `org_tables_v2.html`와 FastAPI `/api` 백엔드가 제공하는 대시보드(사업부 퍼포먼스/랭킹/StatePath/딜체크·QC/조직 뷰어)의 현재 계약을 코드 기준으로 기록한다.
 
 ## Behavioral Contract
-- **사이드바·라우팅**: `MENU_SECTIONS` 순서대로 사업부 퍼포먼스(2026 P&L, 2026 월별 체결액, 2026 Daily Report(WIP)) → 운영(2026 Target Board, 2026 카운터파티 DRI, 딜체크 7개 메뉴) → 분석(StatePath 24→25, 2025 체결액 순위, 조직/People/Deal 뷰어, 숨김: 2025 대기업 딜·People/업종별 매출) → 검수(개인별 세일즈맵 검수, 고객사 불일치). URL hash가 유효하지 않으면 `DEFAULT_MENU_ID="org-view"`로 이동한다. 딜체크 메뉴는 단일 config(`DEALCHECK_MENU_DEFS`)에서 부모 2개(교육1/교육2)와 자식 5개(교육1: 1/2파트, 교육2: 1/2파트/온라인셀)를 정의하며, 라벨 앞에 `↳ ` 접두어만 붙여 서브메뉴를 표시한다(여백/들여쓰기 없음).
+- **사이드바·라우팅**: `MENU_SECTIONS` 순서대로 사업부 퍼포먼스(2026 P&L, 2026 월별 체결액, 2026 Daily Report(WIP)) → 운영(2026 Target Board, 2026 카운터파티 DRI, 딜체크 7개 메뉴) → 분석(StatePath 24→25, 2025 체결액 순위, 조직/People/Deal 뷰어, 숨김: 2025 대기업 딜·People/업종별 매출) → 검수(개인별 세일즈맵 검수, 고객사 불일치). URL hash가 유효하지 않으면 `DEFAULT_MENU_ID="target-2026"`로 이동한다. 딜체크 메뉴는 단일 config(`DEALCHECK_MENU_DEFS`)에서 부모 2개(교육1/교육2)와 자식 5개(교육1: 1/2파트, 교육2: 1/2파트/온라인셀)를 정의하며, 라벨 앞에 `↳ ` 접두어만 붙여 서브메뉴를 표시한다(여백/들여쓰기 없음).
 - **2026 P&L 진행율매출** (`renderBizPerfPlProgress2026`):
   - `/performance/pl-progress-2026/summary` 호출 후 Target(T)/Expected(E) 열을 `연간(T/E) → 2601(T/E) … 2612(T/E)` 순으로 렌더한다. 현재 월은 헤더에 `is-current-month-group`/셀 `is-current-month` 클래스로 하이라이트된다.
   - Assumptions 바는 공헌이익률(온라인/출강)·월 제작비/마케팅비/인건비를 입력받아 `applyAssumptionsToPnlData`로 재계산한다. `pnlAssumpInfoBtn` 클릭 시 제외 건수·스냅샷 버전·가정 요약을 모달로 표시하며 `pnlResetAssumptionsBtn`은 `DEFAULT_PNL_ASSUMPTIONS`로 복구한다.

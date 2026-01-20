@@ -2356,7 +2356,7 @@
     const MENU_ITEMS = MENU_SECTIONS.flatMap((section) => section.items);
     const MENU_IDS = new Set(MENU_ITEMS.map((item) => item.id));
     const MENU_SECTION_STORAGE_PREFIX = "menu_section_open__";
-    const DEFAULT_MENU_ID = "org-view";
+    const DEFAULT_MENU_ID = "target-2026";
     const DEFAULT_PNL_ASSUMPTIONS = {
       onlineContribMarginRate: 0.85,
       offlineContribMarginRate: 0.55,
@@ -7384,7 +7384,7 @@
       st.teamPartLoading = true;
       st.teamPartError = null;
       try {
-        const source = await loadTarget2026SourceRows();
+        const source = await loadTarget2026SourceRowsAll();
         const rows = []
           .concat(source?.big || [])
           .concat(source?.mid || [])
@@ -7451,13 +7451,22 @@
       });
     }
 
-    async function ensureOfflineDriOverrideTargetMap() {
+    async function ensureOfflineDriOverrideUniverse() {
       const st = state.counterpartyRisk;
-      if (st.offlineDriOverrideTargetMap) return st.offlineDriOverrideTargetMap;
-      if (st.offlineDriOverrideTargetMapLoading) return null;
+      if (st.offlineDriOverrideTargetMap && st.offlineDriOverrideKeySet) {
+        return {
+          overrideRows: st.offlineDriOverrideRows || [],
+          overrideKeySet: st.offlineDriOverrideKeySet,
+          overrideTargetMap: st.offlineDriOverrideTargetMap,
+          overrideRowByKey: st.offlineDriOverrideRowByKey || new Map(),
+        };
+      }
+      if (st.offlineDriOverrideTargetMapLoading || st.offlineDriOverrideKeySetLoading) return null;
 
       st.offlineDriOverrideTargetMapLoading = true;
+      st.offlineDriOverrideKeySetLoading = true;
       st.offlineDriOverrideTargetMapError = null;
+      st.offlineDriOverrideKeySetError = null;
 
       try {
         const source = await loadTarget2026SourceRowsAll();
@@ -7467,87 +7476,116 @@
           .concat(source?.small || []);
 
         const map = new Map();
+        const keySet = new Set();
+        const rowByKey = new Map();
+        const overrideRows = [];
 
         for (const r of rows) {
           const orgId = String(r.orgId || r.org_id || "").trim();
           const upperOrg = normalizeUpperOrg(r.upperOrg || r.upper_org || r.counterparty || "");
-
           const isOverride = isTruthyFlag(r.target26OfflineIsOverride);
           const targetWon = Number(r.target26Offline ?? 0);
-          const nonZero = Number.isFinite(targetWon) && targetWon !== 0;
 
           if (!orgId || !upperOrg) continue;
           if (!isOverride) continue;
-          if (!nonZero) continue;
 
-          map.set(`${orgId}||${upperOrg}`, targetWon);
+          const key = `${orgId}||${upperOrg}`;
+          keySet.add(key);
+          map.set(key, Number.isFinite(targetWon) ? targetWon : 0);
+          rowByKey.set(key, r);
+          overrideRows.push(r);
         }
 
         st.offlineDriOverrideTargetMap = map;
-        console.debug("[cpr] offline DRI override target map built", { size: map.size });
-        return map;
+        st.offlineDriOverrideKeySet = keySet;
+        st.offlineDriOverrideRows = overrideRows;
+        st.offlineDriOverrideRowByKey = rowByKey;
+        console.debug("[cpr] offline DRI override universe built", {
+          size: keySet.size,
+          rows: overrideRows.length,
+        });
+        return {
+          overrideRows,
+          overrideKeySet: keySet,
+          overrideTargetMap: map,
+          overrideRowByKey: rowByKey,
+        };
       } catch (err) {
         console.error(err);
         st.offlineDriOverrideTargetMapError = err;
+        st.offlineDriOverrideKeySetError = err;
         st.offlineDriOverrideTargetMap = null;
+        st.offlineDriOverrideKeySet = null;
+        st.offlineDriOverrideRows = [];
+        st.offlineDriOverrideRowByKey = new Map();
         return null;
       } finally {
         st.offlineDriOverrideTargetMapLoading = false;
-      }
-    }
-
-    async function ensureOfflineDriOverrideNonZeroKeySet() {
-      const st = state.counterpartyRisk;
-      if (st.offlineDriOverrideKeySet) return st.offlineDriOverrideKeySet;
-      if (st.offlineDriOverrideTargetMap) {
-        const set = new Set(st.offlineDriOverrideTargetMap.keys());
-        st.offlineDriOverrideKeySet = set;
-        return set;
-      }
-      if (st.offlineDriOverrideKeySetLoading) return null;
-
-      st.offlineDriOverrideKeySetLoading = true;
-      st.offlineDriOverrideKeySetError = null;
-
-      try {
-        const map = await ensureOfflineDriOverrideTargetMap();
-        if (map) {
-          const set = new Set(map.keys());
-          st.offlineDriOverrideKeySet = set;
-          return set;
-        }
-        return null;
-      } catch (err) {
-        console.error(err);
-        st.offlineDriOverrideKeySetError = err;
-        st.offlineDriOverrideKeySet = null;
-        return null;
-      } finally {
         st.offlineDriOverrideKeySetLoading = false;
       }
     }
 
-    function filterCounterpartyRiskRowsByKeySet(data, keySet) {
-      if (!data || !Array.isArray(data.counterparties) || !keySet) return data;
+    function projectReportToDriOverrideUniverse(data, universe) {
+      if (!data || !Array.isArray(data.counterparties) || !universe) return data;
+      const { overrideKeySet, overrideTargetMap, overrideRowByKey } = universe;
+      if (!overrideKeySet || !overrideTargetMap) return data;
 
-      const rows = data.counterparties || [];
-      const filtered = rows.filter((row) => {
+      const reportRowByKey = new Map();
+      (data.counterparties || []).forEach((row) => {
         const orgId = String(row.organizationId || row.orgId || "").trim();
-        const upperOrg = normalizeUpperOrg(row.counterpartyName || row.upperOrg || "");
-        if (!orgId || !upperOrg) return false;
-        return keySet.has(`${orgId}||${upperOrg}`);
+        const upper = normalizeUpperOrg(row.counterpartyName || row.upperOrg || "");
+        if (!orgId || !upper) return;
+        reportRowByKey.set(`${orgId}||${upper}`, row);
       });
 
-      return {
+      const syntheticRows = [];
+      const finalRows = [];
+      overrideKeySet.forEach((key) => {
+        const existing = reportRowByKey.get(key);
+        if (existing) {
+          finalRows.push(existing);
+          return;
+        }
+        const dri = overrideRowByKey.get(key) || {};
+        const [orgId, upper] = key.split("||");
+        const syn = {
+          organizationId: orgId,
+          organizationName: dri.orgName || dri.organizationName || orgId || "-",
+          counterpartyName: upper,
+          tier: dri.orgTier || dri.tier || null,
+          baseline_2025_confirmed: 0,
+          target_2026: Number(overrideTargetMap.get(key) ?? 0),
+          confirmed_2026: 0,
+          expected_2026: 0,
+          coverage_2026: 0,
+          gap: 0,
+          coverage_ratio: null,
+          pipeline_zero: 0,
+          risk_level_rule: "양호",
+          min_cov_current_month: dri.min_cov_current_month ?? dri.min_cov ?? 0,
+          severe_threshold: dri.severe_threshold ?? 0.5,
+          rule_trigger: "TARGET_ZERO",
+          top_blockers: [],
+          evidence_bullets: [],
+          recommended_actions: [],
+          dq_year_unknown_cnt: 0,
+          excluded_by_quality: 0,
+        };
+        syntheticRows.push(syn);
+        finalRows.push(syn);
+      });
+
+      const merged = {
         ...data,
-        counterparties: filtered,
+        counterparties: finalRows,
         meta: {
           ...(data.meta || {}),
-          offline_dri_override_only: true,
-          offline_dri_override_total_before: rows.length,
-          offline_dri_override_total_after: filtered.length,
+          offline_dri_override_universe_total: overrideKeySet.size,
+          offline_dri_override_missing_added: syntheticRows.length,
+          offline_dri_override_projected: true,
         },
       };
+      return merged;
     }
 
     function applyOfflineDriTargetOverride(data, targetMap) {
@@ -7869,18 +7907,13 @@
           state.counterpartyRisk.date = dateVal;
           let data = await fetchCounterpartyRiskReport(dateVal, mode, { force });
           if (mode === "offline") {
-            const keySet = await ensureOfflineDriOverrideNonZeroKeySet();
-            if (keySet) {
-              data = filterCounterpartyRiskRowsByKeySet(data, keySet);
-            } else {
-              console.warn("[cpr] offline DRI override keySet not available; showing unfiltered report");
-            }
-            const targetMap = await ensureOfflineDriOverrideTargetMap();
-            if (targetMap) {
-              data = applyOfflineDriTargetOverride(data, targetMap);
+            const universe = await ensureOfflineDriOverrideUniverse();
+            if (universe) {
+              data = projectReportToDriOverrideUniverse(data, universe);
+              data = applyOfflineDriTargetOverride(data, universe.overrideTargetMap);
               data = { ...data, summary: recomputeCprSummaryFromRows(data.counterparties || []) };
             } else {
-              console.warn("[cpr] offline DRI target map not available; target_2026 not overridden");
+              console.warn("[cpr] offline DRI override universe not available; showing unprojected report");
             }
           }
           state.counterpartyRisk.data = data;

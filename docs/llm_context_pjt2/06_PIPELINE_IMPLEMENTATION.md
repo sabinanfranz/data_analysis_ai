@@ -1,8 +1,11 @@
 ---
 title: 구현 파이프라인 (PJT2) – D1~D7
-last_synced: 2026-01-06
+last_synced: 2026-01-13
 sync_source:
   - dashboard/server/deal_normalizer.py
+  - dashboard/server/agents/registry.py
+  - dashboard/server/agents/core/orchestrator.py
+  - dashboard/server/report/composer.py
   - dashboard/server/counterparty_llm.py
   - dashboard/server/report_scheduler.py
   - dashboard/server/org_tables_api.py
@@ -15,25 +18,25 @@ sync_source:
 - D1~D7을 실제 실행 순서/입출력/임시 테이블/아이템포턴시/폴백 관점으로 정리해 재실행·운영 시 참조한다.
 
 ## Behavioral Contract
-- 입력: `salesmap_latest.db` 스냅샷(스케줄러가 복사). 출력: `report_cache/YYYYMMDD.json`(원자적 저장) + `report_cache/llm/...`(LLM 캐시) + status.json.
-- 모든 단계는 idempotent; 캐시가 동일(as_of+db_signature)하면 재계산을 스킵한다.
+- 입력: `salesmap_latest.db` 스냅샷(스케줄러가 복사). 출력: offline `report_cache/YYYY-MM-DD.json`, online `report_cache/counterparty-risk/online/YYYY-MM-DD.json`(원자적 저장) + `report_cache/llm/{as_of}/{db_hash}/{mode}/...`(LLM 캐시) + status(mode별).
+- 모든 단계는 idempotent; 캐시가 동일(as_of+db_signature+mode)하면 재계산을 스킵한다.
 - 실패 시 최근 성공본을 그대로 제공(폴백), LLM 실패는 전체 실패로 처리하지 않는다.
 
 ## Invariants (Must Not Break, 단계별)
-- **D1 deal_norm (TEMP)**: Convert 제외, amount/date parse, is_nononline, counterparty_name 정규화, pipeline_bucket(확정/예상) 설정. dq_metrics 수집.
+- **D1 deal_norm (TEMP)**: Convert 제외, amount/date parse, is_nononline/is_online, counterparty_name 정규화, pipeline_bucket(확정/예상) 설정. dq_metrics 수집.
 - **D2 org_tier_runtime (TEMP)**: 2025 비온라인 확정액 합 → 티어(S0/P0/P1/P2, 삼성 제외), confirmed_amount_2025_won 포함.
-- **D3 counterparty_target_2026 (TEMP)**: 유니버스(2025/2026 비온라인) × 티어 org → baseline_2025, target_2026, is_unclassified flag.
-- **D4 tmp_counterparty_risk_rule (TEMP)**: 2026 coverage(확정/예상), target join, gap/coverage_ratio/pipeline_zero, risk_level_rule(min_cov/월), rule_trigger.
-- **D5 report JSON**: build_counterparty_risk_report → counterparty 카드 정렬 + 요약 + data_quality + meta(db_version hash, as_of, generated_at).
-- **D6 LLM 병합**: counterparty_llm.generate_llm_cards → payload hash→캐시 hit→폴백 evidence/actions. 규칙 risk_level 우선, LLM 필드 병합. **deal_norm을 재조회하지 않고 D5에서 만든 `top_deals_2026` 리스트를 사용**(없으면 deal 테이블 간단 fallback).
-- **D7 스케줄/캐시**: run_daily_counterparty_risk_job (report_scheduler) → DB 안정성 체크(3분 윈도우, 재시도) → 스냅샷 → 캐시 존재 시 스킵 → 생성/atomic write → status.json 업데이트 → retention.
+- **D3 counterparty_target_2026 (TEMP)**: 유니버스(2025/2026, 모드별 is_nononline/is_online) × 티어 org → baseline_2025, target_2026, is_unclassified flag.
+- **D4 tmp_counterparty_risk_rule (TEMP)**: 2026 coverage(확정/예상, 모드 필터), target join, gap/coverage_ratio/pipeline_zero, risk_level_rule(min_cov/월), rule_trigger.
+- **D5 report base JSON**: build_counterparty_risk_report → counterparty base row 정렬 + 요약 + data_quality + meta(db_version hash, as_of, generated_at, mode, report_id).
+- **D6 에이전트 체인(LLM/폴백)**: registry→orchestrator→CounterpartyCardAgent(프롬프트/캐시 mode별) 실행 → composer가 blockers/evidence/actions 불변 강제 병합. 규칙 risk_level 우선, LLM 결과는 risk_level_llm/llm_meta. **deal_norm 재조회 금지, base row의 top_deals_2026 재사용(없으면 deal 테이블 fallback)**.
+- **D7 스케줄/캐시**: run_daily_counterparty_risk_job_all_modes (report_scheduler) → lock → offline+online 순차 실행 → 스냅샷 → 캐시 존재 시 스킵 → 생성/atomic write → mode별 status 업데이트 → retention.
 
 ## Coupling Map
-- 파이프라인/임시테이블: `dashboard/server/deal_normalizer.py` (build_deal_norm/org_tier/target/risk_rule/report).
-- LLM 캐시/폴백: `dashboard/server/counterparty_llm.py`.
+- 파이프라인/임시테이블: `dashboard/server/deal_normalizer.py` (build_deal_norm/org_tier/target/risk_rule/report + orchestrator/composer 호출).
+- 에이전트/LLM: `dashboard/server/agents/registry.py`, `agents/core/orchestrator.py`, `agents/counterparty_card/*`, `dashboard/server/counterparty_llm.py`(어댑터).
 - 스케줄/락/캐시/상태: `dashboard/server/report_scheduler.py`.
-- API: `dashboard/server/org_tables_api.py` (`/api/report/counterparty-risk`, `/recompute`, `/status`).
-- 프런트: `org_tables_v2.html`(`counterparty-risk-daily` fetch/render).
+- API: `dashboard/server/org_tables_api.py` (`/api/report/counterparty-risk`, `/recompute`, `/status` mode 지원).
+- 프런트: `org_tables_v2.html`(`counterparty-risk-daily`/`counterparty-risk-daily-online` fetch/render).
 - 테스트: `tests/test_counterparty_risk_rule.py`(D4), `tests/test_counterparty_target.py`, `tests/test_org_tier.py`, `tests/test_deal_normalizer.py`.
 
 ## Edge Cases
@@ -45,11 +48,11 @@ sync_source:
 ## Verification
 - 로컬 생성 예시:  
   `python - <<'PY'\nfrom dashboard.server.report_scheduler import run_daily_counterparty_risk_job\nprint(run_daily_counterparty_risk_job(force=True))\nPY`
-- 캐시 확인: `report_cache/YYYYMMDD.json` meta.as_of/db_signature 존재 여부, llm 캐시 폴더 생성 여부.
-- 단위테스트: `PYTHONPATH=. python3 -m unittest tests.test_deal_normalizer tests.test_org_tier tests.test_counterparty_target tests.test_counterparty_risk_rule`.
+- 캐시 확인: offline `report_cache/YYYY-MM-DD.json`, online `report_cache/counterparty-risk/online/YYYY-MM-DD.json` meta.as_of/db_signature 존재 여부, llm 캐시 폴더(`report_cache/llm/{as_of}/{db_hash}/{mode}`) 생성 여부.
+- 단위테스트: `PYTHONPATH=. python3 -m unittest tests.test_deal_normalizer tests.test_org_tier tests.test_counterparty_target tests.test_counterparty_risk_rule tests.test_counterparty_card_agent_contract`.
 - 스냅샷 사용 여부: report_work/salesmap_snapshot_* 존재 확인.
 
 ## Refactor-Planning Notes (Facts Only)
-- build_counterparty_risk_report 내부에서 db_hash(sha256 mtime 16자) 계산·llm 병합·캐시 메타 작성이 모두 이루어져 있어 함수 분리 시 메타 누락 위험이 있다.
-- run_daily_counterparty_risk_job은 캐시 히트 시 빠르게 종료하므로 디버깅 시 force=True를 사용해야 전체 파이프라인이 실행된다.
+- build_counterparty_risk_report가 orchestrator/composer를 호출해 counterparties를 완성하므로 agent/registry 변경 시 이 함수가 SSOT다.
+- run_daily_counterparty_risk_job_all_modes는 lock을 한 번 잡은 뒤 모드 루프를 실행하므로 force=True로 모드별 재생성을 강제할 수 있다.
 - TEMP 테이블은 커넥션 종료 시 사라지므로 외부 커넥션으로 재사용하려 하면 `no such table: deal_norm` 회귀가 발생할 수 있다.

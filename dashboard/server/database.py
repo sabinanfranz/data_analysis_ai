@@ -16,6 +16,7 @@ DB_PATH_ENV = os.getenv("DB_PATH", "salesmap_latest.db")
 print(f"[db] Using DB_PATH={DB_PATH_ENV}")
 DB_PATH = Path(DB_PATH_ENV)
 _OWNER_LOOKUP_CACHE: Dict[Path, Dict[str, str]] = {}
+_TABLE_COLUMNS_CACHE: Dict[Tuple[Path, str], Tuple[Optional[float], Set[str]]] = {}
 YEARS_FOR_WON = {"2023", "2024", "2025"}
 ONLINE_COURSE_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포팅"}
 ONLINE_PNL_FORMATS = {
@@ -322,8 +323,39 @@ def _has_column(conn: sqlite3.Connection, table_name: str, column_name: str) -> 
     """
     Check if the given table has a column. Uses PRAGMA table_info for presence detection.
     """
+    db_path: Optional[Path] = None
+    mtime: Optional[float] = None
+    try:
+        db_info = conn.execute("PRAGMA database_list").fetchone()
+        if db_info and db_info["file"]:
+            db_path = Path(db_info["file"])
+            try:
+                mtime = db_path.stat().st_mtime
+            except Exception:
+                mtime = None
+    except Exception:
+        db_path = None
+
+    cache_key = (db_path, table_name) if db_path else None
+    if cache_key and cache_key in _TABLE_COLUMNS_CACHE:
+        cached_mtime, cached_cols = _TABLE_COLUMNS_CACHE[cache_key]
+        if cached_mtime is None or cached_mtime == mtime:
+            return column_name in cached_cols
+
     rows = conn.execute(f"PRAGMA table_info('{table_name}')").fetchall()
-    return any(row["name"] == column_name for row in rows)
+    cols = set()
+    for row in rows:
+        try:
+            cols.add(row["name"])
+        except Exception:
+            try:
+                cols.add(row[1])
+            except Exception:
+                continue
+
+    if cache_key:
+        _TABLE_COLUMNS_CACHE[cache_key] = (mtime, cols)
+    return column_name in cols
 
 
 def _pick_column(conn: sqlite3.Connection, table: str, candidates: Sequence[str]) -> Optional[str]:
@@ -1358,9 +1390,13 @@ def get_org_memos(org_id: str, limit: int = 100, db_path: Path = DB_PATH) -> Lis
     limit = max(1, min(limit, 500))
     owner_lookup = _get_owner_lookup(db_path)
     with _connect(db_path) as conn:
+        has_html = _has_column(conn, "memo", "htmlBody")
+        select_cols = "id, text, ownerId, createdAt, updatedAt"
+        if has_html:
+            select_cols = "id, text, htmlBody, ownerId, createdAt, updatedAt"
         rows = _fetch_all(
             conn,
-            "SELECT id, text, ownerId, createdAt, updatedAt "
+            f"SELECT {select_cols} "
             "FROM memo "
             "WHERE organizationId = ? AND peopleId IS NULL AND dealId IS NULL "
             "ORDER BY createdAt DESC "
@@ -1370,9 +1406,11 @@ def get_org_memos(org_id: str, limit: int = 100, db_path: Path = DB_PATH) -> Lis
     result: List[Dict[str, Any]] = []
     for row in rows:
         owner_id = row["ownerId"]
+        html_body = row["htmlBody"] if "htmlBody" in row.keys() else None
         result.append(
             {
                 **dict(row),
+                "htmlBody": html_body,
                 "ownerName": owner_lookup.get(owner_id, owner_id),
             }
         )
@@ -1606,9 +1644,13 @@ def get_memos_for_person(
     limit = max(1, min(limit, 500))
     owner_lookup = _get_owner_lookup(db_path)
     with _connect(db_path) as conn:
+        has_html = _has_column(conn, "memo", "htmlBody")
+        select_cols = "id, text, ownerId, createdAt, updatedAt"
+        if has_html:
+            select_cols = "id, text, htmlBody, ownerId, createdAt, updatedAt"
         rows = _fetch_all(
             conn,
-            "SELECT id, text, ownerId, createdAt, updatedAt "
+            f"SELECT {select_cols} "
             "FROM memo "
             "WHERE peopleId = ? AND (dealId IS NULL OR TRIM(dealId) = '') "
             "ORDER BY createdAt DESC "
@@ -1618,9 +1660,11 @@ def get_memos_for_person(
     result: List[Dict[str, Any]] = []
     for row in rows:
         owner_id = row["ownerId"]
+        html_body = row["htmlBody"] if "htmlBody" in row.keys() else None
         result.append(
             {
                 **dict(row),
+                "htmlBody": html_body,
                 "ownerName": owner_lookup.get(owner_id, owner_id),
             }
         )
@@ -1634,9 +1678,13 @@ def get_memos_for_deal(deal_id: str, limit: int = 200, db_path: Path = DB_PATH) 
     limit = max(1, min(limit, 500))
     owner_lookup = _get_owner_lookup(db_path)
     with _connect(db_path) as conn:
+        has_html = _has_column(conn, "memo", "htmlBody")
+        select_cols = "id, text, ownerId, createdAt, updatedAt"
+        if has_html:
+            select_cols = "id, text, htmlBody, ownerId, createdAt, updatedAt"
         rows = _fetch_all(
             conn,
-            "SELECT id, text, ownerId, createdAt, updatedAt "
+            f"SELECT {select_cols} "
             "FROM memo "
             "WHERE dealId = ? "
             "ORDER BY createdAt DESC "
@@ -1646,9 +1694,11 @@ def get_memos_for_deal(deal_id: str, limit: int = 200, db_path: Path = DB_PATH) 
     result: List[Dict[str, Any]] = []
     for row in rows:
         owner_id = row["ownerId"]
+        html_body = row["htmlBody"] if "htmlBody" in row.keys() else None
         result.append(
             {
                 **dict(row),
+                "htmlBody": html_body,
                 "ownerName": owner_lookup.get(owner_id, owner_id),
             }
         )
@@ -2360,6 +2410,7 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
         if not org_rows:
             return {"organization": None, "groups": []}
         org_row = org_rows[0]
+        has_memo_html = _has_column(conn, "memo", "htmlBody")
         org_meta = {
             "id": org_row["id"],
             "name": org_row["name"],
@@ -2428,12 +2479,12 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
         )
 
         # Memo preloading (single pass)
-        memo_rows = _fetch_all(
-            conn,
-            "SELECT id, dealId, peopleId, organizationId, text, createdAt "
-            "FROM memo WHERE organizationId = ?",
-            (org_id,),
+        memo_select = (
+            "SELECT id, dealId, peopleId, organizationId, text, createdAt"
+            + (", htmlBody" if has_memo_html else "")
+            + " FROM memo WHERE organizationId = ?"
         )
+        memo_rows = _fetch_all(conn, memo_select, (org_id,))
 
     # Build memo lookup maps outside connection
     person_memos: Dict[str, List[Dict[str, Any]]] = {}
@@ -2442,14 +2493,15 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
     for memo in memo_rows:
         date_only = _date_only(memo["createdAt"])
         cleaned = _clean_form_memo(memo["text"])
+        html_body = memo["htmlBody"] if "htmlBody" in memo.keys() else None
         if cleaned == "":
             # Skip low-value form memos
             continue
         if cleaned is None:
-            entry = {"date": date_only, "text": memo["text"]}
+            entry = {"date": date_only, "text": memo["text"], "htmlBody": html_body}
         else:
             # Replace text with structured cleanText
-            entry = {"date": date_only, "cleanText": cleaned}
+            entry = {"date": date_only, "cleanText": cleaned, "htmlBody": html_body}
         deal_id = memo["dealId"]
         person_id = memo["peopleId"]
         org_only = memo["organizationId"]
@@ -3098,6 +3150,7 @@ def get_initial_dashboard_data(db_path: Path = DB_PATH) -> Dict[str, Any]:
         raise FileNotFoundError(f"Database not found at {db_path}")
 
     with _connect(db_path) as conn:
+        has_memo_html = _has_column(conn, "memo", "htmlBody")
         org_rows = _fetch_all(
             conn,
             'SELECT id, COALESCE("이름", id) AS name, "업종" AS industry, "팀" AS team, '
@@ -3116,16 +3169,24 @@ def get_initial_dashboard_data(db_path: Path = DB_PATH) -> Dict[str, Any]:
             '"금액" AS amount, "예상 체결액" AS expected_amount, "마감일" AS deadline, "수주 예정일" AS expected_date '
             "FROM deal ORDER BY organizationId, peopleId",
         )
+        memo_select = (
+            "SELECT id, dealId, peopleId, organizationId, text, createdAt, updatedAt, ownerId"
+            + (", htmlBody" if has_memo_html else "")
+            + " FROM memo"
+        )
         memo_rows = _fetch_all(
             conn,
-            "SELECT id, dealId, peopleId, organizationId, text, createdAt, updatedAt, ownerId "
-            "FROM memo",
+            memo_select,
         )
 
     organizations = _rows_to_dicts(org_rows)
     people = _rows_to_dicts(people_rows)
     deals = _rows_to_dicts(deal_rows)
     memos = _rows_to_dicts(memo_rows)
+    if memos:
+        for memo in memos:
+            if "htmlBody" not in memo:
+                memo["htmlBody"] = None
 
     deals_by_person: Dict[str, List[Dict[str, Any]]] = {}
     for deal in deals:

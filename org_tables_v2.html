@@ -127,18 +127,10 @@
       align-items: center;
       justify-content: space-between;
     }
-    .cpr-summary-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 12px;
-      margin: 10px 0 4px;
-    }
-    .cpr-card {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--panel);
-      padding: 12px;
-      box-shadow: var(--shadow);
+    .cpr-teampart-row .pill {
+      display: flex;
+      gap: 6px;
+      align-items: center;
     }
     /* Global numeric alignment utility */
     th.num,
@@ -172,50 +164,6 @@
     td.dri {
       text-align: center !important;
       white-space: nowrap;
-    }
-    .cpr-card h3 {
-      margin: 0 0 6px;
-      font-size: 16px;
-    }
-    .cpr-kpi-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      font-size: 13px;
-    }
-    .cpr-kpi {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      padding: 4px 8px;
-      border-radius: 8px;
-      background: rgba(56, 189, 248, 0.08);
-    }
-    .cpr-chip-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin: 6px 0 4px;
-    }
-    .cpr-chip {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      cursor: pointer;
-      font-size: 12px;
-    }
-    .cpr-chip.active {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-    .cpr-filter-row {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      flex-wrap: wrap;
-      margin: 8px 0;
     }
     .cpr-section {
       margin-top: 14px;
@@ -632,8 +580,9 @@
     }
 
     .memo-modal {
-      max-width: 900px;
-      width: min(900px, 92vw);
+      /* viewport 90% 목표, 백드롭 padding(16px*2) 안전폭 */
+      width: min(90vw, calc(100vw - 32px));
+      max-width: none;
       max-height: 80vh;
       display: flex;
       flex-direction: column;
@@ -641,6 +590,7 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       box-shadow: var(--shadow);
+      box-sizing: border-box;
     }
 
     .memo-modal .modal-header {
@@ -702,7 +652,7 @@
       white-space: pre-wrap !important;
       word-break: break-word;
       overflow-wrap: anywhere;
-      font-size: 1.5em !important;
+      font-size: 1.2em !important;
       line-height: 1.45;
     }
 
@@ -750,6 +700,47 @@
       gap: 8px;
       align-items: start;
     }
+
+    .memo-rich {
+      white-space: normal !important;
+      line-height: 1.35;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+    .memo-rich h1, .memo-rich h2, .memo-rich h3, .memo-rich h4, .memo-rich h5, .memo-rich h6 {
+      margin: 0.6em 0 0.35em;
+      font-size: 1.05em;
+      font-weight: 700;
+    }
+    .memo-rich p { margin: 0.35em 0; }
+    .memo-rich ul, .memo-rich ol { margin: 0.35em 0 0.35em 1.25em; padding: 0; }
+    .memo-rich li { margin: 0.15em 0; }
+    .memo-rich hr { border: 0; border-top: 1px solid rgba(255,255,255,0.25); margin: 0.6em 0; }
+    .memo-rich a { text-decoration: underline; color: var(--accent); }
+    .memo-rich a:visited { opacity: 0.9; }
+    .memo-rich code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background: rgba(255,255,255,0.04);
+      padding: 0 3px;
+      border-radius: 3px;
+    }
+    .memo-rich pre {
+      padding: 8px;
+      overflow: auto;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.03);
+    }
+    .memo-text-plain { white-space: pre-wrap; }
+    .memo-rich .memo-table-scroll { max-width: 100%; overflow-x: auto; margin: 0.35em 0; }
+    .memo-rich .memo-table-scroll table { border-collapse: collapse; width: max-content; min-width: 100%; }
+    .memo-rich .memo-table-scroll th,
+    .memo-rich .memo-table-scroll td {
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      vertical-align: top;
+    }
+    .memo-rich .memo-table-scroll th { font-weight: 700; }
 
     .row {
       display: flex;
@@ -2431,12 +2422,19 @@
         data: null,
         date: null,
         modeKey: "offline",
-        filters: {
-          tiers: new Set(["S0", "P0", "P1", "P2"]),
-          risks: new Set(["심각", "보통", "양호"]),
-          pipelineOnly: false,
-          search: "",
-        },
+        teamFilter: "all",
+        partFilter: "all",
+        teamPartIndex: null,
+        teamPartTeams: ["all"],
+        teamPartPartsByTeam: null,
+        teamPartLoading: false,
+        teamPartError: null,
+        offlineDriOverrideTargetMap: null,
+        offlineDriOverrideTargetMapLoading: false,
+        offlineDriOverrideTargetMapError: null,
+        offlineDriOverrideKeySet: null,
+        offlineDriOverrideKeySetError: null,
+        offlineDriOverrideKeySetLoading: false,
         sectionOpen: { 심각: true, 보통: true, 양호: false },
       },
       dealQc: {
@@ -3406,8 +3404,8 @@
         .slice()
         .sort((a, b) => String(b.createdAt || "").localeCompare(String(a.createdAt || "")))
         .map((m) => {
-          const text = escapeHtml(normalizeMemoText(m.text));
-          return `<tr><td class="memo-date">${formatDateYYMMDD(m.createdAt)}</td><td class="memo-text">${text || "-"}</td></tr>`;
+          const body = memoBodyToHtml(m) || "<div class=\"memo-text-plain\">-</div>";
+          return `<tr><td class="memo-date">${formatDateYYMMDD(m.createdAt)}</td><td class="memo-text">${body}</td></tr>`;
         })
         .join("");
       state.dealMemoModal.title.textContent = "딜 메모";
@@ -3573,12 +3571,110 @@
       if (state.rankMultiplierModal?.backdrop) state.rankMultiplierModal.backdrop.style.display = "none";
     }
 
-    function openMemoModal({ createdAt, ownerName, ownerId, text }) {
+    const MEMO_ALLOWED_TAGS = new Set([
+      "P","BR","UL","OL","LI","B","STRONG","I","EM","U","H1","H2","H3","H4","H5","H6","HR","A","BLOCKQUOTE","CODE","PRE",
+      "DIV","TABLE","THEAD","TBODY","TFOOT","TR","TH","TD","CAPTION","COLGROUP","COL"
+    ]);
+
+    function isSafeHref(href) {
+      if (!href) return false;
+      const s = String(href).trim();
+      if (s.startsWith("#") || s.startsWith("/") || s.startsWith("./") || s.startsWith("../")) return true;
+      try {
+        const u = new URL(s, window.location.href);
+        return ["http:", "https:", "mailto:"].includes(u.protocol);
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function sanitizeMemoHtml(html) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(String(html || ""), "text/html");
+      const out = document.createElement("div");
+
+      function walk(node, parent) {
+        if (!node) return;
+        if (node.nodeType === Node.TEXT_NODE) {
+          parent.appendChild(document.createTextNode(node.nodeValue || ""));
+          return;
+        }
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+
+        const tag = node.tagName.toUpperCase();
+        if (tag === "SCRIPT" || tag === "STYLE") {
+          return;
+        }
+
+        if (MEMO_ALLOWED_TAGS.has(tag)) {
+          let el = document.createElement(tag.toLowerCase());
+          if (tag === "A") {
+            const href = node.getAttribute("href") || "";
+            if (isSafeHref(href)) {
+              el.setAttribute("href", href.trim());
+            }
+            el.setAttribute("target", "_blank");
+            el.setAttribute("rel", "noopener noreferrer");
+          } else if (tag === "TD" || tag === "TH") {
+            const colspan = node.getAttribute("colspan");
+            const rowspan = node.getAttribute("rowspan");
+            if (colspan && /^\d+$/.test(colspan)) el.setAttribute("colspan", colspan);
+            if (rowspan && /^\d+$/.test(rowspan)) el.setAttribute("rowspan", rowspan);
+          }
+
+          let targetParent = parent;
+          if (tag === "TABLE") {
+            const wrapper = document.createElement("div");
+            wrapper.className = "memo-table-scroll";
+            parent.appendChild(wrapper);
+            wrapper.appendChild(el);
+            targetParent = el;
+          }
+
+          const children = Array.from(node.childNodes);
+          for (const child of children) walk(child, el);
+          if (tag !== "TABLE") {
+            parent.appendChild(el);
+          }
+          return;
+        }
+
+        const children = Array.from(node.childNodes);
+        for (const child of children) walk(child, parent);
+      }
+
+      const roots = Array.from(doc.body.childNodes);
+      for (const child of roots) walk(child, out);
+      return out.innerHTML;
+    }
+
+    function memoBodyToHtml(memo) {
+      if (memo && memo.htmlBody && String(memo.htmlBody).trim().length > 0) {
+        const safe = sanitizeMemoHtml(memo.htmlBody);
+        return `<div class="memo-rich">${safe}</div>`;
+      }
+      const text = memo && memo.text ? normalizeMemoText(memo.text) : "";
+      return `<div class="memo-text-plain">${escapeHtml(text)}</div>`;
+    }
+
+    function renderMemoBodyInto(containerEl, memo) {
+      const html = memo && memo.htmlBody;
+      if (html && String(html).trim().length > 0) {
+        containerEl.classList.add("memo-rich");
+        containerEl.innerHTML = sanitizeMemoHtml(html);
+        containerEl.style.whiteSpace = "normal";
+      } else {
+        containerEl.classList.remove("memo-rich");
+        containerEl.textContent = memo && memo.text ? String(memo.text) : "";
+        containerEl.style.whiteSpace = "pre-wrap";
+      }
+    }
+
+    function openMemoModal({ createdAt, ownerName, ownerId, text, htmlBody }) {
       if (!state.modal.backdrop) return;
       state.modal.date.textContent = `작성일: ${formatDate(createdAt)}`;
       state.modal.author.textContent = `작성자: ${ownerName || ownerId || "-"}`;
-      const normalized = normalizeMemoText(text);
-      state.modal.body.textContent = normalized || "(내용 없음)";
+      renderMemoBodyInto(state.modal.body, { text, htmlBody });
       state.modal.backdrop.style.display = "flex";
     }
 
@@ -3780,6 +3876,7 @@
     }
 
     let target2026Cache = null;
+    let target2026AllCache = null;
     let pnlAssumptionTimer = null;
     async function loadBizPerfSummary({ teamKey = null } = {}) {
       const cacheKey = teamKey || "all";
@@ -3892,6 +3989,38 @@
         throw new Error("DRI 데이터가 비어 있습니다.");
       }
       return target2026Cache;
+    }
+
+    async function loadTarget2026SourceRowsAll() {
+      if (target2026AllCache) return target2026AllCache;
+      let sizes = [];
+      try {
+        sizes = await getSizes();
+      } catch (err) {
+        console.debug("[target2026-all] getSizes failed, fallback defaults", err);
+      }
+      const pickSize = (pref) => {
+        const found = sizes.find((s) => s.includes(pref));
+        return found || pref;
+      };
+      const sizeBig = pickSize("대기업");
+      const sizeMid = pickSize("중견");
+      const sizeSmall = pickSize("중소");
+      const [big, mid, small] = await Promise.all([
+        loadCounterpartyRows(sizeBig),
+        loadCounterpartyRows(sizeMid),
+        loadCounterpartyRows(sizeSmall),
+      ]);
+      target2026AllCache = { big: big.rows || [], mid: mid.rows || [], small: small.rows || [] };
+      console.debug("[target2026-all] source rows", {
+        big: target2026AllCache.big.length,
+        mid: target2026AllCache.mid.length,
+        small: target2026AllCache.small.length,
+      });
+      if (target2026AllCache.big.length === 0 && target2026AllCache.mid.length === 0 && target2026AllCache.small.length === 0) {
+        throw new Error("DRI 데이터가 비어 있습니다.");
+      }
+      return target2026AllCache;
     }
 
     async function fetchOrgById(orgId) {
@@ -7217,20 +7346,311 @@
       return promise;
     }
 
-    function applyCounterpartyRiskFilters(items) {
-      const filters = state.counterpartyRisk.filters;
-      const search = (filters.search || "").toLowerCase();
-      return items.filter((row) => {
-        if (filters.tiers.size && !filters.tiers.has(row.tier)) return false;
-        if (filters.risks.size && !filters.risks.has(row.risk_level_rule)) return false;
-        if (filters.pipelineOnly && !row.pipeline_zero) return false;
-        if (search) {
-          const text = `${row.organizationName || ""} ${row.counterpartyName || ""}`.toLowerCase();
-          if (!text.includes(search)) return false;
+    function isTruthyFlag(val) {
+      if (val === true || val === 1) return true;
+      if (typeof val === "string") {
+        const t = val.trim().toLowerCase();
+        return ["true", "1", "y", "yes", "o", "예", "네"].includes(t);
+      }
+      return false;
+    }
+
+    function computePrimaryTeamPartFromOwners(owners) {
+      const names = Array.isArray(owners) ? owners.filter(Boolean) : [];
+      if (!names.length) return { team: "미매핑", part: "미매핑" };
+
+      const counts = new Map();
+      for (const name of names) {
+        const r = resolveOwnerTeamPart(name);
+        if (r.ambiguous || r.missing || !r.team || !r.part) continue;
+        const key = `${r.team}||${r.part}`;
+        counts.set(key, (counts.get(key) || 0) + 1);
+      }
+      if (!counts.size) return { team: "미매핑", part: "미매핑" };
+
+      const sorted = Array.from(counts.entries()).sort((a, b) => {
+        if (b[1] !== a[1]) return b[1] - a[1];
+        return a[0].localeCompare(b[0]);
+      });
+      const [topKey] = sorted[0];
+      const [team, part] = topKey.split("||");
+      return { team, part };
+    }
+
+    async function ensureCprTeamPartIndex() {
+      const st = state.counterpartyRisk;
+      if (st.teamPartIndex && st.teamPartPartsByTeam) return;
+      if (st.teamPartLoading) return;
+      st.teamPartLoading = true;
+      st.teamPartError = null;
+      try {
+        const source = await loadTarget2026SourceRows();
+        const rows = []
+          .concat(source?.big || [])
+          .concat(source?.mid || [])
+          .concat(source?.small || []);
+
+        const index = new Map();
+        const partsByTeam = new Map();
+        const teams = new Set();
+
+        for (const r of rows) {
+          const orgId = String(r.orgId || r.org_id || "").trim();
+          const upperOrg = normalizeUpperOrg(r.upperOrg || r.upper_org || r.counterparty || "");
+          if (!orgId || !upperOrg) continue;
+
+          const owners = Array.isArray(r.owners2025) ? r.owners2025 : [];
+          const tp = computePrimaryTeamPartFromOwners(owners);
+
+          const key = `${orgId}||${upperOrg}`;
+          index.set(key, tp);
+
+          const team = tp.team || "미매핑";
+          const part = tp.part || "미매핑";
+          teams.add(team);
+          if (!partsByTeam.has(team)) partsByTeam.set(team, new Set());
+          partsByTeam.get(team).add(part);
         }
+
+        const teamList = ["all"].concat(Array.from(teams).sort((a, b) => a.localeCompare(b)));
+        const partsByTeamFinal = new Map();
+        for (const [team, setParts] of partsByTeam.entries()) {
+          const parts = Array.from(setParts).sort((a, b) => a.localeCompare(b));
+          partsByTeamFinal.set(team, ["all"].concat(parts));
+        }
+
+        st.teamPartIndex = index;
+        st.teamPartTeams = teamList;
+        st.teamPartPartsByTeam = partsByTeamFinal;
+      } catch (err) {
+        console.error(err);
+        st.teamPartError = err;
+      } finally {
+        st.teamPartLoading = false;
+      }
+    }
+
+    function applyCprTeamPartFilter(items) {
+      const st = state.counterpartyRisk;
+      const team = st.teamFilter || "all";
+      const part = st.partFilter || "all";
+
+      if (team === "all") return items;
+      const idx = st.teamPartIndex;
+      if (!idx) return items;
+
+      return items.filter((row) => {
+        const orgId = String(row.organizationId || "").trim();
+        const upper = normalizeUpperOrg(row.counterpartyName || "");
+        if (!orgId || !upper) return false;
+        const key = `${orgId}||${upper}`;
+        const tp = idx.get(key) || { team: "미매핑", part: "미매핑" };
+        if (tp.team !== team) return false;
+        if (part !== "all" && tp.part !== part) return false;
         return true;
       });
     }
+
+    async function ensureOfflineDriOverrideTargetMap() {
+      const st = state.counterpartyRisk;
+      if (st.offlineDriOverrideTargetMap) return st.offlineDriOverrideTargetMap;
+      if (st.offlineDriOverrideTargetMapLoading) return null;
+
+      st.offlineDriOverrideTargetMapLoading = true;
+      st.offlineDriOverrideTargetMapError = null;
+
+      try {
+        const source = await loadTarget2026SourceRowsAll();
+        const rows = []
+          .concat(source?.big || [])
+          .concat(source?.mid || [])
+          .concat(source?.small || []);
+
+        const map = new Map();
+
+        for (const r of rows) {
+          const orgId = String(r.orgId || r.org_id || "").trim();
+          const upperOrg = normalizeUpperOrg(r.upperOrg || r.upper_org || r.counterparty || "");
+
+          const isOverride = isTruthyFlag(r.target26OfflineIsOverride);
+          const targetWon = Number(r.target26Offline ?? 0);
+          const nonZero = Number.isFinite(targetWon) && targetWon !== 0;
+
+          if (!orgId || !upperOrg) continue;
+          if (!isOverride) continue;
+          if (!nonZero) continue;
+
+          map.set(`${orgId}||${upperOrg}`, targetWon);
+        }
+
+        st.offlineDriOverrideTargetMap = map;
+        console.debug("[cpr] offline DRI override target map built", { size: map.size });
+        return map;
+      } catch (err) {
+        console.error(err);
+        st.offlineDriOverrideTargetMapError = err;
+        st.offlineDriOverrideTargetMap = null;
+        return null;
+      } finally {
+        st.offlineDriOverrideTargetMapLoading = false;
+      }
+    }
+
+    async function ensureOfflineDriOverrideNonZeroKeySet() {
+      const st = state.counterpartyRisk;
+      if (st.offlineDriOverrideKeySet) return st.offlineDriOverrideKeySet;
+      if (st.offlineDriOverrideTargetMap) {
+        const set = new Set(st.offlineDriOverrideTargetMap.keys());
+        st.offlineDriOverrideKeySet = set;
+        return set;
+      }
+      if (st.offlineDriOverrideKeySetLoading) return null;
+
+      st.offlineDriOverrideKeySetLoading = true;
+      st.offlineDriOverrideKeySetError = null;
+
+      try {
+        const map = await ensureOfflineDriOverrideTargetMap();
+        if (map) {
+          const set = new Set(map.keys());
+          st.offlineDriOverrideKeySet = set;
+          return set;
+        }
+        return null;
+      } catch (err) {
+        console.error(err);
+        st.offlineDriOverrideKeySetError = err;
+        st.offlineDriOverrideKeySet = null;
+        return null;
+      } finally {
+        st.offlineDriOverrideKeySetLoading = false;
+      }
+    }
+
+    function filterCounterpartyRiskRowsByKeySet(data, keySet) {
+      if (!data || !Array.isArray(data.counterparties) || !keySet) return data;
+
+      const rows = data.counterparties || [];
+      const filtered = rows.filter((row) => {
+        const orgId = String(row.organizationId || row.orgId || "").trim();
+        const upperOrg = normalizeUpperOrg(row.counterpartyName || row.upperOrg || "");
+        if (!orgId || !upperOrg) return false;
+        return keySet.has(`${orgId}||${upperOrg}`);
+      });
+
+      return {
+        ...data,
+        counterparties: filtered,
+        meta: {
+          ...(data.meta || {}),
+          offline_dri_override_only: true,
+          offline_dri_override_total_before: rows.length,
+          offline_dri_override_total_after: filtered.length,
+        },
+      };
+    }
+
+    function applyOfflineDriTargetOverride(data, targetMap) {
+      if (!data || !Array.isArray(data.counterparties) || !targetMap) return data;
+
+      let applied = 0;
+      const rows = data.counterparties.map((row) => {
+        const orgId = String(row.organizationId || row.orgId || "").trim();
+        const upperOrg = normalizeUpperOrg(row.counterpartyName || row.upperOrg || "");
+        const key = `${orgId}||${upperOrg}`;
+        const driTarget = targetMap.get(key);
+
+        if (!Number.isFinite(Number(driTarget))) return row;
+
+        const next = { ...row };
+
+        if (next.target_2026_dri_original == null) {
+          next.target_2026_dri_original = next.target_2026;
+        }
+
+        next.target_2026 = Number(driTarget);
+
+        const confirmed = Number(next.confirmed_2026 || 0);
+        const expected = Number(next.expected_2026 || 0);
+        const coverage = Number.isFinite(Number(next.coverage_2026)) ? Number(next.coverage_2026) : confirmed + expected;
+        next.coverage_2026 = coverage;
+
+        next.gap = next.target_2026 - next.coverage_2026;
+        next.coverage_ratio = next.target_2026 > 0 ? next.coverage_2026 / next.target_2026 : null;
+        next.pipeline_zero = next.coverage_2026 === 0 && next.target_2026 > 0 ? 1 : 0;
+
+        const minCov = Number(next.min_cov_current_month);
+        const severe = Number(next.severe_threshold);
+
+        if (next.target_2026 === 0) {
+          next.risk_level_rule = "양호";
+          next.rule_trigger = "TARGET_ZERO";
+          next.coverage_ratio = null;
+          next.pipeline_zero = 0;
+        } else {
+          const ratio = next.coverage_ratio;
+          if (next.pipeline_zero) {
+            next.risk_level_rule = "심각";
+            next.rule_trigger = "PIPELINE_ZERO";
+          } else if (Number.isFinite(severe) && ratio != null && ratio < severe) {
+            next.risk_level_rule = "심각";
+            next.rule_trigger = "COVERAGE_BELOW_HALF_MIN";
+          } else if (Number.isFinite(minCov) && ratio != null && ratio < minCov) {
+            next.risk_level_rule = "보통";
+            next.rule_trigger = "COVERAGE_BELOW_MIN";
+          } else if (next.gap <= 0) {
+            next.risk_level_rule = "양호";
+            next.rule_trigger = "GAP_COVERED";
+          } else {
+            next.risk_level_rule = "양호";
+            next.rule_trigger = "ON_TRACK";
+          }
+        }
+
+        applied += 1;
+        return next;
+      });
+
+      return {
+        ...data,
+        counterparties: rows,
+        meta: {
+          ...(data.meta || {}),
+          offline_target_overridden_from_dri: true,
+          offline_target_override_applied_rows: applied,
+        },
+      };
+    }
+
+    function recomputeCprSummaryFromRows(rows) {
+      const tierGroups = {
+        S0_P0_P1: { target: 0, coverage: 0, gap: 0, coverage_ratio: null },
+        P2: { target: 0, coverage: 0, gap: 0, coverage_ratio: null },
+      };
+      const counts = { severe: 0, normal: 0, good: 0, pipeline_zero: 0 };
+
+      const groupKey = (tier) => (String(tier || "").toUpperCase() === "P2" ? "P2" : "S0_P0_P1");
+
+      for (const r of rows || []) {
+        const gk = groupKey(r.tier);
+        tierGroups[gk].target += Number(r.target_2026 || 0);
+        tierGroups[gk].coverage += Number(r.coverage_2026 || 0);
+        tierGroups[gk].gap += Number(r.gap || 0);
+
+        if (Number(r.pipeline_zero) === 1) counts.pipeline_zero += 1;
+        if (r.risk_level_rule === "심각") counts.severe += 1;
+        else if (r.risk_level_rule === "보통") counts.normal += 1;
+        else counts.good += 1;
+      }
+
+      Object.keys(tierGroups).forEach((k) => {
+        const g = tierGroups[k];
+        g.coverage_ratio = g.target > 0 ? g.coverage / g.target : null;
+      });
+
+      return { tier_groups: tierGroups, counts };
+    }
+
 
     function renderCounterpartyRiskDaily(root, modeKey = "offline") {
       const mode = modeKey === "online" ? "online" : "offline";
@@ -7253,27 +7673,14 @@
             <button id="cprRefreshBtn" class="pill">새로고침</button>
           </div>
         </div>
-        <div id="cprSummary" class="cpr-summary-grid" style="margin-top:10px;"></div>
-        <div id="cprChips" class="cpr-chip-row"></div>
-        <div class="cpr-filter-row">
-          <label class="pill">티어
-            <select id="cprTierSelect" multiple size="4" style="min-width:110px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:4px;">
-              <option value="S0" selected>S0</option>
-              <option value="P0" selected>P0</option>
-              <option value="P1" selected>P1</option>
-              <option value="P2" selected>P2</option>
-            </select>
+        <div class="cpr-teampart-row" style="margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <label class="pill">팀
+            <select id="cprTeamSelect" style="min-width:160px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:6px 8px;"></select>
           </label>
-          <label class="pill">리스크
-            <select id="cprRiskSelect" multiple size="3" style="min-width:100px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:4px;">
-              <option value="심각" selected>심각</option>
-              <option value="보통" selected>보통</option>
-              <option value="양호" selected>양호</option>
-            </select>
+          <label class="pill">파트
+            <select id="cprPartSelect" style="min-width:140px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:6px 8px;"></select>
           </label>
-          <label class="pill"><input id="cprPipelineOnly" type="checkbox" /> pipeline_zero만</label>
-          <input id="cprSearch" type="search" placeholder="고객사/카운터파티 검색" style="flex:1;min-width:160px;background:var(--panel-2);border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:10px;" />
-          <button id="cprClear" class="pill muted">필터 초기화</button>
+          <span id="cprTeamPartHint" class="muted" style="font-size:12px;"></span>
         </div>
         <div id="cprBody" class="muted">불러오는 중...</div>
         <div id="cprDQ" class="muted" style="margin-top:10px;"></div>
@@ -7283,76 +7690,42 @@
 
       const dateInput = wrapper.querySelector("#cprDateInput");
       const refreshBtn = wrapper.querySelector("#cprRefreshBtn");
-      const chipRow = wrapper.querySelector("#cprChips");
-      const summaryEl = wrapper.querySelector("#cprSummary");
       const bodyEl = wrapper.querySelector("#cprBody");
       const dqEl = wrapper.querySelector("#cprDQ");
-      const tierSelect = wrapper.querySelector("#cprTierSelect");
-      const riskSelect = wrapper.querySelector("#cprRiskSelect");
-      const pipelineOnly = wrapper.querySelector("#cprPipelineOnly");
-      const searchInput = wrapper.querySelector("#cprSearch");
-      const clearBtn = wrapper.querySelector("#cprClear");
       const dbVersionEl = wrapper.querySelector("#cprDbVersion");
+      const teamSelect = wrapper.querySelector("#cprTeamSelect");
+      const partSelect = wrapper.querySelector("#cprPartSelect");
+      const tpHint = wrapper.querySelector("#cprTeamPartHint");
 
-      const setFiltersFromInputs = () => {
-        const tiers = new Set(Array.from(tierSelect.selectedOptions).map((o) => o.value));
-        const risks = new Set(Array.from(riskSelect.selectedOptions).map((o) => o.value));
-        state.counterpartyRisk.filters.tiers = tiers;
-        state.counterpartyRisk.filters.risks = risks;
-        state.counterpartyRisk.filters.pipelineOnly = pipelineOnly.checked;
-        state.counterpartyRisk.filters.search = searchInput.value || "";
-      };
-
-      const resetFilters = () => {
-        ["S0", "P0", "P1", "P2"].forEach((v, idx) => (tierSelect.options[idx].selected = true));
-        ["심각", "보통", "양호"].forEach((v, idx) => (riskSelect.options[idx].selected = true));
-        pipelineOnly.checked = false;
-        searchInput.value = "";
-        setFiltersFromInputs();
-        renderData();
-      };
-
-      const renderSummary = (data) => {
-        const t1 = data.summary.tier_groups["S0_P0_P1"] || {};
-        const t2 = data.summary.tier_groups["P2"] || {};
-        const card = (title, g) => `
-          <div class="cpr-card">
-            <h3>${title}</h3>
-            <div class="cpr-kpi-row">
-              <span class="cpr-kpi">target ${formatAmount(g.target || 0)}</span>
-              <span class="cpr-kpi">coverage ${formatAmount(g.coverage || 0)}</span>
-              <span class="cpr-kpi">gap ${formatAmount(g.gap || 0)}</span>
-              <span class="cpr-kpi">cov ${formatPercent(g.coverage_ratio)}</span>
-            </div>
-          </div>
-        `;
-        summaryEl.innerHTML = card("S0~P1", t1) + card("P2", t2);
-      };
-
-      const renderChips = (data) => {
-        const counts = data.summary.counts || {};
-        const chips = [
-          { key: "심각", label: `심각 ${counts.severe || 0}` },
-          { key: "보통", label: `보통 ${counts.normal || 0}` },
-          { key: "양호", label: `양호 ${counts.good || 0}` },
-          { key: "pipeline", label: `pipeline_zero ${counts.pipeline_zero || 0}` },
-        ];
-        chipRow.innerHTML = chips
-          .map((c) => `<button class="cpr-chip ${c.key === "pipeline" ? (state.counterpartyRisk.filters.pipelineOnly ? "active" : "") : state.counterpartyRisk.filters.risks.has(c.key) ? "active" : ""}" data-key="${c.key}">${c.label}</button>`)
+      const renderTeamOptions = () => {
+        const st = state.counterpartyRisk;
+        const teams = st.teamPartTeams || ["all"];
+        teamSelect.innerHTML = teams
+          .map((t) => `<option value="${t}">${t === "all" ? "전체" : t}</option>`)
           .join("");
-        chipRow.querySelectorAll(".cpr-chip").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const key = btn.getAttribute("data-key");
-            if (key === "pipeline") {
-              state.counterpartyRisk.filters.pipelineOnly = !state.counterpartyRisk.filters.pipelineOnly;
-            } else {
-              const set = state.counterpartyRisk.filters.risks;
-              if (set.has(key)) set.delete(key);
-              else set.add(key);
-            }
-            renderData();
-          });
-        });
+        teamSelect.value = st.teamFilter || "all";
+      };
+
+      const renderPartOptions = () => {
+        const st = state.counterpartyRisk;
+        const team = st.teamFilter || "all";
+
+        if (team === "all") {
+          partSelect.innerHTML = `<option value="all">전체</option>`;
+          partSelect.value = "all";
+          partSelect.disabled = true;
+          return;
+        }
+
+        const parts = st.teamPartPartsByTeam?.get(team) || ["all"];
+        partSelect.innerHTML = parts
+          .map((p) => `<option value="${p}">${p === "all" ? "전체" : p}</option>`)
+          .join("");
+
+        const current = st.partFilter || "all";
+        partSelect.value = parts.includes(current) ? current : "all";
+        st.partFilter = partSelect.value;
+        partSelect.disabled = false;
       };
 
       const renderDQ = (data) => {
@@ -7365,7 +7738,8 @@
       };
 
       const renderSections = (data) => {
-        const filtered = applyCounterpartyRiskFilters(data.counterparties || []);
+        const baseItems = data.counterparties || [];
+        const filtered = applyCprTeamPartFilter(baseItems);
         const byRisk = { 심각: [], 보통: [], 양호: [] };
         filtered.forEach((row) => {
           if (byRisk[row.risk_level_rule]) byRisk[row.risk_level_rule].push(row);
@@ -7461,12 +7835,31 @@
       const renderData = () => {
         const data = state.counterpartyRisk.data;
         if (!data) return;
-        renderSummary(data);
-        renderChips(data);
         renderSections(data);
         renderDQ(data);
         dbVersionEl.textContent = data.meta?.db_version ? `DB: ${data.meta.db_version}` : "";
       };
+
+      teamSelect.disabled = true;
+      partSelect.disabled = true;
+      tpHint.textContent = "팀/파트 매핑 불러오는 중...";
+      renderTeamOptions();
+      renderPartOptions();
+
+      ensureCprTeamPartIndex().then(() => {
+        const st = state.counterpartyRisk;
+        if (st.teamPartError) {
+          tpHint.textContent = "팀/파트 매핑 로드 실패(필터 비활성)";
+          teamSelect.disabled = true;
+          partSelect.disabled = true;
+          return;
+        }
+        tpHint.textContent = "";
+        teamSelect.disabled = false;
+        renderTeamOptions();
+        renderPartOptions();
+        renderData();
+      });
 
       const loadData = async (force = false) => {
         state.counterpartyRisk.loading = true;
@@ -7474,7 +7867,22 @@
         try {
           const dateVal = dateInput.value || todayIso();
           state.counterpartyRisk.date = dateVal;
-          const data = await fetchCounterpartyRiskReport(dateVal, mode, { force });
+          let data = await fetchCounterpartyRiskReport(dateVal, mode, { force });
+          if (mode === "offline") {
+            const keySet = await ensureOfflineDriOverrideNonZeroKeySet();
+            if (keySet) {
+              data = filterCounterpartyRiskRowsByKeySet(data, keySet);
+            } else {
+              console.warn("[cpr] offline DRI override keySet not available; showing unfiltered report");
+            }
+            const targetMap = await ensureOfflineDriOverrideTargetMap();
+            if (targetMap) {
+              data = applyOfflineDriTargetOverride(data, targetMap);
+              data = { ...data, summary: recomputeCprSummaryFromRows(data.counterparties || []) };
+            } else {
+              console.warn("[cpr] offline DRI target map not available; target_2026 not overridden");
+            }
+          }
           state.counterpartyRisk.data = data;
           state.counterpartyRisk.error = null;
           renderData();
@@ -7488,26 +7896,17 @@
       };
 
       dateInput.value = state.counterpartyRisk.date || todayIso();
-      setFiltersFromInputs();
       refreshBtn.addEventListener("click", () => loadData(true));
-      tierSelect.addEventListener("change", () => {
-        setFiltersFromInputs();
+      teamSelect.addEventListener("change", () => {
+        state.counterpartyRisk.teamFilter = teamSelect.value || "all";
+        state.counterpartyRisk.partFilter = "all";
+        renderPartOptions();
         renderData();
       });
-      riskSelect.addEventListener("change", () => {
-        setFiltersFromInputs();
+      partSelect.addEventListener("change", () => {
+        state.counterpartyRisk.partFilter = partSelect.value || "all";
         renderData();
       });
-      pipelineOnly.addEventListener("change", () => {
-        setFiltersFromInputs();
-        renderData();
-      });
-      searchInput.addEventListener("input", () => {
-        setFiltersFromInputs();
-        renderData();
-      });
-      clearBtn.addEventListener("click", resetFilters);
-      chipRow.innerHTML = "";
 
       loadData();
     }

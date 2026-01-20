@@ -1,9 +1,12 @@
 ---
 title: 아키텍처 (PJT2) – 카운터파티 리스크 리포트
-last_synced: 2026-01-06
+last_synced: 2026-01-13
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
+  - dashboard/server/agents/registry.py
+  - dashboard/server/agents/core/orchestrator.py
+  - dashboard/server/report/composer.py
   - dashboard/server/report_scheduler.py
   - dashboard/server/org_tables_api.py
   - dashboard/server/main.py
@@ -18,23 +21,23 @@ sync_source:
 ## Behavioral Contract
 - DB 교체(일일 스냅샷)와 리포트 생성이 충돌하지 않도록 스냅샷 후 읽기-only로 집계한다.
 - 리포트는 캐시 파일(`report_cache/YYYY-MM-DD.json`)을 우선 서빙하며, 없으면 생성 후 제공한다.
-- LLM은 env 설정 시 OpenAI 호출, 미설정/실패 시 폴백 evidence/actions로 채운다. 프롬프트는 파일(`dashboard/server/prompts/*.txt`)이 있으면 사용, 없으면 기본 상수 사용.
+- LLM은 env 설정 시 OpenAI 호출, 미설정/실패 시 폴백 evidence/actions로 채운다. 프롬프트는 mode별 파일(`dashboard/server/agents/counterparty_card/prompts/{offline|online}/v1/*.txt`)을 사용한다.
 
 ## Invariants
 - 입력 DB: `salesmap_latest.db`(SQLite). 없는 경우 500/오류 상태.
 - 스냅샷: 리포트 생성 시 DB를 `report_work/salesmap_snapshot_<as_of>_<HHMMSS>.db`로 복사 후 사용.
-- 캐시: `report_cache/YYYY-MM-DD.json`에 원자적 저장. status.json으로 마지막 성공/실패 기록.
-- LLM 캐시: `report_cache/llm/{as_of}/{db_hash}/{org}__{counterparty}.json` (`llm_input_hash` 일치 시 재사용).
-- 스케줄: APScheduler cron(기본 "0 8 * * *", TZ=Asia/Seoul). `ENABLE_SCHEDULER=0`이면 startup에서 start_scheduler가 건너뜀.
-- API: `/api/report/counterparty-risk`는 캐시 우선 → 없으면 생성(force) → fallback 최근 성공본.
-- 락: `report_cache/.counterparty_risk.lock` (fcntl + Windows msvcrt), 실패 시 SKIPPED_LOCKED 처리.
+- 캐시: offline은 `report_cache/YYYY-MM-DD.json`, online은 `report_cache/counterparty-risk/online/YYYY-MM-DD.json`에 원자적 저장. status는 mode별(`status.json`, `status_online.json`)로 기록.
+- LLM 캐시: `report_cache/llm/{as_of}/{db_hash}/{mode}/{org}__{counterparty}.json` (`llm_input_hash` 일치 시 재사용). counterparty_llm는 agent 어댑터로 위 경로를 사용한다.
+- 스케줄: APScheduler cron(기본 "0 8 * * *", TZ=Asia/Seoul)에서 두 모드(off→on) 순차 실행. `ENABLE_SCHEDULER=0`이면 startup에서 start_scheduler가 건너뜀. `REPORT_MODES` env로 모드 리스트를 제어한다.
+- API: `/api/report/counterparty-risk`는 mode 파라미터 기본 offline, 캐시 우선 → 없으면 생성(force) → fallback 최근 성공본.
+- 락: `report_cache/.counterparty_risk.lock` (fcntl + Windows msvcrt), 모드 루프 전체에 공용 사용, 실패 시 SKIPPED_LOCKED 처리.
 
 ## Coupling Map
-- Generator/Rules: `dashboard/server/deal_normalizer.py` (D1~D6 + 리포트 빌더).
-- LLM payload/canonical/hash/폴백: `dashboard/server/counterparty_llm.py` + 프롬프트 파일.
+- Generator/Rules: `dashboard/server/deal_normalizer.py` (D1~D5) + Orchestrator/Composer 병합.
+- Agents: `dashboard/server/agents/registry.py`(report_id×mode→agent chain), `agents/core/orchestrator.py`, `agents/counterparty_card/*`(LLM/fallback), `counterparty_llm.py`(어댑터).
 - Cache/Snapshot/Scheduler: `dashboard/server/report_scheduler.py` (+ start_scheduler in `main.py`).
-- API: `dashboard/server/org_tables_api.py` (`/report/counterparty-risk`, `/recompute`, `/status`).
-- 프런트: `org_tables_v2.html` 메뉴/렌더(`counterparty-risk-daily` → “2026 Daily Report(WIP)”).
+- API: `dashboard/server/org_tables_api.py` (`/report/counterparty-risk`, `/recompute`, `/status` mode 지원).
+- 프런트: `org_tables_v2.html` 메뉴/렌더(`counterparty-risk-daily`→“2026 Daily Report(출강)”, `counterparty-risk-daily-online`→“2026 Daily Report(온라인)”).
 
 ## Edge Cases
 - DB 교체 직후(3분 이내) 스케줄 실행 시 재시도 후 실패 가능 → status에 FAILED, 캐시는 최근 성공본 유지.
@@ -45,7 +48,7 @@ sync_source:
 - 스냅샷 경로 생성/사용 여부 확인: report_scheduler `_make_snapshot`.
 - 캐시 파일 생성/내용(meta.as_of/db_signature)이 리포트 JSON에 존재하는지 확인.
 - API 호출 시 캐시가 반환되는지, 캐시 없으면 생성 후 반환되는지 수동 호출로 검증.
-- LLM 캐시: 동일 입력으로 두 번 실행 시 `report_cache/llm/...`이 재사용되는지 해시 비교.
+- LLM 캐시: 동일 입력으로 두 번 실행 시 `report_cache/llm/{as_of}/{db_hash}/{mode}/...`이 재사용되는지 해시 비교.
 
 ## Refactor-Planning Notes (Facts Only)
 - FastAPI startup에서 `load_dotenv()`와 `start_scheduler()`를 호출하므로 배포 환경이 변하면 main.py 수정이 필요한 지점이다.

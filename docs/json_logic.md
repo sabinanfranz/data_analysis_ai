@@ -28,18 +28,18 @@ sync_source:
   - Deal.people를 `people_id` 참조로 교체하고 누락된 사람은 stub(id/name/upper_org/team/title/edu_area)로 people 배열에 추가한다.
   - Won 딜을 기준으로 group/organization 요약(`won_amount_by_year`, online/offline 분리)을 생성하고 organization.summary에 누적한다.
   - `deal_defaults`는 course_format/category/owner/day1_teams의 80% 이상 반복 값을 추출해 그룹 수준으로 올리고, 개별 딜에서 동일 값은 제거한다.
-  - day1_teams는 `team` JSON을 배열로 정규화하며, 날짜 필드는 모두 YYYY-MM-DD로 맞춘다. **현재 구현은 memos/webforms를 compact 결과에 그대로 보존**하며 null/빈 배열·객체만 제거한다.
+  - day1_teams는 `team` JSON을 배열로 정규화하며, 날짜 필드는 모두 YYYY-MM-DD로 맞춘다. memos/webforms는 compact 결과에도 남지만 `htmlBody`는 제거되며, text가 비었고 htmlBody만 있을 경우 사람이 읽기 좋은 plain text로 보강된다. null/빈 배열·객체는 제거한다.
 - **프런트 필터링** (`org_tables_v2.html`):
   - 회사 선택 시 `/orgs/{id}/won-groups-json`을 1회 fetch 후 캐시에 저장한다.
   - 상위 조직 표에서 선택한 upper_org가 없으면 JSON 버튼을 비활성화하고 안내 문구를 표시한다.
-  - “전체 JSON”은 원본 그대로, “선택 상위 조직 JSON”은 `filterWonGroupByUpper`로 groups만 upper_org 일치 항목으로 필터링한다(organization 블록은 그대로 유지). compact 버튼은 `/won-groups-json-compact` 응답을 사용한다.
+  - “전체 JSON”은 원본 그대로, “선택 상위 조직 JSON”은 `filterWonGroupByUpper`로 groups만 upper_org 일치 항목으로 필터링한다(organization 블록은 그대로 유지). compact 버튼은 `/won-groups-json-compact` 응답을 사용하며 `htmlBody`가 포함되지 않는지 확인한다.
 
 ## Invariants (Must Not Break)
 - target_uppers는 Won 딜이 있는 upper_org만 포함하며, Won 없는 조직은 groups가 빈 배열이어야 한다.
 - groups 정렬은 upper_org asc → team asc 고정이다(`groups_list.sort`).
 - webforms는 `{name, date}`만 노출되고 webform id는 절대 포함하지 않는다. `webform_history` 테이블이 없으면 날짜는 비워두지 않고 `"날짜 확인 불가"`로 채운다.
 - 폼 메모 정제는 utm_source/“고객 마케팅 수신 동의”가 없으면 skip, 정보 부족/특수 문구면 drop한다. `cleanText==""` 메모는 결과에서 제외해야 한다.
-- compact 변환은 Won 딜이 아닌 값은 summary에 반영하지 않는다. deal_defaults는 3건 이상·80% 이상 반복일 때만 설정된다. **memos/webforms는 compact에서도 남으므로 개인정보 제거 용도가 아니다.**
+- compact 변환은 Won 딜이 아닌 값은 summary에 반영하지 않는다. deal_defaults는 3건 이상·80% 이상 반복일 때만 설정된다. memos/webforms는 compact에서도 남지만 `htmlBody`는 제거되므로 HTML 보존용이 아니다.
 - 프런트 선택 JSON은 organization 블록을 수정하지 않고 groups만 필터링해야 하며, 선택이 없으면 버튼이 비활성화되어야 한다.
 
 ## Coupling Map
@@ -57,7 +57,7 @@ sync_source:
 
 ## Verification
 - 샘플 org_id로 `/api/orgs/{id}/won-groups-json`을 호출해 industry_major/mid, webforms `{name,date}` 매핑, 폼 메모 정제/제외 규칙이 적용됐는지 확인한다.
-- 동일 org_id로 `/api/orgs/{id}/won-groups-json-compact`를 호출해 schema_version, organization.summary, deal_defaults가 적용되고 memos/webforms가 원본과 동일하게 남는지 확인한다.
+- 동일 org_id로 `/api/orgs/{id}/won-groups-json-compact`를 호출해 schema_version, organization.summary, deal_defaults가 적용되고 memos/webforms가 원본과 동일하게 남는지, `htmlBody` 키가 완전히 제거됐는지 확인한다.
 - 프런트에서 상위 조직 미선택 시 JSON 버튼이 비활성화되고, 선택 시 groups가 해당 upper_org만 남는지 DevTools에서 확인한다.
 - Won 딜이 없는 조직으로 호출할 때 groups가 빈 배열인지, Won 딜 있는 조직은 groups 정렬이 upper_org→team 순인지 확인한다.
 

@@ -34,7 +34,15 @@ sync_source:
   - `renderDealQcR1R15Screen`은 `/qc/deal-errors/summary?team=edu1|edu2|public` 카드 3개(담당자/총이슈 desc)와 `/qc/deal-errors/person` 상세 모달(R1~R15 섹션만 노출)을 제공한다.
 - **조직/People/Deal 뷰어**:
   - `getSizes`→`/orgs`로 조직 리스트를 불러오고, 회사 선택 시 `/orgs/{id}/people`→사람 선택→`/people/{id}/deals`/`/people/{id}/memos`/`/deals/{id}/memos`를 순차 호출한다.
-  - 상위 조직 JSON 카드에서 `/orgs/{id}/won-groups-json`을 캐싱하고 `filterWonGroupByUpper`로 그룹을 필터링한다. 선택 없으면 JSON 버튼 비활성 + 안내 문구 노출, 선택 시 전체/선택 JSON 모달을 별도로 제공하며 compact 버튼은 `/won-groups-json-compact`를 사용한다.
+- 상위 조직 JSON 카드에서 `/orgs/{id}/won-groups-json`을 캐싱하고 `filterWonGroupByUpper`로 그룹을 필터링한다. 선택 없으면 JSON 버튼 비활성 + 안내 문구 노출, 선택 시 전체/선택 JSON 모달을 별도로 제공하며 compact 버튼은 `/won-groups-json-compact`를 사용한다.
+- 메모 표시 우선순위: `htmlBody`가 있으면 프런트에서 안전하게 Sanitized HTML로 렌더하고, 없으면 `text`를 `white-space: pre-wrap`으로 표시한다. 딜체크 “메모 확인” 모달 포함 모든 모달이 동일 규칙을 따른다.
+- compact JSON 버튼(`/won-groups-json-compact`)은 HTML을 포함하지 않는 텍스트 중심 JSON이어야 하므로 `htmlBody`가 제거됐는지 확인한다.
+
+## 수동 QA 체크리스트 (메모 관련)
+- 딜체크 메모 모달: h2/h3가 과도하게 크지 않고 제목처럼 보이는지, ul/ol 중첩이 깨지지 않는지 확인한다.
+- 메모 본문 링크가 새 탭으로 열리고 `rel="noopener noreferrer"`가 적용됐는지 DevTools로 확인한다.
+- htmlBody가 없는 메모는 기존처럼 줄바꿈이 유지된 텍스트로 보이는지 확인한다.
+- 간소화 JSON 보기/복사 결과에 HTML 태그나 `htmlBody` 키가 섞이지 않는지 확인한다.
 - **기타 분석 뷰**: StatePath 24→25는 `/statepath/portfolio-2425` 결과를 segment/sort/limit만 서버에서 가져온 뒤 필터 드로어(규모 라디오, 2024 티어 프리셋/체크박스, Quick Filters, 패턴 필터 전이/셀/rail)를 전부 클라이언트 상태로 적용해 Snapshot/Pattern Explorer/테이블을 갱신하며 “전체 해제”가 필터를 리셋한다. `renderRank2025Screen`은 `/rank/2025/summary-by-size`와 `/rank/2025-deals`를 사용해 등급 가이드/배수 모달과 26 타겟(온라인/비온라인) 컬럼이 포함된 랭킹 표를 렌더한다. `renderCounterpartyRiskDaily`는 날짜 선택+필터(tier/risk/pipeline_zero/search)와 함께 `/report/counterparty-risk` 캐시 결과의 summary/counts/data_quality 및 counterparties 리스트(coverage/gap/target/expected/evidence/recommendations)를 표시한다.
 
 ## Invariants (Must Not Break)

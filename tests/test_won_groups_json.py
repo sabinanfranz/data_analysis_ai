@@ -2,9 +2,11 @@ import json
 import sqlite3
 import tempfile
 from pathlib import Path
+from typing import Any
 from unittest import TestCase
 
 from dashboard.server import database as db
+from dashboard.server.html_to_markdown import html_to_markdown, strip_key_deep
 from dashboard.server.database import _clean_form_memo
 from dashboard.server.json_compact import compact_won_groups_json
 
@@ -103,6 +105,19 @@ def build_sample_db(db_path: Path) -> None:
             ("h4", "p1", "org1", None, None, None, "2025-02-01 09:00:00", "wf-2"),
         ],
     )
+    conn.commit()
+    conn.close()
+
+
+def build_sample_db_with_html_body(db_path: Path) -> None:
+    """
+    Reuse the base sample DB and add htmlBody column/values to memo.
+    """
+    build_sample_db(db_path)
+    conn = sqlite3.connect(db_path)
+    conn.execute("ALTER TABLE memo ADD COLUMN htmlBody TEXT")
+    conn.execute("UPDATE memo SET htmlBody = '<p>본문1</p>' WHERE id = 'm1'")
+    conn.execute("UPDATE memo SET htmlBody = '<p>본문2</p>' WHERE id = 'm2'")
     conn.commit()
     conn.close()
 
@@ -234,6 +249,84 @@ def build_compact_sample_db(db_path: Path) -> None:
     conn.close()
 
 
+def build_compact_htmlbody_db(db_path: Path) -> None:
+    conn = sqlite3.connect(db_path)
+    conn.execute('CREATE TABLE organization (id TEXT, "이름" TEXT)')
+    conn.execute('INSERT INTO organization VALUES ("org-html","Org HTML")')
+    conn.execute('CREATE TABLE people (id TEXT, organizationId TEXT, "이름" TEXT, "담당자" TEXT)')
+    conn.execute('INSERT INTO people VALUES ("p-html","org-html","Person","{}")')
+    conn.execute(
+        'CREATE TABLE deal (id TEXT, peopleId TEXT, organizationId TEXT, "이름" TEXT, "상태" TEXT, "계약 체결일" TEXT, "금액" TEXT)'
+    )
+    conn.execute(
+        'INSERT INTO deal VALUES ("d-html","p-html","org-html","Deal","Won","2025-01-01","100")'
+    )
+    conn.execute(
+        "CREATE TABLE memo (id TEXT, dealId TEXT, peopleId TEXT, organizationId TEXT, text TEXT, createdAt TEXT, htmlBody TEXT)"
+    )
+    conn.execute(
+        "INSERT INTO memo VALUES (?,?,?,?,?,?,?)",
+        (
+            "m-html",
+            "d-html",
+            "p-html",
+            "org-html",
+            "",
+            "2025-01-02",
+            "<h2>Title</h2><ul><li>Alpha</li><li>Beta</li></ul><a href='https://example.com'>link</a>",
+        ),
+    )
+    conn.commit()
+    conn.close()
+
+
+def build_memo_lookup_db(db_path: Path, with_html: bool) -> None:
+    conn = sqlite3.connect(db_path)
+    conn.execute('CREATE TABLE organization (id TEXT, "담당자" TEXT)')
+    conn.execute('CREATE TABLE people (id TEXT, organizationId TEXT, "담당자" TEXT)')
+    conn.execute('CREATE TABLE deal (id TEXT, peopleId TEXT, organizationId TEXT, "담당자" TEXT)')
+
+    owner_json = json.dumps({"id": "o1", "name": "Owner One"})
+    conn.execute('INSERT INTO organization VALUES ("org1", ?)', (owner_json,))
+    conn.execute('INSERT INTO people VALUES ("p1", "org1", ?)', (owner_json,))
+    conn.execute('INSERT INTO deal VALUES ("d1", "p1", "org1", ?)', (owner_json,))
+
+    memo_cols = (
+        "id TEXT, dealId TEXT, peopleId TEXT, organizationId TEXT, text TEXT, ownerId TEXT, createdAt TEXT, updatedAt TEXT"
+    )
+    if with_html:
+        memo_cols += ", htmlBody TEXT"
+    conn.execute(f"CREATE TABLE memo ({memo_cols})")
+    memo_params = (
+        "m1",
+        None,
+        "p1",
+        "org1",
+        "메모 본문",
+        "o1",
+        "2025-01-01",
+        "2025-01-02",
+    )
+    if with_html:
+        conn.execute("INSERT INTO memo VALUES (?,?,?,?,?,?,?,?,?)", memo_params + ("<p>HTML</p>",))
+    else:
+        conn.execute("INSERT INTO memo VALUES (?,?,?,?,?,?,?,?)", memo_params)
+
+    conn.commit()
+    conn.close()
+
+
+def assert_no_key(obj: Any, key: str) -> None:
+    if isinstance(obj, dict):
+        if key in obj:
+            raise AssertionError(f"Found key '{key}' in {obj}")
+        for val in obj.values():
+            assert_no_key(val, key)
+    elif isinstance(obj, list):
+        for item in obj:
+            assert_no_key(item, key)
+
+
 class WonGroupsWebformDateTest(TestCase):
     def test_webforms_include_history_dates_and_clean_text(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -356,3 +449,78 @@ class WonGroupsCompactTest(TestCase):
             org_summary = compact["organization"]["summary"]
             self.assertEqual(org_summary["won_amount_by_year"]["2025"], 100.0)
             self.assertEqual(org_summary["won_amount_offline_by_year"]["2023"], 300.0)
+
+
+class MemoHtmlBodyTest(TestCase):
+    def test_html_body_propagates_and_compact_strips(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            db_path = Path(tmpdir) / "db.sqlite"
+            build_sample_db_with_html_body(db_path)
+
+            raw = db.get_won_groups_json("org1", db_path=db_path)
+            memos = raw["groups"][0]["people"][0]["memos"]
+            self.assertEqual(len(memos), 1)
+            self.assertEqual(memos[0].get("htmlBody"), "<p>본문1</p>")
+
+            compact = compact_won_groups_json(raw)
+            assert_no_key(compact, "htmlBody")
+
+    def test_memo_endpoints_include_html_optionally(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            db_path = Path(tmpdir) / "with_html.sqlite"
+            build_memo_lookup_db(db_path, with_html=True)
+            memos_with = db.get_memos_for_person("p1", db_path=db_path)
+            self.assertEqual(memos_with[0].get("htmlBody"), "<p>HTML</p>")
+            self.assertEqual(memos_with[0].get("ownerName"), "Owner One")
+
+            db_path_no_html = Path(tmpdir) / "without_html.sqlite"
+            build_memo_lookup_db(db_path_no_html, with_html=False)
+            memos_without = db.get_memos_for_person("p1", db_path=db_path_no_html)
+            self.assertEqual(memos_without[0].get("htmlBody"), None)
+            self.assertEqual(memos_without[0].get("ownerName"), "Owner One")
+
+    def test_compact_strips_htmlbody_and_fills_text(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            db_path = Path(tmpdir) / "db.sqlite"
+            build_compact_htmlbody_db(db_path)
+
+            raw = db.get_won_groups_json("org-html", db_path=db_path)
+            compact = compact_won_groups_json(raw)
+            assert_no_key(compact, "htmlBody")
+            payload = json.dumps(compact, ensure_ascii=False)
+            self.assertNotIn("htmlBody", payload)
+            groups = compact.get("groups", [])
+            self.assertTrue(groups)
+            memos = groups[0]["deals"][0].get("memos", [])
+            self.assertTrue(memos)
+            text_val = memos[0].get("text") or ""
+            self.assertIn("Title", text_val)
+            self.assertIn("Alpha", text_val)
+            self.assertIn("-", text_val)
+
+    def test_strip_key_deep(self) -> None:
+        sample = {"a": 1, "htmlBody": 2, "nested": {"htmlBody": 3, "x": 4}, "list": [{"htmlBody": 5}, {"y": 6}]}
+        cleaned = strip_key_deep(sample, "htmlBody")
+        payload = json.dumps(cleaned)
+        self.assertNotIn("htmlBody", payload)
+
+
+class HtmlToMarkdownTableTest(TestCase):
+    def test_table_preserves_columns(self) -> None:
+        html = """
+        <table>
+          <tr><th>Col1</th><th>Col2</th></tr>
+          <tr><td>A1</td><td>B1</td></tr>
+          <tr><td>A2</td><td>B2</td></tr>
+        </table>
+        """
+        md = html_to_markdown(html)
+        lines = [ln for ln in md.splitlines() if ln.strip()]
+        self.assertTrue(any("|Col1|Col2|" in ln for ln in lines))
+        self.assertTrue(any("|A1|B1|" in ln for ln in lines))
+        self.assertTrue(any("|A2|B2|" in ln for ln in lines))
+        # 1열 테이블도 1열로 유지되는지 확인
+        html_one_col = "<table><tr><th>Only</th></tr><tr><td>Row1</td></tr></table>"
+        md_one = html_to_markdown(html_one_col)
+        self.assertIn("|Only|", md_one)
+        self.assertIn("|Row1|", md_one)

@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Tuple
 
 from .database import YEARS_FOR_WON, _date_only, _safe_json_load, _to_number
+from .html_to_markdown import html_to_markdown, should_enrich_text, strip_key_deep
 
 SCHEMA_VERSION = "won-groups-json/compact-v1"
 ONLINE_COURSE_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포팅"}
@@ -100,6 +101,8 @@ def compact_won_groups_json(raw: Dict[str, Any]) -> Dict[str, Any]:
         "organization": {**org_meta, "summary": org_summary},
         "groups": compact_groups,
     }
+    compact = _strip_memo_html(compact)
+    compact = strip_key_deep(compact, "htmlBody")
     return _prune(compact, keep_keys={"schema_version", "organization"})
 
 
@@ -213,6 +216,32 @@ def _hashable(val: Any) -> Any:
 
 def _values_equal(left: Any, right: Any) -> bool:
     return _hashable(left) == _hashable(right)
+
+
+def _strip_memo_html(value: Any) -> Any:
+    """
+    Remove htmlBody keys from any memo-like dicts for compact payloads.
+    If htmlBody exists and text is missing/blank, fill text with a plain-text
+    representation of htmlBody for better readability in compact JSON.
+    """
+    if isinstance(value, dict):
+        result: Dict[str, Any] = {}
+        html_body = value.get("htmlBody")
+        text_val = value.get("text")
+        need_fill = (
+            html_body is not None
+            and should_enrich_text(text_val)
+        )
+        for k, v in value.items():
+            if k == "htmlBody":
+                continue
+            result[k] = _strip_memo_html(v)
+        if need_fill:
+            result["text"] = html_to_markdown(str(html_body))
+        return result
+    if isinstance(value, list):
+        return [_strip_memo_html(item) for item in value]
+    return value
 
 
 def _prune(value: Any, keep_keys: set[str]) -> Any:

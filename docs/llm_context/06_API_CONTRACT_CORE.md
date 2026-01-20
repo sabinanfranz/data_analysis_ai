@@ -24,7 +24,7 @@ sync_source:
   - `GET /api/orgs/{id}/memos`/`/people/{id}/memos`/`/deals/{id}/memos` → createdAt desc, limit ≤500.
 - Won JSON:
   - `GET /api/orgs/{id}/won-groups-json` → organization(id/name/size/industry/industry_major/mid + memos) + groups(upper_org/team별 people/deals). webforms `{name,date}`(id 숨김, webform_history 매핑) 포함, 폼 메모는 `_clean_form_memo`로 정제해 `cleanText`.
-  - `GET /api/orgs/{id}/won-groups-json-compact` → schema_version `won-groups-json/compact-v1`, deal_defaults(>=80% 반복 필드) 추출, Won 요약(summary) 누적. **현재 구현은 memos/webforms를 compact 결과에 그대로 보존**한다.
+- `GET /api/orgs/{id}/won-groups-json-compact` → schema_version `won-groups-json/compact-v1`, deal_defaults(>=80% 반복 필드) 추출, Won 요약(summary) 누적. memos/webforms는 유지하지만 `htmlBody`는 제거되며(텍스트 중심 JSON), text가 비어 있고 htmlBody만 있는 경우 plain text로 보강한다.
   - `GET /api/orgs/{id}/won-summary` → 상위 조직별 Won 합계(2023/2024/2025) + owners/owners2025/dealCount.
 - 랭킹/DRI/StatePath:
   - `GET /api/rank/2025/summary-by-size?exclude_org_name=삼성전자&years=2025,2026` → Won 합계 규모별, 캐시 키 `snapshot_version=db_mtime:<int>`.

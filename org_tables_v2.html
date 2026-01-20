@@ -2435,6 +2435,13 @@
         offlineDriOverrideKeySet: null,
         offlineDriOverrideKeySetError: null,
         offlineDriOverrideKeySetLoading: false,
+        onlineDriOverrideTargetMap: null,
+        onlineDriOverrideTargetMapLoading: false,
+        onlineDriOverrideTargetMapError: null,
+        onlineDriOverrideKeySet: null,
+        onlineDriOverrideKeySetError: null,
+        onlineDriOverrideKeySetLoading: false,
+        onlineDriOverrideRowByKey: null,
         sectionOpen: { 심각: true, 보통: true, 양호: false },
       },
       dealQc: {
@@ -7588,6 +7595,144 @@
       return merged;
     }
 
+    async function ensureOnlineDriOverrideUniverse() {
+      const st = state.counterpartyRisk;
+      if (st.onlineDriOverrideTargetMap && st.onlineDriOverrideKeySet && st.onlineDriOverrideRowByKey) {
+        return {
+          overrideKeySet: st.onlineDriOverrideKeySet,
+          overrideTargetMap: st.onlineDriOverrideTargetMap,
+          overrideRowByKey: st.onlineDriOverrideRowByKey,
+        };
+      }
+      if (st.onlineDriOverrideTargetMapLoading || st.onlineDriOverrideKeySetLoading) return null;
+
+      st.onlineDriOverrideTargetMapLoading = true;
+      st.onlineDriOverrideKeySetLoading = true;
+      st.onlineDriOverrideTargetMapError = null;
+      st.onlineDriOverrideKeySetError = null;
+
+      try {
+        const source = await loadTarget2026SourceRowsAll();
+        const rows = []
+          .concat(source?.big || [])
+          .concat(source?.mid || [])
+          .concat(source?.small || []);
+
+        const targetMap = new Map();
+        const keySet = new Set();
+        const rowByKey = new Map();
+
+        let overrideCount = 0;
+        rows.forEach((r) => {
+          const orgId = String(r.orgId || r.org_id || "").trim();
+          const upperOrg = normalizeUpperOrg(r.upperOrg || r.upper_org || r.counterparty || "");
+          if (!orgId || !upperOrg) return;
+          const isOverride = isTruthyFlag(r.target26OnlineIsOverride);
+          const targetVal = Number(r.target26Online ?? 0);
+          const nonZero = Number.isFinite(targetVal) && targetVal !== 0;
+          if (!isOverride || !nonZero) return;
+          const key = `${orgId}||${upperOrg}`;
+          keySet.add(key);
+          const prev = targetMap.get(key);
+          const val = Number.isFinite(targetVal) ? targetVal : 0;
+          targetMap.set(key, prev !== undefined ? Math.max(prev, val) : val);
+          rowByKey.set(key, r);
+          overrideCount += 1;
+        });
+
+        st.onlineDriOverrideTargetMap = targetMap;
+        st.onlineDriOverrideKeySet = keySet;
+        st.onlineDriOverrideRowByKey = rowByKey;
+        console.debug("[cpr] online DRI override universe built", {
+          rows: rows.length,
+          overrideCount,
+          keySize: keySet.size,
+        });
+        return {
+          overrideKeySet: keySet,
+          overrideTargetMap: targetMap,
+          overrideRowByKey: rowByKey,
+        };
+      } catch (err) {
+        console.error(err);
+        st.onlineDriOverrideTargetMapError = err;
+        st.onlineDriOverrideKeySetError = err;
+        st.onlineDriOverrideTargetMap = null;
+        st.onlineDriOverrideKeySet = null;
+        st.onlineDriOverrideRowByKey = null;
+        return null;
+      } finally {
+        st.onlineDriOverrideTargetMapLoading = false;
+        st.onlineDriOverrideKeySetLoading = false;
+      }
+    }
+
+    function projectReportToOnlineDriUniverse(data, universe) {
+      if (!data || !Array.isArray(data.counterparties) || !universe) return data;
+      const { overrideKeySet, overrideTargetMap, overrideRowByKey } = universe;
+      if (!overrideKeySet || !overrideTargetMap) return data;
+
+      const reportRowByKey = new Map();
+      (data.counterparties || []).forEach((row) => {
+        const orgId = String(row.organizationId || row.orgId || "").trim();
+        const upper = normalizeUpperOrg(row.counterpartyName || row.upperOrg || "");
+        if (!orgId || !upper) return;
+        reportRowByKey.set(`${orgId}||${upper}`, row);
+      });
+
+      const finalRows = [];
+      const syntheticRows = [];
+
+      overrideKeySet.forEach((key) => {
+        const existing = reportRowByKey.get(key);
+        if (existing) {
+          finalRows.push(existing);
+          return;
+        }
+        const dri = overrideRowByKey.get(key) || {};
+        const [orgId, upper] = key.split("||");
+        const targetVal = Number(overrideTargetMap.get(key) ?? 0);
+        const syn = {
+          organizationId: orgId,
+          organizationName: dri.orgName || dri.organizationName || orgId || "-",
+          counterpartyName: upper,
+          tier: dri.orgTier || dri.tier || null,
+          baseline_2025_confirmed: 0,
+          target_2026: targetVal,
+          confirmed_2026: 0,
+          expected_2026: 0,
+          coverage_2026: 0,
+          gap: targetVal,
+          coverage_ratio: targetVal > 0 ? 0 / targetVal : null,
+          pipeline_zero: targetVal > 0 ? 1 : 0,
+          risk_level_rule: targetVal > 0 ? "심각" : "양호",
+          min_cov_current_month: dri.min_cov_current_month ?? dri.min_cov ?? 0,
+          severe_threshold: dri.severe_threshold ?? 0.5,
+          rule_trigger: targetVal > 0 ? "PIPELINE_ZERO" : "TARGET_ZERO",
+          top_blockers: [],
+          evidence_bullets: [],
+          recommended_actions: [],
+          dq_year_unknown_cnt: 0,
+          excluded_by_quality: 0,
+          flags: ["dri_override_only"],
+        };
+        syntheticRows.push(syn);
+        finalRows.push(syn);
+      });
+
+      const merged = {
+        ...data,
+        counterparties: finalRows,
+        meta: {
+          ...(data.meta || {}),
+          online_dri_override_universe_total: overrideKeySet.size,
+          online_dri_override_missing_added: syntheticRows.length,
+          online_dri_override_projected: true,
+        },
+      };
+      return merged;
+    }
+
     function applyOfflineDriTargetOverride(data, targetMap) {
       if (!data || !Array.isArray(data.counterparties) || !targetMap) return data;
 
@@ -7914,6 +8059,15 @@
               data = { ...data, summary: recomputeCprSummaryFromRows(data.counterparties || []) };
             } else {
               console.warn("[cpr] offline DRI override universe not available; showing unprojected report");
+            }
+          } else if (mode === "online") {
+            const universe = await ensureOnlineDriOverrideUniverse();
+            if (universe) {
+              data = projectReportToOnlineDriUniverse(data, universe);
+              data = applyOfflineDriTargetOverride(data, universe.overrideTargetMap);
+              data = { ...data, summary: recomputeCprSummaryFromRows(data.counterparties || []) };
+            } else {
+              console.warn("[cpr] online DRI override universe not available; showing unprojected report");
             }
           }
           state.counterpartyRisk.data = data;

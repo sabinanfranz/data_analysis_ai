@@ -1,6 +1,6 @@
 ---
 title: 구현 파이프라인 (PJT2) – D1~D7
-last_synced: 2026-01-13
+last_synced: 2026-01-20
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/agents/registry.py
@@ -30,6 +30,7 @@ sync_source:
 - **D5 report base JSON**: build_counterparty_risk_report → counterparty base row 정렬 + 요약 + data_quality + meta(db_version hash, as_of, generated_at, mode, report_id).
 - **D6 에이전트 체인(LLM/폴백)**: registry→orchestrator→CounterpartyCardAgent(프롬프트/캐시 mode별) 실행 → composer가 blockers/evidence/actions 불변 강제 병합. 규칙 risk_level 우선, LLM 결과는 risk_level_llm/llm_meta. **deal_norm 재조회 금지, base row의 top_deals_2026 재사용(없으면 deal 테이블 fallback)**.
 - **D7 스케줄/캐시**: run_daily_counterparty_risk_job_all_modes (report_scheduler) → lock → offline+online 순차 실행 → 스냅샷 → 캐시 존재 시 스킵 → 생성/atomic write → mode별 status 업데이트 → retention.
+- **프런트 후처리(모드별 DRI universe 적용)**: org_tables_v2.html에서 백엔드 응답을 DRI 기반으로 재구성한다. 출강은 `target26OfflineIsOverride` 전체(0 포함), 온라인은 `target26OnlineIsOverride` & `target26Online!=0` 전체를 size별 전체 DRI에서 불러와 리포트 rows를 투영·target 덮어쓰기·gap/risk 재계산 후 summary를 다시 계산하고, 없던 키는 synthetic row로 추가한다. 팀→파트 필터도 동일 DRI 전체로 매핑한다.
 
 ## Coupling Map
 - 파이프라인/임시테이블: `dashboard/server/deal_normalizer.py` (build_deal_norm/org_tier/target/risk_rule/report + orchestrator/composer 호출).

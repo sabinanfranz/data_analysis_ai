@@ -1,6 +1,6 @@
 ---
 title: LLM Context Pack (PJT2) 인덱스 – 카운터파티 리스크 리포트
-last_synced: 2026-01-06
+last_synced: 2026-01-20
 sync_source:
   - docs/llm_context_pjt2/01_GLOSSARY.md
   - docs/llm_context_pjt2/02_ARCHITECTURE.md

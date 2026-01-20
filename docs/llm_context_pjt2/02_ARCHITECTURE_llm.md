@@ -1,6 +1,6 @@
 ---
 title: 아키텍처 (PJT2) – 카운터파티 리스크 리포트
-last_synced: 2026-01-13
+last_synced: 2026-01-20
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
@@ -22,6 +22,7 @@ sync_source:
 - DB 교체(일일 스냅샷)와 리포트 생성이 충돌하지 않도록 스냅샷 후 읽기-only로 집계한다.
 - 리포트는 캐시 파일(`report_cache/YYYY-MM-DD.json`)을 우선 서빙하며, 없으면 생성 후 제공한다.
 - LLM은 env 설정 시 OpenAI 호출, 미설정/실패 시 폴백 evidence/actions로 채운다. 프롬프트는 mode별 파일(`dashboard/server/agents/counterparty_card/prompts/{offline|online}/v1/*.txt`)을 사용한다.
+- 프런트는 서버 응답을 그대로 쓰지 않고, **DRI override universe**를 클라이언트에서 적용한다: 출강은 `target26OfflineIsOverride` 전부(0 포함), 온라인은 `target26OnlineIsOverride` & `target26Online!=0` 전부를 로드해 리포트 row를 재구성·타겟 덮어쓰고 요약을 재계산한다(없던 키는 synthetic row로 추가).
 
 ## Invariants
 - 입력 DB: `salesmap_latest.db`(SQLite). 없는 경우 500/오류 상태.
@@ -31,6 +32,7 @@ sync_source:
 - 스케줄: APScheduler cron(기본 "0 8 * * *", TZ=Asia/Seoul)에서 두 모드(off→on) 순차 실행. `ENABLE_SCHEDULER=0`이면 startup에서 start_scheduler가 건너뜀. `REPORT_MODES` env로 모드 리스트를 제어한다.
 - API: `/api/report/counterparty-risk`는 mode 파라미터 기본 offline, 캐시 우선 → 없으면 생성(force) → fallback 최근 성공본.
 - 락: `report_cache/.counterparty_risk.lock` (fcntl + Windows msvcrt), 모드 루프 전체에 공용 사용, 실패 시 SKIPPED_LOCKED 처리.
+- 프런트 DRI 로딩: `loadCounterpartyRows(size)`를 limit 없이 호출해 size별 전체 DRI를 사용하며, 출강/온라인 각각 mode별 override 조건으로 universe를 강제한다. 팀→파트 매핑도 동일 DRI 전체를 사용한다.
 
 ## Coupling Map
 - Generator/Rules: `dashboard/server/deal_normalizer.py` (D1~D5) + Orchestrator/Composer 병합.

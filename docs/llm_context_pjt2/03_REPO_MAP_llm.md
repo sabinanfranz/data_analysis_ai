@@ -1,6 +1,6 @@
 ---
 title: 레포 지도 (PJT2) – 기능 ↔ 파일
-last_synced: 2026-01-06
+last_synced: 2026-01-20
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
@@ -32,7 +32,7 @@ sync_source:
 - **API 라우터**: `dashboard/server/org_tables_api.py`
   - `/api/report/counterparty-risk`, `/report/counterparty-risk/recompute`, `/report/counterparty-risk/status`.
 - **프런트**: `org_tables_v2.html`
-  - 메뉴 `counterparty-risk-daily` 추가, fetch/render/필터/요약/섹션 테이블.
+  - 메뉴 `counterparty-risk-daily`(출강), `counterparty-risk-daily-online`(온라인). mode별 DRI override universe(출강=offline override 전체, 온라인=online override&비0)로 리포트 rows를 재구성하고 target을 덮어쓴다. 팀→파트 필터도 DRI 전체 기반.
 - **테스트**: `tests/test_counterparty_risk_rule.py`(D4 규칙), `tests/test_counterparty_target.py`, `tests/test_deal_normalizer.py`, `tests/test_org_tier.py`.
 
 ## Edge Cases

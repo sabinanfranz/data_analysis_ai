@@ -318,9 +318,10 @@ def get_rank_2025_top100_counterparty_dri(
         description="최대 반환 수 (미지정 시 전체 반환)",
     ),
     offset: int = Query(0, ge=0, description="org 목록 offset (limit 단위, limit 미지정 시 무시)"),
+    debug: bool = Query(False, description="override 매칭 진단 포함 여부"),
 ) -> dict:
     try:
-        return db.get_rank_2025_top100_counterparty_dri(size=size, limit=limit, offset=offset)
+        return db.get_rank_2025_top100_counterparty_dri(size=size, limit=limit, offset=offset, debug=debug)
     except FileNotFoundError as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

@@ -1557,8 +1557,14 @@ def _tier_multiplier(tier: str | None) -> float:
     return 1.0
 
 
+def _norm_min(val: Any) -> str:
+    if val is None:
+        return ""
+    return str(val).replace("\u00A0", " ").strip()
+
+
 def _normalize_counterparty_upper(val: Any) -> str:
-    text = (val or "").strip()
+    text = _norm_min(val)
     if not text or text in {"-", "–", "—"}:
         return "미입력"
     return text
@@ -1574,7 +1580,7 @@ def _row_get(row: Any, key: str, default: Any = None) -> Any:
 
 
 def _norm_text(val: Any) -> str:
-    text = (val or "").strip()
+    text = _norm_min(val)
     return text if text else "미입력"
 
 
@@ -4112,10 +4118,15 @@ def _compute_counterparty_dri_rows(
     offline_targets: Dict[Tuple[str, str], float],
     online_targets: Dict[Tuple[str, str], float],
     targets_version: str,
+    targets_meta: Dict[Tuple[str, str], Dict[str, Any]],
+    debug: bool,
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any], int]:
     online_set = sp.ONLINE_COURSE_FORMATS
     db_stat = db_path.stat()
     snapshot_version = f"db_mtime:{int(db_stat.st_mtime)}"
+    override_keys: Set[Tuple[str, str]] = set(offline_targets.keys()) | set(online_targets.keys())
+    override_diagnostics: List[Dict[str, Any]] = []
+    targets_meta = targets_meta or {}
 
     with _connect(db_path) as conn:
         has_expected_close = _has_column(conn, "deal", "수주 예정일")
@@ -4248,6 +4259,17 @@ def _compute_counterparty_dri_rows(
             else:
                 entry["cpOnline2026"] += amount
 
+    deal_row_keys: Set[Tuple[str, str]] = set()
+    deal_row_lookup: Dict[Tuple[str, str], Dict[str, Any]] = {}
+    for (org_id, upper), cp in cp_map.items():
+        org_entry = org_lookup.get(org_id, {})
+        org_name = (org_entry.get("orgName") or "").strip()
+        upper_norm = _normalize_counterparty_upper(upper)
+        if org_name:
+            key = (org_name, upper_norm)
+            deal_row_keys.add(key)
+            deal_row_lookup[key] = cp
+
     # owners: fetch minimal rows for top orgs only
     owner_rows: List[sqlite3.Row] = []
     with _connect(db_path) as conn:
@@ -4309,6 +4331,7 @@ def _compute_counterparty_dri_rows(
     # Collect org/upper universe for unused override diagnostics
     all_org_names: Set[str] = set()
     all_org_upper_pairs: Set[Tuple[str, str]] = set()
+    people_upper_by_org_all: Dict[str, Set[str]] = {}
     with _connect(db_path) as conn:
         org_rows = _fetch_all(conn, 'SELECT id, COALESCE("이름", id) AS name FROM organization')
         org_name_lookup = {row["id"]: _norm_text(row["name"]) for row in org_rows}
@@ -4325,6 +4348,7 @@ def _compute_counterparty_dri_rows(
                     continue
                 upper_norm = _normalize_counterparty_upper(prow["upper_org"])
                 all_org_upper_pairs.add((org_name, upper_norm))
+                people_upper_by_org_all.setdefault(prow["organizationId"], set()).add(upper_norm)
         # Fallback: if people table absent, at least ensure org names set is populated.
     # Add cp_map will also add pairs below, but we want full-universe upper pairs when possible.
     for (org_id, upper), cp in cp_map.items():
@@ -4367,14 +4391,14 @@ def _compute_counterparty_dri_rows(
 
     existing_keys: Set[Tuple[str, str]] = set()
     for r in rows:
-        org_name_norm = (r.get("orgName") or "").strip()
+        org_name_norm = _norm_min(r.get("orgName"))
         upper_norm = _normalize_counterparty_upper(r.get("upperOrg"))
         if org_name_norm:
             existing_keys.add((org_name_norm, upper_norm))
 
     candidate_keys: Set[Tuple[str, str]] = set()
-    candidate_keys.update({(org, _normalize_counterparty_upper(upper)) for org, upper in offline_targets.keys()})
-    candidate_keys.update({(org, _normalize_counterparty_upper(upper)) for org, upper in online_targets.keys()})
+    candidate_keys.update({(_norm_min(org), _normalize_counterparty_upper(upper)) for org, upper in offline_targets.keys()})
+    candidate_keys.update({(_norm_min(org), _normalize_counterparty_upper(upper)) for org, upper in online_targets.keys()})
 
     if candidate_keys:
         with _connect(db_path) as conn:
@@ -4385,20 +4409,19 @@ def _compute_counterparty_dri_rows(
             org_by_name: Dict[str, Dict[str, Any]] = {}
             org_name_dupes: Set[str] = set()
             for row in org_rows_all:
-                name = (row["name"] or "").strip()
-                if not name:
+                name_norm = _norm_min(row["name"])
+                if not name_norm:
                     continue
-                if name in org_by_name:
-                    org_name_dupes.add(name)
-                org_by_name.setdefault(name, row)
+                if name_norm in org_by_name:
+                    org_name_dupes.add(name_norm)
+                org_by_name.setdefault(name_norm, row)
 
+            org_total_lookup: Dict[str, float] = {row["orgId"]: row.get("total", 0.0) for row in org_lookup.values()}
             candidate_org_ids: Set[str] = set()
-            candidate_org_names: Set[str] = {name for name, _ in candidate_keys}
-            for name in candidate_org_names:
-                if name in org_name_dupes:
-                    logging.warning("[counterparty_targets_2026] duplicate organization name, skip excel match: %s", name)
+            for org_name_norm, _ in candidate_keys:
+                if org_name_norm in org_name_dupes:
                     continue
-                entry = org_by_name.get(name)
+                entry = org_by_name.get(org_name_norm)
                 if entry:
                     candidate_org_ids.add(entry["id"])
 
@@ -4415,7 +4438,6 @@ def _compute_counterparty_dri_rows(
                     upper_norm = _normalize_counterparty_upper(prow["upper_org"])
                     people_upper_by_org.setdefault(org_id, set()).add(upper_norm)
 
-            org_total_lookup: Dict[str, float] = {row["orgId"]: row.get("total", 0.0) for row in org_lookup.values()}
             missing_totals: Set[str] = set(candidate_org_ids) - set(org_total_lookup.keys())
             if missing_totals:
                 cond_sql = " AND ".join(conditions)
@@ -4467,25 +4489,107 @@ def _compute_counterparty_dri_rows(
                 "sizeRaw": row.get("sizeRaw"),
             }
 
-        for org_name_raw, upper_raw in sorted(candidate_keys):
-            org_name = (org_name_raw or "").strip()
-            upper_norm = _normalize_counterparty_upper(upper_raw)
-            if not org_name:
+        for org_name_norm, upper_norm in sorted(candidate_keys):
+            if not org_name_norm:
                 continue
-            if (org_name, upper_norm) in existing_keys:
+            if org_name_norm in org_name_dupes:
+                if debug:
+                    meta_entry = targets_meta.get((org_name_norm, upper_norm), {})
+                    override_diagnostics.append(
+                        {
+                            "orgName": meta_entry.get("orgRaw") or org_name_norm,
+                            "upperOrg": meta_entry.get("upperRaw") or upper_norm,
+                            "org_match_count": 2,
+                            "matched_org_id": None,
+                            "matched_org_size": None,
+                            "size_mismatch": False,
+                            "upper_org_exists_in_people": False,
+                            "has_deal_row_already": False,
+                            "has_override": True,
+                            "cpTotal2025": 0.0,
+                            "would_be_dropped_by_zero_total_filter": True,
+                        }
+                    )
                 continue
 
-            if org_name in org_name_dupes:
-                continue
-            org_entry = org_by_name.get(org_name)
+            org_entry = org_by_name.get(org_name_norm)
             if not org_entry:
+                if debug:
+                    meta_entry = targets_meta.get((org_name_norm, upper_norm), {})
+                    override_diagnostics.append(
+                        {
+                            "orgName": meta_entry.get("orgRaw") or org_name_norm,
+                            "upperOrg": meta_entry.get("upperRaw") or upper_norm,
+                            "org_match_count": 0,
+                            "matched_org_id": None,
+                            "matched_org_size": None,
+                            "size_mismatch": False,
+                            "upper_org_exists_in_people": False,
+                            "has_deal_row_already": False,
+                            "has_override": True,
+                            "cpTotal2025": 0.0,
+                            "would_be_dropped_by_zero_total_filter": True,
+                        }
+                    )
                 continue
             org_size = _row_get(org_entry, "sizeRaw")
             if size and size != "전체" and org_size != size:
+                if debug:
+                    meta_entry = targets_meta.get((org_name_norm, upper_norm), {})
+                    override_diagnostics.append(
+                        {
+                            "orgName": meta_entry.get("orgRaw") or org_name_norm,
+                            "upperOrg": meta_entry.get("upperRaw") or upper_norm,
+                            "org_match_count": 1,
+                            "matched_org_id": org_entry["id"],
+                            "matched_org_size": org_size,
+                            "size_mismatch": True,
+                            "upper_org_exists_in_people": False,
+                            "has_deal_row_already": False,
+                            "has_override": True,
+                            "cpTotal2025": 0.0,
+                            "would_be_dropped_by_zero_total_filter": True,
+                        }
+                    )
                 continue
+
             org_id = org_entry["id"]
             upper_set = people_upper_by_org.get(org_id, set())
-            if upper_norm not in upper_set:
+            upper_exists = upper_norm in upper_set
+
+            matched_org_name = _norm_min(org_entry["name"])
+            key_norm = (matched_org_name, upper_norm) if matched_org_name else None
+            has_deal_row = bool(key_norm and key_norm in existing_keys)
+            cp_total_2025 = 0.0
+            if key_norm and key_norm in deal_row_lookup:
+                cp_total_2025 = deal_row_lookup[key_norm].get("cpTotal2025", 0.0)
+
+            has_override = (org_name_norm, upper_norm) in override_keys
+            org_total = org_total_lookup.get(org_id, 0.0)
+            org_tier_guess = _compute_grade(org_total)
+            would_drop_zero = (cp_total_2025 == 0) and (org_tier_guess != "N") and (not has_override)
+
+            if debug:
+                meta_entry = targets_meta.get((org_name_norm, upper_norm), {})
+                override_diagnostics.append(
+                    {
+                        "orgName": meta_entry.get("orgRaw") or org_name_norm,
+                        "upperOrg": meta_entry.get("upperRaw") or upper_norm,
+                        "org_match_count": 1,
+                        "matched_org_id": org_id,
+                        "matched_org_size": org_size,
+                        "size_mismatch": False,
+                        "upper_org_exists_in_people": upper_exists,
+                        "has_deal_row_already": has_deal_row,
+                        "has_override": has_override,
+                        "cpTotal2025": cp_total_2025,
+                        "would_be_dropped_by_zero_total_filter": would_drop_zero,
+                    }
+                )
+
+            if (matched_org_name, upper_norm) in existing_keys:
+                continue
+            if not upper_exists:
                 continue
 
             org_won = org_meta_by_id.get(org_id, {}).get("orgWon2025")
@@ -4493,17 +4597,17 @@ def _compute_counterparty_dri_rows(
                 org_won = org_total_lookup.get(org_id, 0.0)
             owners_list = sorted(owners_by_org.get(org_id, set()))
 
-            offline_override = offline_targets.get((org_name, upper_norm))
-            online_override = online_targets.get((org_name, upper_norm))
+            offline_override = offline_targets.get((org_name_norm, upper_norm))
+            online_override = online_targets.get((org_name_norm, upper_norm))
             if offline_override is not None:
-                used_offline_overrides.add((org_name, upper_norm))
+                used_offline_overrides.add((org_name_norm, upper_norm))
             if online_override is not None:
-                used_online_overrides.add((org_name, upper_norm))
+                used_online_overrides.add((org_name_norm, upper_norm))
 
             rows.append(
                 {
                     "orgId": org_id,
-                    "orgName": org_name,
+                    "orgName": matched_org_name or org_id,
                     "orgTier": "N",
                     "orgWon2025": org_won or 0.0,
                     "orgOnline2025": 0.0,
@@ -4522,26 +4626,39 @@ def _compute_counterparty_dri_rows(
                     "target26OnlineIsOverride": online_override is not None,
                 }
             )
-            existing_keys.add((org_name, upper_norm))
+            existing_keys.add((matched_org_name, upper_norm))
+
+    def _row_has_override(r: Dict[str, Any]) -> bool:
+        key = (_norm_min(r.get("orgName")), _normalize_counterparty_upper(r.get("upperOrg")))
+        return bool(r.get("target26OfflineIsOverride")) or bool(r.get("target26OnlineIsOverride")) or key in override_keys
 
     rows = [
         r
         for r in rows
-        if (r.get("cpTotal2025") or 0) > 0 or ((r.get("orgTier") or "").upper() == "N")
+        if (r.get("cpTotal2025") or 0) > 0 or ((r.get("orgTier") or "").upper() == "N") or _row_has_override(r)
     ]
     rows.sort(key=lambda r: (-r["orgWon2025"], -r["cpTotal2025"]))
 
     unused_offline = set(offline_targets.keys()) - used_offline_overrides
     unused_online = set(online_targets.keys()) - used_online_overrides
+
+    def _raw_key(key: Tuple[str, str]) -> Tuple[str, str]:
+        meta_entry = targets_meta.get(key, {})
+        return (
+            (meta_entry.get("orgRaw") if meta_entry.get("orgRaw") is not None else key[0]),
+            (meta_entry.get("upperRaw") if meta_entry.get("upperRaw") is not None else key[1]),
+        )
+
     # classify unused: org missing vs upper missing (org exists)
     def _classify(unused_keys: Set[Tuple[str, str]]) -> Tuple[Set[Tuple[str, str]], Set[Tuple[str, str]]]:
         org_missing = set()
         upper_missing = set()
         for org_name, upper in unused_keys:
+            raw_org, raw_upper = _raw_key((org_name, upper))
             if org_name not in all_org_names:
-                org_missing.add((org_name, upper))
+                org_missing.add((raw_org, raw_upper))
             elif (org_name, upper) not in all_org_upper_pairs:
-                upper_missing.add((org_name, upper))
+                upper_missing.add((raw_org, raw_upper))
         return org_missing, upper_missing
 
     offline_org_missing, offline_upper_missing = _classify(unused_offline)
@@ -4574,11 +4691,17 @@ def _compute_counterparty_dri_rows(
         "limit": org_limit,
         "snapshot_version": snapshot_version,
     }
+    if debug:
+        meta["overrideDiagnostics"] = override_diagnostics
     return rows, meta, len(top_orgs)
 
 
 def get_rank_2025_top100_counterparty_dri(
-    size: str = "대기업", limit: int | None = None, offset: int = 0, db_path: Path = DB_PATH
+    size: str = "대기업",
+    limit: int | None = None,
+    offset: int = 0,
+    db_path: Path = DB_PATH,
+    debug: bool = False,
 ) -> Dict[str, Any]:
     """
     Top organizations by 2025 Won (size-filtered) with counterparty(upper_org) breakdown and owners list.
@@ -4596,10 +4719,10 @@ def get_rank_2025_top100_counterparty_dri(
     else:
         offset = 0
 
-    offline_targets, online_targets, targets_version = load_counterparty_targets_2026()
+    offline_targets, online_targets, targets_meta, targets_version = load_counterparty_targets_2026()
     stat = db_path.stat()
-    cache_key = (db_path, stat.st_mtime, size or "대기업", limit or "all", offset, targets_version)
-    cached = _COUNTERPARTY_DRI_CACHE.get(cache_key)
+    cache_key = (db_path, stat.st_mtime, size or "대기업", limit or "all", offset, targets_version, debug)
+    cached = None if debug else _COUNTERPARTY_DRI_CACHE.get(cache_key)
     if cached is not None:
         return cached
 
@@ -4611,6 +4734,8 @@ def get_rank_2025_top100_counterparty_dri(
         offline_targets=offline_targets,
         online_targets=online_targets,
         targets_version=targets_version,
+        targets_meta=targets_meta,
+        debug=debug,
     )
 
     result = {
@@ -4620,7 +4745,8 @@ def get_rank_2025_top100_counterparty_dri(
         "rows": rows,
         "meta": {**meta, "targetsVersion": targets_version},
     }
-    _COUNTERPARTY_DRI_CACHE[cache_key] = result
+    if not debug:
+        _COUNTERPARTY_DRI_CACHE[cache_key] = result
     return result
 
 
@@ -4628,7 +4754,7 @@ def get_rank_2025_counterparty_dri_targets_summary(size: str = "대기업", db_p
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
 
-    offline_targets, online_targets, targets_version = load_counterparty_targets_2026()
+    offline_targets, online_targets, targets_meta, targets_version = load_counterparty_targets_2026()
     stat = db_path.stat()
     cache_key = (db_path, stat.st_mtime, size or "대기업", targets_version)
     cached = _COUNTERPARTY_DRI_SUMMARY_CACHE.get(cache_key)
@@ -4643,6 +4769,8 @@ def get_rank_2025_counterparty_dri_targets_summary(size: str = "대기업", db_p
         offline_targets=offline_targets,
         online_targets=online_targets,
         targets_version=targets_version,
+        targets_meta=targets_meta,
+        debug=False,
     )
 
     totals = {

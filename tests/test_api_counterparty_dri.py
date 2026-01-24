@@ -3,6 +3,9 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import openpyxl
+
+from dashboard.server import counterparty_targets_2026 as ct
 from dashboard.server import database as db
 
 
@@ -53,6 +56,37 @@ def _build_db(path: Path) -> None:
   conn.executemany('INSERT INTO deal VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', deals)
   conn.commit()
   conn.close()
+
+
+def _write_targets(path: Path, offline_rows: list[tuple], online_rows: list[tuple]) -> None:
+  wb = openpyxl.Workbook()
+  ws = wb.active
+  ws.title = "26 출강 타겟"
+  offline_headers = ["기업명", "카운터파티", "26 출강 타겟"]
+  if offline_rows and len(offline_rows[0]) == 4:
+    offline_headers.insert(1, "orgId")
+  ws.append(offline_headers)
+  for row in offline_rows:
+    if len(row) == 4:
+      org, org_id, upper, val = row
+      ws.append([org, org_id, upper, val])
+    else:
+      org, upper, val = row
+      ws.append([org, upper, val])
+
+  ws2 = wb.create_sheet("26 온라인 타겟")
+  online_headers = ["기업명", "카운터파티", "26 온라인 타겟"]
+  if online_rows and len(online_rows[0]) == 4:
+    online_headers.insert(1, "orgId")
+  ws2.append(online_headers)
+  for row in online_rows:
+    if len(row) == 4:
+      org, org_id, upper, val = row
+      ws2.append([org, org_id, upper, val])
+    else:
+      org, upper, val = row
+      ws2.append([org, upper, val])
+  wb.save(path)
 
 
 class CounterpartyDriApiTest(unittest.TestCase):
@@ -157,6 +191,253 @@ class CounterpartyDriApiTest(unittest.TestCase):
       self.assertGreater(totals["cpOffline2025"], 0)
       self.assertGreater(totals["target26Offline"], 0)
       self.assertGreater(totals["cpOnline2025"], 0)
+
+  def test_excel_only_override_injected_as_tier_n(self) -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+      db_path = Path(tmpdir) / "db.sqlite"
+      conn = sqlite3.connect(db_path)
+      conn.executescript(
+          """
+            CREATE TABLE organization (id TEXT, "이름" TEXT, "기업 규모" TEXT);
+            CREATE TABLE people (id TEXT, organizationId TEXT, "이름" TEXT, "소속 상위 조직" TEXT, "담당자" TEXT);
+            CREATE TABLE deal (
+              id TEXT,
+              peopleId TEXT,
+              organizationId TEXT,
+              "이름" TEXT,
+              "상태" TEXT,
+              "성사 가능성" TEXT,
+              "금액" TEXT,
+              "예상 체결액" TEXT,
+              "계약 체결일" TEXT,
+              "생성 날짜" TEXT,
+              "과정포맷" TEXT,
+              "담당자" TEXT
+            );
+          """
+      )
+      conn.execute('INSERT INTO organization VALUES ("org-a","비지에프리테일","대기업")')
+      conn.execute('INSERT INTO people VALUES ("p-other","org-a","담당자A","다른팀", NULL)')
+      conn.execute('INSERT INTO people VALUES ("p-target","org-a","담당자B","인프라 운영팀", NULL)')
+      conn.execute(
+          'INSERT INTO deal VALUES ("d-1","p-other","org-a","딜1","Won","확정","100000000","0","2025-01-01","2024-12-20","집합","{}")'
+      )
+      conn.commit()
+      conn.close()
+
+      xlsx_path = Path(tmpdir) / "targets.xlsx"
+      _write_targets(
+          xlsx_path,
+          offline_rows=[],
+          online_rows=[("비지에프리테일", "인프라운영팀", 1.2)],
+      )
+
+      original_path = ct.RESOURCE_PATH
+      try:
+        ct._CACHE.update({"mtime": None, "offline": {}, "online": {}, "meta": {}})
+        ct.RESOURCE_PATH = xlsx_path
+        res = db.get_rank_2025_top100_counterparty_dri(size="대기업", db_path=db_path)
+      finally:
+        ct.RESOURCE_PATH = original_path
+        ct._CACHE.update({"mtime": None, "offline": {}, "online": {}, "meta": {}})
+
+      rows = res["rows"]
+      target = next((r for r in rows if r["orgName"] == "비지에프리테일" and r["upperOrg"] == "인프라운영팀"), None)
+      self.assertIsNotNone(target)
+      if target:
+        self.assertEqual(target["orgTier"], "N")
+        self.assertAlmostEqual(target["target26Online"], 1.2 * 1e8)
+        self.assertTrue(target["target26OnlineIsOverride"])
+        self.assertEqual(target["cpTotal2025"], 0)
+
+  def test_override_keeps_zero_total_row(self) -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+      db_path = Path(tmpdir) / "db.sqlite"
+      conn = sqlite3.connect(db_path)
+      conn.executescript(
+          """
+            CREATE TABLE organization (id TEXT, "이름" TEXT, "기업 규모" TEXT);
+            CREATE TABLE people (id TEXT, organizationId TEXT, "이름" TEXT, "소속 상위 조직" TEXT, "담당자" TEXT);
+            CREATE TABLE deal (
+              id TEXT,
+              peopleId TEXT,
+              organizationId TEXT,
+              "이름" TEXT,
+              "상태" TEXT,
+              "성사 가능성" TEXT,
+              "금액" TEXT,
+              "예상 체결액" TEXT,
+              "계약 체결일" TEXT,
+              "생성 날짜" TEXT,
+              "과정포맷" TEXT,
+              "담당자" TEXT
+            );
+          """
+      )
+      conn.execute('INSERT INTO organization VALUES ("org-b","테스트B","대기업")')
+      conn.execute('INSERT INTO people VALUES ("p-b","org-b","담당자B","팀B", NULL)')
+      # 2026 deal only -> cpTotal2025 stays 0 but org appears
+      conn.execute(
+          'INSERT INTO deal VALUES ("d-b1","p-b","org-b","딜B","Won","확정","200000000","0","2026-02-01","2025-12-15","집합","{}")'
+      )
+      conn.commit()
+      conn.close()
+
+      xlsx_path = Path(tmpdir) / "targets.xlsx"
+      _write_targets(
+          xlsx_path,
+          offline_rows=[("테스트B", "팀B", 0.5)],
+          online_rows=[],
+      )
+
+      original_path = ct.RESOURCE_PATH
+      try:
+        ct._CACHE.update({"mtime": None, "offline": {}, "online": {}, "meta": {}})
+        ct.RESOURCE_PATH = xlsx_path
+        res = db.get_rank_2025_top100_counterparty_dri(size="대기업", db_path=db_path)
+      finally:
+        ct.RESOURCE_PATH = original_path
+        ct._CACHE.update({"mtime": None, "offline": {}, "online": {}, "meta": {}})
+
+      rows = res["rows"]
+      target = next((r for r in rows if r["orgName"] == "테스트B" and r["upperOrg"] == "팀B"), None)
+      self.assertIsNotNone(target)
+      if target:
+        self.assertEqual(target["cpTotal2025"], 0)
+        self.assertTrue(target["target26OfflineIsOverride"])
+        self.assertAlmostEqual(target["target26Offline"], 0.5 * 1e8)
+
+  def test_override_diagnostics_when_match_fails(self) -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+      db_path = Path(tmpdir) / "db.sqlite"
+      conn = sqlite3.connect(db_path)
+      conn.executescript(
+          """
+            CREATE TABLE organization (id TEXT, "이름" TEXT, "기업 규모" TEXT);
+            CREATE TABLE people (id TEXT, organizationId TEXT, "이름" TEXT, "소속 상위 조직" TEXT, "담당자" TEXT);
+            CREATE TABLE deal (
+              id TEXT,
+              peopleId TEXT,
+              organizationId TEXT,
+              "이름" TEXT,
+              "상태" TEXT,
+              "성사 가능성" TEXT,
+              "금액" TEXT,
+              "예상 체결액" TEXT,
+              "계약 체결일" TEXT,
+              "생성 날짜" TEXT,
+              "과정포맷" TEXT,
+              "담당자" TEXT
+            );
+          """
+      )
+      conn.execute('INSERT INTO organization VALUES ("org-c","유효조직","대기업")')
+      conn.execute('INSERT INTO people VALUES ("p-c","org-c","담당자C","다른팀", NULL)')
+      conn.execute(
+          'INSERT INTO deal VALUES ("d-c","p-c","org-c","딜C","Won","확정","50000000","0","2025-01-10","2024-12-01","집합","{}")'
+      )
+      conn.commit()
+      conn.close()
+
+      xlsx_path = Path(tmpdir) / "targets.xlsx"
+      _write_targets(
+          xlsx_path,
+          offline_rows=[("없는회사", "진단팀", 1.0)],
+          online_rows=[],
+      )
+
+      original_path = ct.RESOURCE_PATH
+      try:
+        ct._CACHE.update({"mtime": None, "offline": {}, "online": {}, "meta": {}})
+        ct.RESOURCE_PATH = xlsx_path
+        res = db.get_rank_2025_top100_counterparty_dri(size="대기업", db_path=db_path, debug=True)
+      finally:
+        ct.RESOURCE_PATH = original_path
+        ct._CACHE.update({"mtime": None, "offline": {}, "online": {}, "meta": {}})
+
+      diags = res["meta"].get("overrideDiagnostics") or []
+      target = next((d for d in diags if d.get("orgName") == "없는회사"), None)
+      self.assertIsNotNone(target)
+      if target:
+        self.assertEqual(target.get("org_match_count"), 0)
+        self.assertFalse(target.get("upper_org_exists_in_people"))
+        self.assertFalse(target.get("has_deal_row_already"))
+
+  def test_override_regressions_exact_match(self) -> None:
+    with tempfile.TemporaryDirectory() as tmpdir:
+      db_path = Path(tmpdir) / "db.sqlite"
+      conn = sqlite3.connect(db_path)
+      conn.executescript(
+          """
+            CREATE TABLE organization (id TEXT, "이름" TEXT, "기업 규모" TEXT);
+            CREATE TABLE people (id TEXT, organizationId TEXT, "이름" TEXT, "소속 상위 조직" TEXT, "담당자" TEXT);
+            CREATE TABLE deal (
+              id TEXT,
+              peopleId TEXT,
+              organizationId TEXT,
+              "이름" TEXT,
+              "상태" TEXT,
+              "성사 가능성" TEXT,
+              "금액" TEXT,
+              "예상 체결액" TEXT,
+              "계약 체결일" TEXT,
+              "생성 날짜" TEXT,
+              "과정포맷" TEXT,
+              "담당자" TEXT
+            );
+          """
+      )
+      conn.execute('INSERT INTO organization VALUES ("org-samsung","삼성전자","전체")')
+      conn.execute('INSERT INTO organization VALUES ("org-naver","네이버","전체")')
+      conn.execute('INSERT INTO organization VALUES ("org-lg","엘지전자","전체")')
+      conn.execute('INSERT INTO people VALUES ("p-s","org-samsung","담당자S","Talent Development  ", NULL)')
+      conn.execute('INSERT INTO people VALUES ("p-n","org-naver","담당자N","HR LEADER CLASS", NULL)')
+      conn.execute('INSERT INTO people VALUES ("p-l","org-lg","담당자L","CTO 조직", NULL)')
+      # add minimal deals so orgs are included in top set
+      conn.execute(
+          'INSERT INTO deal VALUES ("d-s","p-s","org-samsung","딜S","Won","확정","100000000","0","2025-01-01","2024-12-01","집합","{}")'
+      )
+      conn.execute(
+          'INSERT INTO deal VALUES ("d-n","p-n","org-naver","딜N","Won","확정","80000000","0","2025-02-01","2025-01-01","집합","{}")'
+      )
+      conn.execute(
+          'INSERT INTO deal VALUES ("d-l","p-l","org-lg","딜L","Won","확정","60000000","0","2025-03-01","2025-02-01","포팅","{}")'
+      )
+      conn.commit()
+      conn.close()
+
+      xlsx_path = Path(tmpdir) / "targets.xlsx"
+      _write_targets(
+          xlsx_path,
+          offline_rows=[
+              ("삼성전자", "Talent Development", 1.1),
+              ("네이버", "HR LEADER CLASS", 2.2),
+          ],
+          online_rows=[
+              ("엘지전자", "CTO 조직", 3.3),
+          ],
+      )
+
+      original_path = ct.RESOURCE_PATH
+      try:
+        ct._CACHE.update({"mtime": None, "offline": {}, "online": {}, "meta": {}})
+        ct.RESOURCE_PATH = xlsx_path
+        res = db.get_rank_2025_top100_counterparty_dri(size="전체", db_path=db_path)
+      finally:
+        ct.RESOURCE_PATH = original_path
+        ct._CACHE.update({"mtime": None, "offline": {}, "online": {}, "meta": {}})
+
+      rows = res["rows"]
+      pair_checks = [
+          ("삼성전자", "Talent Development", "target26OfflineIsOverride"),
+          ("네이버", "HR LEADER CLASS", "target26OfflineIsOverride"),
+          ("엘지전자", "CTO 조직", "target26OnlineIsOverride"),
+      ]
+      for org_name, upper, flag in pair_checks:
+        target = next((r for r in rows if r["orgName"] == org_name and r["upperOrg"] == upper), None)
+        self.assertIsNotNone(target, f"missing override row for {org_name} | {upper}")
+        if target:
+          self.assertTrue(target.get(flag), f"override flag missing for {org_name} | {upper}")
 
 
 if __name__ == "__main__":

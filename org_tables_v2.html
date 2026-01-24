@@ -3934,17 +3934,18 @@
       return data;
     }
 
-    async function loadCounterpartyRows(size = "대기업", options = null) {
+    async function loadCounterpartyRows(size = "전체", options = null) {
       const opts = options || {};
       const limit = opts.limit;
       const offset = opts.offset || 0;
       const limitKey = limit ?? "all";
-      const key = `${size || "대기업"}|${limitKey}|${offset}`;
+      const normalizedSize = size || "전체";
+      const key = `${normalizedSize}|${limitKey}|${offset}`;
       if (state.rankCounterpartyCache[key]) {
         return state.rankCounterpartyCache[key];
       }
       const params = new URLSearchParams();
-      params.set("size", size || "대기업");
+      params.set("size", normalizedSize);
       if (limit !== undefined && limit !== null) {
         params.set("limit", limit);
         params.set("offset", offset);
@@ -9351,6 +9352,8 @@
 
     async function renderRankCounterpartyDriScreen(contentRoot) {
       const stateDri = state.rankCounterpartyDri;
+      // 메뉴 진입 시 항상 전체 규모로 초기화해 일관된 기본값을 유지한다.
+      stateDri.size = "전체";
       contentRoot.innerHTML = `
         <section class="card compact">
           <div class="control-row">
@@ -9581,7 +9584,7 @@
         statusEl.textContent = "불러오는 중...";
         tableWrap.innerHTML = "";
         try {
-          const data = await loadCounterpartyRows(stateDri.size || "대기업");
+          const data = await loadCounterpartyRows(stateDri.size || "전체");
           stateDri.rows = data.rows || [];
           stateDri.meta = data.meta || {};
           rebuildTeamPartOptions();
@@ -9601,17 +9604,17 @@
 
       try {
         const sizes = await getSizes();
-        sizeSelect.innerHTML = sizes.map((s) => `<option value="${s}">${s}</option>`).join("");
-        if (!sizes.includes(stateDri.size)) {
-          stateDri.size = sizes.find((s) => s === "대기업") || sizes[0] || "대기업";
-        }
-        sizeSelect.value = stateDri.size;
+        const sizeOptions = ["전체", ...sizes.filter((s) => s && s !== "전체")];
+        sizeSelect.innerHTML = sizeOptions.map((s) => `<option value="${s}">${s}</option>`).join("");
+        stateDri.size = "전체";
+        sizeSelect.value = "전체";
       } catch (err) {
-        sizeSelect.innerHTML = `<option value="대기업">대기업</option>`;
+        sizeSelect.innerHTML = `<option value="전체">전체</option>`;
+        stateDri.size = "전체";
       }
 
       sizeSelect.addEventListener("change", async (e) => {
-        stateDri.size = e.target.value || "대기업";
+        stateDri.size = e.target.value || "전체";
         await loadData();
       });
 

@@ -1,7 +1,6 @@
-# DB Table Columns (salesmap_latest.db)
 ---
 title: salesmap_latest.db 테이블 컬럼 목록
-last_synced: 2026-12-11
+last_synced: 2026-01-25
 sync_source:
   - salesmap_latest.db
   - dashboard/server/database.py
@@ -44,6 +43,7 @@ sync_source:
 - 구독 종료일 — TEXT
 - 금액 — TEXT
 - 기업 니즈 — TEXT
+- 기획시트 링크 — TEXT
 - 누적 시퀀스 등록수 — TEXT
 - 다음 TODO 날짜 — TEXT
 - 다음 연락일 — TEXT
@@ -216,7 +216,7 @@ sync_source:
 
 ## memo
 - id — TEXT
-- cursorId — TEXT
+- htmlBody — TEXT
 - text — TEXT
 - dealId — TEXT
 - leadId — TEXT
@@ -256,6 +256,7 @@ sync_source:
 - 업종 구분(대) — TEXT
 - 업종 구분(중) — TEXT
 - 업종 세부 — TEXT
+- 연결된 고객 수 — TEXT
 - 완료 TODO — TEXT
 - 웹 주소 — TEXT
 - 이름 — TEXT
@@ -263,6 +264,7 @@ sync_source:
 - 전체 TODO — TEXT
 - 전화 — TEXT
 - 제출된 웹폼 목록 — TEXT
+- 종료된 딜 수 — TEXT
 - 주소 — TEXT
 - 직원수 — TEXT
 - 진행중 딜 개수 — TEXT

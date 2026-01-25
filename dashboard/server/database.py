@@ -2623,6 +2623,8 @@ def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any
     org_won_2025_total: Dict[str, float] = {}
 
     with _connect(db_path) as conn:
+        planning_col = _pick_column(conn, "deal", ["기획시트 링크"])
+        planning_col_expr = f"{_dq(planning_col)} AS planning_sheet_link" if planning_col else "NULL AS planning_sheet_link"
         won_rows = _fetch_all(
             conn,
             'SELECT organizationId AS org_id, "금액" AS amount '
@@ -2655,6 +2657,7 @@ def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any
             "  d.\"성사 가능성\" AS probability, "
             "  d.\"수주 예정일\" AS expected_close_date, "
             "  d.\"예상 체결액\" AS expected_amount, "
+            f"  {planning_col_expr}, "
             "  p.\"소속 상위 조직\" AS upper_org, "
             "  p.\"팀(명함/메일서명)\" AS team_signature, "
             "  p.id AS person_id, "
@@ -2685,6 +2688,11 @@ def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any
 
         org_id = row["org_id"]
         org_name = row["org_name"] or org_id or "-"
+        raw_planning = row["planning_sheet_link"]
+        planning_link = None
+        if raw_planning is not None:
+            trimmed = str(raw_planning).strip()
+            planning_link = trimmed if trimmed else None
         items.append(
             {
                 "dealId": row["deal_id"],
@@ -2701,6 +2709,7 @@ def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any
                 "probability": row["probability"],
                 "expectedCloseDate": row["expected_close_date"],
                 "expectedAmount": _to_number(row["expected_amount"]),
+                "planningSheetLink": planning_link,
                 "memoCount": int(row["memo_count"] or 0),
                 "isRetention": bool(org_id and org_id in retention_org_ids),
                 "orgWon2025Total": org_won_2025_total.get(org_id, 0.0) if org_id else 0.0,

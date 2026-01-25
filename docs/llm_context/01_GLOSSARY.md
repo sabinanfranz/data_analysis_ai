@@ -4,8 +4,9 @@ last_synced: 2026-12-11
 sync_source:
   - dashboard/server/database.py
   - org_tables_v2.html
-  - docs/json_logic.md
   - salesmap_first_page_snapshot.py
+  - docs/llm_context/06_API_CONTRACT_CORE.md
+  - docs/llm_context/08_MEMO_WEBFORM_RULES.md
 ---
 
 ## Purpose
@@ -25,7 +26,7 @@ sync_source:
 - DB/백엔드: `dashboard/server/database.py` (필드명, 온라인/규모 판정, owner 정규화, won 집계).
 - 프런트: `org_tables_v2.html` (normalizeUpperOrg, PART_STRUCTURE, course format 표시/필터).
 - 파이프라인: `salesmap_first_page_snapshot.py` (raw 필드 적재, webform_history 후처리).
-- 문서: `docs/json_logic.md`(won-groups JSON 필드), `docs/api_behavior.md`(엔드포인트 필드 스키마).
+- 문서: `06_API_CONTRACT_CORE.md`(엔드포인트 필드 스키마), `08_MEMO_WEBFORM_RULES.md`(won-groups JSON 필드/정제).
 
 ## Edge Cases & Failure Modes
 - owner JSON이 비어 있거나 파싱 실패 시 `"미입력"`으로 처리되어 DRI/owners 리스트가 비어 있을 수 있다.

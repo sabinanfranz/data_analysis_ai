@@ -8,7 +8,9 @@ sync_source:
   - dashboard/server/statepath_engine.py
   - tests/test_pl_progress_2026.py
   - tests/test_perf_monthly_contracts.py
-  - docs/org_tables_v2.md
+absorbed_from:
+  - org_tables_v2.md
+  - json_logic.md
 ---
 
 ## Purpose
@@ -30,6 +32,7 @@ sync_source:
 - 2026 온라인 리텐션: `/ops/2026-online-retention`을 호출해 상태=Won, 생성일≥2024-01-01, 온라인 과정포맷 3종, 금액/수강시작/수강종료/코스ID가 모두 있는 딜만 받아 2024-10~2027-12 수강종료월별 섹션으로 표를 렌더한다. 컬럼은 기업명/상위조직/팀/담당자/생성일/딜명/과정포맷/파트/데이원 + 상태/금액/(온라인)입과 주기/(온라인)최초 입과 여부/수강시작일/수강종료일/메모 버튼(메모 확인/메모 없음) 순으로 고정된다. 파트는 owners를 resolveOwnerTeamPart로 해석해 1/2/온라인셀 조합 문자열을 표시한다.
 - 딜체크/QC:
   - `renderDealCheckScreen(teamKey, options)` 한 곳에서 7개 딜체크 메뉴를 공통 렌더하며, `/deal-check/edu1`·`/deal-check/edu2`(또는 `/deal-check?team=`) 결과를 orgWon2025Total desc→createdAt asc→dealId asc로 렌더, memoCount=0이면 “메모 없음” 비활성 버튼. 부모 메뉴는 필터 없이 팀 전체를, 자식 메뉴는 `partFilter`(1/2파트/온라인셀)를 받아 owners→`getDealCheckPartLookup` 룩업 기반으로 클라이언트 필터를 적용한다. 섹션은 공통 6분할(리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인) 순서를 유지한다.
+  - 딜체크 테이블 컬럼 순서는 (티어, 선택적으로) 기업명/상위조직/팀/담당자/생성 날짜/딜 이름/과정포맷/**기획**/파트/데이원/가능성/수주 예정일/예상/메모이며, `기획` 칼럼은 항상 “링크” 텍스트를 표시하되 `planningSheetLink`가 http(s)로 시작할 때만 새 탭 링크로 감싼다.
   - `renderDealQcR1R15Screen`은 `/qc/deal-errors/summary` 카드(팀별 총이슈 desc) + `/qc/deal-errors/person` 상세 모달(R1~R15 위배만 표시) 제공.
 - 조직/People/Deal 뷰어:
   - `getSizes`→`/orgs`로 조직 목록 로드, 선택 시 `/orgs/{id}/people`→사람 선택→`/people/{id}/deals`/`/people/{id}/memos`/`/deals/{id}/memos`.
@@ -38,6 +41,12 @@ sync_source:
 - StatePath 24→25: 서버 호출은 `segment/sort/limit`만 전달하며, 필터는 모두 클라이언트 드로어(규모 라디오, 2024 티어 프리셋/체크박스, Quick Filters, 패턴 필터 전이/셀/rail)에서 즉시 적용된다. Snapshot/Pattern Explorer/테이블/브레드크럼이 공유 상태를 사용하고 “전체 해제” 버튼이 클라이언트 필터를 리셋한다. Glossary/Legend 모달과 Core JSON 복사 버튼(StatePath 상세)이 포함돼 필터 기준과 복사 스키마를 안내한다.
 - 2026 Daily Report(WIP, Counterparty Risk): 날짜 선택+새로고침 버튼, tier/risk 멀티셀렉트, pipeline_zero 토글, 검색, 리스크 칩을 제공한다. `/report/counterparty-risk` 응답의 summary.tier_groups/summary.counts/data_quality와 counterparties[*](`target_2026/coverage_2026/expected_2026/gap/coverage_ratio/pipeline_zero/evidence_bullets/recommended_actions`)를 표시하며, 섹션별 details 토글이 evidence/추천 액션을 노출한다. DB 버전 배지를 표시하고 필터 상태는 메모리 캐시(Map)로 유지된다.
 - 2025 체결액 순위: 규모 셀렉터 + 등급 가이드/배수 설정 모달을 갖추고, `/rank/2025-deals`만 호출해 받은 데이터를 프런트에서 `computeTargets`로 재계산해 26 타겟/온라인/비온라인 컬럼을 렌더한다(삼성 S0는 50억 고정). `/rank/2025/summary-by-size`는 UI에서 사용하지 않는다.
+### (흡수) UI/렌더 세부 규칙
+- 카운터파티 DRI 화면은 `/rank/2025-top100-counterparty-dri?size=...`로 규모별 **전체 조직**을 한 번에 불러와 캐시에 보관하고, 검색/DRI(O/X/all)/팀&파트 필터를 모두 클라이언트에서 적용한다. Prev/Next 없이 한 화면에서 필터링하며 기본 정렬은 orgWon2025 desc→cpTotal2025 desc다. target26 컬럼은 override 시 강조한다.
+- 상위 조직 JSON 카드는 선택이 없으면 버튼이 비활성화되고 안내 문구를 표시한다. 전체 JSON은 원본 그대로, 선택 JSON은 `filterWonGroupByUpper`로 groups만 upper_org 일치 항목을 필터링하며 organization 블록은 그대로 유지한다. compact 버튼은 `/won-groups-json-compact` 응답을 사용해 `schema_version=won-groups-json/compact-v1`과 `htmlBody` 제거 여부를 확인한다.
+- 2026 P&L은 헤더/셀에 `is-current-month-group`/`is-current-month` 클래스로 현재 월을 강조하고 월별 E 열만 클릭 가능하다. assumptions 바는 변경 시 `is-dirty` 클래스로 표시되며 `pnlAssumpInfoBtn`이 제외 건수·스냅샷 버전·가정을 모달로 보여준다.
+- 월별 체결액 모달은 amount>0 우선→expectedAmount→dealName asc로 정렬된 15열(colgroup 고정) 테이블을 사용하며, dealCount 0 셀은 `<span class=\"mp-cell-btn is-zero\">`로 비활성 처리된다.
+- 딜체크 7개 메뉴는 모두 `DEALCHECK_MENU_DEFS`에서 파생된 동일 renderer를 사용하고, memoCount=0일 때 “메모 없음” 비활성 버튼을 보여준다. 섹션은 리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인 순서로 고정된다.
 
 ## Invariants (Must Not Break)
 - 메뉴 섹션/라벨/순서/ID는 `MENU_SECTIONS` 정의와 일치해야 하며, 잘못된 hash 시 org-view로 이동해야 한다.

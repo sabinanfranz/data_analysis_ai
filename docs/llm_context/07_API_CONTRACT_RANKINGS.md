@@ -24,6 +24,10 @@ sync_source:
 - `GET /api/rank/2025-top100-counterparty-dri/targets-summary?size=대기업` → 규모별 DRI 행을 받아 티어 그룹별 target26/coverage/expected 합계와 DB snapshot 정보를 제공한다(프런트 Target Board 계산에 사용).
 - `GET /api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...`: 해당 org/upper_org 딜 상세, `deals[]`에 `people_id/people_name/upper_org` 포함.
 - 프런트 랭킹 화면은 `/api/rank/2025-deals`만 사용해 26년 타겟(온라인/비온라인)을 클라이언트에서 계산하며, summary-by-size 응답은 UI에서 직접 사용하지 않는다.
+### (흡수) 랭킹/DRI 필드·정렬·캐시 상세
+- `/api/rank/2025/summary-by-size`는 snapshot_version을 `db_mtime:<int>`로 포함하고 exclude_org_name 기본값을 유지한다.
+- `/api/rank/2025-top100-counterparty-dri`는 규모별 **전체 리스트** 반환이 기본이며 limit/offset은 선택 사항이다. owners는 People.owner_json 우선(없으면 deal.owner_json)이고 target26 필드가 override면 `target26*IsOverride` 플래그가 반드시 함께 내려간다.
+- `/api/rank/2025-top100-counterparty-dri/targets-summary`는 규모별 target/coverage/expected 합계와 snapshot_version/targets_version을 함께 내려 캐시 버전을 표시한다.
 
 ## Invariants (Must Not Break)
 - ONLINE 포맷은 정확히 `구독제(온라인)`, `선택구매(온라인)`, `포팅`만 인정한다(`statepath_engine.ONLINE_COURSE_FORMATS`).
@@ -31,6 +35,9 @@ sync_source:
 - `/rank/2025-deals-people`는 상위 조직/팀이 모두 미입력인 행을 제외하고 won2025 desc 정렬을 유지한다.
 - 카운터파티 DRI는 Lost/Convert 제외, 확정/높음/Won만 포함하며 owners는 People.owner_json을 우선 사용한다(`tests/test_api_counterparty_dri.py`). target26 필드는 API에서 제공되면 override 플래그를 함께 내려야 하고, 없으면 프런트가 티어별 multiplier로 계산한다.
 - summary-by-size는 exclude_org_name 기본값 “삼성전자”이며 snapshot_version이 DB mtime을 포함해야 한다.
+### (흡수) 랭킹·DRI 추가 불변조건
+- DRI 응답은 orgWon2025 desc→cpTotal2025 desc 정렬을 유지하고 규모별 전체를 반환해야 하며 snapshot_version/targets_version 조합으로 캐시 버전을 표시해야 한다.
+- targets-summary는 규모별 target/coverage/expected 합계와 snapshot_version/targets_version을 포함해야 한다.
 
 ## Coupling Map
 - 라우터/집계: `dashboard/server/org_tables_api.py` ↔ `dashboard/server/database.py`(get_rank_* 함수들).
@@ -50,6 +57,9 @@ sync_source:
 - `/api/rank/2025-top100-counterparty-dri`가 Lost/Convert 제외, 온라인 판정/owners 우선순위, orgWon2025 desc→cpTotal2025 desc 정렬을 유지하는지 테스트 케이스와 대조한다.
 - `/api/rank/2025-counterparty-dri/detail`에서 deals[].people_id/people_name/upper_org가 존재해 프런트 팝업에 상위 조직/교담자 컬럼을 채우는지 확인한다.
 - `/api/rank/2025/summary-by-size` 응답에 snapshot_version=db_mtime:*이 포함되고 exclude_org_names에 삼성전자가 기본 포함되는지 확인한다.
+### (흡수) 추가 검증 포인트
+- `/api/rank/2025-top100-counterparty-dri`가 규모별 전체 리스트를 반환하고 owners를 People.owner_json 우선으로 채우며 target26 override 플래그가 함께 내려오는지 확인한다.
+- `/api/rank/2025-top100-counterparty-dri/targets-summary`가 snapshot_version과 targets_version을 모두 포함하고 규모별 target/coverage/expected 합계가 있는지 확인한다.
 
 ## Refactor-Planning Notes (Facts Only)
 - 랭킹/DRI/이상치/요약 집계가 모두 `database.py` 하나에 모여 있고, 캐시 키가 DB mtime 기반으로 프로세스 재시작이 필요하다.

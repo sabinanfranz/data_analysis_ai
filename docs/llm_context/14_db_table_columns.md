@@ -109,6 +109,10 @@ sync_source:
 - 팔로워 — TEXT
 - 현재 진행중인 시퀀스 여부 — TEXT
 
+### (부록) KPI 리포트에서 사용하는 컬럼 탐지/별칭
+- `build_kpi_review_report.py`는 PRAGMA 결과를 기준으로 net% 컬럼을 `netPercent→net→NET→net%→NET%→공헌이익률→공헌이익률(%)→공헌이익률 %` 순으로 탐지하며, 발견하지 못하면 `meta.netPercentColumn="__NONE__"`로 기록한다.
+- 계약/생성 연도는 `contractDate`/`createdAt` 문자열 앞 4자리로 파싱하며, organization 이름이 없을 때는 organizationId→dealId 순으로 대체해 UI에 표시한다.
+
 ## lead
 - id — TEXT
 - peopleId — TEXT

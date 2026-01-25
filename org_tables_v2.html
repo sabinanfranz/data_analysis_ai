@@ -2117,7 +2117,7 @@
     })();
     const PART_STRUCTURE = {
       "기업교육 1팀": {
-        "1파트": ["김솔이", "황초롱", "김정은", "김동찬", "정태윤", "서정연", "오진선"],
+        "1파트": ["김솔이", "황초롱", "김정은", "김동찬", "정태윤", "서정연", "오진선", "공새봄"],
         "2파트": ["강지선", "정하영", "박범규", "하승민", "이은서", "김세연"],
       },
       "기업교육 2팀": {
@@ -3192,6 +3192,7 @@
       const baseKeys = [
         "courseFormat",
         "createdAt",
+        "planning",
         "part",
         "owners",
         "probability",
@@ -3232,6 +3233,11 @@
           const max = 120;
           return Math.max(min, Math.min(max, width));
         }
+        if (key === "planning") {
+          const min = 56;
+          const max = 96;
+          return Math.max(min, Math.min(max, width));
+        }
         if (key === "startDate" || key === "endDate") {
           const min = 92;
           const max = 140;
@@ -3262,6 +3268,7 @@
           ...(includeTier ? { tier: computeTierFromWon2025Total(row.orgWon2025Total) } : {}),
           courseFormat: row.courseFormat || "",
           createdAt: formatDateYYMMDD(row.createdAt),
+          planning: "링크",
           part: inferPartFn(owners),
           owners: owners.length ? owners.join(", ") : "-",
           probability: formatProbability(row.probability),
@@ -4101,6 +4108,18 @@
         return joinParts(Object.values(parsed));
       }
       return String(parsed);
+    }
+
+    function renderPlanningLinkCell(planningSheetLink) {
+      const label = "링크";
+      const raw = planningSheetLink === null || planningSheetLink === undefined ? "" : String(planningSheetLink);
+      const trimmed = raw.trim();
+      if (!trimmed) return label;
+      const lower = trimmed.toLowerCase();
+      const isHttp = lower.startsWith("http://") || lower.startsWith("https://");
+      if (!isHttp) return label;
+      const safeHref = escapeAttr(trimmed);
+      return `<a class="sm-link" href="${safeHref}" target="_blank" rel="noopener noreferrer">${label}</a>`;
     }
 
     function formatAmount(num) {
@@ -5777,6 +5796,15 @@
         .replace(/'/g, "&#39;");
     }
 
+    function escapeAttr(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
     function setBreadcrumb() {
       const orgName = state.orgs.find((o) => o.id === state.selectedOrg)?.name || "-";
       const personName = state.selectedPerson && state.people.find((p) => p.id === state.selectedPerson)?.name || "-";
@@ -7034,6 +7062,7 @@
               <td data-col="createdAt">${formatDateYYMMDD(row.createdAt)}</td>
               <td data-col="dealName">${dealLink}</td>
               <td data-col="courseFormat">${row.courseFormat || "-"}</td>
+              <td data-col="planning">${renderPlanningLinkCell(row.planningSheetLink)}</td>
               <td data-col="part">${part}</td>
               <td data-col="owners">${ownersText}</td>
               <td data-col="probability">${formatProbability(row.probability)}</td>
@@ -7064,6 +7093,7 @@
               <col data-col="createdAt" />
               <col data-col="dealName" />
               <col data-col="courseFormat" />
+              <col data-col="planning" style="min-width:6ch; width:6ch;" />
               <col data-col="part" />
               <col data-col="owners" />
               <col data-col="probability" />
@@ -7081,6 +7111,7 @@
                 <th data-col="createdAt">생성 날짜</th>
                 <th data-col="dealName">딜 이름</th>
                 <th data-col="courseFormat">과정포맷</th>
+                <th data-col="planning">기획</th>
                 <th data-col="part">파트</th>
                 <th data-col="owners">데이원</th>
                 <th data-col="probability">가능성</th>

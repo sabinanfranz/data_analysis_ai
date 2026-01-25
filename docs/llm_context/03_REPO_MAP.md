@@ -28,6 +28,7 @@ sync_source:
 - 프런트: `org_tables_v2.html` 렌더러(`renderBizPerfPlProgress2026`, `renderBizPerfMonthly`, `renderRankCounterpartyDriScreen`, `renderDealCheckScreen`, `renderStatePathMenu`, `renderOrgScreen` 등) ↔ `/api/*`.
 - 데이터/파이프라인: `salesmap_first_page_snapshot.py`가 DB를 생성/교체, webform_history 후처리.
 - 정적 HTML: `build_org_tables.py` → `org_tables.html`(딜 있음/없음 3×3 레이아웃).
+- KPI Review Report(오프라인 HTML): `build_kpi_review_report.py`(CLI 생성) ↔ `templates/kpi_review_report.template.html`(UI/스키마) ↔ `data/existing_orgs_2025_eval.txt`(ORG_MAP/필터링 기준).
 - 테스트: `tests/test_pl_progress_2026.py`, `tests/test_perf_monthly_contracts.py`, `tests/test_api_counterparty_dri.py`, `tests/test_won_groups_json.py`, `tests/test_deal_check_edu1.py` 등.
 
 ## Edge Cases & Failure Modes

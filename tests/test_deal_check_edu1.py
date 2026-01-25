@@ -201,6 +201,8 @@ class DealCheckTest(unittest.TestCase):
             memo_item = next(row for row in items if row["dealId"] == "deal-a1")
             self.assertEqual(memo_item["memoCount"], 2)
             self.assertEqual(memo_item["orgWon2025Total"], 100.0)
+            self.assertIn("planningSheetLink", memo_item)
+            self.assertIsNone(memo_item["planningSheetLink"])
 
             self.assertNotIn("deal-b2", deal_ids)
 
@@ -211,6 +213,9 @@ class DealCheckTest(unittest.TestCase):
             self.assertEqual(edu2_row["orgId"], "orgC")
             self.assertTrue(edu2_row["isRetention"])
             self.assertEqual(edu2_row["orgWon2025Total"], 200.0)
+            for row in edu2_items:
+                self.assertIn("planningSheetLink", row)
+                self.assertIsNone(row["planningSheetLink"])
 
             with self.assertRaises(ValueError):
                 db.get_deal_check("unknown", db_path=db_path)

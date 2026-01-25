@@ -4,8 +4,8 @@ last_synced: 2026-01-06
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
-  - docs/json_logic.md
-  - docs/org_tables_v2.md
+  - dashboard/server/database.py
+  - org_tables_v2.html
 ---
 
 # 규칙집 (PJT2) – 카운터파티 리스크 리포트 MVP

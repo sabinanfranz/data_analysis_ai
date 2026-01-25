@@ -1,0 +1,139 @@
+{
+  "$defs": {
+    "RollupMetricsV1": {
+      "properties": {
+        "target_sum_2026": {
+          "default": 0,
+          "title": "Target Sum 2026",
+          "type": "number"
+        },
+        "actual_sum_2026": {
+          "default": 0,
+          "title": "Actual Sum 2026",
+          "type": "number"
+        },
+        "progress_ratio": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Progress Ratio"
+        },
+        "no_progress_cnt": {
+          "default": 0,
+          "title": "No Progress Cnt",
+          "type": "integer"
+        },
+        "ongoing_cnt": {
+          "default": 0,
+          "title": "Ongoing Cnt",
+          "type": "integer"
+        },
+        "good_progress_cnt": {
+          "default": 0,
+          "title": "Good Progress Cnt",
+          "type": "integer"
+        }
+      },
+      "title": "RollupMetricsV1",
+      "type": "object"
+    },
+    "ScopeKeyV1": {
+      "properties": {
+        "type": {
+          "enum": [
+            "business",
+            "team",
+            "part"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "key"
+      ],
+      "title": "ScopeKeyV1",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "const": "group-progress-output/v1",
+      "default": "group-progress-output/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "as_of": {
+      "title": "As Of",
+      "type": "string"
+    },
+    "report_mode": {
+      "enum": [
+        "offline",
+        "online"
+      ],
+      "title": "Report Mode",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/ScopeKeyV1"
+    },
+    "executive_summary": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 4,
+      "minItems": 2,
+      "title": "Executive Summary",
+      "type": "array"
+    },
+    "problem_diagnosis": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8,
+      "minItems": 2,
+      "title": "Problem Diagnosis",
+      "type": "array"
+    },
+    "today_priorities": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 8,
+      "minItems": 3,
+      "title": "Today Priorities",
+      "type": "array"
+    },
+    "rollup": {
+      "$ref": "#/$defs/RollupMetricsV1"
+    },
+    "llm_meta": {
+      "additionalProperties": true,
+      "title": "Llm Meta",
+      "type": "object"
+    }
+  },
+  "required": [
+    "as_of",
+    "report_mode",
+    "scope",
+    "executive_summary",
+    "problem_diagnosis",
+    "today_priorities",
+    "rollup"
+  ],
+  "title": "GroupProgressOutputV1",
+  "type": "object"
+}

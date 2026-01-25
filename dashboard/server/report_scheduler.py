@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import contextlib
+import hashlib
 import json
 import os
 import shutil
@@ -14,6 +15,14 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
 from .deal_normalizer import build_counterparty_risk_report, DB_PATH, _connect
+from .agents.core.artifacts import ArtifactStore
+from .agents.core.orchestrator import Orchestrator
+from .agents.core.types import AgentContext, LLMConfig
+from .agents.registry import (
+    REPORT_ID_COUNTERPARTY_PROGRESS_DAILY,
+    get_agent_chain,
+)
+from .report.progress_universe import build_progress_universe, build_l1_payload
 
 TZ = os.getenv("TZ", "Asia/Seoul")
 REPORT_CRON = os.getenv("REPORT_CRON", "0 8 * * *")
@@ -27,6 +36,8 @@ LOCK_PATH = CACHE_DIR / ".counterparty_risk.lock"
 GENERATOR_VERSION = "d7-v1"
 _SCHEDULER_INSTANCE: Optional[BackgroundScheduler] = None
 ALLOWED_MODES = {"offline", "online"}
+PROGRESS_CRON = os.getenv("PROGRESS_CRON", "0 6 * * *")
+ENABLE_PROGRESS_SCHEDULER = os.getenv("ENABLE_PROGRESS_SCHEDULER", "0") == "1"
 
 
 def _db_signature(db_path: Path) -> str:
@@ -148,11 +159,34 @@ def _save_status(data: Dict[str, Any], mode: str = "offline") -> None:
     _atomic_write(_status_path(mode), data)
 
 
+def _progress_status_path() -> Path:
+    return CACHE_DIR / "status_progress.json"
+
+
+def _load_progress_status() -> Dict[str, Any]:
+    p = _progress_status_path()
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def _save_progress_status(data: Dict[str, Any]) -> None:
+    _atomic_write(_progress_status_path(), data)
+
+
 def _report_cache_path(as_of: date | str, mode: str) -> Path:
     as_of_str = as_of if isinstance(as_of, str) else as_of.isoformat()
     if mode == "offline":
         return CACHE_DIR / f"{as_of_str}.json"
     return CACHE_DIR / "counterparty-risk" / mode / f"{as_of_str}.json"
+
+
+def _progress_cache_dir(as_of: date | str, mode: str) -> Path:
+    as_of_str = as_of if isinstance(as_of, str) else as_of.isoformat()
+    return CACHE_DIR / "llm_progress" / as_of_str / _db_signature(DB_PATH)
 
 
 REPORT_MODES = [m.strip() for m in os.getenv("REPORT_MODES", "offline,online").split(",") if m.strip()]
@@ -269,6 +303,100 @@ def run_daily_counterparty_risk_job_all_modes(as_of_date: Optional[str] = None, 
     return results
 
 
+def run_daily_counterparty_progress_job_all_modes(force: bool = False) -> Dict[str, Any]:
+    """
+    Progress L1 precompute. Reuses lock; builds universe, payloads, and populates LLM caches.
+    """
+    results: Dict[str, Any] = {}
+    as_of = date.today().isoformat()
+    status = _load_progress_status()
+    job_run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    def _run_one(mode: str) -> Dict[str, Any]:
+        db_ready = False
+        db_signature = None
+        for attempt in range(DB_RETRY):
+            if DB_PATH.exists() and _db_stable(DB_PATH):
+                db_ready = True
+                db_signature = _db_signature(DB_PATH)
+                break
+            time.sleep(DB_RETRY_INTERVAL_SEC)
+        if not db_ready:
+            return {
+                "result": "FAILED",
+                "error_code": "DB_UNSTABLE_OR_UPDATING",
+                "as_of": as_of,
+                "mode": mode,
+            }
+        db_mtime_iso = datetime.fromtimestamp(Path(DB_PATH).stat().st_mtime, timezone.utc).isoformat()
+        db_hash = hashlib.sha256(db_mtime_iso.encode("utf-8")).hexdigest()[:16]
+        snap_path = _make_snapshot(DB_PATH, as_of)
+        try:
+            # build universe + payloads
+            universe = build_progress_universe(as_of=as_of, mode=mode, snapshot_db_path=snap_path)
+            payloads = [build_l1_payload(k, as_of=as_of, mode=mode, snapshot_db_path=snap_path).model_dump() for k in universe]
+
+            # Agent execution (fan-out)
+            artifacts = ArtifactStore()
+            artifacts.set("base.counterparty_rows", payloads)
+            ctx = AgentContext(
+                report_id=REPORT_ID_COUNTERPARTY_PROGRESS_DAILY,
+                mode_key=mode,
+                as_of_date=date.fromisoformat(as_of),
+                db_hash=db_hash,
+                snapshot_db_path=snap_path,
+                cache_root=CACHE_DIR,
+                llm=LLMConfig.from_env(),
+            )
+            agents = get_agent_chain(REPORT_ID_COUNTERPARTY_PROGRESS_DAILY, mode)
+            orchestrator = Orchestrator()
+            with _connect(snap_path) as conn:
+                orchestrator.run(REPORT_ID_COUNTERPARTY_PROGRESS_DAILY, mode, ctx, artifacts, agents, conn=conn)
+
+            return {
+                "result": "SUCCESS",
+                "as_of": as_of,
+                "mode": mode,
+                "snapshot": str(snap_path),
+                "db_signature": db_signature,
+                "db_hash": db_hash,
+                "job_run_id": job_run_id,
+                "payload_count": len(payloads),
+            }
+        except Exception as exc:
+            return {
+                "result": "FAILED",
+                "error_code": "PIPELINE_FAILED",
+                "error_message": str(exc),
+                "as_of": as_of,
+                "mode": mode,
+            }
+
+    try:
+        with file_lock(LOCK_PATH):
+            for mode in ["offline", "online"]:
+                results[mode] = _run_one(mode)
+            status["last_run"] = {
+                "generated_at": datetime.now().isoformat(),
+                "result": "SUCCESS",
+                "as_of": as_of,
+                "modes": list(results.keys()),
+                "job_run_id": job_run_id,
+            }
+            status["last_success"] = status.get("last_run", {})
+            _save_progress_status(status)
+            _cleanup_old()
+    except BlockingIOError:
+        status["last_run"] = {
+            "generated_at": datetime.now().isoformat(),
+            "result": "SKIPPED_LOCKED",
+            "as_of": as_of,
+        }
+        _save_progress_status(status)
+        results["all"] = {"result": "SKIPPED_LOCKED", "as_of": as_of}
+    return results
+
+
 def get_cached_report(as_of: Optional[str] = None, mode: str = "offline") -> Dict[str, Any]:
     mode_norm = _normalize_mode(mode)
     as_of = as_of or date.today().isoformat()
@@ -301,6 +429,9 @@ def start_scheduler():
     scheduler = BackgroundScheduler(timezone=TZ)
     cron = CronTrigger.from_crontab(REPORT_CRON, timezone=TZ)
     scheduler.add_job(run_daily_counterparty_risk_job_all_modes, cron, max_instances=1, coalesce=True)
+    if ENABLE_PROGRESS_SCHEDULER:
+        progress_cron = CronTrigger.from_crontab(PROGRESS_CRON, timezone=TZ)
+        scheduler.add_job(run_daily_counterparty_progress_job_all_modes, progress_cron, max_instances=1, coalesce=True)
     scheduler.start()
     _SCHEDULER_INSTANCE = scheduler
     return scheduler

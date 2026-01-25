@@ -1,0 +1,1 @@
+입력 JSON 수치는 사실로 취급하고 변형하지 마라. 출력은 JSON 1개, executive_summary 2~4문장, problem_diagnosis 2~8개, today_priorities 3~8개를 한국어로 작성한다.

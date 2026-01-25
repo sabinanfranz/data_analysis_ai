@@ -1,0 +1,171 @@
+{
+  "$defs": {
+    "L1ItemMiniV1": {
+      "properties": {
+        "org_id": {
+          "title": "Org Id",
+          "type": "string"
+        },
+        "org_name": {
+          "title": "Org Name",
+          "type": "string"
+        },
+        "upper_org": {
+          "title": "Upper Org",
+          "type": "string"
+        },
+        "tier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tier"
+        },
+        "target_2026": {
+          "default": 0,
+          "title": "Target 2026",
+          "type": "number"
+        },
+        "actual_2026": {
+          "default": 0,
+          "title": "Actual 2026",
+          "type": "number"
+        },
+        "progress_status": {
+          "enum": [
+            "NO_PROGRESS",
+            "ONGOING",
+            "GOOD_PROGRESS"
+          ],
+          "title": "Progress Status",
+          "type": "string"
+        },
+        "headline": {
+          "title": "Headline",
+          "type": "string"
+        }
+      },
+      "required": [
+        "org_id",
+        "org_name",
+        "upper_org",
+        "progress_status",
+        "headline"
+      ],
+      "title": "L1ItemMiniV1",
+      "type": "object"
+    },
+    "RollupMetricsV1": {
+      "properties": {
+        "target_sum_2026": {
+          "default": 0,
+          "title": "Target Sum 2026",
+          "type": "number"
+        },
+        "actual_sum_2026": {
+          "default": 0,
+          "title": "Actual Sum 2026",
+          "type": "number"
+        },
+        "progress_ratio": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Progress Ratio"
+        },
+        "no_progress_cnt": {
+          "default": 0,
+          "title": "No Progress Cnt",
+          "type": "integer"
+        },
+        "ongoing_cnt": {
+          "default": 0,
+          "title": "Ongoing Cnt",
+          "type": "integer"
+        },
+        "good_progress_cnt": {
+          "default": 0,
+          "title": "Good Progress Cnt",
+          "type": "integer"
+        }
+      },
+      "title": "RollupMetricsV1",
+      "type": "object"
+    },
+    "ScopeKeyV1": {
+      "properties": {
+        "type": {
+          "enum": [
+            "business",
+            "team",
+            "part"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "key": {
+          "title": "Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "key"
+      ],
+      "title": "ScopeKeyV1",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "const": "group-progress-input/v1",
+      "default": "group-progress-input/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "as_of": {
+      "title": "As Of",
+      "type": "string"
+    },
+    "report_mode": {
+      "enum": [
+        "offline",
+        "online"
+      ],
+      "title": "Report Mode",
+      "type": "string"
+    },
+    "scope": {
+      "$ref": "#/$defs/ScopeKeyV1"
+    },
+    "rollup": {
+      "$ref": "#/$defs/RollupMetricsV1"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/L1ItemMiniV1"
+      },
+      "title": "Items",
+      "type": "array"
+    }
+  },
+  "required": [
+    "as_of",
+    "report_mode",
+    "scope",
+    "rollup"
+  ],
+  "title": "GroupProgressInputV1",
+  "type": "object"
+}

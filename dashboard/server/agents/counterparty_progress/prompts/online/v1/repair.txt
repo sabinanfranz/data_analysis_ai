@@ -1,0 +1,7 @@
+너의 이전 출력은 유효한 JSON이 아니거나 스키마를 위반했다.
+
+설명/마크다운/코드블록 없이,
+오직 스키마에 맞는 “순수 JSON 1개 객체”만 다시 출력하라.
+
+허용 키는 progress_status, confidence, headline, evidence_bullets, recommended_actions 5개뿐이다.
+evidence_bullets는 정확히 3개, recommended_actions는 2~3개여야 한다.

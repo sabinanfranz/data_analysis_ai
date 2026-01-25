@@ -6,6 +6,7 @@ sync_source:
   - dashboard/server/counterparty_llm.py
   - dashboard/server/agents/registry.py
   - dashboard/server/agents/core/orchestrator.py
+  - dashboard/server/report/progress_universe.py
   - dashboard/server/report/composer.py
   - dashboard/server/report_scheduler.py
   - dashboard/server/org_tables_api.py
@@ -37,6 +38,7 @@ sync_source:
 ## Recent Updates (frontend + matching)
 - DRI 매칭 롤백: 엑셀 override 매칭은 org/upper 모두 앞뒤 공백만 trim하는 exact match로 복원했고 orgId 기반 매칭/공백 제거/법인표기 제거는 제거됐다(`database.py`).
 - Daily Report UI: DRI 전체 row를 `orgId||upperOrg` 맵으로 캐시해 리포트 각 row에 `actual_2026`을 주입(출강=cpOffline2026, 온라인=cpOnline2026). 테이블 컬럼을 `#·고객사·카운터파티·티어·target·actual·액션` 7개로 단순화했다(`org_tables_v2.html`).
+- Progress LLM(L1 가동): `progress_universe`에서 프런트와 동일한 universe(리포트 rows ∪ mode별 override rows)와 `actual_2026` 주입을 재현해 L1 입력을 생성하며, fallback(if-else) 포함 CounterpartyProgressAgent가 실 LLM/수리 프롬프트(v1)로 캐시(`report_cache/llm_progress/...`)를 채운다. 스케줄러는 06:00 KST에 오프라인→온라인 순으로 스냅샷 후 프리컴퓨트한다.
 
 ## Coupling Map
 - Generator/Rules: `dashboard/server/deal_normalizer.py` (D1~D5) + Orchestrator/Composer 병합.

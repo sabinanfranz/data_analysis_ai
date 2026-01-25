@@ -1,0 +1,17 @@
+입력:
+{{PAYLOAD_JSON}}
+
+출력 스키마:
+{
+  "schema_version": "group-progress-output/v1",
+  "as_of": "YYYY-MM-DD",
+  "report_mode": "online",
+  "scope": { "type": "business|team|part", "key": "" },
+  "executive_summary": ["문장", ...],
+  "problem_diagnosis": ["문장", ...],
+  "today_priorities": ["문장", ...],
+  "rollup": { "target_sum_2026": 0, "actual_sum_2026": 0, "progress_ratio": 0, "no_progress_cnt": 0, "ongoing_cnt": 0, "good_progress_cnt": 0 },
+  "llm_meta": {}
+}
+
+JSON 한 개만 출력하라.

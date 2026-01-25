@@ -1,0 +1,122 @@
+{
+  "$defs": {
+    "CounterpartyKeyV1": {
+      "properties": {
+        "org_id": {
+          "description": "organization UUID",
+          "title": "Org Id",
+          "type": "string"
+        },
+        "org_name": {
+          "title": "Org Name",
+          "type": "string"
+        },
+        "upper_org": {
+          "description": "upper org / counterparty (trim-only key)",
+          "title": "Upper Org",
+          "type": "string"
+        },
+        "tier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tier"
+        }
+      },
+      "required": [
+        "org_id",
+        "org_name",
+        "upper_org"
+      ],
+      "title": "CounterpartyKeyV1",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "const": "counterparty-progress-output/v1",
+      "default": "counterparty-progress-output/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "as_of": {
+      "title": "As Of",
+      "type": "string"
+    },
+    "report_mode": {
+      "enum": [
+        "offline",
+        "online"
+      ],
+      "title": "Report Mode",
+      "type": "string"
+    },
+    "counterparty_key": {
+      "$ref": "#/$defs/CounterpartyKeyV1"
+    },
+    "progress_status": {
+      "enum": [
+        "NO_PROGRESS",
+        "ONGOING",
+        "GOOD_PROGRESS"
+      ],
+      "title": "Progress Status",
+      "type": "string"
+    },
+    "confidence": {
+      "default": "MED",
+      "enum": [
+        "LOW",
+        "MED",
+        "HIGH"
+      ],
+      "title": "Confidence",
+      "type": "string"
+    },
+    "headline": {
+      "description": "Korean, 1 sentence",
+      "title": "Headline",
+      "type": "string"
+    },
+    "evidence_bullets": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 3,
+      "title": "Evidence Bullets",
+      "type": "array"
+    },
+    "recommended_actions": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 2,
+      "title": "Recommended Actions",
+      "type": "array"
+    },
+    "llm_meta": {
+      "additionalProperties": true,
+      "title": "Llm Meta",
+      "type": "object"
+    }
+  },
+  "required": [
+    "as_of",
+    "report_mode",
+    "counterparty_key",
+    "progress_status",
+    "headline",
+    "evidence_bullets",
+    "recommended_actions"
+  ],
+  "title": "CounterpartyProgressOutputV1",
+  "type": "object"
+}

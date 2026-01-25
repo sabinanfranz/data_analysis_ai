@@ -1,0 +1,2 @@
+입력 JSON의 수치를 변경하지 말고, 출력은 JSON 1개 객체만 생성하라.
+executive_summary 2~4문장, problem_diagnosis 2~8개, today_priorities 3~8개를 한국어로 작성한다.

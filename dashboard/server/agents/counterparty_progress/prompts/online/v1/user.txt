@@ -1,0 +1,21 @@
+아래는 1개 카운터파티의 입력 payload(JSON)이다.
+이 JSON에 없는 사실을 절대 만들지 말고, 오직 아래 출력 스키마에 맞는 “순수 JSON”만 출력하라.
+
+[입력 payload]
+{{PAYLOAD_JSON}}
+
+[출력 스키마(키 고정, 추가 키 금지)]
+{
+  "progress_status": "NO_PROGRESS|ONGOING|GOOD_PROGRESS",
+  "confidence": "LOW|MED|HIGH",
+  "headline": "...",
+  "evidence_bullets": ["...", "...", "..."],
+  "recommended_actions": ["...", "..."]
+}
+
+[생성 규칙]
+- evidence_bullets는 정확히 3개, 각 1문장.
+- evidence_bullets 중 최소 1개는 반드시 target_2026 및 actual_2026 수치를 포함하라(목표가 0이면 0이라고 명시).
+- 메모/딜 텍스트를 따옴표로 직접 인용하지 말고 “요약”하라.
+- recommended_actions는 2~3개, 각 1문장(명령형/행동형).
+- 출력은 반드시 JSON 1개 객체만 허용한다(설명/마크다운/코드블록 금지).

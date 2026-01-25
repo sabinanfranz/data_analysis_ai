@@ -1,0 +1,301 @@
+{
+  "$defs": {
+    "CounterpartyKeyV1": {
+      "properties": {
+        "org_id": {
+          "description": "organization UUID",
+          "title": "Org Id",
+          "type": "string"
+        },
+        "org_name": {
+          "title": "Org Name",
+          "type": "string"
+        },
+        "upper_org": {
+          "description": "upper org / counterparty (trim-only key)",
+          "title": "Upper Org",
+          "type": "string"
+        },
+        "tier": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tier"
+        }
+      },
+      "required": [
+        "org_id",
+        "org_name",
+        "upper_org"
+      ],
+      "title": "CounterpartyKeyV1",
+      "type": "object"
+    },
+    "DealMiniV1": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Status"
+        },
+        "probability": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Probability",
+          "type": "array"
+        },
+        "amount": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Amount"
+        },
+        "expected_amount": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Amount"
+        },
+        "contract_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Contract Date"
+        },
+        "expected_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Date"
+        },
+        "start_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start Date"
+        },
+        "course_format": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Course Format"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "DealMiniV1",
+      "type": "object"
+    },
+    "MemoMiniV1": {
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "text": {
+          "maxLength": 1200,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "date",
+        "text"
+      ],
+      "title": "MemoMiniV1",
+      "type": "object"
+    },
+    "ProgressSignalsV1": {
+      "properties": {
+        "last_activity_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Last Activity Date"
+        },
+        "open_deals_cnt": {
+          "default": 0,
+          "title": "Open Deals Cnt",
+          "type": "integer"
+        },
+        "won_deals_cnt": {
+          "default": 0,
+          "title": "Won Deals Cnt",
+          "type": "integer"
+        },
+        "dq_flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dq Flags",
+          "type": "array"
+        }
+      },
+      "title": "ProgressSignalsV1",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "schema_version": {
+      "const": "counterparty-progress-input/v1",
+      "default": "counterparty-progress-input/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "as_of": {
+      "description": "YYYY-MM-DD",
+      "title": "As Of",
+      "type": "string"
+    },
+    "report_mode": {
+      "enum": [
+        "offline",
+        "online"
+      ],
+      "title": "Report Mode",
+      "type": "string"
+    },
+    "counterparty_key": {
+      "$ref": "#/$defs/CounterpartyKeyV1"
+    },
+    "target_2026": {
+      "default": 0,
+      "title": "Target 2026",
+      "type": "number"
+    },
+    "actual_2026": {
+      "default": 0,
+      "title": "Actual 2026",
+      "type": "number"
+    },
+    "target_is_override": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target Is Override"
+    },
+    "viewer_compact": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Viewer Compact"
+    },
+    "top_deals": {
+      "description": "max 10, sorted desc by amount",
+      "items": {
+        "$ref": "#/$defs/DealMiniV1"
+      },
+      "title": "Top Deals",
+      "type": "array"
+    },
+    "recent_memos": {
+      "description": "max 20, last 180d",
+      "items": {
+        "$ref": "#/$defs/MemoMiniV1"
+      },
+      "title": "Recent Memos",
+      "type": "array"
+    },
+    "signals": {
+      "$ref": "#/$defs/ProgressSignalsV1"
+    }
+  },
+  "required": [
+    "as_of",
+    "report_mode",
+    "counterparty_key"
+  ],
+  "title": "CounterpartyProgressInputV1",
+  "type": "object"
+}

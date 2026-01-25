@@ -34,6 +34,10 @@ sync_source:
 - 락: `report_cache/.counterparty_risk.lock` (fcntl + Windows msvcrt), 모드 루프 전체에 공용 사용, 실패 시 SKIPPED_LOCKED 처리.
 - 프런트 DRI 로딩: `loadCounterpartyRows(size)`를 limit 없이 호출해 size별 전체 DRI를 사용하며, 출강/온라인 각각 mode별 override 조건으로 universe를 강제한다. 팀→파트 매핑도 동일 DRI 전체를 사용한다.
 
+## Recent Updates (frontend + matching)
+- DRI 매칭 롤백: 엑셀 override 매칭은 org/upper 모두 앞뒤 공백만 trim하는 exact match로 복원했고 orgId 기반 매칭/공백 제거/법인표기 제거는 제거됐다(`database.py`).
+- Daily Report UI: DRI 전체 row를 `orgId||upperOrg` 맵으로 캐시해 리포트 각 row에 `actual_2026`을 주입(출강=cpOffline2026, 온라인=cpOnline2026). 테이블 컬럼을 `#·고객사·카운터파티·티어·target·actual·액션` 7개로 단순화했다(`org_tables_v2.html`).
+
 ## Coupling Map
 - Generator/Rules: `dashboard/server/deal_normalizer.py` (D1~D5) + Orchestrator/Composer 병합.
 - Agents: `dashboard/server/agents/registry.py`(report_id×mode→agent chain), `agents/core/orchestrator.py`, `agents/counterparty_card/*`(LLM/fallback), `counterparty_llm.py`(어댑터).

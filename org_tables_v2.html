@@ -7373,14 +7373,38 @@
       return new Date().toISOString().slice(0, 10);
     }
 
-    function fetchCounterpartyRiskReport(date, modeKey = "offline", { force = false } = {}) {
+    async function fetchCounterpartyRiskReport(date, modeKey = "offline", { force = false } = {}) {
       const key = `${modeKey || "offline"}::${date || "today"}`;
       const cache = state.counterpartyRisk.cache;
       if (!force && cache.has(key)) return cache.get(key);
       const params = new URLSearchParams();
       if (date) params.set("date", date);
       if (modeKey) params.set("mode", modeKey);
-      const promise = fetchJson(`/report/counterparty-risk${params.toString() ? `?${params}` : ""}`);
+      const promise = (async () => {
+        const data = await fetchJson(`/report/counterparty-risk${params.toString() ? `?${params}` : ""}`);
+        const driMap = await ensureDriAllRowByKey();
+        const wonKey = (TARGET2026_MODE_CONFIG[modeKey] || TARGET2026_MODE_CONFIG.offline).wonKey;
+        if (data && Array.isArray(data.counterparties)) {
+          let fallbackLogged = false;
+          data.counterparties = data.counterparties.map((row) => {
+            const orgId = String(row.organizationId || row.orgId || "").trim();
+            const upperOrg = normalizeUpperOrg(row.counterpartyName || row.upperOrg || "");
+            const key = `${orgId}||${upperOrg}`;
+            const driRow = driMap ? driMap.get(key) : null;
+            const actual = Number(driRow?.[wonKey] ?? 0);
+            if (Number.isFinite(actual)) {
+              return { ...row, actual_2026: actual };
+            }
+            const fallback = Number(row.coverage_2026 ?? (Number(row.confirmed_2026 || 0) + Number(row.expected_2026 || 0)) ?? 0);
+            if (!fallbackLogged) {
+              console.warn("[cpr] actual_2026 fallback", { key, modeKey });
+              fallbackLogged = true;
+            }
+            return { ...row, actual_2026: fallback };
+          });
+        }
+        return data;
+      })();
       cache.set(key, promise);
       return promise;
     }
@@ -7561,6 +7585,40 @@
       } finally {
         st.offlineDriOverrideTargetMapLoading = false;
         st.offlineDriOverrideKeySetLoading = false;
+      }
+    }
+
+    async function ensureDriAllRowByKey() {
+      const st = state.counterpartyRisk;
+      if (st.driAllRowByKey) return st.driAllRowByKey;
+      if (st.driAllRowByKeyLoading) return null;
+      st.driAllRowByKeyLoading = true;
+      st.driAllRowByKeyError = null;
+      try {
+        const source = await loadTarget2026SourceRowsAll();
+        const rows = []
+          .concat(source?.big || [])
+          .concat(source?.mid || [])
+          .concat(source?.small || []);
+
+        const map = new Map();
+        for (const r of rows) {
+          const orgId = String(r.orgId || r.org_id || "").trim();
+          const upperOrg = normalizeUpperOrg(r.upperOrg || r.upper_org || r.counterparty || "");
+          if (!orgId || !upperOrg) continue;
+          const key = `${orgId}||${upperOrg}`;
+          if (!map.has(key)) {
+            map.set(key, r);
+          }
+        }
+        st.driAllRowByKey = map;
+        return map;
+      } catch (err) {
+        console.error("[cpr] ensureDriAllRowByKey failed", err);
+        st.driAllRowByKeyError = err;
+        return null;
+      } finally {
+        st.driAllRowByKeyLoading = false;
       }
     }
 
@@ -7961,14 +8019,13 @@
         });
 
         const sectionOrder = ["심각", "보통", "양호"];
+        const CPR_DAILY_COLSPAN = 7;
         const section = (level) => {
           const rows = byRisk[level] || [];
           const open = state.counterpartyRisk.sectionOpen[level] ?? (level !== "양호");
           const rowsHtml = rows
             .map((row, idx) => {
-              const coveragePct = row.target_2026 > 0 ? formatPercent(row.coverage_2026 / row.target_2026) : "–";
               const tier = row.tier || "-";
-              const pipelineBadge = row.pipeline_zero ? '<span class="cpr-pill error">pipeline_zero</span>' : "";
               return `
                 <tr data-key="${row.organizationId}__${row.counterpartyName}" class="cpr-row">
                   <td>${idx + 1}</td>
@@ -7976,15 +8033,11 @@
                   <td>${row.counterpartyName}</td>
                   <td>${tier}</td>
                   <td class="num">${formatAmount(row.target_2026)}</td>
-                  <td class="num">${formatAmount(row.confirmed_2026)}</td>
-                  <td class="num">${formatAmount(row.expected_2026)}</td>
-                  <td class="num">${coveragePct}</td>
-                  <td class="num">${formatAmount(row.gap)}</td>
-                  <td>${pipelineBadge}</td>
+                  <td class="num">${formatAmount(row.actual_2026)}</td>
                   <td><button class="pill" data-action="toggle-detail">상세</button></td>
                 </tr>
                 <tr class="cpr-detail-row" style="display:none;">
-                  <td colspan="10">
+                  <td colspan="${CPR_DAILY_COLSPAN}">
                     <div class="cpr-row-detail">
                       <div>
                         <div class="muted" style="font-size:12px;">근거</div>
@@ -8013,15 +8066,11 @@
                       <th>카운터파티</th>
                       <th>티어</th>
                       <th class="num">target</th>
-                      <th class="num">확정</th>
-                      <th class="num">예상</th>
-                      <th class="num">coverage%</th>
-                      <th class="num">gap</th>
-                      <th>플래그</th>
+                      <th class="num">actual</th>
                       <th>액션</th>
                     </tr>
                   </thead>
-                  <tbody>${rowsHtml || `<tr><td colspan="11" class="muted">데이터 없음</td></tr>`}</tbody>
+                  <tbody>${rowsHtml || `<tr><td colspan="${CPR_DAILY_COLSPAN}" class="muted">데이터 없음</td></tr>`}</tbody>
                 </table>
               </div>
             </details>

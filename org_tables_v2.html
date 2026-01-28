@@ -1006,6 +1006,12 @@
       cursor: not-allowed;
     }
 
+    .md-copy-btn {
+      font-weight: 700;
+      border-color: rgba(255, 255, 255, 0.18);
+      min-height: 32px;
+    }
+
     .pl-progress-table .row-label {
       text-align: left;
       padding-left: 6px;
@@ -4043,6 +4049,77 @@
         throw new Error(txt || resp.statusText);
       }
       return resp.json();
+    }
+
+    function escapeMdCell(text) {
+      return String(text || "")
+        .replace(/\r?\n/g, "<br>")
+        .replace(/\|/g, "\\|")
+        .trim();
+    }
+
+    function cellToMd(tdOrTh) {
+      if (!tdOrTh) return "";
+      const a = tdOrTh.querySelector && tdOrTh.querySelector("a[href]");
+      if (a) {
+        const label = escapeMdCell((a.textContent || "").replace(/\s+/g, " "));
+        const href = a.getAttribute("href") || "";
+        return href ? `[${label}](${href})` : label;
+      }
+      const raw = (tdOrTh.textContent || "").replace(/\s+/g, " ");
+      return escapeMdCell(raw);
+    }
+
+    function tableToMarkdown(table) {
+      if (!table) return "";
+      const ths = Array.from(table.querySelectorAll("thead th"));
+      const headers = ths.map((th) => escapeMdCell((th.textContent || "").replace(/\s+/g, " ")));
+      const trs = Array.from(table.querySelectorAll("tbody tr"));
+      if (!headers.length || !trs.length) return "";
+      const lines = [];
+      lines.push(`| ${headers.join(" | ")} |`);
+      lines.push(`| ${headers.map(() => "---").join(" | ")} |`);
+      for (const tr of trs) {
+        let cells = Array.from(tr.querySelectorAll("td")).map(cellToMd);
+        while (cells.length < headers.length) cells.push("");
+        if (cells.length > headers.length) cells = cells.slice(0, headers.length);
+        lines.push(`| ${cells.join(" | ")} |`);
+      }
+      return lines.join("\n");
+    }
+
+    async function copyTextToClipboard(text) {
+      const t = String(text || "");
+      if (!t.trim()) {
+        showToast("복사할 내용이 없습니다.", "error");
+        return false;
+      }
+      try {
+        await navigator.clipboard.writeText(t);
+        showToast("복사되었습니다.", "success");
+        return true;
+      } catch (_) {
+        try {
+          const textarea = document.createElement("textarea");
+          textarea.value = t;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand("copy");
+          document.body.removeChild(textarea);
+          showToast("복사되었습니다.", "success");
+          return true;
+        } catch (err2) {
+          showToast(`복사 실패: ${err2.message}`, "error");
+          return false;
+        }
+      }
+    }
+
+    async function copyMarkdownTableFromSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      const table = section ? section.querySelector("table") : null;
+      const md = tableToMarkdown(table);
+      return copyTextToClipboard(md);
     }
 
     async function fetchBlob(path) {
@@ -11444,6 +11521,21 @@
       const teamBar = document.getElementById("revTeamButtons");
       const teamBtns = Array.from(teamBar?.querySelectorAll("button[data-team]") || []);
       const body = document.getElementById("revBody");
+      if (!window.__mdCopyBtnBound) {
+        window.__mdCopyBtnBound = true;
+        document.addEventListener("click", async (e) => {
+          const btn = e.target && e.target.closest && e.target.closest("button.md-copy-btn");
+          if (!btn) return;
+          const sectionId = btn.getAttribute("data-md-section");
+          if (!sectionId) return;
+          btn.disabled = true;
+          try {
+            await copyMarkdownTableFromSection(sectionId);
+          } finally {
+            btn.disabled = false;
+          }
+        });
+      }
 
       const updateTeamButtons = () => {
         const cur = String(state.monthlyRevenue.team || "");
@@ -11663,10 +11755,18 @@
 
         const missing = Array.isArray(data.missingAccountingDeals) ? data.missingAccountingDeals : [];
         const missingHtml = missing.length
-          ? `<section class="card" style="margin-top:12px;">
-              <h3>이전 기간에 매출신고 대상이었으나 회계팀에 신고가 안 된 딜 <span class="muted">(${missing.length}건)</span></h3>
+          ? `
+            <section class="card" id="qcMissingAccounting" style="margin-top:12px;">
+              <div class="control-row tight" style="align-items:center;">
+                <h3 style="margin:0;">
+                  이전 기간에 매출신고 대상이었으나 회계팀에 신고가 안 된 딜 <span class="muted">(${missing.length}건)</span>
+                </h3>
+                <div class="spacer"></div>
+                <button type="button" class="md-copy-btn" data-md-section="qcMissingAccounting">마크다운 복사</button>
+              </div>
               ${renderMissingAccountingTable(missing)}
-            </section>`
+            </section>
+          `
           : "";
 
         body.innerHTML = `

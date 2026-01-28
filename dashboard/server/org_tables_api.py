@@ -1,4 +1,9 @@
 from fastapi import APIRouter, HTTPException, Query
+from fastapi.responses import Response
+from io import BytesIO
+from urllib.parse import quote
+from openpyxl import Workbook
+from openpyxl.styles import Font, Alignment
 from datetime import datetime
 
 from . import database as db
@@ -155,6 +160,78 @@ def get_qc_monthly_revenue_report(
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/qc/monthly-revenue-report/xlsx")
+def download_qc_monthly_revenue_report_xlsx(
+    team: str = Query(..., description="edu1|edu2|public"),
+    year: int = Query(..., ge=2000, le=2100, description="연도 (YYYY)"),
+    month: int = Query(..., ge=1, le=12, description="월 (1-12)"),
+) -> Response:
+    try:
+        data = db.get_qc_monthly_revenue_report(team=team, year=year, month=month)
+        items = data.get("reportDeals", []) or []
+
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "매출신고"
+
+        headers = ["코스 ID", "이름", "담당자", "상태", "계약 체결일", "금액(원)", "수강시작일", "수강종료일"]
+        ws.append(headers)
+
+        try:
+            for cell in ws[1]:
+                cell.font = Font(bold=True)
+                cell.alignment = Alignment(horizontal="center")
+            ws.freeze_panes = "A2"
+        except Exception:
+            pass
+
+        for row in items:
+            owners = row.get("owners") or ""
+            if isinstance(owners, list):
+                owners = ", ".join(owners)
+            ws.append(
+                [
+                    row.get("courseId") or "",
+                    row.get("dealName") or "",
+                    owners or "",
+                    row.get("status") or "",
+                    row.get("contractDate") or "",
+                    row.get("amount") if row.get("amount") is not None else "",
+                    row.get("startDate") or "",
+                    row.get("endDate") or "",
+                ]
+            )
+
+        try:
+            for r in range(2, ws.max_row + 1):
+                c = ws.cell(row=r, column=6)
+                if isinstance(c.value, (int, float)):
+                    c.number_format = "#,##0"
+        except Exception:
+            pass
+
+        bio = BytesIO()
+        wb.save(bio)
+        bio.seek(0)
+
+        team_label = getattr(db, "QC_TEAM_LABELS", {}).get(team, team)
+        mm = f"{month:02d}"
+        filename = f"{team_label}_{year}년_{mm}월_매출신고.xlsx"
+        quoted = quote(filename)
+        ascii_fallback = f"{team}_{year}_{mm}_revenue.xlsx"
+        headers = {
+            "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            "Content-Disposition": f'attachment; filename="{ascii_fallback}"; filename*=UTF-8\'\'{quoted}',
+            "Cache-Control": "no-store",
+        }
+        return Response(content=bio.getvalue(), media_type=headers["Content-Type"], headers=headers)
+
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/rank/2025-deals")
 def get_rank_2025_deals(
     size: str = Query("전체", description='조직 규모 필터 (예: "대기업", "전체")')
@@ -231,9 +308,10 @@ def get_performance_monthly_inquiries_summary(
     from_month: str = Query("2025-01", description="시작 YYYY-MM"),
     to_month: str = Query("2026-12", description="종료 YYYY-MM"),
     team: str | None = Query(None, description="edu1|edu2 (선택)"),
+    debug: bool = Query(False, description="디버그/캐시우회 플래그"),
 ) -> dict:
     try:
-        return db.get_perf_monthly_inquiries_summary(from_month=from_month, to_month=to_month, team=team)
+        return db.get_perf_monthly_inquiries_summary(from_month=from_month, to_month=to_month, team=team, debug=debug)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
     except FileNotFoundError as exc:
@@ -246,9 +324,10 @@ def get_performance_monthly_inquiries_deals(
     row: str = Query(..., description="과정포맷||카테고리그룹"),
     month: str = Query(..., description="YYMM (예: 2501)"),
     team: str | None = Query(None, description="edu1|edu2 (선택)"),
+    debug: bool = Query(False, description="디버그/캐시우회 플래그"),
 ) -> dict:
     try:
-        return db.get_perf_monthly_inquiries_deals(segment=segment, row=row, month=month, team=team)
+        return db.get_perf_monthly_inquiries_deals(segment=segment, row=row, month=month, team=team, debug=debug)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
     except FileNotFoundError as exc:

@@ -5,6 +5,7 @@ import logging
 import os
 import re
 import sqlite3
+from collections import Counter
 from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
@@ -4051,7 +4052,7 @@ def _load_perf_monthly_data(db_path: Path) -> Dict[str, Any]:
 
 
 
-def _load_perf_monthly_inquiries_data(db_path: Path) -> Dict[str, Any]:
+def _load_perf_monthly_inquiries_data(db_path: Path, debug: bool = False) -> Dict[str, Any]:
     """
     Load deals for monthly inquiry (deal creation) counts.
     Uses deal."생성 날짜" as month key and filters out Convert / onlineFirst==FALSE.
@@ -4062,7 +4063,7 @@ def _load_perf_monthly_inquiries_data(db_path: Path) -> Dict[str, Any]:
     stat = db_path.stat()
     cache_key = (db_path, stat.st_mtime)
     cached = _PERF_MONTHLY_INQUIRIES_CACHE.get(cache_key)
-    if cached is not None:
+    if not debug and cached is not None:
         return cached
 
     excluded = {"status_convert": 0, "online_first_false": 0, "online_first_missing": 0, "missing_created_at": 0}
@@ -4070,6 +4071,17 @@ def _load_perf_monthly_inquiries_data(db_path: Path) -> Dict[str, Any]:
     value_counts_size: Dict[str, int] = {}
     size_raw_counts: Dict[str, int] = {}
     size_group_counts: Dict[str, int] = {}
+    join_diag = {
+        "deal_org_null": 0,
+        "deal_org_blank": 0,
+        "people_org_null": 0,
+        "people_org_blank": 0,
+        "coalesce_org_blank": 0,
+        "org_join_miss": 0,
+        "org_size_raw_missing": 0,
+    }
+    sample_join_miss: List[Dict[str, Any]] = []
+    sample_size_missing_univ_public: List[Dict[str, Any]] = []
     missing_course_raw = 0
     missing_category_raw = 0
     raw_sizes: Set[str] = set()
@@ -4147,6 +4159,17 @@ def _load_perf_monthly_inquiries_data(db_path: Path) -> Dict[str, Any]:
         raw_formats.add((row["course_format_raw"] or "").strip())
         raw_categories.add((row["category_raw"] or "").strip())
 
+        deal_org_id_raw = row.get("deal_org_id_raw")
+        people_org_id_raw = row.get("people_org_id_raw")
+        if deal_org_id_raw is None:
+            join_diag["deal_org_null"] += 1
+        elif str(deal_org_id_raw).strip() == "":
+            join_diag["deal_org_blank"] += 1
+        if people_org_id_raw is None:
+            join_diag["people_org_null"] += 1
+        elif str(people_org_id_raw).strip() == "":
+            join_diag["people_org_blank"] += 1
+
         deal_org_id = (row.get("deal_org_id") or "").strip()
         people_org_id = (row.get("people_org_id") or "").strip()
         if deal_org_id:
@@ -4158,6 +4181,42 @@ def _load_perf_monthly_inquiries_data(db_path: Path) -> Dict[str, Any]:
 
         size_raw_key = (row["size_raw"] or "").strip() or "<NULL_OR_EMPTY>"
         size_raw_counts[size_raw_key] = size_raw_counts.get(size_raw_key, 0) + 1
+        if not (row.get("org_id") or "").strip():
+            join_diag["coalesce_org_blank"] += 1
+
+        org_join_failed = row.get("org_id") and row.get("org_name") is None and row.get("size_raw") is None
+        if org_join_failed:
+            join_diag["org_join_miss"] += 1
+            if len(sample_join_miss) < 20:
+                sample_join_miss.append(
+                    {
+                        "deal_id": row.get("deal_id"),
+                        "deal_name": row.get("deal_name"),
+                        "deal_org_id": deal_org_id,
+                        "people_org_id": people_org_id,
+                        "org_id": row.get("org_id"),
+                        "org_name": row.get("org_name"),
+                        "size_raw": row.get("size_raw"),
+                    }
+                )
+
+        org_size_raw_missing = size_raw_key == "<NULL_OR_EMPTY>"
+        if org_size_raw_missing:
+            join_diag["org_size_raw_missing"] += 1
+            org_name = (row.get("org_name") or "").strip()
+            if (
+                len(sample_size_missing_univ_public) < 20
+                and (("대학" in org_name) or any(kw in org_name for kw in PUBLIC_KEYWORDS))
+            ):
+                sample_size_missing_univ_public.append(
+                    {
+                        "deal_id": row.get("deal_id"),
+                        "deal_name": row.get("deal_name"),
+                        "org_name": org_name,
+                        "org_id": row.get("org_id"),
+                        "size_raw": row.get("size_raw"),
+                    }
+                )
 
         course_format_norm = _normalize_course_format(row["course_format_raw"])
         is_online_fmt = course_format_norm in ONLINE_COURSE_FORMATS
@@ -4211,6 +4270,7 @@ def _load_perf_monthly_inquiries_data(db_path: Path) -> Dict[str, Any]:
         "rows": data_rows,
         "snapshot_version": f"db_mtime:{int(stat.st_mtime)}",
         "meta_debug": {
+            "impl_tag": "inq_v1_people_nullif_trim",
             "excluded": excluded,
             "value_counts": {
                 "sizeGroup": value_counts_size,
@@ -4220,6 +4280,11 @@ def _load_perf_monthly_inquiries_data(db_path: Path) -> Dict[str, Any]:
                 "size_group_counts": size_group_counts,
             },
             "join_source": join_source,
+            "join_diag": {
+                **join_diag,
+                "sample_join_miss": sample_join_miss,
+                "sample_size_missing_univ_public": sample_size_missing_univ_public,
+            },
             "raw_samples": {
                 "size_raw_unique_top": list(itertools.islice(raw_sizes, 20)),
                 "course_format_raw_unique_top": list(itertools.islice(raw_formats, 20)),
@@ -4227,7 +4292,8 @@ def _load_perf_monthly_inquiries_data(db_path: Path) -> Dict[str, Any]:
             },
         },
     }
-    _PERF_MONTHLY_INQUIRIES_CACHE[cache_key] = payload
+    if not debug:
+        _PERF_MONTHLY_INQUIRIES_CACHE[cache_key] = payload
     return payload
 
 
@@ -4441,6 +4507,7 @@ def get_perf_monthly_inquiries_summary(
     to_month: str = "2026-12",
     team: Optional[str] = None,
     db_path: Path = DB_PATH,
+    debug: bool = False,
 ) -> Dict[str, Any]:
     """
     Summary counts of deal creations by (size_group, course_format, category_group) × month.
@@ -4450,12 +4517,13 @@ def get_perf_monthly_inquiries_summary(
     if not months:
         raise ValueError("from/to month range is empty")
 
-    payload = _load_perf_monthly_inquiries_data(db_path)
+    payload = _load_perf_monthly_inquiries_data(db_path, debug=debug)
     stat = db_path.stat()
     cache_key = (db_path, stat.st_mtime, from_month, to_month, team or "all")
-    cached = _PERF_MONTHLY_INQUIRIES_SUMMARY_CACHE.get(cache_key)
-    if cached is not None:
-        return cached
+    if not debug:
+        cached = _PERF_MONTHLY_INQUIRIES_SUMMARY_CACHE.get(cache_key)
+        if cached is not None:
+            return cached
 
     team_members = _dealcheck_team_members(team)
     detail_counts: Dict[Tuple[str, str, str], Dict[str, int]] = {}
@@ -4470,10 +4538,21 @@ def get_perf_monthly_inquiries_summary(
             for category in INQUIRY_CATEGORY_GROUPS:
                 _init_counts_for_detail(size, course, category)
 
+    rows_total_in_range = 0
+    excluded_by_team = 0
+    excluded_by_team_by_size: Dict[str, int] = {}
+    excluded_owner_counter: Counter[str] = Counter()
+
     for row in payload["rows"]:
         if row["month"] not in month_set:
             continue
+        rows_total_in_range += 1
         if team_members is not None and not _owners_match_team(row.get("owner_names"), team_members):
+            excluded_by_team += 1
+            size = row["size_group"]
+            excluded_by_team_by_size[size] = excluded_by_team_by_size.get(size, 0) + 1
+            for name in row.get("owner_names") or []:
+                excluded_owner_counter[name] += 1
             continue
         size = row["size_group"]
         course = row["course_format"]
@@ -4515,6 +4594,18 @@ def get_perf_monthly_inquiries_summary(
                     }
                 )
 
+    team_filter_debug = None
+    if debug and team is not None:
+        team_filter_debug = {
+            "team_param": team,
+            "allowed_member_count": len(team_members or []),
+            "rows_total_in_range": rows_total_in_range,
+            "rows_after_team_filter": rows_total_in_range - excluded_by_team,
+            "excluded_by_team": excluded_by_team,
+            "excluded_by_team_by_size": excluded_by_team_by_size,
+            "excluded_owner_names_top": excluded_owner_counter.most_common(20),
+        }
+
     result = {
         "months": months,
         "rows": rows_list,
@@ -4524,7 +4615,11 @@ def get_perf_monthly_inquiries_summary(
             "debug": payload.get("meta_debug"),
         },
     }
-    _PERF_MONTHLY_INQUIRIES_SUMMARY_CACHE[cache_key] = result
+    if team_filter_debug is not None:
+        result["meta"]["debug"] = result["meta"].get("debug") or {}
+        result["meta"]["debug"]["team_filter"] = team_filter_debug
+    if not debug:
+        _PERF_MONTHLY_INQUIRIES_SUMMARY_CACHE[cache_key] = result
     return result
 
 
@@ -4534,6 +4629,7 @@ def get_perf_monthly_inquiries_deals(
     month: str,
     team: Optional[str] = None,
     db_path: Path = DB_PATH,
+    debug: bool = False,
 ) -> Dict[str, Any]:
     """
     Drilldown deals for monthly inquiries grid (segment=size group, row=course||category).
@@ -4552,10 +4648,11 @@ def get_perf_monthly_inquiries_deals(
     if category_grp != INQ_ALL and category_grp not in INQUIRY_CATEGORY_GROUPS:
         raise ValueError(f"Unknown categoryGroup: {category_grp}")
 
-    payload = _load_perf_monthly_inquiries_data(db_path)
+    payload = _load_perf_monthly_inquiries_data(db_path, debug=debug)
     team_members = _dealcheck_team_members(team)
     items: List[Dict[str, Any]] = []
     seen: Set[str] = set()
+    excluded_samples: List[Dict[str, Any]] = []
 
     for row_data in payload["rows"]:
         if row_data["month"] != month_key:
@@ -4567,6 +4664,17 @@ def get_perf_monthly_inquiries_deals(
         if category_grp != INQ_ALL and row_data["category_group"] != category_grp:
             continue
         if team_members is not None and not _owners_match_team(row_data.get("owner_names"), team_members):
+            if debug and len(excluded_samples) < 50:
+                excluded_samples.append(
+                    {
+                        "dealId": row_data["deal_id"],
+                        "dealName": row_data["deal_name"],
+                        "ownerNames": row_data.get("owner_names"),
+                        "orgName": row_data["org_name"],
+                        "sizeRaw": row_data.get("size_raw"),
+                        "sizeGroup": row_data.get("size_group"),
+                    }
+                )
             continue
         deal_id = row_data["deal_id"]
         if deal_id in seen:
@@ -4601,7 +4709,7 @@ def get_perf_monthly_inquiries_deals(
     else:
         row_label = f"{course_fmt} · {category_grp}"
 
-    return {
+    result = {
         "segment": {"key": segment, "label": segment},
         "row": {"key": row, "label": row_label},
         "month": month_key,
@@ -4609,6 +4717,9 @@ def get_perf_monthly_inquiries_deals(
         "items": items,
         "meta": {"snapshot_version": payload.get("snapshot_version"), "team": team},
     }
+    if debug and excluded_samples:
+        result["meta"]["debug"] = {"excluded_samples": excluded_samples}
+    return result
 
 
 def _pl_target_for_year(year: int) -> Dict[str, Dict[str, float]]:

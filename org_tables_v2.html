@@ -997,6 +997,15 @@
       outline-offset: 2px;
     }
 
+    .xlsx-download-btn {
+      font-weight: 700;
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+    .xlsx-download-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
     .pl-progress-table .row-label {
       text-align: left;
       padding-left: 6px;
@@ -4036,6 +4045,26 @@
       return resp.json();
     }
 
+    async function fetchBlob(path) {
+      const resp = await fetch(`${API_BASE}${path}`);
+      if (!resp.ok) {
+        const txt = await resp.text();
+        throw new Error(txt || resp.statusText);
+      }
+      return resp.blob();
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }
+
     let target2026Cache = null;
     let target2026AllCache = null;
     let pnlAssumptionTimer = null;
@@ -4062,26 +4091,24 @@
       return fetchJson(`/performance/monthly-amounts/deals?${params.toString()}`);
     }
 
-    async function loadBizPerfInquirySummary({ teamKey = null } = {}) {
-      const cacheKey = teamKey || "all";
+    async function loadBizPerfInquirySummary() {
+      const cacheKey = "all";
       if (state.perfMonthlyInquiries.summaryCache.has(cacheKey)) {
         return state.perfMonthlyInquiries.summaryCache.get(cacheKey);
       }
       const params = new URLSearchParams();
       params.set("from", "2025-01");
       params.set("to", "2026-12");
-      if (teamKey) params.set("team", teamKey);
       const data = await fetchJson(`/performance/monthly-inquiries/summary?${params.toString()}`);
       state.perfMonthlyInquiries.summaryCache.set(cacheKey, data);
       return data;
     }
 
-    async function loadBizPerfInquiryDeals(segmentKey, rowKey, monthKey, { teamKey = null } = {}) {
+    async function loadBizPerfInquiryDeals(segmentKey, rowKey, monthKey) {
       const params = new URLSearchParams();
       params.set("segment", segmentKey);
       params.set("row", rowKey);
       params.set("month", monthKey);
-      if (teamKey) params.set("team", teamKey);
       return fetchJson(`/performance/monthly-inquiries/deals?${params.toString()}`);
     }
 
@@ -8996,7 +9023,7 @@
       state.rankPeopleModal.body.innerHTML = `<div class="muted" style="padding:12px;">불러오는 중...</div>`;
       try {
         const data = isInquiries
-          ? await loadBizPerfInquiryDeals(segmentKey, rowKey, monthKey, { teamKey })
+          ? await loadBizPerfInquiryDeals(segmentKey, rowKey, monthKey)
           : await loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey });
         const titleLabel = `${(data.segment && data.segment.label) || segmentKey} · ${formatPerfMonthLabel(
           data.month,
@@ -9371,7 +9398,7 @@
       };
 
       try {
-        latestData = await loadBizPerfInquirySummary({ teamKey });
+        latestData = await loadBizPerfInquirySummary();
         drawTable(latestData);
         attachHandlers();
       } catch (err) {
@@ -11642,11 +11669,51 @@
         body.innerHTML = `
           ${missingHtml}
           <section class="card" style="margin-top:12px;">
-            <h3>${ymTitle} 매출 신고 목록 <span class="muted">(${data.counts?.report ?? 0}건)</span></h3>
+            <div class="control-row tight" style="align-items:center;">
+              <h3 style="margin:0;">
+                ${ymTitle} 매출 신고 목록 <span class="muted">(${data.counts?.report ?? 0}건)</span>
+              </h3>
+              <div class="spacer"></div>
+              <button
+                type="button"
+                id="revReportXlsxBtn"
+                class="xlsx-download-btn"
+                ${(data.counts?.report ?? 0) > 0 ? "" : "disabled"}
+                title="현재 매출 신고 목록을 엑셀로 다운로드"
+              >
+                xlsx 다운로드
+              </button>
+            </div>
             ${renderReportTable(data.reportDeals || [])}
           </section>
           ${reviewSectionHtml}
         `;
+
+        const btn = body.querySelector("#revReportXlsxBtn");
+        if (btn) {
+          btn.addEventListener("click", async () => {
+            try {
+              btn.disabled = true;
+              const teamKey = data.team || state.monthlyRevenue?.team || "";
+              const yearNum = Number(data.year);
+              const mm = String(data.month).padStart(2, "0");
+              const teamLabel =
+                (TEAM_OPTIONS || []).find((t) => t.value === teamKey)?.label || teamKey || "조직";
+              const params = new URLSearchParams();
+              params.set("team", teamKey);
+              params.set("year", String(yearNum));
+              params.set("month", String(Number(data.month)));
+              const blob = await fetchBlob(`/qc/monthly-revenue-report/xlsx?${params.toString()}`);
+              const filename = `${teamLabel}_${yearNum}년_${mm}월_매출신고.xlsx`;
+              downloadBlob(blob, filename);
+            } catch (err) {
+              showToast(`xlsx 다운로드 실패: ${err.message}`, "error");
+            } finally {
+              const hasRows = (data.counts?.report ?? 0) > 0;
+              btn.disabled = !hasRows;
+            }
+          });
+        }
       };
 
       const maybeLoad = async () => {

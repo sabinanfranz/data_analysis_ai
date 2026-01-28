@@ -1,6 +1,6 @@
 ---
 title: 핵심 조회 API 계약 (org_tables_v2.html 사용)
-last_synced: 2026-12-11
+last_synced: 2026-01-27
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py
@@ -9,6 +9,8 @@ sync_source:
   - tests/test_perf_monthly_contracts.py
   - tests/test_pl_progress_2026.py
   - tests/test_api_counterparty_dri.py
+  - tests/test_perf_monthly_inquiries.py
+  - tests/test_perf_monthly_inquiries_online_first_filter.py
 ---
 
 ## Purpose
@@ -39,6 +41,8 @@ sync_source:
 - `GET /api/performance/monthly-amounts/deals?segment=...&row=TOTAL|CONTRACT|CONFIRMED|HIGH&month=YYMM&team=edu1|edu2(opt)` → row=TOTAL은 3버킷 합집합 dedupe, totalAmount=amount>0 else expectedAmount 합산, team 지정 시 동일 필터 적용. items 정렬은 프런트가 수행.
   - `GET /api/performance/pl-progress-2026/summary` → Target(T) 열은 `PL_2026_TARGET`, Expected(E)는 기간 비율로 분배한 recognized_by_month 합계(억 단위 소수 4자리). OP_MARGIN은 연간 OP/REV. 캐시 키 `_PL_PROGRESS_SUMMARY_CACHE`.
   - `GET /api/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E` → recognizedAmount desc→amountUsed desc→dealName desc 정렬. variant T는 빈 리스트 반환.
+- 신규: `GET /api/performance/monthly-inquiries/summary?from=2025-01&to=2026-12&team=edu2(opt)` → 24개월 고정(months=2501~2612), row는 (기업 규모×과정포맷) 합산(91) + 상세(기업 규모×과정포맷×카테고리그룹 637) 총 728행. 카테고리 그룹은 온라인/생성형AI/DT/직무별교육/스킬/기타/미기재(공백/NULL) 순서. status=Convert 제외. online_first(온라인 최초 입과 여부)는 과정포맷이 온라인 3종(구독제(온라인)/선택구매(온라인)/포팅)일 때 명시적 FALSE 계열만 제외하며 NULL/공백은 포함, 비온라인 포맷은 제외하지 않는다. 규모/과정포맷 공백은 미기재, 미정규 값은 기타. team 지정 시 day1OwnerNames 팀 매칭 필터 적용. snapshot_version과 meta.debug(excluded/value_counts/raw_samples) 포함.
+- 신규: `GET /api/performance/monthly-inquiries/deals?segment=<size>&row=<courseFormat>||<categoryGroup>&month=YYMM&team=...` → summary 셀 클릭 드릴다운. 필드/테이블/정렬 구조는 월별 체결액 팝업과 동일(orgName/upperOrg/person/dealName/courseFormat/**category**/owners/status/probability/expectedCloseDate/expectedAmount/startDate/endDate/courseId/contractDate/amount). catToken이 미기재면 category NULL/공백만 포함하며, online_first FALSE 제외 규칙은 온라인 3포맷에서만 적용된다.
 - 딜체크/QC:
   - `GET /api/deal-check?team=edu1|edu2` → `상태='SQL'` 딜 중 팀 구성원 포함 건만, orgWon2025Total desc→createdAt asc→dealId asc, memoCount join. isRetention은 2025 Won 금액 파싱 성공 여부.
   - `GET /api/deal-check/edu1|edu2` → 위 래퍼.
@@ -61,6 +65,7 @@ sync_source:
 - DRI: Lost/Convert 제외, prob 확정/높음/Won만 카운터파티 합산, owners는 People.owner_json을 우선 사용한다.
 - 딜체크: memoCount left join, isRetention은 2025 Won 금액 파싱 성공 기준(예상 체결액 미사용).
 - 캐시 키: DB mtime을 포함하는 메모리 캐시(`_COUNTERPARTY_DRI_CACHE`, `_PERF_MONTHLY_*`, `_PL_PROGRESS_*`, `_RANK_2025_SUMMARY_CACHE`)가 있어 프로세스 재시작 전까지 새 DB가 반영되지 않을 수 있다.
+- 문의 인입: sizeGroup은 7개 표준값만 사용하며 course_format 13개·category_group 7개 순서를 고정한다. online_first FALSE 제외는 course_format이 ONLINE_COURSE_FORMATS인 경우에만 적용하고 NULL/공백은 포함한다. deals/summary 모두 category 필드를 포함한다.
 ### (흡수) 불변조건·정렬·캐시
 - `/api/orgs` 정렬은 won2025 desc→name asc 고정이며 People/Deal이 모두 0이면 제외된다.
 - Won JSON은 23/24/25 Won 딜 upper_org만 포함하고 webform id는 노출하지 않는다. `_clean_form_memo`는 utm_source 또는 “고객 마케팅 수신 동의”가 없는 경우 정제를 스킵하며 전화/규모/업종/채널/동의/utm 키를 항상 제거한다.

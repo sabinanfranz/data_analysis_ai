@@ -887,11 +887,114 @@
       cursor: default;
     }
 
+    /* Inquiries size filter bar */
+    .inq-sizebar {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+      flex-wrap: wrap;
+      margin: 10px 0 12px 0;
+    }
+    .inq-size-btn {
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      transition: 120ms ease;
+    }
+    .inq-size-btn:not(.is-active) {
+      opacity: 0.75;
+    }
+    .inq-size-btn.is-active {
+      opacity: 1;
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.18);
+      color: var(--text);
+      font-weight: 800;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.18) inset;
+    }
+    .inq-size-btn:hover {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .inq-size-btn.is-active:hover {
+      background: rgba(56, 189, 248, 0.24);
+    }
+    .inq-size-btn:focus-visible {
+      outline: 2px solid rgba(56, 189, 248, 0.55);
+      outline-offset: 2px;
+    }
+
     .mp-monthly-table td.mp-num {
       width: 4.2em;
       min-width: 4.2em;
       padding: 0.15em 0.25em;
       text-align: center;
+    }
+
+    /* Monthly Revenue Report (월별 매출신고) */
+    .monthly-revenue-screen .monthly-revenue-filterbar {
+      justify-content: flex-start;
+      align-items: center;
+      gap: 8px;
+    }
+    .monthly-revenue-screen .rev-label {
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 800;
+      font-size: 13px;
+    }
+    .monthly-revenue-screen th {
+      color: rgba(255, 255, 255, 0.82);
+    }
+    .monthly-revenue-screen .muted {
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    .rev-team-bar {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+    .rev-team-btn {
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.06);
+      color: rgba(255, 255, 255, 0.92);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      user-select: none;
+      transition: 120ms ease;
+    }
+    .rev-team-btn:not(.is-active) {
+      opacity: 0.75;
+    }
+    .rev-team-btn:hover {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .rev-team-btn.is-active {
+      opacity: 1;
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.18);
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.18) inset;
+    }
+    .rev-team-btn:focus-visible {
+      outline: 2px solid rgba(56, 189, 248, 0.55);
+      outline-offset: 2px;
     }
 
     .pl-progress-table .row-label {
@@ -2117,13 +2220,16 @@
     })();
     const PART_STRUCTURE = {
       "기업교육 1팀": {
-        "1파트": ["김솔이", "황초롱", "김정은", "김동찬", "정태윤", "서정연", "오진선", "공새봄"],
+        "1파트": ["김솔이", "황초롱", "김정은", "김동찬", "정태윤", "서정연", "오진선", "공새봄", "김별"],
         "2파트": ["강지선", "정하영", "박범규", "하승민", "이은서", "김세연"],
       },
       "기업교육 2팀": {
-        "1파트": ["권노을", "이윤지B", "이현진", "김민선", "강연정", "방신우", "홍제환"],
+        "1파트": ["권노을", "이윤지B", "이현진", "김민선", "강연정", "방신우", "홍제환", "정선희"],
         "2파트": ["정다혜", "임재우", "송승희", "손승완", "김윤지", "손지훈", "홍예진"],
         "온라인셀": ["강진우", "강다현", "이수빈"],
+      },
+      "공공교육팀": {
+        "전체": ["이준석", "김미송", "오정민", "조경원", "김다인", "서민정", "김지원", "김진호"],
       },
     };
     const COUNTERPARTY_ONLINE_FORMATS = new Set(["구독제(온라인)", "선택구매(온라인)", "포팅"]);
@@ -2269,13 +2375,32 @@
       { id: "edu2-dealcheck-online", label: "교육 2팀 온라인셀 딜체크", teamKey: "edu2", partFilter: "online", parentId: DEALCHECK_TEAMS.edu2.id },
     ];
     const PERF_MONTHLY_MENU_DEFS = [
-      { id: "biz-perf-monthly", label: "2026 월별 체결액", teamKey: null, parentId: null },
-      { id: "biz-perf-monthly-edu1", label: "2026 1팀 월별 체결액", teamKey: "edu1", parentId: "biz-perf-monthly" },
-      { id: "biz-perf-monthly-edu2", label: "2026 2팀 월별 체결액", teamKey: "edu2", parentId: "biz-perf-monthly" },
+      { id: "biz-perf-monthly", label: "2026 월별 체결액", teamKey: null, parentId: null, kind: "monthly-amounts" },
+      { id: "biz-perf-monthly-edu1", label: "2026 1팀 월별 체결액", teamKey: "edu1", parentId: "biz-perf-monthly", kind: "monthly-amounts" },
+      { id: "biz-perf-monthly-edu2", label: "2026 2팀 월별 체결액", teamKey: "edu2", parentId: "biz-perf-monthly", kind: "monthly-amounts" },
+      {
+        id: "biz-perf-monthly-edu2-inquiries",
+        label: "2026 문의 인입 현황",
+        teamKey: "edu2",
+        parentId: "biz-perf-monthly-edu2",
+        kind: "monthly-inquiries",
+        suppressArrow: true,
+      },
     ];
 
     function menuLabelWithArrow(def) {
-      return def.parentId ? `↳ ${def.label}` : def.label;
+      if (def && def.suppressArrow) return def.label;
+      const allDefs = [...PERF_MONTHLY_MENU_DEFS, ...DEALCHECK_MENU_DEFS];
+      const map = new Map(allDefs.map((d) => [d.id, d]));
+      let depth = 0;
+      let cur = def;
+      while (cur && cur.parentId) {
+        depth += 1;
+        cur = map.get(cur.parentId);
+        if (!cur) break;
+      }
+      const prefix = depth ? `${"↳".repeat(depth)} ` : "";
+      return `${prefix}${def.label}`;
     }
 
     const MENU_SECTIONS = [
@@ -2324,6 +2449,7 @@
         items: [
           { id: "deal-qc-r1r15", label: "개인별 세일즈맵 검수" },
           { id: "mismatch-2025", label: "고객사 불일치" },
+          { id: "mismatch-2025-monthly-revenue", label: "월별 매출신고", parentId: "mismatch-2025" },
         ],
       },
     ];
@@ -2340,6 +2466,7 @@
       "counterparty-risk-daily-online": (root) => renderCounterpartyRiskDaily(root, "online"),
       "deal-qc-r1r15": renderDealQcR1R15Screen,
       "mismatch-2025": renderMismatch2025Screen,
+      "mismatch-2025-monthly-revenue": renderMonthlyRevenueReportScreen,
       "industry-2025": renderIndustryMenu,
       "statepath-2425": renderStatePathMenu,
       "org-view": renderOrgScreen,
@@ -2350,7 +2477,12 @@
         renderDealCheckScreen(def.teamKey, root, { label: def.label, partFilter: def.partFilter });
     });
     PERF_MONTHLY_MENU_DEFS.forEach((def) => {
-      MENU_RENDERERS[def.id] = (root) => renderBizPerfMonthly(root, { teamKey: def.teamKey, label: def.label });
+      if (def.kind === "monthly-inquiries") {
+        MENU_RENDERERS[def.id] = (root) =>
+          renderBizPerfMonthlyInquiries(root, { teamKey: def.teamKey, label: def.label });
+      } else {
+        MENU_RENDERERS[def.id] = (root) => renderBizPerfMonthly(root, { teamKey: def.teamKey, label: def.label });
+      }
     });
 
     const MENU_ITEMS = MENU_SECTIONS.flatMap((section) => section.items);
@@ -2510,6 +2642,21 @@
         loading: false,
         error: null,
         summaryCache: new Map(),
+      },
+      monthlyRevenue: {
+        team: "",
+        year: "",
+        month: "",
+        loading: false,
+        error: null,
+        data: null,
+        cache: new Map(),
+      },
+      perfMonthlyInquiries: {
+        loading: false,
+        error: null,
+        summaryCache: new Map(),
+        ui: { sizeGroup: "대기업" },
       },
       perfPlProgress2026: {
         loading: false,
@@ -3915,6 +4062,29 @@
       return fetchJson(`/performance/monthly-amounts/deals?${params.toString()}`);
     }
 
+    async function loadBizPerfInquirySummary({ teamKey = null } = {}) {
+      const cacheKey = teamKey || "all";
+      if (state.perfMonthlyInquiries.summaryCache.has(cacheKey)) {
+        return state.perfMonthlyInquiries.summaryCache.get(cacheKey);
+      }
+      const params = new URLSearchParams();
+      params.set("from", "2025-01");
+      params.set("to", "2026-12");
+      if (teamKey) params.set("team", teamKey);
+      const data = await fetchJson(`/performance/monthly-inquiries/summary?${params.toString()}`);
+      state.perfMonthlyInquiries.summaryCache.set(cacheKey, data);
+      return data;
+    }
+
+    async function loadBizPerfInquiryDeals(segmentKey, rowKey, monthKey, { teamKey = null } = {}) {
+      const params = new URLSearchParams();
+      params.set("segment", segmentKey);
+      params.set("row", rowKey);
+      params.set("month", monthKey);
+      if (teamKey) params.set("team", teamKey);
+      return fetchJson(`/performance/monthly-inquiries/deals?${params.toString()}`);
+    }
+
     async function loadPlProgress2026Summary(year = 2026) {
       const cached = state.perfPlProgress2026.summary;
       if (cached && cached.year === year) return cached;
@@ -4155,6 +4325,91 @@
       const value = Number(num);
       if (!Number.isFinite(value)) return "0.0";
       return value.toFixed(1);
+    }
+
+    function normalizeDealCategoryText(v) {
+      const s = (v ?? "").toString().trim();
+      return s ? s : "미기재";
+    }
+
+    function normalizeInqSizeGroupKey(v) {
+      const s = (v ?? "").toString().trim();
+      if (!s) return "미기재";
+      if (s.includes("미기재") || s.includes("미입력")) return "미기재";
+      if (s.includes("대기업")) return "대기업";
+      if (s.includes("중견")) return "중견기업";
+      if (s.includes("중소")) return "중소기업";
+      if (s.includes("공공")) return "공공기관";
+      if (s.includes("대학")) return "대학교";
+      if (s.includes("기타")) return "기타";
+      return "기타";
+    }
+
+    // --- KST (Asia/Seoul) date helpers for default monthly revenue period ---
+    function getSeoulTodayYmd() {
+      const fmt = new Intl.DateTimeFormat("en-CA", {
+        timeZone: "Asia/Seoul",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+      const parts = fmt.formatToParts(new Date());
+      const get = (type) => parts.find((p) => p.type === type)?.value;
+      const y = Number(get("year"));
+      const m = Number(get("month"));
+      const d = Number(get("day"));
+      return { y, m, d };
+    }
+
+    function shiftYearMonth(y, m, deltaMonths) {
+      const idx = y * 12 + (m - 1) + deltaMonths;
+      const ny = Math.floor(idx / 12);
+      const nm = (idx % 12) + 1;
+      return { y: ny, m: nm };
+    }
+
+    function isWithinFirstNBusinessDaysSeoul(y, m, d, n = 5) {
+      let cnt = 0;
+      for (let day = 1; day <= d; day++) {
+        // Use UTC date at 03:00 (KST noon) to avoid TZ drift; KST has no DST.
+        const t = new Date(Date.UTC(y, m - 1, day, 3, 0, 0));
+        const dow = t.getUTCDay(); // 0=Sun..6=Sat
+        if (dow >= 1 && dow <= 5) cnt++;
+      }
+      return cnt <= n;
+    }
+
+    function getDefaultRevenueYearMonthSeoul() {
+      const { y, m, d } = getSeoulTodayYmd();
+      const early = isWithinFirstNBusinessDaysSeoul(y, m, d, 5);
+      if (early) return shiftYearMonth(y, m, -1);
+      return { y, m };
+    }
+
+    function normalizeMonth2(v) {
+      const n = parseInt(String(v || ""), 10);
+      if (!Number.isFinite(n) || n < 1 || n > 12) return "";
+      return String(n).padStart(2, "0");
+    }
+
+    function applyDefaultRevenuePeriodIfNeeded(filters, yearSelect, monthSelect) {
+      if (!filters || !yearSelect || !monthSelect) return;
+      if (filters.year && filters.month) {
+        yearSelect.value = String(filters.year);
+        monthSelect.value = normalizeMonth2(filters.month);
+        return;
+      }
+      const def = getDefaultRevenueYearMonthSeoul();
+      const yVal = String(def.y);
+      const mVal = normalizeMonth2(def.m);
+      if ([...yearSelect.options].some((o) => o.value === yVal)) {
+        yearSelect.value = yVal;
+        filters.year = yVal;
+      }
+      if ([...monthSelect.options].some((o) => o.value === mVal)) {
+        monthSelect.value = mVal;
+        filters.month = mVal;
+      }
     }
 
     const TARGET2026_MODE_CONFIG = {
@@ -8240,6 +8495,23 @@
       return data;
     }
 
+    const QC_REVENUE_HISTORY_FROM = "2025-01";
+
+    async function loadMonthlyRevenueReport(team, year, month, historyFrom = QC_REVENUE_HISTORY_FROM) {
+      const key = `${team}-${year}-${month}-${historyFrom || "none"}`;
+      if (state.monthlyRevenue.cache.has(key)) {
+        return state.monthlyRevenue.cache.get(key);
+      }
+      const params = new URLSearchParams();
+      params.set("team", team);
+      params.set("year", String(year));
+      params.set("month", String(month));
+      if (historyFrom) params.set("history_from", historyFrom);
+      const data = await fetchJson(`/qc/monthly-revenue-report?${params.toString()}`);
+      state.monthlyRevenue.cache.set(key, data);
+      return data;
+    }
+
     async function loadMismatchData(size) {
       const key = size && size !== "전체" ? size : "전체";
       const cached = cache.mismatch2025BySize.get(key);
@@ -8711,20 +8983,30 @@
 
     async function openBizPerfDealsModal(segmentKey, rowKey, monthKey, options = {}) {
       const teamKey = options.teamKey || null;
+      const kind = options.kind || "monthly-amounts";
+      const isInquiries = kind === "monthly-inquiries";
       bindGlobalModalsOnce();
       if (!state.rankPeopleModal.backdrop || !state.rankPeopleModal.title || !state.rankPeopleModal.body) {
         showToast("딜 모달을 초기화할 수 없습니다.", "error");
         return;
       }
       state.rankPeopleModal.backdrop.style.display = "flex";
-      state.rankPeopleModal.title.textContent = "월별 체결액 딜 목록";
+      state.rankPeopleModal.title.textContent = isInquiries ? "월별 문의 인입 딜 목록" : "월별 체결액 딜 목록";
       if (state.rankPeopleModal.subtitle) state.rankPeopleModal.subtitle.textContent = "";
       state.rankPeopleModal.body.innerHTML = `<div class="muted" style="padding:12px;">불러오는 중...</div>`;
       try {
-        const data = await loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey });
-        const titleLabel = `${(data.segment && data.segment.label) || segmentKey} · ${formatPerfMonthLabel(data.month)} · ${(data.row && data.row.label) || rowKey}`;
-        state.rankPeopleModal.title.textContent = `월별 체결액 - ${titleLabel}`;
-        if (state.rankPeopleModal.subtitle) state.rankPeopleModal.subtitle.textContent = `${formatPerfMonthLabel(data.month)} · ${(data.segment && data.segment.label) || segmentKey} · ${(data.row && data.row.label) || rowKey}`;
+        const data = isInquiries
+          ? await loadBizPerfInquiryDeals(segmentKey, rowKey, monthKey, { teamKey })
+          : await loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey });
+        const titleLabel = `${(data.segment && data.segment.label) || segmentKey} · ${formatPerfMonthLabel(
+          data.month,
+        )} · ${(data.row && data.row.label) || rowKey}`;
+        const titlePrefix = isInquiries ? "월별 문의 인입" : "월별 체결액";
+        state.rankPeopleModal.title.textContent = `${titlePrefix} - ${titleLabel}`;
+        if (state.rankPeopleModal.subtitle)
+          state.rankPeopleModal.subtitle.textContent = `${formatPerfMonthLabel(data.month)} · ${
+            (data.segment && data.segment.label) || segmentKey
+          } · ${(data.row && data.row.label) || rowKey}`;
         const items = (data.items || []).slice();
         const sortKey = (it) => {
           const a = Number(it.amount);
@@ -8738,19 +9020,21 @@
           if (diff !== 0) return diff;
           return String(x.dealName || "").localeCompare(String(y.dealName || ""), "ko");
         });
-        const rowsHtml =
-          items
-            .map((item) => {
-              const dealLink = buildSalesmapLink("deal", item.dealId);
-              const owners = Array.isArray(item.day1OwnerNames) ? item.day1OwnerNames.filter(Boolean).join(", ") : item.day1OwnerNames || "-";
-              const fmtAmt = (v) => (Number(v) > 0 ? formatEok1(v) : "-");
-              return `
-                <tr>
-                  <td class="align-left txt">${item.orgName || "-"}</td>
-                  <td class="align-left txt">${normalizeUpperOrg(item.upperOrg)}</td>
-                  <td class="align-left txt">${item.customerPersonName || "-"}</td>
-                  <td class="deal-name-cell align-left txt">${dealLink ? `<a class="deal-name-link" href="${dealLink}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">${item.dealName || item.dealId || "-"}</a>` : `<span class="deal-name-link">${item.dealName || item.dealId || "-"}</span>`}</td>
-                  <td class="auto-fit txt">${item.courseFormat || "-"}</td>
+          const rowsHtml =
+            items
+              .map((item) => {
+                const dealLink = buildSalesmapLink("deal", item.dealId);
+                const owners = Array.isArray(item.day1OwnerNames) ? item.day1OwnerNames.filter(Boolean).join(", ") : item.day1OwnerNames || "-";
+                const fmtAmt = (v) => (Number(v) > 0 ? formatEok1(v) : "-");
+              const categoryText = normalizeDealCategoryText(item.category ?? item.categoryGroup ?? item.dealCategory);
+                return `
+                  <tr>
+                    <td class="align-left txt">${item.orgName || "-"}</td>
+                    <td class="align-left txt">${normalizeUpperOrg(item.upperOrg)}</td>
+                    <td class="align-left txt">${item.customerPersonName || "-"}</td>
+                    <td class="deal-name-cell align-left txt">${dealLink ? `<a class="deal-name-link" href="${dealLink}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">${item.dealName || item.dealId || "-"}</a>` : `<span class="deal-name-link">${item.dealName || item.dealId || "-"}</span>`}</td>
+                    <td class="auto-fit txt">${item.courseFormat || "-"}</td>
+                    <td class="auto-fit txt">${categoryText}</td>
                   <td class="auto-fit txt">${owners || "-"}</td>
                   <td class="auto-fit txt">${item.status || "-"}</td>
                   <td class="auto-fit txt">${formatProbability(item.probability)}</td>
@@ -8764,9 +9048,9 @@
                 </tr>
               `;
             })
-            .join("") || `<tr><td colspan="15" class="muted">딜이 없습니다.</td></tr>`;
+            .join("") || `<tr><td colspan="16" class="muted">딜이 없습니다.</td></tr>`;
 
-        state.rankPeopleModal.body.innerHTML = `
+          state.rankPeopleModal.body.innerHTML = `
           <div class="table-wrap full deals-modal-scroll">
             <table class="perf-table mp-monthly-table mp-deals-table">
               <colgroup>
@@ -8782,6 +9066,7 @@
                   <th class="align-left txt">담당자</th>
                   <th class="align-left txt">딜이름</th>
                   <th class="auto-fit txt">과정포맷</th>
+                  <th class="auto-fit txt">카테고리</th>
                   <th class="auto-fit txt">데이원</th>
                   <th class="auto-fit txt">상태</th>
                   <th class="auto-fit txt">가능성</th>
@@ -8879,6 +9164,222 @@
         showToast(`월별 체결액을 불러오지 못했습니다: ${err.message}`, "error");
       } finally {
         state.perfMonthly.loading = false;
+      }
+    }
+
+    function renderBizPerfMonthlyInquiriesTable(rows, months = [], selectedSize = "대기업") {
+      if (!rows || !rows.length || !months.length) {
+        return `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
+      }
+      const SIZE_ORDER = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타", "미기재"];
+      const FORMAT_ORDER = [
+        "구독제(온라인)",
+        "선택구매(온라인)",
+        "포팅",
+        "출강",
+        "복합(출강+온라인)",
+        "교육체계 수립",
+        "스킬컨설팅",
+        "스킬진단인증",
+        "컨텐츠 개발제작",
+        "비대면 실시간",
+        "바이트디그리",
+        "기타",
+        "미기재",
+      ];
+      const CATEGORY_ORDER = ["온라인", "생성형AI", "DT", "직무별교육", "스킬", "기타", "미기재"];
+      const idx = (arr, v) => {
+        const i = arr.indexOf(v);
+        return i >= 0 ? i : 999;
+      };
+
+      const headerCells = months.map((m) => `<th class="num">${m}</th>`).join("");
+      const parents = rows
+        .filter((r) => Number(r.level) === 1)
+        .sort(
+          (a, b) =>
+            idx(SIZE_ORDER, a.sizeGroup) - idx(SIZE_ORDER, b.sizeGroup) ||
+            idx(FORMAT_ORDER, a.courseFormat) - idx(FORMAT_ORDER, b.courseFormat),
+        );
+      const childrenMap = new Map();
+      rows
+        .filter((r) => Number(r.level) === 2)
+        .forEach((r) => {
+          const pid = `${r.courseFormat}`;
+          if (!childrenMap.has(pid)) childrenMap.set(pid, []);
+          childrenMap.get(pid).push(r);
+        });
+      childrenMap.forEach((list, pid) => {
+        list.sort((a, b) => idx(CATEGORY_ORDER, a.categoryGroup) - idx(CATEGORY_ORDER, b.categoryGroup));
+      });
+
+      const renderCells = (row) =>
+        months
+          .map((m) => {
+            const cnt = Number((row.countByMonth || {})[m] || 0);
+            const disabled = cnt === 0;
+            const display = Number.isFinite(cnt) ? cnt.toLocaleString("ko-KR") : "0";
+            return `
+              <td>
+                ${
+                  disabled
+                    ? `<span class="mp-cell-btn is-zero">${display}</span>`
+                    : `<button type="button" class="mp-cell-btn" data-perf-cell="1" data-perf-kind="monthly-inquiries" data-segment="${selectedSize}" data-row="${row.rowKey}" data-month="${m}">${display}</button>`
+                }
+              </td>
+            `;
+          })
+          .join("");
+
+      const bodyRows = parents
+        .map((parent) => {
+          const pid = `${parent.courseFormat}`;
+          const caret = `<span class="inq-caret" data-caret="1">▸</span>`;
+          const childRows =
+            (childrenMap.get(pid) || [])
+              .map(
+                (child) => `
+                <tr class="inq-child" data-parent-id="${pid}" style="display:none">
+                  <td class="sticky-col mp-format"></td>
+                  <td class="sticky-col mp-cat align-left">┗ ${escapeHtml(child.categoryGroup || child.label || "-")}</td>
+                  ${renderCells(child)}
+                </tr>
+              `,
+              )
+              .join("") || "";
+          return `
+            <tr class="inq-parent" data-parent-id="${pid}" aria-expanded="false">
+              <td class="sticky-col mp-format align-left">${caret}${escapeHtml(parent.courseFormat || "-")}</td>
+              <td class="sticky-col mp-cat align-left">전체</td>
+              ${renderCells(parent)}
+            </tr>
+            ${childRows}
+          `;
+        })
+        .join("");
+
+      return `
+        <section class="card">
+          <div class="control-row">
+            <h3>문의 인입 현황 (딜 생성 건수)</h3>
+            <div class="spacer"></div>
+            <span class="pill muted">2025-01 ~ 2026-12</span>
+          </div>
+          <div class="table-wrap full perf-table-wrap">
+            <table class="perf-table mp-monthly-table">
+              <colgroup>
+                <col style="width:14em" />
+                <col style="width:10em" />
+              </colgroup>
+              <thead>
+                <tr>
+                  <th class="sticky-col mp-format">과정포맷</th>
+                  <th class="sticky-col mp-cat">카테고리</th>
+                  ${headerCells}
+                </tr>
+              </thead>
+              <tbody>
+                ${bodyRows}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    async function renderBizPerfMonthlyInquiries(contentRoot, options = {}) {
+      const teamKey = options.teamKey || null;
+      const titleText = options.label || "월별 문의 인입 현황";
+      state.perfMonthlyInquiries.loading = true;
+      state.perfMonthlyInquiries.error = null;
+      const SIZE_ORDER = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타", "미기재"];
+      contentRoot.innerHTML = `
+        <section class="card compact-header">
+          <div class="control-row">
+            <div>
+              <h1>${escapeHtml(titleText)}</h1>
+              <div class="muted" id="perfMonthlyInquiryMeta">단위: 건 / 클릭 시 딜 목록 표시</div>
+            </div>
+            <div class="spacer"></div>
+            <span class="pill muted">2025-01 ~ 2026-12</span>
+          </div>
+        </section>
+        <div class="inq-sizebar" id="inqSizeBar"></div>
+        <div id="perfMonthlyInquiryTable">
+          <div class="muted card" style="padding: 12px;">불러오는 중...</div>
+        </div>
+      `;
+
+      const tableRoot = document.getElementById("perfMonthlyInquiryTable");
+      const metaEl = document.getElementById("perfMonthlyInquiryMeta");
+      const sizeBar = document.getElementById("inqSizeBar");
+      let latestData = null;
+
+      const renderSizeBar = (selected) =>
+        SIZE_ORDER.map(
+          (s) =>
+            `<button type="button" class="inq-size-btn ${s === selected ? "is-active" : ""}" data-inq-size="${s}" aria-pressed="${
+              s === selected
+            }">${s}</button>`,
+        ).join("");
+
+      const drawTable = (data) => {
+        const selected = state.perfMonthlyInquiries.ui.sizeGroup || "대기업";
+        if (sizeBar) {
+          sizeBar.innerHTML = renderSizeBar(selected);
+        }
+        if (metaEl) {
+          const snapshot = data.meta && data.meta.snapshot_version ? ` · ${data.meta.snapshot_version}` : "";
+          metaEl.textContent = `단위: 건 / 클릭 시 딜 목록 표시${snapshot}`;
+        }
+          let rowsForSize = (data.rows || []).filter((r) => r.sizeGroup === selected);
+          if (rowsForSize.some((r) => r.sizeGroup !== selected)) {
+            console.warn("Monthly inquiries rows contained mixed sizeGroup; enforcing selected filter", { selected });
+            rowsForSize = rowsForSize.filter((r) => r.sizeGroup === selected);
+          }
+        tableRoot.innerHTML = renderBizPerfMonthlyInquiriesTable(rowsForSize, data.months || [], selected);
+      };
+
+      const attachHandlers = () => {
+        tableRoot.addEventListener("click", async (e) => {
+          const btn = e.target.closest("button[data-perf-cell][data-perf-kind='monthly-inquiries']");
+          if (btn) {
+            const segment = btn.getAttribute("data-segment");
+            const row = btn.getAttribute("data-row");
+            const month = btn.getAttribute("data-month");
+            await openBizPerfDealsModal(segment, row, month, { teamKey, kind: "monthly-inquiries" });
+            return;
+          }
+          const parentRow = e.target.closest("tr.inq-parent");
+          if (!parentRow) return;
+          const pid = parentRow.getAttribute("data-parent-id");
+          const expanded = parentRow.getAttribute("aria-expanded") === "true";
+          parentRow.setAttribute("aria-expanded", expanded ? "false" : "true");
+          const caret = parentRow.querySelector(".inq-caret");
+          if (caret) caret.textContent = expanded ? "▸" : "▾";
+          tableRoot.querySelectorAll(`tr.inq-child[data-parent-id="${pid}"]`).forEach((tr) => {
+            tr.style.display = expanded ? "none" : "";
+          });
+        });
+        sizeBar.addEventListener("click", (e) => {
+          const btn = e.target.closest("button[data-inq-size]");
+          if (!btn) return;
+          const sg = btn.getAttribute("data-inq-size");
+          state.perfMonthlyInquiries.ui.sizeGroup = sg;
+          drawTable(latestData);
+        });
+      };
+
+      try {
+        latestData = await loadBizPerfInquirySummary({ teamKey });
+        drawTable(latestData);
+        attachHandlers();
+      } catch (err) {
+        state.perfMonthlyInquiries.error = err;
+        if (tableRoot) tableRoot.innerHTML = `<div class="muted card" style="padding:12px;">오류: ${err.message}</div>`;
+        showToast(`문의 인입 현황을 불러오지 못했습니다: ${err.message}`, "error");
+      } finally {
+        state.perfMonthlyInquiries.loading = false;
       }
     }
 
@@ -10867,6 +11368,335 @@
       });
 
       await refresh();
+    }
+
+    async function renderMonthlyRevenueReportScreen(contentRoot) {
+      const TEAM_OPTIONS = [
+        { value: "edu1", label: "기업교육 1팀" },
+        { value: "edu2", label: "기업교육 2팀" },
+        { value: "public", label: "공공교육팀" },
+      ];
+      const YEAR_OPTIONS = [2024, 2025, 2026, 2027];
+      const MONTH_OPTIONS = Array.from({ length: 12 }, (_, i) => i + 1);
+      state.monthlyRevenue = state.monthlyRevenue || { team: "", year: "", month: "", loading: false, error: null, data: null, cache: new Map() };
+
+      contentRoot.innerHTML = `
+        <section class="card monthly-revenue-screen">
+          <div class="control-row monthly-revenue-filterbar">
+            <label class="rev-label" for="revYearSelect">연도</label>
+            <select id="revYearSelect">
+              <option value="">선택</option>
+              ${YEAR_OPTIONS.map((y) => `<option value="${y}">${y}</option>`).join("")}
+            </select>
+
+            <label class="rev-label" for="revMonthSelect">월</label>
+            <select id="revMonthSelect">
+              <option value="">선택</option>
+              ${MONTH_OPTIONS.map((m) => {
+                const mm = String(m).padStart(2, "0");
+                return `<option value="${mm}">${mm}</option>`;
+              }).join("")}
+            </select>
+
+            <div class="rev-team-bar" id="revTeamButtons" aria-label="팀 선택">
+              ${TEAM_OPTIONS.map(
+                (o) => `
+                <button type="button" class="rev-team-btn" data-team="${o.value}" aria-pressed="false">
+                  ${o.label}
+                </button>
+              `
+              ).join("")}
+            </div>
+          </div>
+          <div id="revBody" class="muted" style="margin-top:12px;">필터를 선택하세요.</div>
+        </section>
+      `;
+
+      const yearSel = document.getElementById("revYearSelect");
+      const monthSel = document.getElementById("revMonthSelect");
+      const teamBar = document.getElementById("revTeamButtons");
+      const teamBtns = Array.from(teamBar?.querySelectorAll("button[data-team]") || []);
+      const body = document.getElementById("revBody");
+
+      const updateTeamButtons = () => {
+        const cur = String(state.monthlyRevenue.team || "");
+        teamBtns.forEach((btn) => {
+          const key = btn.getAttribute("data-team") || "";
+          const active = key === cur && Boolean(key);
+          btn.classList.toggle("is-active", active);
+          btn.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      };
+
+      const setSelectionsFromState = () => {
+        if (state.monthlyRevenue.year) yearSel.value = state.monthlyRevenue.year;
+        const mm = normalizeMonth2(state.monthlyRevenue.month);
+        if (mm) monthSel.value = mm;
+        updateTeamButtons();
+      };
+
+      const renderTables = (data) => {
+        const ymTitle = `${data.year}년 ${String(data.month).padStart(2, "0")}월`;
+
+        const formatWonNumber = (v) => {
+          if (v === null || v === undefined || v === "") return "-";
+          const n = Number(v);
+          if (!Number.isFinite(n)) return "-";
+          return Math.round(n).toLocaleString("ko-KR");
+        };
+
+        const renderReportTable = (items) => {
+          if (!items || !items.length) return `<div class="muted">조건을 충족하는 딜이 없습니다.</div>`;
+          return `
+            <div class="table-wrap full">
+              <table>
+                <thead>
+                  <tr>
+                    <th>코스 ID</th>
+                    <th>이름</th>
+                    <th>담당자</th>
+                    <th>상태</th>
+                    <th>계약 체결일</th>
+                    <th>금액(원)</th>
+                    <th>수강시작일</th>
+                    <th>수강종료일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${items
+                    .map((row) => {
+                      const link = buildSalesmapLink("deal", row.dealId);
+                      const owners = (row.owners || []).join(", ") || "-";
+                      return `
+                        <tr>
+                          <td>${escapeHtml(row.courseId || "")}</td>
+                          <td>${
+                            link
+                              ? `<a class="sm-link" href="${link}" target="_blank" rel="noopener noreferrer">${escapeHtml(
+                                  row.dealName || "-"
+                                )}</a>`
+                              : escapeHtml(row.dealName || "-")
+                          }</td>
+                          <td>${escapeHtml(owners)}</td>
+                          <td>${escapeHtml(row.status || "")}</td>
+                          <td>${formatDate(row.contractDate)}</td>
+                          <td class="num">${formatWonNumber(row.amount)}</td>
+                          <td>${formatDate(row.startDate)}</td>
+                          <td>${formatDate(row.endDate)}</td>
+                        </tr>
+                      `;
+                    })
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          `;
+        };
+
+        const renderReviewTable = (items) => {
+          const filtered = (items || []).filter((row) => !String(row.dealName || "").includes("[비매출입과]"));
+          if (!filtered.length) return `<div class="muted">검수가 필요한 딜이 없습니다.</div>`;
+          if (!items || !items.length) return `<div class="muted">검수가 필요한 딜이 없습니다.</div>`;
+          return `
+            <div class="table-wrap full">
+              <table>
+                <thead>
+                  <tr>
+                    <th>코스 ID</th>
+                    <th>이름</th>
+                    <th>담당자</th>
+                    <th>상태</th>
+                    <th>수주 예정일</th>
+                    <th>계약 체결일</th>
+                    <th>예상 체결액(원)</th>
+                    <th>금액(원)</th>
+                    <th>수강시작일</th>
+                    <th>수강종료일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${filtered
+                    .map((row) => {
+                      const link = buildSalesmapLink("deal", row.dealId);
+                      const owners = (row.owners || []).join(", ") || "-";
+                      return `
+                        <tr>
+                          <td>${escapeHtml(row.courseId || "")}</td>
+                          <td>${
+                            link
+                              ? `<a class="sm-link" href="${link}" target="_blank" rel="noopener noreferrer">${escapeHtml(
+                                  row.dealName || "-"
+                                )}</a>`
+                              : escapeHtml(row.dealName || "-")
+                          }</td>
+                          <td>${escapeHtml(owners)}</td>
+                          <td>${escapeHtml(row.status || "")}</td>
+                          <td>${formatDate(row.expectedCloseDate)}</td>
+                          <td>${formatDate(row.contractDate)}</td>
+                          <td class="num">${formatWonNumber(row.expectedAmount)}</td>
+                          <td class="num">${formatWonNumber(row.amount)}</td>
+                          <td>${formatDate(row.startDate)}</td>
+                          <td>${formatDate(row.endDate)}</td>
+                        </tr>
+                      `;
+                    })
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          `;
+        };
+
+        const history = data.reviewHistory || [];
+        const selectedKey = `${data.year.toString().padStart(4, "0")}-${String(data.month).padStart(2, "0")}`;
+
+        const renderMissingAccountingTable = (rows) => {
+          if (!rows || !rows.length) return "";
+          return `
+            <div class="table-wrap full">
+              <table>
+                <thead>
+                  <tr>
+                    <th>매출 신고 월</th>
+                    <th>코스 ID</th>
+                    <th>이름</th>
+                    <th>담당자</th>
+                    <th>상태</th>
+                    <th>계약 체결일</th>
+                    <th>금액(원)</th>
+                    <th>수강시작일</th>
+                    <th>수강종료일</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows
+                    .map((row) => {
+                      const link = buildSalesmapLink("deal", row.dealId);
+                      const owners = (row.owners || []).join(", ") || "-";
+                      return `
+                        <tr>
+                          <td>${escapeHtml(row.reportMonthKey || "")}</td>
+                          <td>${escapeHtml(row.courseId || "")}</td>
+                          <td>${
+                            link
+                              ? `<a class="sm-link" href="${link}" target="_blank" rel="noopener noreferrer">${escapeHtml(
+                                  row.dealName || "-"
+                                )}</a>`
+                              : escapeHtml(row.dealName || "-")
+                          }</td>
+                          <td>${escapeHtml(owners)}</td>
+                          <td>${escapeHtml(row.status || "")}</td>
+                          <td>${formatDate(row.contractDate)}</td>
+                          <td class="num">${formatWonNumber(row.amount)}</td>
+                          <td>${formatDate(row.startDate)}</td>
+                          <td>${formatDate(row.endDate)}</td>
+                        </tr>
+                      `;
+                    })
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          `;
+        };
+
+        const reviewSectionHtml = (() => {
+          if (!history.length) {
+            if (data.reviewDeals && data.reviewDeals.length) {
+              // Fallback to single-month behavior
+              return `
+                <section class="card" style="margin-top:16px;">
+                  <h3>${ymTitle} 검수가 필요한 딜 <span class="muted">(${data.counts?.review ?? 0}건)</span></h3>
+                  ${renderReviewTable(data.reviewDeals)}
+                </section>
+              `;
+            }
+            return `<section class="card" style="margin-top:16px;"><h3>검수가 필요한 딜</h3><div class="muted">검수 필요 딜이 없습니다.</div></section>`;
+          }
+
+          return history
+            .map((section) => {
+              const mk = section.monthKey || `${section.year}-${String(section.month).padStart(2, "0")}`;
+              const titleCount = section.count !== undefined ? ` (${section.count}건)` : "";
+              const isSelected = mk === selectedKey;
+              const heading = `${section.year}년 ${String(section.month).padStart(2, "0")}월 검수가 필요한 딜${isSelected ? titleCount : titleCount}`;
+              const content = renderReviewTable(section.deals || []);
+              return `
+                <section class="card" id="qcReview_${mk}" style="margin-top:16px;">
+                  <h3>${heading}</h3>
+                  ${content}
+                </section>
+              `;
+            })
+            .join("");
+        })();
+
+        const missing = Array.isArray(data.missingAccountingDeals) ? data.missingAccountingDeals : [];
+        const missingHtml = missing.length
+          ? `<section class="card" style="margin-top:12px;">
+              <h3>이전 기간에 매출신고 대상이었으나 회계팀에 신고가 안 된 딜 <span class="muted">(${missing.length}건)</span></h3>
+              ${renderMissingAccountingTable(missing)}
+            </section>`
+          : "";
+
+        body.innerHTML = `
+          ${missingHtml}
+          <section class="card" style="margin-top:12px;">
+            <h3>${ymTitle} 매출 신고 목록 <span class="muted">(${data.counts?.report ?? 0}건)</span></h3>
+            ${renderReportTable(data.reportDeals || [])}
+          </section>
+          ${reviewSectionHtml}
+        `;
+      };
+
+      const maybeLoad = async () => {
+        const teamVal = String(state.monthlyRevenue.team || "").trim();
+        const yearVal = Number(yearSel.value);
+        const monthKey = normalizeMonth2(monthSel.value);
+        const monthVal = monthKey ? Number(monthKey) : NaN;
+        state.monthlyRevenue.team = teamVal;
+        state.monthlyRevenue.year = yearSel.value;
+        state.monthlyRevenue.month = monthKey || "";
+
+        if (!teamVal || !yearSel.value || !monthKey) {
+          body.innerHTML = `<div class="muted">필터를 선택하세요.</div>`;
+          return;
+        }
+
+        body.textContent = "불러오는 중...";
+        state.monthlyRevenue.loading = true;
+        state.monthlyRevenue.error = null;
+        try {
+          const data = await loadMonthlyRevenueReport(teamVal, yearVal, monthVal, QC_REVENUE_HISTORY_FROM);
+          state.monthlyRevenue.data = data;
+          renderTables(data);
+        } catch (err) {
+          state.monthlyRevenue.error = err;
+          body.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+          showToast(`매출 신고 조회 실패: ${err.message}`, "error");
+        } finally {
+          state.monthlyRevenue.loading = false;
+        }
+      };
+
+      setSelectionsFromState();
+      applyDefaultRevenuePeriodIfNeeded(state.monthlyRevenue, yearSel, monthSel);
+      updateTeamButtons();
+
+      teamBar.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-team]");
+        if (!btn) return;
+        const next = btn.getAttribute("data-team") || "";
+        if (!next) return;
+        if (state.monthlyRevenue.team === next) return;
+        state.monthlyRevenue.team = next;
+        updateTeamButtons();
+        maybeLoad();
+      });
+      yearSel.addEventListener("change", maybeLoad);
+      monthSel.addEventListener("change", maybeLoad);
+
+      await maybeLoad();
     }
 
     async function renderRank2025PeopleScreen(contentRoot) {

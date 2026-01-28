@@ -27,7 +27,10 @@ ONLINE_PNL_FORMATS = {
     "포팅",
 }
 SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타/미입력"]
+INQ_ALL = "__ALL__"
 PUBLIC_KEYWORDS = ["공단", "공사", "진흥원", "재단", "협회", "청", "시청", "도청", "구청", "교육청", "원"]
+ACCOUNTING_AUDIT_START_KEY = "2025-01"
+ACCOUNTING_DATA_ENV = "ACCOUNTING_DATA_PATH"
 _KST_TZ = timezone(timedelta(hours=9))
 _COUNTERPARTY_DRI_CACHE: Dict[Tuple[Path, float, str, int, str], Dict[str, Any]] = {}
 _COUNTERPARTY_DRI_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] = {}
@@ -35,8 +38,30 @@ _COUNTERPARTY_TARGET_WARNED: Set[Tuple[float, str]] = set()
 _RANK_2025_SUMMARY_CACHE: Dict[Tuple[Path, float, str, Tuple[int, ...]], Dict[str, Any]] = {}
 _PERF_MONTHLY_DATA_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
 _PERF_MONTHLY_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] = {}
+_PERF_MONTHLY_INQUIRIES_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
+_PERF_MONTHLY_INQUIRIES_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str, str], Dict[str, Any]] = {}
 _PL_PROGRESS_PAYLOAD_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
 _PL_PROGRESS_SUMMARY_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
+_QC_MONTHLY_REVENUE_CACHE: Dict[Tuple[Path, float, str, int, int, Optional[str], Optional[float]], Dict[str, Any]] = {}
+_ACCOUNTING_COURSE_ID_CACHE: Dict[Tuple[Path, Optional[float]], Set[str]] = {}
+
+INQUIRY_SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타", "미기재"]
+INQUIRY_COURSE_FORMATS = [
+    "구독제(온라인)",
+    "선택구매(온라인)",
+    "포팅",
+    "출강",
+    "복합(출강+온라인)",
+    "교육체계 수립",
+    "스킬컨설팅",
+    "스킬진단인증",
+    "컨텐츠 개발제작",
+    "비대면 실시간",
+    "바이트디그리",
+    "기타",
+    "미기재",
+]
+INQUIRY_CATEGORY_GROUPS = ["온라인", "생성형AI", "DT", "직무별교육", "스킬", "기타", "미기재"]
 
 PL_2026_TARGET_DEFAULT: Dict[str, Dict[str, float]] = {
     "2601": {"online": 3.7, "offline": 2.1},
@@ -301,15 +326,32 @@ PL_2026_TARGET_FULL: Dict[str, Dict[str, Dict[str, float]]] = {
 
 def _date_only(val: Any) -> str:
     """
-    Normalize a datetime-ish value to YYYY-MM-DD. Returns "" when empty/None.
+    Normalize a datetime-ish value to YYYY-MM-DD (KST). Returns "" when empty/None.
     """
     if val is None:
         return ""
-    text = str(val)
-    if "T" in text:
-        text = text.split("T")[0]
+    text_raw = str(val).strip()
+    if not text_raw:
+        return ""
+
+    # Try ISO8601 with timezone first to avoid off-by-one when source is UTC/Z.
+    if "T" in text_raw:
+        iso_text = text_raw
+        if iso_text.endswith("Z"):
+            iso_text = iso_text[:-1] + "+00:00"
+        try:
+            dt = datetime.fromisoformat(iso_text)
+            if dt.tzinfo is not None:
+                return dt.astimezone(_KST_TZ).date().isoformat()
+            return dt.date().isoformat()
+        except Exception:
+            pass
+
+    text = text_raw
     if " " in text:
         text = text.split(" ")[0]
+    if "T" in text:
+        text = text.split("T")[0]
     return text
 
 
@@ -356,6 +398,65 @@ def _has_column(conn: sqlite3.Connection, table_name: str, column_name: str) -> 
     if cache_key:
         _TABLE_COLUMNS_CACHE[cache_key] = (mtime, cols)
     return column_name in cols
+
+
+def _normalize_course_id(val: Any) -> str:
+    text = (val or "").strip()
+    if not text or text == "-":
+        return ""
+    # drop commas/spaces and keep digits only
+    text = text.replace(",", "").replace(" ", "")
+    text = re.sub(r"[^0-9]", "", text)
+    return text
+
+
+def _load_accounting_course_ids(path: Path) -> Tuple[Set[str], Optional[float], str]:
+    """
+    Load accounting course IDs from TSV file (column '코스ID' or '코스 ID').
+    Returns (set, mtime, status).
+    status: "OK" | "MISSING" | "INVALID_HEADER"
+    """
+    if not path.exists():
+        return set(), None, "MISSING"
+
+    try:
+        mtime = path.stat().st_mtime
+    except Exception:
+        mtime = None
+
+    cache_key = (path, mtime)
+    if cache_key in _ACCOUNTING_COURSE_ID_CACHE:
+        return _ACCOUNTING_COURSE_ID_CACHE[cache_key], mtime, "OK"
+
+    course_ids: Set[str] = set()
+    status = "OK"
+    try:
+        with path.open("r", encoding="utf-8") as f:
+            lines = f.read().splitlines()
+        if not lines:
+            _ACCOUNTING_COURSE_ID_CACHE[cache_key] = course_ids
+            return course_ids, mtime, status
+        header = lines[0].split("\t")
+        header_norm = [h.replace(" ", "") for h in header]
+        try:
+            col_idx = header_norm.index("코스ID")
+        except ValueError:
+            status = "INVALID_HEADER"
+            _ACCOUNTING_COURSE_ID_CACHE[cache_key] = course_ids
+            return course_ids, mtime, status
+        for line in lines[1:]:
+            parts = line.split("\t")
+            if col_idx >= len(parts):
+                continue
+            raw = parts[col_idx]
+            norm = _normalize_course_id(raw)
+            if norm:
+                course_ids.add(norm)
+    except Exception:
+        status = "INVALID_HEADER"
+
+    _ACCOUNTING_COURSE_ID_CACHE[cache_key] = course_ids
+    return course_ids, mtime, status
 
 
 def _pick_column(conn: sqlite3.Connection, table: str, candidates: Sequence[str]) -> Optional[str]:
@@ -620,11 +721,86 @@ def _parse_date(val: Any) -> Optional[date]:
         return None
 
 
+def _date_str(parsed: Optional[date], raw: Any) -> str:
+    """
+    Return YYYY-MM-DD string preferring parsed date (KST adjusted).
+    """
+    if parsed:
+        return parsed.isoformat()
+    return _date_only(raw)
+
+
 def _normalize_course_format(val: Any) -> str:
     text = (val or "").strip()
     # Remove spaces before parentheses to match 온라인 포맷 변형
     text = re.sub(r"\s+\(", "(", text)
     return text
+
+
+_INQUIRY_CATEGORY_MAP: Dict[str, Set[str]] = {
+    "온라인": {"법정의무교육", "온라인", "자유입과(온라인)"},
+    "생성형AI": {"생성형AI"},
+    "DT": {"데이터분석/CDS", "DX Essential", "빅데이터/AI"},
+    "직무별교육": {
+        "재무회계",
+        "PM/PO",
+        "마케팅",
+        "개발/CD",
+        "OA/업무자동화",
+        "비즈니스/문제해결력",
+        "HR",
+        "디자인",
+        "UI/UX",
+    },
+    "스킬": {"Skill-based HRD", "Skill Match"},
+}
+
+
+def _normalize_inquiry_size(org_name: str | None, size_raw: str | None) -> str:
+    """
+    Inquiry 전용 규모 정규화: 실제 값(pass-through) 우선, 7개 버킷 고정.
+    """
+    s = (size_raw or "").strip()
+    if not s:
+        return "미기재"
+
+    if s in {"대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타"}:
+        return s
+
+    if s == "기타/미입력":
+        return "기타"
+
+    return "기타"
+
+
+def _normalize_inquiry_course_format(val: Any) -> str:
+    text = _normalize_course_format(val)
+    if not text:
+        return "미기재"
+    if text in INQUIRY_COURSE_FORMATS:
+        return text
+    return "기타"
+
+
+def _map_inquiry_category_group(val: Any) -> str:
+    text = (val or "").strip()
+    if not text:
+        return "미기재"
+    for grp, keywords in _INQUIRY_CATEGORY_MAP.items():
+        if text in keywords:
+            return grp
+    return "기타"
+
+
+def _is_false_like(val: Any) -> bool:
+    if val is False:
+        return True
+    if val is None:
+        return False
+    if isinstance(val, (int, float)):
+        return float(val) == 0.0
+    text = str(val).strip().lower()
+    return text in {"false", "0", "no", "n", "x"}
 
 
 def _is_online_for_pnl(val: Any) -> bool:
@@ -675,16 +851,35 @@ def normalize_owner_name(name: str) -> str:
 
 PART_STRUCTURE = {
     "기업교육 1팀": {
-        "1파트": ["김솔이", "황초롱", "김정은", "김동찬", "정태윤", "서정연", "오진선", "공새봄"],
+        "1파트": [
+            "김솔이",
+            "황초롱",
+            "김정은",
+            "김동찬",
+            "정태윤",
+            "서정연",
+            "오진선",
+            "공새봄",
+            "김별",  # 팀장 포함
+        ],
         "2파트": ["강지선", "정하영", "박범규", "하승민", "이은서", "김세연", "이주연"],
     },
     "기업교육 2팀": {
-        "1파트": ["권노을", "이윤지", "이현진", "김민선", "강연정", "방신우", "홍제환"],
+        "1파트": [
+            "권노을",
+            "이윤지",
+            "이현진",
+            "김민선",
+            "강연정",
+            "방신우",
+            "홍제환",
+            "정선희",  # 팀장 포함
+        ],
         "2파트": ["정다혜", "임재우", "송승희", "손승완", "김윤지", "손지훈", "홍예진"],
         "온라인셀": ["강진우", "강다현", "이수빈"],
     },
     "공공교육팀": {
-        "1파트": ["이준석", "김미송", "김다인", "채선영", "황인후", "서민정"],
+        "전체": ["이준석", "김미송", "오정민", "조경원", "김다인", "서민정", "김지원", "김진호"],
     },
 }
 
@@ -1482,8 +1677,19 @@ def _month_key_from_text(val: Any) -> str | None:
     """
     if val is None:
         return None
-    text = str(val)
-    match = re.match(r"^(\d{4})[-/]?(\d{1,2})", text)
+    text_raw = str(val).strip()
+    if not text_raw:
+        return None
+
+    # If ISO datetime, first normalize to KST date then extract.
+    if "T" in text_raw:
+        kst_date = _date_only(text_raw)
+        match_kst = re.match(r"^(\d{4})-(\d{2})", kst_date)
+        if match_kst:
+            yyyy, mm = match_kst.group(1), match_kst.group(2)
+            return f"{yyyy[-2:]}{mm}"
+
+    match = re.match(r"^(\d{4})[-/]?(\d{1,2})", text_raw)
     if not match:
         return None
     year, month = match.group(1), match.group(2)
@@ -3157,6 +3363,310 @@ def get_qc_deal_errors_for_owner(team: str, owner: str, db_path: Path = DB_PATH)
     }
 
 
+def _qc_monthly_team_members(team: str) -> Set[str]:
+    """
+    Return normalized owner names for the given QC team (edu1|edu2|public).
+    """
+    members = _qc_members(team)
+    return {m for m in members if m}
+
+
+def _parse_owner_names_display(raw: Any) -> List[str]:
+    """
+    Parse owner names for display while keeping normalization consistent with roster matching.
+    """
+    owners_raw = _parse_owner_names(raw)
+    seen: Set[str] = set()
+    result: List[str] = []
+    for name in owners_raw:
+        norm = normalize_owner_name(name) or name.strip()
+        if not norm:
+            continue
+        if norm in seen:
+            continue
+        seen.add(norm)
+        result.append(norm)
+    return result
+
+
+def _matches_team(owners: Any, team_members: Set[str]) -> bool:
+    owner_list = _parse_owner_names(owners)
+    if not owner_list:
+        return False
+    for name in owner_list:
+        norm = normalize_owner_name(name)
+        if norm and norm in team_members:
+            return True
+    return False
+
+
+def get_qc_monthly_revenue_report(
+    team: str, year: int, month: int, history_from: str | None = None, db_path: Path = DB_PATH
+) -> Dict[str, Any]:
+    """
+    Build monthly revenue report/review lists for QC.
+    - team: edu1|edu2|public
+    - year: YYYY
+    - month: 1~12
+    - history_from: optional 'YYYY-MM' to include review history for past months (inclusive).
+    """
+    if team not in {"edu1", "edu2", "public"}:
+        raise ValueError("team must be one of edu1|edu2|public")
+    if month < 1 or month > 12:
+        raise ValueError("month must be between 1 and 12")
+    if year < 2000 or year > 2100:
+        raise ValueError("year must be between 2000 and 2100")
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    accounting_path = Path(os.getenv(ACCOUNTING_DATA_ENV, Path(__file__).parent / "resources" / "accounting data.txt"))
+    accounting_ids, accounting_mtime, accounting_status = _load_accounting_course_ids(accounting_path)
+
+    selected_key = f"{year:04d}-{month:02d}"
+
+    history_start_key: str | None = None
+    if history_from:
+        match = re.match(r"^(\d{4})-(\d{2})$", history_from.strip())
+        if not match:
+            raise ValueError("history_from must be in YYYY-MM format")
+        h_year, h_month = int(match.group(1)), int(match.group(2))
+        if h_month < 1 or h_month > 12:
+            raise ValueError("history_from month must be between 1 and 12")
+        history_start_key = f"{h_year:04d}-{h_month:02d}"
+        if history_start_key > selected_key:
+            raise ValueError("history_from cannot be later than the selected year/month")
+
+    def _month_iter(start_key: str, end_key: str) -> List[Tuple[int, int, str]]:
+        sy, sm = int(start_key[:4]), int(start_key[5:])
+        ey, em = int(end_key[:4]), int(end_key[5:])
+        cur_y, cur_m = sy, sm
+        items: List[Tuple[int, int, str]] = []
+        while (cur_y, cur_m) <= (ey, em):
+            items.append((cur_y, cur_m, f"{cur_y:04d}-{cur_m:02d}"))
+            if cur_m == 12:
+                cur_y += 1
+                cur_m = 1
+            else:
+                cur_m += 1
+        return items
+
+    months_list = _month_iter(history_start_key or selected_key, selected_key)
+    months_set = {key for _, _, key in months_list}
+
+    mtime = db_path.stat().st_mtime
+    cache_key = (db_path, mtime, team, year, month, history_start_key, accounting_mtime)
+    cached = _QC_MONTHLY_REVENUE_CACHE.get(cache_key)
+    if cached:
+        return cached
+
+    team_members = _qc_monthly_team_members(team)
+
+    def _parse_date_flexible(val: Any) -> Optional[date]:
+        if val is None:
+            return None
+        text = str(val).strip()
+        if not text:
+            return None
+        # Preserve ISO datetime (incl. milliseconds) to keep parser intact
+        if "T" in text:
+            return _parse_date(text)
+        # Normalize date-only strings with common separators
+        standardized = text.replace(".", "-").replace("/", "-")
+        return _parse_date(standardized)
+
+    with _connect(db_path) as conn:
+        rows = _fetch_all(
+            conn,
+            'SELECT '
+            '  id, '
+            '  "코스 ID" AS course_id, '
+            '  "이름" AS deal_name, '
+            '  "담당자" AS owner_json, '
+            '  "상태" AS status_raw, '
+            '  "성사 가능성" AS probability_raw, '
+            '  "계약 체결일" AS contract_date_raw, '
+            '  "수주 예정일" AS expected_close_date_raw, '
+            '  "금액" AS amount_raw, '
+            '  "예상 체결액" AS expected_amount_raw, '
+            '  "수강시작일" AS start_date_raw, '
+            '  "수강종료일" AS end_date_raw '
+            "FROM deal",
+        )
+
+    report_by_month: Dict[str, List[Dict[str, Any]]] = {}
+    review_by_month: Dict[str, List[Dict[str, Any]]] = {}
+    missing_accounting: List[Dict[str, Any]] = []
+    seen_missing_ids: Set[str] = set()
+
+    for row in rows:
+        owners_display = _parse_owner_names_display(row["owner_json"])
+        if not owners_display:
+            continue
+        if not _matches_team(row["owner_json"], team_members):
+            continue
+
+        course_id = (row["course_id"] or "").strip()
+        deal_name = (row["deal_name"] or "").strip()
+        status_norm = _status_norm(row["status_raw"])
+        prob_is_high = _prob_is_high(row["probability_raw"]) or _prob_is_high(row["status_raw"])
+        contract_date = _parse_date_flexible(row["contract_date_raw"])
+        expected_close_date = _parse_date_flexible(row["expected_close_date_raw"])
+        amount_val = _to_number(row["amount_raw"])
+        expected_amount_val = _to_number(row["expected_amount_raw"])
+        start_date = _parse_date_flexible(row["start_date_raw"])
+        end_date = _parse_date_flexible(row["end_date_raw"])
+        start_date_text = _date_str(start_date, row["start_date_raw"])
+        end_date_text = _date_str(end_date, row["end_date_raw"])
+        contract_date_text = _date_str(contract_date, row["contract_date_raw"])
+        expected_close_text = _date_str(expected_close_date, row["expected_close_date_raw"])
+        report_base_ok = (
+            course_id
+            and deal_name
+            and status_norm == "won"
+            and contract_date
+            and amount_val is not None
+            and not _missing_str(row["start_date_raw"])
+            and not _missing_str(row["end_date_raw"])
+        )
+
+        # --- Report list (Won, fully populated) ---
+        report_month_key = None
+        if contract_date:
+            report_month_key = f"{contract_date.year:04d}-{contract_date.month:02d}"
+        report_condition = (
+            report_base_ok
+            and report_month_key in months_set
+        )
+        if report_condition and report_month_key:
+            report_by_month.setdefault(report_month_key, []).append(
+                {
+                    "dealId": row["id"],
+                    "courseId": course_id,
+                    "dealName": deal_name,
+                    "owners": owners_display,
+                    "status": row["status_raw"],
+                    "contractDate": contract_date_text,
+                    "amount": amount_val,
+                    "startDate": start_date_text,
+                    "endDate": end_date_text,
+                }
+            )
+
+        # --- Missing accounting audit (prior months, independent of review conditions) ---
+        if (
+            report_month_key
+            and report_base_ok
+            and ACCOUNTING_AUDIT_START_KEY <= report_month_key < selected_key
+        ):
+            norm_course = _normalize_course_id(course_id)
+            if norm_course and norm_course not in accounting_ids:
+                if row["id"] not in seen_missing_ids:
+                    seen_missing_ids.add(row["id"])
+                    missing_accounting.append(
+                        {
+                            "reportMonthKey": report_month_key,
+                            "dealId": row["id"],
+                            "courseId": course_id,
+                            "dealName": deal_name,
+                            "owners": owners_display,
+                            "status": row["status_raw"],
+                            "contractDate": contract_date_text,
+                            "amount": amount_val,
+                            "startDate": start_date_text,
+                            "endDate": end_date_text,
+                        }
+                    )
+
+        # --- Review list (확정/높음, not already in report) ---
+        # Date rule: prefer contract_date if present else expected_close_date.
+        date_for_match = contract_date or expected_close_date
+        if not date_for_match:
+            continue
+        month_key_for_review = f"{date_for_match.year:04d}-{date_for_match.month:02d}"
+        if month_key_for_review not in months_set:
+            continue
+        if not prob_is_high:
+            continue
+        if "[비매출입과]" in deal_name:
+            continue
+        if report_condition and report_month_key == month_key_for_review:
+            continue
+
+        review_by_month.setdefault(month_key_for_review, []).append(
+            {
+                "dealId": row["id"],
+                "courseId": course_id,
+                "dealName": deal_name,
+                "owners": owners_display,
+                "status": row["status_raw"],
+                "probability": row["probability_raw"],
+                "expectedCloseDate": expected_close_text,
+                "contractDate": contract_date_text,
+                "expectedAmount": expected_amount_val,
+                "amount": amount_val,
+                "startDate": start_date_text,
+                "endDate": end_date_text,
+            }
+        )
+
+    for deals in report_by_month.values():
+        deals.sort(key=lambda d: (d["contractDate"] or "", d["dealName"], d["dealId"]))
+    for deals in review_by_month.values():
+        deals.sort(
+            key=lambda d: (
+                d["contractDate"] or d["expectedCloseDate"] or "",
+                d["dealName"] or "",
+                d["dealId"] or "",
+            )
+        )
+
+    if missing_accounting:
+        missing_accounting.sort(
+            key=lambda d: (
+                d["reportMonthKey"],
+                d["contractDate"] or "",
+                d["dealName"] or "",
+                d["dealId"] or "",
+            ),
+            reverse=True,
+        )
+
+    payload = {
+        "team": team,
+        "year": year,
+        "month": month,
+        "reportDeals": report_by_month.get(selected_key, []),
+        "reviewDeals": review_by_month.get(selected_key, []),
+        "counts": {
+            "report": len(report_by_month.get(selected_key, [])),
+            "review": len(review_by_month.get(selected_key, [])),
+            "missingAccounting": len(missing_accounting),
+        },
+        "meta": {"db_version": mtime, "accounting_status": accounting_status},
+        "missingAccountingDeals": missing_accounting,
+    }
+
+    if history_start_key:
+        history_sections: List[Dict[str, Any]] = []
+        for y, m, key in reversed(months_list):
+            deals = review_by_month.get(key, [])
+            if not deals:
+                continue
+            history_sections.append(
+                {
+                    "year": y,
+                    "month": m,
+                    "monthKey": key,
+                    "count": len(deals),
+                    "deals": deals,
+                }
+            )
+        payload["reviewHistory"] = history_sections
+
+    _QC_MONTHLY_REVENUE_CACHE[cache_key] = payload
+    return payload
+
+
 def get_initial_dashboard_data(db_path: Path = DB_PATH) -> Dict[str, Any]:
     """
     Read the SQLite snapshot and return a JSON-serializable structure for the dashboard.
@@ -3423,6 +3933,8 @@ def _load_perf_monthly_data(db_path: Path) -> Dict[str, Any]:
     with _connect(db_path) as conn:
         course_id_col = _detect_course_id_column(conn)
         course_id_select = f'd."{course_id_col}" AS course_id' if course_id_col else "NULL AS course_id"
+        category_col = _pick_column(conn, "deal", ["카테고리", "category", "Category"])
+        category_select = f'd."{category_col}" AS category' if category_col else "NULL AS category"
         base_query = f'''
             SELECT
               d.id AS deal_id,
@@ -3442,7 +3954,8 @@ def _load_perf_monthly_data(db_path: Path) -> Dict[str, Any]:
               d."수주 예정일" AS expected_close_date,
               d."수강시작일" AS start_date,
               d."수강종료일" AS end_date,
-              {course_id_select}
+              {course_id_select},
+              {category_select}
             FROM deal d
             LEFT JOIN organization o ON o.id = d.organizationId
             LEFT JOIN people p ON p.id = d.peopleId
@@ -3511,6 +4024,7 @@ def _load_perf_monthly_data(db_path: Path) -> Dict[str, Any]:
                 "deal_id": row["deal_id"],
                 "deal_name": row["deal_name"] or row["deal_id"],
                 "course_format": row["course_format"],
+                "category": row["category"] if "category" in row.keys() else None,
                 "day1_owner_names": _parse_owner_names(row["owner_json"]),
                 "status": row["status"],
                 "probability": row["probability"],
@@ -3534,6 +4048,188 @@ def _load_perf_monthly_data(db_path: Path) -> Dict[str, Any]:
     }
     _PERF_MONTHLY_DATA_CACHE[cache_key] = payload
     return payload
+
+
+
+def _load_perf_monthly_inquiries_data(db_path: Path) -> Dict[str, Any]:
+    """
+    Load deals for monthly inquiry (deal creation) counts.
+    Uses deal."생성 날짜" as month key and filters out Convert / onlineFirst==FALSE.
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    stat = db_path.stat()
+    cache_key = (db_path, stat.st_mtime)
+    cached = _PERF_MONTHLY_INQUIRIES_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    excluded = {"status_convert": 0, "online_first_false": 0, "online_first_missing": 0, "missing_created_at": 0}
+    join_source = {"deal_org_used": 0, "people_org_used": 0, "missing_both": 0}
+    value_counts_size: Dict[str, int] = {}
+    size_raw_counts: Dict[str, int] = {}
+    size_group_counts: Dict[str, int] = {}
+    missing_course_raw = 0
+    missing_category_raw = 0
+    raw_sizes: Set[str] = set()
+    raw_formats: Set[str] = set()
+    raw_categories: Set[str] = set()
+
+    with _connect(db_path) as conn:
+        created_col = _pick_column(conn, "deal", ["생성 날짜", "생성일", "createdAt", "created_at", "created_at_utc"])
+        if not created_col:
+            raise ValueError("deal 생성 날짜 컬럼을 찾을 수 없습니다.")
+        course_id_col = _detect_course_id_column(conn)
+        online_first_col = _pick_column(
+            conn,
+            "deal",
+            [
+                "(온라인)최초 입과 여부",
+                "온라인최초 입과 여부",
+                "온라인 최초 입과 여부",
+                "online_first",
+                "online_first_enrollment",
+                "online_first_enroll",
+            ],
+        )
+
+        course_id_select = f'd."{course_id_col}" AS course_id' if course_id_col else "NULL AS course_id"
+        online_first_select = f'd."{online_first_col}" AS online_first' if online_first_col else "NULL AS online_first"
+
+        rows = _fetch_all(
+            conn,
+            f"""
+            SELECT
+              d.id AS deal_id,
+              d."이름" AS deal_name,
+              NULLIF(TRIM(d.organizationId), '') AS deal_org_id,
+              NULLIF(TRIM(p.organizationId), '') AS people_org_id,
+              COALESCE(NULLIF(TRIM(d.organizationId), ''), NULLIF(TRIM(p.organizationId), '')) AS org_id,
+              COALESCE(o."이름", COALESCE(NULLIF(TRIM(d.organizationId), ''), NULLIF(TRIM(p.organizationId), ''))) AS org_name,
+              o."기업 규모" AS size_raw,
+              d."과정포맷" AS course_format_raw,
+              d."카테고리" AS category_raw,
+              d."상태" AS status,
+              d."성사 가능성" AS probability,
+              d."예상 체결액" AS expected_amount,
+              d."금액" AS amount,
+              d."수주 예정일" AS expected_close_date,
+              d."계약 체결일" AS contract_date,
+              d."수강시작일" AS start_date,
+              d."수강종료일" AS end_date,
+              d."담당자" AS owner_json,
+              p."소속 상위 조직" AS upper_org,
+              p."이름" AS person_name,
+              d."{created_col}" AS created_at,
+              {online_first_select},
+              {course_id_select}
+            FROM deal d
+            LEFT JOIN people p ON p.id = d.peopleId
+            LEFT JOIN organization o ON o.id = COALESCE(NULLIF(TRIM(d.organizationId), ''), NULLIF(TRIM(p.organizationId), ''))
+            WHERE d."{created_col}" LIKE '2025%' OR d."{created_col}" LIKE '2026%'
+            """,
+        )
+        rows = [dict(r) for r in rows]
+
+    data_rows: List[Dict[str, Any]] = []
+    for row in rows:
+        month_key = _month_key_from_text(row["created_at"])
+        if not month_key:
+            excluded["missing_created_at"] += 1
+            continue
+        status_norm = _status_norm(row["status"])
+        if status_norm == "convert":
+            excluded["status_convert"] += 1
+            continue
+
+        raw_sizes.add((row["size_raw"] or "").strip())
+        raw_formats.add((row["course_format_raw"] or "").strip())
+        raw_categories.add((row["category_raw"] or "").strip())
+
+        deal_org_id = (row.get("deal_org_id") or "").strip()
+        people_org_id = (row.get("people_org_id") or "").strip()
+        if deal_org_id:
+            join_source["deal_org_used"] += 1
+        elif people_org_id:
+            join_source["people_org_used"] += 1
+        else:
+            join_source["missing_both"] += 1
+
+        size_raw_key = (row["size_raw"] or "").strip() or "<NULL_OR_EMPTY>"
+        size_raw_counts[size_raw_key] = size_raw_counts.get(size_raw_key, 0) + 1
+
+        course_format_norm = _normalize_course_format(row["course_format_raw"])
+        is_online_fmt = course_format_norm in ONLINE_COURSE_FORMATS
+
+        if online_first_col and is_online_fmt and _is_false_like(row["online_first"]):
+            excluded["online_first_false"] += 1
+            continue
+        if online_first_col and is_online_fmt and _missing_str(row["online_first"]):
+            excluded["online_first_missing"] += 1
+
+        size_group = _normalize_inquiry_size(row["org_name"], row["size_raw"])
+        value_counts_size[size_group] = value_counts_size.get(size_group, 0) + 1
+        size_group_counts[size_group] = size_group_counts.get(size_group, 0) + 1
+
+        course_format = _normalize_inquiry_course_format(row["course_format_raw"])
+        if not (row["course_format_raw"] or "").strip():
+            missing_course_raw += 1
+
+        category_group = _map_inquiry_category_group(row["category_raw"])
+        if not (row["category_raw"] or "").strip():
+            missing_category_raw += 1
+        owner_names = _parse_owner_names(row["owner_json"])
+
+        data_rows.append(
+            {
+                "deal_id": row["deal_id"],
+                "deal_name": row["deal_name"],
+            "org_id": row["org_id"],
+            "org_name": row["org_name"],
+                "size_group": size_group,
+                "course_format": course_format,
+                "category_group": category_group,
+                "category": row["category_raw"],
+                "month": month_key,
+                "owner_names": owner_names,
+                "upper_org": row["upper_org"],
+                "person_name": row["person_name"],
+                "status": row["status"],
+                "probability": row["probability"],
+                "expected_close_date": row["expected_close_date"],
+                "expected_amount": _to_number(row["expected_amount"]),
+                "start_date": row["start_date"],
+                "end_date": row["end_date"],
+                "course_id": row["course_id"],
+                "contract_date": row["contract_date"],
+                "amount": _to_number(row["amount"]),
+            }
+        )
+
+    payload = {
+        "rows": data_rows,
+        "snapshot_version": f"db_mtime:{int(stat.st_mtime)}",
+        "meta_debug": {
+            "excluded": excluded,
+            "value_counts": {
+                "sizeGroup": value_counts_size,
+                "courseFormat_missing_raw": missing_course_raw,
+                "category_missing_raw": missing_category_raw,
+                "size_raw_counts": size_raw_counts,
+                "size_group_counts": size_group_counts,
+            },
+            "join_source": join_source,
+            "raw_samples": {
+                "size_raw_unique_top": list(itertools.islice(raw_sizes, 20)),
+                "course_format_raw_unique_top": list(itertools.islice(raw_formats, 20)),
+                "category_raw_unique_top": list(itertools.islice(raw_categories, 20)),
+            },
+        },
+    }
+    _PERF_MONTHLY_INQUIRIES_CACHE[cache_key] = payload
+    return payload
+
 
 
 def _perf_segments() -> List[Dict[str, Any]]:
@@ -3712,6 +4408,7 @@ def get_perf_monthly_amounts_deals(
                 "dealId": deal["deal_id"],
                 "dealName": deal["deal_name"],
                 "courseFormat": deal["course_format"],
+                "category": deal.get("category"),
                 "day1OwnerNames": deal["day1_owner_names"],
                 "status": deal["status"],
                 "probability": deal["probability"],
@@ -3735,6 +4432,181 @@ def get_perf_monthly_amounts_deals(
         "dealCount": len(items),
         "items": items,
         "note": "성사 확정/높음은 금액이 없으면 예상 체결액을 합산합니다.",
+        "meta": {"snapshot_version": payload.get("snapshot_version"), "team": team},
+    }
+
+
+def get_perf_monthly_inquiries_summary(
+    from_month: str = "2025-01",
+    to_month: str = "2026-12",
+    team: Optional[str] = None,
+    db_path: Path = DB_PATH,
+) -> Dict[str, Any]:
+    """
+    Summary counts of deal creations by (size_group, course_format, category_group) × month.
+    """
+    months = _month_range_keys(from_month, to_month)
+    month_set = set(months)
+    if not months:
+        raise ValueError("from/to month range is empty")
+
+    payload = _load_perf_monthly_inquiries_data(db_path)
+    stat = db_path.stat()
+    cache_key = (db_path, stat.st_mtime, from_month, to_month, team or "all")
+    cached = _PERF_MONTHLY_INQUIRIES_SUMMARY_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    team_members = _dealcheck_team_members(team)
+    detail_counts: Dict[Tuple[str, str, str], Dict[str, int]] = {}
+    fmt_rollup: Dict[Tuple[str, str], Dict[str, int]] = {}
+
+    def _init_counts_for_detail(size: str, course: str, category: str) -> Dict[str, int]:
+        return detail_counts.setdefault((size, course, category), {m: 0 for m in months})
+
+    for size in INQUIRY_SIZE_GROUPS:
+        for course in INQUIRY_COURSE_FORMATS:
+            fmt_rollup[(size, course)] = {m: 0 for m in months}
+            for category in INQUIRY_CATEGORY_GROUPS:
+                _init_counts_for_detail(size, course, category)
+
+    for row in payload["rows"]:
+        if row["month"] not in month_set:
+            continue
+        if team_members is not None and not _owners_match_team(row.get("owner_names"), team_members):
+            continue
+        size = row["size_group"]
+        course = row["course_format"]
+        category = row["category_group"]
+        month = row["month"]
+        detail_counts[(size, course, category)][month] += 1
+        fmt_rollup[(size, course)][month] += 1
+
+    rows_list: List[Dict[str, Any]] = []
+    for size in INQUIRY_SIZE_GROUPS:
+        for course in INQUIRY_COURSE_FORMATS:
+            # level 1: format rollup
+            rows_list.append(
+                {
+                    "level": 1,
+                    "sizeGroup": size,
+                    "courseFormat": course,
+                    "categoryGroup": None,
+                    "segmentKey": size,
+                    "rowKey": f"{course}||{INQ_ALL}",
+                    "key": f"{course}||{INQ_ALL}",
+                    "label": course,
+                    "countByMonth": fmt_rollup[(size, course)],
+                }
+            )
+            for category in INQUIRY_CATEGORY_GROUPS:
+                # level 2: detail
+                rows_list.append(
+                    {
+                        "level": 2,
+                        "sizeGroup": size,
+                        "courseFormat": course,
+                        "categoryGroup": category,
+                        "segmentKey": size,
+                        "rowKey": f"{course}||{category}",
+                        "key": f"{course}||{category}",
+                        "label": category,
+                        "countByMonth": detail_counts[(size, course, category)],
+                    }
+                )
+
+    result = {
+        "months": months,
+        "rows": rows_list,
+        "meta": {
+            "snapshot_version": payload.get("snapshot_version"),
+            "team": team,
+            "debug": payload.get("meta_debug"),
+        },
+    }
+    _PERF_MONTHLY_INQUIRIES_SUMMARY_CACHE[cache_key] = result
+    return result
+
+
+def get_perf_monthly_inquiries_deals(
+    segment: str,
+    row: str,
+    month: str,
+    team: Optional[str] = None,
+    db_path: Path = DB_PATH,
+) -> Dict[str, Any]:
+    """
+    Drilldown deals for monthly inquiries grid (segment=size group, row=course||category).
+    """
+    if not month or len(month.strip()) != 4:
+        raise ValueError("month must be YYMM format, e.g., 2501")
+    month_key = month.strip()
+    if segment not in INQUIRY_SIZE_GROUPS:
+        raise ValueError(f"Unknown segment(size group): {segment}")
+    if "||" not in row:
+        course_fmt, category_grp = INQ_ALL, INQ_ALL
+    else:
+        course_fmt, category_grp = row.split("||", 1)
+    if course_fmt != INQ_ALL and course_fmt not in INQUIRY_COURSE_FORMATS:
+        raise ValueError(f"Unknown courseFormat: {course_fmt}")
+    if category_grp != INQ_ALL and category_grp not in INQUIRY_CATEGORY_GROUPS:
+        raise ValueError(f"Unknown categoryGroup: {category_grp}")
+
+    payload = _load_perf_monthly_inquiries_data(db_path)
+    team_members = _dealcheck_team_members(team)
+    items: List[Dict[str, Any]] = []
+    seen: Set[str] = set()
+
+    for row_data in payload["rows"]:
+        if row_data["month"] != month_key:
+            continue
+        if row_data["size_group"] != segment:
+            continue
+        if course_fmt != INQ_ALL and row_data["course_format"] != course_fmt:
+            continue
+        if category_grp != INQ_ALL and row_data["category_group"] != category_grp:
+            continue
+        if team_members is not None and not _owners_match_team(row_data.get("owner_names"), team_members):
+            continue
+        deal_id = row_data["deal_id"]
+        if deal_id in seen:
+            continue
+        seen.add(deal_id)
+        items.append(
+            {
+                "orgName": row_data["org_name"],
+                "upperOrg": row_data["upper_org"],
+                "customerPersonName": row_data["person_name"],
+                "dealId": deal_id,
+                "dealName": row_data["deal_name"],
+                "courseFormat": row_data["course_format"],
+                "day1OwnerNames": row_data.get("owner_names"),
+                "status": row_data["status"],
+                "probability": row_data["probability"],
+                "expectedCloseDate": row_data["expected_close_date"],
+                "expectedAmount": row_data["expected_amount"],
+                "startDate": row_data["start_date"],
+                "endDate": row_data["end_date"],
+                "courseId": row_data["course_id"],
+                "contractDate": row_data["contract_date"],
+                "amount": row_data["amount"],
+                "category": row_data.get("category"),
+            }
+        )
+
+    if course_fmt == INQ_ALL and category_grp == INQ_ALL:
+        row_label = "전체"
+    elif category_grp == INQ_ALL:
+        row_label = f"{course_fmt} (합계)"
+    else:
+        row_label = f"{course_fmt} · {category_grp}"
+
+    return {
+        "segment": {"key": segment, "label": segment},
+        "row": {"key": row, "label": row_label},
+        "month": month_key,
+        "dealCount": len(items),
+        "items": items,
         "meta": {"snapshot_version": payload.get("snapshot_version"), "team": team},
     }
 

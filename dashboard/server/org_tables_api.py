@@ -140,6 +140,21 @@ def get_qc_deal_errors_for_owner(
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/qc/monthly-revenue-report")
+def get_qc_monthly_revenue_report(
+    team: str = Query(..., description="edu1|edu2|public"),
+    year: int = Query(..., ge=2000, le=2100, description="연도 (YYYY)"),
+    month: int = Query(..., ge=1, le=12, description="월 (1-12)"),
+    history_from: str | None = Query(None, description="선택 월까지 포함할 과거 시작 월(YYYY-MM)"),
+) -> dict:
+    try:
+        return db.get_qc_monthly_revenue_report(team=team, year=year, month=month, history_from=history_from)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/rank/2025-deals")
 def get_rank_2025_deals(
     size: str = Query("전체", description='조직 규모 필터 (예: "대기업", "전체")')
@@ -205,6 +220,35 @@ def get_performance_monthly_amounts_deals(
 ) -> dict:
     try:
         return db.get_perf_monthly_amounts_deals(segment=segment, row=row, month=month, team=team)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/performance/monthly-inquiries/summary")
+def get_performance_monthly_inquiries_summary(
+    from_month: str = Query("2025-01", description="시작 YYYY-MM"),
+    to_month: str = Query("2026-12", description="종료 YYYY-MM"),
+    team: str | None = Query(None, description="edu1|edu2 (선택)"),
+) -> dict:
+    try:
+        return db.get_perf_monthly_inquiries_summary(from_month=from_month, to_month=to_month, team=team)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/performance/monthly-inquiries/deals")
+def get_performance_monthly_inquiries_deals(
+    segment: str = Query(..., description="세그먼트 키 (기업 규모)"),
+    row: str = Query(..., description="과정포맷||카테고리그룹"),
+    month: str = Query(..., description="YYMM (예: 2501)"),
+    team: str | None = Query(None, description="edu1|edu2 (선택)"),
+) -> dict:
+    try:
+        return db.get_perf_monthly_inquiries_deals(segment=segment, row=row, month=month, team=team)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
     except FileNotFoundError as exc:

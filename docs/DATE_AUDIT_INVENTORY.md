@@ -7,6 +7,8 @@ sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/agents/counterparty_card/agent.py
   - org_tables_v2.html
+  - dashboard/server/date_kst.py
+  - tests/test_no_raw_date_ops.py
 ---
 
 ## Purpose
@@ -46,6 +48,7 @@ sync_source:
 
 ## Frontend Inventory (메뉴 → 사용 날짜 필드)
 - 공통 포맷터: `formatDate`, `formatDateYYMMDD` in `org_tables_v2.html` — `split("T")[0]` 기반 표시.
+- 신규 방어 포맷터: `formatDateKstSafe`, `formatDateYYMMDDKstSafe` (ISO+TZ → KST YYYY-MM-DD/YY.MM.DD), 기존 date-only는 그대로 표시.
 - 메뉴/렌더러별 주요 날짜 사용:
   - 조직/People/Deal 뷰어 (`renderOrgTable`, deal 테이블) → `created_at`, `contract_date`, `expected_close_date`, `start_date`, `end_date`, memo `createdAt`.
   - 딜체크 (`renderDealCheckScreen`) → `created_at`, `contract_date`, `expected_close_date`, `course_start_date`, `course_end_date`.
@@ -56,12 +59,18 @@ sync_source:
   - QC/메모 모달 → memo `createdAt`.
   - StatePath UI → 상태 JSON 내 `contract_date`, `expected_close_date`, `start_date`, `end_date`.
 
+### KST-safe 적용 완료(표시 기준) 체크리스트
+- 고객사 불일치 > 월별 매출신고 테이블: contractDate/expectedCloseDate/startDate/endDate를 `formatDateKstSafe`.
+- 월별 체결액 딜 모달: expectedCloseDate/startDate/endDate/contractDate를 `formatDateKstSafe`.
+- 월별 문의 인입 딜 모달: 동일 필드에 `formatDateKstSafe`.
+  (기타 화면은 순차 적용 예정)
+
 ## Known Raw Date Handling Patterns (현 위치)
 - 프런트: `org_tables_v2.html` `formatDate`/`formatDateYYMMDD`에서 `split("T")[0]` 문자열 절단 (라인 4262~4274).
 - 백엔드: `database.py`에 `LIKE '2025%'`, `SUBSTR(d."계약 체결일",1,4)` 등 다수 (`rg "LIKE '20"`, `rg "SUBSTR("` 결과).
 - 파이썬 파서: `deal_normalizer.py::_parse_date`가 ISO datetime을 `"T"` split으로 처리, 타임존 변환 없음.
 - 에이전트: `agents/counterparty_card/agent.py::_parse_date`도 문자열 split 기반.
+- 탐지 도구: `tests/test_no_raw_date_ops.py`가 raw split/LIKE/SUBSTR를 비차단으로 리포트(ENV `RAW_DATE_OPS_ENFORCE=1` 시 실패).
 
 ## Next Actions (for refactor phases)
 - 위 인벤토리를 기반으로 PHASE 1~6 실행: KST 유틸 SSOT(date_kst.py) 추가, SQLite UDF 등록 후 모든 연/월 판정 교체, API 응답 날짜 표준화, 프런트 방어 포맷터 도입, 경계/린트 테스트 및 정책 문서 작성.
-

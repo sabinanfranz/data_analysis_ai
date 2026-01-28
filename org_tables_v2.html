@@ -1454,6 +1454,11 @@
       max-height: calc(min(90vh, 900px) - 56px);
       padding: 0 12px 12px;
     }
+    .modal.deals-modal-wide .table-wrap.deals-modal-scroll,
+    .modal.deals-modal-wide .table-wrap.full.deals-modal-scroll {
+      max-height: calc(min(90vh, 900px) - 56px) !important;
+      overflow: auto !important;
+    }
 
     /* ✅ 딜 모달 테이블: 값 길이대로 컬럼 폭 결정 */
     .modal.deals-modal-wide table.mp-deals-table {
@@ -3311,7 +3316,7 @@
         body.innerHTML = `<div class="muted">딜이 없습니다.</div>`;
       } else {
         body.innerHTML = `
-          <div class="table-wrap full">
+          <div class="table-wrap deals-modal-scroll">
             <table>
               <thead>
                 <tr>
@@ -3328,11 +3333,11 @@
                   .map(
                     (d) => `
                       <tr>
-                        <td>${formatDate(d.created_at)}</td>
+                        <td>${formatDateKstSafe(d.created_at)}</td>
                         <td>${d.dealName || "-"}</td>
                         <td>${d.status || "-"}</td>
                         <td>${formatAmount(d.amount)}</td>
-                        <td>${formatDate(d.contract_date)}</td>
+                        <td>${formatDateKstSafe(d.contract_date)}</td>
                         <td>${d.course_format || "-"}</td>
                       </tr>
                     `
@@ -4354,6 +4359,51 @@
         return digits.slice(2, 8);
       }
       return clean || val;
+    }
+
+    function isIsoDatetimeWithTz(s) {
+      if (typeof s !== "string") return false;
+      const t = s.trim();
+      if (!t.includes("T")) return false;
+      return /[zZ]$/.test(t) || /[+-]\d{2}:\d{2}$/.test(t);
+    }
+
+    const KST_FMT = new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Seoul",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+
+    function formatDateKstFromDateObj(d) {
+      const parts = KST_FMT.formatToParts(d);
+      const y = parts.find((p) => p.type === "year")?.value;
+      const m = parts.find((p) => p.type === "month")?.value;
+      const da = parts.find((p) => p.type === "day")?.value;
+      if (!y || !m || !da) return null;
+      return `${y}-${m}-${da}`;
+    }
+
+    function formatDateKstSafe(val) {
+      if (!val) return "-";
+      const raw = String(val).trim();
+      if (!raw) return "-";
+      if (!raw.includes("T")) return raw;
+      if (isIsoDatetimeWithTz(raw)) {
+        const d = new Date(raw);
+        if (!Number.isFinite(d.getTime())) return raw;
+        const kst = formatDateKstFromDateObj(d);
+        return kst || raw;
+      }
+      return raw.split("T")[0];
+    }
+
+    function formatDateYYMMDDKstSafe(val) {
+      const d = formatDateKstSafe(val);
+      if (!d || d === "-") return "-";
+      const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d);
+      if (!m) return d;
+      return `${m[1].slice(2)}.${m[2]}.${m[3]}`;
     }
 
     function formatProbability(val) {
@@ -9142,12 +9192,12 @@
                   <td class="auto-fit txt">${owners || "-"}</td>
                   <td class="auto-fit txt">${item.status || "-"}</td>
                   <td class="auto-fit txt">${formatProbability(item.probability)}</td>
-                  <td class="auto-fit txt">${formatDate(item.expectedCloseDate)}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.expectedCloseDate)}</td>
                   <td class="auto-fit num"><span class="pnl-num">${fmtAmt(item.expectedAmount)}</span></td>
-                  <td class="auto-fit txt">${formatDate(item.startDate)}</td>
-                  <td class="auto-fit txt">${formatDate(item.endDate)}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.startDate)}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.endDate)}</td>
                   <td class="auto-fit txt">${item.courseId || "-"}</td>
-                  <td class="auto-fit txt">${formatDate(item.contractDate)}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.contractDate)}</td>
                   <td class="auto-fit num"><span class="pnl-num">${fmtAmt(item.amount)}</span></td>
                 </tr>
               `;
@@ -9155,7 +9205,7 @@
             .join("") || `<tr><td colspan="16" class="muted">딜이 없습니다.</td></tr>`;
 
           state.rankPeopleModal.body.innerHTML = `
-          <div class="table-wrap full deals-modal-scroll">
+          <div class="table-wrap deals-modal-scroll">
             <table class="perf-table mp-monthly-table mp-deals-table">
               <colgroup>
                 <col style="width:14em" />
@@ -9529,11 +9579,11 @@
                   <td class="auto-fit txt">${owners || "-"}</td>
                   <td class="auto-fit txt">${item.status || "-"}</td>
                   <td class="auto-fit txt">${formatProbability(item.probability)}</td>
-                  <td class="auto-fit txt">${formatDate(item.expectedCloseDate)}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.expectedCloseDate)}</td>
                   <td class="auto-fit num"><span class="pnl-num">${fmtWon(item.expectedAmount)}</span></td>
-                  <td class="auto-fit txt">${formatDate(item.startDate)}</td>
-                  <td class="auto-fit txt">${formatDate(item.endDate)}</td>
-                  <td class="auto-fit txt">${formatDate(item.contractDate)}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.startDate)}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.endDate)}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.contractDate)}</td>
                   <td class="auto-fit num"><span class="pnl-num">${fmtWon(item.amount)}</span></td>
                   <td class="auto-fit num"><span class="pnl-num">${fmtRec(item.recognizedAmount)}</span></td>
                   <td class="auto-fit num"><span class="pnl-num">${overlap}</span></td>
@@ -9544,7 +9594,7 @@
           `<tr><td class="muted" colspan="16">데이터가 없습니다.</td></tr>`;
 
         state.rankPeopleModal.body.innerHTML = `
-          <div class="table-wrap full" style="max-height:60vh; overflow:auto; padding: 0 12px 12px;">
+          <div class="table-wrap deals-modal-scroll" style="padding: 0 12px 12px;">
             <table class="perf-table mp-monthly-table mp-deals-table">
               <thead>
                 <tr>
@@ -11598,10 +11648,10 @@
                           }</td>
                           <td>${escapeHtml(owners)}</td>
                           <td>${escapeHtml(row.status || "")}</td>
-                          <td>${formatDate(row.contractDate)}</td>
+                          <td>${formatDateKstSafe(row.contractDate)}</td>
                           <td class="num">${formatWonNumber(row.amount)}</td>
-                          <td>${formatDate(row.startDate)}</td>
-                          <td>${formatDate(row.endDate)}</td>
+                          <td>${formatDateKstSafe(row.startDate)}</td>
+                          <td>${formatDateKstSafe(row.endDate)}</td>
                         </tr>
                       `;
                     })
@@ -11650,12 +11700,12 @@
                           }</td>
                           <td>${escapeHtml(owners)}</td>
                           <td>${escapeHtml(row.status || "")}</td>
-                          <td>${formatDate(row.expectedCloseDate)}</td>
-                          <td>${formatDate(row.contractDate)}</td>
+                          <td>${formatDateKstSafe(row.expectedCloseDate)}</td>
+                          <td>${formatDateKstSafe(row.contractDate)}</td>
                           <td class="num">${formatWonNumber(row.expectedAmount)}</td>
                           <td class="num">${formatWonNumber(row.amount)}</td>
-                          <td>${formatDate(row.startDate)}</td>
-                          <td>${formatDate(row.endDate)}</td>
+                          <td>${formatDateKstSafe(row.startDate)}</td>
+                          <td>${formatDateKstSafe(row.endDate)}</td>
                         </tr>
                       `;
                     })
@@ -11705,10 +11755,10 @@
                           }</td>
                           <td>${escapeHtml(owners)}</td>
                           <td>${escapeHtml(row.status || "")}</td>
-                          <td>${formatDate(row.contractDate)}</td>
+                          <td>${formatDateKstSafe(row.contractDate)}</td>
                           <td class="num">${formatWonNumber(row.amount)}</td>
-                          <td>${formatDate(row.startDate)}</td>
-                          <td>${formatDate(row.endDate)}</td>
+                          <td>${formatDateKstSafe(row.startDate)}</td>
+                          <td>${formatDateKstSafe(row.endDate)}</td>
                         </tr>
                       `;
                     })

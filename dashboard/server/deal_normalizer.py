@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Sequence, Tuple
 
 from . import counterparty_llm as cllm
+from . import date_kst
 from .agents.core.artifacts import ArtifactStore
 from .agents.core.types import AgentContext, LLMConfig
 from .agents.core.orchestrator import Orchestrator
@@ -17,6 +18,21 @@ from .report.composer import merge_counterparty_card_outputs
 
 DB_PATH_ENV = os.getenv("DB_PATH", "salesmap_latest.db")
 DB_PATH = Path(DB_PATH_ENV)
+DATE_KST_MODE = os.getenv("DATE_KST_MODE", "legacy").lower()
+if DATE_KST_MODE not in {"legacy", "shadow", "strict"}:
+    DATE_KST_MODE = "legacy"
+
+
+def _date_kst_mode() -> str:
+    return DATE_KST_MODE
+
+
+def _is_strict_mode() -> bool:
+    return _date_kst_mode() == "strict"
+
+
+def _is_shadow_mode() -> bool:
+    return _date_kst_mode() == "shadow"
 
 ONLINE_DEAL_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포팅"}
 COUNTERPARTY_UNKNOWN = "미분류(카운터파티 없음)"
@@ -234,7 +250,7 @@ def _parse_amount(raw: Any) -> Tuple[int, bool]:
         return 0, False
 
 
-def _parse_date(raw: Any) -> str | None:
+def _parse_date_legacy(raw: Any) -> str | None:
     """
     다양한 문자열 패턴을 YYYY-MM-DD로 정규화.
     허용: YYYY-MM-DD / YYYY.MM.DD / YYYY/MM/DD / ISO datetime.
@@ -270,6 +286,13 @@ def _parse_date(raw: Any) -> str | None:
         return date(year, month, day).isoformat()
     except ValueError:
         return None
+
+
+def _parse_date(raw: Any) -> str | None:
+    if _is_strict_mode():
+        val = date_kst.kst_date_only(raw)
+        return val or None
+    return _parse_date_legacy(raw)
 
 
 def _bool_to_int(flag: bool) -> int:

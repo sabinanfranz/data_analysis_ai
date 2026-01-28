@@ -12,10 +12,130 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from . import statepath_engine as sp
 from .counterparty_targets_2026 import load_counterparty_targets_2026
+from . import date_kst
 
 DB_PATH_ENV = os.getenv("DB_PATH", "salesmap_latest.db")
 print(f"[db] Using DB_PATH={DB_PATH_ENV}")
 DB_PATH = Path(DB_PATH_ENV)
+DATE_KST_MODE = os.getenv("DATE_KST_MODE", "legacy").lower()
+if DATE_KST_MODE not in {"legacy", "shadow", "strict"}:
+    logging.warning("Invalid DATE_KST_MODE=%s. Falling back to legacy.", DATE_KST_MODE)
+    DATE_KST_MODE = "legacy"
+try:
+    DATE_KST_SHADOW_MAX_EXAMPLES = int(os.getenv("DATE_KST_SHADOW_MAX_EXAMPLES", "20"))
+except Exception:
+    DATE_KST_SHADOW_MAX_EXAMPLES = 20
+
+
+def _date_kst_mode() -> str:
+    return DATE_KST_MODE
+
+
+def _is_strict_mode() -> bool:
+    return _date_kst_mode() == "strict"
+
+
+def _is_shadow_mode() -> bool:
+    return _date_kst_mode() == "shadow"
+
+
+def _effective_date_mode(mode: Optional[str] = None) -> str:
+    m = (mode or _date_kst_mode() or "legacy").lower()
+    return "strict" if m == "strict" else "legacy"
+
+
+def sql_year_clause(col_expr: str, year: str, mode: Optional[str] = None) -> Tuple[str, List[Any]]:
+    eff = _effective_date_mode(mode)
+    if eff == "strict":
+        return f"kst_year({col_expr}) = ?", [str(year)]
+    return f'{col_expr} LIKE ?', [f"{year}%"]
+
+
+def sql_years_clause(col_expr: str, years: Sequence[str], mode: Optional[str] = None) -> Tuple[str, List[Any]]:
+    eff = _effective_date_mode(mode)
+    years = list(years)
+    if eff == "strict":
+        placeholders = ",".join(["?"] * len(years))
+        return f"kst_year({col_expr}) IN ({placeholders})", [str(y) for y in years]
+    clauses = []
+    params: List[Any] = []
+    for y in years:
+        clauses.append(f"{col_expr} LIKE ?")
+        params.append(f"{y}%")
+    return "(" + " OR ".join(clauses) + ")", params
+
+
+def sql_year_expr(col_expr: str, mode: Optional[str] = None) -> str:
+    eff = _effective_date_mode(mode)
+    if eff == "strict":
+        return f"kst_year({col_expr})"
+    return f"SUBSTR({col_expr}, 1, 4)"
+
+
+def sql_ym_clause(col_expr: str, ym: str, mode: Optional[str] = None) -> Tuple[str, List[Any]]:
+    eff = _effective_date_mode(mode)
+    if eff == "strict":
+        return f"kst_ym({col_expr}) = ?", [ym]
+    return f"{col_expr} LIKE ?", [f"{ym}%"]
+
+
+class ShadowDiffCollector:
+    """
+    Collects legacy vs strict date normalization diffs when DATE_KST_MODE=shadow.
+    Only keeps up to max_examples to avoid log spam.
+    """
+
+    def __init__(self, enabled: bool, max_examples: int = DATE_KST_SHADOW_MAX_EXAMPLES):
+        self.enabled = enabled
+        self.max_examples = max_examples
+        self.diff_count = 0
+        self.examples: List[Dict[str, Any]] = []
+
+    def _should_check(self, raw: Any) -> bool:
+        if raw is None:
+            return False
+        text = str(raw)
+        if "T" not in text:
+            return False
+        return any(tok in text for tok in ("Z", "+", "-"))
+
+    def add(
+        self,
+        field: str,
+        raw: Any,
+        legacy: Any,
+        strict: Any,
+        deal_id: Any | None = None,
+        extra: Dict[str, Any] | None = None,
+    ) -> None:
+        if not self.enabled:
+            return
+        if not self._should_check(raw):
+            return
+        if legacy == strict:
+            return
+        self.diff_count += 1
+        if len(self.examples) >= self.max_examples:
+            return
+        example = {"field": field, "raw": raw, "legacy": legacy, "strict": strict}
+        if deal_id is not None:
+            example["dealId"] = deal_id
+        if extra:
+            example.update(extra)
+        self.examples.append(example)
+
+    def emit(self, logger: logging.Logger, context: Dict[str, Any]) -> None:
+        if not self.enabled or self.diff_count == 0:
+            return
+        payload = {
+            "tag": "DATE_KST_SHADOW_DIFF",
+            **context,
+            "diff_count": self.diff_count,
+            "examples": self.examples,
+        }
+        logger.warning("DATE_KST_SHADOW_DIFF %s", payload)
+
+
 _OWNER_LOOKUP_CACHE: Dict[Path, Dict[str, str]] = {}
 _TABLE_COLUMNS_CACHE: Dict[Tuple[Path, str], Tuple[Optional[float], Set[str]]] = {}
 YEARS_FOR_WON = {"2023", "2024", "2025"}
@@ -325,9 +445,10 @@ PL_2026_TARGET_FULL: Dict[str, Dict[str, Dict[str, float]]] = {
 
 
 
-def _date_only(val: Any) -> str:
+def _date_only_legacy(val: Any) -> str:
     """
     Normalize a datetime-ish value to YYYY-MM-DD (KST). Returns "" when empty/None.
+    Legacy implementation (string split).
     """
     if val is None:
         return ""
@@ -356,9 +477,22 @@ def _date_only(val: Any) -> str:
     return text
 
 
+def _date_only(val: Any) -> str:
+    if _is_strict_mode():
+        return date_kst.kst_date_only(val)
+    return _date_only_legacy(val)
+
+
 def _connect(db_path: Path) -> sqlite3.Connection:
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
+    try:
+        conn.create_function("kst_date", 1, date_kst.kst_date_only)
+        conn.create_function("kst_year", 1, date_kst.kst_year)
+        conn.create_function("kst_ym", 1, date_kst.kst_ym)
+        conn.create_function("kst_yymm", 1, date_kst.kst_yymm)
+    except Exception:
+        logging.exception("Failed to register KST date UDFs")
     return conn
 
 
@@ -1073,6 +1207,9 @@ def list_organizations(
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
 
+    eff_mode = _effective_date_mode()
+    won_clause, won_params = sql_year_clause(' "계약 체결일"', "2025", eff_mode)
+
     limit = max(1, min(limit, 500))  # guardrail
     offset = max(0, offset)
 
@@ -1087,12 +1224,13 @@ def list_organizations(
         "  ON dc.organizationId = o.id "
         "LEFT JOIN ("
         '  SELECT organizationId, SUM(CAST("금액" AS REAL)) AS won2025 '
-        '  FROM deal WHERE "상태" = \'Won\' AND "계약 체결일" LIKE \'2025%\' AND organizationId IS NOT NULL '
+        f"  FROM deal WHERE \"상태\" = 'Won' AND {won_clause} AND organizationId IS NOT NULL "
         "  GROUP BY organizationId"
         ") w ON w.organizationId = o.id "
         "WHERE 1=1 "
     )
     params: List[Any] = []
+    params.extend(won_params)
 
     if size and size != "전체":
         query += 'AND "기업 규모" = ? '
@@ -1656,13 +1794,20 @@ def _to_number(val: Any) -> float | None:
         return None
 
 
-def _parse_year_from_text(val: Any) -> str | None:
+def _parse_year_from_text_legacy(val: Any) -> str | None:
     if val is None:
         return None
     text = str(val)
     if len(text) >= 4 and text[:4].isdigit():
         return text[:4]
     return None
+
+
+def _parse_year_from_text(val: Any) -> str | None:
+    if _is_strict_mode():
+        year = date_kst.kst_year(val)
+        return year if year else None
+    return _parse_year_from_text_legacy(val)
 
 
 def _year_from_dates(contract_date: Any, expected_date: Any) -> str | None:
@@ -1672,9 +1817,10 @@ def _year_from_dates(contract_date: Any, expected_date: Any) -> str | None:
     return _parse_year_from_text(expected_date)
 
 
-def _month_key_from_text(val: Any) -> str | None:
+def _month_key_from_text_legacy(val: Any) -> str | None:
     """
     Extract YYMM from strings like YYYY-MM or YYYY-MM-DD (also tolerates YYYY/MM).
+    Legacy implementation (string split).
     """
     if val is None:
         return None
@@ -1684,7 +1830,7 @@ def _month_key_from_text(val: Any) -> str | None:
 
     # If ISO datetime, first normalize to KST date then extract.
     if "T" in text_raw:
-        kst_date = _date_only(text_raw)
+        kst_date = _date_only_legacy(text_raw)
         match_kst = re.match(r"^(\d{4})-(\d{2})", kst_date)
         if match_kst:
             yyyy, mm = match_kst.group(1), match_kst.group(2)
@@ -1695,6 +1841,12 @@ def _month_key_from_text(val: Any) -> str | None:
         return None
     year, month = match.group(1), match.group(2)
     return f"{year[-2:]}{int(month):02d}"
+
+
+def _month_key_from_text(val: Any) -> str | None:
+    if _is_strict_mode():
+        return date_kst.kst_yymm(val)
+    return _month_key_from_text_legacy(val)
 
 
 def _month_key_from_dates(contract_date: Any, expected_date: Any) -> str | None:
@@ -2035,8 +2187,10 @@ def get_rank_2025_deals(size: str = "전체", db_path: Path = DB_PATH) -> List[D
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
 
-    conditions = ['d."계약 체결일" LIKE ?']
-    params: List[Any] = ["2025%"]
+    eff_mode = _effective_date_mode()
+    y2025_clause, y2025_params = sql_year_clause('d."계약 체결일"', "2025", eff_mode)
+    conditions = [y2025_clause]
+    params: List[Any] = list(y2025_params)
     if size and size != "전체":
         conditions.append('o."기업 규모" = ?')
         params.append(size)
@@ -2056,8 +2210,9 @@ def get_rank_2025_deals(size: str = "전체", db_path: Path = DB_PATH) -> List[D
             params,
         )
 
-        conditions_2024 = ['d."상태" = ?', 'd."계약 체결일" LIKE ?']
-        params_2024: List[Any] = ["Won", "2024%"]
+        y2024_clause, y2024_params = sql_year_clause('d."계약 체결일"', "2024", eff_mode)
+        conditions_2024 = ['d."상태" = ?', y2024_clause]
+        params_2024: List[Any] = ["Won", *y2024_params]
         if size and size != "전체":
             conditions_2024.append('o."기업 규모" = ?')
             params_2024.append(size)
@@ -2198,18 +2353,23 @@ def get_won_industry_summary(
         raise FileNotFoundError(f"Database not found at {db_path}")
 
     years_set: Set[str] = set(str(y) for y in years)
+    eff_mode = _effective_date_mode()
+    year_expr = sql_year_expr('d."계약 체결일"', eff_mode)
+    years_clause, years_params = sql_years_clause('d."계약 체결일"', years_set, eff_mode)
     conditions = ['d."상태" = ?']
     params: List[Any] = ["Won"]
     if size and size != "전체":
         conditions.append('o."기업 규모" = ?')
         params.append(size)
+    conditions.append(years_clause)
+    params.extend(years_params)
     with _connect(db_path) as conn:
         rows = _fetch_all(
             conn,
             'SELECT '
             '  COALESCE(o."업종 구분(대)", "미입력") AS industry_major, '
             '  COALESCE(o.id, d.organizationId) AS org_id, '
-            '  SUBSTR(d."계약 체결일", 1, 4) AS year, '
+            f"  {year_expr} AS year, "
             '  SUM(CAST(d."금액" AS REAL)) AS totalAmount '
             "FROM deal d "
             "LEFT JOIN organization o ON o.id = d.organizationId "
@@ -2455,8 +2615,10 @@ def get_rank_2025_deals_people(size: str = "대기업", db_path: Path = DB_PATH)
         raise FileNotFoundError(f"Database not found at {db_path}")
 
     # 단계 A: 2025 Won 보유 조직 집합
-    org_conditions = ['d."상태" = ?', 'd."계약 체결일" LIKE ?']
-    org_params: List[Any] = ["Won", "2025%"]
+    eff_mode = _effective_date_mode()
+    y2025_clause, y2025_params = sql_year_clause('d."계약 체결일"', "2025", eff_mode)
+    org_conditions = ['d."상태" = ?', y2025_clause]
+    org_params: List[Any] = ["Won", *y2025_params]
     if size and size != "전체":
         org_conditions.append('o."기업 규모" = ?')
         org_params.append(size)
@@ -3468,10 +3630,10 @@ def get_qc_monthly_revenue_report(
         text = str(val).strip()
         if not text:
             return None
-        # Preserve ISO datetime (incl. milliseconds) to keep parser intact
+        # ISO datetime은 그대로 파싱(밀리초 '.' 보존)
         if "T" in text:
             return _parse_date(text)
-        # Normalize date-only strings with common separators
+        # date-only만 구분자 normalize
         standardized = text.replace(".", "-").replace("/", "-")
         return _parse_date(standardized)
 
@@ -3493,6 +3655,8 @@ def get_qc_monthly_revenue_report(
             '  "수강종료일" AS end_date_raw '
             "FROM deal",
         )
+
+    collector = ShadowDiffCollector(enabled=_is_shadow_mode())
 
     report_by_month: Dict[str, List[Dict[str, Any]]] = {}
     review_by_month: Dict[str, List[Dict[str, Any]]] = {}
@@ -3520,6 +3684,17 @@ def get_qc_monthly_revenue_report(
         end_date_text = _date_str(end_date, row["end_date_raw"])
         contract_date_text = _date_str(contract_date, row["contract_date_raw"])
         expected_close_text = _date_str(expected_close_date, row["expected_close_date_raw"])
+        if collector.enabled:
+            for field, raw, legacy_date in [
+                ("contractDate", row["contract_date_raw"], _date_only_legacy(row["contract_date_raw"])),
+                ("expectedCloseDate", row["expected_close_date_raw"], _date_only_legacy(row["expected_close_date_raw"])),
+                ("startDate", row["start_date_raw"], _date_only_legacy(row["start_date_raw"])),
+                ("endDate", row["end_date_raw"], _date_only_legacy(row["end_date_raw"])),
+            ]:
+                strict_date = date_kst.kst_date_only(raw)
+                collector.add(field, raw, legacy_date, strict_date, deal_id=row.get("id"))
+                if legacy_date and strict_date and len(legacy_date) == 10 and len(strict_date) == 10:
+                    collector.add(f"{field}.ym", raw, legacy_date[:7], strict_date[:7], deal_id=row.get("id"))
         report_base_ok = (
             course_id
             and deal_name
@@ -3664,6 +3839,16 @@ def get_qc_monthly_revenue_report(
             )
         payload["reviewHistory"] = history_sections
 
+    collector.emit(
+        logging.getLogger(__name__),
+        {
+            "endpoint": "qc/monthly-revenue-report",
+            "team": team,
+            "year": year,
+            "month": month,
+            "historyFrom": history_start_key,
+        },
+    )
     _QC_MONTHLY_REVENUE_CACHE[cache_key] = payload
     return payload
 
@@ -3836,16 +4021,19 @@ def get_rank_2025_summary_by_size(
     if not years_list:
         years_list = [2025, 2026]
     years_str = [str(y) for y in years_list]
+    eff_mode = _effective_date_mode()
     stat = db_path.stat()
     snapshot_version = f"db_mtime:{int(stat.st_mtime)}"
 
-    cache_key = (db_path, stat.st_mtime, exclude_org_name or "", tuple(years_list))
+    cache_mode = "strict" if eff_mode == "strict" else "legacy"
+    cache_key = (db_path, stat.st_mtime, exclude_org_name or "", tuple(years_list), cache_mode)
     cached = _RANK_2025_SUMMARY_CACHE.get(cache_key)
     if cached is not None:
         return cached
 
-    year_placeholders = ",".join(["?"] * len(years_str))
-    params: List[Any] = list(years_str)
+    year_expr = sql_year_expr('d."계약 체결일"', eff_mode)
+    years_clause, years_params = sql_years_clause('d."계약 체결일"', years_str, eff_mode)
+    params: List[Any] = list(years_params)
     exclude_condition = ""
     if exclude_org_name:
         exclude_condition = ' AND COALESCE(o."이름", d.organizationId) <> ?'
@@ -3857,13 +4045,13 @@ def get_rank_2025_summary_by_size(
             f'''
             SELECT
               COALESCE(NULLIF(o."기업 규모", ''), '미입력') AS size,
-              SUBSTR(d."계약 체결일", 1, 4) AS year,
+              {year_expr} AS year,
               SUM(CAST(d."금액" AS REAL)) AS totalAmount
             FROM deal d
             LEFT JOIN organization o ON o.id = d.organizationId
             WHERE d."상태" = 'Won'
               AND d."계약 체결일" IS NOT NULL
-              AND SUBSTR(d."계약 체결일", 1, 4) IN ({year_placeholders})
+              AND {years_clause}
               {exclude_condition}
             GROUP BY size, year
             ''',
@@ -3975,11 +4163,21 @@ def _load_perf_monthly_data(db_path: Path) -> Dict[str, Any]:
             rows = _fetch_all(conn, fallback_query)
 
     major_sizes = {"대기업", "중견기업", "중소기업"}
+    collector = ShadowDiffCollector(enabled=_is_shadow_mode())
     data_rows: List[Dict[str, Any]] = []
     for row in rows:
         month_key = _month_key_from_dates(row["contract_date"], row["expected_close_date"])
         if not month_key:
             continue
+        if collector.enabled:
+            strict_key = date_kst.kst_yymm(row["contract_date"]) or date_kst.kst_yymm(row["expected_close_date"])
+            collector.add(
+                "month_key",
+                row["contract_date"] or row["expected_close_date"],
+                month_key,
+                strict_key,
+                deal_id=row["deal_id"],
+            )
         org_name = row["org_name"] or (row["org_id"] or "-")
         size_group = infer_size_group(org_name, row["size_raw"])
         is_major = size_group in major_sizes
@@ -4047,6 +4245,10 @@ def _load_perf_monthly_data(db_path: Path) -> Dict[str, Any]:
         "course_id_available": any(r.get("course_id") is not None for r in data_rows) or course_id_col is not None,
         "try_query_error": str(try_query_error) if try_query_error else None,
     }
+    collector.emit(
+        logging.getLogger(__name__),
+        {"endpoint": "perf/monthly-amounts(load)", "from_month": "2025-01", "to_month": "2026-12"},
+    )
     _PERF_MONTHLY_DATA_CACHE[cache_key] = payload
     return payload
 
@@ -4066,6 +4268,7 @@ def _load_perf_monthly_inquiries_data(db_path: Path, debug: bool = False) -> Dic
     if not debug and cached is not None:
         return cached
 
+    collector = ShadowDiffCollector(enabled=_is_shadow_mode())
     excluded = {"status_convert": 0, "online_first_false": 0, "online_first_missing": 0, "missing_created_at": 0}
     join_source = {"deal_org_used": 0, "people_org_used": 0, "missing_both": 0}
     value_counts_size: Dict[str, int] = {}
@@ -4150,6 +4353,9 @@ def _load_perf_monthly_inquiries_data(db_path: Path, debug: bool = False) -> Dic
         if not month_key:
             excluded["missing_created_at"] += 1
             continue
+        if collector.enabled:
+            strict_key = date_kst.kst_yymm(row["created_at"])
+            collector.add("month_key", row["created_at"], month_key, strict_key, deal_id=row.get("deal_id"))
         status_norm = _status_norm(row["status"])
         if status_norm == "convert":
             excluded["status_convert"] += 1
@@ -4294,6 +4500,7 @@ def _load_perf_monthly_inquiries_data(db_path: Path, debug: bool = False) -> Dic
     }
     if not debug:
         _PERF_MONTHLY_INQUIRIES_CACHE[cache_key] = payload
+    collector.emit(logging.getLogger(__name__), {"endpoint": "perf/monthly-inquiries(load)", "created_col": created_col})
     return payload
 
 

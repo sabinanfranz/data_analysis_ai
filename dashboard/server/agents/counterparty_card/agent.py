@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 from datetime import date, timedelta
 from pathlib import Path
@@ -19,6 +20,7 @@ from ..core.prompt_store import PromptStore
 from ..core.types import AgentContext, LLMConfig
 from .fallback import fallback_actions, fallback_blockers, fallback_evidence
 from .schema import CounterpartyCardOutput, CounterpartyCardPayload
+from ... import date_kst
 
 TOP_GAP_K = 20
 TOP_DEALS_LIMIT = 10  # payload에는 상위 5개만 사용
@@ -27,6 +29,21 @@ MEMO_WINDOW_DAYS = 180
 MEMO_LIMIT = 20
 MEMO_TRIM_LEN = 1000
 ONLINE_DEAL_FORMATS = {"구독제(온라인)", "선택구매(온라인)", "포팅"}
+DATE_KST_MODE = os.getenv("DATE_KST_MODE", "legacy").lower()
+if DATE_KST_MODE not in {"legacy", "shadow", "strict"}:
+    DATE_KST_MODE = "legacy"
+
+
+def _date_kst_mode() -> str:
+    return DATE_KST_MODE
+
+
+def _is_strict_mode() -> bool:
+    return _date_kst_mode() == "strict"
+
+
+def _is_shadow_mode() -> bool:
+    return _date_kst_mode() == "shadow"
 
 
 def select_candidates(rows: Sequence[Any], top_gap_k: int = TOP_GAP_K) -> List[Tuple[str, str]]:
@@ -56,10 +73,10 @@ def _normalize_mode(mode: str) -> str:
     return "online" if mode == "online" else "offline"
 
 
-def _parse_date(text: Any) -> str | None:
+def _parse_date_legacy(text: Any) -> str | None:
     if text is None:
         return None
-    if isinstance(text, (date, )):
+    if isinstance(text, (date,)):
         return text.isoformat()
     s = str(text).strip()
     if not s:
@@ -75,6 +92,13 @@ def _parse_date(text: Any) -> str | None:
         return date.fromisoformat(s).isoformat()
     except Exception:
         return None
+
+
+def _parse_date(text: Any) -> str | None:
+    if _is_strict_mode():
+        val = date_kst.kst_date_only(text)
+        return val or None
+    return _parse_date_legacy(text)
 
 
 def _parse_amount(raw: Any) -> int:

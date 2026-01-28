@@ -11628,33 +11628,36 @@
         };
 
         const reviewSectionHtml = (() => {
+          const renderSection = (section, deals) => {
+            const mk = section.monthKey || `${section.year}-${String(section.month).padStart(2, "0")}`;
+            const titleCount = section.count !== undefined ? ` (${section.count}건)` : "";
+            const heading = `${section.year}년 ${String(section.month).padStart(2, "0")}월 검수가 필요한 딜${titleCount}`;
+            const filteredDeals = (deals || []).filter((row) => !String(row.dealName || "").includes("[비매출입과]"));
+            const hasRowsForCopy = filteredDeals.length > 0;
+            const content = renderReviewTable(filteredDeals);
+            return `
+              <section class="card" id="qcReview_${mk}" style="margin-top:16px;">
+                <div class="control-row tight" style="align-items:center;">
+                  <h3 style="margin:0;">${heading}</h3>
+                  <div class="spacer"></div>
+                  ${hasRowsForCopy ? `<button type="button" class="md-copy-btn" data-md-section="qcReview_${mk}">마크다운 복사</button>` : ""}
+                </div>
+                ${content}
+              </section>
+            `;
+          };
+
           if (!history.length) {
-            if (data.reviewDeals && data.reviewDeals.length) {
-              // Fallback to single-month behavior
-              return `
-                <section class="card" style="margin-top:16px;">
-                  <h3>${ymTitle} 검수가 필요한 딜 <span class="muted">(${data.counts?.review ?? 0}건)</span></h3>
-                  ${renderReviewTable(data.reviewDeals)}
-                </section>
-              `;
+            const section = { year: data.year, month: data.month, monthKey: selectedKey, count: data.counts?.review };
+            const rawDeals = data.reviewDeals || [];
+            if (!rawDeals.length) {
+              return `<section class="card" style="margin-top:16px;"><h3>검수가 필요한 딜</h3><div class="muted">검수 필요 딜이 없습니다.</div></section>`;
             }
-            return `<section class="card" style="margin-top:16px;"><h3>검수가 필요한 딜</h3><div class="muted">검수 필요 딜이 없습니다.</div></section>`;
+            return renderSection(section, rawDeals);
           }
 
           return history
-            .map((section) => {
-              const mk = section.monthKey || `${section.year}-${String(section.month).padStart(2, "0")}`;
-              const titleCount = section.count !== undefined ? ` (${section.count}건)` : "";
-              const isSelected = mk === selectedKey;
-              const heading = `${section.year}년 ${String(section.month).padStart(2, "0")}월 검수가 필요한 딜${isSelected ? titleCount : titleCount}`;
-              const content = renderReviewTable(section.deals || []);
-              return `
-                <section class="card" id="qcReview_${mk}" style="margin-top:16px;">
-                  <h3>${heading}</h3>
-                  ${content}
-                </section>
-              `;
-            })
+            .map((section) => renderSection(section, section.deals || []))
             .join("");
         })();
 

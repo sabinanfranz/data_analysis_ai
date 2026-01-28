@@ -1,6 +1,6 @@
 ---
 title: org_tables_v2 프런트 계약
-last_synced: 2026-01-27
+last_synced: 2026-01-28
 sync_source:
   - org_tables_v2.html
   - dashboard/server/org_tables_api.py
@@ -22,6 +22,7 @@ absorbed_from:
 - 사이드바: `MENU_SECTIONS` 순서로 사업부 퍼포먼스(2026 P&L → 2026 월별 체결액 → 2026 Daily Report(WIP)) → 운영(2026 Targetboard(출강), 2026 Targetboard(온라인), 2026 카운터파티 DRI, 딜체크 7개 메뉴) → 분석(StatePath 24→25, 2025 체결액 순위, 조직/People/Deal 뷰어, 숨김: 2025 대기업 딜·People/업종별 매출) → 검수(개인별 세일즈맵 검수, 고객사 불일치). 해시가 유효하지 않으면 `DEFAULT_MENU_ID="target-2026"`. 딜체크 메뉴는 단일 config(`DEALCHECK_MENU_DEFS`)에서 부모 2개(교육1/교육2)와 자식 5개(교육1: 1/2파트, 교육2: 1/2파트/온라인셀)를 정의하며, 자식 라벨에만 `↳ ` 접두어를 추가한다. 월별 체결액도 동일 패턴으로 부모 `biz-perf-monthly` 아래 하위 메뉴 2개(교육1/교육2)가 있으며 `team` 파라미터를 전달한다.
 - 사업부 퍼포먼스 메뉴 확장: `biz-perf-monthly-edu2` 하위에 `biz-perf-monthly-edu2-inquiries`(라벨: “2026 문의 인입 현황”, kind=monthly-inquiries, suppressArrow=true)가 추가되며 parentId는 유지되지만 사이드바 라벨 앞 `↳`는 이 메뉴에만 표시하지 않는다(다른 하위 메뉴는 기존 `↳` 유지).
 - API_BASE: origin이 있으면 `<origin>/api`, 아니면 `http://localhost:8000/api`.
+- 데스크톱(>900px): body 스크롤을 숨기고 사이드바/콘텐츠를 각각 독립 세로 스크롤로 분리한다(`.sidebar`↔`.content`), 메뉴 리스트는 `overflow-y:auto`로 스크롤된다. 메뉴를 클릭할 때마다(동일 메뉴 재클릭 포함) 콘텐츠 스크롤 컨테이너(`#contentScroll`)와 window 모두 top=0으로 리셋된다.
 - 2026 P&L (`renderBizPerfPlProgress2026`):
   - `/performance/pl-progress-2026/summary` → 연간(T/E) 후 2601~2612 T/E 컬럼을 렌더. 현재 월 헤더/셀에 `is-current-month-group`/`is-current-month` 클래스 부여.
   - assumptions 바(공헌이익률 온라인/출강, 월 제작/마케팅/인건비) 입력 → `applyAssumptionsToPnlData`로 즉시 재계산. `pnlAssumpInfoBtn`은 meta.excluded·snapshot_version·가정을 모달로 표시, `pnlResetAssumptionsBtn`은 기본값으로 복구.

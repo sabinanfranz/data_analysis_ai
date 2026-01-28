@@ -1,6 +1,6 @@
 ---
 title: 로컬/운영 런북
-last_synced: 2026-12-11
+last_synced: 2026-01-28
 sync_source:
   - dashboard/server/main.py
   - start.sh

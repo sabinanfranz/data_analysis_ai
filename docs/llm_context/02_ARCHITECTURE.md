@@ -1,6 +1,6 @@
 ---
 title: 아키텍처 개요
-last_synced: 2026-12-11
+last_synced: 2026-01-28
 sync_source:
   - salesmap_first_page_snapshot.py
   - dashboard/server/main.py
@@ -14,7 +14,7 @@ sync_source:
 
 ## Behavioral Contract
 - 데이터 수집: `salesmap_first_page_snapshot.py`가 Salesmap API에서 조직/People/Deal/메모/웹폼 제출을 SQLite(`salesmap_latest.db`)에 적재하고, 완료 후 webform_history를 후처리한다.
-- 백엔드: `dashboard/server/main.py`가 FastAPI를 기동해 `/api/*` 라우트를 `org_tables_api.py`에 위임하고, CORS와 `/api/initial-data` 초기 데이터 로드, `/` 정적 파일(`org_tables_v2.html`) 제공을 담당한다.
+- 백엔드: `dashboard/server/main.py`가 FastAPI를 기동해 `/api/*` 라우트를 `org_tables_api.py`에 위임하고, CORS와 `/api/initial-data` 초기 데이터 로드, `/` 정적 파일(`org_tables_v2.html`) 제공을 담당한다. 기동 시 `report_scheduler.start_scheduler()`로 Counterparty Risk/Progress 일일 리포트 스케줄러를 백그라운드에서 시작한다.
 - DB/집계: `dashboard/server/database.py`가 모든 조회/집계/정렬을 수행하며, P&L/월별 체결액/StatePath/랭킹/딜체크/QC/DRI 로직과 캐시를 포함한다. JSON compact 변환은 `json_compact.py`, StatePath 계산은 `statepath_engine.py`가 수행한다.
 - 프런트: `org_tables_v2.html`이 정적 HTML로 API fetch→렌더/모달/캐시를 담당하며, 사이드바 메뉴로 사업부 퍼포먼스/운영/분석/검수 화면을 전환한다.
 - 테스트: `tests/test_perf_monthly_contracts.py`, `tests/test_pl_progress_2026.py`, `tests/test_api_counterparty_dri.py` 등에서 월별/P&L/DRI 계약을 검증한다.

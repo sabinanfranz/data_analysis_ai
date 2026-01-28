@@ -1,21 +1,68 @@
 ---
 title: salesmap_latest.db 테이블 컬럼 목록
-last_synced: 2026-01-25
+last_synced: 2026-01-28
 sync_source:
   - salesmap_latest.db
+  - salesmap_first_page_snapshot.py
   - dashboard/server/database.py
+  - build_kpi_review_report.py
 ---
 
-# DB Table Columns (salesmap_latest.db)
+## Purpose
+- 현재 배포 DB(`salesmap_latest.db`)의 실제 테이블/컬럼을 PRAGMA 기준으로 기록해 API·프런트·리포트가 참조하는 스키마를 SSOT로 제공한다.
 
-## deal
+## Behavioral Contract
+- 스냅샷 스크립트(`salesmap_first_page_snapshot.py`)가 Salesmap API 응답을 TEXT 컬럼으로 저장하며, 새 필드는 `TableWriter`가 자동으로 `ALTER TABLE ... TEXT`로 추가한다.
+- 아래 컬럼 목록은 2026-01-28 기준 `salesmap_latest.db`의 `PRAGMA table_info` 결과이며, 집계/렌더/리포트는 이 스키마를 전제로 동작한다.
+- `manifest`/`run_info`는 수집 메타데이터를 저장하며, `build_kpi_review_report.py`는 PRAGMA로 net% 후보 컬럼을 탐지한다.
+
+## Invariants (Must Not Break)
+- deal/lead/organization/people/memo/webform_history/run_info/manifest/team/user 10개 테이블이 모두 존재해야 한다.
+- PRAGMA 상 모든 도메인 컬럼 타입은 TEXT이며, `manifest.row_count`/`manifest.column_count`만 INTEGER이다.
+- 컬럼 추가 시 기존 컬럼 삭제나 타입 변경 없이 TEXT 컬럼만 append한다(스냅샷 적재/`TableWriter._add_columns`).
+- 핵심 집계가 사용하는 필드(`deal.상태/계약 체결일/금액/예상 체결액/코스 ID/과정포맷`, `organization."기업 규모"/"업종 구분(대/중)"`, `people.owner_json/upper_org`)가 없으면 API 계약이 깨진다.
+
+## Coupling Map
+- 데이터 적재: `salesmap_first_page_snapshot.py` → `salesmap_latest.db`(아래 컬럼).
+- 백엔드 조회/집계: `dashboard/server/database.py`가 deal/lead/organization/people/webform_history 등을 직접 SELECT/PRAGMA로 사용한다.
+- 프런트: `org_tables_v2.html`이 API 응답 필드(위 컬럼 기반)를 렌더링한다.
+- 리포트: `build_kpi_review_report.py`가 `deal` PRAGMA로 net% 컬럼을 탐지해 KPI 계산에 사용한다.
+
+## Edge Cases & Failure Modes
+- 필수 컬럼 부재 시 `_has_column`/`_pick_column`이 None을 반환해 해당 기능이 스킵되거나 500을 반환할 수 있다(예: `기획시트 링크`, `코스 ID`).
+- 모든 값이 TEXT라 숫자/날짜 파싱 실패 시 0/None으로 처리되어 집계 누락이 발생한다.
+- manifest/run_info가 없으면 스냅샷 메타를 확인할 수 없고 파이프라인 리포트 작성이 막힌다.
+
+## Verification
+- `python3 - <<'PY' ... PRAGMA table_info ...` 실행 시 테이블/컬럼 수가 아래와 일치해야 한다(deal 147, lead 120, memo 14, organization 45, people 76, webform_history 8, run_info 7, manifest 5, team 4, user 7).
+- `dashboard/server/database.py`의 SELECT에서 참조하는 컬럼(예: `deal."상태"`, `deal."계약 체결일"`, `organization."기업 규모"`, `people.owner_json` 등)이 실제 PRAGMA에 존재하는지 확인한다.
+- `build_kpi_review_report.py` 실행 시 net% 탐지 결과가 PRAGMA 컬럼 중 하나와 일치하고, 없으면 `meta.netPercentColumn="__NONE__"`가 기록되는지 확인한다.
+
+## Refactor-Planning Notes (Facts Only)
+- deal 테이블이 147개 TEXT 컬럼을 갖고 있어 SELECT 시 컬럼 지정 누락/오타 가능성이 크다.
+- 동일 필드(utm_*, TODO 카운트 등)가 deal/lead/people에 반복돼 파싱/정규화 로직이 중복되어 있다.
+- 모든 값이 TEXT라 숫자/날짜 변환 실패를 코드 각처에서 별도로 처리하고 있으며, 스키마 수준 제약은 없다.
+
+## Table Columns (PRAGMA, salesmap_latest.db)
+
+### deal (147 cols)
 - id — TEXT
 - peopleId — TEXT
 - organizationId — TEXT
 - (온라인)입과 주기 — TEXT
 - (온라인)최초 입과 여부 — TEXT
+- 1차 f-up(교육 제안)로 진입한 날짜 — TEXT
+- 1차 f-up(교육 제안)에서 퇴장한 날짜 — TEXT
+- 2차 f-up(교육 제안)로 진입한 날짜 — TEXT
+- 2차 f-up(교육 제안)에서 퇴장한 날짜 — TEXT
+- AE인계(Sales Development)로 진입한 날짜 — TEXT
+- AE인계(Sales Development)에서 퇴장한 날짜 — TEXT
 - LOST 확정일 — TEXT
 - Net(%) — TEXT
+- Proposal 송부(교육 제안)로 진입한 날짜 — TEXT
+- Proposal 송부(교육 제안)에서 퇴장한 날짜 — TEXT
+- Proposal 준비(교육 제안)로 진입한 날짜 — TEXT
+- Proposal 준비(교육 제안)에서 퇴장한 날짜 — TEXT
 - RecordId — TEXT
 - SDR (AE 배정 후) — TEXT
 - SQL 전환일 — TEXT
@@ -36,7 +83,17 @@ sync_source:
 - 계약 체결일 — TEXT
 - 과정포맷 — TEXT
 - 교육 시작월(예상) — TEXT
+- 교육 종료(Ongoing)로 진입한 날짜 — TEXT
+- 교육 종료(Ongoing)에서 퇴장한 날짜 — TEXT
+- 교육 종료(교육 운영)로 진입한 날짜 — TEXT
+- 교육 종료(교육 운영)에서 퇴장한 날짜 — TEXT
 - 교육 주제 — TEXT
+- 교육 중(Ongoing)로 진입한 날짜 — TEXT
+- 교육 중(Ongoing)에서 퇴장한 날짜 — TEXT
+- 교육 중(교육 운영)로 진입한 날짜 — TEXT
+- 교육 중(교육 운영)에서 퇴장한 날짜 — TEXT
+- 교육 회고(교육 운영)로 진입한 날짜 — TEXT
+- 교육 회고(교육 운영)에서 퇴장한 날짜 — TEXT
 - 구독 시작 유형 — TEXT
 - 구독 시작일 — TEXT
 - 구독 종료 유형 — TEXT
@@ -53,11 +110,19 @@ sync_source:
 - 딜 전환 유형 — TEXT
 - 리드 목록 — TEXT
 - 마감일 — TEXT
+- 매출 집계 예정(교육 제안)로 진입한 날짜 — TEXT
+- 매출 집계 예정(교육 제안)에서 퇴장한 날짜 — TEXT
 - 메인 견적 상품 리스트 — TEXT
 - 문의 주제 (최초) — TEXT
 - 문의 주제 (후속) — TEXT
 - 미완료 TODO — TEXT
+- 미팅 완료(Sales Development)로 진입한 날짜 — TEXT
+- 미팅 완료(Sales Development)에서 퇴장한 날짜 — TEXT
+- 미팅(교육 제안)로 진입한 날짜 — TEXT
+- 미팅(교육 제안)에서 퇴장한 날짜 — TEXT
 - 방문 경로 — TEXT
+- 보완 Proposal(교육 제안)로 진입한 날짜 — TEXT
+- 보완 Proposal(교육 제안)에서 퇴장한 날짜 — TEXT
 - 상담 문의 내용 — TEXT
 - 상태 — TEXT
 - 생성 날짜 — TEXT
@@ -75,18 +140,34 @@ sync_source:
 - 실패 사유 — TEXT
 - 실패 상세 사유 — TEXT
 - 업로드 제안서명 — TEXT
+- 영업 기회(Sales Development)로 진입한 날짜 — TEXT
+- 영업 기회(Sales Development)에서 퇴장한 날짜 — TEXT
+- 영업 제안(Sales Development)로 진입한 날짜 — TEXT
+- 영업 제안(Sales Development)에서 퇴장한 날짜 — TEXT
 - 예상 교육 인원 — TEXT
 - 예상 교육 일정 — TEXT
 - 예상 입금일자 — TEXT
 - 예상 체결액 — TEXT
+- 온보딩(Ongoing)로 진입한 날짜 — TEXT
+- 온보딩(Ongoing)에서 퇴장한 날짜 — TEXT
 - 완료 TODO — TEXT
 - 운영 담당자 — TEXT
 - 운영 담당자 (사용X) — TEXT
+- 운영 세팅 중 (AE)(교육 운영)로 진입한 날짜 — TEXT
+- 운영 세팅 중 (AE)(교육 운영)에서 퇴장한 날짜 — TEXT
+- 운영 세팅 중 (CSM)(교육 운영)로 진입한 날짜 — TEXT
+- 운영 세팅 중 (CSM)(교육 운영)에서 퇴장한 날짜 — TEXT
+- 운영 요청(Ongoing)로 진입한 날짜 — TEXT
+- 운영 요청(Ongoing)에서 퇴장한 날짜 — TEXT
 - 월 구독 금액 — TEXT
 - 이름 — TEXT
 - 이탈 사유 — TEXT
+- 인바운드 유입(교육 제안)로 진입한 날짜 — TEXT
+- 인바운드 유입(교육 제안)에서 퇴장한 날짜 — TEXT
 - 입과자 (온라인) — TEXT
 - 입찰/PT 여부 — TEXT
+- 자동 응대 메일 발송(Dropped Deals)로 진입한 날짜 — TEXT
+- 자동 응대 메일 발송(Dropped Deals)에서 퇴장한 날짜 — TEXT
 - 전체 TODO — TEXT
 - 제안서 발송일 — TEXT
 - 제안서 작성 여부 — TEXT
@@ -101,6 +182,8 @@ sync_source:
 - 최근 제출된 웹폼 — TEXT
 - 최근 파이프라인 단계 수정 날짜 — TEXT
 - 최근 파이프라인 수정 날짜 — TEXT
+- 최종 f-up(교육 제안)로 진입한 날짜 — TEXT
+- 최종 f-up(교육 제안)에서 퇴장한 날짜 — TEXT
 - 카테고리 — TEXT
 - 코스 ID — TEXT
 - 팀 — TEXT
@@ -108,17 +191,19 @@ sync_source:
 - 파이프라인 단계 — TEXT
 - 팔로워 — TEXT
 - 현재 진행중인 시퀀스 여부 — TEXT
+- 후속 FUP 필요(Sales Development)로 진입한 날짜 — TEXT
+- 후속 FUP 필요(Sales Development)에서 퇴장한 날짜 — TEXT
 
-### (부록) KPI 리포트에서 사용하는 컬럼 탐지/별칭
-- `build_kpi_review_report.py`는 PRAGMA 결과를 기준으로 net% 컬럼을 `netPercent→net→NET→net%→NET%→공헌이익률→공헌이익률(%)→공헌이익률 %` 순으로 탐지하며, 발견하지 못하면 `meta.netPercentColumn="__NONE__"`로 기록한다.
-- 계약/생성 연도는 `contractDate`/`createdAt` 문자열 앞 4자리로 파싱하며, organization 이름이 없을 때는 organizationId→dealId 순으로 대체해 UI에 표시한다.
-
-## lead
+### lead (120 cols)
 - id — TEXT
 - peopleId — TEXT
 - organizationId — TEXT
 - (온라인)입과 주기 — TEXT
 - (온라인)최초 입과 여부 — TEXT
+- 1차 안내 완료(결제완료)(공개 교육 파이프라인)로 진입한 날짜 — TEXT
+- 1차 안내 완료(결제완료)(공개 교육 파이프라인)에서 퇴장한 날짜 — TEXT
+- 2차 안내 완료(공개 교육 파이프라인)로 진입한 날짜 — TEXT
+- 2차 안내 완료(공개 교육 파이프라인)에서 퇴장한 날짜 — TEXT
 - LOST 확정일 — TEXT
 - Net(%) — TEXT
 - RecordId — TEXT
@@ -148,6 +233,8 @@ sync_source:
 - 누적 시퀀스 등록수 — TEXT
 - 다음 TODO 날짜 — TEXT
 - 다음 연락일 — TEXT
+- 단체신청 응대 완료(공개 교육 파이프라인)로 진입한 날짜 — TEXT
+- 단체신청 응대 완료(공개 교육 파이프라인)에서 퇴장한 날짜 — TEXT
 - 담당 파트 — TEXT
 - 담당자 — TEXT
 - 등록된 시퀀스 목록 — TEXT
@@ -162,19 +249,35 @@ sync_source:
 - 보류 사유 — TEXT
 - 보류 상세 사유 — TEXT
 - 상태 — TEXT
+- 새 리드(리드 파이프라인)로 진입한 날짜 — TEXT
+- 새 리드(리드 파이프라인)에서 퇴장한 날짜 — TEXT
 - 생성 날짜 — TEXT
 - 서비스 유형 (최초) — TEXT
 - 서비스 유형 (후속) — TEXT
 - 성사 가능성 — TEXT
 - 소스 — TEXT
+- 수강 당일 안내(공개 교육 파이프라인)로 진입한 날짜 — TEXT
+- 수강 당일 안내(공개 교육 파이프라인)에서 퇴장한 날짜 — TEXT
+- 수강 완료(공개 교육 파이프라인)로 진입한 날짜 — TEXT
+- 수강 완료(공개 교육 파이프라인)에서 퇴장한 날짜 — TEXT
 - 수강시작일 — TEXT
 - 수강종료일 — TEXT
 - 수료 조건 (온라인) — TEXT
 - 수정 날짜 — TEXT
 - 수주 예정일 — TEXT
 - 수주 예정일(지연) — TEXT
+- 신청서 제출 완료(공개 교육 파이프라인)로 진입한 날짜 — TEXT
+- 신청서 제출 완료(공개 교육 파이프라인)에서 퇴장한 날짜 — TEXT
 - 실제 수주액 — TEXT
 - 업로드 제안서명 — TEXT
+- 연락 시도 중(리드 파이프라인)로 진입한 날짜 — TEXT
+- 연락 시도 중(리드 파이프라인)에서 퇴장한 날짜 — TEXT
+- 연락 완료(리드 파이프라인)로 진입한 날짜 — TEXT
+- 연락 완료(리드 파이프라인)에서 퇴장한 날짜 — TEXT
+- 영업 대상 보류(리드 파이프라인)로 진입한 날짜 — TEXT
+- 영업 대상 보류(리드 파이프라인)에서 퇴장한 날짜 — TEXT
+- 영업 대상 확정(리드 파이프라인)로 진입한 날짜 — TEXT
+- 영업 대상 확정(리드 파이프라인)에서 퇴장한 날짜 — TEXT
 - 예상 교육 인원 — TEXT
 - 예상 교육 일정 — TEXT
 - 예상 입금일자 — TEXT
@@ -210,15 +313,10 @@ sync_source:
 - 파이프라인 단계 — TEXT
 - 팔로워 — TEXT
 - 현재 진행중인 시퀀스 여부 — TEXT
+- 환불(공개 교육 파이프라인)로 진입한 날짜 — TEXT
+- 환불(공개 교육 파이프라인)에서 퇴장한 날짜 — TEXT
 
-## manifest
-- table — TEXT
-- endpoint — TEXT
-- row_count — INTEGER
-- column_count — INTEGER
-- errors — TEXT
-
-## memo
+### memo (14 cols)
 - id — TEXT
 - htmlBody — TEXT
 - text — TEXT
@@ -234,7 +332,7 @@ sync_source:
 - updatedAt — TEXT
 - createdAt — TEXT
 
-## organization
+### organization (45 cols)
 - id — TEXT
 - LMS 교체일 — TEXT
 - Label — TEXT
@@ -281,7 +379,7 @@ sync_source:
 - 팀 — TEXT
 - 프로필 사진 — TEXT
 
-## people
+### people (76 cols)
 - id — TEXT
 - organizationId — TEXT
 - AI 교육 니즈 — TEXT
@@ -359,31 +457,7 @@ sync_source:
 - 프로필 사진 — TEXT
 - 현재 진행중인 시퀀스 여부 — TEXT
 
-## run_info
-- run_tag — TEXT
-- captured_at_utc — TEXT
-- base_url — TEXT
-- endpoints — TEXT
-- note — TEXT
-- checkpoint_path — TEXT
-- final_db_path — TEXT
-
-## team
-- id — TEXT
-- name — TEXT
-- description — TEXT
-- teammateList — TEXT
-
-## user
-- id — TEXT
-- name — TEXT
-- status — TEXT
-- email — TEXT
-- role — TEXT
-- createdAt — TEXT
-- updatedAt — TEXT
-
-## webform_history
+### webform_history (8 cols)
 - id — TEXT
 - peopleId — TEXT
 - organizationId — TEXT
@@ -392,3 +466,34 @@ sync_source:
 - contents — TEXT
 - createdAt — TEXT
 - webFormId — TEXT
+
+### run_info (7 cols)
+- run_tag — TEXT
+- captured_at_utc — TEXT
+- base_url — TEXT
+- endpoints — TEXT
+- note — TEXT
+- checkpoint_path — TEXT
+- final_db_path — TEXT
+
+### manifest (5 cols)
+- table — TEXT
+- endpoint — TEXT
+- row_count — INTEGER
+- column_count — INTEGER
+- errors — TEXT
+
+### team (4 cols)
+- id — TEXT
+- name — TEXT
+- description — TEXT
+- teammateList — TEXT
+
+### user (7 cols)
+- id — TEXT
+- name — TEXT
+- status — TEXT
+- email — TEXT
+- role — TEXT
+- createdAt — TEXT
+- updatedAt — TEXT

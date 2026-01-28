@@ -1,6 +1,6 @@
 ---
 title: SQLite 데이터 모델 핵심 필드
-last_synced: 2026-12-11
+last_synced: 2026-01-28
 sync_source:
   - dashboard/server/database.py
   - salesmap_first_page_snapshot.py

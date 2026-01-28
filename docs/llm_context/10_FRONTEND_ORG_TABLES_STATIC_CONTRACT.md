@@ -1,9 +1,10 @@
 ---
 title: 정적 org_tables.html 프런트 계약
-last_synced: 2026-12-11
+last_synced: 2026-01-28
 sync_source:
   - build_org_tables.py
   - org_tables.html
+  - tests/test_build_org_tables.py
 absorbed_from:
   - org_tables_usage.md
 ---

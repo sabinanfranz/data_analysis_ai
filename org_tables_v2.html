@@ -6,6 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2026 B2B Dashboard</title>
   <style>
+    html {
+      height: 100%;
+    }
+
     :root {
       --bg: #0b1220;
       --panel: #0f172a;
@@ -33,6 +37,8 @@
         var(--bg);
       color: var(--text);
       min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
       padding: 18px;
       display: flex;
       flex-direction: column;
@@ -53,8 +59,12 @@
     .layout {
       display: grid;
       grid-template-columns: 240px 1fr;
+      grid-template-rows: 1fr;
       gap: 12px;
-      align-items: start;
+      align-items: stretch;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
     }
 
     .sidebar {
@@ -66,7 +76,8 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      min-height: 200px;
+      min-height: 0;
+      overflow: hidden;
     }
 
     .menu-list {
@@ -76,6 +87,9 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
     }
 
     .menu-section {
@@ -343,6 +357,8 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      min-height: 0;
+      overflow: auto;
     }
 
     h1 {
@@ -1435,7 +1451,7 @@
       cursor: pointer;
     }
 
-    /* ✅ 딜 목록 모달 폭/높이/스크롤 개선 */
+    /* ✅ 딜 목록 모달 폭/높이/스크롤 개선 (FIX: 마지막 row 잘림) */
     .modal.deals-modal-wide {
       width: min(96vw, 1400px) !important;
       max-width: 96vw !important;
@@ -1443,20 +1459,37 @@
       overflow: hidden;
     }
 
+    /* 헤더는 고정(스크롤 영역과 분리) */
+    .modal.deals-modal-wide .deals-modal-header {
+      flex: 0 0 auto;
+    }
+
+    /* body는 남은 높이를 채우고, 내부에서만 스크롤이 생기도록 한다 */
     .modal.deals-modal-wide .body {
+      flex: 1 1 auto;
+      min-height: 0;
+      max-height: none !important;
       overflow: hidden !important;
+
+      display: flex;
+      flex-direction: column;
+
       white-space: normal;
       padding: 0;
     }
 
-    .deals-modal-scroll {
+    /* 실제 스크롤은 table-wrap(deals-modal-scroll)에서만 발생 */
+    .modal.deals-modal-wide .body .deals-modal-scroll {
+      flex: 1 1 auto;
+      min-height: 0;
       overflow: auto;
-      max-height: calc(min(90vh, 900px) - 56px);
       padding: 0 12px 12px;
     }
+
+    /* 기존 calc(max-height: 90vh - 56px) 기반 규칙 무력화 */
     .modal.deals-modal-wide .table-wrap.deals-modal-scroll,
     .modal.deals-modal-wide .table-wrap.full.deals-modal-scroll {
-      max-height: calc(min(90vh, 900px) - 56px) !important;
+      max-height: none !important;
       overflow: auto !important;
     }
 
@@ -2110,6 +2143,27 @@
     }
 
     @media (max-width: 900px) {
+      body {
+        height: auto;
+        overflow: auto;
+      }
+      .layout {
+        flex: none;
+        min-height: auto;
+        overflow: visible;
+      }
+      .sidebar {
+        overflow: visible;
+      }
+      .menu-list {
+        flex: none;
+        min-height: auto;
+        overflow: visible;
+      }
+      .content {
+        min-height: auto;
+        overflow: visible;
+      }
       .layout {
         grid-template-columns: 1fr;
       }
@@ -2144,7 +2198,7 @@
       <ul id="menuList" class="menu-list"></ul>
     </aside>
 
-    <div class="content">
+    <div class="content" id="contentScroll">
       <div id="contentRoot"></div>
     </div>
   </div>
@@ -3965,6 +4019,13 @@
       }
     }
 
+    function scrollRightContentToTop() {
+      const el = document.querySelector(".content");
+      if (el && typeof el.scrollTo === "function") {
+        el.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
+    }
+
     function setActiveMenu(menuId, options = {}) {
       const { skipHash = false, force = false } = options;
       const nextId = MENU_IDS.has(menuId) ? menuId : DEFAULT_MENU_ID;
@@ -3977,6 +4038,7 @@
           // ignore hash errors
         }
       }
+      scrollRightContentToTop();
       renderSidebar();
       if (changed || force) {
         return renderContent();

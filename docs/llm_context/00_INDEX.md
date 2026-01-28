@@ -1,6 +1,6 @@
 ---
 title: LLM Context Pack 인덱스
-last_synced: 2026-01-27
+last_synced: 2026-01-28
 sync_source:
   - docs/llm_context/05_SNAPSHOT_PIPELINE_CONTRACT.md
   - docs/llm_context/06_API_CONTRACT_CORE.md
@@ -20,10 +20,27 @@ sync_source:
 - 삭제된 루트 문서 내용(api_behavior/org_tables_v2/json_logic/snapshot_pipeline/error_log/user_guide/org_tables_usage/kpi_review_report/study_material/daily_progress)은 모두 00~14 SSOT 세트에 흡수되었으며, 본 세트를 우선 참조한다.
 - `llm_context_pjt2/*`는 카운터파티 리스크 리포트(PJT2) 전용 컨텍스트 팩으로 별도 관리하며, 본 세트와 혼용하지 않는다.
 
+### 문서 맵 (00~14, SSOT)
+- `00_INDEX.md` — 문서 맵/검증 체크리스트.
+- `01_GLOSSARY.md` — 도메인/필드 용어 정규화.
+- `02_ARCHITECTURE.md` — 스냅샷→API→프런트 흐름과 책임.
+- `03_REPO_MAP.md` — 기능별 파일 경로 매핑.
+- `04_DATA_MODEL_SQLITE.md` — SQLite 핵심 필드 사용 방식.
+- `05_SNAPSHOT_PIPELINE_CONTRACT.md` — 스냅샷 수집/체크포인트/백업 계약.
+- `06_API_CONTRACT_CORE.md` — 핵심 조회/퍼포먼스/StatePath/리스크 API.
+- `07_API_CONTRACT_RANKINGS.md` — 랭킹/DRI/이상치/리텐션 API.
+- `08_MEMO_WEBFORM_RULES.md` — 메모/웹폼 정제 및 won JSON 계약.
+- `09_FRONTEND_ORG_TABLES_V2_CONTRACT.md` — org_tables_v2 UI 상태/렌더/캐시.
+- `10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md` — build_org_tables 정적 HTML 계약.
+- `11_RUNBOOK_LOCAL_AND_OPS.md` — 로컬 실행/운영 변수/캐시 주의.
+- `12_TESTING_AND_QUALITY.md` — 테스트 실행법과 보호 계약.
+- `13_RAILWAY_AND_CI.md` — GitHub Actions/Release/Railway 재배포 계약.
+- `14_db_table_columns.md` — 현재 salesmap_latest.db 테이블/컬럼 SSOT.
+
 ## Invariants (Must Not Break)
 - front matter에 last_synced/sync_source가 존재해야 하며, 맵에 포함된 문서들은 모두 필수 섹션(Purpose~Verification)을 갖춘 상태여야 한다.
 - 문서 카테고리(A~H)와 링크가 실제 파일 경로와 일치해야 한다(SSOT=00~14).
-- 최신 변경은 llm_context 세트의 기준 날짜(2026-01-27)와 동기화되어야 한다.
+- 최신 변경은 llm_context 세트의 기준 날짜(2026-01-28)와 동기화되어야 한다.
 
 ## Coupling Map
 - SSOT 문서: `05_SNAPSHOT_PIPELINE_CONTRACT.md`(스냅샷), `06_API_CONTRACT_CORE.md`/`07_API_CONTRACT_RANKINGS.md`(API), `08_MEMO_WEBFORM_RULES.md`(won-groups JSON 정제), `09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`/`10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md`(프런트), `11_RUNBOOK_LOCAL_AND_OPS.md`(운영), `12_TESTING_AND_QUALITY.md`(품질).

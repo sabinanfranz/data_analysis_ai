@@ -1,6 +1,6 @@
 ---
 title: 핵심 조회 API 계약 (org_tables_v2.html 사용)
-last_synced: 2026-01-27
+last_synced: 2026-01-28
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py
@@ -9,7 +9,6 @@ sync_source:
   - tests/test_perf_monthly_contracts.py
   - tests/test_pl_progress_2026.py
   - tests/test_api_counterparty_dri.py
-  - tests/test_perf_monthly_inquiries.py
   - tests/test_perf_monthly_inquiries_online_first_filter.py
 ---
 

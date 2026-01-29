@@ -5,11 +5,18 @@ from urllib.parse import quote
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment
 from datetime import datetime
+import json
 
 from . import database as db
 from .json_compact import compact_won_groups_json
 from .statepath_engine import build_statepath
 from .report_scheduler import run_daily_counterparty_risk_job, get_cached_report, _load_status
+from .llm_target_attainment import (
+    TargetAttainmentRequest,
+    run_target_attainment,
+    validate_payload_limits,
+    MAX_TARGET_ATTAINMENT_REQUEST_BYTES,
+)
 
 router = APIRouter(prefix="/api")
 
@@ -420,6 +427,29 @@ def get_counterparty_risk_status(
     if mode not in {"offline", "online"}:
         raise HTTPException(status_code=400, detail="Invalid mode")
     return _load_status(mode=mode)
+
+
+@router.post("/llm/target-attainment")
+def post_target_attainment(req: TargetAttainmentRequest, debug: bool = Query(False, description="attach __meta when true")) -> dict:
+    try:
+        payload_dict = req.model_dump()
+        try:
+            size = validate_payload_limits(payload_dict)
+        except ValueError:
+            raise HTTPException(
+                status_code=413,
+                detail={
+                    "error": "PAYLOAD_TOO_LARGE",
+                    "max_bytes": MAX_TARGET_ATTAINMENT_REQUEST_BYTES,
+                    "bytes": len(json.dumps(payload_dict, ensure_ascii=False).encode("utf-8")),
+                    "hint": "upperOrg 1개 그룹만 포함되도록 compact JSON을 축소하세요.",
+                },
+            )
+        return run_target_attainment(req, debug=debug, payload_bytes=size)
+    except HTTPException:
+        raise
+    except Exception as exc:  # pragma: no cover - defensive
+        return {"error": "TARGET_ATTAINMENT_INTERNAL_ERROR", "message": str(exc)}
 
 
 @router.get("/rank/2025-deals-people")

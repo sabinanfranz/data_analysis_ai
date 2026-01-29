@@ -204,6 +204,9 @@
       padding: 8px 10px;
       border-bottom: 1px solid var(--border);
     }
+    .row-loading {
+      opacity: 0.6;
+    }
     .cpr-table th {
       background: var(--panel-2);
       position: sticky;
@@ -2536,7 +2539,7 @@
       "target-2026": renderTarget2026Screen,
       "target-2026-online": (root) => renderTarget2026DashboardScreen(root, "online"),
       "ops-2026-online-retention": renderOnlineRetention2026Screen,
-      "counterparty-risk-daily": (root) => renderCounterpartyRiskDaily(root, "offline"),
+      "counterparty-risk-daily": (root) => renderDailyReport2026V2Offline(root),
       "counterparty-risk-daily-online": (root) => renderCounterpartyRiskDaily(root, "online"),
       "deal-qc-r1r15": renderDealQcR1R15Screen,
       "mismatch-2025": renderMismatch2025Screen,
@@ -2607,6 +2610,19 @@
         P3: 1.0,
         P4: 1.0,
         P5: 1.0,
+      },
+      dailyReportV2Offline: {
+        cacheRows: null,
+        loading: false,
+        error: null,
+        teamFilter: "",
+        partFilter: "",
+        teamPartIndex: null,
+        teamPartTeams: [],
+        teamPartPartsByTeam: new Map(),
+        llmCache: new Map(),
+        llmInflight: new Map(),
+        inFlightRowKeys: new Set(),
       },
       rankPeopleModal: {
         backdrop: null,
@@ -4116,6 +4132,24 @@
         throw new Error(txt || resp.statusText);
       }
       return resp.json();
+    }
+
+    async function postJson(path, body) {
+      const resp = await fetch(`${API_BASE}${path}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body ?? {}),
+      });
+      const contentType = resp.headers.get("content-type") || "";
+      const isJson = contentType.includes("application/json");
+      const payload = isJson ? await resp.json() : await resp.text();
+      if (!resp.ok) {
+        const err = new Error(resp.statusText || "Request failed");
+        err.status = resp.status;
+        err.payload = payload;
+        throw err;
+      }
+      return payload;
     }
 
     function escapeMdCell(text) {
@@ -6195,6 +6229,12 @@
       };
     }
 
+    function timeoutAfter(ms, reason = "timeout") {
+      return new Promise((_, reject) => {
+        setTimeout(() => reject(new Error(reason)), ms);
+      });
+    }
+
     let _metricResizeBound = false;
     const applyEqualMetricColWidthsDebounced = debounce(() => {
       const tableEl = document.getElementById("rankCounterpartyDriTable");
@@ -6621,6 +6661,23 @@
       };
     }
 
+    function filterWonGroupByUpperWithFallback(data, upper) {
+      if (!data || !upper) return { filtered: null, available: [] };
+      const groups = data.groups || [];
+      const available = Array.from(new Set(groups.map((g) => g.upper_org).filter(Boolean)));
+      const exact = filterWonGroupByUpper(data, upper);
+      if (exact && exact.groups && exact.groups.length) return { filtered: exact, available };
+      const upperNorm = normalizeUpperOrg(upper);
+      const filtered = groups.filter((g) => normalizeUpperOrg(g.upper_org) === upperNorm);
+      if (filtered.length) {
+        return {
+          filtered: { ...data, groups: filtered },
+          available,
+        };
+      }
+      return { filtered: null, available };
+    }
+
     function renderWonGroupJsonAll(data) {
       const hint = document.getElementById("wonGroupJsonHintAll");
       const viewBtn = document.getElementById("viewWonGroupJsonAllBtn");
@@ -6808,6 +6865,16 @@
           if (btn) btn.disabled = true;
         });
       }
+    }
+
+    async function getWonGroupsJsonCompactCached(orgId) {
+      if (!orgId) throw new Error("orgId is required");
+      if (cache.wonGroupJsonCompactByOrg.has(orgId)) {
+        return cache.wonGroupJsonCompactByOrg.get(orgId);
+      }
+      const data = await fetchJson(`/orgs/${orgId}/won-groups-json-compact`);
+      cache.wonGroupJsonCompactByOrg.set(orgId, data);
+      return data;
     }
 
     async function loadStatePath(orgId) {
@@ -7911,6 +7978,198 @@
       return { team, part };
     }
 
+    /**
+     * @typedef {Object} DailyReportV2Row
+     * @property {string} orgId
+     * @property {string} orgName
+     * @property {string} upperOrg
+     * @property {string} tier
+     * @property {number} target
+     * @property {number} actual
+     * @property {any[]} owners2025
+     */
+
+    function normalizeDailyReportV2OfflineRow(raw) {
+      const cfg = TARGET2026_MODE_CONFIG.offline;
+      return {
+        orgId: String(raw.orgId || raw.org_id || ""),
+        orgName: String(raw.orgName || raw.organizationName || ""),
+        upperOrg: String(raw.upperOrg || raw.upper_org || raw.counterparty || ""),
+        tier: String(raw.orgTier || raw.tier || ""),
+        target: Number(raw[cfg.targetKey] || raw.target26Offline || 0),
+        actual: Number(raw[cfg.wonKey] || raw.cpOffline2026 || 0),
+        owners2025: Array.isArray(raw.owners2025) ? raw.owners2025 : [],
+      };
+    }
+
+    async function ensureDailyReportV2OfflineRows(force = false) {
+      const st = state.dailyReportV2Offline;
+      if (!force && Array.isArray(st.cacheRows)) return;
+
+      st.loading = true;
+      st.error = null;
+
+      try {
+        const src = await loadTarget2026SourceRowsAll();
+        const rawRows = [].concat(src?.big || []).concat(src?.mid || []).concat(src?.small || []);
+        st.cacheRows = rawRows.map(normalizeDailyReportV2OfflineRow);
+      } catch (e) {
+        st.cacheRows = [];
+        st.error = e?.message ? String(e.message) : String(e);
+      } finally {
+        st.loading = false;
+      }
+    }
+
+    function ensureDailyReportV2OfflineTeamPartIndex() {
+      const st = state.dailyReportV2Offline;
+      if (st.teamPartIndex) return;
+      const index = new Map();
+      const teamSet = new Set();
+      const partSetByTeam = new Map();
+
+      for (const r of st.cacheRows || []) {
+        const upper = normalizeUpperOrg(r.upperOrg || "");
+        const key = `${r.orgId}||${upper}`;
+        const tp = computePrimaryTeamPartFromOwners(r.owners2025 || []);
+        index.set(key, tp);
+        const team = tp.team || "미매핑";
+        const part = tp.part || "미매핑";
+        teamSet.add(team);
+        if (!partSetByTeam.has(team)) partSetByTeam.set(team, new Set());
+        partSetByTeam.get(team).add(part);
+      }
+
+      const teamList = Array.from(teamSet).sort((a, b) => String(a).localeCompare(String(b)));
+      const partsByTeam = new Map();
+      teamList.forEach((team) => {
+        const parts = Array.from(partSetByTeam.get(team) || new Set()).sort((a, b) => String(a).localeCompare(String(b)));
+        partsByTeam.set(team, parts);
+      });
+
+      st.teamPartIndex = index;
+      st.teamPartTeams = teamList;
+      st.teamPartPartsByTeam = partsByTeam;
+    }
+
+    function applyDailyReportV2OfflineTeamPartFilter(items) {
+      const st = state.dailyReportV2Offline;
+      const team = st.teamFilter || "";
+      const part = st.partFilter || "";
+      if (!team) return items;
+      const idx = st.teamPartIndex;
+      if (!idx) return items;
+      return (items || []).filter((row) => {
+        const key = `${row.orgId}||${normalizeUpperOrg(row.upperOrg || "")}`;
+        const tp = idx.get(key) || { team: "", part: "" };
+        if (tp.team !== team) return false;
+        if (part && tp.part !== part) return false;
+        return true;
+      });
+    }
+
+    function buildDailyReportV2RowKey(row) {
+      const upper = normalizeUpperOrg(row.upperOrg || "");
+      return `${row.orgId}||${upper}||${Number(row.target) || 0}||${Number(row.actual) || 0}`;
+    }
+
+    async function handleDailyReportV2OfflineRowClick({ orgId, orgName, upperOrg, target, actual }, rowEl = null) {
+      const st = state.dailyReportV2Offline;
+      if (!st.llmCache) st.llmCache = new Map();
+      if (!st.llmInflight) st.llmInflight = new Map();
+      if (!st.inFlightRowKeys) st.inFlightRowKeys = new Set();
+      const rowKey = buildDailyReportV2RowKey({ orgId, upperOrg, target, actual });
+      const title = `Target Attainment · ${orgName || orgId || ""} / ${upperOrg || ""}`;
+
+      const cached = st.llmCache.get(rowKey);
+      if (cached) {
+        openJsonModal(title, cached);
+        return;
+      }
+
+      if (st.inFlightRowKeys.has(rowKey)) {
+        openJsonModal(title, { loading: true, note: "request in progress", orgId, upperOrg, target_2026: target, actual_2026: actual });
+        return;
+      }
+
+      openJsonModal(title, { loading: true, orgId, upperOrg, target_2026: target, actual_2026: actual });
+
+      if (st.llmInflight.has(rowKey)) {
+        try {
+          const inflightResult = await st.llmInflight.get(rowKey);
+          openJsonModal(title, inflightResult);
+          return;
+        } catch (err) {
+          openJsonModal(title, { error: "LLM_CALL_FAILED", message: err?.message || String(err), orgId, upperOrg });
+          return;
+        }
+      }
+
+      if (rowEl) rowEl.classList.add("row-loading");
+      st.inFlightRowKeys.add(rowKey);
+
+      const promise = (async () => {
+        try {
+          const compact = await getWonGroupsJsonCompactCached(orgId);
+          const { filtered, available } = filterWonGroupByUpperWithFallback(compact, upperOrg);
+          if (!filtered || !(filtered.groups || []).length) {
+            const errObj = {
+              error: "UPPER_GROUP_NOT_FOUND",
+              orgId,
+              upperOrg,
+              availableUppers: available,
+            };
+            st.llmCache.set(rowKey, errObj);
+            return errObj;
+          }
+
+          const body = {
+            orgId,
+            orgName,
+            upperOrg,
+            mode: "offline",
+            target_2026: Number(target) || 0,
+            actual_2026: Number(actual) || 0,
+            won_group_json_compact: filtered,
+          };
+
+          const TIMEOUT_MS = 30000;
+          let respJson = null;
+          try {
+            respJson = await Promise.race([postJson("/llm/target-attainment", body), timeoutAfter(TIMEOUT_MS, "LLM_CALL_TIMEOUT")]);
+          } catch (err) {
+            const errObj = {
+              error: err?.message === "LLM_CALL_TIMEOUT" ? "LLM_CALL_TIMEOUT" : "LLM_CALL_FAILED",
+              orgId,
+              upperOrg,
+              status: err?.status ?? null,
+              message: err?.message || String(err),
+              body: err?.payload ?? null,
+            };
+            st.llmCache.set(rowKey, errObj);
+            return errObj;
+          }
+
+          st.llmCache.set(rowKey, respJson);
+          return respJson;
+        } catch (err) {
+          const errObj = { error: "COMPACT_FETCH_FAILED", orgId, upperOrg, message: err?.message || String(err) };
+          st.llmCache.set(rowKey, errObj);
+          return errObj;
+        }
+      })();
+
+      st.llmInflight.set(rowKey, promise);
+      try {
+        const result = await promise;
+        openJsonModal(title, result);
+      } finally {
+        st.llmInflight.delete(rowKey);
+        st.inFlightRowKeys.delete(rowKey);
+        if (rowEl) rowEl.classList.remove("row-loading");
+      }
+    }
+
     async function ensureCprTeamPartIndex() {
       const st = state.counterpartyRisk;
       if (st.teamPartIndex && st.teamPartPartsByTeam) return;
@@ -8395,6 +8654,168 @@
       return { tier_groups: tierGroups, counts };
     }
 
+
+    function renderDailyReport2026V2Offline(root) {
+      const st = state.dailyReportV2Offline;
+      if (!st.llmCache) st.llmCache = new Map();
+      if (!st.llmInflight) st.llmInflight = new Map();
+      const wrapper = document.createElement("div");
+      wrapper.className = "card";
+      wrapper.innerHTML = `
+        <div class="cpr-header">
+          <div>
+            <h2 style="margin:0;">2026 Daily Report(출강)</h2>
+            <div class="muted" style="font-size:12px;">V2 · DRI 기반 (리스크 파이프라인 미사용)</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <button id="drv2RefreshBtn" class="pill">새로고침</button>
+          </div>
+        </div>
+        <div class="cpr-teampart-row" style="margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <label class="pill">팀
+            <select id="drv2TeamSelect" style="min-width:160px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:6px 8px;"></select>
+          </label>
+          <label class="pill">파트
+            <select id="drv2PartSelect" style="min-width:140px;background:var(--panel-2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:6px 8px;"></select>
+          </label>
+        </div>
+        <div id="drv2Body" class="muted" style="margin-top:10px;">불러오는 중...</div>
+      `;
+      root.innerHTML = "";
+      root.appendChild(wrapper);
+
+      const bodyEl = wrapper.querySelector("#drv2Body");
+      const refreshBtn = wrapper.querySelector("#drv2RefreshBtn");
+      const teamSelect = wrapper.querySelector("#drv2TeamSelect");
+      const partSelect = wrapper.querySelector("#drv2PartSelect");
+
+      const renderTeamOptions = () => {
+        const teams = st.teamPartTeams || [];
+        const opts = ['<option value="">전체</option>'].concat(
+          teams.map((t) => `<option value="${t}">${t}</option>`)
+        );
+        teamSelect.innerHTML = opts.join("");
+        teamSelect.value = st.teamFilter || "";
+      };
+
+      const renderPartOptions = () => {
+        const team = st.teamFilter || "";
+        if (!team) {
+          partSelect.innerHTML = '<option value="">전체</option>';
+          partSelect.value = "";
+          partSelect.disabled = true;
+          return;
+        }
+        const parts = (st.teamPartPartsByTeam && st.teamPartPartsByTeam.get(team)) || [];
+        const opts = ['<option value="">전체</option>'].concat(parts.map((p) => `<option value="${p}">${p}</option>`));
+        partSelect.innerHTML = opts.join("");
+        const current = st.partFilter || "";
+        partSelect.value = parts.includes(current) ? current : "";
+        st.partFilter = partSelect.value;
+        partSelect.disabled = false;
+      };
+
+      const renderTable = () => {
+        if (st.loading) {
+          bodyEl.innerHTML = '<div class="muted">불러오는 중...</div>';
+          return;
+        }
+        if (st.error) {
+          bodyEl.innerHTML = `<div class="pill error">오류: ${st.error}</div>`;
+          return;
+        }
+        const rows = applyDailyReportV2OfflineTeamPartFilter(st.cacheRows || []);
+        if (!rows.length) {
+          bodyEl.innerHTML = '<div class="muted">데이터가 없습니다.</div>';
+          return;
+        }
+        const rowsHtml = rows
+          .map(
+            (r) => `
+              <tr data-org-id="${r.orgId || ""}" data-org-name="${r.orgName || ""}" data-upper-org="${r.upperOrg || ""}" data-target="${r.target}" data-actual="${r.actual}" style="cursor:pointer;">
+                <td>${r.tier || "-"}</td>
+                <td>${r.orgName || "-"}</td>
+                <td>${r.upperOrg || "-"}</td>
+                <td class="num">${formatAmount(r.target)}</td>
+                <td class="num">${formatAmount(r.actual)}</td>
+              </tr>
+            `
+          )
+          .join("");
+        bodyEl.innerHTML = `
+          <div class="table-wrap">
+            <table class="cpr-table drv2-table">
+              <thead>
+                <tr>
+                  <th style="width:82px;">티어</th>
+                  <th>고객사</th>
+                  <th>카운터파티</th>
+                  <th class="num">target</th>
+                  <th class="num">actual</th>
+                </tr>
+              </thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          </div>
+        `;
+
+        const table = bodyEl.querySelector(".drv2-table");
+        if (table && !table._drv2Bound) {
+          table._drv2Bound = true;
+          table.addEventListener("click", (e) => {
+            const tr = e.target.closest("tbody tr");
+            if (!tr) return;
+            const orgId = tr.dataset.orgId || "";
+            const orgName = tr.dataset.orgName || "";
+            const upperOrg = tr.dataset.upperOrg || "";
+            const target = Number(tr.dataset.target || 0);
+            const actual = Number(tr.dataset.actual || 0);
+            handleDailyReportV2OfflineRowClick({ orgId, orgName, upperOrg, target, actual }, tr);
+          });
+        }
+      };
+
+      const load = async (force = false) => {
+        bodyEl.innerHTML = '<div class="muted">불러오는 중...</div>';
+        await ensureDailyReportV2OfflineRows(force);
+        if (!Array.isArray(st.cacheRows)) {
+          renderTable();
+          return;
+        }
+        if (force) {
+          st.teamPartIndex = null;
+          st.teamPartTeams = [];
+          st.teamPartPartsByTeam = new Map();
+        }
+        ensureDailyReportV2OfflineTeamPartIndex();
+        renderTeamOptions();
+        renderPartOptions();
+        renderTable();
+      };
+
+      teamSelect.addEventListener("change", () => {
+        st.teamFilter = teamSelect.value || "";
+        st.partFilter = "";
+        renderPartOptions();
+        renderTable();
+      });
+
+      partSelect.addEventListener("change", () => {
+        st.partFilter = partSelect.value || "";
+        renderTable();
+      });
+
+      refreshBtn.addEventListener("click", () => {
+        st.cacheRows = null;
+        st.error = null;
+        st.teamPartIndex = null;
+        st.teamPartTeams = [];
+        st.teamPartPartsByTeam = new Map();
+        load(true);
+      });
+
+      load();
+    }
 
     function renderCounterpartyRiskDaily(root, modeKey = "offline") {
       const mode = modeKey === "online" ? "online" : "offline";

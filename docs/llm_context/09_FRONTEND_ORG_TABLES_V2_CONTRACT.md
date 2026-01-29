@@ -22,7 +22,8 @@ absorbed_from:
 - 사이드바: `MENU_SECTIONS` 순서로 사업부 퍼포먼스(2026 P&L → 2026 월별 체결액 → 2026 Daily Report(WIP)) → 운영(2026 Targetboard(출강), 2026 Targetboard(온라인), 2026 카운터파티 DRI, 딜체크 7개 메뉴) → 분석(StatePath 24→25, 2025 체결액 순위, 조직/People/Deal 뷰어, 숨김: 2025 대기업 딜·People/업종별 매출) → 검수(개인별 세일즈맵 검수, 고객사 불일치). 해시가 유효하지 않으면 `DEFAULT_MENU_ID="target-2026"`. 딜체크 메뉴는 단일 config(`DEALCHECK_MENU_DEFS`)에서 부모 2개(교육1/교육2)와 자식 5개(교육1: 1/2파트, 교육2: 1/2파트/온라인셀)를 정의하며, 자식 라벨에만 `↳ ` 접두어를 추가한다. 월별 체결액도 동일 패턴으로 부모 `biz-perf-monthly` 아래 하위 메뉴 2개(교육1/교육2)가 있으며 `team` 파라미터를 전달한다.
 - 사업부 퍼포먼스 메뉴 확장: `biz-perf-monthly-edu2` 하위에 `biz-perf-monthly-edu2-inquiries`(라벨: “2026 문의 인입 현황”, kind=monthly-inquiries, suppressArrow=true)가 추가되며 parentId는 유지되지만 사이드바 라벨 앞 `↳`는 이 메뉴에만 표시하지 않는다(다른 하위 메뉴는 기존 `↳` 유지).
 - API_BASE: origin이 있으면 `<origin>/api`, 아니면 `http://localhost:8000/api`.
-- 데스크톱(>900px): body 스크롤을 숨기고 사이드바/콘텐츠를 각각 독립 세로 스크롤로 분리한다(`.sidebar`↔`.content`), 메뉴 리스트는 `overflow-y:auto`로 스크롤된다. 메뉴를 클릭할 때마다(동일 메뉴 재클릭 포함) 콘텐츠 스크롤 컨테이너(`#contentScroll`)와 window 모두 top=0으로 리셋된다.
+- 데스크톱(>900px): `html{height:100%}`, `body{height:100vh; overflow:hidden}`으로 페이지 스크롤을 막고 `.layout{grid-template-rows:1fr; flex:1 1 auto; min-height:0; overflow:hidden; align-items:stretch}` 아래 사이드바/콘텐츠를 분리 스크롤한다. 사이드바는 `min-height:0; overflow:hidden`, 메뉴 리스트는 `overflow-y:auto`, 콘텐츠는 `overflow:auto`이며 `.content#contentScroll`에 스크롤이 쌓인다. 메뉴 클릭 시 `scrollRightContentToTop()`이 `.content`를 top=0으로 리셋한다.
+- 모바일(<=900px): @media에서 body/레이아웃/사이드바/메뉴/콘텐츠 height·overflow를 auto/visible로 되돌려 단일 페이지 스크롤을 유지한다.
 - 2026 P&L (`renderBizPerfPlProgress2026`):
   - `/performance/pl-progress-2026/summary` → 연간(T/E) 후 2601~2612 T/E 컬럼을 렌더. 현재 월 헤더/셀에 `is-current-month-group`/`is-current-month` 클래스 부여.
   - assumptions 바(공헌이익률 온라인/출강, 월 제작/마케팅/인건비) 입력 → `applyAssumptionsToPnlData`로 즉시 재계산. `pnlAssumpInfoBtn`은 meta.excluded·snapshot_version·가정을 모달로 표시, `pnlResetAssumptionsBtn`은 기본값으로 복구.
@@ -55,7 +56,7 @@ absorbed_from:
 - 카운터파티 DRI 화면은 `/rank/2025-top100-counterparty-dri?size=...`로 규모별 **전체 조직**을 한 번에 불러와 캐시에 보관하고, 검색/DRI(O/X/all)/팀&파트 필터를 모두 클라이언트에서 적용한다. Prev/Next 없이 한 화면에서 필터링하며 기본 정렬은 orgWon2025 desc→cpTotal2025 desc다. target26 컬럼은 override 시 강조한다.
 - 상위 조직 JSON 카드는 선택이 없으면 버튼이 비활성화되고 안내 문구를 표시한다. 전체 JSON은 원본 그대로, 선택 JSON은 `filterWonGroupByUpper`로 groups만 upper_org 일치 항목을 필터링하며 organization 블록은 그대로 유지한다. compact 버튼은 `/won-groups-json-compact` 응답을 사용해 `schema_version=won-groups-json/compact-v1`과 `htmlBody` 제거 여부를 확인한다.
 - 2026 P&L은 헤더/셀에 `is-current-month-group`/`is-current-month` 클래스로 현재 월을 강조하고 월별 E 열만 클릭 가능하다. assumptions 바는 변경 시 `is-dirty` 클래스로 표시되며 `pnlAssumpInfoBtn`이 제외 건수·스냅샷 버전·가정을 모달로 보여준다.
-- 월별 체결액/문의 인입 공용 딜 모달은 amount>0 우선→expectedAmount→dealName asc로 정렬된 테이블을 사용하며, `카테고리` 컬럼이 과정포맷 오른쪽에 추가돼 총 16열이다. dealCount 0 셀은 `<span class=\"mp-cell-btn is-zero\">`로 비활성 처리된다.
+- 월별 체결액/문의 인입 공용 딜 모달은 amount>0 우선→expectedAmount→dealName asc로 정렬된 테이블을 사용하며, `카테고리` 컬럼이 과정포맷 오른쪽에 추가돼 총 16열이다. dealCount 0 셀은 `<span class=\"mp-cell-btn is-zero\">`로 비활성 처리된다. 모달은 `.modal.deals-modal-wide` flex 레이아웃을 사용해 헤더를 고정(`.deals-modal-header`)하고 본문 `.body`를 `flex:1` + `min-height:0`로 설정, 실제 스크롤은 `.deals-modal-scroll`에서만 발생한다(폭: min(96vw,1400px), 높이: min(90vh,900px)).
 - 딜체크 7개 메뉴는 모두 `DEALCHECK_MENU_DEFS`에서 파생된 동일 renderer를 사용하고, memoCount=0일 때 “메모 없음” 비활성 버튼을 보여준다. 섹션은 리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인 순서로 고정된다.
 
 ## Invariants (Must Not Break)
@@ -63,7 +64,7 @@ absorbed_from:
 - P&L 테이블: 연간(T/E) → 월별(T/E) 순, 현재 월 하이라이트, 월별 E만 클릭 가능, 숫자 우측 정렬(tabular-nums), 0은 버튼 대신 span.
 - 월별 체결액: rows 4개·YYMM 24개 전부 출력, dealCount=0 셀은 비활성 span, 금액은 `formatEok1`(원→억) 사용.
 - 문의 인입 현황: SIZE_ORDER 7개 버튼 중 선택한 규모만 렌더하며 기본 선택은 "대기업". sticky 컬럼은 과정포맷/카테고리 2개, child 행은 기본 숨김, parent 클릭 시 caret과 함께 토글되어야 한다. 버튼 셀에는 `data-perf-kind="monthly-inquiries"`와 segment=rowKey=month dataset이 모두 설정돼야 한다.
-- 모달 공유 DOM(`#rankPeopleModal*`, `#dealQcModal`, JSON/StatePath 모달)을 재사용하며 ESC/백드롭/X로 닫혀야 한다.
+- 모달 공유 DOM(`#rankPeopleModal*`, `#dealQcModal`, JSON/StatePath 모달)을 재사용하며 ESC/백드롭/X로 닫혀야 한다. 딜 모달은 `.deals-modal-wide` flex 스크롤 구조(헤더 고정, `.deals-modal-scroll`에서만 overflow)와 max-height `min(90vh,900px)`을 유지해야 마지막 행이 잘리지 않는다.
 - 캐시: 공통 fetchJson은 캐시를 두지 않으며 화면별로 Map 캐시(state/cache 객체)를 개별 보관한다. DB 교체/포트 변경 시 새로고침 전에는 각 화면 캐시가 무효화되지 않는다. 딜체크 7개 메뉴는 모두 `DEALCHECK_MENU_DEFS`에서 파생된 동일 renderer를 사용해야 하며, 메뉴 추가 시 config 1곳만 수정하면 사이드바/renderer가 함께 반영돼야 한다.
 - StatePath 필터 드로어의 토글/싱글 선택(전이/셀/rail/seed/회사 방향/위험 등)은 서버 재호출 없이 클라이언트 필터만 변경해야 하며, Snapshot/Pattern/테이블이 즉시 동기화된다.
 - Counterparty Risk 화면은 tier/risk/pipeline_zero/search 필터를 모두 프런트에서 적용하고, summary(티어별 target/coverage/gap/coverage%)와 evidence/추천 액션 토글을 표시해야 한다.
@@ -85,11 +86,13 @@ absorbed_from:
  - StatePath는 segment만 서버에 전달하고 나머지 필터는 프런트 상태에만 존재하므로, DB 교체 시 새로고침을 하지 않으면 구 데이터를 계속 필터링할 수 있다.
 
 ## Verification
- - 사이드바 라벨/순서가 계약대로인지, 잘못된 hash 시 조직 뷰어가 열리는지 확인한다.
+- 사이드바 라벨/순서가 계약대로인지, 잘못된 hash 시 조직 뷰어가 열리는지 확인한다.
+- 데스크톱에서 body에 스크롤바가 없고 `.sidebar`/`.content` 각각 세로 스크롤바가 표시되는지, 메뉴 클릭 시 `.content`가 항상 top=0으로 리셋되는지 확인한다.
 - `/performance/pl-progress-2026/summary` 응답으로 연간→월별 T/E 헤더와 현재 월 하이라이트가 표시되고, 월별 E 셀 클릭 시 `/performance/pl-progress-2026/deals` 모달이 recognizedAmount desc→amountUsed desc→dealName desc 정렬인지 확인한다.
-- `/performance/monthly-amounts/summary`가 24개월·4개 row를 모두 포함하고 0 셀이 비활성화되며, 모달 정렬이 amount>0→expectedAmount→dealName asc인지 확인한다.
-- `/performance/monthly-inquiries/summary`가 7개 size·13 과정포맷 rollup과 카테고리(온라인/생성형AI/DT/직무별교육/스킬/기타/미기재) 상세를 모두 포함하는지, size 버튼 전환 시 테이블이 해당 규모 데이터로 재렌더되는지 확인한다.
-- 문의 인입 테이블 parent 클릭 시 child 행이 접기/펼치기 되고, 숫자 버튼 클릭 시 `/performance/monthly-inquiries/deals` 모달이 열리며 카테고리 컬럼이 표시되는지(공백→미기재) 확인한다.
+ - `/performance/monthly-amounts/summary`가 24개월·4개 row를 모두 포함하고 0 셀이 비활성화되며, 모달 정렬이 amount>0→expectedAmount→dealName asc인지 확인한다.
+ - `/performance/monthly-inquiries/summary`가 7개 size·13 과정포맷 rollup과 카테고리(온라인/생성형AI/DT/직무별교육/스킬/기타/미기재) 상세를 모두 포함하는지, size 버튼 전환 시 테이블이 해당 규모 데이터로 재렌더되는지 확인한다.
+ - 문의 인입 테이블 parent 클릭 시 child 행이 접기/펼치기 되고, 숫자 버튼 클릭 시 `/performance/monthly-inquiries/deals` 모달이 열리며 카테고리 컬럼이 표시되는지(공백→미기재) 확인한다.
+ - 월별 체결액/문의 인입 딜 모달을 열어 스크롤을 끝까지 내려도 마지막 행이 잘리지 않고 완전히 보이는지 확인한다(헤더 2줄 상황 포함).
 - 사이드바에서 `2026 문의 인입 현황` 라벨만 `↳` 없이 노출되고 다른 하위 메뉴는 기존 `↳`를 유지하는지 확인한다.
 - `/rank/2025-top100-counterparty-dri` 호출 후 검색/DRI/팀&파트 필터가 즉시 반영되고 행 클릭 시 `/rank/2025-counterparty-dri/detail` 모달이 열리는지 확인한다.
 - 딜체크 메뉴 7개가 모두 표시되고, `/deal-check?team=edu1|edu2` 결과가 orgWon2025Total desc→createdAt asc→dealId asc 정렬인지 확인한다. 자식 메뉴(파트/온라인셀)는 owners 기반 partFilter가 적용돼 카운트/목록이 달라지는지 검증한다.

@@ -474,6 +474,10 @@ def _date_only_legacy(val: Any) -> str:
         text = text.split(" ")[0]
     if "T" in text:
         text = text.split("T")[0]
+    # Fallback: allow dots/compact digits via date_kst parser
+    kst = date_kst.kst_date_only(text)
+    if kst:
+        return kst
     return text
 
 
@@ -835,7 +839,15 @@ def _parse_date(val: Any) -> Optional[date]:
     if not text_raw:
         return None
 
-    # Try timezone-aware ISO first to avoid off-by-one day due to UTC storage
+    # First, delegate to the canonical KST parser to support dots/compact digits/UTC offsets.
+    kst = date_kst.kst_date_only(text_raw)
+    if kst:
+        try:
+            return datetime.strptime(kst, "%Y-%m-%d").date()
+        except Exception:
+            return None
+
+    # Fallback: legacy ISO parsing
     if "T" in text_raw:
         iso_text = text_raw
         if iso_text.endswith("Z"):
@@ -1828,6 +1840,11 @@ def _month_key_from_text_legacy(val: Any) -> str | None:
     if not text_raw:
         return None
 
+    # Prefer the canonical KST parser for broad format coverage (., digits-only, UTC offsets).
+    kst_yymm = date_kst.kst_yymm(text_raw)
+    if kst_yymm:
+        return kst_yymm
+
     # If ISO datetime, first normalize to KST date then extract.
     if "T" in text_raw:
         kst_date = _date_only_legacy(text_raw)
@@ -1836,7 +1853,7 @@ def _month_key_from_text_legacy(val: Any) -> str | None:
             yyyy, mm = match_kst.group(1), match_kst.group(2)
             return f"{yyyy[-2:]}{mm}"
 
-    match = re.match(r"^(\d{4})[-/]?(\d{1,2})", text_raw)
+    match = re.match(r"^(\d{4})[-/.]?(\d{1,2})", text_raw)
     if not match:
         return None
     year, month = match.group(1), match.group(2)
@@ -3234,7 +3251,7 @@ def _qc_pick_columns(conn: sqlite3.Connection) -> Tuple[Dict[str, Optional[str]]
         "proposal_written": pick(["제안서 작성 여부"], "proposal_written"),
         "proposal_upload": pick(["업로드 제안서명"], "proposal_upload"),
         "probability": pick(["성사 가능성"], "probability"),
-        "created_at": pick(["생성 날짜", "createdAt", "created_at"], "created_at"),
+        "created_at": pick(["생성 날짜", "생성일", "createdAt", "created_at", "created_at_utc"], "created_at"),
         "status": pick(["상태"], "status"),
         "amount": pick(["금액"], "amount"),
         "owner": pick(["담당자"], "owner"),
@@ -4312,6 +4329,8 @@ def _load_perf_monthly_inquiries_data(db_path: Path, debug: bool = False) -> Dic
         course_id_select = f'd."{course_id_col}" AS course_id' if course_id_col else "NULL AS course_id"
         online_first_select = f'd."{online_first_col}" AS online_first' if online_first_col else "NULL AS online_first"
 
+        year_clause, year_params = sql_years_clause(f'd."{created_col}"', ["2025", "2026"], mode="strict")
+
         rows = _fetch_all(
             conn,
             f"""
@@ -4342,8 +4361,9 @@ def _load_perf_monthly_inquiries_data(db_path: Path, debug: bool = False) -> Dic
             FROM deal d
             LEFT JOIN people p ON p.id = d.peopleId
             LEFT JOIN organization o ON o.id = COALESCE(NULLIF(TRIM(d.organizationId), ''), NULLIF(TRIM(p.organizationId), ''))
-            WHERE d."{created_col}" LIKE '2025%' OR d."{created_col}" LIKE '2026%'
+            WHERE {year_clause}
             """,
+            year_params,
         )
         rows = [dict(r) for r in rows]
 

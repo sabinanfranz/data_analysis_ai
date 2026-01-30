@@ -50,6 +50,7 @@ def kst_date_only(raw: Any) -> str:
     Normalize to KST date-only (YYYY-MM-DD). Return "" on failure/empty.
     Supported inputs: None, "", date, datetime, and strings:
       - YYYY-MM-DD / YYYY/MM/DD / YYYY.MM.DD / YYYYMMDD
+      - Datetime strings with space or T separator (e.g., 2026-01-10 09:30:00)
       - ISO datetime with Z or offset (e.g., 2025-12-31T15:00:00.000Z)
     """
     if raw is None:
@@ -65,6 +66,18 @@ def kst_date_only(raw: Any) -> str:
     text = str(raw).strip()
     if not text:
         return ""
+
+    # Space-separated datetime (non-ISO T) → try ISO parse first, else trim to date part.
+    if " " in text and ":" in text and "T" not in text:
+        dt = _parse_iso_datetime(text.replace(" ", "T", 1))
+        if dt:
+            if dt.tzinfo:
+                dt = dt.astimezone(KST_TZ)
+            return dt.date().isoformat()
+        date_part = text.split(" ")[0]
+        d_only = _parse_date_flexible(date_part)
+        if d_only:
+            return d_only.isoformat()
 
     # ISO datetime handling
     if "T" in text or re.search(r"[+-]\d{2}:?\d{2}$", text) or text.endswith("Z"):

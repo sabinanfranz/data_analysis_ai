@@ -1,10 +1,10 @@
 ---
 title: LLM Context Pack (PJT2) 인덱스 – 카운터파티 리스크 리포트
-last_synced: 2026-01-20
+last_synced: 2026-01-29
 sync_source:
-  - docs/llm_context_pjt2/01_GLOSSARY.md
-  - docs/llm_context_pjt2/02_ARCHITECTURE.md
-  - docs/llm_context_pjt2/03_REPO_MAP.md
+  - docs/llm_context_pjt2/01_GLOSSARY_llm.md
+  - docs/llm_context_pjt2/02_ARCHITECTURE_llm.md
+  - docs/llm_context_pjt2/03_REPO_MAP_llm.md
   - docs/llm_context_pjt2/04_DATA_MODEL_COUNTERPARTY.md
   - docs/llm_context_pjt2/05_RULEBOOK_COUNTERPARTY_RISK.md
   - docs/llm_context_pjt2/06_PIPELINE_IMPLEMENTATION.md
@@ -21,9 +21,9 @@ sync_source:
 - 카운터파티 리스크 리포트(MVP, 31.1~31.7) 전용 컨텍스트 팩이다. salesmap_latest.db만 주어진 외부 LLM/Codex가 규칙/파이프라인/LLM 캐시/스케줄을 빠르게 복원하도록 안내한다.
 
 ## 문서 맵 / 읽기 순서
-- 01_GLOSSARY: 핵심 용어/키/해시 정의.
-- 02_ARCHITECTURE: 스냅샷 DB → 리포트 생성기 → 캐시/LLM/스케줄 전체 흐름(mermaid).
-- 03_REPO_MAP: 기능별 실제 파일 경로.
+- 01_GLOSSARY_llm: 핵심 용어/키/해시 정의.
+- 02_ARCHITECTURE_llm: 스냅샷 DB → 리포트 생성기 → 캐시/LLM/스케줄 전체 흐름(mermaid).
+- 03_REPO_MAP_llm: 기능별 실제 파일 경로.
 - 04_DATA_MODEL_COUNTERPARTY: counterparty 키/조인/메모 연결/PRAGMA 근거.
 - 05_RULEBOOK_COUNTERPARTY_RISK: 포함/제외/비온라인/연도 귀속/target/gap/coverage/risk 룰 SSOT.
 - 06_PIPELINE_IMPLEMENTATION: D1~D7 실제 파이프라인(입·출력/임시테이블/아이템포턴시/폴백).
@@ -65,7 +65,8 @@ sync_source:
 
 ## Verification
 - 모든 하위 문서가 frontmatter와 필수 섹션을 갖추었는지 확인한다.
-- 문서에 언급된 파일/컬럼이 실제 레포/PRAGMA에 존재하는지 링크·grep·sqlite로 검증한다.
+- 문서에 언급된 파일/컬럼이 실제 레포/PRAGMA에 존재하는지 `rg`, `PRAGMA table_info`, `python -m unittest discover -s tests`로 검증한다.
+- 스케줄러/락/캐시 경로는 `dashboard/server/report_scheduler.py`, `dashboard/server/main.py`, `org_tables_v2.html`를 직접 열람해 동기화한다.
 
 ## Refactor-Planning Notes (Facts Only)
 - 문서 구조 표준(필수 섹션 + frontmatter)은 본 파일에 서술된 대로 이미 모든 PJT2 문서에 적용되어야 하며, 누락 시 리팩토링 이전에 우선 보완해야 한다.

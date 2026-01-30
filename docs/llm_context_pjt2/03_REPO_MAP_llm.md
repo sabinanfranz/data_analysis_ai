@@ -1,6 +1,6 @@
 ---
 title: 레포 지도 (PJT2) – 기능 ↔ 파일
-last_synced: 2026-01-20
+last_synced: 2026-01-29
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
@@ -8,6 +8,12 @@ sync_source:
   - dashboard/server/org_tables_api.py
   - org_tables_v2.html
   - tests/test_counterparty_risk_rule.py
+  - dashboard/server/main.py
+  - tests/test_api_target_attainment.py
+  - dashboard/server/main.py
+  - tests/test_api_target_attainment.py
+  - dashboard/server/main.py
+  - tests/test_api_target_attainment.py
 ---
 
 # 레포 지도 (PJT2) – 기능 ↔ 파일
@@ -30,10 +36,10 @@ sync_source:
 - **스케줄/캐시/락**: `dashboard/server/report_scheduler.py`
   - cron(08:00 KST) 등록, DB 안정성 체크, 스냅샷 복사, 캐시 atomic write, status.json.
 - **API 라우터**: `dashboard/server/org_tables_api.py`
-  - `/api/report/counterparty-risk`, `/report/counterparty-risk/recompute`, `/report/counterparty-risk/status`.
+  - `/api/report/counterparty-risk`, `/report/counterparty-risk/recompute`, `/report/counterparty-risk/status`, `/api/llm/target-attainment` 등.
 - **프런트**: `org_tables_v2.html`
   - 메뉴 `counterparty-risk-daily`(출강), `counterparty-risk-daily-online`(온라인). mode별 DRI override universe(출강=offline override 전체, 온라인=online override&비0)로 리포트 rows를 재구성하고 target을 덮어쓴다. 팀→파트 필터도 DRI 전체 기반.
-- **테스트**: `tests/test_counterparty_risk_rule.py`(D4 규칙), `tests/test_counterparty_target.py`, `tests/test_deal_normalizer.py`, `tests/test_org_tier.py`.
+- **테스트**: `tests/test_counterparty_risk_rule.py`(D4 규칙), `tests/test_counterparty_target.py`, `tests/test_deal_normalizer.py`, `tests/test_org_tier.py`, `tests/test_counterparty_llm.py`, `tests/test_api_target_attainment.py`.
 
 ## Edge Cases
 - Scheduler start hook는 `dashboard/server/main.py`의 startup 이벤트에서 호출되며, `ENABLE_SCHEDULER=0`이면 미기동.

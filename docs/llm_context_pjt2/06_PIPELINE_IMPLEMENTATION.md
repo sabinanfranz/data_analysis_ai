@@ -1,6 +1,6 @@
 ---
 title: 구현 파이프라인 (PJT2) – D1~D7
-last_synced: 2026-01-20
+last_synced: 2026-01-29
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/agents/registry.py
@@ -22,7 +22,14 @@ sync_source:
 - 모든 단계는 idempotent; 캐시가 동일(as_of+db_signature+mode)하면 재계산을 스킵한다.
 - 실패 시 최근 성공본을 그대로 제공(폴백), LLM 실패는 전체 실패로 처리하지 않는다.
 
-## Invariants (Must Not Break, 단계별)
+## Invariants
+- D1 deal_norm: 원본 deal/people/organization 정규화, ONLINE 3종 제외 시 is_nononline=1, 금액 파싱 실패는 amount_parse_failed=1로 0 처리.
+- D2 org_tier: 2025 확정액 기준 S0/P0/P1/P2 산정, 삼성전자 이름 포함 시 tier=None/target=50억.
+- D3 counterparty_target_2026: baseline_2025 × multiplier; target26Offline/Online override 플래그는 DRI universe에서만 사용.
+- D4 tmp_counterparty_risk_rule: 임시 테이블(tiered_orgs, deals_2026, agg_2026, year_unknown_dq, universe_counterparty)로 coverage/gap/risk_level_rule 계산.
+- D5 report compose: top_deals_2026(금액 desc 상위 10, payload 5) 붙인 후 severity 정렬, summary counts/gap 계산.
+- D6 LLM: CounterpartyCardAgent v1 단일 체인, payload hash 캐시(`report_cache/llm/...`), 실패 시 폴백 evidence/actions.
+- D7 캐시 저장: `report_cache/{as_of}.json`(offline), `report_cache/counterparty-risk/online/{as_of}.json`(online) 원자적 쓰기.
 - **D1 deal_norm (TEMP)**: Convert 제외, amount/date parse, is_nononline/is_online, counterparty_name 정규화, pipeline_bucket(확정/예상) 설정. dq_metrics 수집.
 - **D2 org_tier_runtime (TEMP)**: 2025 비온라인 확정액 합 → 티어(S0/P0/P1/P2, 삼성 제외), confirmed_amount_2025_won 포함.
 - **D3 counterparty_target_2026 (TEMP)**: 유니버스(2025/2026, 모드별 is_nononline/is_online) × 티어 org → baseline_2025, target_2026, is_unclassified flag.
@@ -41,12 +48,18 @@ sync_source:
 - 테스트: `tests/test_counterparty_risk_rule.py`(D4), `tests/test_counterparty_target.py`, `tests/test_org_tier.py`, `tests/test_deal_normalizer.py`.
 
 ## Edge Cases
+- cache miss 시 API가 run_daily_counterparty_risk_job(force)로 생성 후 캐시를 서빙하며, 실패하면 last_success를 is_stale로 반환.
+- DB 불안정 시(최근 mtime < 안정창) 리트라이 후 실패하면 SKIPPED/FAILED status 기록.
 - DB 최신 수정이 3분 미만이면 DB_UNSTABLE로 재시도 후 실패 시 status에 FAILED 기록, 캐시 기존본 유지.
 - 캐시 쓰기 실패 시 기존 캐시 보존, status에 CACHE_WRITE_FAILED 필요(추가 개선 포인트).
 - LLM 캐시 파일이 깨졌거나 prompt_version 변경 시 재생성; 실패 시 폴백 evidence/actions 생성.
 - deal_norm TEMP 테이블 스코프: build_counterparty_risk_report 내부 커넥션에서만 사용, LLM은 counterparty row에 포함된 top_deals_2026을 사용해 재조회하지 않음.
 
 ## Verification
+- `python -m unittest tests/test_counterparty_risk_rule.py`로 D4 계산 검증.
+- `python -m unittest tests/test_counterparty_target.py`로 target 계산/삼성 특례 확인.
+- `python -m unittest tests/test_deal_normalizer.py`로 deal_norm 파싱/버킷 분류 확인.
+- `python -m unittest tests/test_org_tier.py`로 티어 산정 확인.
 - 로컬 생성 예시:  
   `python - <<'PY'\nfrom dashboard.server.report_scheduler import run_daily_counterparty_risk_job\nprint(run_daily_counterparty_risk_job(force=True))\nPY`
 - 캐시 확인: offline `report_cache/YYYY-MM-DD.json`, online `report_cache/counterparty-risk/online/YYYY-MM-DD.json` meta.as_of/db_signature 존재 여부, llm 캐시 폴더(`report_cache/llm/{as_of}/{db_hash}/{mode}`) 생성 여부.
@@ -57,3 +70,4 @@ sync_source:
 - build_counterparty_risk_report가 orchestrator/composer를 호출해 counterparties를 완성하므로 agent/registry 변경 시 이 함수가 SSOT다.
 - run_daily_counterparty_risk_job_all_modes는 lock을 한 번 잡은 뒤 모드 루프를 실행하므로 force=True로 모드별 재생성을 강제할 수 있다.
 - TEMP 테이블은 커넥션 종료 시 사라지므로 외부 커넥션으로 재사용하려 하면 `no such table: deal_norm` 회귀가 발생할 수 있다.
+

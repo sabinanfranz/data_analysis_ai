@@ -13,8 +13,15 @@ class TestKstDateOnly(unittest.TestCase):
         src = "2023-08-09T05:47:38.949Z"
         self.assertEqual(kst_date_only(src), "2023-08-09")
 
+    def test_iso_with_space(self):
+        src = "2026-01-10 09:30:00"
+        self.assertEqual(kst_date_only(src), "2026-01-10")
+
     def test_date_only(self):
         self.assertEqual(kst_date_only("2026-01-01"), "2026-01-01")
+
+    def test_dot_separated_date(self):
+        self.assertEqual(kst_date_only("2026.01.10"), "2026-01-10")
 
     def test_compact_digits(self):
         self.assertEqual(kst_date_only("20260110"), "2026-01-10")
@@ -43,6 +50,9 @@ class TestKstHelpers(unittest.TestCase):
     def test_kst_yymm(self):
         self.assertEqual(kst_yymm("2026-02-03"), "2602")
         self.assertIsNone(kst_yymm(None))
+
+    def test_kst_yymm_utc_boundary(self):
+        self.assertEqual(kst_yymm("2025-12-31T15:00:00Z"), "2601")
 
 
 if __name__ == "__main__":

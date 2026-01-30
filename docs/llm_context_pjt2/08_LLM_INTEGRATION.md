@@ -1,6 +1,6 @@
 ---
 title: LLM 연동/캐시 (PJT2) – 31.6
-last_synced: 2026-01-13
+last_synced: 2026-01-29
 sync_source:
   - dashboard/server/counterparty_llm.py
   - dashboard/server/agents/registry.py
@@ -24,6 +24,11 @@ sync_source:
 - 실행 경로: registry(report_id×mode) → orchestrator(순차 실행) → CounterpartyCardAgent(모드 인식) → composer(불변 보강). counterparty_llm.py는 호환용 thin adapter.
 
 ## Invariants
+- LLM env: LLM_PROVIDER=openai, OPENAI_API_KEY, LLM_MODEL(default gpt-4o-mini), LLM_BASE_URL(optional), LLM_TIMEOUT, LLM_MAX_TOKENS, LLM_TEMPERATURE.
+- payload 해시: canonical JSON sha256 = llm_input_hash (CounterpartyCardAgent).
+- 캐시 경로: `report_cache/llm/{as_of}/{db_hash}/{mode}/{org}__{counterparty}.json`, input_hash+prompt_version 일치 시 재사용.
+- 폴백: OpenAI 호출 실패/파싱 실패 시 fallback_blockers/evidence/recommended_actions 생성, risk_level_llm은 규칙값으로 대체.
+- signals(lost_90d_count/last_contact_date)는 현재 집계되지 않고 payload 필드만 존재.
 - Payload 필드:
   - counterparty_key(orgId/orgName/counterpartyName), tier, **report_mode**
   - risk_rule: rule_risk_level, pipeline_zero, min_cov_current_month, coverage, gap, target_2026, confirmed_2026, expected_2026 (coverage/min_cov는 round6)
@@ -43,11 +48,16 @@ sync_source:
 - 캐시 경로/DB 해시: `deal_normalizer.build_counterparty_risk_report` (db_hash=mtime sha256 16자, 캐시에 mode 포함).
 
 ## Edge Cases
+- OPENAI_API_KEY 미설정 또는 LLM_PROVIDER!=openai이면 LLM_NOT_CONFIGURED 상태로 폴백 사용.
+- repair 프롬프트 한 번 시도 후에도 JSON 파싱 실패 시 LLM_OUTPUT_NOT_JSON으로 처리.
 - LLM 미연동 상태: CounterpartyCardAgent 폴백만 반환. 모델 연결 시 해당 호출 사용.
 - 캐시 파일 깨짐/해시 불일치: 캐시 미스 후 재생성.
 - coverage_ratio None(target=0) → evidence는 gap/pipeline 중심, coverage 기반 근거 금지.
 
 ## Verification
+- env 미설정 상태에서 리포트 생성 시 fallback evidence/actions가 포함된 JSON이 반환되는지 확인.
+- 동일 입력 payload에 대해 llm_input_hash와 캐시가 재사용되는지 확인.
+- prompts 디렉터리(`counterparty_card/prompts/{mode}/v1`)가 로드 가능하며 파일 없을 때 default_text로 대체되는지 확인.
 - 동일 payload 두 번 호출 시 llm cache hit(파일 존재, llm_input_hash 동일)로 재호출 0회.
 - memo 1개 변경 시 llm_input_hash가 달라져 캐시 미스 발생.
 - 폴백 동작: LLM 호출을 강제 실패시켜도 evidence 3개/actions 2~3개가 채워지는지 확인(CounterpartyCardAgent).
@@ -147,6 +157,9 @@ sync_source:
 - 프롬프트 교체: `dashboard/server/agents/counterparty_card/prompts/{mode}/v1/*.txt` 수정으로 가능(placeholder/스키마 규약 유지).
 
 ## Verification
+- env 미설정 상태에서 리포트 생성 시 fallback evidence/actions가 포함된 JSON이 반환되는지 확인.
+- 동일 입력 payload에 대해 llm_input_hash와 캐시가 재사용되는지 확인.
+- prompts 디렉터리(`counterparty_card/prompts/{mode}/v1`)가 로드 가능하며 파일 없을 때 default_text로 대체되는지 확인.
 - 캐시 적중: 동일 payload 입력 시 CounterpartyCardAgent/loader가 llm_input_hash 일치 여부로 캐시 재사용하는지 확인.
 - 폴백: LLM 호출 제거 상태에서 report 생성 시 evidence_bullets 3개/actions 2~3개가 채워지는지 확인.
 - 해시 안정성: deal/memo 정렬 변경 시 hash가 바뀌는지, 동일 정렬이면 언어/OS 불문 동일 hash인지 확인.
@@ -155,3 +168,4 @@ sync_source:
 - top_deals_2026와 memos 입력이 비어도 폴백 근거/액션은 생성되지만, signals는 현재 집계되지 않아 payload 변경 시 캐시 해시가 달라질 수 있다.
 - 프롬프트 파일이 없으면 빈 문자열로 호출되므로 프롬프트만 교체하려면 `dashboard/server/agents/counterparty_card/prompts/{mode}/v1/*.txt` 배포가 필요하다.
 - LLM_PROVIDER가 openai가 아니거나 키가 없으면 항상 폴백-only로 동작하므로 배포 환경에서 키 로딩 실패가 곧바로 리포트 실패로 이어지지 않도록 설계되어 있다.
+

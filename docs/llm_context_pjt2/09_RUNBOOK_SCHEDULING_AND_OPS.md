@@ -1,6 +1,6 @@
 ---
 title: 운영 런북 (PJT2) – 스케줄링/로그/폴백
-last_synced: 2026-01-13
+last_synced: 2026-01-29
 sync_source:
   - dashboard/server/report_scheduler.py
   - dashboard/server/org_tables_api.py
@@ -19,6 +19,12 @@ sync_source:
 - API는 캐시 우선 제공, 캐시 없으면 생성(force) 후 제공, 실패 시 최근 성공본(meta.is_stale=true)을 반환한다.
 
 ## Invariants
+- cron: REPORT_CRON 기본 "0 8 * * *" (TZ=Asia/Seoul); REPORT_MODES로 모드 리스트 제어.
+- ENABLE_SCHEDULER=0이면 main.py startup에서 start_scheduler가 실행되지 않는다.
+- 락: `report_cache/.counterparty_risk.lock` (fcntl + msvcrt)로 중복 실행 방지, 모드 루프 공용.
+- 스냅샷: `report_work/salesmap_snapshot_<as_of>_<HHMMSS>.db` 복사 후 읽기 전용 사용.
+- 캐시: offline `report_cache/{as_of}.json`, online `report_cache/counterparty-risk/online/{as_of}.json`, status(`status.json`, `status_online.json`)는 retention 클린업 제외.
+- fallback: 캐시 미존재 시 생성 실패하면 last_success 캐시를 meta.is_stale=true로 서빙.
 - 환경 기본값: TZ=Asia/Seoul, REPORT_CRON="0 8 * * *", REPORT_MODES="offline,online", CACHE_DIR="report_cache", WORK_DIR="report_work", DB_STABLE_WINDOW_SEC=180, DB_RETRY=10, DB_RETRY_INTERVAL_SEC=30, CACHE_RETENTION_DAYS=14.
 - DB 시그니처: `mtime-size` 문자열. DB 안정성: 최근 수정 ≥ 180초.
 - 스냅샷: `report_work/salesmap_snapshot_<as_of>_<HHMMSS>.db`로 copy 후 집계.
@@ -33,7 +39,9 @@ sync_source:
 - API 재생성/상태: `dashboard/server/org_tables_api.py` (`/report/counterparty-risk`, `/recompute`, `/status`).
 - 리포트 생성 파이프라인: `dashboard/server/deal_normalizer.py`(build_counterparty_risk_report).
 
-## Edge Cases & Failure Modes
+## Edge Cases
+- DB 불안정(최근 mtime < 안정창) 시 리트라이 후 실패하면 FAILED 기록.
+- 락 획득 실패 시 SKIPPED_LOCKED, status에 기록.
 - DB 교체 직후(3분 미만) 스케줄 실행 → DB_UNSTABLE_OR_UPDATING 재시도 후 실패 가능. 실패해도 기존 캐시 유지, status=FAILED.
 - 캐시 쓰기 실패 → 기존 캐시 보존. status에 CACHE_WRITE_FAILED 기록 필요(추가 개선).
 - LLM 실패 → 폴백 evidence/actions로 채워 SUCCESS_WITH_FALLBACK 취급(전체 실패 아님).
@@ -41,6 +49,9 @@ sync_source:
 - Windows에서도 file_lock이 msvcrt로 동작하며, lock 실패 시 SKIPPED_LOCKED.
 
 ## Verification
+- `python -m unittest discover -s tests`로 스케줄 관련 회귀 포함 전체 테스트 실행.
+- `curl /api/report/counterparty-risk/status`로 status.json 구조/last_run 갱신 확인.
+- Windows 환경에서 scheduler 실행 시 lock 획득/해제가 동작하는지 로그로 확인(msvcrt).
 - 강제 재생성:  
   `curl -X POST "http://localhost:8000/api/report/counterparty-risk/recompute?date=2026-01-10&mode=offline"`  
   `curl -X POST "http://localhost:8000/api/report/counterparty-risk/recompute?date=2026-01-10&mode=online"`  
@@ -55,3 +66,4 @@ sync_source:
 - start_scheduler가 main.py startup에 직접 연결되어 있어 uvicorn --reload나 멀티프로세스 시 중복 실행 가드(락) 외 추가 제어가 필요할 수 있다.
 - file_lock은 로컬 파일 시스템을 전제로 하므로 NAS/클라우드 스토리지로 옮길 경우 msvcrt/fcntl 동작 보장이 떨어질 수 있다.
 - status.json은 retention 대상에서 제외되어 운영 상태 확인의 단일 소스가 되므로 필드 변경 시 API `/status`와 프런트 문서도 동시에 수정해야 한다.
+

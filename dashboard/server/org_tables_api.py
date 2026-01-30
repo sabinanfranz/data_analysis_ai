@@ -17,6 +17,7 @@ from .llm_target_attainment import (
     validate_payload_limits,
     MAX_TARGET_ATTAINMENT_REQUEST_BYTES,
 )
+from .agents.daily_report_v2.orchestrator import run_pipeline as run_daily_report_v2_pipeline
 
 router = APIRouter(prefix="/api")
 
@@ -429,8 +430,26 @@ def get_counterparty_risk_status(
     return _load_status(mode=mode)
 
 
+def _parse_bool(val: bool | str | None, default: bool = False) -> bool:
+    if isinstance(val, bool):
+        return val
+    if val is None:
+        return default
+    s = str(val).strip().lower()
+    if s in {"1", "true", "yes", "y", "on"}:
+        return True
+    if s in {"0", "false", "no", "n", "off"}:
+        return False
+    return default
+
+
 @router.post("/llm/target-attainment")
-def post_target_attainment(req: TargetAttainmentRequest, debug: bool = Query(False, description="attach __meta when true")) -> dict:
+def post_target_attainment(
+    req: TargetAttainmentRequest,
+    debug: bool = Query(False, description="attach __meta when true"),
+    nocache: bool = Query(False, description="skip cache when true"),
+    include_input: bool = Query(False, description="include __llm_input when true"),
+) -> dict:
     try:
         payload_dict = req.model_dump()
         try:
@@ -445,11 +464,31 @@ def post_target_attainment(req: TargetAttainmentRequest, debug: bool = Query(Fal
                     "hint": "upperOrg 1개 그룹만 포함되도록 compact JSON을 축소하세요.",
                 },
             )
-        return run_target_attainment(req, debug=debug, payload_bytes=size)
+        return run_target_attainment(
+            req,
+            debug=debug,
+            payload_bytes=size,
+            nocache=_parse_bool(nocache),
+            include_input=_parse_bool(include_input),
+        )
     except HTTPException:
         raise
     except Exception as exc:  # pragma: no cover - defensive
         return {"error": "TARGET_ATTAINMENT_INTERNAL_ERROR", "message": str(exc)}
+
+
+@router.post("/llm/daily-report-v2/pipeline")
+def post_daily_report_v2_pipeline(
+    payload: dict,
+    pipeline_id: str = Query(..., description='파이프라인 ID (예: "daily.part_rollup", "row.target_attainment")'),
+    variant: str = Query("offline", description='모드 ("offline"|"online")'),
+    debug: bool = Query(False, description="attach __meta when true"),
+    nocache: bool = Query(False, description="skip cache when true"),
+) -> dict:
+    try:
+        return run_daily_report_v2_pipeline(pipeline_id, payload, variant=variant, debug=debug, nocache=_parse_bool(nocache))
+    except Exception as exc:  # pragma: no cover - defensive
+        return {"error": "DAILY_REPORT_V2_PIPELINE_ERROR", "message": str(exc)}
 
 
 @router.get("/rank/2025-deals-people")

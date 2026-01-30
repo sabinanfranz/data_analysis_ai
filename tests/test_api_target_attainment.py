@@ -72,16 +72,23 @@ class TargetAttainmentApiTest(unittest.TestCase):
             "actual_2026": 50,
             "won_group_json_compact": {"schema_version": "won-groups-json/compact-v1", "groups": []},
         }
-        with patch("dashboard.server.llm_target_attainment._call_openai_chat_completions", return_value='{"likelihood":"HIGH"}'):
+        with patch(
+            "dashboard.server.agents.target_attainment.agent._call_openai_chat_completions",
+            return_value='{"likelihood":"HIGH"}',
+        ):
             resp = self.client.post("/api/llm/target-attainment?debug=1", json=payload)
         self.assertEqual(resp.status_code, 200)
         data = resp.json()
         self.assertIn("__meta", data)
         self.assertIn("input_hash", data["__meta"])
         self.assertIn("payload_bytes", data["__meta"])
+        self.assertIn("prompt_hash", data["__meta"])
 
         # debug off -> no __meta
-        with patch("dashboard.server.llm_target_attainment._call_openai_chat_completions", return_value='{"likelihood":"HIGH"}'):
+        with patch(
+            "dashboard.server.agents.target_attainment.agent._call_openai_chat_completions",
+            return_value='{"likelihood":"HIGH"}',
+        ):
             resp2 = self.client.post("/api/llm/target-attainment", json=payload)
         self.assertEqual(resp2.status_code, 200)
         data2 = resp2.json()

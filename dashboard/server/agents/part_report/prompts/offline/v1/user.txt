@@ -1,0 +1,8 @@
+# part_report_user
+아래 파트 데이터(rows)를 요약해줘.
+- rows는 target/actual 및 row_agent_output_json(compacted) 정보를 포함한다.
+- 핵심 통찰, 위험, 다음 행동을 JSON 오브젝트 하나로 정리하라. (예: { "summary": "...", "risks": [], "next_actions": [] })
+
+part_name: {part_name}
+rows (json):
+{rows_json}

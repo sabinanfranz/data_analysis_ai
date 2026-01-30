@@ -3378,6 +3378,35 @@
       state.jsonModal.backdrop.style.display = "flex";
     }
 
+    function openJsonModalOutputAndInput(title, outputObj, inputObj) {
+      if (!state.jsonModal.backdrop || !state.jsonModal.body || !state.jsonModal.title) return;
+      state.jsonModal.title.textContent = title || "JSON 보기";
+      const body = state.jsonModal.body;
+      body.innerHTML = "";
+
+      const mkLabel = (t) => {
+        const el = document.createElement("div");
+        el.style.fontWeight = "700";
+        el.style.margin = "10px 0 6px";
+        el.textContent = t;
+        return el;
+      };
+      const mkPre = (obj) => {
+        const pre = document.createElement("pre");
+        pre.style.margin = "0";
+        pre.style.whiteSpace = "pre-wrap";
+        pre.textContent = toJsonText(obj);
+        return pre;
+      };
+
+      body.appendChild(mkLabel("LLM OUTPUT"));
+      body.appendChild(mkPre(outputObj));
+      body.appendChild(mkLabel("LLM INPUT (actual request payload)"));
+      body.appendChild(mkPre(inputObj));
+
+      state.jsonModal.backdrop.style.display = "flex";
+    }
+
     function openDealsModal(personLabel, deals) {
       if (!state.rankPeopleModal.backdrop || !state.rankPeopleModal.title || !state.rankPeopleModal.body) return;
       const list = Array.isArray(deals) ? deals : [];
@@ -8083,7 +8112,13 @@
 
       const cached = st.llmCache.get(rowKey);
       if (cached) {
-        openJsonModal(title, cached);
+        if (cached.__llm_input) {
+          const outOnly = { ...cached };
+          delete outOnly.__llm_input;
+          openJsonModalOutputAndInput(title, outOnly, cached.__llm_input);
+        } else {
+          openJsonModal(title, cached);
+        }
         return;
       }
 
@@ -8133,10 +8168,11 @@
             won_group_json_compact: filtered,
           };
 
-          const TIMEOUT_MS = 30000;
+          const TARGET_ATTAINMENT_TIMEOUT_MS = 120000; // align with server TARGET_ATTAINMENT_TIMEOUT default 120s
+          const TIMEOUT_MS = TARGET_ATTAINMENT_TIMEOUT_MS;
           let respJson = null;
           try {
-            respJson = await Promise.race([postJson("/llm/target-attainment", body), timeoutAfter(TIMEOUT_MS, "LLM_CALL_TIMEOUT")]);
+            respJson = await Promise.race([postJson("/llm/target-attainment?include_input=1", body), timeoutAfter(TIMEOUT_MS, "LLM_CALL_TIMEOUT")]);
           } catch (err) {
             const errObj = {
               error: err?.message === "LLM_CALL_TIMEOUT" ? "LLM_CALL_TIMEOUT" : "LLM_CALL_FAILED",
@@ -8151,6 +8187,14 @@
           }
 
           st.llmCache.set(rowKey, respJson);
+          const llmInput = respJson && respJson.__llm_input ? respJson.__llm_input : null;
+          if (llmInput) {
+            const outputOnly = { ...respJson };
+            delete outputOnly.__llm_input;
+            openJsonModalOutputAndInput(title, outputOnly, llmInput);
+          } else {
+            openJsonModal(title, respJson);
+          }
           return respJson;
         } catch (err) {
           const errObj = { error: "COMPACT_FETCH_FAILED", orgId, upperOrg, message: err?.message || String(err) };

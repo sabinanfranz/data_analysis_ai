@@ -1,0 +1,13 @@
+# target_attainment_user
+아래 입력을 보고 2026 target 달성 가능성을 평가해줘.
+- won_group_json_compact에는 선택된 상위 조직 단위의 people/deal/memo 요약 정보가 들어있다.
+- target_2026, actual_2026 숫자를 함께 고려한다.
+- 판단 기준은 "현재 실적(actual) + 남은 파이프라인/딜 신호(있다면)"로 타겟 달성 가능성을 추정하는 것이다.
+- 출력은 시스템 규칙대로 JSON 오브젝트만.
+
+[INPUT]
+target_2026: {target_2026}
+actual_2026: {actual_2026}
+
+won_group_json_compact (json):
+{won_group_json_compact_json}

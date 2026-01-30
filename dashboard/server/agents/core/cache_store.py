@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 from typing import Any, Dict
 
@@ -23,3 +24,14 @@ def save_atomic(path: Path, data: Dict[str, Any]) -> None:
         f.flush()
     tmp.replace(path)
 
+
+def build_cache_key(*, llm_input_hash: str, prompt_hash: str, model: str, variant: str | None = None, extra: str | None = None) -> str:
+    """
+    Build cache key that guarantees prompt_hash inclusion (prompt change => cache miss).
+    """
+    parts = [llm_input_hash, prompt_hash, model]
+    if variant:
+        parts.append(variant)
+    if extra:
+        parts.append(extra)
+    return hashlib.sha256("|".join(parts).encode("utf-8")).hexdigest()

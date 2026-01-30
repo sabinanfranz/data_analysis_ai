@@ -1,0 +1,7 @@
+# daily_rollup_user
+아래 파트 요약 결과들을 보고 전체 일간 요약을 작성해줘.
+- 전체 성과 요약, 리스크, 다음 행동을 JSON 오브젝트로 정리해라. (예: { "summary": "...", "risks": [], "next_actions": [] })
+
+date: {date}
+parts (json):
+{parts_json}

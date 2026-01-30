@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 from typing import Dict
 
@@ -26,9 +27,13 @@ class PromptStore:
         return self._read(path, default_text)
 
     def load_set(self, mode_key: str, version: str) -> Dict[str, str]:
+        system = self.load_prompt(mode_key, version, "system", "")
+        user = self.load_prompt(mode_key, version, "user", "")
+        repair = self.load_prompt(mode_key, version, "repair", "")
+        prompt_hash = hashlib.sha256(f"{system}\n{user}\n{repair}".encode("utf-8")).hexdigest()
         return {
-            "system": self.load_prompt(mode_key, version, "system", ""),
-            "user": self.load_prompt(mode_key, version, "user", ""),
-            "repair": self.load_prompt(mode_key, version, "repair", ""),
+            "system": system,
+            "user": user,
+            "repair": repair,
+            "prompt_hash": prompt_hash,
         }
-

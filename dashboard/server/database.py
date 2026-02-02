@@ -737,6 +737,8 @@ def _status_norm(raw: Any) -> str:
     text = str(raw or "").strip().lower()
     if not text:
         return "other"
+    if "sql" in text:
+        return "sql"
     if "convert" in text:
         return "convert"
     if "won" in text or "확정" in text:
@@ -862,6 +864,61 @@ def _parse_date(val: Any) -> Optional[date]:
     text = _date_only(text_raw)
     if not text:
         return None
+    try:
+        return datetime.strptime(text, "%Y-%m-%d").date()
+    except Exception:
+        return None
+
+
+def _today_kst_date() -> date:
+    return datetime.now(timezone.utc).astimezone(_KST_TZ).date()
+
+
+def _sub_business_days(d: date, n: int) -> date:
+    """Return the date that is n business days (Mon-Fri) before d."""
+    if n <= 0:
+        return d
+    cur = d
+    counted = 0
+    while counted < n:
+        cur = cur - timedelta(days=1)
+        if cur.weekday() < 5:  # 0=Mon, 6=Sun
+            counted += 1
+    return cur
+
+
+def _within_last_n_business_days(event_date: Optional[date], today: date, n: int) -> bool:
+    if event_date is None:
+        return False
+    if event_date > today:
+        return False
+    window_start = _sub_business_days(today, n)
+    return window_start <= event_date <= today
+
+
+def _parse_kst_date_best_effort(raw: Any) -> Optional[date]:
+    """Parse a date string to date (KST-adjusted when tz info exists)."""
+    if raw is None:
+        return None
+    text_raw = str(raw).strip()
+    if not text_raw:
+        return None
+
+    kst = date_kst.kst_date_only(text_raw)
+    if kst:
+        try:
+            return datetime.strptime(kst, "%Y-%m-%d").date()
+        except Exception:
+            pass
+
+    text = text_raw
+    if "T" in text:
+        text = text.split("T", 1)[0]
+    if " " in text:
+        text = text.split(" ", 1)[0]
+    text = text.replace(".", "-").replace("/", "-")
+    if re.fullmatch(r"\d{8}", text):
+        text = f"{text[:4]}-{text[4:6]}-{text[6:]}"
     try:
         return datetime.strptime(text, "%Y-%m-%d").date()
     except Exception:
@@ -3011,6 +3068,8 @@ def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any
     with _connect(db_path) as conn:
         planning_col = _pick_column(conn, "deal", ["기획시트 링크"])
         planning_col_expr = f"{_dq(planning_col)} AS planning_sheet_link" if planning_col else "NULL AS planning_sheet_link"
+        lost_col = _pick_column(conn, "deal", ["LOST 확정일", "Lost 확정일", "lost_confirmed_at"])
+        lost_col_expr = f"d.{_q(lost_col)} AS lost_confirmed_date_raw" if lost_col else "NULL AS lost_confirmed_date_raw"
         won_rows = _fetch_all(
             conn,
             'SELECT organizationId AS org_id, "금액" AS amount '
@@ -3044,6 +3103,9 @@ def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any
             "  d.\"수주 예정일\" AS expected_close_date, "
             "  d.\"예상 체결액\" AS expected_amount, "
             f"  {planning_col_expr}, "
+            "  d.\"상태\" AS status_raw, "
+            "  d.\"계약 체결일\" AS contract_date_raw, "
+            f"  {lost_col_expr}, "
             "  p.\"소속 상위 조직\" AS upper_org, "
             "  p.\"팀(명함/메일서명)\" AS team_signature, "
             "  p.id AS person_id, "
@@ -3060,16 +3122,46 @@ def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any
             "  WHERE dealId IS NOT NULL AND TRIM(dealId) <> '' "
             "  GROUP BY dealId"
             ") mc ON mc.dealId = d.id "
-            "WHERE d.\"상태\" = 'SQL'",
+            "WHERE d.\"상태\" IN ('SQL', 'Won', 'Lost', 'LOST')",
         )
 
     items: List[Dict[str, Any]] = []
+    today_kst = _today_kst_date()
+    WINDOW_BDAYS = 10
+
     for row in rows:
         owner_names_raw = _parse_owner_names(row["owner_json"])
         if not owner_names_raw:
             continue
         normalized_owners = _parse_owner_names_normalized(row["owner_json"])
         if not any(name in allowed_members for name in normalized_owners):
+            continue
+
+        status_raw = row["status_raw"]
+        status_norm = _status_norm(status_raw)
+
+        # Visibility filter by status
+        show = False
+        if status_norm == "other" or status_norm == "convert":
+            continue
+        if status_norm == "won":
+            contract_dt = _parse_kst_date_best_effort(row["contract_date_raw"])
+            if contract_dt and _within_last_n_business_days(contract_dt, today_kst, WINDOW_BDAYS):
+                show = True
+            else:
+                if contract_dt is not None:
+                    show = False
+                else:
+                    expected_dt = _parse_kst_date_best_effort(row["expected_close_date"])
+                    show = _within_last_n_business_days(expected_dt, today_kst, WINDOW_BDAYS)
+        elif status_norm == "lost":
+            lost_dt = _parse_kst_date_best_effort(row["lost_confirmed_date_raw"])
+            show = _within_last_n_business_days(lost_dt, today_kst, WINDOW_BDAYS)
+        else:
+            # status_norm == "won" handled above, convert handled at top, so remaining is SQL
+            show = True
+
+        if not show:
             continue
 
         org_id = row["org_id"]
@@ -3099,6 +3191,7 @@ def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any
                 "memoCount": int(row["memo_count"] or 0),
                 "isRetention": bool(org_id and org_id in retention_org_ids),
                 "orgWon2025Total": org_won_2025_total.get(org_id, 0.0) if org_id else 0.0,
+                "status": status_norm,
             }
         )
 

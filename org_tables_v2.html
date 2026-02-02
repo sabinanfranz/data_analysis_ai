@@ -3455,6 +3455,9 @@
       if (!tableEl) return;
       const inferPartFn = typeof options.inferPartFn === "function" ? options.inferPartFn : () => "-";
       const includeTier = Boolean(options.includeTier);
+      const compact = Boolean(options.compact);
+      const fixedOrgCh = Number(options.fixedOrgCh) || 15;
+      const fixedPersonCh = Number(options.fixedPersonCh) || 8;
       const baseKeys = [
         "courseFormat",
         "createdAt",
@@ -3519,7 +3522,27 @@
         }
         if (key === "courseFormat") {
           const min = 90;
-          const max = 240;
+          const max = compact ? 180 : 240;
+          return Math.max(min, Math.min(max, width));
+        }
+        if (key === "expectedAmount") {
+          const min = 56;
+          const max = compact ? 160 : 220;
+          return Math.max(min, Math.min(max, width));
+        }
+        if (key === "probability") {
+          const min = 56;
+          const max = compact ? 140 : 220;
+          return Math.max(min, Math.min(max, width));
+        }
+        if (key === "part") {
+          const min = 56;
+          const max = compact ? 140 : 220;
+          return Math.max(min, Math.min(max, width));
+        }
+        if (key === "owners") {
+          const min = 56;
+          const max = compact ? 160 : 220;
           return Math.max(min, Math.min(max, width));
         }
         const min = 56;
@@ -3571,11 +3594,17 @@
       ["orgName", "upperOrg", "teamSignature"].forEach((k) => {
         const col = tableEl.querySelector(`col[data-col="${k}"]`);
         if (col) {
-          col.style.width = "15ch";
-          col.style.minWidth = "15ch";
-          col.style.maxWidth = "15ch";
+          col.style.width = `${fixedOrgCh}ch`;
+          col.style.minWidth = `${fixedOrgCh}ch`;
+          col.style.maxWidth = `${fixedOrgCh}ch`;
         }
       });
+      const personCol = tableEl.querySelector(`col[data-col="personName"]`);
+      if (personCol) {
+        personCol.style.width = `${fixedPersonCh}ch`;
+        personCol.style.minWidth = `${fixedPersonCh}ch`;
+        personCol.style.maxWidth = `${fixedPersonCh}ch`;
+      }
     }
 
     function applyMemoColumnWidth(tableEl) {
@@ -3612,7 +3641,7 @@
       col.style.width = `${finalWidth}px`;
     }
 
-    function applyDealNameMinWidth(tableEl, minChars = 15) {
+    function applyDealNameMinWidth(tableEl, minChars = 15, opts = {}) {
       if (!tableEl) return;
       const canvas =
         applyDealNameMinWidth._canvas || (applyDealNameMinWidth._canvas = document.createElement("canvas"));
@@ -3648,7 +3677,12 @@
       });
 
       const needMinTotal = Math.ceil(otherPx + minDealNamePx);
-      tableEl.style.minWidth = `${needMinTotal}px`;
+      let finalMin = needMinTotal;
+      const cap = opts && Number.isFinite(opts.maxTotalPx) && opts.maxTotalPx > 0 ? opts.maxTotalPx : null;
+      if (cap !== null) {
+        finalMin = Math.min(finalMin, Math.floor(cap));
+      }
+      tableEl.style.minWidth = `${finalMin}px`;
     }
 
     function closeDealsModal() {
@@ -7626,7 +7660,6 @@
               <td data-col="upperOrg">${row.upperOrg || "-"}</td>
               <td data-col="teamSignature">${row.teamSignature || "-"}</td>
               <td data-col="personName">${customerCell}</td>
-              <td data-col="createdAt">${formatDateYYMMDD(row.createdAt)}</td>
               <td data-col="dealName">${dealLink}</td>
               <td data-col="courseFormat">${row.courseFormat || "-"}</td>
               <td data-col="planning">${renderPlanningLinkCell(row.planningSheetLink)}</td>
@@ -7657,7 +7690,6 @@
               <col data-col="upperOrg" style="width:15ch; min-width:15ch; max-width:15ch;" />
               <col data-col="teamSignature" style="width:15ch; min-width:15ch; max-width:15ch;" />
               <col data-col="personName" style="width:8ch; min-width:8ch; max-width:8ch;" />
-              <col data-col="createdAt" />
               <col data-col="dealName" />
               <col data-col="courseFormat" />
               <col data-col="planning" style="min-width:6ch; width:6ch;" />
@@ -7670,16 +7702,15 @@
             </colgroup>
             <thead>
               <tr>
-                ${tierHead}
-                <th data-col="orgName">기업명</th>
-                <th data-col="upperOrg">소속 상위 조직</th>
-                <th data-col="teamSignature">팀(명함/메일서명)</th>
-                <th data-col="personName">담당자</th>
-                <th data-col="createdAt">생성 날짜</th>
-                <th data-col="dealName">딜 이름</th>
-                <th data-col="courseFormat">과정포맷</th>
-                <th data-col="planning">기획</th>
-                <th data-col="part">파트</th>
+              ${tierHead}
+              <th data-col="orgName">기업명</th>
+              <th data-col="upperOrg">소속 상위 조직</th>
+              <th data-col="teamSignature">팀(명함/메일서명)</th>
+              <th data-col="personName">담당자</th>
+              <th data-col="dealName">딜 이름</th>
+              <th data-col="courseFormat">과정포맷</th>
+              <th data-col="planning">기획</th>
+              <th data-col="part">파트</th>
                 <th data-col="owners">데이원</th>
                 <th data-col="probability">가능성</th>
                 <th data-col="expectedCloseDate">수주 예정일</th>
@@ -7891,9 +7922,22 @@
           body.innerHTML = html;
           const tableEl = body.querySelector("table.dealcheck-table");
           if (tableEl && sectItems.length) {
-            fitColumnsToContent(tableEl, sectItems, { inferPartFn, includeTier });
+            const wrapEl = tableEl.closest(".dealcheck-table-wrap") || tableEl.parentElement;
+            const wrapW = wrapEl ? wrapEl.getBoundingClientRect().width : 0;
+            const compact = wrapW > 0 && wrapW <= 1400;
+            const fixedOrgCh = wrapW > 0 ? (wrapW <= 1200 ? 10 : wrapW <= 1400 ? 12 : 15) : 15;
+            const fixedPersonCh = compact ? 7 : 8;
+            fitColumnsToContent(tableEl, sectItems, {
+              inferPartFn,
+              includeTier,
+              compact,
+              fixedOrgCh,
+              fixedPersonCh,
+            });
             applyMemoColumnWidth(tableEl);
-            applyDealNameMinWidth(tableEl, 15);
+            const minChars = compact ? 10 : 15;
+            const capOpts = wrapW > 0 ? { maxTotalPx: wrapW - 2 } : {};
+            applyDealNameMinWidth(tableEl, minChars, capOpts);
             tableEl.id = idSuffix;
             tableEl.querySelectorAll('button[data-action="deal-memo"]').forEach((btn) => {
               if (btn.disabled) return;

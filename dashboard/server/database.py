@@ -4830,7 +4830,7 @@ def _load_perf_monthly_close_rate_data(db_path: Path = DB_PATH) -> Dict[str, Any
         created_col = _pick_column(conn, "deal", ["생성 날짜", "생성일", "createdAt", "created_at", "created_at_utc"])
         if not created_col:
             raise ValueError("deal 생성 날짜 컬럼을 찾을 수 없습니다.")
-        category_col = _pick_column(conn, "deal", ["과정 대분류", "category1"])
+        category_col = _pick_column(conn, "deal", ["카테고리", "과정 대분류", "category1", "category", "Category"])
         course_id_col = _detect_course_id_column(conn)
         online_first_col = _pick_column(
             conn,
@@ -4916,7 +4916,8 @@ def _load_perf_monthly_close_rate_data(db_path: Path = DB_PATH) -> Dict[str, Any
             excluded["other_course_format"] += 1
             continue
 
-        category_group = _map_inquiry_category_group(row.get("category_raw"))
+        category_raw = (row.get("category_raw") or "").strip()
+        category_group = _map_inquiry_category_group(category_raw.replace(" ", ""))
         if course_group == "오프라인" and category_group != "생성형AI":
             excluded["offline_not_genai"] += 1
             continue
@@ -4978,6 +4979,7 @@ def _load_perf_monthly_close_rate_data(db_path: Path = DB_PATH) -> Dict[str, Any
             "excluded_online_not_first": excluded["online_not_first"],
             "excluded_other_course_format": excluded["other_course_format"],
             "excluded_offline_not_genai": excluded["offline_not_genai"],
+            "category_col_used": category_col or "",
             "raw_formats_sample": list(itertools.islice(raw_formats, 20)),
             "raw_categories_sample": list(itertools.islice(raw_categories, 20)),
         },
@@ -5177,7 +5179,7 @@ def get_perf_monthly_close_rate_deals(
         if row_data.get("prob_bucket") in {"confirmed", "high"}:
             numerator += 1
 
-        if metric != "close_rate" and row_data.get("prob_bucket") != metric:
+        if metric not in {"close_rate", "total"} and row_data.get("prob_bucket") != metric:
             continue
 
         items.append(
@@ -5208,7 +5210,7 @@ def get_perf_monthly_close_rate_deals(
         "cust": cust,
         "scope": scope,
     }
-    if metric == "close_rate":
+    if metric in {"close_rate", "total"}:
         meta.update(
             {
                 "numeratorCount": numerator,

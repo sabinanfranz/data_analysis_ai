@@ -10235,117 +10235,103 @@
       }
     }
 
-    function renderBizPerfMonthlyCloseRateTable(data, selectedSize = "대기업", ui = {}, expanded = {}) {
+    function renderBizPerfMonthlyCloseRateTable(data, selectedSize = "대기업", ui = {}) {
       if (!data || !Array.isArray(data.rows) || !data.months || !data.months.length) {
         return `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
       }
       const months = data.months || [];
       const headerCells = months.map((m) => `<th class="num">${formatPerfMonthLabel(m)}</th>`).join("");
+      const metricOrder = ["total", "confirmed", "high", "low", "lost", "close_rate"];
 
-      const totalMap = new Map();
-      const metricMap = new Map(); // course -> metric -> month -> val
+      // course -> metric -> month -> number
+      const metricMap = new Map();
       CLOSE_RATE_COURSE_GROUPS.forEach((c) => {
-        totalMap.set(c, {});
         metricMap.set(c, {});
-        CLOSE_RATE_METRICS.forEach((m) => {
+        metricOrder.forEach((m) => {
           metricMap.get(c)[m] = {};
           months.forEach((mon) => (metricMap.get(c)[m][mon] = 0));
         });
       });
 
       data.rows
-        .filter((r) => r.segment === selectedSize)
+        .filter((r) => r.segment === selectedSize && Number(r.level) === 2)
         .forEach((r) => {
-          const m = r.rowKey || r.key;
-          if (Number(r.level) === 1) {
-            const course = r.rowKey;
-            if (!totalMap.has(course)) return;
-            months.forEach((mon) => {
-              totalMap.get(course)[mon] = Number((r.countsByMonth || {})[mon] || 0);
-            });
-          } else {
-            const [course, metric] = (m || "").split("||");
-            if (!metricMap.has(course) || !metricMap.get(course)[metric]) return;
-            months.forEach((mon) => {
-              metricMap.get(course)[metric][mon] = Number((r.countsByMonth || {})[mon] || 0);
-            });
-          }
+          const [course, metric] = String(r.rowKey || r.key || "").split("||");
+          if (!metricMap.has(course) || !metricMap.get(course)[metric]) return;
+          months.forEach((mon) => {
+            metricMap.get(course)[metric][mon] = Number((r.countsByMonth || {})[mon] || 0);
+          });
         });
-
-      const metricOrder = ["total", "confirmed", "high", "low", "lost", "close_rate"];
 
       const renderCells = (course, metric) =>
         months
           .map((mon) => {
-            const total = totalMap.get(course)?.[mon] || 0;
-            const val = metricMap.get(course)?.[metric]?.[mon];
+            const total = metricMap.get(course)?.total?.[mon] ?? 0;
+            const val = metricMap.get(course)?.[metric]?.[mon] ?? 0;
             if (metric === "close_rate") {
-              const display = total > 0 ? `${Number(val || 0).toFixed(1)}%` : "-";
-              const clickable = total > 0;
-              return `<td>${clickable ? `<button type="button" class="mp-cell-btn" data-perf-kind="monthly-close-rate" data-segment="${selectedSize}" data-course="${course}" data-metric="close_rate" data-month="${mon}" data-cust="${ui.customerType}" data-scope="${ui.scope}">${display}</button>` : `<span class="mp-cell-btn is-zero">${display}</span>`}</td>`;
+              const display = total > 0 ? `${Number(val || 0).toFixed(1)}%` : "0.0%";
+              return `<td><span class="mp-cell-btn ${total === 0 ? "is-zero" : ""}">${display}</span></td>`;
+            }
+            if (metric === "total") {
+              const clickable = val > 0;
+              const display = Number(val || 0).toLocaleString("ko-KR");
+              return `<td>${
+                clickable
+                  ? `<button type="button" class="mp-cell-btn" data-perf-kind="monthly-close-rate" data-segment="${selectedSize}" data-course="${course}" data-metric="total" data-month="${mon}" data-cust="${ui.customerType}" data-scope="${ui.scope}">${display}</button>`
+                  : `<span class="mp-cell-btn is-zero">${display}</span>`
+              }</td>`;
             }
             const display = Number(val || 0).toLocaleString("ko-KR");
             return `<td><span class="mp-cell-btn ${Number(val || 0) === 0 ? "is-zero" : ""}">${display}</span></td>`;
           })
           .join("");
 
-      const parentRows = CLOSE_RATE_COURSE_GROUPS.map((course) => {
-        const isOpen = expanded[course] !== false;
-        const caret = `<span class="cr-caret" data-caret="1">${isOpen ? "▾" : "▸"}</span>`;
-        const total = totalMap.get(course) || {};
-        const parentCells = months
-          .map((mon) => {
-            const v = total[mon] || 0;
-            const display = Number(v || 0).toLocaleString("ko-KR");
-            return `<td><span class="mp-cell-btn ${v === 0 ? "is-zero" : ""}">${display}</span></td>`;
-          })
-          .join("");
-        const children = metricOrder
+      const sectionTables = CLOSE_RATE_COURSE_GROUPS.map((course) => {
+        const bodyRows = metricOrder
           .map((metric) => {
             const label = CLOSE_RATE_METRIC_LABEL[metric] || metric;
-            const rowHtml = `
-              <tr class="cr-child" data-cr-child-parent="${course}" style="${isOpen ? "" : "display:none"}">
-                <td class="sticky-col mp-format align-left">┗ ${label}</td>
+            return `
+              <tr>
+                <td class="sticky-col mp-format align-left">${label}</td>
                 ${renderCells(course, metric)}
               </tr>
             `;
-            return rowHtml;
           })
           .join("");
         return `
-          <tr class="cr-parent" data-cr-parent="${course}" aria-expanded="${isOpen ? "true" : "false"}">
-            <td class="sticky-col mp-format align-left">${caret}${course}</td>
-            ${parentCells}
-          </tr>
-          ${children}
+          <h4 class="cr-course-title" style="margin:12px 0 4px;">${course}</h4>
+          <div class="table-wrap full perf-table-wrap">
+            <table class="perf-table mp-monthly-table">
+              <thead>
+                <tr>
+                  <th class="sticky-col mp-format align-left">지표</th>
+                  ${headerCells}
+                </tr>
+              </thead>
+              <tbody>
+                ${bodyRows}
+              </tbody>
+            </table>
+          </div>
         `;
       }).join("");
 
       return `
         <section class="card">
           <div class="control-row">
-            <h3>체결률 현황 (확정·높음 / 전체)</h3>
+            <div>
+              <h3>2026 체결률 현황</h3>
+              <div class="muted small">※ 체결률(%) = (확정+높음)/전체</div>
+            </div>
             <div class="spacer"></div>
             <span class="pill muted">2025-01 ~ 2026-12</span>
           </div>
-          <div class="table-wrap full perf-table-wrap">
-            <table class="perf-table mp-monthly-table">
-              <thead>
-                <tr>
-                  <th class="sticky-col mp-format align-left">과정포맷 / 지표</th>
-                  ${headerCells}
-                </tr>
-              </thead>
-              <tbody>
-                ${parentRows}
-              </tbody>
-            </table>
-          </div>
+          ${sectionTables}
         </section>
       `;
     }
 
-    async function openBizPerfMonthlyCloseRateDealsModal({ segment, course, month, cust, scope }) {
+    async function openBizPerfMonthlyCloseRateDealsModal({ segment, course, metric = "total", month, cust, scope }) {
       bindGlobalModalsOnce();
       if (!state.rankPeopleModal.backdrop || !state.rankPeopleModal.title || !state.rankPeopleModal.body) {
         showToast("딜 모달을 초기화할 수 없습니다.", "error");
@@ -10359,24 +10345,33 @@
         const data = await loadPerfMonthlyCloseRateDeals({
           segment,
           course,
-          metric: "close_rate",
+          metric,
           month,
           cust,
           scope,
         });
-        const titleLabel = `${segment} · ${formatPerfMonthLabel(month)} · ${course} · 체결률`;
+        const metricLabel = CLOSE_RATE_METRIC_LABEL[metric] || metric;
+        const titleLabel = `${segment} · ${formatPerfMonthLabel(month)} · ${course} · ${metricLabel}`;
         state.rankPeopleModal.title.textContent = titleLabel;
         if (state.rankPeopleModal.subtitle) {
           const meta = data.meta || {};
-          const rateText =
-            meta && Number.isFinite(meta.close_rate)
-              ? `체결률 ${Number(meta.close_rate).toFixed(1)}%`
-              : "체결률 계산 불가";
-          const frac =
-            meta && Number.isFinite(meta.numeratorCount) && Number.isFinite(meta.denominatorCount)
-              ? `(${meta.numeratorCount} / ${meta.denominatorCount})`
-              : "";
-          state.rankPeopleModal.subtitle.textContent = `${rateText} ${frac}`.trim();
+          if (metric === "total") {
+            const cnt = Number.isFinite(meta.totalCount) ? meta.totalCount : data.dealCount;
+            state.rankPeopleModal.subtitle.textContent = `전체 딜: ${Number(cnt || 0).toLocaleString("ko-KR")}건`;
+          } else if (metric === "close_rate") {
+            const rateText =
+              meta && Number.isFinite(meta.close_rate)
+                ? `체결률 ${Number(meta.close_rate).toFixed(1)}%`
+                : "체결률 계산 불가";
+            const frac =
+              meta && Number.isFinite(meta.numeratorCount) && Number.isFinite(meta.denominatorCount)
+                ? `(${meta.numeratorCount} / ${meta.denominatorCount})`
+                : "";
+            state.rankPeopleModal.subtitle.textContent = `${rateText} ${frac}`.trim();
+          } else {
+            const cnt = Number.isFinite(data.dealCount) ? data.dealCount : (data.items || []).length;
+            state.rankPeopleModal.subtitle.textContent = `${metricLabel}: ${Number(cnt || 0).toLocaleString("ko-KR")}건`;
+          }
         }
         const items = (data.items || []).slice();
         const sortKey = (it) => {
@@ -10830,7 +10825,7 @@
           // zero-detection for hint
           let totalSum = 0;
           (data.rows || [])
-            .filter((r) => Number(r.level) === 1 && r.segment === selectedSize)
+            .filter((r) => Number(r.level) === 2 && r.segment === selectedSize && String(r.rowKey || r.key || "").endsWith("||total"))
             .forEach((r) => {
               Object.values(r.countsByMonth || {}).forEach((v) => {
                 totalSum += Number(v || 0);
@@ -10850,12 +10845,7 @@
           }`;
         }
         if (tableRoot) {
-          tableRoot.innerHTML = renderBizPerfMonthlyCloseRateTable(
-            data,
-            selectedSize,
-            ui,
-            state.perfMonthlyCloseRate.expanded || {},
-          );
+          tableRoot.innerHTML = renderBizPerfMonthlyCloseRateTable(data, selectedSize, ui);
         }
       };
 
@@ -10909,19 +10899,6 @@
         }
         if (tableRoot) {
           tableRoot.addEventListener("click", async (e) => {
-            const parent = e.target.closest("tr.cr-parent");
-            if (parent) {
-              const course = parent.getAttribute("data-cr-parent");
-              const expanded = parent.getAttribute("aria-expanded") === "true";
-              parent.setAttribute("aria-expanded", expanded ? "false" : "true");
-              const caret = parent.querySelector(".cr-caret");
-              if (caret) caret.textContent = expanded ? "▸" : "▾";
-              tableRoot
-                .querySelectorAll(`tr.cr-child[data-cr-child-parent="${course}"]`)
-                .forEach((tr) => (tr.style.display = expanded ? "none" : ""));
-              state.perfMonthlyCloseRate.expanded[course] = !expanded;
-              return;
-            }
             const btn = e.target.closest("button[data-perf-kind='monthly-close-rate']");
             if (btn) {
               const segment = btn.getAttribute("data-segment");
@@ -10929,8 +10906,12 @@
               const month = btn.getAttribute("data-month");
               const cust = btn.getAttribute("data-cust");
               const scope = btn.getAttribute("data-scope");
-              await openBizPerfDealsModal(segment, `${course}||close_rate`, month, {
-                kind: "monthly-close-rate",
+              const metric = btn.getAttribute("data-metric") || "total";
+              await openBizPerfMonthlyCloseRateDealsModal({
+                segment,
+                course,
+                metric,
+                month,
                 cust,
                 scope,
               });

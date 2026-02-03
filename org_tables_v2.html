@@ -2310,6 +2310,31 @@
       },
     };
     const COUNTERPARTY_ONLINE_FORMATS = new Set(["구독제(온라인)", "선택구매(온라인)", "포팅"]);
+    const CLOSE_RATE_COURSE_GROUPS = ["구독제(온라인)", "선택구매(온라인)", "포팅", "오프라인"];
+    const CLOSE_RATE_METRICS = ["total", "confirmed", "high", "low", "lost", "close_rate"];
+    const CLOSE_RATE_METRIC_LABEL = {
+      total: "전체",
+      confirmed: "확정",
+      high: "높음",
+      low: "낮음",
+      lost: "LOST",
+      close_rate: "체결률(%)",
+    };
+    const CLOSE_RATE_SCOPE_OPTIONS = [
+      { key: "all", label: "전체" },
+      { key: "corp_group", label: "기업 그룹" },
+      { key: "edu1", label: "기업 1팀" },
+      { key: "edu2", label: "기업 2팀" },
+      { key: "edu1_p1", label: "1팀 1파트" },
+      { key: "edu1_p2", label: "1팀 2파트" },
+      { key: "edu2_p1", label: "2팀 1파트" },
+      { key: "edu2_p2", label: "2팀 2파트" },
+      { key: "edu2_online", label: "2팀 온라인셀" },
+    ];
+    const CLOSE_RATE_CUSTOMER_OPTIONS = [
+      { key: "new", label: "신규 고객" },
+      { key: "existing", label: "기존 고객" },
+    ];
     const SALESMAP_WORKSPACE_PATH = "64cb5beda5a78ae225d7815b"; // update if workspace path changes
     const SALESMAP_BASE = "https://salesmap.kr/64cb5beda5a78ae225d7815b";
     const salesmapOrgUrl = (orgId) => `${SALESMAP_BASE}/contact/organization/${encodeURIComponent(orgId || "")}`;
@@ -2463,6 +2488,13 @@
         kind: "monthly-inquiries",
         suppressArrow: true,
       },
+      {
+        id: "biz-perf-monthly-close-rate-2026",
+        label: "2026 체결률 현황",
+        parentId: "biz-perf-monthly",
+        kind: "monthly-close-rate",
+        suppressArrow: true,
+      },
     ];
 
     function menuLabelWithArrow(def) {
@@ -2557,6 +2589,8 @@
       if (def.kind === "monthly-inquiries") {
         MENU_RENDERERS[def.id] = (root) =>
           renderBizPerfMonthlyInquiries(root, { teamKey: def.teamKey, label: def.label });
+      } else if (def.kind === "monthly-close-rate") {
+        MENU_RENDERERS[def.id] = (root) => renderBizPerfMonthlyCloseRate2026(root, { label: def.label });
       } else {
         MENU_RENDERERS[def.id] = (root) => renderBizPerfMonthly(root, { teamKey: def.teamKey, label: def.label });
       }
@@ -2747,6 +2781,22 @@
         error: null,
         summaryCache: new Map(),
         ui: { sizeGroup: "대기업" },
+      },
+      perfMonthlyCloseRate: {
+        loading: false,
+        error: null,
+        summaryCache: new Map(), // key: from|to|cust|scope
+        ui: {
+          sizeGroup: "대기업",
+          customerType: "new",
+          scope: "all",
+        },
+        expanded: {
+          "구독제(온라인)": true,
+          "선택구매(온라인)": true,
+          "포팅": true,
+          "오프라인": true,
+        },
       },
       perfPlProgress2026: {
         loading: false,
@@ -4351,6 +4401,35 @@
       params.set("row", rowKey);
       params.set("month", monthKey);
       return fetchJson(`/performance/monthly-inquiries/deals?${params.toString()}`);
+    }
+
+    async function loadPerfMonthlyCloseRateSummary({ from, to, cust, scope }) {
+      const params = new URLSearchParams();
+      params.set("from", from);
+      params.set("to", to);
+      params.set("cust", cust);
+      params.set("scope", scope);
+      return fetchJson(`/performance/monthly-close-rate/summary?${params.toString()}`);
+    }
+
+    async function getPerfMonthlyCloseRateSummaryCached({ from, to, cust, scope }) {
+      const key = `${from}|${to}|${cust}|${scope}`;
+      if (state.perfMonthlyCloseRate.summaryCache.has(key)) {
+        return state.perfMonthlyCloseRate.summaryCache.get(key);
+      }
+      const data = await loadPerfMonthlyCloseRateSummary({ from, to, cust, scope });
+      state.perfMonthlyCloseRate.summaryCache.set(key, data);
+      return data;
+    }
+
+    async function loadPerfMonthlyCloseRateDeals({ segment, course, metric, month, cust, scope }) {
+      const params = new URLSearchParams();
+      params.set("segment", segment);
+      params.set("row", `${course}||${metric}`);
+      params.set("month", month);
+      params.set("cust", cust);
+      params.set("scope", scope);
+      return fetchJson(`/performance/monthly-close-rate/deals?${params.toString()}`);
     }
 
     async function loadPlProgress2026Summary(year = 2026) {
@@ -9710,6 +9789,7 @@
       const teamKey = options.teamKey || null;
       const kind = options.kind || "monthly-amounts";
       const isInquiries = kind === "monthly-inquiries";
+      const isCloseRate = kind === "monthly-close-rate";
       bindGlobalModalsOnce();
       if (!state.rankPeopleModal.backdrop || !state.rankPeopleModal.title || !state.rankPeopleModal.body) {
         showToast("딜 모달을 초기화할 수 없습니다.", "error");
@@ -9720,18 +9800,44 @@
       if (state.rankPeopleModal.subtitle) state.rankPeopleModal.subtitle.textContent = "";
       state.rankPeopleModal.body.innerHTML = `<div class="muted" style="padding:12px;">불러오는 중...</div>`;
       try {
-        const data = isInquiries
-          ? await loadBizPerfInquiryDeals(segmentKey, rowKey, monthKey)
-          : await loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey });
+        let data;
+        if (isInquiries) {
+          data = await loadBizPerfInquiryDeals(segmentKey, rowKey, monthKey);
+        } else if (isCloseRate) {
+          const [course, metric] = (rowKey || "").split("||");
+          data = await loadPerfMonthlyCloseRateDeals({
+            segment: segmentKey,
+            course: course || "",
+            metric: metric || "close_rate",
+            month: monthKey,
+            cust: options.cust || "new",
+            scope: options.scope || "all",
+          });
+        } else {
+          data = await loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey });
+        }
         const titleLabel = `${(data.segment && data.segment.label) || segmentKey} · ${formatPerfMonthLabel(
           data.month,
         )} · ${(data.row && data.row.label) || rowKey}`;
-        const titlePrefix = isInquiries ? "월별 문의 인입" : "월별 체결액";
+        const titlePrefix = isInquiries ? "월별 문의 인입" : isCloseRate ? "체결률 현황" : "월별 체결액";
         state.rankPeopleModal.title.textContent = `${titlePrefix} - ${titleLabel}`;
-        if (state.rankPeopleModal.subtitle)
-          state.rankPeopleModal.subtitle.textContent = `${formatPerfMonthLabel(data.month)} · ${
-            (data.segment && data.segment.label) || segmentKey
-          } · ${(data.row && data.row.label) || rowKey}`;
+        if (state.rankPeopleModal.subtitle) {
+          if (isCloseRate) {
+            const meta = data.meta || {};
+            const rate = Number.isFinite(meta.close_rate) ? `${Number(meta.close_rate).toFixed(1)}%` : "-";
+            const frac =
+              Number.isFinite(meta.numeratorCount) && Number.isFinite(meta.totalCount)
+                ? `(${meta.numeratorCount} / ${meta.totalCount})`
+                : "";
+            state.rankPeopleModal.subtitle.textContent = `${formatPerfMonthLabel(data.month)} · ${
+              (data.segment && data.segment.label) || segmentKey
+            } · ${(data.row && data.row.label) || rowKey} · ${rate} ${frac}`.trim();
+          } else {
+            state.rankPeopleModal.subtitle.textContent = `${formatPerfMonthLabel(data.month)} · ${
+              (data.segment && data.segment.label) || segmentKey
+            } · ${(data.row && data.row.label) || rowKey}`;
+          }
+        }
         const items = (data.items || []).slice();
         const sortKey = (it) => {
           const a = Number(it.amount);
@@ -9745,14 +9851,14 @@
           if (diff !== 0) return diff;
           return String(x.dealName || "").localeCompare(String(y.dealName || ""), "ko");
         });
-          const rowsHtml =
-            items
-              .map((item) => {
-                const dealLink = buildSalesmapLink("deal", item.dealId);
-                const owners = Array.isArray(item.day1OwnerNames) ? item.day1OwnerNames.filter(Boolean).join(", ") : item.day1OwnerNames || "-";
-                const fmtAmt = (v) => (Number(v) > 0 ? formatEok1(v) : "-");
+        const rowsHtml =
+          items
+            .map((item) => {
+              const dealLink = buildSalesmapLink("deal", item.dealId);
+              const owners = Array.isArray(item.day1OwnerNames) ? item.day1OwnerNames.filter(Boolean).join(", ") : item.day1OwnerNames || "-";
+              const fmtAmt = (v) => (Number(v) > 0 ? formatEok1(v) : "-");
               const categoryText = normalizeDealCategoryText(item.category ?? item.categoryGroup ?? item.dealCategory);
-                return `
+              return `
                   <tr>
                     <td class="align-left txt">${item.orgName || "-"}</td>
                     <td class="align-left txt">${normalizeUpperOrg(item.upperOrg)}</td>
@@ -9768,10 +9874,10 @@
                   <td class="auto-fit txt">${formatDateKstSafe(item.startDate)}</td>
                   <td class="auto-fit txt">${formatDateKstSafe(item.endDate)}</td>
                   <td class="auto-fit txt">${item.courseId || "-"}</td>
-                  <td class="auto-fit txt">${formatDateKstSafe(item.contractDate)}</td>
-                  <td class="auto-fit num"><span class="pnl-num">${fmtAmt(item.amount)}</span></td>
-                </tr>
-              `;
+                    <td class="auto-fit txt">${formatDateKstSafe(item.contractDate)}</td>
+                    <td class="auto-fit num"><span class="pnl-num">${fmtAmt(item.amount)}</span></td>
+                  </tr>
+                `;
             })
             .join("") || `<tr><td colspan="16" class="muted">딜이 없습니다.</td></tr>`;
 
@@ -9810,6 +9916,238 @@
             </table>
           </div>
         `;
+      } catch (err) {
+        state.rankPeopleModal.body.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        showToast(`딜 목록을 불러오지 못했습니다: ${err.message}`, "error");
+      }
+    }
+
+    function renderBizPerfMonthlyCloseRateTable(data, selectedSize = "대기업", ui = {}, expanded = {}) {
+      if (!data || !Array.isArray(data.rows) || !data.months || !data.months.length) {
+        return `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
+      }
+      const months = data.months || [];
+      const headerCells = months.map((m) => `<th class="num">${formatPerfMonthLabel(m)}</th>`).join("");
+
+      const totalMap = new Map();
+      const metricMap = new Map(); // course -> metric -> month -> val
+      CLOSE_RATE_COURSE_GROUPS.forEach((c) => {
+        totalMap.set(c, {});
+        metricMap.set(c, {});
+        CLOSE_RATE_METRICS.forEach((m) => {
+          metricMap.get(c)[m] = {};
+          months.forEach((mon) => (metricMap.get(c)[m][mon] = 0));
+        });
+      });
+
+      data.rows
+        .filter((r) => r.segment === selectedSize)
+        .forEach((r) => {
+          const m = r.rowKey || r.key;
+          if (Number(r.level) === 1) {
+            const course = r.rowKey;
+            if (!totalMap.has(course)) return;
+            months.forEach((mon) => {
+              totalMap.get(course)[mon] = Number((r.countsByMonth || {})[mon] || 0);
+            });
+          } else {
+            const [course, metric] = (m || "").split("||");
+            if (!metricMap.has(course) || !metricMap.get(course)[metric]) return;
+            months.forEach((mon) => {
+              metricMap.get(course)[metric][mon] = Number((r.countsByMonth || {})[mon] || 0);
+            });
+          }
+        });
+
+      const metricOrder = ["total", "confirmed", "high", "low", "lost", "close_rate"];
+
+      const renderCells = (course, metric) =>
+        months
+          .map((mon) => {
+            const total = totalMap.get(course)?.[mon] || 0;
+            const val = metricMap.get(course)?.[metric]?.[mon];
+            if (metric === "close_rate") {
+              const display = total > 0 ? `${Number(val || 0).toFixed(1)}%` : "-";
+              const clickable = total > 0;
+              return `<td>${clickable ? `<button type="button" class="mp-cell-btn" data-perf-kind="monthly-close-rate" data-segment="${selectedSize}" data-course="${course}" data-metric="close_rate" data-month="${mon}" data-cust="${ui.customerType}" data-scope="${ui.scope}">${display}</button>` : `<span class="mp-cell-btn is-zero">${display}</span>`}</td>`;
+            }
+            const display = Number(val || 0).toLocaleString("ko-KR");
+            return `<td><span class="mp-cell-btn ${Number(val || 0) === 0 ? "is-zero" : ""}">${display}</span></td>`;
+          })
+          .join("");
+
+      const parentRows = CLOSE_RATE_COURSE_GROUPS.map((course) => {
+        const isOpen = expanded[course] !== false;
+        const caret = `<span class="cr-caret" data-caret="1">${isOpen ? "▾" : "▸"}</span>`;
+        const total = totalMap.get(course) || {};
+        const parentCells = months
+          .map((mon) => {
+            const v = total[mon] || 0;
+            const display = Number(v || 0).toLocaleString("ko-KR");
+            return `<td><span class="mp-cell-btn ${v === 0 ? "is-zero" : ""}">${display}</span></td>`;
+          })
+          .join("");
+        const children = metricOrder
+          .map((metric) => {
+            const label = CLOSE_RATE_METRIC_LABEL[metric] || metric;
+            const rowHtml = `
+              <tr class="cr-child" data-cr-child-parent="${course}" style="${isOpen ? "" : "display:none"}">
+                <td class="sticky-col mp-format align-left">┗ ${label}</td>
+                ${renderCells(course, metric)}
+              </tr>
+            `;
+            return rowHtml;
+          })
+          .join("");
+        return `
+          <tr class="cr-parent" data-cr-parent="${course}" aria-expanded="${isOpen ? "true" : "false"}">
+            <td class="sticky-col mp-format align-left">${caret}${course}</td>
+            ${parentCells}
+          </tr>
+          ${children}
+        `;
+      }).join("");
+
+      return `
+        <section class="card">
+          <div class="control-row">
+            <h3>체결률 현황 (확정·높음 / 전체)</h3>
+            <div class="spacer"></div>
+            <span class="pill muted">2025-01 ~ 2026-12</span>
+          </div>
+          <div class="table-wrap full perf-table-wrap">
+            <table class="perf-table mp-monthly-table">
+              <thead>
+                <tr>
+                  <th class="sticky-col mp-format align-left">과정포맷 / 지표</th>
+                  ${headerCells}
+                </tr>
+              </thead>
+              <tbody>
+                ${parentRows}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      `;
+    }
+
+    async function openBizPerfMonthlyCloseRateDealsModal({ segment, course, month, cust, scope }) {
+      bindGlobalModalsOnce();
+      if (!state.rankPeopleModal.backdrop || !state.rankPeopleModal.title || !state.rankPeopleModal.body) {
+        showToast("딜 모달을 초기화할 수 없습니다.", "error");
+        return;
+      }
+      state.rankPeopleModal.backdrop.style.display = "flex";
+      state.rankPeopleModal.title.textContent = "체결률 현황 딜 목록";
+      if (state.rankPeopleModal.subtitle) state.rankPeopleModal.subtitle.textContent = "";
+      state.rankPeopleModal.body.innerHTML = `<div class="muted" style="padding:12px;">불러오는 중...</div>`;
+      try {
+        const data = await loadPerfMonthlyCloseRateDeals({
+          segment,
+          course,
+          metric: "close_rate",
+          month,
+          cust,
+          scope,
+        });
+        const titleLabel = `${segment} · ${formatPerfMonthLabel(month)} · ${course} · 체결률`;
+        state.rankPeopleModal.title.textContent = titleLabel;
+        if (state.rankPeopleModal.subtitle) {
+          const meta = data.meta || {};
+          const rateText =
+            meta && Number.isFinite(meta.close_rate)
+              ? `체결률 ${Number(meta.close_rate).toFixed(1)}%`
+              : "체결률 계산 불가";
+          const frac =
+            meta && Number.isFinite(meta.numeratorCount) && Number.isFinite(meta.denominatorCount)
+              ? `(${meta.numeratorCount} / ${meta.denominatorCount})`
+              : "";
+          state.rankPeopleModal.subtitle.textContent = `${rateText} ${frac}`.trim();
+        }
+        const items = (data.items || []).slice();
+        const sortKey = (it) => {
+          const a = Number(it.amount);
+          const e = Number(it.expectedAmount);
+          if (Number.isFinite(a) && a > 0) return a;
+          if (Number.isFinite(e) && e > 0) return e;
+          return 0;
+        };
+        items.sort((x, y) => {
+          const diff = sortKey(y) - sortKey(x);
+          if (diff !== 0) return diff;
+          return String(x.dealName || "").localeCompare(String(y.dealName || ""), "ko");
+        });
+        const rowsHtml =
+          items
+            .map((item) => {
+              const dealLink = buildSalesmapLink("deal", item.dealId);
+              const owners = Array.isArray(item.day1OwnerNames)
+                ? item.day1OwnerNames.filter(Boolean).join(", ")
+                : item.day1OwnerNames || "-";
+              const fmtAmt = (v) => (Number(v) > 0 ? formatEok1(v) : "-");
+              return `
+                <tr>
+                  <td class="align-left txt">${item.orgName || "-"}</td>
+                  <td class="align-left txt">${normalizeUpperOrg(item.upperOrg)}</td>
+                  <td class="align-left txt">${item.customerPersonName || "-"}</td>
+                  <td class="deal-name-cell align-left txt">${
+                    dealLink
+                      ? `<a class="deal-name-link" href="${dealLink}" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: underline;">${item.dealName || item.dealId || "-"}</a>`
+                      : `<span class="deal-name-link">${item.dealName || item.dealId || "-"}</span>`
+                  }</td>
+                  <td class="auto-fit txt">${item.courseFormat || "-"}</td>
+                  <td class="auto-fit txt">${item.categoryGroup || item.category || "-"}</td>
+                  <td class="auto-fit txt">${owners || "-"}</td>
+                  <td class="auto-fit txt">${item.status || "-"}</td>
+                  <td class="auto-fit txt">${formatProbability(item.probability)}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.expectedCloseDate)}</td>
+                  <td class="auto-fit num"><span class="pnl-num">${fmtAmt(item.expectedAmount)}</span></td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.startDate)}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.endDate)}</td>
+                  <td class="auto-fit txt">${item.courseId || "-"}</td>
+                  <td class="auto-fit txt">${formatDateKstSafe(item.contractDate)}</td>
+                  <td class="auto-fit num"><span class="pnl-num">${fmtAmt(item.amount)}</span></td>
+                </tr>
+              `;
+            })
+            .join("") || `<tr><td colspan="16" class="muted">딜이 없습니다.</td></tr>`;
+
+        state.rankPeopleModal.body.innerHTML = `
+        <div class="table-wrap deals-modal-scroll">
+          <table class="perf-table mp-monthly-table mp-deals-table">
+            <colgroup>
+              <col style="width:14em" />
+              <col style="width:14em" />
+              <col style="width:8em" />
+              <col style="width:20em" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="align-left txt">기업명</th>
+                <th class="align-left txt">소속 상위 조직</th>
+                <th class="align-left txt">담당자</th>
+                <th class="align-left txt">딜이름</th>
+                <th class="auto-fit txt">과정포맷</th>
+                <th class="auto-fit txt">카테고리</th>
+                <th class="auto-fit txt">데이원</th>
+                <th class="auto-fit txt">상태</th>
+                <th class="auto-fit txt">가능성</th>
+                <th class="auto-fit txt">수주 예정일</th>
+                <th class="auto-fit num">예상 체결액</th>
+                <th class="auto-fit txt">수강시작일</th>
+                <th class="auto-fit txt">수강종료일</th>
+                <th class="auto-fit txt">코스 ID</th>
+                <th class="auto-fit txt">계약체결일</th>
+                <th class="auto-fit num">금액</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHtml}
+            </tbody>
+          </table>
+        </div>
+      `;
       } catch (err) {
         state.rankPeopleModal.body.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
         showToast(`딜 목록을 불러오지 못했습니다: ${err.message}`, "error");
@@ -10107,6 +10445,201 @@
         state.perfMonthlyInquiries.loading = false;
       }
     }
+
+    async function renderBizPerfMonthlyCloseRate2026(contentRoot, options = {}) {
+      const titleText = options.label || "2026 체결률 현황";
+      const FROM = "2025-01";
+      const TO = "2026-12";
+      state.perfMonthlyCloseRate.loading = true;
+      state.perfMonthlyCloseRate.error = null;
+      contentRoot.innerHTML = `
+        <section class="card compact-header">
+          <div class="control-row">
+            <div>
+              <h1>${escapeHtml(titleText)}</h1>
+              <div class="muted" id="closeRateMeta">단위: 건 / 체결률 = (확정+높음) / 전체</div>
+            </div>
+            <div class="spacer"></div>
+            <span class="pill muted">2025-01 ~ 2026-12</span>
+          </div>
+        </section>
+        <div class="inq-sizebar" id="crSizeBar"></div>
+        <div class="inq-sizebar" id="crCustBar"></div>
+        <div class="inq-sizebar" id="crScopeBar"></div>
+        <div id="perfMonthlyCloseRateTable">
+          <div class="muted card" style="padding: 12px;">불러오는 중...</div>
+        </div>
+      `;
+
+      const tableRoot = document.getElementById("perfMonthlyCloseRateTable");
+      const metaEl = document.getElementById("closeRateMeta");
+      const sizeBar = document.getElementById("crSizeBar");
+      const custBar = document.getElementById("crCustBar");
+      const scopeBar = document.getElementById("crScopeBar");
+      let latestData = null;
+
+      const renderSizeBtns = (selected) =>
+        INQUIRY_SIZE_GROUPS.map(
+          (s) =>
+            `<button type="button" class="inq-size-btn ${s === selected ? "is-active" : ""}" data-cr-size="${s}" aria-pressed="${
+              s === selected
+            }">${s}</button>`,
+        ).join("");
+
+      const renderCustBtns = (selected) =>
+        CLOSE_RATE_CUSTOMER_OPTIONS.map(
+          (c) =>
+            `<button type="button" class="inq-size-btn ${c.key === selected ? "is-active" : ""}" data-cr-cust="${
+              c.key
+            }" aria-pressed="${c.key === selected}">${c.label}</button>`,
+        ).join("");
+
+      const renderScopeBtns = (selected) =>
+        CLOSE_RATE_SCOPE_OPTIONS.map(
+          (s) =>
+            `<button type="button" class="inq-size-btn ${s.key === selected ? "is-active" : ""}" data-cr-scope="${
+              s.key
+            }" aria-pressed="${s.key === selected}">${s.label}</button>`,
+        ).join("");
+
+      const draw = (data) => {
+        const ui = state.perfMonthlyCloseRate.ui;
+        const selectedSize = ui.sizeGroup || "대기업";
+        if (sizeBar) sizeBar.innerHTML = renderSizeBtns(selectedSize);
+        if (custBar) custBar.innerHTML = renderCustBtns(ui.customerType || "new");
+        if (scopeBar) scopeBar.innerHTML = renderScopeBtns(ui.scope || "all");
+        if (metaEl) {
+          const snapshot = data && data.meta && data.meta.snapshot_version ? ` · ${data.meta.snapshot_version}` : "";
+          // zero-detection for hint
+          let totalSum = 0;
+          (data.rows || [])
+            .filter((r) => Number(r.level) === 1 && r.segment === selectedSize)
+            .forEach((r) => {
+              Object.values(r.countsByMonth || {}).forEach((v) => {
+                totalSum += Number(v || 0);
+              });
+            });
+          let hint = "";
+          const md = (data.meta && data.meta.meta_debug) || {};
+          if (totalSum === 0 || md.after_filters === 0) {
+            if (md.excluded_missing_created_at) hint = "created_at 누락/파싱 제외가 많습니다.";
+            else if (md.excluded_scope_mismatch) hint = "scope(팀/파트) 필터로 대부분 제외되었습니다.";
+            else if (md.excluded_customer_type_mismatch) hint = "신규/기존 필터로 대부분 제외되었습니다.";
+            else if (md.excluded_offline_not_genai) hint = "오프라인 비생성형AI는 제외됩니다.";
+            else hint = "필터 결과가 0입니다. meta_debug를 확인하세요.";
+          }
+          metaEl.innerHTML = `단위: 건 / 체결률 = (확정+높음)/전체${snapshot}${
+            hint ? ` <span class="pill error" style="margin-left:8px;">${escapeHtml(hint)}</span>` : ""
+          }`;
+        }
+        if (tableRoot) {
+          tableRoot.innerHTML = renderBizPerfMonthlyCloseRateTable(
+            data,
+            selectedSize,
+            ui,
+            state.perfMonthlyCloseRate.expanded || {},
+          );
+        }
+      };
+
+      const attachHandlers = () => {
+        if (sizeBar) {
+          sizeBar.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-cr-size]");
+            if (!btn) return;
+            const sg = btn.getAttribute("data-cr-size");
+            state.perfMonthlyCloseRate.ui.sizeGroup = sg;
+            draw(latestData);
+          });
+        }
+        if (custBar) {
+          custBar.addEventListener("click", async (e) => {
+            const btn = e.target.closest("button[data-cr-cust]");
+            if (!btn) return;
+            const cust = btn.getAttribute("data-cr-cust");
+            state.perfMonthlyCloseRate.ui.customerType = cust;
+            try {
+              latestData = await getPerfMonthlyCloseRateSummaryCached({
+                from: FROM,
+                to: TO,
+                cust,
+                scope: state.perfMonthlyCloseRate.ui.scope,
+              });
+              draw(latestData);
+            } catch (err) {
+              showToast(`체결률 요약 로드 실패: ${err.message}`, "error");
+            }
+          });
+        }
+        if (scopeBar) {
+          scopeBar.addEventListener("click", async (e) => {
+            const btn = e.target.closest("button[data-cr-scope]");
+            if (!btn) return;
+            const scope = btn.getAttribute("data-cr-scope");
+            state.perfMonthlyCloseRate.ui.scope = scope;
+            try {
+              latestData = await getPerfMonthlyCloseRateSummaryCached({
+                from: FROM,
+                to: TO,
+                cust: state.perfMonthlyCloseRate.ui.customerType,
+                scope,
+              });
+              draw(latestData);
+            } catch (err) {
+              showToast(`체결률 요약 로드 실패: ${err.message}`, "error");
+            }
+          });
+        }
+        if (tableRoot) {
+          tableRoot.addEventListener("click", async (e) => {
+            const parent = e.target.closest("tr.cr-parent");
+            if (parent) {
+              const course = parent.getAttribute("data-cr-parent");
+              const expanded = parent.getAttribute("aria-expanded") === "true";
+              parent.setAttribute("aria-expanded", expanded ? "false" : "true");
+              const caret = parent.querySelector(".cr-caret");
+              if (caret) caret.textContent = expanded ? "▸" : "▾";
+              tableRoot
+                .querySelectorAll(`tr.cr-child[data-cr-child-parent="${course}"]`)
+                .forEach((tr) => (tr.style.display = expanded ? "none" : ""));
+              state.perfMonthlyCloseRate.expanded[course] = !expanded;
+              return;
+            }
+            const btn = e.target.closest("button[data-perf-kind='monthly-close-rate']");
+            if (btn) {
+              const segment = btn.getAttribute("data-segment");
+              const course = btn.getAttribute("data-course");
+              const month = btn.getAttribute("data-month");
+              const cust = btn.getAttribute("data-cust");
+              const scope = btn.getAttribute("data-scope");
+              await openBizPerfDealsModal(segment, `${course}||close_rate`, month, {
+                kind: "monthly-close-rate",
+                cust,
+                scope,
+              });
+            }
+          });
+        }
+      };
+
+      try {
+        latestData = await getPerfMonthlyCloseRateSummaryCached({
+          from: FROM,
+          to: TO,
+          cust: state.perfMonthlyCloseRate.ui.customerType,
+          scope: state.perfMonthlyCloseRate.ui.scope,
+        });
+        draw(latestData);
+        attachHandlers();
+      } catch (err) {
+        state.perfMonthlyCloseRate.error = err;
+        if (tableRoot) tableRoot.innerHTML = `<div class="muted card" style="padding:12px;">오류: ${err.message}</div>`;
+        showToast(`체결률 현황을 불러오지 못했습니다: ${err.message}`, "error");
+      } finally {
+        state.perfMonthlyCloseRate.loading = false;
+      }
+    }
+
 
     async function openPlProgressDealsModal({ month, rail, variant = "E" }) {
       bindGlobalModalsOnce();
@@ -11929,7 +12462,7 @@
               action: "금액 또는 예상 체결액 중 최소 하나를 입력하세요.",
             },
             R13: {
-              title: "Won & 고객사 담당자 메타 결측",
+              title: "대기업/중견 · Won 또는 SQL · 담당자 메타 결측",
               action: "소속 상위 조직/팀/직급/교육영역 4개 필드를 모두 채워 주세요.",
             },
             R14: {
@@ -11964,11 +12497,12 @@
           const orgMinCh = Math.min(60, Math.max(12, orgMaxLen + 2));
           const peopleMinCh = Math.min(60, Math.max(12, peopleMaxLen + 2));
           const dealMinCh = 16;
-          const ruleOrder = ["R1","R2","R3","R4","R5","R6","R7","R8","R9","R10","R11","R12","R13","R14","R15","R16"];
+          const visibleRules = new Set(["R1","R2","R3","R4","R5","R6","R7","R8","R9","R10","R11","R12","R13","R14","R15","R16"]);
+          const ruleOrder = Array.from(visibleRules);
           const byRule = {};
           ruleOrder.forEach((r) => (byRule[r] = []));
           items.forEach((d) => {
-            (d.issueCodes || []).forEach((code) => {
+            (d.issueCodes || []).filter((c) => visibleRules.has(c)).forEach((code) => {
               if (byRule[code]) byRule[code].push(d);
             });
           });

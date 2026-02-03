@@ -161,6 +161,13 @@ _PERF_MONTHLY_DATA_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
 _PERF_MONTHLY_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str], Dict[str, Any]] = {}
 _PERF_MONTHLY_INQUIRIES_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
 _PERF_MONTHLY_INQUIRIES_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str, str], Dict[str, Any]] = {}
+# 2026 체결률(근황) 전용 캐시
+CLOSE_RATE_ONLINE_COURSE_FORMATS = ["구독제(온라인)", "선택구매(온라인)", "포팅"]
+CLOSE_RATE_OFFLINE_FORMATS = {"출강", "복합(출강+온라인)", "교육체계 수립", "비대면 실시간"}
+CLOSE_RATE_COURSE_GROUPS = ["구독제(온라인)", "선택구매(온라인)", "포팅", "오프라인"]
+CLOSE_RATE_METRICS = ["total", "confirmed", "high", "low", "lost", "close_rate"]
+_PERF_MONTHLY_CLOSE_RATE_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
+_PERF_MONTHLY_CLOSE_RATE_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str, str, str], Dict[str, Any]] = {}
 _PL_PROGRESS_PAYLOAD_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
 _PL_PROGRESS_SUMMARY_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
 _QC_MONTHLY_REVENUE_CACHE: Dict[Tuple[Path, float, str, int, int, Optional[str], Optional[float]], Dict[str, Any]] = {}
@@ -1053,6 +1060,25 @@ def normalize_owner_name(name: str) -> str:
     return text
 
 
+def is_large_or_mid(size_group: str) -> bool:
+    """Return True for 대기업 or 중견기업 (including 변형에 '중견' 포함)."""
+    if not size_group:
+        return False
+    sg = str(size_group).strip()
+    return sg in {"대기업", "중견기업"} or ("중견" in sg)
+
+
+def is_missing_person_meta(upper_org: Any, team_signature: Any, title_signature: Any, edu_area: Any) -> bool:
+    return any(_missing_str(val) for val in (upper_org, team_signature, title_signature, edu_area))
+
+
+def is_month_exception(owner_name_norm: str, deal_name: str) -> bool:
+    norm = normalize_owner_name(owner_name_norm)
+    if norm not in {"김정은", "이은서"}:
+        return False
+    return bool(_re_month.search(deal_name or ""))
+
+
 PART_STRUCTURE = {
     "기업교육 1팀": {
         "1파트": [
@@ -1123,6 +1149,8 @@ QC_RULES: List[Tuple[str, str]] = [
 ]
 QC_SINCE_DATE = date(2024, 10, 1)
 QC_TEAM_LABELS = {"edu1": "기업교육 1팀", "edu2": "기업교육 2팀", "public": "공공교육팀", "all": "전체"}
+QC_HIDDEN_RULE_CODES: Set[str] = {"R17"}
+QC_EXCLUDE_FROM_TOTAL_ISSUES: Set[str] = {"R17"}
 
 
 def _clean_form_memo(text: str) -> Optional[Dict[str, str]]:
@@ -1965,6 +1993,37 @@ def _owners_match_team(owners: Any, allowed: Optional[Set[str]]) -> bool:
         if norm and norm in allowed:
             return True
     return False
+
+
+def _perf_close_rate_scope_members(scope: str) -> Optional[Set[str]]:
+    """
+    scope -> allowed member set (normalized). None means no filtering.
+    corp_group = edu1+edu2 전체.
+    """
+    def part_members(team_key: str, part_key: str) -> Set[str]:
+        team = PART_STRUCTURE.get(team_key, {})
+        raw = team.get(part_key, [])
+        return {normalize_owner_name(n) for n in raw if n}
+
+    if scope == "all":
+        return None
+    if scope == "corp_group":
+        return _dealcheck_members("edu1") | _dealcheck_members("edu2")
+    if scope == "edu1":
+        return _dealcheck_members("edu1")
+    if scope == "edu2":
+        return _dealcheck_members("edu2")
+    if scope == "edu1_p1":
+        return part_members("기업교육 1팀", "1파트")
+    if scope == "edu1_p2":
+        return part_members("기업교육 1팀", "2파트")
+    if scope == "edu2_p1":
+        return part_members("기업교육 2팀", "1파트")
+    if scope == "edu2_p2":
+        return part_members("기업교육 2팀", "2파트")
+    if scope == "edu2_online":
+        return part_members("기업교육 2팀", "온라인셀")
+    raise ValueError(f"Unknown scope: {scope}")
 
 
 def _amount_fallback(amount: Any, expected: Any) -> float:
@@ -3361,7 +3420,7 @@ def _qc_team_for_owner(owner: str) -> Optional[str]:
     return None
 
 
-def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
+def _qc_compute(team: str, db_path: Path = DB_PATH, include_hidden: bool = False) -> Dict[str, Any]:
     if not db_path.exists():
         raise FileNotFoundError(f"Database not found at {db_path}")
     if team not in {"all", "edu1", "edu2", "public"}:
@@ -3506,16 +3565,13 @@ def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
         if prob_n in {"확정", "높음"} and _missing_num(amount_val) and _missing_num(expected_amount_val):
             issues.append("R12")
         size_group = infer_size_group(row["org_name"], row["org_size_raw"])
-        if status_n != "convert" and size_group in {"대기업", "중견기업"}:
-            r13_exempt = False
-            if owner_display in {"김정은", "이은서"} and _re_month.search(deal_name):
-                r13_exempt = True
-            if not r13_exempt:
-                if any(
-                    _missing_str(val)
-                    for val in [row["upper_org"], row["team_signature"], row["title_signature"], row["edu_area"]]
-                ):
-                    issues.append("R13")
+        person_meta_missing = is_missing_person_meta(
+            row["upper_org"], row["team_signature"], row["title_signature"], row["edu_area"]
+        )
+        month_exception = is_month_exception(owner_norm, deal_name)
+
+        if is_large_or_mid(size_group) and status_n in {"won", "sql"} and person_meta_missing and not month_exception:
+            issues.append("R13")
         if status_n == "won" and course_fmt in ONLINE_COURSE_FORMATS and _missing_str(online_cycle):
             if cols["online_cycle"]:
                 issues.append("R14")
@@ -3525,6 +3581,8 @@ def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
                 r15_exempt = True
             if cols["instructor_name1"] and _missing_str(instructor_name1) and not r15_exempt:
                 issues.append("R15")
+        if is_large_or_mid(size_group) and status_n == "lost" and person_meta_missing and not month_exception:
+            issues.append("R17")
         # R16: 2025-01-01 이후, 비온라인, 카테고리=생성형AI, 조직 규모=대기업, Won 상태
         if status_n == "won":
             created_at_dt = _parse_date(row["created_at"])
@@ -3596,9 +3654,58 @@ def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
         }
         details_by_owner.setdefault(person_key, []).append(detail)
 
+    if not include_hidden:
+        # Apply hidden-rule filtering to details before computing totals exposed to API.
+        def _filter_codes(codes: List[str]) -> List[str]:
+            return [c for c in codes if c not in QC_HIDDEN_RULE_CODES]
+
+        # Filter per-item codes and recompute issueCount; also strip hidden rule descriptions.
+        for owner_key, items in details_by_owner.items():
+            for item in items:
+                visible_codes = _filter_codes(item.get("issueCodes", []))
+                item["issueCodes"] = visible_codes
+                item["issueDescriptions"] = [
+                    desc for desc in item.get("issueDescriptions", []) if desc.split(":", 1)[0] in visible_codes
+                ]
+                item["issueCount"] = len(visible_codes)
+
+        # Filter rule list for exposure.
+        exposed_rules = [(code, label) for code, label in QC_RULES if code not in QC_HIDDEN_RULE_CODES]
+
+        # Recompute people totals excluding hidden codes.
+        filtered_people_rows: List[Dict[str, Any]] = []
+        for person in people_summary.values():
+            filtered_by_rule = {
+                code: cnt for code, cnt in person["byRule"].items() if code not in QC_HIDDEN_RULE_CODES
+            }
+            total_issues = sum(cnt for code, cnt in filtered_by_rule.items() if code not in QC_EXCLUDE_FROM_TOTAL_ISSUES)
+            filtered_people_rows.append(
+                {
+                    **person,
+                    "byRule": filtered_by_rule,
+                    "totalIssues": total_issues,
+                }
+            )
+
+        filtered_people_rows.sort(key=lambda r: (-r["totalIssues"], -r["dealCount"], r["ownerName"]))
+
+        return {
+            "meta": {
+                "as_of": date.today().isoformat(),
+                "since": QC_SINCE_DATE.isoformat(),
+                "db_mtime": db_path.stat().st_mtime,
+                "team": team,
+                "schema_missing": schema_missing,
+                "dq": meta_dq,
+            },
+            "rules": [{"code": code, "label": label} for code, label in exposed_rules],
+            "people": filtered_people_rows,
+            "details_by_owner": details_by_owner,
+        }
+
+    # include_hidden=True: return raw (no filtering)
     people_rows = list(people_summary.values())
     people_rows.sort(key=lambda r: (-r["totalIssues"], -r["dealCount"], r["ownerName"]))
-
     return {
         "meta": {
             "as_of": date.today().isoformat(),
@@ -3615,14 +3722,14 @@ def _qc_compute(team: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
 
 
 def get_qc_deal_errors_summary(team: str = "all", db_path: Path = DB_PATH) -> Dict[str, Any]:
-    result = _qc_compute(team, db_path=db_path)
+    result = _qc_compute(team, db_path=db_path, include_hidden=False)
     # drop details for summary payload
     result.pop("details_by_owner", None)
     return result
 
 
 def get_qc_deal_errors_for_owner(team: str, owner: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
-    result = _qc_compute(team, db_path=db_path)
+    result = _qc_compute(team, db_path=db_path, include_hidden=False)
     owner_norm = normalize_owner_name(owner)
     details = result.pop("details_by_owner", {})
     return {
@@ -4211,6 +4318,65 @@ def _detect_course_id_column(conn: sqlite3.Connection) -> Optional[str]:
             return name
     return None
 
+
+def _compute_existing_org_ids_for_2025(db_path: Path) -> Set[str]:
+    """
+    Identify orgs with 2025 Won deals that have course_id + start/end date + amount + contract_date in 2025.
+    Org id is COALESCE(deal.organizationId, people.organizationId).
+    """
+    if not db_path.exists():
+        return set()
+    with _connect(db_path) as conn:
+        course_id_col = _detect_course_id_column(conn)
+        if not course_id_col:
+            return set()
+        start_col = _pick_column(conn, "deal", ["수강시작일", "수강 시작일", "start_date", "startDate"])
+        end_col = _pick_column(conn, "deal", ["수강종료일", "수강 종료일", "end_date", "endDate"])
+        contract_col = _pick_column(conn, "deal", ["계약 체결일", "contract_date", "contractDate"])
+        amount_col = _pick_column(conn, "deal", ["금액", "amount"])
+        if not start_col or not end_col or not contract_col or not amount_col:
+            return set()
+        rows = _fetch_all(
+            conn,
+            f"""
+            SELECT
+              d."상태" AS status_raw,
+              d."{course_id_col}" AS course_id,
+              d."{start_col}" AS start_date,
+              d."{end_col}" AS end_date,
+              d."{contract_col}" AS contract_date,
+              d."{amount_col}" AS amount,
+              COALESCE(NULLIF(TRIM(d.organizationId), ''), NULLIF(TRIM(p.organizationId), '')) AS org_id
+            FROM deal d
+            LEFT JOIN people p ON p.id = d.peopleId
+            WHERE d."상태" = 'Won'
+            """,
+        )
+    rows = _rows_to_dicts(rows)
+    existing: Set[str] = set()
+    for row in rows:
+        status_norm = _status_norm(row.get("status_raw"))
+        if status_norm != "won":
+            continue
+        org_id = (row.get("org_id") or "").strip()
+        if not org_id:
+            continue
+        course_id = (row.get("course_id") or "").strip()
+        if not course_id:
+            continue
+        amt = _to_number(row.get("amount"))
+        if amt is None or amt <= 0:
+            continue
+        start_dt = _parse_kst_date_best_effort(row.get("start_date"))
+        end_dt = _parse_kst_date_best_effort(row.get("end_date"))
+        contract_dt = _parse_kst_date_best_effort(row.get("contract_date"))
+        if not (start_dt and end_dt and contract_dt):
+            continue
+        if contract_dt.year != 2025:
+            continue
+        existing.add(org_id)
+    return existing
+
 def _load_perf_monthly_data(db_path: Path) -> Dict[str, Any]:
     """
     Load deals with fields required for monthly performance aggregation.
@@ -4616,6 +4782,446 @@ def _load_perf_monthly_inquiries_data(db_path: Path, debug: bool = False) -> Dic
     collector.emit(logging.getLogger(__name__), {"endpoint": "perf/monthly-inquiries(load)", "created_col": created_col})
     return payload
 
+ 
+ 
+def _load_perf_monthly_close_rate_data(db_path: Path = DB_PATH) -> Dict[str, Any]:
+    """
+    Load deals for close-rate aggregation (확정/높음/낮음/LOST) per month/size/course group.
+    """
+    if not db_path.exists():
+        raise FileNotFoundError(f"Database not found at {db_path}")
+
+    stat = db_path.stat()
+    cache_key = (db_path, stat.st_mtime)
+    cached = _PERF_MONTHLY_CLOSE_RATE_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    collector = ShadowDiffCollector(enabled=_is_shadow_mode())
+    excluded = {
+        "status_convert": 0,
+        "missing_created_at": 0,
+        "created_at_parse_fail": 0,
+        "online_not_first": 0,
+        "other_course_format": 0,
+        "offline_not_genai": 0,
+    }
+
+    with _connect(db_path) as conn:
+        created_col = _pick_column(conn, "deal", ["생성 날짜", "생성일", "createdAt", "created_at", "created_at_utc"])
+        if not created_col:
+            raise ValueError("deal 생성 날짜 컬럼을 찾을 수 없습니다.")
+        category_col = _pick_column(conn, "deal", ["과정 대분류", "category1"])
+        course_id_col = _detect_course_id_column(conn)
+        online_first_col = _pick_column(
+            conn,
+            "deal",
+            [
+                "(온라인)최초 입과 여부",
+                "온라인최초 입과 여부",
+                "온라인 최초 입과 여부",
+                "online_first",
+                "online_first_enrollment",
+                "online_first_enroll",
+            ],
+        )
+
+        course_id_select = f'd."{course_id_col}" AS course_id' if course_id_col else "NULL AS course_id"
+        online_first_select = f'd."{online_first_col}" AS online_first' if online_first_col else "NULL AS online_first"
+        category_select = f'd."{category_col}" AS category_raw' if category_col else "NULL AS category_raw"
+
+        year_clause, year_params = sql_years_clause(f'd."{created_col}"', ["2025", "2026"], mode="strict")
+
+        rows = _fetch_all(
+            conn,
+            f"""
+            SELECT
+              d.id AS deal_id,
+              d."이름" AS deal_name,
+              NULLIF(TRIM(d.organizationId), '') AS deal_org_id,
+              NULLIF(TRIM(p.organizationId), '') AS people_org_id,
+              COALESCE(NULLIF(TRIM(d.organizationId), ''), NULLIF(TRIM(p.organizationId), '')) AS org_id,
+              COALESCE(o."이름", COALESCE(NULLIF(TRIM(d.organizationId), ''), NULLIF(TRIM(p.organizationId), ''))) AS org_name,
+              o."기업 규모" AS size_raw,
+              d."과정포맷" AS course_format_raw,
+              {category_select},
+              d."상태" AS status,
+              d."성사 가능성" AS probability,
+              d."예상 체결액" AS expected_amount,
+              d."금액" AS amount,
+              d."수주 예정일" AS expected_close_date,
+              d."계약 체결일" AS contract_date,
+              d."수강시작일" AS start_date,
+              d."수강종료일" AS end_date,
+              d."담당자" AS owner_json,
+              p."소속 상위 조직" AS upper_org,
+              p."팀(명함/메일서명)" AS team_signature,
+              p."이름" AS person_name,
+              d."{created_col}" AS created_at,
+              {online_first_select},
+              {course_id_select}
+            FROM deal d
+            LEFT JOIN people p ON p.id = d.peopleId
+            LEFT JOIN organization o ON o.id = COALESCE(NULLIF(TRIM(d.organizationId), ''), NULLIF(TRIM(p.organizationId), ''))
+            WHERE {year_clause}
+            """,
+            year_params,
+        )
+        rows = [dict(r) for r in rows]
+
+    data_rows: List[Dict[str, Any]] = []
+    raw_formats: Set[str] = set()
+    raw_categories: Set[str] = set()
+
+    for row in rows:
+        month_key = _month_key_from_text(row.get("created_at"))
+        if not month_key:
+            excluded["missing_created_at"] += 1
+            continue
+        if collector.enabled:
+            strict_key = date_kst.kst_yymm(row["created_at"])
+            collector.add("month_key", row["created_at"], month_key, strict_key, deal_id=row.get("deal_id"))
+        status_norm = _status_norm(row.get("status"))
+        if status_norm == "convert":
+            excluded["status_convert"] += 1
+            continue
+
+        course_format_norm = _normalize_course_format(row.get("course_format_raw"))
+        raw_formats.add((row.get("course_format_raw") or "").strip())
+        raw_categories.add((row.get("category_raw") or "").strip())
+        if course_format_norm in CLOSE_RATE_ONLINE_COURSE_FORMATS:
+            course_group = course_format_norm
+        elif course_format_norm in CLOSE_RATE_OFFLINE_FORMATS:
+            course_group = "오프라인"
+        else:
+            excluded["other_course_format"] += 1
+            continue
+
+        category_group = _map_inquiry_category_group(row.get("category_raw"))
+        if course_group == "오프라인" and category_group != "생성형AI":
+            excluded["offline_not_genai"] += 1
+            continue
+
+        is_online_fmt = course_format_norm in CLOSE_RATE_ONLINE_COURSE_FORMATS
+        if is_online_fmt and online_first_col and _is_false_like(row.get("online_first")):
+            excluded["online_not_first"] += 1
+            continue
+
+        size_group = _normalize_inquiry_size(row.get("org_name"), row.get("size_raw")) or "미기재"
+
+        prob_bucket = "low"
+        if status_norm == "lost":
+            prob_bucket = "lost"
+        elif _prob_equals(row.get("probability"), "확정"):
+            prob_bucket = "confirmed"
+        elif _prob_equals(row.get("probability"), "높음"):
+            prob_bucket = "high"
+        elif _prob_equals(row.get("probability"), "LOST"):
+            prob_bucket = "lost"
+
+        data_rows.append(
+            {
+                "deal_id": row.get("deal_id"),
+                "deal_name": row.get("deal_name"),
+                "org_id": row.get("org_id"),
+                "org_name": row.get("org_name"),
+                "size_group": size_group,
+                "course_group": course_group,
+                "category_group": category_group,
+                "month": month_key,
+                "prob_bucket": prob_bucket,
+                "owner_names": _parse_owner_names(row.get("owner_json")),
+                "course_format": course_format_norm,
+                "probability": row.get("probability"),
+                "status": row.get("status"),
+                "expected_close_date": row.get("expected_close_date"),
+                "expected_amount": _to_number(row.get("expected_amount")),
+                "start_date": row.get("start_date"),
+                "end_date": row.get("end_date"),
+                "course_id": row.get("course_id"),
+                "contract_date": row.get("contract_date"),
+                "amount": _to_number(row.get("amount")),
+                "upper_org": row.get("upper_org"),
+                "team_signature": row.get("team_signature"),
+                "person_name": row.get("person_name"),
+            }
+        )
+
+    payload = {
+        "rows": data_rows,
+        "existing_org_ids": _compute_existing_org_ids_for_2025(db_path),
+        "snapshot_version": f"db_mtime:{int(stat.st_mtime)}",
+        "meta_debug": {
+            "total_loaded": len(rows),
+            "excluded_convert": excluded["status_convert"],
+            "excluded_missing_created_at": excluded["missing_created_at"],
+            "excluded_created_at_parse_fail": excluded["created_at_parse_fail"],
+            "excluded_online_not_first": excluded["online_not_first"],
+            "excluded_other_course_format": excluded["other_course_format"],
+            "excluded_offline_not_genai": excluded["offline_not_genai"],
+            "raw_formats_sample": list(itertools.islice(raw_formats, 20)),
+            "raw_categories_sample": list(itertools.islice(raw_categories, 20)),
+        },
+    }
+    _PERF_MONTHLY_CLOSE_RATE_CACHE[cache_key] = payload
+    return payload
+
+
+def get_perf_monthly_close_rate_summary(
+    from_month: str = "2025-01",
+    to_month: str = "2026-12",
+    cust: str = "all",
+    scope: str = "all",
+    db_path: Path = DB_PATH,
+) -> Dict[str, Any]:
+    if cust not in {"all", "new", "existing"}:
+        raise ValueError(f"Unknown cust: {cust}")
+    # scope 검증은 helper 내부에서 ValueError 발생
+    allowed_members = _perf_close_rate_scope_members(scope)
+
+    months = _month_range_keys(from_month, to_month)
+    if not months:
+        raise ValueError("from/to month range is empty")
+    month_set = set(months)
+
+    payload = _load_perf_monthly_close_rate_data(db_path)
+    stat = db_path.stat()
+    cache_key = (db_path, stat.st_mtime, from_month, to_month, cust, scope)
+    cached = _PERF_MONTHLY_CLOSE_RATE_SUMMARY_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    existing_org_ids = payload.get("existing_org_ids") or set()
+
+    def zero_map():
+        return {m: 0 for m in months}
+
+    total_counts: Dict[Tuple[str, str], Dict[str, int]] = {}
+    metric_counts: Dict[Tuple[str, str, str], Dict[str, float]] = {}
+    for size in INQUIRY_SIZE_GROUPS:
+        for course in CLOSE_RATE_COURSE_GROUPS:
+            total_counts[(size, course)] = zero_map()
+            for metric in CLOSE_RATE_METRICS:
+                metric_counts[(size, course, metric)] = zero_map()
+
+    summary_debug = {
+        "excluded_out_of_range": 0,
+        "excluded_scope_mismatch": 0,
+        "excluded_customer_type_mismatch": 0,
+    }
+    included = 0
+
+    for row in payload["rows"]:
+        month_key = row.get("month")
+        if month_key not in month_set:
+            summary_debug["excluded_out_of_range"] += 1
+            continue
+        size = row.get("size_group")
+        course_group = row.get("course_group")
+        if size not in INQUIRY_SIZE_GROUPS or course_group not in CLOSE_RATE_COURSE_GROUPS:
+            continue
+        if allowed_members is not None and not _owners_match_team(row.get("owner_names"), allowed_members):
+            summary_debug["excluded_scope_mismatch"] += 1
+            continue
+
+        org_id = (row.get("org_id") or "").strip()
+        if cust == "existing" and org_id not in existing_org_ids:
+            summary_debug["excluded_customer_type_mismatch"] += 1
+            continue
+        if cust == "new" and org_id in existing_org_ids:
+            summary_debug["excluded_customer_type_mismatch"] += 1
+            continue
+
+        included += 1
+        total_counts[(size, course_group)][month_key] += 1
+        bucket = row.get("prob_bucket")
+        if bucket in {"confirmed", "high", "low", "lost"}:
+            metric_counts[(size, course_group, bucket)][month_key] += 1
+        # total is mirrored from total_counts later (SSOT)
+        metric_counts[(size, course_group, "total")][month_key] += 1
+
+    # mirror total into metric_counts for row generation
+    for size in INQUIRY_SIZE_GROUPS:
+        for course in CLOSE_RATE_COURSE_GROUPS:
+            metric_counts[(size, course, "total")] = total_counts[(size, course)]
+
+    # close_rate per month
+    for size in INQUIRY_SIZE_GROUPS:
+        for course in CLOSE_RATE_COURSE_GROUPS:
+            totals = total_counts[(size, course)]
+            conf = metric_counts[(size, course, "confirmed")]
+            high = metric_counts[(size, course, "high")]
+            rate_map = metric_counts[(size, course, "close_rate")]
+            for m in months:
+                denom = totals[m]
+                numer = conf[m] + high[m]
+                rate_map[m] = round((numer / denom) * 100, 1) if denom > 0 else 0.0
+
+    label_map = {
+        "total": "전체",
+        "confirmed": "확정",
+        "high": "높음",
+        "low": "낮음",
+        "lost": "LOST",
+        "close_rate": "체결률(%)",
+    }
+
+    rows_list: List[Dict[str, Any]] = []
+    for size in INQUIRY_SIZE_GROUPS:
+        for course in CLOSE_RATE_COURSE_GROUPS:
+            rows_list.append(
+                {
+                    "level": 1,
+                    "segment": size,
+                    "rowKey": course,
+                    "label": course,
+                    "countsByMonth": total_counts[(size, course)],
+                }
+            )
+            for metric in CLOSE_RATE_METRICS:
+                rows_list.append(
+                    {
+                        "level": 2,
+                        "segment": size,
+                        "parentKey": course,
+                        "rowKey": f"{course}||{metric}",
+                        "label": label_map.get(metric, metric),
+                        "countsByMonth": metric_counts[(size, course, metric)],
+                    }
+                )
+
+    meta_debug = {
+        **(payload.get("meta_debug") or {}),
+        **summary_debug,
+        "after_filters": included,
+    }
+
+    result = {
+        "months": months,
+        "rows": rows_list,
+        "meta": {
+            "snapshot_version": payload.get("snapshot_version"),
+            "from": from_month,
+            "to": to_month,
+            "cust": cust,
+            "scope": scope,
+            "meta_debug": meta_debug,
+        },
+    }
+    _PERF_MONTHLY_CLOSE_RATE_SUMMARY_CACHE[cache_key] = result
+    return result
+
+
+def get_perf_monthly_close_rate_deals(
+    segment: str,
+    row: str,
+    month: str,
+    cust: str = "all",
+    scope: str = "all",
+    db_path: Path = DB_PATH,
+) -> Dict[str, Any]:
+    if cust not in {"all", "new", "existing"}:
+        raise ValueError(f"Unknown cust: {cust}")
+    allowed_members = _perf_close_rate_scope_members(scope)
+    if segment not in INQUIRY_SIZE_GROUPS:
+        raise ValueError(f"Unknown segment(size group): {segment}")
+    if not month or len(month.strip()) != 4:
+        raise ValueError("month must be YYMM format, e.g., 2501")
+    if "||" not in row:
+        raise ValueError("row must be course_group||metric")
+    course_group, metric = row.split("||", 1)
+    if course_group not in CLOSE_RATE_COURSE_GROUPS:
+        raise ValueError(f"Unknown course_group: {course_group}")
+    if metric not in CLOSE_RATE_METRICS:
+        raise ValueError(f"Unknown metric: {metric}")
+
+    payload = _load_perf_monthly_close_rate_data(db_path)
+    month_key = month.strip()
+    existing_org_ids = payload.get("existing_org_ids") or set()
+
+    items: List[Dict[str, Any]] = []
+    numerator = 0
+    denominator = 0
+
+    for row_data in payload["rows"]:
+        if row_data.get("month") != month_key:
+            continue
+        if row_data.get("size_group") != segment:
+            continue
+        if row_data.get("course_group") != course_group:
+            continue
+        if allowed_members is not None and not _owners_match_team(row_data.get("owner_names"), allowed_members):
+            continue
+        org_id = (row_data.get("org_id") or "").strip()
+        if cust == "existing" and org_id not in existing_org_ids:
+            continue
+        if cust == "new" and org_id in existing_org_ids:
+            continue
+
+        denominator += 1
+        if row_data.get("prob_bucket") in {"confirmed", "high"}:
+            numerator += 1
+
+        if metric != "close_rate" and row_data.get("prob_bucket") != metric:
+            continue
+
+        items.append(
+            {
+                "orgName": row_data.get("org_name"),
+                "upperOrg": row_data.get("upper_org"),
+                "teamSignature": row_data.get("team_signature"),
+                "customerPersonName": row_data.get("person_name"),
+                "dealId": row_data.get("deal_id"),
+                "dealName": row_data.get("deal_name"),
+                "courseFormat": row_data.get("course_format"),
+                "categoryGroup": row_data.get("category_group"),
+                "day1OwnerNames": row_data.get("owner_names"),
+                "status": row_data.get("status"),
+                "probability": row_data.get("probability"),
+                "expectedCloseDate": row_data.get("expected_close_date"),
+                "expectedAmount": row_data.get("expected_amount"),
+                "startDate": row_data.get("start_date"),
+                "endDate": row_data.get("end_date"),
+                "courseId": row_data.get("course_id"),
+                "contractDate": row_data.get("contract_date"),
+                "amount": row_data.get("amount"),
+            }
+        )
+
+    meta = {
+        "snapshot_version": payload.get("snapshot_version"),
+        "cust": cust,
+        "scope": scope,
+    }
+    if metric == "close_rate":
+        meta.update(
+            {
+                "numeratorCount": numerator,
+                "denominatorCount": denominator,
+                "totalCount": denominator,
+                "close_rate": round((numerator / denominator) * 100, 1) if denominator > 0 else 0.0,
+            }
+        )
+
+    return {
+        "segment": {"key": segment, "label": segment},
+        "row": {"key": row, "label": row},
+        "month": month_key,
+        "dealCount": len(items),
+        "items": items,
+        "meta": {
+            **meta,
+            "filters": {
+                "segment": segment,
+                "course_group": course_group,
+                "metric": metric,
+                "month": month_key,
+                "cust": cust,
+                "scope": scope,
+            },
+            "dedupedDealsCount": len(items),
+        },
+    }
 
 
 def _perf_segments() -> List[Dict[str, Any]]:

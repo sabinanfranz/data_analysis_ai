@@ -45,7 +45,7 @@ sync_source:
 - 딜체크/QC:
   - `GET /api/deal-check?team=edu1|edu2` → `상태='SQL'` 딜 중 팀 구성원 포함 건만, orgWon2025Total desc→createdAt asc→dealId asc, memoCount join. isRetention은 2025 Won 금액 파싱 성공 여부.
   - `GET /api/deal-check/edu1|edu2` → 위 래퍼.
-  - `GET /api/qc/deal-errors/summary?team=all|edu1|edu2|public` → QC_RULES(R1~R16) 위배 수 집계. `GET /api/qc/deal-errors/person?owner=...&team=...` → 담당자별 위배 리스트. R13(“고객사 담당자 정보 결측”)은 상태가 convert가 아니고 규모가 대기업/중견기업인 딜에서 상위조직/팀/직급/교육영역 결측을 검사(나머지 조건/예외 동일). R16은 2025-01-01 이후 생성·비온라인·카테고리=생성형AI·규모=대기업·상태=Won인 딜에서 제안서 작성/업로드 여부를 검사(작성 공백 또는 작성≠X인데 업로드 공백이면 위배).
+- `GET /api/qc/deal-errors/summary?team=all|edu1|edu2|public` → QC_RULES(R1~R16) 위배 수 집계. `GET /api/qc/deal-errors/person?owner=...&team=...` → 담당자별 위배 리스트. R13(“고객사 담당자 정보 결측”)은 **규모 대기업/중견 + 상태 won 또는 sql**인 딜에서 상위조직/팀/직급/교육영역 결측을 검사(월 패턴 + 담당자 김정은/이은서 예외는 유지). R16은 2025-01-01 이후 생성·비온라인·카테고리=생성형AI·규모=대기업·상태=Won인 딜에서 제안서 작성/업로드 여부를 검사(작성 공백 또는 작성≠X인데 업로드 공백이면 위배). R17은 내부 숨김 규칙으로 집계/표시에 포함되지 않는다.
 - 카운터파티 리스크:
 - `GET /api/report/counterparty-risk?date=YYYY-MM-DD` → 캐시 없으면 `report_scheduler.run_daily_counterparty_risk_job` 실행 후 반환. summary(`tier_groups`, `counts`), `counterparties[]`(`target_2026/coverage_2026/expected_2026/gap/coverage_ratio/pipeline_zero/tier/evidence_bullets/recommended_actions`)와 `meta.db_version`/`data_quality`를 포함한다. `POST /api/report/counterparty-risk/recompute`는 강제 재계산, `GET /api/report/counterparty-risk/status`는 status.json 반환.
 ### (흡수) 엔드포인트 동작/정렬/필드 스키마 상세

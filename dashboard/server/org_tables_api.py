@@ -342,6 +342,37 @@ def get_performance_monthly_inquiries_deals(
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/performance/monthly-close-rate/summary")
+def get_performance_monthly_close_rate_summary(
+    from_month: str = Query("2025-01", alias="from", description="시작 YYYY-MM"),
+    to_month: str = Query("2026-12", alias="to", description="종료 YYYY-MM"),
+    cust: str = Query("all", description="all|new|existing"),
+    scope: str = Query("all", description="all|corp_group|edu1|edu2|edu1_p1|edu1_p2|edu2_p1|edu2_p2|edu2_online"),
+) -> dict:
+    try:
+        return db.get_perf_monthly_close_rate_summary(from_month=from_month, to_month=to_month, cust=cust, scope=scope)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/performance/monthly-close-rate/deals")
+def get_performance_monthly_close_rate_deals(
+    segment: str = Query(..., description="세그먼트 키 (기업 규모)"),
+    row: str = Query(..., description="course_group||metric"),
+    month: str = Query(..., description="YYMM (예: 2501)"),
+    cust: str = Query("all", description="all|new|existing"),
+    scope: str = Query("all", description="all|corp_group|edu1|edu2|edu1_p1|edu1_p2|edu2_p1|edu2_p2|edu2_online"),
+) -> dict:
+    try:
+        return db.get_perf_monthly_close_rate_deals(segment=segment, row=row, month=month, cust=cust, scope=scope)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/performance/pl-progress-2026/summary")
 def get_pl_progress_summary(year: int = Query(2026, description="연도 (기본 2026)")) -> dict:
     try:

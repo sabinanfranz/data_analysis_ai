@@ -1,0 +1,1 @@
+Console log not captured: local browser session not available in this environment. Menu previously threw `INQUIRY_SIZE_GROUPS is not defined` before fix.

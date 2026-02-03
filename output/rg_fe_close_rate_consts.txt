@@ -1,0 +1,7 @@
+2313:    const CLOSE_RATE_COURSE_GROUPS = ["구독제(온라인)", "선택구매(온라인)", "포팅", "오프라인"];
+2314:    const CLOSE_RATE_METRICS = ["total", "confirmed", "high", "low", "lost", "close_rate"];
+2315:    const CLOSE_RATE_METRIC_LABEL = {
+10246:      CLOSE_RATE_COURSE_GROUPS.forEach((c) => {
+10249:        CLOSE_RATE_METRICS.forEach((m) => {
+10291:      const parentRows = CLOSE_RATE_COURSE_GROUPS.map((course) => {
+10304:            const label = CLOSE_RATE_METRIC_LABEL[metric] || metric;

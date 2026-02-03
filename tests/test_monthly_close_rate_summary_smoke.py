@@ -1,5 +1,11 @@
+import sys
 import unittest
+from types import SimpleNamespace
 from unittest.mock import patch
+
+# Stub openpyxl to avoid heavy dependency when importing dashboard.server modules
+sys.modules.setdefault("openpyxl", SimpleNamespace())
+sys.modules.setdefault("openpyxl.styles", SimpleNamespace(Font=lambda *a, **k: None, Alignment=lambda *a, **k: None))
 
 from dashboard.server import database as db
 

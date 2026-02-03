@@ -1,0 +1,11 @@
+167:CLOSE_RATE_COURSE_GROUPS = ["구독제(온라인)", "선택구매(온라인)", "포팅", "오프라인"]
+168:CLOSE_RATE_METRICS = ["total", "confirmed", "high", "low", "lost", "close_rate"]
+5021:        for course in CLOSE_RATE_COURSE_GROUPS:
+5023:            for metric in CLOSE_RATE_METRICS:
+5040:        if size not in INQUIRY_SIZE_GROUPS or course_group not in CLOSE_RATE_COURSE_GROUPS:
+5064:        for course in CLOSE_RATE_COURSE_GROUPS:
+5069:        for course in CLOSE_RATE_COURSE_GROUPS:
+5090:        for course in CLOSE_RATE_COURSE_GROUPS:
+5100:            for metric in CLOSE_RATE_METRICS:
+5152:    if course_group not in CLOSE_RATE_COURSE_GROUPS:
+5154:    if metric not in CLOSE_RATE_METRICS:

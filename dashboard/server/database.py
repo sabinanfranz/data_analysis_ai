@@ -5,7 +5,7 @@ import logging
 import os
 import re
 import sqlite3
-from collections import Counter
+from collections import Counter, defaultdict
 from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
@@ -2846,7 +2846,11 @@ def get_rank_2025_deals_people(size: str = "대기업", db_path: Path = DB_PATH)
     return result
 
 
-def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
+def get_won_groups_json(
+    org_id: str,
+    target_uppers: Optional[List[str]] = None,
+    db_path: Path = DB_PATH,
+) -> Dict[str, Any]:
     """
     Build grouped JSON by upper_org -> team for organizations that have Won deals in 2023/2024/2025.
     Each group includes all deals (any status) for people in that upper_org/team, attached people info,
@@ -3006,10 +3010,20 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
             # Skip low-value form memos
             continue
         if cleaned is None:
-            entry = {"date": date_only, "text": memo["text"], "htmlBody": html_body}
+            entry = {
+                "date": date_only,
+                "text": memo["text"],
+                "htmlBody": html_body,
+                "created_at_ts": memo.get("createdAt"),
+            }
         else:
             # Replace text with structured cleanText
-            entry = {"date": date_only, "cleanText": cleaned, "htmlBody": html_body}
+            entry = {
+                "date": date_only,
+                "cleanText": cleaned,
+                "htmlBody": html_body,
+                "created_at_ts": memo.get("createdAt"),
+            }
         deal_id = memo["dealId"]
         person_id = memo["peopleId"]
         org_only = memo["organizationId"]
@@ -3021,7 +3035,7 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
             org_memos.append(entry)
 
     # Determine target upper_org set (Won in 2023/2024/2025)
-    target_uppers: set[str] = set()
+    target_uppers_set: set[str] = set()
     for row in deal_rows:
         status = row["status"]
         if status != "Won":
@@ -3032,9 +3046,14 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
         pid = row["peopleId"]
         person = people_map.get(pid)
         upper = person["upper_org"] if person else "미입력"
-        target_uppers.add(upper)
+        target_uppers_set.add(upper)
 
-    if not target_uppers:
+    # Apply caller-specified filter if provided
+    if target_uppers is not None:
+        requested = {_normalize_upper(u) for u in (target_uppers or []) if u}
+        target_uppers_set = target_uppers_set & requested
+
+    if not target_uppers_set:
         return {"organization": {**org_meta, "memos": org_memos}, "groups": []}
 
     groups: Dict[tuple[str, str], Dict[str, Any]] = {}
@@ -3047,7 +3066,7 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
 
     # Populate people per group (only those belonging to target uppers)
     for person in people_map.values():
-        if person["upper_org"] not in target_uppers:
+        if person["upper_org"] not in target_uppers_set:
             continue
         group = _ensure_group(person["upper_org"], person["team"])
         group["people"].append(
@@ -3067,7 +3086,7 @@ def get_won_groups_json(org_id: str, db_path: Path = DB_PATH) -> Dict[str, Any]:
     for row in deal_rows:
         pid = row["peopleId"]
         person = people_map.get(pid)
-        if not person or person["upper_org"] not in target_uppers:
+        if not person or person["upper_org"] not in target_uppers_set:
             continue
         group = _ensure_group(person["upper_org"], person["team"])
         owner = _safe_json_load(row["owner_json"])
@@ -4983,6 +5002,7 @@ def get_perf_monthly_close_rate_summary(
     if not months:
         raise ValueError("from/to month range is empty")
     month_set = set(months)
+    zero_map = lambda: {m: 0 for m in months}  # noqa: E731
 
     payload = _load_perf_monthly_close_rate_data(db_path)
     stat = db_path.stat()
@@ -4993,16 +5013,13 @@ def get_perf_monthly_close_rate_summary(
 
     existing_org_ids = payload.get("existing_org_ids") or set()
 
-    def zero_map():
-        return {m: 0 for m in months}
-
-    total_counts: Dict[Tuple[str, str], Dict[str, int]] = {}
-    metric_counts: Dict[Tuple[str, str, str], Dict[str, float]] = {}
+    total_counts: Dict[Tuple[str, str], Dict[str, int]] = defaultdict(zero_map)
+    metric_counts: Dict[Tuple[str, str, str], Dict[str, float]] = defaultdict(zero_map)
     for size in INQUIRY_SIZE_GROUPS:
         for course in CLOSE_RATE_COURSE_GROUPS:
-            total_counts[(size, course)] = zero_map()
+            _ = total_counts[(size, course)]
             for metric in CLOSE_RATE_METRICS:
-                metric_counts[(size, course, metric)] = zero_map()
+                _ = metric_counts[(size, course, metric)]
 
     summary_debug = {
         "excluded_out_of_range": 0,
@@ -5037,8 +5054,6 @@ def get_perf_monthly_close_rate_summary(
         bucket = row.get("prob_bucket")
         if bucket in {"confirmed", "high", "low", "lost"}:
             metric_counts[(size, course_group, bucket)][month_key] += 1
-        # total is mirrored from total_counts later (SSOT)
-        metric_counts[(size, course_group, "total")][month_key] += 1
 
     # mirror total into metric_counts for row generation
     for size in INQUIRY_SIZE_GROUPS:

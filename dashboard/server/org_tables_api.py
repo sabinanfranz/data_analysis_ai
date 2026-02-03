@@ -1,14 +1,16 @@
 from fastapi import APIRouter, HTTPException, Query
-from fastapi.responses import Response
+from fastapi.responses import PlainTextResponse, Response
 from io import BytesIO
 from urllib.parse import quote
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment
 from datetime import datetime
 import json
+from typing import Any
 
 from . import database as db
 from .json_compact import compact_won_groups_json
+from .markdown_compact import won_groups_compact_to_markdown
 from .statepath_engine import build_statepath
 from .report_scheduler import run_daily_counterparty_risk_job, get_cached_report, _load_status
 from .llm_target_attainment import (
@@ -360,12 +362,18 @@ def get_performance_monthly_close_rate_summary(
 @router.get("/performance/monthly-close-rate/deals")
 def get_performance_monthly_close_rate_deals(
     segment: str = Query(..., description="세그먼트 키 (기업 규모)"),
-    row: str = Query(..., description="course_group||metric"),
+    row: str | None = Query(None, description="course_group||metric"),
     month: str = Query(..., description="YYMM (예: 2501)"),
     cust: str = Query("all", description="all|new|existing"),
     scope: str = Query("all", description="all|corp_group|edu1|edu2|edu1_p1|edu1_p2|edu2_p1|edu2_p2|edu2_online"),
+    course: str | None = Query(None, description="course_group (row 미제공 시 fallback)"),
+    metric: str | None = Query(None, description="metric (row 미제공 시 fallback)"),
 ) -> dict:
     try:
+        if not row and course and metric:
+            row = f"{course}||{metric}"
+        if not row:
+            raise HTTPException(status_code=400, detail="row or course+metric is required")
         return db.get_perf_monthly_close_rate_deals(segment=segment, row=row, month=month, cust=cust, scope=scope)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
@@ -597,6 +605,43 @@ def get_won_groups_json_compact(org_id: str) -> dict:
         raw = db.get_won_groups_json(org_id=org_id)
         return compact_won_groups_json(raw)
     except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@router.get("/orgs/{org_id}/won-groups-markdown-compact")
+def get_won_groups_markdown_compact(
+    org_id: str,
+    upper_org: str | None = Query(None, description="상위 조직 필터"),
+    max_deals: int = Query(200, ge=1, le=500),
+    max_people: int = Query(60, ge=1, le=500),
+    deal_memo_limit: int = Query(10, ge=1, le=50),
+    memo_max_chars: int = Query(240, ge=50, le=500),
+    redact_phone: bool = Query(True),
+    max_output_chars: int = Query(200_000, ge=10_000, le=1_000_000),
+    format: str = Query("text", regex="^(text|json)$"),
+) -> Any:
+    try:
+        uppers = [upper_org] if upper_org else None
+        raw = db.get_won_groups_json(org_id=org_id, target_uppers=uppers)
+        compact = compact_won_groups_json(raw)
+        md = won_groups_compact_to_markdown(
+            compact,
+            scope_label="UPPER_SELECTED" if upper_org else "ORG_ALL",
+            max_people=max_people,
+            max_deals=max_deals,
+            deal_memo_limit=deal_memo_limit,
+            memo_max_chars=memo_max_chars,
+            redact_phone=redact_phone,
+            max_output_chars=max_output_chars,
+        )
+        if format == "json":
+            return {"schema_version": "won-groups-json/compact-md-v1.1", "markdown": md}
+        return PlainTextResponse(md, media_type="text/plain; charset=utf-8")
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 
 

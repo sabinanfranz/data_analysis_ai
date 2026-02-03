@@ -21,6 +21,7 @@ sync_source:
   - 조직 메모(memo.organizationId only)는 organization.memos 배열에 추가.
   - People/Deal 메모는 각 엔티티의 memos 배열에 추가, `cleanText==""`는 제외.
   - memo에 `htmlBody`가 있을 수 있으며, won-groups-json에서는 그대로 포함되지만 compact에서는 제거된다(아래 참조).
+  - memo 정렬/표시를 위해 `created_at_ts` 필드가 추가로 포함될 수 있으며, 원본 `createdAt` 타임스탬프 문자열을 그대로 담는다.
 - 웹폼 정제:
   - People.`"제출된 웹폼 목록"`을 `_safe_json_load` 후 `{id,name}` 배열로 변환.
   - webform_history 테이블에서 (peopleId, webFormId)별 제출 날짜를 조회해 `date`에 단일/리스트를 채우고, 없으면 `"날짜 확인 불가"`.
@@ -30,6 +31,7 @@ sync_source:
   - people가 deal.people_id 참조만 남고 누락된 인물은 stub로 people 배열에 추가된다.
 - 프런트 렌더:
   - 메모 상세/딜체크 모달은 `htmlBody`가 있으면 sanitizer(화이트리스트)로 안전하게 렌더하고, 없으면 text를 `pre-wrap`으로 표시한다. sanitizer는 DIV/Table/thead/tbody/tr/th/td/caption까지 허용해 블록/표 구조를 유지하고, 링크는 href 검증 + `_blank`/`noopener`를 강제한다.
+  - Compact Markdown(v1.1) 렌더러(서버/프런트 공통)는 deal.memos를 `created_at_ts`(없으면 `date`) 내림차순으로 정렬해 최신 10개를 노출하며, 전화번호는 `[phone]`으로 마스킹하고 200~300자(기본 240자)로 truncate한다.
 ### (흡수) Won JSON/Compact 생성 세부 규칙
 - 백엔드 원본 JSON(`get_won_groups_json`): 입력 org가 없으면 `{"organization": null, "groups": []}`. target_uppers는 2023/2024/2025 Won 딜이 있는 upper_org만 포함하며 People/Deal은 `(upper_org, team)`별로 묶어 upper_org asc → team asc 정렬한다. organization 블록에 `industry_major/industry_mid`와 organizationId만 가진 memos를 포함한다.
 - People 필드는 `id/name/upper_org/team_signature→team/title_signature→title/edu_area/webforms/memos`를 모두 노출한다. webforms는 `_safe_json_load` 후 `{name,date}`로 변환하며 webform id는 절대 포함하지 않고, `webform_history`가 없거나 제출이 없으면 date=`"날짜 확인 불가"`, 동일 id 다중 제출은 날짜 리스트로 남긴다.

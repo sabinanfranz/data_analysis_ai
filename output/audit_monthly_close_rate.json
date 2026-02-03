@@ -1,0 +1,263 @@
+{
+  "timestamp": "2026-02-03T01:48:36.908120Z",
+  "files": {
+    "fe": "/mnt/c/Users/admin/Desktop/B2B/data_analysis_ai/org_tables_v2.html",
+    "be": "/mnt/c/Users/admin/Desktop/B2B/data_analysis_ai/dashboard/server/database.py",
+    "api": "/mnt/c/Users/admin/Desktop/B2B/data_analysis_ai/dashboard/server/org_tables_api.py"
+  },
+  "checks": [
+    {
+      "id": "FE_UNDEFINED_INQUIRY_SIZE_GROUPS",
+      "status": "PASS",
+      "evidence": [],
+      "details": {
+        "line": 2313
+      }
+    },
+    {
+      "id": "COURSE_GROUPS_MATCH",
+      "status": "PASS",
+      "fe": [
+        "구독제(온라인)",
+        "선택구매(온라인)",
+        "포팅",
+        "오프라인"
+      ],
+      "be": [
+        "구독제(온라인)",
+        "선택구매(온라인)",
+        "포팅",
+        "오프라인"
+      ],
+      "diff": {
+        "missing_in_fe": [],
+        "missing_in_be": []
+      },
+      "evidence": [
+        "FE line 2314",
+        "BE line 167"
+      ]
+    },
+    {
+      "id": "METRICS_MATCH",
+      "status": "PASS",
+      "fe": [
+        "total",
+        "confirmed",
+        "high",
+        "low",
+        "lost",
+        "close_rate"
+      ],
+      "be": [
+        "total",
+        "confirmed",
+        "high",
+        "low",
+        "lost",
+        "close_rate"
+      ],
+      "diff": {
+        "missing_in_fe": [],
+        "missing_in_be": []
+      },
+      "evidence": [
+        "FE line 2315",
+        "BE line 168"
+      ]
+    },
+    {
+      "id": "ROWKEY_PATTERN",
+      "status": "PASS",
+      "evidence": [
+        "FE uses `${course}||${metric}` pattern"
+      ],
+      "details": {
+        "be_parsing": "database.py expects course_group||metric (split('||'))"
+      }
+    },
+    {
+      "id": "SUMMARY_PARAMS_FE_BE_MATCH",
+      "status": "PASS",
+      "fe": [
+        "from",
+        "to",
+        "cust",
+        "scope"
+      ],
+      "be": [
+        "from_month",
+        "from",
+        "to_month",
+        "to",
+        "cust",
+        "scope"
+      ],
+      "diff": {
+        "missing_in_be": [],
+        "missing_in_fe": [
+          "from_month",
+          "to_month"
+        ]
+      },
+      "evidence": [
+        "FE params: ['from', 'to', 'cust', 'scope']",
+        "BE params: ['from_month', 'from', 'to_month', 'to', 'cust', 'scope']"
+      ]
+    },
+    {
+      "id": "DEALS_PARAMS_FE_BE_MATCH",
+      "status": "PASS",
+      "fe": [
+        "segment",
+        "row"
+      ],
+      "be": [
+        "segment",
+        "row",
+        "month",
+        "cust",
+        "scope",
+        "course",
+        "metric"
+      ],
+      "diff": {
+        "missing_in_be": [],
+        "missing_in_fe": [
+          "month",
+          "cust",
+          "scope",
+          "course",
+          "metric"
+        ]
+      },
+      "evidence": [
+        "FE params: ['segment', 'row']",
+        "BE params: ['segment', 'row', 'month', 'cust', 'scope', 'course', 'metric']"
+      ]
+    },
+    {
+      "id": "SCOPE_KEYS_MATCH",
+      "status": "PASS",
+      "evidence": [
+        "FE scope keys: ['all', 'corp_group', 'edu1', 'edu2', 'edu1_p1', 'edu1_p2', 'edu2_p1', 'edu2_p2', 'edu2_online']",
+        "BE scope keys: ['all', 'corp_group', 'edu1', 'edu2', 'edu1_p1', 'edu1_p2', 'edu2_p1', 'edu2_p2', 'edu2_online']"
+      ],
+      "details": {
+        "missing_in_fe": [],
+        "missing_in_be": []
+      }
+    },
+    {
+      "id": "SIZE_GROUPS_MATCH",
+      "status": "PASS",
+      "evidence": [
+        "FE size groups: ['대기업', '중견기업', '중소기업', '공공기관', '대학교', '기타', '미기재']",
+        "BE size groups: ['대기업', '중견기업', '중소기업', '공공기관', '대학교', '기타', '미기재']"
+      ]
+    },
+    {
+      "id": "API_ROUTES_PRESENT",
+      "status": "PASS",
+      "evidence": [
+        "summary params: ['from_month', 'from', 'to_month', 'to', 'cust', 'scope']",
+        "deals params: ['segment', 'row', 'month', 'cust', 'scope', 'course', 'metric']"
+      ]
+    },
+    {
+      "id": "MONTH_RANGE_FUNCTION_USED",
+      "status": "PASS",
+      "evidence": [
+        "_month_range_keys present in database.py"
+      ]
+    },
+    {
+      "id": "META_DEBUG_PRESENT",
+      "status": "PASS",
+      "evidence": [
+        "meta_debug string present in database.py summary payload"
+      ]
+    }
+  ],
+  "diffs": {
+    "course_groups_mismatch": {
+      "fe": [
+        "구독제(온라인)",
+        "선택구매(온라인)",
+        "포팅",
+        "오프라인"
+      ],
+      "be": [
+        "구독제(온라인)",
+        "선택구매(온라인)",
+        "포팅",
+        "오프라인"
+      ]
+    },
+    "metrics_mismatch": {
+      "fe": [
+        "total",
+        "confirmed",
+        "high",
+        "low",
+        "lost",
+        "close_rate"
+      ],
+      "be": [
+        "total",
+        "confirmed",
+        "high",
+        "low",
+        "lost",
+        "close_rate"
+      ]
+    },
+    "scope_mismatch": {
+      "fe": [
+        "all",
+        "corp_group",
+        "edu1",
+        "edu2",
+        "edu1_p1",
+        "edu1_p2",
+        "edu2_p1",
+        "edu2_p2",
+        "edu2_online"
+      ],
+      "be": [
+        "all",
+        "corp_group",
+        "edu1",
+        "edu2",
+        "edu1_p1",
+        "edu1_p2",
+        "edu2_p1",
+        "edu2_p2",
+        "edu2_online"
+      ]
+    },
+    "size_mismatch": {
+      "fe": [
+        "대기업",
+        "중견기업",
+        "중소기업",
+        "공공기관",
+        "대학교",
+        "기타",
+        "미기재"
+      ],
+      "be": [
+        "대기업",
+        "중견기업",
+        "중소기업",
+        "공공기관",
+        "대학교",
+        "기타",
+        "미기재"
+      ]
+    }
+  },
+  "next_actions": [
+    "All close-rate contract checks passed."
+  ]
+}

@@ -1,0 +1,58 @@
+dashboard/server/org_tables_api.py:347:@router.get("/performance/monthly-close-rate/summary")
+dashboard/server/org_tables_api.py:362:@router.get("/performance/monthly-close-rate/deals")
+dashboard/server/database.py:165:CLOSE_RATE_ONLINE_COURSE_FORMATS = ["구독제(온라인)", "선택구매(온라인)", "포팅"]
+dashboard/server/database.py:166:CLOSE_RATE_OFFLINE_FORMATS = {"출강", "복합(출강+온라인)", "교육체계 수립", "비대면 실시간"}
+dashboard/server/database.py:167:CLOSE_RATE_COURSE_GROUPS = ["구독제(온라인)", "선택구매(온라인)", "포팅", "오프라인"]
+dashboard/server/database.py:168:CLOSE_RATE_METRICS = ["total", "confirmed", "high", "low", "lost", "close_rate"]
+dashboard/server/database.py:169:_PERF_MONTHLY_CLOSE_RATE_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
+dashboard/server/database.py:170:_PERF_MONTHLY_CLOSE_RATE_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str, str, str], Dict[str, Any]] = {}
+dashboard/server/database.py:176:INQUIRY_SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타", "미기재"]
+dashboard/server/database.py:4815:    cached = _PERF_MONTHLY_CLOSE_RATE_CACHE.get(cache_key)
+dashboard/server/database.py:4911:        if course_format_norm in CLOSE_RATE_ONLINE_COURSE_FORMATS:
+dashboard/server/database.py:4913:        elif course_format_norm in CLOSE_RATE_OFFLINE_FORMATS:
+dashboard/server/database.py:4924:        is_online_fmt = course_format_norm in CLOSE_RATE_ONLINE_COURSE_FORMATS
+dashboard/server/database.py:4985:    _PERF_MONTHLY_CLOSE_RATE_CACHE[cache_key] = payload
+dashboard/server/database.py:5009:    cached = _PERF_MONTHLY_CLOSE_RATE_SUMMARY_CACHE.get(cache_key)
+dashboard/server/database.py:5020:    for size in INQUIRY_SIZE_GROUPS:
+dashboard/server/database.py:5021:        for course in CLOSE_RATE_COURSE_GROUPS:
+dashboard/server/database.py:5023:            for metric in CLOSE_RATE_METRICS:
+dashboard/server/database.py:5040:        if size not in INQUIRY_SIZE_GROUPS or course_group not in CLOSE_RATE_COURSE_GROUPS:
+dashboard/server/database.py:5063:    for size in INQUIRY_SIZE_GROUPS:
+dashboard/server/database.py:5064:        for course in CLOSE_RATE_COURSE_GROUPS:
+dashboard/server/database.py:5068:    for size in INQUIRY_SIZE_GROUPS:
+dashboard/server/database.py:5069:        for course in CLOSE_RATE_COURSE_GROUPS:
+dashboard/server/database.py:5089:    for size in INQUIRY_SIZE_GROUPS:
+dashboard/server/database.py:5090:        for course in CLOSE_RATE_COURSE_GROUPS:
+dashboard/server/database.py:5100:            for metric in CLOSE_RATE_METRICS:
+dashboard/server/database.py:5130:    _PERF_MONTHLY_CLOSE_RATE_SUMMARY_CACHE[cache_key] = result
+dashboard/server/database.py:5145:    if segment not in INQUIRY_SIZE_GROUPS:
+dashboard/server/database.py:5152:    if course_group not in CLOSE_RATE_COURSE_GROUPS:
+dashboard/server/database.py:5154:    if metric not in CLOSE_RATE_METRICS:
+dashboard/server/database.py:5480:    for size in INQUIRY_SIZE_GROUPS:
+dashboard/server/database.py:5510:    for size in INQUIRY_SIZE_GROUPS:
+dashboard/server/database.py:5585:    if segment not in INQUIRY_SIZE_GROUPS:
+org_tables_v2.html:2313:    const CLOSE_RATE_COURSE_GROUPS = ["구독제(온라인)", "선택구매(온라인)", "포팅", "오프라인"];
+org_tables_v2.html:2314:    const CLOSE_RATE_METRICS = ["total", "confirmed", "high", "low", "lost", "close_rate"];
+org_tables_v2.html:2315:    const CLOSE_RATE_METRIC_LABEL = {
+org_tables_v2.html:2323:    const CLOSE_RATE_SCOPE_OPTIONS = [
+org_tables_v2.html:2334:    const CLOSE_RATE_CUSTOMER_OPTIONS = [
+org_tables_v2.html:2492:        id: "biz-perf-monthly-close-rate-2026",
+org_tables_v2.html:2495:        kind: "monthly-close-rate",
+org_tables_v2.html:2592:      } else if (def.kind === "monthly-close-rate") {
+org_tables_v2.html:2593:        MENU_RENDERERS[def.id] = (root) => renderBizPerfMonthlyCloseRate2026(root, { label: def.label });
+org_tables_v2.html:4671:      return fetchJson(`/performance/monthly-close-rate/summary?${params.toString()}`);
+org_tables_v2.html:4691:      return fetchJson(`/performance/monthly-close-rate/deals?${params.toString()}`);
+org_tables_v2.html:10104:      const isCloseRate = kind === "monthly-close-rate";
+org_tables_v2.html:10237:    function renderBizPerfMonthlyCloseRateTable(data, selectedSize = "대기업", ui = {}, expanded = {}) {
+org_tables_v2.html:10246:      CLOSE_RATE_COURSE_GROUPS.forEach((c) => {
+org_tables_v2.html:10249:        CLOSE_RATE_METRICS.forEach((m) => {
+org_tables_v2.html:10284:              return `<td>${clickable ? `<button type="button" class="mp-cell-btn" data-perf-kind="monthly-close-rate" data-segment="${selectedSize}" data-course="${course}" data-metric="close_rate" data-month="${mon}" data-cust="${ui.customerType}" data-scope="${ui.scope}">${display}</button>` : `<span class="mp-cell-btn is-zero">${display}</span>`}</td>`;
+org_tables_v2.html:10291:      const parentRows = CLOSE_RATE_COURSE_GROUPS.map((course) => {
+org_tables_v2.html:10304:            const label = CLOSE_RATE_METRIC_LABEL[metric] || metric;
+org_tables_v2.html:10761:    async function renderBizPerfMonthlyCloseRate2026(contentRoot, options = {}) {
+org_tables_v2.html:10794:        INQUIRY_SIZE_GROUPS.map(
+org_tables_v2.html:10802:        CLOSE_RATE_CUSTOMER_OPTIONS.map(
+org_tables_v2.html:10810:        CLOSE_RATE_SCOPE_OPTIONS.map(
+org_tables_v2.html:10848:          tableRoot.innerHTML = renderBizPerfMonthlyCloseRateTable(
+org_tables_v2.html:10920:            const btn = e.target.closest("button[data-perf-kind='monthly-close-rate']");
+org_tables_v2.html:10928:                kind: "monthly-close-rate",

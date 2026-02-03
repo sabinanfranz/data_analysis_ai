@@ -2310,6 +2310,7 @@
       },
     };
     const COUNTERPARTY_ONLINE_FORMATS = new Set(["구독제(온라인)", "선택구매(온라인)", "포팅"]);
+    const INQUIRY_SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타", "미기재"];
     const CLOSE_RATE_COURSE_GROUPS = ["구독제(온라인)", "선택구매(온라인)", "포팅", "오프라인"];
     const CLOSE_RATE_METRICS = ["total", "confirmed", "high", "low", "lost", "close_rate"];
     const CLOSE_RATE_METRIC_LABEL = {
@@ -2813,6 +2814,8 @@
       wonGroupJsonCompact: null,
       filteredWonGroupJson: null,
       filteredWonGroupJsonCompact: null,
+      wonGroupMdCompact: null,
+      filteredWonGroupMdCompact: null,
       statePath: null,
       selectedUpperOrg: null,
       people: [],
@@ -3396,6 +3399,13 @@
       }
     }
 
+    function toModalText(data) {
+      if (typeof data === "string") {
+        return data;
+      }
+      return toJsonText(data);
+    }
+
     async function copyJsonData(data, successMessage) {
       const text = toJsonText(data);
       if (!text.trim()) {
@@ -3418,9 +3428,9 @@
 
     function openJsonModal(title, data) {
       if (!state.jsonModal.backdrop || !state.jsonModal.body || !state.jsonModal.title) return;
-      const text = toJsonText(data);
+      const text = toModalText(data);
       if (!text.trim()) {
-        showToast("표시할 JSON이 없습니다.", "error");
+        showToast("표시할 데이터가 없습니다.", "info");
         return;
       }
       state.jsonModal.title.textContent = title || "JSON 보기";
@@ -4302,7 +4312,7 @@
       return lines.join("\n");
     }
 
-    async function copyTextToClipboard(text) {
+    async function copyTextToClipboard(text, successMessage) {
       const t = String(text || "");
       if (!t.trim()) {
         showToast("복사할 내용이 없습니다.", "error");
@@ -4310,7 +4320,7 @@
       }
       try {
         await navigator.clipboard.writeText(t);
-        showToast("복사되었습니다.", "success");
+        showToast(successMessage || "복사되었습니다.", "success");
         return true;
       } catch (_) {
         try {
@@ -4320,7 +4330,7 @@
           textarea.select();
           document.execCommand("copy");
           document.body.removeChild(textarea);
-          showToast("복사되었습니다.", "success");
+          showToast(successMessage || "복사되었습니다.", "success");
           return true;
         } catch (err2) {
           showToast(`복사 실패: ${err2.message}`, "error");
@@ -4334,6 +4344,256 @@
       const table = section ? section.querySelector("table") : null;
       const md = tableToMarkdown(table);
       return copyTextToClipboard(md);
+    }
+
+    function mdEscapeCell(v) {
+      if (v === null || v === undefined) return "";
+      return String(v).replace(/\|/g, "\\|").replace(/\r?\n/g, "<br>");
+    }
+
+    function fmtWon(n) {
+      const num = Number(n);
+      if (Number.isNaN(num)) return "";
+      return num.toLocaleString("ko-KR");
+    }
+
+    function truncateText(s, maxChars) {
+      const limit = Number(maxChars) || 0;
+      if (!limit) return String(s || "");
+      const str = String(s || "");
+      if (str.length <= limit) return str;
+      if (limit <= 3) return str.slice(0, limit);
+      return `${str.slice(0, limit - 3)}...`;
+    }
+
+    function redactPhone(s) {
+      if (!s) return "";
+      return String(s).replace(/\b01[016789]-?\d{3,4}-?\d{4}\b/g, "[phone]");
+    }
+
+    function pickCleanText(cleanText) {
+      if (!cleanText || typeof cleanText !== "object") return "";
+      const preferred = ["summary", "short", "brief", "text", "body", "value", "content"];
+      for (const key of preferred) {
+        const val = cleanText[key];
+        if (typeof val === "string" && val.trim()) {
+          return truncateText(val.replace(/\s+/g, " ").trim(), 200);
+        }
+      }
+      const fallback = Object.values(cleanText).find((v) => typeof v === "string" && v.trim());
+      if (fallback) {
+        return truncateText(fallback.replace(/\s+/g, " ").trim(), 200);
+      }
+      return "";
+    }
+
+    function sumSummaryBlocks(blocks) {
+      const years = ["2023", "2024", "2025"];
+      const keys = ["won_amount_by_year", "won_amount_online_by_year", "won_amount_offline_by_year"];
+      const out = {
+        won_amount_by_year: { 2023: 0, 2024: 0, 2025: 0 },
+        won_amount_online_by_year: { 2023: 0, 2024: 0, 2025: 0 },
+        won_amount_offline_by_year: { 2023: 0, 2024: 0, 2025: 0 },
+      };
+      if (!Array.isArray(blocks)) return out;
+      blocks.forEach((block) => {
+        if (!block) return;
+        keys.forEach((k) => {
+          const src = block[k] || {};
+          years.forEach((y) => {
+            const num = Number(src[y]) || 0;
+            out[k][y] += num;
+          });
+        });
+      });
+      return out;
+    }
+
+    function renderSummaryTable(summary) {
+      const years = ["2023", "2024", "2025"];
+      if (!summary) return "";
+      const rows = [
+        ["Won 합계", summary.won_amount_by_year || {}],
+        ["Won 온라인", summary.won_amount_online_by_year || {}],
+        ["Won 오프라인", summary.won_amount_offline_by_year || {}],
+      ];
+      const lines = [];
+      lines.push(`| 항목 | ${years.join(" | ")} |`);
+      lines.push(`| --- | ${years.map(() => "---").join(" | ")} |`);
+      rows.forEach(([label, obj]) => {
+        const cells = years.map((y) => fmtWon(obj[y]));
+        lines.push(`| ${mdEscapeCell(label)} | ${cells.map(mdEscapeCell).join(" | ")} |`);
+      });
+      return lines.join("\n");
+    }
+
+    function summarizeMemos(memos, opts = {}) {
+      const limit = Number(opts.limit) || 10;
+      const maxChars = Number(opts.maxChars) || 240;
+      const maskPhone = opts.redactPhone !== false;
+      if (!Array.isArray(memos) || memos.length === 0) return { count: 0, lines: [] };
+      const sorted = [...memos].sort((a, b) => (b?.date || "").localeCompare(a?.date || ""));
+      const lines = [];
+      for (const memo of sorted.slice(0, limit)) {
+        const date = (memo && memo.date) || "";
+        let snippet = "";
+        const clean = memo && memo.cleanText;
+        if (clean && typeof clean === "object") {
+          snippet = pickCleanText(clean);
+        }
+        if (!snippet && memo && typeof memo.text === "string") {
+          snippet = memo.text;
+        }
+        snippet = (snippet || "").replace(/\s+/g, " ").trim();
+        if (maskPhone) snippet = redactPhone(snippet);
+        snippet = truncateText(snippet, maxChars);
+        if (!snippet) snippet = "(no text)";
+        lines.push(`${date || ""} - ${snippet}`);
+      }
+      return { count: memos.length, lines };
+    }
+
+    function wonGroupsCompactToMarkdown(data, opts = {}) {
+      const options = {
+        scopeLabel: "",
+        maxPeopleRows: 60,
+        maxDealRows: 200,
+        memoLimit: 10,
+        memoMaxChars: 240,
+        redactPhone: true,
+        ...opts,
+      };
+      if (!data || !Array.isArray(data.groups)) return "데이터가 없습니다.";
+
+      const org = data.organization || {};
+      const orgName = org.name || org.org_name || org.orgName || "미입력";
+      const industryMid = org.industry_mid || org.industryMid;
+      const industryMajor = org.industry_major || org.industryMajor;
+      const industryLine = [industryMajor, industryMid].filter(Boolean).join(" / ");
+      const lines = [];
+
+      lines.push(`# ${orgName} - compact-info-md/v1.1`);
+      lines.push(`- org_id: ${org.id || org.org_id || ""}`);
+      lines.push(`- scope: ${options.scopeLabel || "ORG_ALL"}`);
+      lines.push(`- size: ${org.size || org.size_group || org.legacy_size_group || "-"}`);
+      lines.push(`- industry: ${industryLine || "-"}`);
+      lines.push("");
+
+      lines.push("## Summary (Org)");
+      const orgSummaryMd = renderSummaryTable(org.summary);
+      lines.push(orgSummaryMd || "(요약 없음)");
+
+      const scopeSummary = sumSummaryBlocks(data.groups.map((g) => g && g.counterparty_summary));
+      lines.push("");
+      lines.push("## Summary (Scope)");
+      const scopeSummaryMd = renderSummaryTable(scopeSummary);
+      lines.push(scopeSummaryMd || "(요약 없음)");
+
+      data.groups.forEach((group, idx) => {
+        if (!group) return;
+        const people = Array.isArray(group.people) ? group.people : [];
+        const deals = Array.isArray(group.deals) ? group.deals : [];
+        const peopleIndex = new Map();
+        people.forEach((p) => {
+          const pid = p && (p.id || p.people_id || p.peopleId);
+          if (pid) peopleIndex.set(pid, p);
+        });
+
+        lines.push("");
+        lines.push("---");
+        lines.push(`## ${group.upper_org || "(상위 조직 미입력)"} / ${group.team || "-"}`);
+
+        const defaults = group.deal_defaults || {};
+        const defaultEntries = Object.entries(defaults).filter(([, v]) => v !== undefined && v !== null);
+        if (defaultEntries.length) {
+          const defParts = defaultEntries.map(([k, v]) => {
+            if (k === "day1_teams" && Array.isArray(v)) {
+              const names = v.map((t) => t?.name || t?.id || "").filter(Boolean).join(", ");
+              return `${k}=${names || "(none)"}`;
+            }
+            return `${k}=${Array.isArray(v) ? v.join(", ") : v}`;
+          });
+          lines.push(`- deal_defaults: ${defParts.join(" | ")}`);
+        }
+
+        lines.push("");
+        lines.push("### Group Won Summary");
+        const groupSummaryMd = renderSummaryTable(group.counterparty_summary);
+        lines.push(groupSummaryMd || "(요약 없음)");
+
+        const maxPeople = Number(options.maxPeopleRows) || 0;
+        const peopleRows = maxPeople ? people.slice(0, maxPeople) : people;
+        if (peopleRows.length) {
+          lines.push("");
+          lines.push("### People");
+          lines.push("| Name | Title | Team | Edu | Signals | Last memo |");
+          lines.push("| --- | --- | --- | --- | --- | --- |");
+          peopleRows.forEach((p) => {
+            const lastMemo = summarizeMemos(p && p.memos, { limit: 1, maxChars: 140, redactPhone: options.redactPhone !== false });
+            const memoCell = lastMemo.lines.length ? lastMemo.lines.map((ln, i) => `${i + 1}) ${ln}`).join("<br>") : "";
+            lines.push(
+              `| ${mdEscapeCell(p?.name || p?.people_name || "-")} | ${mdEscapeCell(p?.title || "-")} | ${mdEscapeCell(p?.team || "-")} | ${mdEscapeCell(p?.edu_area || "-")} | ${mdEscapeCell(p?.signals || "")} | ${mdEscapeCell(memoCell)} |`
+            );
+          });
+          if (maxPeople && people.length > peopleRows.length) {
+            lines.push(`_truncated: ${people.length - peopleRows.length} more people not shown_`);
+          }
+        }
+
+        const maxDeals = Number(options.maxDealRows) || 0;
+        const dealRows = maxDeals ? deals.slice(0, maxDeals) : deals;
+        lines.push("");
+        lines.push("### Deals");
+        if (!dealRows.length) {
+          lines.push("거래가 없습니다.");
+          return;
+        }
+        lines.push("| # | Deal | Status | Amount | Contract | Expected | Period | Contact | Exceptions | Memos |");
+        lines.push("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |");
+        dealRows.forEach((deal, rowIdx) => {
+          const dealName = deal?.name || deal?.deal_name || "(no name)";
+          const idFragment = deal?.id ? String(deal.id).slice(0, 8) : "";
+          const dealLabel = idFragment ? `${dealName} (${idFragment})` : dealName;
+          const amountVal = deal?.amount ?? deal?.expected_amount;
+          const period =
+            deal?.start_date && deal?.end_date ? `${deal.start_date}~${deal.end_date}` : (deal?.start_date || deal?.end_date || "");
+          const contact = (() => {
+            const person = peopleIndex.get(deal?.people_id || deal?.peopleId);
+            if (!person) return "";
+            const nm = person.name || person.people_name || "";
+            const title = person.title ? ` (${person.title})` : "";
+            return `${nm}${title}`;
+          })();
+          const exceptions = [];
+          if (deal && Object.prototype.hasOwnProperty.call(deal, "owner") && deal.owner) exceptions.push(`owner=${deal.owner}`);
+          if (deal && Object.prototype.hasOwnProperty.call(deal, "course_format") && deal.course_format)
+            exceptions.push(`course_format=${deal.course_format}`);
+          if (deal && Object.prototype.hasOwnProperty.call(deal, "category") && deal.category) exceptions.push(`category=${deal.category}`);
+          if (deal && Object.prototype.hasOwnProperty.call(deal, "day1_teams") && Array.isArray(deal.day1_teams) && deal.day1_teams.length) {
+            const names = deal.day1_teams.map((t) => t?.name || t?.id || "").filter(Boolean).join(", ");
+            exceptions.push(`day1_teams=${names}`);
+          }
+
+          const memoSummary = summarizeMemos(deal && deal.memos, {
+            limit: options.memoLimit,
+            maxChars: options.memoMaxChars,
+            redactPhone: options.redactPhone !== false,
+          });
+          const memoLines = memoSummary.lines.map((line, i) => `${i + 1}) ${line}`);
+          const memoCell = memoLines.length
+            ? `(총 ${memoSummary.count}개) ${memoLines.map(mdEscapeCell).join("<br>")}`
+            : "";
+
+          lines.push(
+            `| ${mdEscapeCell(rowIdx + 1)} | ${mdEscapeCell(dealLabel)} | ${mdEscapeCell(deal?.status || "-")} | ${mdEscapeCell(fmtWon(amountVal))} | ${mdEscapeCell(deal?.contract_date || "")} | ${mdEscapeCell(deal?.expected_date || deal?.expected_close_date || "")} | ${mdEscapeCell(period)} | ${mdEscapeCell(contact)} | ${mdEscapeCell(exceptions.join(" | "))} | ${mdEscapeCell(memoCell)} |`
+          );
+        });
+        if (maxDeals && deals.length > dealRows.length) {
+          lines.push(`_truncated: ${deals.length - dealRows.length} more deals not shown_`);
+        }
+      });
+
+      return lines.join("\n");
     }
 
     async function fetchBlob(path) {
@@ -6598,6 +6858,8 @@
       state.wonGroupJsonCompact = null;
       state.filteredWonGroupJson = null;
       state.filteredWonGroupJsonCompact = null;
+      state.wonGroupMdCompact = null;
+      state.filteredWonGroupMdCompact = null;
       state.statePath = null;
       updateStatePathButton();
       renderOrgMemos([]);
@@ -6623,6 +6885,8 @@
       state.statePath = null;
       state.filteredWonGroupJson = null;
       state.filteredWonGroupJsonCompact = null;
+      state.wonGroupMdCompact = null;
+      state.filteredWonGroupMdCompact = null;
       setBreadcrumb();
       renderWonGroupJsonAll(null);
       renderWonGroupJsonFiltered(null);
@@ -6754,6 +7018,9 @@
           state.dealMemos = [];
           state.filteredWonGroupJson = filterWonGroupByUpper(state.wonGroupJson, upper);
           state.filteredWonGroupJsonCompact = filterWonGroupByUpper(state.wonGroupJsonCompact, upper);
+          state.filteredWonGroupMdCompact = state.filteredWonGroupJsonCompact
+            ? wonGroupsCompactToMarkdown(state.filteredWonGroupJsonCompact, { scopeLabel: "UPPER_SELECTED" })
+            : null;
           renderWonSummary(summary);
           renderWonGroupJsonFiltered(state.filteredWonGroupJson);
           renderWonGroupJsonFilteredCompact(state.filteredWonGroupJsonCompact);
@@ -6938,6 +7205,8 @@
         state.wonGroupJsonCompact = null;
         state.filteredWonGroupJson = null;
         state.filteredWonGroupJsonCompact = null;
+        state.wonGroupMdCompact = null;
+        state.filteredWonGroupMdCompact = null;
         renderWonGroupJsonAll(null);
         renderWonGroupJsonFiltered(null);
         renderWonGroupJsonAllCompact(null);
@@ -6950,6 +7219,8 @@
       state.wonGroupJsonCompact = null;
       state.filteredWonGroupJson = null;
       state.filteredWonGroupJsonCompact = null;
+      state.wonGroupMdCompact = null;
+      state.filteredWonGroupMdCompact = null;
       renderWonGroupJsonAll(null);
       renderWonGroupJsonFiltered(null);
       renderWonGroupJsonAllCompact(null);
@@ -6976,6 +7247,10 @@
           cache.wonGroupJsonCompactByOrg.set(orgId, compact);
           state.wonGroupJsonCompact = compact;
           state.filteredWonGroupJsonCompact = filterWonGroupByUpper(compact, state.selectedUpperOrg);
+          state.wonGroupMdCompact = wonGroupsCompactToMarkdown(state.wonGroupJsonCompact, { scopeLabel: "ORG_ALL" });
+          state.filteredWonGroupMdCompact = state.filteredWonGroupJsonCompact
+            ? wonGroupsCompactToMarkdown(state.filteredWonGroupJsonCompact, { scopeLabel: "UPPER_SELECTED" })
+            : null;
           renderWonGroupJsonAllCompact(compact);
           renderWonGroupJsonFilteredCompact(state.filteredWonGroupJsonCompact);
         } else {
@@ -6989,6 +7264,8 @@
         state.wonGroupJsonCompact = null;
         state.filteredWonGroupJson = null;
         state.filteredWonGroupJsonCompact = null;
+        state.wonGroupMdCompact = null;
+        state.filteredWonGroupMdCompact = null;
         const hintAll = document.getElementById("wonGroupJsonHintAll");
         const hintFiltered = document.getElementById("wonGroupJsonHintFiltered");
         const buttons = [
@@ -7347,6 +7624,10 @@
       state.statePath = null;
       state.filteredWonGroupJson = null;
       state.wonGroupJson = null;
+      state.wonGroupJsonCompact = null;
+      state.filteredWonGroupJsonCompact = null;
+      state.wonGroupMdCompact = null;
+      state.filteredWonGroupMdCompact = null;
       state.wonSummaryCleared = true;
 
       const searchInput = document.getElementById("orgSearch");
@@ -7415,10 +7696,42 @@
       if (copyAll) copyAll.addEventListener("click", () => copyJsonData(state.wonGroupJson));
       if (viewFiltered) viewFiltered.addEventListener("click", () => openJsonModal("선택 상위 조직 JSON", state.filteredWonGroupJson));
       if (copyFiltered) copyFiltered.addEventListener("click", () => copyJsonData(state.filteredWonGroupJson));
-      if (viewAllCompact) viewAllCompact.addEventListener("click", () => openJsonModal("상위 조직별 간소화 JSON (전체)", state.wonGroupJsonCompact));
-      if (copyAllCompact) copyAllCompact.addEventListener("click", () => copyJsonData(state.wonGroupJsonCompact));
-      if (viewFilteredCompact) viewFilteredCompact.addEventListener("click", () => openJsonModal("선택 상위 조직 간소화 JSON", state.filteredWonGroupJsonCompact));
-      if (copyFilteredCompact) copyFilteredCompact.addEventListener("click", () => copyJsonData(state.filteredWonGroupJsonCompact));
+      if (viewAllCompact) viewAllCompact.addEventListener("click", () => {
+        const md = state.wonGroupMdCompact || wonGroupsCompactToMarkdown(state.wonGroupJsonCompact, { scopeLabel: "ORG_ALL" });
+        state.wonGroupMdCompact = md;
+        openJsonModal("간소화 정보 (MD) - 전체", md);
+      });
+      if (copyAllCompact) copyAllCompact.addEventListener("click", () => {
+        const md = state.wonGroupMdCompact || wonGroupsCompactToMarkdown(state.wonGroupJsonCompact, { scopeLabel: "ORG_ALL" });
+        state.wonGroupMdCompact = md;
+        if (!md || !String(md).trim()) {
+          showToast("복사할 데이터가 없습니다.", "error");
+          return;
+        }
+        copyTextToClipboard(md, "간소화 정보(MD) 복사 완료");
+      });
+      if (viewFilteredCompact) viewFilteredCompact.addEventListener("click", () => {
+        const md =
+          state.filteredWonGroupMdCompact ||
+          (state.filteredWonGroupJsonCompact
+            ? wonGroupsCompactToMarkdown(state.filteredWonGroupJsonCompact, { scopeLabel: "UPPER_SELECTED" })
+            : null);
+        if (md) state.filteredWonGroupMdCompact = md;
+        openJsonModal("간소화 정보 (MD) - 선택 상위 조직", md);
+      });
+      if (copyFilteredCompact) copyFilteredCompact.addEventListener("click", () => {
+        const md =
+          state.filteredWonGroupMdCompact ||
+          (state.filteredWonGroupJsonCompact
+            ? wonGroupsCompactToMarkdown(state.filteredWonGroupJsonCompact, { scopeLabel: "UPPER_SELECTED" })
+            : null);
+        if (md) state.filteredWonGroupMdCompact = md;
+        if (!md || !String(md).trim()) {
+          showToast("복사할 데이터가 없습니다.", "error");
+          return;
+        }
+        copyTextToClipboard(md, "간소화 정보(MD) 복사 완료");
+      });
       if (agentLinkAllBtn) agentLinkAllBtn.addEventListener("click", () => window.open("https://gemini.google.com/gem/1iH4jAlauCVyc-Kp9Tfb1LysS5X6SemZO?usp=sharing", "_blank", "noopener,noreferrer"));
       if (agentLinkFilteredBtn) agentLinkFilteredBtn.addEventListener("click", () => window.open("https://gemini.google.com/gem/1Bbf9opz_tuTIQfg09N5O9vzhXQ5OpI9H?usp=sharing", "_blank", "noopener,noreferrer"));
       await loadSizes();
@@ -10477,9 +10790,13 @@
       const custBar = document.getElementById("crCustBar");
       const scopeBar = document.getElementById("crScopeBar");
       let latestData = null;
+      const sizeGroups =
+        typeof INQUIRY_SIZE_GROUPS !== "undefined" && Array.isArray(INQUIRY_SIZE_GROUPS) && INQUIRY_SIZE_GROUPS.length
+          ? INQUIRY_SIZE_GROUPS
+          : ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타", "미기재"];
 
       const renderSizeBtns = (selected) =>
-        INQUIRY_SIZE_GROUPS.map(
+        sizeGroups.map(
           (s) =>
             `<button type="button" class="inq-size-btn ${s === selected ? "is-active" : ""}" data-cr-size="${s}" aria-pressed="${
               s === selected

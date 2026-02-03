@@ -1,0 +1,2 @@
+4671:      return fetchJson(`/performance/monthly-close-rate/summary?${params.toString()}`);
+4691:      return fetchJson(`/performance/monthly-close-rate/deals?${params.toString()}`);

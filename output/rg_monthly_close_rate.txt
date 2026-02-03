@@ -1,0 +1,11 @@
+dashboard/server/org_tables_api.py:347:@router.get("/performance/monthly-close-rate/summary")
+dashboard/server/org_tables_api.py:362:@router.get("/performance/monthly-close-rate/deals")
+org_tables_v2.html:2493:        id: "biz-perf-monthly-close-rate-2026",
+org_tables_v2.html:2496:        kind: "monthly-close-rate",
+org_tables_v2.html:2593:      } else if (def.kind === "monthly-close-rate") {
+org_tables_v2.html:4672:      return fetchJson(`/performance/monthly-close-rate/summary?${params.toString()}`);
+org_tables_v2.html:4692:      return fetchJson(`/performance/monthly-close-rate/deals?${params.toString()}`);
+org_tables_v2.html:10105:      const isCloseRate = kind === "monthly-close-rate";
+org_tables_v2.html:10285:              return `<td>${clickable ? `<button type="button" class="mp-cell-btn" data-perf-kind="monthly-close-rate" data-segment="${selectedSize}" data-course="${course}" data-metric="close_rate" data-month="${mon}" data-cust="${ui.customerType}" data-scope="${ui.scope}">${display}</button>` : `<span class="mp-cell-btn is-zero">${display}</span>`}</td>`;
+org_tables_v2.html:10925:            const btn = e.target.closest("button[data-perf-kind='monthly-close-rate']");
+org_tables_v2.html:10933:                kind: "monthly-close-rate",

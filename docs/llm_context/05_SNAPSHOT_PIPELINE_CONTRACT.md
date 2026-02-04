@@ -1,6 +1,6 @@
 ---
 title: 스냅샷 파이프라인 계약
-last_synced: 2026-01-28
+last_synced: 2026-02-04
 sync_source:
   - salesmap_first_page_snapshot.py
   - logs/run_history.jsonl

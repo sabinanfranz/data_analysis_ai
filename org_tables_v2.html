@@ -4669,7 +4669,18 @@
       params.set("to", to);
       params.set("cust", cust);
       params.set("scope", scope);
-      return fetchJson(`/performance/monthly-close-rate/summary?${params.toString()}`);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+      try {
+        return await fetchJson(`/performance/monthly-close-rate/summary?${params.toString()}`, { signal: controller.signal });
+      } catch (err) {
+        if (err.name === "AbortError") {
+          throw new Error("요청이 시간 초과되었습니다(30초).");
+        }
+        throw err;
+      } finally {
+        clearTimeout(timeout);
+      }
     }
 
     async function getPerfMonthlyCloseRateSummaryCached({ from, to, cust, scope }) {
@@ -4689,7 +4700,18 @@
       params.set("month", month);
       params.set("cust", cust);
       params.set("scope", scope);
-      return fetchJson(`/performance/monthly-close-rate/deals?${params.toString()}`);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000);
+      try {
+        return await fetchJson(`/performance/monthly-close-rate/deals?${params.toString()}`, { signal: controller.signal });
+      } catch (err) {
+        if (err.name === "AbortError") {
+          throw new Error("딜 조회가 시간 초과되었습니다(30초).");
+        }
+        throw err;
+      } finally {
+        clearTimeout(timeout);
+      }
     }
 
     async function loadPlProgress2026Summary(year = 2026) {
@@ -10267,22 +10289,32 @@
         months
           .map((mon) => {
             const total = metricMap.get(course)?.total?.[mon] ?? 0;
-            const val = metricMap.get(course)?.[metric]?.[mon] ?? 0;
+            const rawVal = metricMap.get(course)?.[metric]?.[mon] ?? 0;
+            const val = Number(rawVal || 0);
+
+            // 체결률(%)은 텍스트만 표시(클릭 불가)
             if (metric === "close_rate") {
-              const display = total > 0 ? `${Number(val || 0).toFixed(1)}%` : "0.0%";
-              return `<td><span class="mp-cell-btn ${total === 0 ? "is-zero" : ""}">${display}</span></td>`;
+              const rate = total > 0 ? Number(val || 0) : 0;
+              const display = `${rate.toFixed(1)}%`;
+              return `<td class="mp-num">${display}</td>`;
             }
-            if (metric === "total") {
-              const clickable = val > 0;
-              const display = Number(val || 0).toLocaleString("ko-KR");
-              return `<td>${
-                clickable
-                  ? `<button type="button" class="mp-cell-btn" data-perf-kind="monthly-close-rate" data-segment="${selectedSize}" data-course="${course}" data-metric="total" data-month="${mon}" data-cust="${ui.customerType}" data-scope="${ui.scope}">${display}</button>`
-                  : `<span class="mp-cell-btn is-zero">${display}</span>`
-              }</td>`;
-            }
-            const display = Number(val || 0).toLocaleString("ko-KR");
-            return `<td><span class="mp-cell-btn ${Number(val || 0) === 0 ? "is-zero" : ""}">${display}</span></td>`;
+
+            // total/confirmed/high/low/lost : 값>0이면 버튼 클릭 가능
+            const display = val.toLocaleString("ko-KR");
+            const clickable = val > 0;
+            return `<td class="mp-num">${
+              clickable
+                ? `<button type="button"
+                           class="mp-cell-btn"
+                           data-perf-kind="monthly-close-rate"
+                           data-segment="${selectedSize}"
+                           data-course="${course}"
+                           data-metric="${metric}"
+                           data-month="${mon}"
+                           data-cust="${ui.customerType}"
+                           data-scope="${ui.scope}">${display}</button>`
+                : `<span class="mp-cell-btn is-zero">${display}</span>`
+            }</td>`;
           })
           .join("");
 

@@ -1,6 +1,6 @@
 ---
 title: 레포 지도 (기능 ↔ 파일)
-last_synced: 2026-01-28
+last_synced: 2026-02-04
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py

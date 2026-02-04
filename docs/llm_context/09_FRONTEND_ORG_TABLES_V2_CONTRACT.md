@@ -1,6 +1,6 @@
 ---
 title: org_tables_v2 프런트 계약
-last_synced: 2026-01-28
+last_synced: 2026-02-04
 sync_source:
   - org_tables_v2.html
   - dashboard/server/org_tables_api.py
@@ -10,6 +10,7 @@ sync_source:
   - tests/test_perf_monthly_contracts.py
   - tests/test_perf_monthly_inquiries.py
   - tests/test_perf_monthly_inquiries_online_first_filter.py
+  - tests/test_qc_r13_r17_hidden.py
 absorbed_from:
   - org_tables_v2.md
   - json_logic.md
@@ -44,7 +45,7 @@ absorbed_from:
 - 딜체크/QC:
   - `renderDealCheckScreen(teamKey, options)` 한 곳에서 7개 딜체크 메뉴를 공통 렌더하며, `/deal-check/edu1`·`/deal-check/edu2`(또는 `/deal-check?team=`) 결과를 orgWon2025Total desc→createdAt asc→dealId asc로 렌더, memoCount=0이면 “메모 없음” 비활성 버튼. 부모 메뉴는 필터 없이 팀 전체를, 자식 메뉴는 `partFilter`(1/2파트/온라인셀)를 받아 owners→`getDealCheckPartLookup` 룩업 기반으로 클라이언트 필터를 적용한다. 섹션은 공통 6분할(리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인) 순서를 유지한다.
   - 딜체크 테이블 컬럼 순서는 (티어, 선택적으로) 기업명/상위조직/팀/담당자/생성 날짜/딜 이름/과정포맷/**기획**/파트/데이원/가능성/수주 예정일/예상/메모이며, `기획` 칼럼은 항상 “링크” 텍스트를 표시하되 `planningSheetLink`가 http(s)로 시작할 때만 새 탭 링크로 감싼다.
-  - `renderDealQcR1R15Screen`은 `/qc/deal-errors/summary` 카드(팀별 총이슈 desc) + `/qc/deal-errors/person` 상세 모달(R1~R15 위배만 표시) 제공. R13은 **규모 대기업/중견 + 상태 Won 또는 SQL**에서 담당자 메타(상위조직/팀/직급/교육영역) 결측을 검사하며, 김정은/이은서 + 월 패턴 예외를 유지한다. QC 화면은 계약상 R1~R15까지만 표시하고 숨김 규칙은 합산/노출하지 않는다.
+  - `renderDealQcR1R15Screen`은 `/qc/deal-errors/summary` 카드(팀별 총이슈 desc) + `/qc/deal-errors/person` 상세 모달을 제공한다. 프런트는 표시 가능 규칙 Set을 `R1~R16`로 정의하지만 **UI는 R1~R15만 노출**하며 issueCodes에서 이 집합에 없는 코드는 렌더 단계에서 필터한다. R13 가이드는 “대기업/중견 · Won 또는 SQL · 담당자 메타 결측”으로 표기한다. 숨김 규칙(R17)은 summary totalIssues/byRule, 모달 issueCodes 모두에서 제외된다.
 - 조직/People/Deal 뷰어:
   - `getSizes`→`/orgs`로 조직 목록 로드, 선택 시 `/orgs/{id}/people`→사람 선택→`/people/{id}/deals`/`/people/{id}/memos`/`/deals/{id}/memos`.
   - 상위 조직 JSON 카드: `/orgs/{id}/won-groups-json` 캐시 → 선택 upper_org가 없으면 JSON 버튼 비활성+안내, 선택 시 전체/선택 JSON 모달, compact 버튼은 `/won-groups-json-compact`.

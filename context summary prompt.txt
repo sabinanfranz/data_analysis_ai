@@ -1,183 +1,257 @@
-# ✅ Codex 지시문: Documentation Sync Engineer — Update Docs 00~14 (Post-Development)
-
-## ROLE
+## Codex 지시문: Docs Sync Engineer (00~14 최신화, 경로 고정)
 
 너는 이 레포의 **문서 동기화(Documentation Sync) 엔지니어**다.
-목표는 `docs/00_INDEX.md`부터 `docs/14_db_table_columns.md`까지(00~14) 모든 문서가 **현재 코드/구현 상태와 1:1로 일치**하도록 업데이트되게 하면서, 동시에 이 docs 묶음이 **LLM 리팩토링 계획 수립에 바로 투입 가능한 “Refactor-Ready Knowledge Pack”**이 되도록 만드는 것이다.
+목표는 아래 경로의 **00~14 문서 전체**가 **현재 코드/구현/운영/DB 스키마와 1:1로 일치**하도록 업데이트되는 것이다.
 
-## HARD RULES (절대 위반 금지)
+### 문서 위치(SSOT, 고정)
 
-1. **추측/상상 금지**: 문서에 쓰는 모든 내용은 반드시 **코드/파일에서 확인되는 근거**(파일 경로, 함수/클래스명, 라우트, 상수, CSS selector, HTML 문자열, 테스트명, SQL 문자열 등)로만 작성한다.
-2. **원하는 설계/개선 제안 금지**: “이렇게 바꾸면 좋다/해야 한다” 같은 처방은 문서 본문에 쓰지 않는다.
+* `C:\Users\admin\Desktop\B2B\data_analysis_ai\docs\llm_context`
 
-   * 단, **사실 기반 관찰(Facts only)**은 문서 하단 `## Refactor-Planning Notes (Facts Only)`에만 기록한다.
-3. 구현되지 않은 내용은 문서 본문에 섞지 말고 `## TODO / Not Implemented` 섹션으로 분리한다.
-4. **문서 추가는 최소화**: 00~14가 SSOT다. 새 문서는 “정말 추적 불가능할 정도로 계약이 흩어진 경우”에만 1개 이내로 추가 가능.
-5. 의미 없는 공백/포맷터 대규모 재정렬 금지(최소 diff 원칙).
+### 대상 문서(반드시 모두 업데이트: 00~14)
 
----
+* `...\docs\llm_context\00_INDEX.md`
+* `...\docs\llm_context\01_GLOSSARY.md`
+* `...\docs\llm_context\02_ARCHITECTURE.md`
+* `...\docs\llm_context\03_REPO_MAP.md`
+* `...\docs\llm_context\04_DATA_MODEL_SQLITE.md`
+* `...\docs\llm_context\05_SNAPSHOT_PIPELINE_CONTRACT.md`
+* `...\docs\llm_context\06_API_CONTRACT_CORE.md`
+* `...\docs\llm_context\07_API_CONTRACT_RANKINGS.md`
+* `...\docs\llm_context\08_MEMO_WEBFORM_RULES.md`
+* `...\docs\llm_context\09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`
+* `...\docs\llm_context\10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md`
+* `...\docs\llm_context\11_RUNBOOK_LOCAL_AND_OPS.md`
+* `...\docs\llm_context\12_TESTING_AND_QUALITY.md`
+* `...\docs\llm_context\13_RAILWAY_AND_CI.md`
+* `...\docs\llm_context\14_db_table_columns.md`
 
-## SCOPE
-
-* 대상 문서: `docs/00_INDEX.md` … `docs/14_db_table_columns.md` (00~14)
-* 근거 코드 범위: repo 전체(특히 엔트리/서버/라우터/DB/프런트 HTML/스크립트/테스트/CI 워크플로)
-
----
-
-## OUTPUT FORMAT RULE (모든 문서 상단 Front Matter 강제)
-
-각 문서 최상단에 아래 front matter를 **추가 또는 갱신**한다.
-
-```yaml
----
-title: <기존 제목 유지 또는 코드 기준 보정>
-last_synced: <SYNC_DATE: YYYY-MM-DD>
-sync_source:
-  - <이 문서가 직접 근거로 삼는 주요 파일 경로 3~8개>
----
-```
-
-* `last_synced`는 오늘 날짜로 갱신한다.
-* `sync_source`는 “해당 문서가 직접 참조한 파일”만(추측으로 넣지 말 것).
+> 만약 위 파일들이 해당 폴더에 없다면:
+>
+> 1. 레포에서 동일 파일명을 검색해 실제 경로를 찾고
+> 2. **SSOT 문서는 최종적으로 `docs\llm_context` 아래에 있어야 한다는 정책**이 있다면, (a) 이번 PR에서는 “내용 동기화”만 하고 (b) “이동/정리 PR”을 별도 PR로 분리한다.
+> 3. 어쨌든 **최종 결과는 00~14가 `docs\llm_context`에 존재하고 최신 내용**이어야 한다.
 
 ---
 
-## DOC STRUCTURE STANDARD (00~14 모든 문서 공통 강제 섹션)
+## 0) HARD RULES (위반 금지)
 
-각 문서는 아래 섹션을 **반드시 포함**한다. 적용 불가 시 “N/A + 이유(근거 포함)”로 명시.
-
-1. `## Purpose`
-2. `## Behavioral Contract`  (사용자/클라이언트 관점의 현재 동작: 트리거→조건→결과)
-3. `## Invariants (Must Not Break)`  (정렬/필터/포맷/라벨/캐시/원자성 등 구체 규칙)
-4. `## Coupling Map`  (프런트↔API↔DB↔파이프라인 연결)
-5. `## Edge Cases & Failure Modes`
-6. `## Verification`  (3분 체크리스트 5~10개, 어디서 확인하는지도 명시)
-7. `## Refactor-Planning Notes (Facts Only)`  (해결책 금지, 관찰 사실+근거만)
-
-### Invariants 작성 규칙(필수)
-
-* “정렬됨” 같은 추상 금지 → **정렬 키/우선순위**를 명시(예: `A desc → B asc → id asc`)
-* UI: 메뉴명/라벨(문자열 정확히), 컬럼명/순서, 포맷(억/소수점/날짜), 모달/버튼 활성 조건, 캐시/새로고침 필요 여부
-* API: 필터 조건, 기본값(limit/offset 등), 응답 스키마(필드명/타입/의미)
-* 파이프라인: 체크포인트/재개/교체 원자성(tmp→final), 실패 시 잔존물/폴백 위치
+1. **추측 금지**: 문서에 쓰는 모든 내용은 반드시 **코드/스크립트/워크플로/실제 DB PRAGMA**로 확인한다.
+2. **정확한 식별자**: 경로/함수명/상수/DOM id/class/라우트/쿼리/정렬 규칙/env var는 “비슷하게” 쓰지 말고 **정확히** 적는다.
+3. 변경을 반영했으면 각 문서의 `last_synced`를 오늘 날짜로 갱신하고, `sync_source`도 실제 근거 파일로 갱신한다.
+4. 문서 구조는 기존 섹션을 유지하되(Purpose / Behavioral Contract / Invariants / Coupling Map / Edge Cases / Verification / Refactor-Planning Notes), **내용만 코드 기준으로 교체**한다.
+5. 문서 갱신 후 **Verification 섹션의 실행 커맨드/QA 체크**가 최신인지 반드시 맞춘다.
 
 ---
 
-## WORKFLOW (반드시 이 순서로 수행)
+## 1) 변경 탐지(SSOT) — “무엇이 바뀌었는지” 먼저 파악
 
-### Step 0) 문서 대상 확인
+아래 근거(SSOT)를 먼저 읽고, 최근 변경으로 인해 계약이 달라진 지점을 체크리스트로 수집한다.
 
-1. `docs/` 아래 00~14 파일이 실제로 존재하는지 확인하고, 파일명이 다르면 **실제 파일명을 기준**으로 작업하되 “00~14 매핑 표”를 00_INDEX에 반영한다.
-2. 00_INDEX(문서 맵)가 현재 레포에서 문서/기능을 제대로 가리키는지 확인한다(깨졌으면 먼저 고친다).
+### A) 스냅샷/DB/적재
 
-### Step 1) Change Radar: “최근 개발 변경”을 먼저 스캔
+* `salesmap_first_page_snapshot.py`
+* (있다면) snapshot 관련 helper (TableWriter/cleaning/postprocess)
+* 최신 `salesmap_latest.db` (PRAGMA 재추출)
 
-최근 개발로 바뀌기 쉬운 핫스팟을 코드에서 먼저 찾는다(추측 금지).
+### B) 백엔드(API/집계)
 
-* FastAPI 라우트 추가/변경(`/api/*`, `/rank/*`, `/performance/*` 등)
-* DB 쿼리/집계 변경(`dashboard/server/database.py`)
-* 프런트 메뉴/컬럼/모달/필터 변경(`org_tables_v2.html` 또는 관련 리소스)
-* 스냅샷/DB 교체 로직 변경(`salesmap_first_page_snapshot.py`, `start.sh`)
-* CI/Railway 워크플로 변경(`.github/workflows/*.yml`)
-* 테스트 기대치/케이스 변경(`tests/*.py`)
+* `dashboard/server/main.py`
+* `dashboard/server/org_tables_api.py`
+* `dashboard/server/database.py`
+* `dashboard/server/statepath_engine.py`
 
-→ 이 스캔 결과를 “문서에 직접 로그로 남기지 말고”, **각 문서의 본문 업데이트로만 반영**한다.
+### C) 프런트(정적)
 
-### Step 2) 문서별 Sync Source 지정(내부 작업)
+* `org_tables_v2.html` (v2 대시보드)
+* `build_org_tables.py` + 산출물 규칙(org_tables.html)
 
-00~14 각 문서마다 sync_source 3~8개를 고른다.
+### D) 운영/배포
 
-* UI 문서: 프런트 파일 + 관련 렌더 함수 + 호출 API 라우터/핸들러
-* API 문서: 라우터 파일 + 핸들러 + DB 레이어 + 관련 테스트
-* 파이프라인 문서: 스크립트 + 체크포인트/교체 로직 + 로그/워크플로
+* `start.sh`
+* `.github/workflows/salesmap_db_daily.yml`
+* `requirements.txt`
 
-### Step 3) 00~14를 “문서 1개씩 끝내고 다음” 방식으로 업데이트
+### E) 테스트
 
-각 문서에 대해 아래를 수행한다.
+* `tests/*` 전수 (핵심 계약 보호 테스트 목록, 신규/삭제/리네임)
 
-#### 3-1) Claim 검증
+**산출물(내부 메모):**
 
-* 문서에 적힌 주장(경로/명령/API/UI/라벨/정렬/포맷)을 항목별로 분해해 코드로 검증한다.
-* 불일치 항목은 **문서에서 삭제/수정**으로만 반영(체크로그를 따로 남기지 않는다).
-
-#### 3-2) Behavioral Contract 고해상도 작성
-
-* UI: 사용자의 행동(필터 선택/버튼 클릭/모달 열기) → 어떤 API/데이터 → 어떤 렌더 결과
-* API: 어떤 쿼리 파라미터/기본값 → 어떤 DB 조회/집계 → 어떤 응답 필드
-* 파이프라인: 어떤 커맨드/환경변수 → 어떤 파일 생성/교체 → 어떤 산출물/로그
-
-#### 3-3) Invariants 추출
-
-각 invariant마다 아래 3요소를 반드시 포함한다.
-
-1. 규칙(구체적으로)
-2. 근거 위치(파일/함수/상수/셀렉터)
-3. 깨지면 사용자 영향(1줄)
-
-#### 3-4) Coupling Map 작성
-
-* 최소 단위로 프런트↔API↔DB↔파이프라인 연결을 적고, “어떤 변경이 어디를 깨는지” 드러나게 쓴다.
-
-#### 3-5) Edge Cases & Failure Modes 갱신
-
-* 빈 결과/0/null/형 변환/잠금/캐시/네트워크 오류 등
-* “현재 구현이 실제로 어떻게 처리하는지”만 작성
-
-#### 3-6) Verification (3분 체크리스트)
-
-* 사람이 3분 안에 확인 가능한 항목 5~10개
-* 가능하면 “확인 위치(라우트/함수/셀렉터/테스트 파일)”까지 적는다.
-
-#### 3-7) Refactor-Planning Notes (Facts Only)
-
-* 예시 형태(해결책 금지):
-
-  * 관찰 1: 파일이 N라인 이상 / 단일 파일이 다중 책임 보유 + 근거
-  * 관찰 2: 동일 규칙(온라인 판정/정렬)이 프런트+백엔드+테스트에 중복 + 근거
-  * 관찰 3: 캐시 무효화가 없음/약함 + 근거
-
-### Step 4) 문서 간 중복 정리 규칙
-
-* 반복 설명은 상위 문서(00_INDEX/02_ARCHITECTURE/11_RUNBOOK 등)로 모으고 하위는 링크로 참조한다.
-* 단, **Invariants는 중복 허용**(여러 문서에서 반복 확인되는 불변조건은 가치가 있음).
+* “변경된 계약 항목 리스트”를 만들고, 영향을 받는 문서(00~14)에 매핑한다.
+  (예: API 파라미터 변경 → 06/07/09/12 동시 갱신, DB 컬럼 추가 → 14/04/05/06/07/12 동시 갱신)
 
 ---
 
-## DOC-BY-DOC UPDATE MANDATE (00~14 문서별 업데이트 목표)
+## 2) 업데이트 순서(권장) — 의존성 순서대로 “먼저 바닥을 고정”
 
-각 문서는 “해당 영역의 SSOT”가 되도록 아래 항목을 반드시 최신화한다.
+문서 동기화는 아래 순서로 수행한다(SSOT 의존성 때문).
 
-* **00_INDEX.md**: 문서 맵(00~14 링크+1줄 요약), Change Radar 반영된 범위가 드러나게(“기능↔문서” 매핑)
-* **01_GLOSSARY.md**: 코드/화면/API에 실제 등장하는 용어만(티어/온라인 3종/DRI/SQL 등), obsolete 제거
-* **02_ARCHITECTURE.md**: 실행 흐름(스냅샷→DB→API→프런트), 책임 분리, 캐시/운영 제약(사실만)
-* **03_REPO_MAP.md**: 폴더/주요 파일의 “현재 역할” 재기술(경로 정확히)
-* **04_DATA_MODEL_SQLITE.md**: 실제 테이블/컬럼 사용 방식, fallback/PRAGMA 탐지 등(코드 기준)
-* **05_SNAPSHOT_PIPELINE_CONTRACT.md**: 체크포인트/재개/DB 교체 원자성/폴백/로그
-* **06_API_CONTRACT_CORE.md**: /api 핵심 엔드포인트 스키마/기본값/필터/정렬
-* **07_API_CONTRACT_RANKINGS.md**: /rank 엔드포인트(Top100/DRI 등) 스키마/정렬/필터
-* **08_MEMO_WEBFORM_RULES.md**: 메모/웹폼 정제 트리거/규칙/compact 변환
-* **09_FRONTEND_ORG_TABLES_V2_CONTRACT.md**: 메뉴/필터/테이블/모달/캐시 동작(문자열/컬럼/정렬 정확히)
-* **10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md**: build_org_tables.py 정적 HTML 계약(옵션/상태/포맷/엣지)
-* **11_RUNBOOK_LOCAL_AND_OPS.md**: 로컬 실행, start.sh 운영 동작, DB_URL/DB_ALWAYS_REFRESH/PORT, 캐시 주의
-* **12_TESTING_AND_QUALITY.md**: 테스트 실행법/핵심 테스트가 보호하는 계약/커버리지 공백(사실만)
-* **13_RAILWAY_AND_CI.md**: GitHub Actions(스케줄/아티팩트/Release명), Railway redeploy, secrets, 실패 모드
-* **14_db_table_columns.md**: 현재 DB의 실제 컬럼 목록(필요시 최신 DB로 재추출), KPI 리포트 탐지 규칙 등
+1. **14_db_table_columns.md** (DB PRAGMA SSOT)
+2. **05_SNAPSHOT_PIPELINE_CONTRACT.md** (스냅샷 계약)
+3. **04_DATA_MODEL_SQLITE.md** (DB 사용 모델/핵심 필드)
+4. **06_API_CONTRACT_CORE.md / 07_API_CONTRACT_RANKINGS.md** (API 계약)
+5. **08_MEMO_WEBFORM_RULES.md** (cleanText/webform/compact 규칙)
+6. **09/10 프런트 계약** (v2 UI 계약 + static HTML 계약)
+7. **11_RUNBOOK_LOCAL_AND_OPS.md + 13_RAILWAY_AND_CI.md** (운영/배포)
+8. **12_TESTING_AND_QUALITY.md** (테스트 안전망)
+9. **01_GLOSSARY.md / 02_ARCHITECTURE.md / 03_REPO_MAP.md** (용어/구조/탐색)
+10. **00_INDEX.md** (목차/읽는 순서/SSOT 선언을 최종 반영)
 
 ---
 
-## DELIVERABLES
+## 3) 문서별 “무엇을 확인하고 무엇을 갱신하는지” 상세 지시
 
-1. 00~14 문서 전체 업데이트(각 문서 front matter + 강제 섹션 포함)
-2. 00_INDEX에 “문서 맵 + 기능↔문서 매핑” 최신화
-3. 불필요한 포맷 변경 최소화(의미 있는 diff 중심)
+### 3.1) `14_db_table_columns.md` 최신화 (가장 먼저)
+
+* 최신 `salesmap_latest.db`로 **PRAGMA table_info**를 재추출한다.
+
+  * 10개 테이블(deal/lead/organization/people/memo/webform_history/run_info/manifest/team/user) 존재 확인
+  * 각 테이블 컬럼명/타입/개수 최신화(특히 deal/lead)
+* 문서의 “Table Columns (PRAGMA …)” 섹션을 **PRAGMA 결과로 완전 교체**한다.
+* “append-only(TEXT)로 컬럼이 추가된다” 규칙이 현재 적재 코드와 일치하는지 확인 후 갱신한다.
+* Verification에 “PRAGMA 재추출 명령/스크립트”를 최신으로 적는다.
+
+### 3.2) `05_SNAPSHOT_PIPELINE_CONTRACT.md` 최신화
+
+근거: `salesmap_first_page_snapshot.py` 및 관련 스크립트
+
+* CLI 옵션(토큰/limit/resume/checkpoint/tmp/final/backup/webform-only 등) 및 기본값을 실제 코드와 일치시킨다.
+* tmp→final 원자 교체, 실패 시 폴백 DB 생성, 429/5xx 백오프, run_history.jsonl 기록 규칙이 바뀌었으면 반영.
+* 산출물 파일명/경로 규칙(예: salesmap_latest.db)이 현재와 일치하도록 수정.
+
+### 3.3) `04_DATA_MODEL_SQLITE.md` 최신화
+
+근거: 14(PRAGMA), `dashboard/server/database.py`, `org_tables_api.py`
+
+* “테이블별 핵심 필드(대시보드 의존 컬럼)” 리스트를 현재 코드가 실제로 참조하는 컬럼 기준으로 업데이트.
+* 컬럼 타입이 TEXT 중심이라 파싱 실패 시 어떤 fallback이 있는지(스킵/0/None) 코드를 근거로 갱신.
+* 특히 deal/people/organization의 join key, owner_json 처리, 기업규모/과정포맷/상태 필드 사용처를 현재 기준으로 정리.
+
+### 3.4) `06_API_CONTRACT_CORE.md` 최신화
+
+근거: `dashboard/server/main.py`, `org_tables_api.py`, `database.py`
+
+* `/api/orgs`, `/api/orgs/{id}/won-groups-json`, `/api/performance/*`, `/api/statepath/*` 등 **핵심 엔드포인트**의:
+
+  * query param / default / allowed values
+  * response schema(필드명, 타입, 정렬)
+  * 캐시 전제/키/무효화 여부
+    를 코드 기준으로 1:1 반영한다.
+* won-groups-json / compact / compact markdown 관련 스펙(최신 10개 메모, truncate 길이 등)이 바뀌었으면 정확히 반영.
+
+### 3.5) `07_API_CONTRACT_RANKINGS.md` 최신화
+
+근거: `org_tables_api.py`, `database.py`, 관련 ranking 함수들
+
+* 랭킹/DRI/리텐션 등 메뉴성 API의 필터/정렬/offset/limit/예외 조건을 최신화.
+* “클라이언트 필터링 vs 서버 필터링” 경계가 바뀌면 그 책임을 문서에 명확히 반영한다.
+
+### 3.6) `08_MEMO_WEBFORM_RULES.md` 최신화
+
+근거: memo/webform 처리 코드, compact 변환 코드, 프런트 memo 렌더링
+
+* cleanText 생성 규칙, 제외 규칙, webform_history 날짜 매핑/비노출 규칙을 코드 기준으로 갱신.
+* compact JSON 생성 시 제거/보강 필드(htmlBody 제거 여부, text fallback, truncation 등)를 최신화.
+* 프런트에서 htmlBody sanitizer가 허용하는 태그/속성/링크 규칙이 바뀌면 함께 반영.
+
+### 3.7) `09_FRONTEND_ORG_TABLES_V2_CONTRACT.md` 최신화
+
+근거: `org_tables_v2.html` 및 호출 API
+
+* `MENU_SECTIONS`, `DEFAULT_MENU_ID`, 하위 메뉴/숨김/↳ 표기 규칙 최신화
+* 데스크톱 분리 스크롤 / 모바일 단일 스크롤 / 메뉴 클릭 시 우측 scroll reset 로직(함수명+대상 DOM) 최신화
+* 화면별 렌더러(P&L/월별체결액/문의인입/DRI/DealCheck/QC/Daily Report 등)의:
+
+  * 호출 엔드포인트
+  * 클릭 가능 셀 규칙(예: E열만 등)
+  * deals 모달 정렬/필터
+  * 모달 DOM 구조와 스크롤 컨테이너
+    를 “코드 그대로” 문서화한다.
+* 화면별 Map 캐시(키/무효화 여부/새로고침 필요 조건) 최신화.
+
+### 3.8) `10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md` 최신화
+
+근거: `build_org_tables.py`
+
+* CLI 옵션/기본값, 규모/조직 선택 규칙, 3×3 레이아웃, `_deal_count` 기준 분리, breadcrumb 규칙을 코드 기준으로 갱신.
+* 외부 fetch 금지(인라인 데이터만) invariant가 유지되는지 확인 후 반영.
+
+### 3.9) `11_RUNBOOK_LOCAL_AND_OPS.md` 최신화
+
+근거: `dashboard/server/main.py`, `org_tables_v2.html`, `salesmap_first_page_snapshot.py`, `start.sh`
+
+* 로컬 실행 커맨드(uvicorn, http.server), 포트/경로, API_BASE 계산 규칙 최신화
+* DB_PATH 기본값/DB 부재 시 동작(500 등)
+* 스냅샷 생성 방법(토큰, 로그/체크포인트, 재개) 최신화
+* 캐시 때문에 DB 교체 후 “새로고침/재시작이 필요한 조건”을 현재 로직으로 갱신
+
+### 3.10) `13_RAILWAY_AND_CI.md` 최신화
+
+근거: `.github/workflows/salesmap_db_daily.yml`, `start.sh`
+
+* cron, 파이썬 버전, 설치/실행 커맨드, Release 태그/이름/아티팩트 파일명, railway redeploy 명령, secrets를 1:1 반영
+* start.sh의 env vars, 다운로드/검증(50MB 등), 심링크 경로, DB_PATH export, uvicorn 실행 커맨드 최신화
+* 실패 케이스(시크릿 누락, DB_URL 누락, 업로드 실패 등) 실제 흐름대로 정리
+
+### 3.11) `12_TESTING_AND_QUALITY.md` 최신화
+
+근거: `tests/*`
+
+* “핵심 계약을 보호하는 테스트 목록”을 전수 갱신(파일명/대상 기능/보호 계약)
+* 실행 커맨드(`python -m unittest discover -s tests`) 유효성 확인 후 최신화
+* 테스트 assert와 문서의 invariant(24개월 키/row 순서/정렬/필터)가 **완전히 일치**하도록 수정
+* 프런트 DOM/CSS는 자동화가 없으면 수동 QA 체크리스트를 최신화
+
+### 3.12) `01_GLOSSARY.md` 최신화
+
+근거: 분류/필터가 있는 코드(backend+frontend)
+
+* 온라인 과정포맷 3종, 기업규모 그룹, 연도 판정/owner 정규화/팀-파트 매핑 등 “정의가 실제 코드와 일치”하도록 갱신
+* 프런트/백엔드 중복 규칙이 달라졌다면 “SSOT가 어디인지”를 명확히 재정의
+
+### 3.13) `02_ARCHITECTURE.md` 최신화
+
+근거: 실제 엔트리/흐름(스냅샷→DB→FastAPI→정적 HTML→테스트→CI)
+
+* 컴포넌트 경계(스냅샷/백엔드/프런트/테스트/배포)와 책임이 현재 코드와 일치하도록 갱신
+* 캐시/DB 교체/운영 파이프라인이 바뀌면 아키텍처 흐름도/설명 업데이트
+
+### 3.14) `03_REPO_MAP.md` 최신화
+
+근거: 현재 레포 구조
+
+* “기능 → 파일/함수/라우트” 매핑을 최신으로 갱신
+* 신규 메뉴/엔드포인트/스크립트가 추가되었으면 반영
+* 문서들을 찾는 경로(`docs\llm_context`)가 정확히 반영되도록 업데이트
+
+### 3.15) `00_INDEX.md` 최신화 (마지막)
+
+* 00~14가 SSOT라는 선언, 읽는 순서, 문서 간 링크/설명을 최신으로 갱신
+* PJT2 등 다른 컨텍스트 폴더가 있으면 경계를 최신화
+* “문서가 갖춰야 할 섹션 체크리스트”가 실제 문서들과 어긋나면 조정
 
 ---
 
-## SELF-CHECK (완료 전 필수)
+## 4) 완료 조건(반드시 만족)
 
-* 문서에 나온 파일 경로가 실제 존재한다.
-* 문서에 나온 API 경로가 실제 라우터에 존재한다.
-* 각 문서에 `Behavioral Contract / Invariants / Coupling Map / Verification`가 있다.
-* Invariants가 구체적이며(정렬/포맷/라벨/활성조건), 근거 위치가 있다.
-* “~일 것이다/아마/예상” 같은 문구가 없다.
-* 새 문서 추가가 필요했다면(예외적으로) 00_INDEX에 이유/역할이 명확히 반영돼 있다.
+1. **00~14 전부** `last_synced` 갱신 + `sync_source` 최신화
+2. 근거 기반(추측 금지)
+3. Verification 커맨드/체크리스트 최신화
+4. 가능한 범위에서:
+
+   * `python -m unittest discover -s tests` 실행해 결과 확인
+   * 실패 시 “실패 테스트명 + 계약 불일치 지점”을 찾아 **문서를 코드에 맞게 수정** (테스트가 계약 SSOT일 때)
+5. 마지막으로 Git diff를 확인해 “문서 내용이 코드 변경과 어긋나지 않는지” 점검
+
+---
+
+## 5) 출력/커밋 규칙
+
+* PR 단위로 커밋을 나눠 적용한다(권장 커밋 단위):
+
+  1. `docs(llm_context): refresh db schema SSOT (14)`
+  2. `docs(llm_context): sync snapshot/data model contracts (05/04)`
+  3. `docs(llm_context): sync api contracts (06/07/08)`
+  4. `docs(llm_context): sync frontend contracts (09/10)`
+  5. `docs(llm_context): sync ops/ci/testing (11/13/12)`
+  6. `docs(llm_context): sync glossary/architecture/repo map/index (01/02/03/00)`

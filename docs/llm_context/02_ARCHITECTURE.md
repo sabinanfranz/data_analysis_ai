@@ -1,6 +1,6 @@
 ---
 title: 아키텍처 개요
-last_synced: 2026-01-28
+last_synced: 2026-02-04
 sync_source:
   - salesmap_first_page_snapshot.py
   - dashboard/server/main.py

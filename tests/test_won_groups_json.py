@@ -505,6 +505,24 @@ class MemoHtmlBodyTest(TestCase):
         self.assertNotIn("htmlBody", payload)
 
 
+class CreatedAtTsRegressionTest(TestCase):
+    def test_get_won_groups_json_includes_created_at_ts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            db_path = Path(tmpdir) / "db.sqlite"
+            build_sample_db(db_path)
+            result = db.get_won_groups_json("org1", db_path=db_path)
+            groups = result.get("groups") or []
+            self.assertTrue(groups)
+
+            ts_values = set()
+            for g in groups:
+                for person in g.get("people", []):
+                    for memo in person.get("memos", []):
+                        self.assertIn("created_at_ts", memo)
+                        ts_values.add(memo.get("created_at_ts"))
+            self.assertIn("2025-01-01T11:00:00", ts_values)
+
+
 class HtmlToMarkdownTableTest(TestCase):
     def test_table_preserves_columns(self) -> None:
         html = """

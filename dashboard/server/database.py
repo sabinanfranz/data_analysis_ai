@@ -17,6 +17,8 @@ from . import date_kst
 DB_PATH_ENV = os.getenv("DB_PATH", "salesmap_latest.db")
 print(f"[db] Using DB_PATH={DB_PATH_ENV}")
 DB_PATH = Path(DB_PATH_ENV)
+EXISTING_2024_FOR_2025_ENV = "EXISTING_2024_FOR_2025_LIST_PATH"
+EXISTING_2024_FOR_2025_DEFAULT_PATH = Path(__file__).parent / "resources" / "existing_orgs_2024_for_2025.txt"
 DATE_KST_MODE = os.getenv("DATE_KST_MODE", "legacy").lower()
 if DATE_KST_MODE not in {"legacy", "shadow", "strict"}:
     logging.warning("Invalid DATE_KST_MODE=%s. Falling back to legacy.", DATE_KST_MODE)
@@ -166,12 +168,14 @@ CLOSE_RATE_ONLINE_COURSE_FORMATS = ["구독제(온라인)", "선택구매(온라
 CLOSE_RATE_OFFLINE_FORMATS = {"출강", "복합(출강+온라인)", "교육체계 수립", "비대면 실시간"}
 CLOSE_RATE_COURSE_GROUPS = ["구독제(온라인)", "선택구매(온라인)", "포팅", "오프라인"]
 CLOSE_RATE_METRICS = ["total", "confirmed", "high", "low", "lost", "close_rate"]
-_PERF_MONTHLY_CLOSE_RATE_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
-_PERF_MONTHLY_CLOSE_RATE_SUMMARY_CACHE: Dict[Tuple[Path, float, str, str, str, str], Dict[str, Any]] = {}
+_PERF_MONTHLY_CLOSE_RATE_CACHE: Dict[Tuple[Path, float, Path, Optional[float]], Dict[str, Any]] = {}
+_PERF_MONTHLY_CLOSE_RATE_SUMMARY_CACHE: Dict[Tuple[Path, float, Path, Optional[float], str, str, str, str], Dict[str, Any]] = {}
 _PL_PROGRESS_PAYLOAD_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
 _PL_PROGRESS_SUMMARY_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
 _QC_MONTHLY_REVENUE_CACHE: Dict[Tuple[Path, float, str, int, int, Optional[str], Optional[float]], Dict[str, Any]] = {}
 _ACCOUNTING_COURSE_ID_CACHE: Dict[Tuple[Path, Optional[float]], Set[str]] = {}
+_EXISTING_2024_FOR_2025_NAME_CACHE: Dict[Tuple[Path, Optional[float]], Set[str]] = {}
+_EXISTING_2024_FOR_2025_ID_CACHE: Dict[Tuple[Path, Optional[float], Path, Optional[float]], Set[str]] = {}
 
 INQUIRY_SIZE_GROUPS = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타", "미기재"]
 INQUIRY_COURSE_FORMATS = [
@@ -637,6 +641,82 @@ def _fetch_all(conn: sqlite3.Connection, query: str, params: Sequence[Any] = ())
 
 def _rows_to_dicts(rows: Sequence[sqlite3.Row]) -> List[Dict[str, Any]]:
     return [dict(row) for row in rows]
+
+
+def _load_existing_org_names_2024_for_2025(list_path: Optional[Path] = None) -> Tuple[Set[str], Optional[float], str]:
+    """
+    Load hardcoded org names set (2024 existing for 2025 columns).
+    """
+    path = list_path or Path(os.getenv(EXISTING_2024_FOR_2025_ENV, EXISTING_2024_FOR_2025_DEFAULT_PATH))
+    if not path.exists():
+        return set(), None, "MISSING"
+    stat = path.stat()
+    cache_key = (path, stat.st_mtime if stat else None)
+    cached = _EXISTING_2024_FOR_2025_NAME_CACHE.get(cache_key)
+    if cached is not None:
+        return cached, stat.st_mtime if stat else None, "OK"
+    names: Set[str] = set()
+    for line in path.read_text(encoding="utf-8").splitlines():
+        name = line.strip().lstrip("\ufeff")
+        if name:
+            names.add(name)
+    _EXISTING_2024_FOR_2025_NAME_CACHE[cache_key] = names
+    return names, stat.st_mtime if stat else None, "OK"
+
+
+def _compute_existing_org_ids_for_2025_columns(
+    conn: sqlite3.Connection,
+    names_set: Set[str],
+    db_path: Path = DB_PATH,
+    list_path: Optional[Path] = None,
+    list_mtime: Optional[float] = None,
+) -> Tuple[Set[str], Set[str]]:
+    """
+    Convert hardcoded org name set into org_id set for the current DB snapshot.
+    Match rule: exact match on COALESCE(o."이름", o.id) after strip.
+    Returns (ids, matched_names).
+    """
+    if not names_set:
+        return set(), set()
+    db_stat = db_path.stat() if db_path.exists() else None
+    lp = list_path or Path(os.getenv(EXISTING_2024_FOR_2025_ENV, EXISTING_2024_FOR_2025_DEFAULT_PATH))
+    cache_key = (
+        db_path,
+        db_stat.st_mtime if db_stat else None,
+        lp,
+        list_mtime if list_mtime is not None else (lp.stat().st_mtime if lp.exists() else None),
+    )
+    cached = _EXISTING_2024_FOR_2025_ID_CACHE.get(cache_key)
+    if cached is not None:
+        # matched set not cached; recompute for diagnostics
+        ids = cached
+        matched: Set[str] = set()
+        rows = _fetch_all(conn, 'SELECT COALESCE("이름", id) AS name FROM organization')
+        for row in rows:
+            nm = (row["name"] or "").strip()
+            if nm and nm in names_set:
+                matched.add(nm)
+        return ids, matched
+
+    rows = _fetch_all(conn, 'SELECT id, COALESCE("이름", id) AS name FROM organization')
+    ids: Set[str] = set()
+    matched: Set[str] = set()
+    for row in rows:
+        name = (row["name"] or "").strip()
+        if name and name in names_set:
+            ids.add(row["id"])
+            matched.add(name)
+    _EXISTING_2024_FOR_2025_ID_CACHE[cache_key] = ids
+    return ids, matched
+
+
+def _close_rate_is_existing_for_month(org_id: str, month_key: str, existing_by_year: Dict[str, Set[str]]) -> bool:
+    yy = (month_key or "")[:2]
+    year = f"20{yy}" if yy.isdigit() else ""
+    s = existing_by_year.get(year)
+    if not s:
+        return False
+    return org_id in s
 
 
 def _safe_json_load(value: Any) -> Any:
@@ -3002,10 +3082,27 @@ def get_won_groups_json(
     person_memos: Dict[str, List[Dict[str, Any]]] = {}
     deal_memos: Dict[str, List[Dict[str, Any]]] = {}
     org_memos: List[Dict[str, Any]] = []
+    debug_won_json = os.getenv("DEBUG_WON_JSON") == "1"
+    debug_memo_log_count = 0
     for memo in memo_rows:
-        date_only = _date_only(memo["createdAt"])
+        created_at_raw = _row_get(memo, "createdAt")
+        date_only = _date_only(created_at_raw)
         cleaned = _clean_form_memo(memo["text"])
-        html_body = memo["htmlBody"] if "htmlBody" in memo.keys() else None
+        html_body = _row_get(memo, "htmlBody")
+        if debug_won_json and debug_memo_log_count < 3:
+            try:
+                memo_keys = list(memo.keys())
+            except Exception:
+                memo_keys = []
+            created_at_val = memo["createdAt"] if "createdAt" in memo_keys else None
+            logging.warning(
+                "[won-json-debug] memo_type=%s has_keys=%s keys=%s createdAt=%s",
+                type(memo),
+                hasattr(memo, "keys"),
+                memo_keys,
+                created_at_val,
+            )
+            debug_memo_log_count += 1
         if cleaned == "":
             # Skip low-value form memos
             continue
@@ -3014,7 +3111,7 @@ def get_won_groups_json(
                 "date": date_only,
                 "text": memo["text"],
                 "htmlBody": html_body,
-                "created_at_ts": memo.get("createdAt"),
+                "created_at_ts": created_at_raw,
             }
         else:
             # Replace text with structured cleanText
@@ -3022,7 +3119,7 @@ def get_won_groups_json(
                 "date": date_only,
                 "cleanText": cleaned,
                 "htmlBody": html_body,
-                "created_at_ts": memo.get("createdAt"),
+                "created_at_ts": created_at_raw,
             }
         deal_id = memo["dealId"]
         person_id = memo["peopleId"]
@@ -4811,7 +4908,9 @@ def _load_perf_monthly_close_rate_data(db_path: Path = DB_PATH) -> Dict[str, Any
         raise FileNotFoundError(f"Database not found at {db_path}")
 
     stat = db_path.stat()
-    cache_key = (db_path, stat.st_mtime)
+    list_path = Path(os.getenv(EXISTING_2024_FOR_2025_ENV, EXISTING_2024_FOR_2025_DEFAULT_PATH))
+    list_mtime = list_path.stat().st_mtime if list_path.exists() else None
+    cache_key = (db_path, stat.st_mtime, list_path, list_mtime)
     cached = _PERF_MONTHLY_CLOSE_RATE_CACHE.get(cache_key)
     if cached is not None:
         return cached
@@ -4887,6 +4986,17 @@ def _load_perf_monthly_close_rate_data(db_path: Path = DB_PATH) -> Dict[str, Any
             year_params,
         )
         rows = [dict(r) for r in rows]
+
+    # existing sets by year (compute once)
+    names_2024, names_2024_mtime, names_status = _load_existing_org_names_2024_for_2025(list_path=list_path)
+    existing_ids_2025_columns, matched_names_2024 = (
+        _compute_existing_org_ids_for_2025_columns(
+            conn, names_2024, db_path=db_path, list_path=list_path, list_mtime=list_mtime
+        )
+        if names_2024
+        else (set(), set())
+    )
+    existing_ids_2026_columns = _compute_existing_org_ids_for_2025(db_path)
 
     data_rows: List[Dict[str, Any]] = []
     raw_formats: Set[str] = set()
@@ -4969,7 +5079,11 @@ def _load_perf_monthly_close_rate_data(db_path: Path = DB_PATH) -> Dict[str, Any
 
     payload = {
         "rows": data_rows,
-        "existing_org_ids": _compute_existing_org_ids_for_2025(db_path),
+        "existing_org_ids": existing_ids_2026_columns,
+        "existing_org_ids_by_year": {
+            "2025": existing_ids_2025_columns,
+            "2026": existing_ids_2026_columns,
+        },
         "snapshot_version": f"db_mtime:{int(stat.st_mtime)}",
         "meta_debug": {
             "total_loaded": len(rows),
@@ -4982,6 +5096,14 @@ def _load_perf_monthly_close_rate_data(db_path: Path = DB_PATH) -> Dict[str, Any
             "category_col_used": category_col or "",
             "raw_formats_sample": list(itertools.islice(raw_formats, 20)),
             "raw_categories_sample": list(itertools.islice(raw_categories, 20)),
+            "existing_2025_list_status": names_status,
+            "existing_2025_list_count": len(names_2024),
+            "existing_2025_id_count": len(existing_ids_2025_columns),
+            "existing_2025_missing_names_sample": list(
+                itertools.islice([n for n in names_2024 if n not in matched_names_2024], 20)
+            ),
+            "existing_2025_list_mtime": names_2024_mtime,
+            "existing_list_path": str(list_path),
         },
     }
     _PERF_MONTHLY_CLOSE_RATE_CACHE[cache_key] = payload
@@ -5006,14 +5128,19 @@ def get_perf_monthly_close_rate_summary(
     month_set = set(months)
     zero_map = lambda: {m: 0 for m in months}  # noqa: E731
 
+    list_path = Path(os.getenv(EXISTING_2024_FOR_2025_ENV, EXISTING_2024_FOR_2025_DEFAULT_PATH))
+    list_mtime = list_path.stat().st_mtime if list_path.exists() else None
     payload = _load_perf_monthly_close_rate_data(db_path)
     stat = db_path.stat()
-    cache_key = (db_path, stat.st_mtime, from_month, to_month, cust, scope)
+    cache_key = (db_path, stat.st_mtime, list_path, list_mtime, from_month, to_month, cust, scope)
     cached = _PERF_MONTHLY_CLOSE_RATE_SUMMARY_CACHE.get(cache_key)
     if cached is not None:
         return cached
 
-    existing_org_ids = payload.get("existing_org_ids") or set()
+    existing_by_year = payload.get("existing_org_ids_by_year") or {}
+    if not existing_by_year:
+        legacy_set = payload.get("existing_org_ids") or set()
+        existing_by_year = {"2026": legacy_set}
 
     total_counts: Dict[Tuple[str, str], Dict[str, int]] = defaultdict(zero_map)
     metric_counts: Dict[Tuple[str, str, str], Dict[str, float]] = defaultdict(zero_map)
@@ -5044,10 +5171,11 @@ def get_perf_monthly_close_rate_summary(
             continue
 
         org_id = (row.get("org_id") or "").strip()
-        if cust == "existing" and org_id not in existing_org_ids:
+        is_existing = _close_rate_is_existing_for_month(org_id, month_key, existing_by_year)
+        if cust == "existing" and not is_existing:
             summary_debug["excluded_customer_type_mismatch"] += 1
             continue
-        if cust == "new" and org_id in existing_org_ids:
+        if cust == "new" and is_existing:
             summary_debug["excluded_customer_type_mismatch"] += 1
             continue
 
@@ -5152,9 +5280,14 @@ def get_perf_monthly_close_rate_deals(
     if metric not in CLOSE_RATE_METRICS:
         raise ValueError(f"Unknown metric: {metric}")
 
+    list_path = Path(os.getenv(EXISTING_2024_FOR_2025_ENV, EXISTING_2024_FOR_2025_DEFAULT_PATH))
+    list_mtime = list_path.stat().st_mtime if list_path.exists() else None
     payload = _load_perf_monthly_close_rate_data(db_path)
     month_key = month.strip()
-    existing_org_ids = payload.get("existing_org_ids") or set()
+    existing_by_year = payload.get("existing_org_ids_by_year") or {}
+    if not existing_by_year:
+        legacy_set = payload.get("existing_org_ids") or set()
+        existing_by_year = {"2026": legacy_set}
 
     items: List[Dict[str, Any]] = []
     numerator = 0
@@ -5170,9 +5303,10 @@ def get_perf_monthly_close_rate_deals(
         if allowed_members is not None and not _owners_match_team(row_data.get("owner_names"), allowed_members):
             continue
         org_id = (row_data.get("org_id") or "").strip()
-        if cust == "existing" and org_id not in existing_org_ids:
+        is_existing = _close_rate_is_existing_for_month(org_id, month_key, existing_by_year)
+        if cust == "existing" and not is_existing:
             continue
-        if cust == "new" and org_id in existing_org_ids:
+        if cust == "new" and is_existing:
             continue
 
         denominator += 1

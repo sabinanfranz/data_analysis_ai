@@ -1,6 +1,6 @@
 ---
 title: 테스트 & 품질 가이드
-last_synced: 2026-01-28
+last_synced: 2026-02-04
 sync_source:
   - tests/test_perf_monthly_contracts.py
   - tests/test_pl_progress_2026.py

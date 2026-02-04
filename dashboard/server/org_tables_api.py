@@ -1,3 +1,4 @@
+import os
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import PlainTextResponse, Response
 from io import BytesIO
@@ -22,6 +23,24 @@ from .llm_target_attainment import (
 from .agents.daily_report_v2.orchestrator import run_pipeline as run_daily_report_v2_pipeline
 
 router = APIRouter(prefix="/api")
+
+# TODO: remove _debug/won-json-runtime after won-json memo.get investigation is resolved.
+if os.getenv("DEBUG_WON_JSON") == "1":
+
+    @router.get("/_debug/won-json-runtime")
+    def debug_won_json_runtime() -> dict:
+        import dashboard.server.database as db_mod
+        from pathlib import Path
+
+        db_file = Path(db_mod.__file__).resolve()
+        text = db_file.read_text(encoding="utf-8", errors="ignore")
+        occurrences = [idx + 1 for idx, line in enumerate(text.splitlines()) if "created_at_ts" in line][:20]
+        return {
+            "db_file": str(db_file),
+            "db_mtime": db_file.stat().st_mtime,
+            "has_memo_get_createdAt": 'memo.get("createdAt")' in text,
+            "created_at_ts_occurrences": occurrences,
+        }
 
 
 @router.get("/sizes")

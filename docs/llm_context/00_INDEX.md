@@ -1,6 +1,6 @@
 ---
 title: LLM Context Pack 인덱스
-last_synced: 2026-01-28
+last_synced: 2026-02-04
 sync_source:
   - docs/llm_context/05_SNAPSHOT_PIPELINE_CONTRACT.md
   - docs/llm_context/06_API_CONTRACT_CORE.md

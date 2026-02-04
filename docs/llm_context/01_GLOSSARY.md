@@ -1,6 +1,6 @@
 ---
 title: 용어집 (Glossary)
-last_synced: 2026-01-28
+last_synced: 2026-02-04
 sync_source:
   - dashboard/server/database.py
   - org_tables_v2.html

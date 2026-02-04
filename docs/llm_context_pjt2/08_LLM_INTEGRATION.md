@@ -1,11 +1,11 @@
 ---
 title: LLM 연동/캐시 (PJT2) – 31.6
-last_synced: 2026-01-29
+last_synced: 2026-02-04
 sync_source:
   - dashboard/server/counterparty_llm.py
   - dashboard/server/agents/registry.py
   - dashboard/server/agents/core/orchestrator.py
-  - dashboard/server/agents/counterparty_card/*
+  - dashboard/server/agents/counterparty_card/agent.py
   - dashboard/server/report/composer.py
   - dashboard/server/deal_normalizer.py
   - docs/llm_context_pjt2/05_RULEBOOK_COUNTERPARTY_RISK.md
@@ -14,53 +14,54 @@ sync_source:
 # LLM 연동/캐시 (PJT2) – 31.6
 
 ## Purpose
-- 카운터파티 리스크 카드용 LLM 입력/프롬프트/캐시/폴백을 재구현할 수 있게 SSOT(에이전트/캐시/프롬프트/합성 규칙)를 제공한다.
+- 카운터파티 리스크 카드용 LLM 입력·프롬프트·캐시·폴백 동작을 현재 코드 기준으로 재구현할 수 있게 SSOT를 제공한다.
 
 ## Behavioral Contract
-- 호출 대상: 규칙상 `보통/심각` + gap 절대값 상위 TopK(기본 20, target>0) 카운터파티. `양호`는 기본 생략.
-- LLM 출력은 JSON 강제(키 4개: risk_level, top_blockers, evidence_bullets(3), recommended_actions(2~3)). 규칙 risk_level이 UI 우선, 불일치 시 evidence에 규칙 언급 포함.
-- 캐시: payload canonical JSON → SHA256(llm_input_hash). prompt_version 불일치 시 무효화. 파일 경로 `report_cache/llm/{as_of}/{db_hash}/{mode}/{org}__{counterparty}.json`.
-- 실패/미호출: 폴백(blocker 키워드+숫자 근거)으로 evidence/actions를 채우며 job은 SUCCESS_WITH_FALLBACK 취급.
-- 실행 경로: registry(report_id×mode) → orchestrator(순차 실행) → CounterpartyCardAgent(모드 인식) → composer(불변 보강). counterparty_llm.py는 호환용 thin adapter.
+- 대상 선택: `risk_level_rule`이 보통/심각인 모든 카운터파티 + 나머지 중 gap 절대값 상위 20개(target>0)만 LLM 후보로 삼는다.
+- 출력 스키마는 risk_level/top_blockers/evidence_bullets(3)/recommended_actions(2~3) 4키 JSON이다. 규칙 risk_level_rule이 UI 기본값이며 LLM 결과는 risk_level_llm로 별도 보관된다.
+- 캐시 키: canonical payload → llm_input_hash → `report_cache/llm/{as_of}/{db_hash}/{mode}/{org}__{counterparty}.json`. prompt_version(v1) 또는 입력 해시가 다르면 재계산한다.
+- LLM 비활성(OPENAI_API_KEY 없음·LLM_PROVIDER≠openai·OpenAI SDK 미설치)이나 호출/파싱 실패 시 fallback_blockers/evidence/actions를 사용한다.
+- 실행 흐름: registry → orchestrator → CounterpartyCardAgent → (cache hit 시 즉시 반환) → cache miss 시 OpenAI ChatCompletions 호출 → composer가 결과를 base rows에 병합한다. `counterparty_llm.py`는 호환용 thin 어댑터일 뿐, deal_norm 재조회는 수행하지 않는다.
 
 ## Invariants
-- LLM env: LLM_PROVIDER=openai, OPENAI_API_KEY, LLM_MODEL(default gpt-4o-mini), LLM_BASE_URL(optional), LLM_TIMEOUT, LLM_MAX_TOKENS, LLM_TEMPERATURE.
-- payload 해시: canonical JSON sha256 = llm_input_hash (CounterpartyCardAgent).
-- 캐시 경로: `report_cache/llm/{as_of}/{db_hash}/{mode}/{org}__{counterparty}.json`, input_hash+prompt_version 일치 시 재사용.
-- 폴백: OpenAI 호출 실패/파싱 실패 시 fallback_blockers/evidence/recommended_actions 생성, risk_level_llm은 규칙값으로 대체.
-- signals(lost_90d_count/last_contact_date)는 현재 집계되지 않고 payload 필드만 존재.
-- Payload 필드:
-  - counterparty_key(orgId/orgName/counterpartyName), tier, **report_mode**
-  - risk_rule: rule_risk_level, pipeline_zero, min_cov_current_month, coverage, gap, target_2026, confirmed_2026, expected_2026 (coverage/min_cov는 round6)
-  - signals: last_contact_date, lost_90d_count, lost_90d_reasons (현재 미집계)
-  - top_deals_2026: 금액 기준 desc 상위 5(최대 10). **출처: D5 report row에 포함된 리스트**(deal_norm 재조회 없음, 없으면 deal 테이블 fallback 허용). 필드: id/name/status/possibility/amount/start/end/contract/expected_close/course_id_exists.
-  - memos: 최근 180일, 최대 20개, org/deal/people 합집합, dedupe, trim 1000자.
+- LLM env: LLM_PROVIDER(openai만 유효), OPENAI_API_KEY, LLM_MODEL(기본 gpt-4o-mini), LLM_BASE_URL(optional), LLM_TIMEOUT(기본 15s), LLM_MAX_TOKENS(기본 512), LLM_TEMPERATURE(기본 0.2). `LLMConfig.is_enabled`는 provider=="openai" AND api_key 존재일 때만 true.
+- payload 해시: canonical_json(payload) → sha256 = llm_input_hash. prompt_version(v1) 불일치 시 캐시 미스.
+- 캐시 경로: `report_cache/llm/{as_of}/{db_hash}/{mode}/{org}__{counterparty}.json`; meta.prompt_version·llm_input_hash가 일치하면 재사용한다.
+- 폴백: LLM 미설정/호출 실패/repair 실패/스키마 검증 실패 시 fallback_blockers/evidence/actions 생성, risk_level_llm을 규칙값으로 대체한다.
+- signals(lost_90d_count/last_contact_date)는 현재 집계되지 않아 0/None placeholder만 채워진다.
+- Payload 필드
+  - counterparty_key(orgId/orgName/counterpartyName), tier, report_mode
+  - risk_rule: rule_risk_level, pipeline_zero, min_cov_current_month, coverage_ratio, gap, target_2026, confirmed_2026, expected_2026
+  - signals: last_contact_date=None, lost_90d_count=0, lost_90d_reasons=[]
+  - top_deals_2026: base row에 포함된 리스트 사용, 비어 있으면 deal+people 조인으로 2026 딜을 모드 필터링 후 amount desc TOP_DEALS_LIMIT(10) 중 상위 5개만 payload에 사용.
+  - memos: org/deal/people 기준 최근 180일, 최대 20건, 중복 제거 후 1000자 트림.
   - data_quality: unknown_year_deals, unknown_amount_deals, unclassified_counterparty_deals.
-- Canonicalization: 키 정렬, 문자열 trim+공백 축약+NFC, 숫자 round6, arrays 정렬 고정(딜 amount desc, memos date desc). JSON dumps separators(",",":") → sha256.
-- 프롬프트: `dashboard/server/agents/counterparty_card/prompts/{mode}/{version}/{system|user|repair}.txt`(주석 `#` 무시, 없으면 빈 문자열). version 기본 v1.
-- Prompt 버전/모델: CounterpartyCardAgent.version="v1". LLM env로 모델/키를 설정, 미설정 시 폴백-only.
-- Blocker 라벨 10개만 허용: PIPELINE_ZERO/BUDGET/DECISION_MAKER/APPROVAL_DELAY/LOW_PRIORITY/COMPETITOR/FIT_UNCLEAR/NO_RESPONSE/PRICE_TERM/SCHEDULE_RESOURCE.
-- 폴백 blocker: pipeline_zero 우선, 아니면 키워드 regex 매치(top 3) 없으면 FIT_UNCLEAR. 폴백 evidence 3개(숫자+coverage or gap+파이프라인 품질), actions 2~3개(블로커 템플릿).
+- Canonicalization: 키 정렬, 문자열 trim+공백 축약+NFC, 숫자 round6, 딜 amount desc·id asc, 메모 date desc; JSON dumps(separators=",", ":") 후 sha256.
+- 프롬프트: `dashboard/server/agents/counterparty_card/prompts/{mode}/v1/{system|user|repair}.txt`(주석 `#` 무시, 없으면 빈 문자열). CounterpartyCardAgent.version="v1".
+- Blocker 라벨 허용집합: PIPELINE_ZERO/BUDGET/DECISION_MAKER/APPROVAL_DELAY/LOW_PRIORITY/COMPETITOR/FIT_UNCLEAR/NO_RESPONSE/PRICE_TERM/SCHEDULE_RESOURCE. 폴백은 pipeline_zero 우선, regex 점수 상위 3개, 매치 없으면 FIT_UNCLEAR.
 
 ## Coupling Map
-- 구현: `dashboard/server/agents/counterparty_card/*`(payload/hash/fallback/cache), `counterparty_llm.py`(어댑터), `deal_normalizer.py`(orchestrator+composer 병합).
-- 룰 참조: `05_RULEBOOK_COUNTERPARTY_RISK.md` for gap/coverage/risk.
-- 캐시 경로/DB 해시: `deal_normalizer.build_counterparty_risk_report` (db_hash=mtime sha256 16자, 캐시에 mode 포함).
+- 구현: `dashboard/server/agents/counterparty_card/*`(payload/hash/fallback/cache), `counterparty_llm.py`(호환 어댑터), `deal_normalizer.py`(orchestrator+composer 병합).
+- 룰/정렬: `05_RULEBOOK_COUNTERPARTY_RISK.md` 참조.
+- 캐시 루트/DB 해시: `deal_normalizer.build_counterparty_risk_report` (db_hash=mtime sha256 16자, mode 포함).
 
 ## Edge Cases
-- OPENAI_API_KEY 미설정 또는 LLM_PROVIDER!=openai이면 LLM_NOT_CONFIGURED 상태로 폴백 사용.
-- repair 프롬프트 한 번 시도 후에도 JSON 파싱 실패 시 LLM_OUTPUT_NOT_JSON으로 처리.
-- LLM 미연동 상태: CounterpartyCardAgent 폴백만 반환. 모델 연결 시 해당 호출 사용.
-- 캐시 파일 깨짐/해시 불일치: 캐시 미스 후 재생성.
-- coverage_ratio None(target=0) → evidence는 gap/pipeline 중심, coverage 기반 근거 금지.
+- OPENAI_API_KEY 미설정, LLM_PROVIDER≠openai, OpenAI SDK 미설치 중 하나라도 발생하면 LLM 호출 없이 폴백 결과를 사용한다.
+- repair 프롬프트 후에도 JSON 파싱에 실패하거나 스키마 검증에 실패하면 fallback_output으로 대체된다.
+- 캐시 파일이 손상되었거나 prompt_version/llm_input_hash가 다르면 새로 생성한다.
+- target_2026=0으로 coverage_ratio가 None일 때 evidence는 gap/pipeline_zero를 기준으로 생성된다.
 
 ## Verification
 - env 미설정 상태에서 리포트 생성 시 fallback evidence/actions가 포함된 JSON이 반환되는지 확인.
-- 동일 입력 payload에 대해 llm_input_hash와 캐시가 재사용되는지 확인.
-- prompts 디렉터리(`counterparty_card/prompts/{mode}/v1`)가 로드 가능하며 파일 없을 때 default_text로 대체되는지 확인.
-- 동일 payload 두 번 호출 시 llm cache hit(파일 존재, llm_input_hash 동일)로 재호출 0회.
-- memo 1개 변경 시 llm_input_hash가 달라져 캐시 미스 발생.
-- 폴백 동작: LLM 호출을 강제 실패시켜도 evidence 3개/actions 2~3개가 채워지는지 확인(CounterpartyCardAgent).
+- 동일 payload에서 llm_input_hash 일치로 캐시가 재사용되는지 확인.
+- prompts 디렉터리(`counterparty_card/prompts/{mode}/v1`)가 로드되고, 파일이 없을 때 빈 문자열로 호출되는지 확인.
+- memo나 deal 순서 변경 시 canonical hash가 달라져 캐시 미스가 발생하는지 확인.
+- OPENAI_API_KEY 제거 후 report 생성 시 evidence 3개/actions 2~3개가 채워지는지 확인.
+
+## Refactor-Planning Notes (Facts Only)
+- signals가 비어 있어도 payload 해시에 포함되므로 추후 신호 집계 추가 시 캐시 키 변화에 주의해야 한다.
+- 프롬프트 파일 부재 시 빈 문자열로 호출되므로 배포 시 프롬프트 번들 누락 여부를 캐시 miss로만 확인할 수 있다.
+- LLM 비활성 상태도 성공 경로로 처리되므로 “LLM 호출 여부”는 meta.llm_input_hash/logs를 통해서만 알 수 있다.
 
 ## System Prompt (v1)
 ```
@@ -149,7 +150,7 @@ sync_source:
 - 폴백 actions: blocker 매핑 템플릿 상위 2~3개.
 
 ## Canonical Hash (요약)
-- canonicalize(payload): 키 정렬, 문자열 trim+공백축약+NFC, 숫자 round6, arrays 정렬 고정(deals amount desc/id asc, memos date desc/source/text). JSON dumps(separators:",",":", sort_keys=True, ensure_ascii=False), sha256.
+- canonicalize(payload): 키 정렬, 문자열 trim+공백축약+NFC, 숫자 round6, arrays 정렬 고정(deals amount desc/id asc, memos date desc/source/text). JSON dumps(separators=",",":", sort_keys=True, ensure_ascii=False), sha256.
 - compute_llm_input_hash(payload) → 캐시 키/검증.
 
 ## Env (로컬 실행용)
@@ -165,7 +166,6 @@ sync_source:
 - 해시 안정성: deal/memo 정렬 변경 시 hash가 바뀌는지, 동일 정렬이면 언어/OS 불문 동일 hash인지 확인.
 
 ## Refactor-Planning Notes (Facts Only)
-- top_deals_2026와 memos 입력이 비어도 폴백 근거/액션은 생성되지만, signals는 현재 집계되지 않아 payload 변경 시 캐시 해시가 달라질 수 있다.
-- 프롬프트 파일이 없으면 빈 문자열로 호출되므로 프롬프트만 교체하려면 `dashboard/server/agents/counterparty_card/prompts/{mode}/v1/*.txt` 배포가 필요하다.
-- LLM_PROVIDER가 openai가 아니거나 키가 없으면 항상 폴백-only로 동작하므로 배포 환경에서 키 로딩 실패가 곧바로 리포트 실패로 이어지지 않도록 설계되어 있다.
-
+- signals가 비어 있어도 payload 해시에 포함되므로 추후 신호 집계 추가 시 캐시 키 변화에 주의해야 한다.
+- 프롬프트 파일 부재 시 빈 문자열로 호출되므로 배포 시 프롬프트 번들 누락 여부를 캐시 miss로만 확인할 수 있다.
+- LLM 비활성 상태도 성공 경로로 처리되므로 “LLM 호출 여부”는 meta.llm_input_hash/logs를 통해서만 알 수 있다.

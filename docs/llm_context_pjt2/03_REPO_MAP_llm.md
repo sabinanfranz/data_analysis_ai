@@ -1,6 +1,6 @@
 ---
 title: 레포 지도 (PJT2) – 기능 ↔ 파일
-last_synced: 2026-01-29
+last_synced: 2026-02-04
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
@@ -8,10 +8,6 @@ sync_source:
   - dashboard/server/org_tables_api.py
   - org_tables_v2.html
   - tests/test_counterparty_risk_rule.py
-  - dashboard/server/main.py
-  - tests/test_api_target_attainment.py
-  - dashboard/server/main.py
-  - tests/test_api_target_attainment.py
   - dashboard/server/main.py
   - tests/test_api_target_attainment.py
 ---
@@ -34,7 +30,7 @@ sync_source:
 - **LLM 캐시/폴백**: `dashboard/server/counterparty_llm.py`
   - payload 생성, canonical 해시, 폴백 evidence/actions, 파일 캐시(`report_cache/llm/...`).
 - **스케줄/캐시/락**: `dashboard/server/report_scheduler.py`
-  - cron(08:00 KST) 등록, DB 안정성 체크, 스냅샷 복사, 캐시 atomic write, status.json.
+  - cron(08:00 KST) 등록, DB 안정성 체크, 스냅샷 복사, 캐시 atomic write, status/status_online, progress L1(PERF) cron(06:00 기본, ENABLE_PROGRESS_SCHEDULER=1일 때).
 - **API 라우터**: `dashboard/server/org_tables_api.py`
   - `/api/report/counterparty-risk`, `/report/counterparty-risk/recompute`, `/report/counterparty-risk/status`, `/api/llm/target-attainment` 등.
 - **프런트**: `org_tables_v2.html`
@@ -42,7 +38,7 @@ sync_source:
 - **테스트**: `tests/test_counterparty_risk_rule.py`(D4 규칙), `tests/test_counterparty_target.py`, `tests/test_deal_normalizer.py`, `tests/test_org_tier.py`, `tests/test_counterparty_llm.py`, `tests/test_api_target_attainment.py`.
 
 ## Edge Cases
-- Scheduler start hook는 `dashboard/server/main.py`의 startup 이벤트에서 호출되며, `ENABLE_SCHEDULER=0`이면 미기동.
+- Scheduler start hook는 `dashboard/server/main.py`의 startup 이벤트에 연결되어 있으며, `ENABLE_SCHEDULER=0`이면 start_scheduler가 바로 return 한다.
 - LLM 실제 모델 호출은 env(LLM_PROVIDER=openai + OPENAI_API_KEY) 설정 시 활성, 미설정 시 폴백-only.
 
 ## Verification

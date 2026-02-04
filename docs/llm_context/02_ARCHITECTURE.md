@@ -6,7 +6,9 @@ sync_source:
   - dashboard/server/main.py
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py
+  - dashboard/server/statepath_engine.py
   - org_tables_v2.html
+  - start.sh
 ---
 
 ## Purpose
@@ -15,7 +17,7 @@ sync_source:
 ## Behavioral Contract
 - 데이터 수집: `salesmap_first_page_snapshot.py`가 Salesmap API에서 조직/People/Deal/메모/웹폼 제출을 SQLite(`salesmap_latest.db`)에 적재하고, 완료 후 webform_history를 후처리한다.
 - 백엔드: `dashboard/server/main.py`가 FastAPI를 기동해 `/api/*` 라우트를 `org_tables_api.py`에 위임하고, CORS와 `/api/initial-data` 초기 데이터 로드, `/` 정적 파일(`org_tables_v2.html`) 제공을 담당한다. 기동 시 `report_scheduler.start_scheduler()`로 Counterparty Risk/Progress 일일 리포트 스케줄러를 백그라운드에서 시작한다.
-- DB/집계: `dashboard/server/database.py`가 모든 조회/집계/정렬을 수행하며, P&L/월별 체결액/StatePath/랭킹/딜체크/QC/DRI 로직과 캐시를 포함한다. JSON compact 변환은 `json_compact.py`, StatePath 계산은 `statepath_engine.py`가 수행한다.
+- DB/집계: `dashboard/server/database.py`가 모든 조회/집계/정렬을 수행하며, P&L/월별 체결액/StatePath/랭킹/딜체크/QC/DRI 로직과 DB mtime 기반 캐시를 포함한다. JSON compact 변환은 `json_compact.py`, StatePath 계산은 `statepath_engine.py`가 수행한다.
 - 프런트: `org_tables_v2.html`이 정적 HTML로 API fetch→렌더/모달/캐시를 담당하며, 사이드바 메뉴로 사업부 퍼포먼스/운영/분석/검수 화면을 전환한다.
 - 테스트: `tests/test_perf_monthly_contracts.py`, `tests/test_pl_progress_2026.py`, `tests/test_api_counterparty_dri.py` 등에서 월별/P&L/DRI 계약을 검증한다.
 
@@ -24,6 +26,7 @@ sync_source:
 - 프런트 캐시는 클라이언트 메모리(Map)에만 존재하고 무효화가 없으므로, DB 교체 시 새로고침이 필수이다(`org_tables_v2.html` fetchJson).
 - FastAPI는 무상태이며, 모든 집계/정렬 로직은 `database.py`에 단일 책임으로 모여 있다.
 - 스냅샷 교체는 tmp→final 원자 교체(잠금 시 폴백)를 전제로 하며, DB 스키마가 변해도 백엔드는 SQLite를 직접 읽는다.
+- 캐시 키는 대부분 `(db_path, db_mtime, ...)` 조합이므로 파일 교체 후 프로세스 재시작/mtime 변경이 있어야 새로운 데이터가 반영된다.
 
 ## Coupling Map
 - 데이터/파이프라인: `salesmap_first_page_snapshot.py` → SQLite(`salesmap_latest.db`).

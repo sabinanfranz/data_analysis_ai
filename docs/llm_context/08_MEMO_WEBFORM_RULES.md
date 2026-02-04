@@ -4,75 +4,73 @@ last_synced: 2026-02-04
 sync_source:
   - dashboard/server/database.py
   - dashboard/server/json_compact.py
-  - tests/test_won_groups_json.py
+  - dashboard/server/markdown_compact.py
   - org_tables_v2.html
+  - tests/test_won_groups_json.py
 ---
 
 ## Purpose
-- won-groups-json 생성 시 메모/웹폼을 어떻게 정제·매핑하는지 코드 기준으로 명세해 LLM 입력 품질을 보장한다.
+- won-groups-json/compact/markdown 생성 및 프런트 렌더 시 메모·웹폼이 어떻게 정제·매핑되는지 SSOT로 기록해 LLM/대시보드 품질을 보장한다.
 
 ## Behavioral Contract
-- 폼 메모 정제(`database._clean_form_memo`):
-  - 트리거: `utm_source` 또는 “고객 마케팅 수신 동의”가 있을 때만 실행.
-  - 처리: 줄 병합 후 `key: value` 형태만 유지, 전화/기업규모/업종/채널/동의/utm, ATD/SkyHive/제3자 동의 키를 제거.
-  - 제외: 남은 키가 `고객이름/고객이메일/회사이름/고객담당업무/고객직급/직책`만 있으면 `""` 반환, 특수 문구 “단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청”이 있으면 `""` 반환.
-  - 출력: 정제 성공 시 `cleanText` JSON 문자열, 실패/미트리거 시 None → 원문 text 유지.
-- 메모 적용:
-  - 조직 메모(memo.organizationId only)는 organization.memos 배열에 추가.
-  - People/Deal 메모는 각 엔티티의 memos 배열에 추가, `cleanText==""`는 제외.
-  - memo에 `htmlBody`가 있을 수 있으며, won-groups-json에서는 그대로 포함되지만 compact에서는 제거된다(아래 참조).
-  - memo 정렬/표시를 위해 `created_at_ts` 필드가 추가로 포함될 수 있으며, 원본 `createdAt` 타임스탬프 문자열을 그대로 담는다.
-- 웹폼 정제:
-  - People.`"제출된 웹폼 목록"`을 `_safe_json_load` 후 `{id,name}` 배열로 변환.
-  - webform_history 테이블에서 (peopleId, webFormId)별 제출 날짜를 조회해 `date`에 단일/리스트를 채우고, 없으면 `"날짜 확인 불가"`.
-  - won-groups-json 응답에서는 webform id를 노출하지 않는다.
-- compact 변환(`json_compact.py`):
-  - memos/webforms를 유지하되 `htmlBody`는 전역적으로 제거한다. text가 비었거나 품질이 낮으면 `htmlBody`를 Markdown으로 변환해 memo.text를 보강한다(표/줄바꿈/리스트 구조 유지, 1열→2열 변환 금지).
-  - people가 deal.people_id 참조만 남고 누락된 인물은 stub로 people 배열에 추가된다.
-- 프런트 렌더:
-  - 메모 상세/딜체크 모달은 `htmlBody`가 있으면 sanitizer(화이트리스트)로 안전하게 렌더하고, 없으면 text를 `pre-wrap`으로 표시한다. sanitizer는 DIV/Table/thead/tbody/tr/th/td/caption까지 허용해 블록/표 구조를 유지하고, 링크는 href 검증 + `_blank`/`noopener`를 강제한다.
-  - Compact Markdown(v1.1) 렌더러(서버/프런트 공통)는 deal.memos를 `created_at_ts`(없으면 `date`) 내림차순으로 정렬해 최신 10개를 노출하며, 전화번호는 `[phone]`으로 마스킹하고 200~300자(기본 240자)로 truncate한다.
-### (흡수) Won JSON/Compact 생성 세부 규칙
-- 백엔드 원본 JSON(`get_won_groups_json`): 입력 org가 없으면 `{"organization": null, "groups": []}`. target_uppers는 2023/2024/2025 Won 딜이 있는 upper_org만 포함하며 People/Deal은 `(upper_org, team)`별로 묶어 upper_org asc → team asc 정렬한다. organization 블록에 `industry_major/industry_mid`와 organizationId만 가진 memos를 포함한다.
-- People 필드는 `id/name/upper_org/team_signature→team/title_signature→title/edu_area/webforms/memos`를 모두 노출한다. webforms는 `_safe_json_load` 후 `{name,date}`로 변환하며 webform id는 절대 포함하지 않고, `webform_history`가 없거나 제출이 없으면 date=`"날짜 확인 불가"`, 동일 id 다중 제출은 날짜 리스트로 남긴다.
-- Deals는 대상 upper_org People의 모든 상태 딜을 포함해 id/name/team/owner/status/probability/expected_date/expected_amount/lost_confirmed_at/lost_reason/course_format/category/contract_date/amount/start_date/end_date/net_percent/created_at + person 필드를 그대로 둔다. owner는 dict/name/id를 가공 없이 노출한다.
-- Compact(`compact_won_groups_json`): schema_version=`won-groups-json/compact-v1`, Won 딜을 기준으로 `won_amount_by_year` 요약을 누적하고 deal.people를 people_id 참조로 교체한다. 누락 인물은 stub(id/name/upper_org/team/title/edu_area)로 추가하고 day1_teams를 배열로 정규화한다. `deal_defaults`는 course_format/category/owner/day1_teams의 80% 이상 반복 값을 추출해 그룹 수준으로 올리고 개별 딜에서 동일 값은 제거한다. memos/webforms는 유지하되 `htmlBody`는 제거되고 text가 비어 있고 htmlBody만 있을 때 plain text로 보강한다. null/빈 배열·객체는 제거된다.
-### (흡수) 프런트 필터링/렌더 맵
-- `org_tables_v2.html`은 회사 선택 시 `/orgs/{id}/won-groups-json`을 1회 fetch 후 캐시한다. 상위 조직을 선택하지 않으면 JSON 버튼이 비활성화되고 안내 문구를 표시하며, 선택 시 `filterWonGroupByUpper`로 groups만 upper_org 일치 항목을 필터링한다(organization 블록은 그대로 유지). compact 버튼은 `/won-groups-json-compact` 응답을 사용하고 `htmlBody` 미포함 여부를 확인한다.
+### 폼 메모 정제 (`database._clean_form_memo`)
+- 트리거: memo.text에 `utm_source` **또는** “고객 마케팅 수신 동의” 키가 있을 때만 실행(없으면 원문 그대로).
+- 처리: 줄 병합 후 `key: value` 형식만 남기고 전화/기업규모/업종/채널/동의/utm/ATD/SkyHive/제3자 동의 키를 제거.
+- 제외: 남은 키가 `{고객이름,고객이메일,회사이름,고객담당업무,고객직급/직책}`만이면 `""` 반환; 특수 문구 “단, 1차 유선 통화시 미팅이 필요하다고 판단되면 바로 미팅 요청”이 있으면 `""` 반환.
+- 출력: 정제 성공 시 `cleanText`(dict), 실패/비트리거 시 None → 원문 text 사용. `cleanText==""`는 완전히 제외된다.
+
+### 메모 적용 위치
+- organizationId 전용 메모 → organization.memos
+- peopleId/organizationId 메모 → person.memos
+- dealId 메모 → deal.memos
+- `ownerId`를 `_get_owner_lookup`으로 이름 매핑, `created_at_ts`는 원본 createdAt 그대로 보존. `htmlBody` 컬럼이 존재할 경우 원본 메모 API에는 포함된다.
+
+### 웹폼 매핑
+- people."제출된 웹폼 목록" JSON을 `{id,name}` 배열로 변환(id/text 혼재 허용).
+- `webform_history`(peopleId, webFormId, createdAt)에서 날짜를 찾아 동일 id에 날짜 리스트를 매핑; 없으면 `"날짜 확인 불가"`. people/webform id 중 하나라도 비면 매핑 건너뜀.
+- won-groups-json/compact 응답에서는 webform id를 노출하지 않는다.
+
+### compact / markdown 변환
+- `compact_won_groups_json`(schema `won-groups-json/compact-v1`)
+  - memos/webforms 유지하되 `htmlBody` 전역 제거.
+  - text가 없고 htmlBody만 있을 때 plain text로 보강 후 htmlBody 제거.
+  - deal.people → people_id 참조로 단순화, 누락 인물 stub 추가. day1_teams JSON을 배열로 정규화.
+  - `deal_defaults`는 course_format/category/owner/day1_teams 값이 3건 이상·≥80% 반복 시 group level로 승격하고 개별 딜에서 제거.
+  - Won 요약 `won_amount_by_year`/online/offline 누적 후 organization.summary에 합산.
+- `won-groups-markdown-compact`(v1.1)
+  - 메모 정렬: `created_at_ts` → `date` 내림차순. 최대 `deal_memo_limit`(기본 10).
+  - `memo_max_chars`(기본 240)로 truncate, 전화번호는 `[phone]`으로 마스킹, max_output_chars 기본 200k 초과 시 `(truncated due to size limit)` 추가 후 중단.
+
+### 프런트 렌더 규칙 (org_tables_v2.html)
+- JSON 버튼: 회사 미선택 또는 upper_org 미선택 시 비활성화 안내, 선택 시 `/won-groups-json` 캐시 후 upper_org 필터(`filterWonGroupByUpper`).
+- 메모 모달: htmlBody가 있으면 whitelist sanitizer(div/table/thead/tbody/tr/th/td/caption, 링크 href 검증+`_blank`/`noopener`)로 렌더, 없으면 text `pre-wrap`.
+- webform 모달: `{name,date}`만 표시, date는 문자열 또는 배열 그대로 표시.
 
 ## Invariants (Must Not Break)
-- 폼 메모 정제 트리거는 utm_source 또는 “고객 마케팅 수신 동의” 존재 여부에만 의존하며, 다른 문자열로는 정제가 실행되지 않는다.
-- 드롭 키/특수 문구/정보 부족 조건을 만족하면 메모는 결과에서 제외된다.
-- webform id는 응답에 포함되지 않으며, date는 `"날짜 확인 불가"`/단일/리스트 3형식 중 하나다.
-- compact 변환은 memos/webforms를 유지하지만 htmlBody는 제거된다. text 보강은 compact에 한정되며 일반 메모 조회 API는 원본 text/htmlBody를 그대로 노출한다.
-### (흡수) 추가 불변조건
-- target_uppers는 Won 딜이 있는 upper_org만 포함해야 하며, groups 정렬은 upper_org asc → team asc로 고정된다.
-- compact 변환은 Won 딜이 아닌 값은 summary에 반영하지 않고, `deal_defaults`는 3건 이상·80% 이상 반복일 때만 설정된다.
+- 폼 정제 트리거는 utm_source 또는 “고객 마케팅 수신 동의” 존재 여부에만 의존한다.
+- webform id는 어떤 응답에도 노출되지 않는다; date는 "날짜 확인 불가"|단일|리스트 중 하나여야 한다.
+- compact는 memos/webforms를 유지하지만 htmlBody는 항상 제거한다; text 보강은 compact에 한정.
+- target_uppers: Won 딜이 있는 upper_org만 포함, groups 정렬 upper_org ASC → team ASC.
+- markdown: 전화번호 항상 `[phone]` 마스킹, deal_memo_limit/memo_max_chars/max_output_chars 기본값을 준수해야 한다.
 
 ## Coupling Map
- - 백엔드: `dashboard/server/database.py` (`_clean_form_memo`, `get_won_groups_json`), webform 날짜 조회 `_build_history_index`.
- - Compact: `dashboard/server/json_compact.py` (`compact_won_groups_json`, `_normalize_jsonish`, `_normalize_day1_teams`, `_date_only`).
- - 프런트: `org_tables_v2.html` JSON 모달/웹폼 모달(`openWebformModal`, `getWebformsForPerson`)이 웹폼 `{name,date}`를 표시한다.
- - 테스트: `tests/test_won_groups_json.py`가 메모 정제, webform 날짜 매핑, compact summary/deal_defaults를 검증한다.
- - 프런트 won JSON 모달/compact 버튼/필터 로직은 `org_tables_v2.html` 내 JSON 카드 렌더러와 공유하며, 선택이 없을 때 버튼 비활성 로직이 동일하게 적용된다.
+- 백엔드: `database.py` (`_clean_form_memo`, `get_won_groups_json`, `_build_history_index`), `json_compact.py`, `markdown_compact.py`.
+- 프런트: `org_tables_v2.html` 메모/웹폼 모달·JSON 버튼 로직.
+- 테스트: `tests/test_won_groups_json.py`가 cleanText 드롭/정제, webform 날짜 매핑, compact summary/deal_defaults/markdown 규칙을 검증한다.
 
 ## Edge Cases & Failure Modes
- - webform_history 테이블이 없거나 webFormId/peopleId가 비어 있으면 날짜가 매핑되지 않아 `"날짜 확인 불가"`가 반환된다.
- - 폼 형식이 아니거나 트리거가 없으면 정제가 스킵되어 원문 text가 그대로 노출된다.
- - 정제 실패나 정보 부족으로 `cleanText==""`가 되면 해당 메모는 완전히 제외되어 메모 개수가 줄어든다.
- - Won 딜이 없는 조직은 target_uppers가 비어 있고 groups가 빈 배열이어야 하며 organization 블록은 유지돼야 한다.
+- webform_history 테이블이 없거나 peopleId/webFormId 빈값 → date="날짜 확인 불가".
+- 폼이 아니거나 트리거 부재 → cleanText 없음, 원문 text 그대로 노출.
+- cleanText가 `""` → 메모 항목에서 제외되어 개수가 줄 수 있음.
+- compact가 memos/webforms를 유지하므로 개인정보 비식별이 필요하면 별도 후처리가 필요하다.
 
 ## Verification
- - `/api/orgs/{id}/won-groups-json` 호출로 webforms `{name,date}`가 id 없이 포함되는지, 폼 메모가 cleanText로 치환되고 드롭 규칙이 적용되는지 샘플 org로 확인한다.
- - webform_history가 없는 DB에서 date가 `"날짜 확인 불가"`로 노출되는지 확인한다.
-- `/api/orgs/{id}/won-groups-json-compact`에서 schema_version과 summary/deal_defaults가 존재하고 memos/webforms가 원본과 동일하게 남으며 날짜가 YYYY-MM-DD로 정규화되는지 확인한다.
- - `tests/test_won_groups_json.py`를 실행해 메모/웹폼 정제·compact 규칙이 검증되는지 확인한다.
-### (흡수) 추가 검증 포인트
-- 회사 선택 후 상위 조직 미선택 시 JSON 버튼이 비활성화되고 안내 문구가 뜨는지, 선택 시 groups가 해당 upper_org만 남는지 DevTools로 확인한다.
-- compact 응답에 `schema_version=won-groups-json/compact-v1`, `deal_defaults` 80% 이상 추출 규칙, `htmlBody` 제거가 적용됐는지 확인한다.
+- `curl -s "http://localhost:8000/api/orgs/<org>/won-groups-json" | jq '.groups[0].people[0].webforms, .groups[0].deals[0].memos[0]'` → webform id 미노출, date 매핑/cleanText 적용 확인.
+- webform_history 없는 DB로 동일 호출 → date="날짜 확인 불가" 확인.
+- `curl -s "http://localhost:8000/api/orgs/<org>/won-groups-json-compact" | jq '.schema_version, .organization.summary, .groups[0].deals[0].memos[0]'` → htmlBody 제거·text 보강·deal_defaults 확인.
+- `curl -s "http://localhost:8000/api/orgs/<org>/won-groups-markdown-compact" | head -20` → phone 마스킹, memo_max_chars 적용, truncated 문구(필요 시) 확인.
 
 ## Refactor-Planning Notes (Facts Only)
- - 폼 정제 규칙이 `database.py`에만 정의되어 프런트/compact와 분리되어 있어 변경 시 세 곳 이상을 조정해야 한다.
- - webform 날짜 매핑이 webform_history 테이블 유무에 따라 달라져 스키마 의존성이 있다.
-- compact가 memos/webforms를 그대로 유지하므로 LLM 입력을 비식별화하려면 별도 전처리가 필요하다.
- - target_uppers/upper_org 정렬 규칙이 프런트 필터에도 전파되어 있어 로직 변경 시 JSON 모달/필터를 함께 수정해야 한다.
+- 폼 정제/compact/markdown 규칙이 분산되어 있어 변경 시 세 모듈을 모두 수정해야 한다.
+- webform_history 의존도가 있어 스냅샷 후처리 실패 시 날짜 품질이 떨어진다.
+- LLM 비식별 요구 시 compact 이후 별도 필터링/마스킹 모듈이 필요하다.

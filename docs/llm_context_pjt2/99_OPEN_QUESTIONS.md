@@ -1,8 +1,8 @@
 ---
 title: Open Questions / Assumptions (PJT2)
-last_synced: 2026-01-29
+last_synced: 2026-02-04
 sync_source:
-  - docs/llm_context_pjt2/00_INDEX.md
+  - docs/llm_context_pjt2/00_INDEX_llm.md
 ---
 
 # Open Questions / Assumptions (PJT2)

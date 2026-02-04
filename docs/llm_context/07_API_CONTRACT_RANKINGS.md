@@ -1,67 +1,70 @@
 ---
-title: 랭킹/집계/이상치 API 계약
+title: 랭킹/집계/DRI API 계약
 last_synced: 2026-02-04
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py
+  - dashboard/server/statepath_engine.py
   - org_tables_v2.html
   - tests/test_api_counterparty_dri.py
 ---
 
 ## Purpose
-- 랭킹/집계/이상치/DRI 관련 FastAPI 엔드포인트의 필터/정렬/응답 스키마를 코드 기준으로 명세한다.
+- 랭킹·DRI·이상치·요약 계열 FastAPI 엔드포인트의 파라미터/정렬/응답 스키마 및 캐시 규칙을 코드 기준으로 명시한다.
 
 ## Behavioral Contract
-- 공통: 금액은 원 단위 TEXT → `_to_number`로 변환 후 반환, 프런트가 억 단위로 표시한다. 연도 필터는 `"계약 체결일"` 앞 4자리(없으면 `_year_from_dates`/`_parse_year_from_text`)를 사용한다. 규모 필터는 `size`(기본 전체) 파라미터가 있을 때만 적용한다.
-- `GET /api/rank/2025-deals`: 상태 Won, 계약연도 2025. 그룹=orgId. 필드 `orgId/orgName/industryMajor/industryMid/totalAmount/onlineAmount/offlineAmount/grade/totalAmount2024/grade2024/formats[]`. 정렬 totalAmount desc.
-- `GET /api/rank/2025-deals-people`: 2025 Won 딜이 있는 조직만 대상, 상위 조직/팀 미입력만인 경우 제외. 필드 `orgId/orgName/upper_org/team/personId/personName/title_signature/edu_area/won2025/dealCount/deals[]`. 정렬 won2025 desc.
-- `GET /api/rank/mismatched-deals`: deal.organizationId ≠ people.organizationId. 필드 `dealId/dealName/dealOrgId/Name/personId/Name/personOrgId/Name/contract_date/amount/course_format/course_shape`.
-- `GET /api/rank/won-yearly-totals`: Won 상태, 계약연도 2023/2024/2025. 규모별 합계 `won2023/2024/2025`, 정렬 합계 desc.
-- `GET /api/rank/won-industry-summary`: Won 상태, 계약연도 2023/2024/2025, 선택 규모 필터. 업종 구분(대)별 합계/조직 수.
-- `GET /api/rank/2025/summary-by-size?exclude_org_name=삼성전자&years=2025,2026`: Won 상태, 계약연도 years. exclude_org_name 정확히 일치 시 제외. 반환 `by_size{size:sum_2025,sum_2026}`, totals, snapshot_version=`db_mtime:<int>`.
-- `GET /api/rank/2025-top100-counterparty-dri?size=대기업`: Lost/Convert 제외. 2025/2026 계약/예상일이 있는 확정/높음/Won 딜만 집계. ONLINE 판정=`statepath_engine.ONLINE_COURSE_FORMATS`. owners2025는 People.owner_json 우선, 없으면 deal.owner_json. 필드 `orgId/orgName/sizeRaw/orgTier/orgWon2025/upperOrg/cpOnline2025/cpOffline2025/cpOnline2026/cpOffline2026/owners2025/dealCount2025` + 선택적 `target26Offline/target26Online`(override 여부는 `target26OfflineIsOverride/target26OnlineIsOverride`). 정렬 orgWon2025 desc → cpTotal2025 desc. 기본은 규모별 **전체** 반환이며 limit/offset은 선택 사항(meta에 offset/limit/orgCount/rowCount 포함). **추가 규칙**: counterparty_targets_2026.xlsx에만 존재하고 딜이 없는 (기업명, 카운터파티) 조합도, 조직명 정확 일치 + People.upper_org 정규화 일치 시 orgTier=`N`인 row로 추가해 응답에 포함되며, cp* 값은 0, target26*은 엑셀 override 적용 값(없으면 0)과 override 플래그를 유지한다(정렬은 동일 계약 기준이지만 UI에서 N-tier를 최하단으로 배치).
-- `GET /api/ops/2026-online-retention`: 상태=Won, 생성일 ≥ 2024-01-01, 과정포맷이 온라인 3종(구독제/선택구매/포팅), 금액·수강시작일·수강종료일·코스ID가 모두 존재하는 딜만 반환한다(수강종료일 2024-10~2027-12 범위 권장). people/organization을 조인해 `orgId/orgName/upperOrg/teamSignature/personId/personName/createdAt/dealName/courseFormat/status/amount/onlineCycle/onlineFirst/startDate/endDate/owners/memoCount` 필드를 내려주며, owners는 deal.owner_json 우선→people.owner_json 보조로 파싱한다. 정렬은 endDate asc → orgName asc → dealId asc, meta에 db_version/rowCount를 포함한다.
-- `GET /api/rank/2025-top100-counterparty-dri/targets-summary?size=대기업` → 규모별 DRI 행을 받아 티어 그룹별 target26/coverage/expected 합계와 DB snapshot 정보를 제공한다(프런트 Target Board 계산에 사용).
-- `GET /api/rank/2025-counterparty-dri/detail?orgId=...&upperOrg=...`: 해당 org/upper_org 딜 상세, `deals[]`에 `people_id/people_name/upper_org` 포함.
-- 프런트 랭킹 화면은 `/api/rank/2025-deals`만 사용해 26년 타겟(온라인/비온라인)을 클라이언트에서 계산하며, summary-by-size 응답은 UI에서 직접 사용하지 않는다.
-### (흡수) 랭킹/DRI 필드·정렬·캐시 상세
-- `/api/rank/2025/summary-by-size`는 snapshot_version을 `db_mtime:<int>`로 포함하고 exclude_org_name 기본값을 유지한다.
-- `/api/rank/2025-top100-counterparty-dri`는 규모별 **전체 리스트** 반환이 기본이며 limit/offset은 선택 사항이다. owners는 People.owner_json 우선(없으면 deal.owner_json)이고 target26 필드가 override면 `target26*IsOverride` 플래그가 반드시 함께 내려간다.
-- `/api/rank/2025-top100-counterparty-dri/targets-summary`는 규모별 target/coverage/expected 합계와 snapshot_version/targets_version을 함께 내려 캐시 버전을 표시한다.
+### 랭킹 합계
+- `GET /api/rank/2025-deals?size=전체`
+  - 조건: `deal."상태"='Won'` AND 계약연도=2025. size 필터는 organization."기업 규모" 정확 일치(전체면 무시).
+  - 그룹: organizationId. 필드 `orgId, orgName, totalAmount, onlineAmount, offlineAmount, totalAmount2024, grade, grade2024, formats[]` (course_format별 합계). 정렬 totalAmount DESC.
+- `GET /api/rank/2025-deals-people?size=대기업`
+  - 대상: 2025 Won 딜이 있는 조직. 상위조직/팀 모두 미입력인 행은 제외. 필드 `orgId, orgName, upper_org, team, personId, personName, title_signature, edu_area, won2025, dealCount, deals[]`. 정렬 won2025 DESC.
+- `GET /api/rank/mismatched-deals?size=대기업`
+  - 조건: deal.organizationId ≠ people.organizationId. 필드 `dealId, dealName, dealOrgId/Name, personId/Name, personOrgId/Name, contract_date, amount, course_format`. 정렬 contract_date DESC NULLS LAST.
+- `GET /api/rank/won-yearly-totals`
+  - 조건: status=Won, 연도 ∈ {2023,2024,2025}. 반환 `items[{year, size, totalAmount, orgCount}]` by industry? (실제는 규모별 합계) with SUM by size. 정렬 합계 DESC.
+- `GET /api/rank/won-industry-summary?size=전체`
+  - 조건: status=Won, 연도 2023/2024/2025. 그룹: 업종 구분(대). 필드 `industryMajor, orgCount, totalAmountByYear{2023,2024,2025}`. 정렬 2025 금액 DESC.
+- `GET /api/rank/2025/summary-by-size?exclude_org_name=삼성전자&years=2025,2026`
+  - 조건: status=Won, 계약연도 in years. exclude_org_name 정확 일치 제외. 응답 `by_size{size:{y2025,y2026}}, totals, snapshot_version=db_mtime:int`.
+
+### 카운터파티 DRI / Targetboard 2026
+- `GET /api/rank/2025-top100-counterparty-dri?size=대기업&limit=&offset=&debug=false`
+  - 조건: Lost/Convert 제외, 2025/2026 계약 또는 예상일이 있는 딜 중 probability ∈ {확정,높음} 또는 status=Won. ONLINE 판정은 `statepath_engine.ONLINE_COURSE_FORMATS`(구독제(온라인), 선택구매(온라인), 포팅).
+  - owners 우선순위: People.owner_json → deal.owner_json. 필드 `orgId, orgName, sizeRaw, orgTier, orgWon2025, upperOrg, cpOnline2025, cpOffline2025, cpOnline2026, cpOffline2026, owners2025, dealCount2025, target26Offline, target26Online, target26OfflineIsOverride, target26OnlineIsOverride`.
+  - 정렬: orgWon2025 DESC → cpTotal2025 DESC. limit(1–200000)·offset(>=0) 선택, 미지정 시 전체 반환. meta에 orgCount(rowCount), offset/limit, snapshot_version, targetsVersion.
+  - 특수: counterparty_targets_2026.xlsx에만 있고 DB에 없는 (org,upper)도 orgTier='N' row로 포함하며 target26* override/flag는 유지, 금액은 0.
+- `GET /api/rank/2025-top100-counterparty-dri/targets-summary?size=대기업`
+  - 규모별 cp/target/expected 합계와 override 적용 건수를 totals에 담고 meta에 snapshot_version+targets_version 포함.
+- `GET /api/rank/2025-counterparty-dri/detail?orgId=&upperOrg=`
+  - 해당 org/upper_org 딜 상세. 필드 people_id/people_name/upper_org 포함. 404 if missing.
+
+### 기타 집계/이상치
+- `GET /api/ops/2026-online-retention`
+  - 조건: status=Won, 생성일 ≥2024-01-01, 과정포맷 ∈ ONLINE_COURSE_FORMATS, start/end 필수, end 2024-10-01~2027-12-31 범위 필터, course_id 존재 필수. 정렬 endDate ASC → orgName ASC → dealId ASC. meta{db_version,rowCount}.
+- QC 숨김 규칙 R17은 응답에서 제외되며 deal-errors summary/person은 R1~R16만 노출.
 
 ## Invariants (Must Not Break)
-- ONLINE 포맷은 정확히 `구독제(온라인)`, `선택구매(온라인)`, `포팅`만 인정한다(`statepath_engine.ONLINE_COURSE_FORMATS`).
-- `/rank/2025-deals` 등 Won 기반 집계는 계약연도 2025만 포함하며 상태가 Won이 아닌 딜은 제외된다.
-- `/rank/2025-deals-people`는 상위 조직/팀이 모두 미입력인 행을 제외하고 won2025 desc 정렬을 유지한다.
-- 카운터파티 DRI는 Lost/Convert 제외, 확정/높음/Won만 포함하며 owners는 People.owner_json을 우선 사용한다(`tests/test_api_counterparty_dri.py`). target26 필드는 API에서 제공되면 override 플래그를 함께 내려야 하고, 없으면 프런트가 티어별 multiplier로 계산한다.
-- summary-by-size는 exclude_org_name 기본값 “삼성전자”이며 snapshot_version이 DB mtime을 포함해야 한다.
-### (흡수) 랭킹·DRI 추가 불변조건
-- DRI 응답은 orgWon2025 desc→cpTotal2025 desc 정렬을 유지하고 규모별 전체를 반환해야 하며 snapshot_version/targets_version 조합으로 캐시 버전을 표시해야 한다.
-- targets-summary는 규모별 target/coverage/expected 합계와 snapshot_version/targets_version을 포함해야 한다.
+- ONLINE 판정 세트는 정확히 `구독제(온라인)`, `선택구매(온라인)`, `포팅`.
+- `/rank/2025-deals`는 status=Won, 연도=2025만 포함하고 totalAmount DESC 정렬.
+- DRI 정렬: orgWon2025 DESC → cpTotal2025 DESC; owners는 People.owner_json 우선.
+- Target summary/targets_version/snapshot_version이 항상 포함되어야 한다(limit/offset 관계 없음).
+- ops 2026 retention: start/end/amount/course_id 누락 시 제외, amount<=0 제외.
 
 ## Coupling Map
-- 라우터/집계: `dashboard/server/org_tables_api.py` ↔ `dashboard/server/database.py`(get_rank_* 함수들).
-- 프런트: `org_tables_v2.html`의 랭킹/카운터파티/이상치 화면(fetchRankData, renderRankCounterpartyDriScreen 등).
-- 테스트: `tests/test_api_counterparty_dri.py`(owners/온라인/정렬/limit/offset/배제), 기타 랭킹 관련 테스트는 없지만 프런트 스냅샷이 의존한다.
+- 라우터: `org_tables_api.py` ↔ 집계: `database.py` (`get_rank_*`, `get_ops_2026_online_retention` 등) ↔ ONLINE 포맷 상수 `statepath_engine.ONLINE_COURSE_FORMATS`.
+- 프런트: `org_tables_v2.html`의 Rank/Targetboard/온라인 리텐션 화면(fetchRankData, renderRankCounterpartyDriScreen, renderOnlineRetention2026Screen).
+- 테스트: `tests/test_api_counterparty_dri.py`(owners/정렬/limit/override), `tests/test_api_online_retention_2026.py`(필터/정렬), `tests/test_mismatched_deals_2025.py`, `tests/test_rank_2025_deals.py`, `tests/test_rank_2025_deals_people.py`, `tests/test_won_totals_by_size.py` 등.
 
 ## Edge Cases & Failure Modes
-- size 파라미터에 없는 값이 들어오면 필터가 적용되지 않아 전체를 반환한다.
-- cpOffline/Online 2026 집계는 2025 딜이라도 start_date 연도가 2026이면 2026 합계에 포함된다.
-- owners JSON이 비어 있으면 owners2025가 빈 배열이 되어 DRI 필터에서 제외될 수 있다.
-- summary-by-size 캐시가 프로세스 메모리에 남아 DB 교체 후에도 이전 snapshot_version을 반환할 수 있다.
+- size 파라미터 오입력 시 필터 미적용(전체). exclude_org_name 미일치 시 전부 포함.
+- counterparty_targets에만 존재하는 (org, upper) 조합은 orgTier='N'으로 포함되지만 org 목록에 없으면 owners가 비어 있을 수 있다.
+- ops 2026 retention에서 날짜/금액/코스ID 누락, 온라인 포맷 외, 금액<=0은 즉시 제외되어 rowCount가 줄어든다.
+- 캐시: summary-by-size와 DRI/targets-summary는 DB mtime + targets_version 캐시가 메모리에 남아 DB 교체 후 재시작 전까지 이전 데이터를 반환할 수 있다.
 
 ## Verification
-- `/api/rank/2025-deals`가 Won 2025만 포함하고 totalAmount desc 정렬인지 샘플 DB로 확인한다.
-- `/api/rank/2025-deals-people`가 상위 조직/팀 미입력만인 행을 제외하고 won2025 desc 정렬인지 확인한다.
-- `/api/rank/mismatched-deals`가 orgId≠peopleOrgId 행만 반환하는지 확인한다.
-- `/api/rank/2025-top100-counterparty-dri`가 Lost/Convert 제외, 온라인 판정/owners 우선순위, orgWon2025 desc→cpTotal2025 desc 정렬을 유지하는지 테스트 케이스와 대조한다.
-- `/api/rank/2025-counterparty-dri/detail`에서 deals[].people_id/people_name/upper_org가 존재해 프런트 팝업에 상위 조직/교담자 컬럼을 채우는지 확인한다.
-- `/api/rank/2025/summary-by-size` 응답에 snapshot_version=db_mtime:*이 포함되고 exclude_org_names에 삼성전자가 기본 포함되는지 확인한다.
-### (흡수) 추가 검증 포인트
-- `/api/rank/2025-top100-counterparty-dri`가 규모별 전체 리스트를 반환하고 owners를 People.owner_json 우선으로 채우며 target26 override 플래그가 함께 내려오는지 확인한다.
-- `/api/rank/2025-top100-counterparty-dri/targets-summary`가 snapshot_version과 targets_version을 모두 포함하고 규모별 target/coverage/expected 합계가 있는지 확인한다.
-
-## Refactor-Planning Notes (Facts Only)
-- 랭킹/DRI/이상치/요약 집계가 모두 `database.py` 하나에 모여 있고, 캐시 키가 DB mtime 기반으로 프로세스 재시작이 필요하다.
-- ONLINE 판정 상수가 statepath_engine와 database에 중복돼 있어 변경 시 동기화가 필요하다.
-- owners 추출 우선순위(people→deal)가 프런트 DRI 필터링과 연관되어 있어 소스 변경 시 UI 계약이 깨질 수 있다.
+- `curl -s "http://localhost:8000/api/rank/2025-deals?size=대기업" | jq '.items[0]'` → status Won, 연도 2025, totalAmount DESC 확인.
+- `curl -s "http://localhost:8000/api/rank/2025-deals-people" | jq '.items[0].upper_org'` → upper_org/team 미입력만인 행 제외 여부 확인.
+- `curl -s "http://localhost:8000/api/rank/mismatched-deals" | jq '.items | length'` → orgId≠peopleOrgId만 포함되는지 확인.
+- `curl -s "http://localhost:8000/api/rank/2025-top100-counterparty-dri?limit=5" | jq '.items[0].orgWon2025, .items[0].target26OfflineIsOverride'` → 정렬/override 필드 포함 확인, meta.targetsVersion 존재 확인.
+- `curl -s "http://localhost:8000/api/ops/2026-online-retention" | jq '.meta.rowCount, .items[0].courseFormat, .items[0].amount'` → 온라인 3포맷, 금액>0, start/end 존재 확인.

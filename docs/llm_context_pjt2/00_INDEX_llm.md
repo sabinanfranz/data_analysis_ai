@@ -1,6 +1,6 @@
 ---
 title: LLM Context Pack (PJT2) 인덱스 – 카운터파티 리스크 리포트
-last_synced: 2026-01-29
+last_synced: 2026-02-04
 sync_source:
   - docs/llm_context_pjt2/01_GLOSSARY_llm.md
   - docs/llm_context_pjt2/02_ARCHITECTURE_llm.md
@@ -48,11 +48,11 @@ sync_source:
 - 테스트 → 10_TESTING_AND_QA
 
 ## Invariants
-- last_synced는 작성일 기준(2026-01-06). sync_source는 실제 근거 파일만 기재한다.
+- last_synced는 작성일 기준(2026-02-04). sync_source는 실제 근거 파일만 기재한다.
 - 입력 DB: `salesmap_latest.db` PRAGMA 기준. TEMP 테이블/뷰는 코드 그대로(deal_norm/org_tier_runtime/counterparty_target_2026/tmp_counterparty_risk_rule).
-- 캐시: `report_cache/YYYY-MM-DD.json`, LLM 캐시 `report_cache/llm/{as_of}/{db_hash}/...`, 스냅샷 `report_work/salesmap_snapshot_<as_of>_<HHMMSS>.db`.
-- 스케줄러: APScheduler `REPORT_CRON`(기본 0 8 * * *, TZ=Asia/Seoul). `ENABLE_SCHEDULER=0`이면 미기동.
-- LLM: env 설정 시 OpenAI 호출, 키 미설정/미지원 시 fallback-only. 프롬프트는 `dashboard/server/prompts/*.txt`, 없으면 기본 상수 사용.
+- 캐시: `report_cache/{as_of}.json`, LLM 캐시 `report_cache/llm/{as_of}/{db_hash}/...`, 스냅샷 `report_work/salesmap_snapshot_<as_of>_<HHMMSS>.db`.
+- 스케줄러: APScheduler `REPORT_CRON`(기본 0 8 * * *, TZ=Asia/Seoul), `REPORT_MODES`로 모드 리스트 제어, `ENABLE_SCHEDULER=0`이면 startup 훅에서 건너뜀. Progress L1은 `PROGRESS_CRON`/`ENABLE_PROGRESS_SCHEDULER`로 별도 제어.
+- LLM: env 설정 시 OpenAI 호출, 키 미설정/미지원 시 fallback-only. 프롬프트는 `dashboard/server/agents/counterparty_card/prompts/{mode}/v1/*.txt`, 없으면 빈 문자열로 호출된다.
 
 ## Coupling Map
 - 코드 근거: `dashboard/server/deal_normalizer.py`, `counterparty_llm.py`, `report_scheduler.py`, `org_tables_api.py`, `org_tables_v2.html`.

@@ -4,10 +4,14 @@ last_synced: 2026-02-04
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py
+  - dashboard/server/statepath_engine.py
+  - dashboard/server/json_compact.py
   - org_tables_v2.html
   - salesmap_first_page_snapshot.py
   - build_org_tables.py
   - tests/test_pl_progress_2026.py
+  - start.sh
+  - .github/workflows/salesmap_db_daily.yml
 ---
 
 ## Purpose
@@ -25,11 +29,13 @@ sync_source:
 
 ## Coupling Map
 - 백엔드: `dashboard/server/org_tables_api.py`(라우트) ↔ `dashboard/server/database.py`(집계/정렬/캐시) ↔ SQLite 스냅샷.
+- StatePath/compact: `dashboard/server/statepath_engine.py`(state/rail/bucket 계산), `dashboard/server/json_compact.py`(won-groups compact/markdown).
 - 프런트: `org_tables_v2.html` 렌더러(`renderBizPerfPlProgress2026`, `renderBizPerfMonthly`, `renderRankCounterpartyDriScreen`, `renderDealCheckScreen`, `renderStatePathMenu`, `renderOrgScreen` 등) ↔ `/api/*`.
 - 데이터/파이프라인: `salesmap_first_page_snapshot.py`가 DB를 생성/교체, webform_history 후처리.
 - 정적 HTML: `build_org_tables.py` → `org_tables.html`(딜 있음/없음 3×3 레이아웃).
 - KPI Review Report(오프라인 HTML): `build_kpi_review_report.py`(CLI 생성) ↔ `templates/kpi_review_report.template.html`(UI/스키마) ↔ `data/existing_orgs_2025_eval.txt`(ORG_MAP/필터링 기준).
-- 테스트: `tests/test_pl_progress_2026.py`, `tests/test_perf_monthly_contracts.py`, `tests/test_api_counterparty_dri.py`, `tests/test_won_groups_json.py`, `tests/test_deal_check_edu1.py` 등.
+- 테스트: `tests/test_pl_progress_2026.py`, `tests/test_perf_monthly_contracts.py`, `tests/test_api_counterparty_dri.py`, `tests/test_won_groups_json.py`, `tests/test_deal_check_edu1.py`, `tests/test_counterparty_statepath.py` 등.
+- 운영/배포: `start.sh`(DB 다운로드/검증/uvicorn 기동), `.github/workflows/salesmap_db_daily.yml`(cron 스냅샷 → Release → Railway 재배포).
 
 ## Edge Cases & Failure Modes
 - 프런트 캐시(Map)로 인해 DB 교체 후 새로고침을 하지 않으면 오래된 데이터가 남는다.

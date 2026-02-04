@@ -2,6 +2,9 @@
 title: LLM Context Pack 인덱스
 last_synced: 2026-02-04
 sync_source:
+  - docs/llm_context/01_GLOSSARY.md
+  - docs/llm_context/02_ARCHITECTURE.md
+  - docs/llm_context/03_REPO_MAP.md
   - docs/llm_context/05_SNAPSHOT_PIPELINE_CONTRACT.md
   - docs/llm_context/06_API_CONTRACT_CORE.md
   - docs/llm_context/07_API_CONTRACT_RANKINGS.md
@@ -10,6 +13,8 @@ sync_source:
   - docs/llm_context/10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md
   - docs/llm_context/11_RUNBOOK_LOCAL_AND_OPS.md
   - docs/llm_context/12_TESTING_AND_QUALITY.md
+  - docs/llm_context/13_RAILWAY_AND_CI.md
+  - docs/llm_context/14_db_table_columns.md
 ---
 
 ## Purpose
@@ -40,7 +45,7 @@ sync_source:
 ## Invariants (Must Not Break)
 - front matter에 last_synced/sync_source가 존재해야 하며, 맵에 포함된 문서들은 모두 필수 섹션(Purpose~Verification)을 갖춘 상태여야 한다.
 - 문서 카테고리(A~H)와 링크가 실제 파일 경로와 일치해야 한다(SSOT=00~14).
-- 최신 변경은 llm_context 세트의 기준 날짜(2026-01-28)와 동기화되어야 한다.
+- 최신 변경은 llm_context 세트의 기준 날짜(2026-02-04)와 동기화되어야 한다.
 
 ## Coupling Map
 - SSOT 문서: `05_SNAPSHOT_PIPELINE_CONTRACT.md`(스냅샷), `06_API_CONTRACT_CORE.md`/`07_API_CONTRACT_RANKINGS.md`(API), `08_MEMO_WEBFORM_RULES.md`(won-groups JSON 정제), `09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`/`10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md`(프런트), `11_RUNBOOK_LOCAL_AND_OPS.md`(운영), `12_TESTING_AND_QUALITY.md`(품질).
@@ -53,11 +58,11 @@ sync_source:
 
 ## Verification
 - 아래 카테고리 맵이 실제 파일과 일치하는지 확인한다.
-  - A. 아키텍처/개요: `02_ARCHITECTURE.md`, `03_REPO_MAP.md`, `04_DATA_MODEL_SQLITE.md`
-  - B. 로컬 실행/운영: `11_RUNBOOK_LOCAL_AND_OPS.md`, `13_RAILWAY_AND_CI.md`
-  - C. 데이터/스냅샷: `05_SNAPSHOT_PIPELINE_CONTRACT.md`
-  - D. API 계약: `06_API_CONTRACT_CORE.md`, `07_API_CONTRACT_RANKINGS.md`
-  - E. 프런트 UI/UX: `09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`, `10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md`
+- A. 아키텍처/개요: `02_ARCHITECTURE.md`, `03_REPO_MAP.md`, `04_DATA_MODEL_SQLITE.md`
+- B. 로컬 실행/운영: `11_RUNBOOK_LOCAL_AND_OPS.md`, `13_RAILWAY_AND_CI.md`
+- C. 데이터/스냅샷: `05_SNAPSHOT_PIPELINE_CONTRACT.md`
+- D. API 계약: `06_API_CONTRACT_CORE.md`, `07_API_CONTRACT_RANKINGS.md`
+- E. 프런트 UI/UX: `09_FRONTEND_ORG_TABLES_V2_CONTRACT.md`, `10_FRONTEND_ORG_TABLES_STATIC_CONTRACT.md`
   - F. 테스트/품질: `12_TESTING_AND_QUALITY.md`
   - G. 기타: `01_GLOSSARY.md`, `08_MEMO_WEBFORM_RULES.md`, `99_OPEN_QUESTIONS.md`(pjt2)
   - H. 별도 프로젝트: `llm_context_pjt2/*`

@@ -1,6 +1,6 @@
 ---
 title: 데이터 모델/조인 규칙 (PJT2) – 카운터파티 기준
-last_synced: 2026-01-29
+last_synced: 2026-02-04
 sync_source:
   - salesmap_latest.db
   - dashboard/server/deal_normalizer.py
@@ -18,16 +18,16 @@ sync_source:
 - 메모 수집 시 organization/deal/people 연결을 모두 합쳐 중복 제거한다.
 
 ## Invariants
-- **PRAGMA 핵심 컬럼**
-  - deal: id, peopleId, organizationId, '계약 체결일', '수주 예정일', '수강시작일', '금액', '예상 체결액', '상태', '과정포맷', '성사 가능성', '코스 ID', '최근 연락일' 등(총 147 컬럼).
-  - people: id, organizationId, '소속 상위 조직', 이름/연락처/최근 연락일 등(총 76 컬럼).
-  - organization: id, '이름', 업종/규모/연락처 등(총 45 컬럼).
-  - memo: id, text, createdAt, organizationId, peopleId, dealId 등(총 14 컬럼).
+- **PRAGMA 핵심 컬럼 (salesmap_latest.db)**
+  - deal: id, peopleId, organizationId, '계약 체결일', '수주 예정일', '수강시작일', '금액', '예상 체결액', '상태', '과정포맷', '성사 가능성', '코스 ID', '최근 연락일' 등 총 149 컬럼.
+  - people: id, organizationId, '소속 상위 조직', 이름/전화/팀/직급/최근 연락일 등 총 76 컬럼.
+  - organization: id, '이름', 업종/규모/연락처/최근 딜 등 총 47 컬럼.
+  - memo: id, text, createdAt, organizationId, peopleId, dealId, ownerId 등 총 14 컬럼.
 - **카운터파티 키**: (organization_id, counterparty_name); counterparty_name = people.'소속 상위 조직' 정규화, NULL/공백→'미분류(카운터파티 없음)'.
 - **deal_year 계산**: course_start_date 우선, 없으면 계약 체결일, 없으면 수주 예정일.
 - **비온라인 판정**: ONLINE_DEAL_FORMATS 3종(구독제(온라인), 선택구매(온라인), 포팅)만 online; 나머지/NULL은 is_nononline=1.
-- **baseline_2025**: 비온라인 & deal_year=2025 & bucket∈{CONFIRMED_CONTRACT, CONFIRMED_COMMIT}, status!=Convert 합.
-- **coverage_2026**: 비온라인 & deal_year=2026 & status NOT IN(Convert, Lost), confirmed+expected 금액 합.
+- **baseline_2025**: 비온라인(offline 모드) 또는 온라인(online 모드) + deal_year=2025 + bucket∈{CONFIRMED_CONTRACT, CONFIRMED_COMMIT} + status!=Convert 금액 합.
+- **coverage_2026**: 모드별 필터 + deal_year=2026 + status NOT IN(Convert, Lost), CONFIRMED_*+EXPECTED_HIGH 금액 합.
 - **메모 수집**: CounterpartyCardAgent에서 org/deal/people memo를 최근 180일, 최대 20개 dedupe 후 payload에 포함(gather_memos).
 ## Edge Cases
 - `peopleId` 없음 또는 people 조인 실패 → counterparty_name = "미분류(카운터파티 없음)", `counterparty_missing_flag=1`.

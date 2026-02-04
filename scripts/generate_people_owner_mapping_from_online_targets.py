@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """
-Generate people-owner mapping workbook from '26 온라인 타겟' sheet and salesmap DB.
+Generate people-owner mapping workbooks from counterparty targets sheets and salesmap DB.
 
-Output: people_owner_mapping_from_26_online_targets.xlsx with sheets:
+Outputs (written to dashboard/server/resources/outputs/):
+  - people_owner_mapping_from_26_online_targets.xlsx
+  - people_owner_mapping_from_26_lecture_targets.xlsx
+
+Each workbook contains:
   - result: mapped people rows
-  - log: skipped rows and team mismatches
+  - log: skipped rows and matching notes
 
 Usage: python scripts/generate_people_owner_mapping_from_online_targets.py
 """
@@ -41,10 +45,21 @@ EXCEL_PATH = ROOT / "dashboard/server/resources/counterparty_targets_2026.xlsx"
 DB_PATH = ROOT / "dashboard/server/resources/salesmap_latest.db"
 if not DB_PATH.exists():
     DB_PATH = ROOT / "salesmap_latest.db"
-OUTPUT_PATH = ROOT / "people_owner_mapping_from_26_online_targets.xlsx"
-INPUT_SHEET = "26 온라인 타겟"
+
+OUTPUT_DIR = ROOT / "dashboard/server/resources/outputs"
 RESULT_SHEET = "result"
 LOG_SHEET = "log"
+
+SHEETS = [
+    ("26 온라인 타겟", "people_owner_mapping_from_26_online_targets.xlsx"),
+    ("26 출강 타겟", "people_owner_mapping_from_26_lecture_targets.xlsx"),
+]
+
+# caches populated in main()
+SOURCE_WB = None
+ORG_INDEX: Optional[Dict[str, List[str]]] = None
+PEOPLE_BY_ORG: Optional[Dict[str, List[sqlite3.Row]]] = None
+NAME_TO_TEAM: Optional[Dict[str, List[str]]] = None
 
 
 def clean_str(value: Optional[object]) -> str:
@@ -56,19 +71,24 @@ def norm_upper_org(value: Optional[object]) -> str:
     return text if text else "미입력"
 
 
-def parse_assignee(cell_value: Optional[object]) -> Tuple[Optional[str], Optional[str]]:
+def parse_assignee(cell_value: Optional[object]) -> Tuple[Optional[str], Optional[str], int]:
     """
-    Returns (assignee, error_reason). error_reason is 'assignee_multi' when skipped.
+    Returns (assignee, error_reason, token_count).
+
+    error_reason is one of:
+      - assignee_empty: empty/blank
+      - assignee_multi: more than one token
     """
-    if cell_value is None:
-        return "", None
-    tokens = [token.strip() for token in str(cell_value).split(",")]
-    tokens = [tok for tok in tokens if tok]
+    text = clean_str(cell_value)
+    if not text:
+        return "", "assignee_empty", 0
+
+    tokens = [token.strip() for token in text.split(",") if token.strip()]
+    if len(tokens) == 0:
+        return "", "assignee_empty", 0
     if len(tokens) > 1:
-        return None, "assignee_multi"
-    if len(tokens) == 1:
-        return tokens[0], None
-    return "", None
+        return None, "assignee_multi", len(tokens)
+    return tokens[0], None, 1
 
 
 def normalize_owner_name(raw_owner: Optional[object]) -> Tuple[str, bool, bool, str]:
@@ -151,137 +171,226 @@ def build_name_to_team(part_structure: Dict[str, Dict[str, Iterable[str]]]) -> D
     return mapping
 
 
-def main() -> None:
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
+def process_target_sheet(sheet_name: str, output_path: Path) -> dict:
+    if SOURCE_WB is None or ORG_INDEX is None or PEOPLE_BY_ORG is None or NAME_TO_TEAM is None:
+        raise RuntimeError("Context not initialized. Run main().")
 
-    org_index = build_org_index(conn)
-    people_by_org = load_people_by_org(conn)
-    name_to_team = build_name_to_team(PART_STRUCTURE)
-
-    wb = load_workbook(EXCEL_PATH)
-    ws = wb[INPUT_SHEET]
-
+    wb = SOURCE_WB
     result_rows: List[Tuple[str, str, str, str, str]] = []
-    log_rows: List[Tuple[int, str, str, str, str, int, str]] = []
+    log_rows: List[Tuple[object, ...]] = []
 
     skip_counts = defaultdict(int)
-    team_mismatch = 0
+    team_not_found = 0
     team_ambiguous = 0
     owner_json_candidate_count = 0
     owner_json_extracted_count = 0
     owner_json_parse_failed_count = 0
     owner_json_parse_errors: List[str] = []
 
-    for excel_row in range(2, ws.max_row + 1):
-        org_name = clean_str(ws.cell(excel_row, 2).value)
-        upper_org_raw = ws.cell(excel_row, 3).value
-        assignee_cell = ws.cell(excel_row, 4).value
+    def append_log(
+        excel_row_index: int,
+        org_name: str,
+        upper_org_raw: object,
+        assignee_raw: object,
+        assignee_tokens_count: int,
+        org_lookup_status: str,
+        matched_people_count: int,
+        reason: str,
+        owner_raw: object = "",
+        owner_name_normalized: str = "",
+        owner_team: str = "",
+    ) -> None:
+        log_rows.append(
+            (
+                sheet_name,
+                excel_row_index,
+                org_name,
+                clean_str(upper_org_raw),
+                clean_str(assignee_raw),
+                assignee_tokens_count,
+                org_lookup_status,
+                matched_people_count,
+                reason,
+                clean_str(owner_raw),
+                owner_name_normalized,
+                owner_team,
+            )
+        )
 
-        upper_org_norm = norm_upper_org(upper_org_raw)
-        new_assignee, assignee_err = parse_assignee(assignee_cell)
+    if sheet_name not in wb.sheetnames:
+        skip_counts["sheet_missing"] += 1
+        append_log(
+            excel_row_index=0,
+            org_name="",
+            upper_org_raw="",
+            assignee_raw="",
+            assignee_tokens_count=0,
+            org_lookup_status="not_applicable",
+            matched_people_count=0,
+            reason="sheet_missing",
+        )
+    else:
+        ws = wb[sheet_name]
+        for excel_row in range(2, ws.max_row + 1):
+            org_name = clean_str(ws.cell(excel_row, 2).value)
+            upper_org_raw = ws.cell(excel_row, 3).value
+            assignee_cell = ws.cell(excel_row, 4).value
 
-        if not org_name:
-            skip_counts["org_name_blank"] += 1
-            log_rows.append((excel_row, org_name, upper_org_raw or "", assignee_cell or "", "org_name_blank", 0, ""))
-            continue
+            assignee_value, assignee_err, assignee_tokens_count = parse_assignee(assignee_cell)
+            upper_org_norm = norm_upper_org(upper_org_raw)
 
-        if assignee_err:
-            skip_counts[assignee_err] += 1
-            log_rows.append((excel_row, org_name, upper_org_raw or "", assignee_cell or "", assignee_err, 0, ""))
-            continue
-
-        org_ids = org_index.get(org_name, [])
-        if not org_ids:
-            skip_counts["org_not_found"] += 1
-            log_rows.append((excel_row, org_name, upper_org_raw or "", assignee_cell or "", "org_not_found", 0, ""))
-            continue
-        if len(org_ids) > 1:
-            skip_counts["org_ambiguous"] += 1
-            note = f"org_ids={org_ids}"
-            log_rows.append((excel_row, org_name, upper_org_raw or "", assignee_cell or "", "org_ambiguous", 0, note))
-            continue
-
-        org_id = org_ids[0]
-        people = people_by_org.get(org_id, [])
-
-        matched_people = [
-            person
-            for person in people
-            if norm_upper_org(person["소속 상위 조직"]) == upper_org_norm
-        ]
-
-        if not matched_people:
-            skip_counts["people_zero_match"] += 1
-            log_rows.append(
-                (
+            if assignee_err == "assignee_multi":
+                skip_counts[assignee_err] += 1
+                append_log(
                     excel_row,
                     org_name,
-                    upper_org_raw or "",
-                    assignee_cell or "",
-                    "people_zero_match",
+                    upper_org_raw,
+                    assignee_cell,
+                    assignee_tokens_count,
+                    "not_found",
                     0,
-                    f"people_in_org={len(people)}",
+                    assignee_err,
                 )
-            )
-            continue
+                continue
+            if assignee_err == "assignee_empty":
+                skip_counts[assignee_err] += 1
+                append_log(
+                    excel_row,
+                    org_name,
+                    upper_org_raw,
+                    assignee_cell,
+                    assignee_tokens_count,
+                    "not_found",
+                    0,
+                    assignee_err,
+                )
+                continue
 
-        for person in matched_people:
-            existing_owner_raw = person["담당자"]
-            owner_name, owner_json_candidate, owner_json_extracted, owner_json_error = normalize_owner_name(
-                existing_owner_raw
-            )
+            if not org_name:
+                skip_counts["org_not_found"] += 1
+                append_log(
+                    excel_row,
+                    org_name,
+                    upper_org_raw,
+                    assignee_cell,
+                    assignee_tokens_count,
+                    "not_found",
+                    0,
+                    "org_not_found",
+                )
+                continue
 
-            if owner_json_candidate:
-                owner_json_candidate_count += 1
-            if owner_json_extracted:
-                owner_json_extracted_count += 1
-            if owner_json_error:
-                owner_json_parse_failed_count += 1
-                if len(owner_json_parse_errors) < 5:
-                    owner_json_parse_errors.append(owner_json_error)
+            org_ids = ORG_INDEX.get(org_name, [])
+            if not org_ids:
+                skip_counts["org_not_found"] += 1
+                append_log(
+                    excel_row,
+                    org_name,
+                    upper_org_raw,
+                    assignee_cell,
+                    assignee_tokens_count,
+                    "not_found",
+                    0,
+                    "org_not_found",
+                )
+                continue
+            if len(org_ids) > 1:
+                skip_counts["org_ambiguous"] += 1
+                append_log(
+                    excel_row,
+                    org_name,
+                    upper_org_raw,
+                    assignee_cell,
+                    assignee_tokens_count,
+                    "ambiguous",
+                    0,
+                    "org_ambiguous",
+                )
+                continue
 
-            teams = name_to_team.get(owner_name, [])
-            team_name = ""
-            if not teams:
-                team_mismatch += 1
-                log_rows.append(
-                    (
+            org_id = org_ids[0]
+            people = PEOPLE_BY_ORG.get(org_id, [])
+
+            matched_people = [
+                person
+                for person in people
+                if norm_upper_org(person["소속 상위 조직"]) == upper_org_norm
+            ]
+
+            if not matched_people:
+                skip_counts["people_zero_match"] += 1
+                append_log(
+                    excel_row,
+                    org_name,
+                    upper_org_raw,
+                    assignee_cell,
+                    assignee_tokens_count,
+                    "found",
+                    0,
+                    "people_zero_match",
+                )
+                continue
+
+            for person in matched_people:
+                existing_owner_raw = person["담당자"]
+                owner_name, owner_json_candidate, owner_json_extracted, owner_json_error = normalize_owner_name(
+                    existing_owner_raw
+                )
+
+                if owner_json_candidate:
+                    owner_json_candidate_count += 1
+                if owner_json_extracted:
+                    owner_json_extracted_count += 1
+                if owner_json_error:
+                    owner_json_parse_failed_count += 1
+                    if len(owner_json_parse_errors) < 5:
+                        owner_json_parse_errors.append(owner_json_error)
+
+                teams = NAME_TO_TEAM.get(owner_name, [])
+                team_name = ""
+                if not teams:
+                    team_not_found += 1
+                    append_log(
                         excel_row,
                         org_name,
-                        upper_org_raw or "",
-                        assignee_cell or "",
+                        upper_org_raw,
+                        assignee_cell,
+                        assignee_tokens_count,
+                        "found",
+                        len(matched_people),
                         "team_not_found",
-                        len(matched_people),
-                        f"owner_raw={existing_owner_raw}; owner_norm={owner_name}; owner_json_parsed={owner_json_extracted}; error={owner_json_error}",
+                        owner_raw=existing_owner_raw,
+                        owner_name_normalized=owner_name,
+                        owner_team="",
                     )
-                )
-            elif len(teams) == 1:
-                team_name = teams[0]
-            else:
-                team_ambiguous += 1
-                team_name = ",".join(sorted(set(teams)))
-                log_rows.append(
-                    (
+                elif len(teams) == 1:
+                    team_name = teams[0]
+                else:
+                    team_ambiguous += 1
+                    team_name = ",".join(sorted(set(teams)))
+                    append_log(
                         excel_row,
                         org_name,
-                        upper_org_raw or "",
-                        assignee_cell or "",
-                        "team_ambiguous",
+                        upper_org_raw,
+                        assignee_cell,
+                        assignee_tokens_count,
+                        "found",
                         len(matched_people),
-                        f"owner_raw={existing_owner_raw}; owner_norm={owner_name}; owner_json_parsed={owner_json_extracted}; error={owner_json_error}",
+                        "team_ambiguous",
+                        owner_raw=existing_owner_raw,
+                        owner_name_normalized=owner_name,
+                        owner_team=team_name,
+                    )
+
+                result_rows.append(
+                    (
+                        clean_str(person["RecordId"]),
+                        clean_str(person["이름"]),
+                        assignee_value or "",
+                        owner_name,
+                        team_name,
                     )
                 )
-
-            result_rows.append(
-                (
-                    clean_str(person["RecordId"]),
-                    clean_str(person["이름"]),
-                    new_assignee or "",
-                    owner_name,
-                    team_name,
-                )
-            )
 
     out_wb = Workbook()
     res_ws = out_wb.active
@@ -300,33 +409,93 @@ def main() -> None:
 
     log_ws = out_wb.create_sheet(LOG_SHEET)
     log_ws.append(
-        ["excel_row", "org_name", "upper_org", "assignee", "reason", "matched_people_count", "note"]
+        [
+            "sheet_name",
+            "excel_row_index",
+            "org_name",
+            "upper_org",
+            "assignee_raw",
+            "assignee_tokens_count",
+            "org_lookup_status",
+            "matched_people_count",
+            "reason",
+            "owner_raw",
+            "owner_name_normalized",
+            "owner_team",
+        ]
     )
     for row in log_rows:
         log_ws.append(list(row))
 
-    out_wb.save(OUTPUT_PATH)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    out_wb.save(output_path)
 
-    print(f"Output file: {OUTPUT_PATH}")
-    print(f"Result row count: {len(result_rows)}")
-    print("Skip counts:")
-    for key in [
-        "org_not_found",
-        "org_ambiguous",
-        "assignee_multi",
-        "people_zero_match",
-        "org_name_blank",
-    ]:
-        print(f"  {key}: {skip_counts.get(key, 0)}")
-    print(f"Team mismatches (not found): {team_mismatch}")
-    print(f"Team ambiguous (multiple teams): {team_ambiguous}")
-    print(f"Log rows: {len(log_rows)}")
-    print("Owner JSON stats:")
-    print(f"  json_candidate: {owner_json_candidate_count}")
-    print(f"  json_name_extracted: {owner_json_extracted_count}")
-    print(f"  json_parse_failed: {owner_json_parse_failed_count}")
-    if owner_json_parse_errors:
-        print("  sample_errors:", "; ".join(owner_json_parse_errors))
+    skipped_total = sum(skip_counts.values())
+    team_unmatched_count = team_not_found + team_ambiguous
+
+    return {
+        "sheet_name": sheet_name,
+        "result_rows": len(result_rows),
+        "skipped_total": skipped_total,
+        "skipped_by_reason": dict(skip_counts),
+        "team_unmatched_count": team_unmatched_count,
+        "team_not_found": team_not_found,
+        "team_ambiguous": team_ambiguous,
+        "org_not_found": skip_counts.get("org_not_found", 0),
+        "org_ambiguous": skip_counts.get("org_ambiguous", 0),
+        "assignee_multi": skip_counts.get("assignee_multi", 0),
+        "assignee_empty": skip_counts.get("assignee_empty", 0),
+        "people_zero_match": skip_counts.get("people_zero_match", 0),
+        "output_path": output_path,
+        "owner_json_candidate": owner_json_candidate_count,
+        "owner_json_extracted": owner_json_extracted_count,
+        "owner_json_parse_failed": owner_json_parse_failed_count,
+        "owner_json_parse_errors": owner_json_parse_errors,
+    }
+
+
+def main() -> None:
+    global SOURCE_WB, ORG_INDEX, PEOPLE_BY_ORG, NAME_TO_TEAM
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+
+    ORG_INDEX = build_org_index(conn)
+    PEOPLE_BY_ORG = load_people_by_org(conn)
+    NAME_TO_TEAM = build_name_to_team(PART_STRUCTURE)
+    SOURCE_WB = load_workbook(EXCEL_PATH)
+
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    summaries = []
+    for sheet_name, filename in SHEETS:
+        output_path = OUTPUT_DIR / filename
+        summary = process_target_sheet(sheet_name, output_path)
+        summaries.append(summary)
+
+    for summary in summaries:
+        print(f"[{summary['sheet_name']}]")
+        print(f"  result rows: {summary['result_rows']}")
+        print(
+            "  skipped total: {total} (by reason: {by_reason})".format(
+                total=summary["skipped_total"], by_reason=summary["skipped_by_reason"]
+            )
+        )
+        print(
+            "  team unmatched: {count} (not_found={nf}, ambiguous={amb})".format(
+                count=summary["team_unmatched_count"], nf=summary["team_not_found"], amb=summary["team_ambiguous"]
+            )
+        )
+        print(f"  output file: {summary['output_path']}")
+        print(
+            "  owner JSON stats: candidate={cand}, extracted={ext}, parse_failed={pf}".format(
+                cand=summary["owner_json_candidate"],
+                ext=summary["owner_json_extracted"],
+                pf=summary["owner_json_parse_failed"],
+            )
+        )
+        if summary["owner_json_parse_errors"]:
+            print("    sample errors: " + "; ".join(summary["owner_json_parse_errors"]))
 
 
 if __name__ == "__main__":

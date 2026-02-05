@@ -1838,6 +1838,13 @@
       max-height: 720px;
     }
 
+    /* JSON/Markdown modal (간소화 JSON, Daily Report) — allow horizontal scrolling */
+    #jsonModalBackdrop .code-body {
+      white-space: pre;
+      word-break: normal;
+      overflow-wrap: normal;
+    }
+
     /* Extra wide modal for counterparty detail */
     .modal.xl {
       max-width: 90vw;
@@ -2209,7 +2216,7 @@
   <div class="toast" id="toast"></div>
 
   <div class="modal-backdrop" id="memoModalBackdrop">
-    <div class="modal">
+    <div class="modal deals-modal-wide">
       <header>
         <h3>메모 상세</h3>
         <button class="close-btn" id="memoModalClose" type="button">닫기</button>
@@ -2218,17 +2225,21 @@
         <span id="memoModalDate">-</span>
         <span id="memoModalAuthor">-</span>
       </div>
-      <div class="body" id="memoModalBody"></div>
+      <div class="body">
+        <div class="deals-modal-scroll" id="memoModalBody"></div>
+      </div>
     </div>
   </div>
 
   <div class="modal-backdrop" id="jsonModalBackdrop">
-    <div class="modal json-modal">
+    <div class="modal json-modal deals-modal-wide">
       <header>
         <h3 id="jsonModalTitle">JSON 보기</h3>
         <button class="close-btn" id="jsonModalClose" type="button">닫기</button>
       </header>
-      <div class="body code-body" id="jsonModalBody"></div>
+      <div class="body">
+        <div class="deals-modal-scroll code-body" id="jsonModalBody"></div>
+      </div>
     </div>
   </div>
 
@@ -3491,7 +3502,7 @@
       const mkPre = (text) => {
         const pre = document.createElement("pre");
         pre.style.margin = "0";
-        pre.style.whiteSpace = "pre-wrap";
+        pre.style.whiteSpace = "pre";
         pre.textContent = text;
         return pre;
       };
@@ -4101,7 +4112,7 @@
       } else {
         containerEl.classList.remove("memo-rich");
         containerEl.textContent = memo && memo.text ? String(memo.text) : "";
-        containerEl.style.whiteSpace = "pre-wrap";
+        containerEl.style.whiteSpace = "pre";
       }
     }
 

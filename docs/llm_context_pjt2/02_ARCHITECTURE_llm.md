@@ -1,6 +1,6 @@
 ---
 title: 아키텍처 (PJT2) – 카운터파티 리스크 리포트
-last_synced: 2026-02-04
+last_synced: 2026-02-05
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
@@ -30,6 +30,7 @@ sync_source:
 - 스냅샷: report_scheduler가 DB 안정성(최종 mtime ≥ 180s) 확인 후 `report_work/salesmap_snapshot_<as_of>_<HHMMSS>.db`로 복사.
 - 캐시: offline `report_cache/{as_of}.json`, online `report_cache/counterparty-risk/online/{as_of}.json`; status 파일(status.json/status_online.json) 보존.
 - LLM 캐시: `report_cache/llm/{as_of}/{db_hash}/{mode}/{org}__{counterparty}.json` (llm_input_hash+prompt_version 일치 시 재사용).
+- 메타 필드: report 생성 시 meta에 db_version(입력 DB mtime ISO), db_signature(mtime-size), generator_version=d7-v1, job_run_id(YYYYMMDD_HHMMSS) 포함.
 - 스케줄: APScheduler cron(기본 \"0 8 * * *\", TZ=Asia/Seoul), REPORT_MODES로 모드 제어, ENABLE_SCHEDULER=0이면 startup 훅에서 start_scheduler 스킵. PROGRESS_CRON/ENABLE_PROGRESS_SCHEDULER로 progress L1 사전계산 별도 제어.
 - API: `/api/report/counterparty-risk` 캐시 우선 → 없으면 run_daily_counterparty_risk_job(force) → last_success 폴백(meta.is_stale) → 없으면 500.
 - 락: `report_cache/.counterparty_risk.lock` (fcntl + Windows msvcrt) 공용, 충돌 시 SKIPPED_LOCKED.

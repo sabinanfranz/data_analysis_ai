@@ -1,6 +1,6 @@
 ---
 title: 구현 파이프라인 (PJT2) – D1~D7
-last_synced: 2026-02-04
+last_synced: 2026-02-05
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/agents/registry.py
@@ -27,9 +27,9 @@ sync_source:
 - **D2 org_tier_runtime (TEMP)**: 비온라인 & deal_year=2025 & bucket 확정 2종만 합산, 삼성전자 문자열 포함 org는 tier=None. 확정액 기준으로 S0/P0/P1/P2 임계값 적용.
 - **D3 counterparty_target_2026 (TEMP)**: 모드별(is_nononline/is_online) 2025/2026 등장 카운터파티(티어 org 한정) universe 생성 → baseline_2025 확정액 합산 → multiplier(S0=1.5, P0/P1=1.7, P2=1.5)로 target_2026 계산, baseline=0이면 target=0. is_unclassified_counterparty 플래그 포함.
 - **D4 tmp_counterparty_risk_rule (TEMP)**: 모드별 2026 딜 중 status NOT IN(Convert, Lost)만 대상, agg_bucket을 확정/예상/IGNORE로 재분류해 coverage/gap/coverage_ratio/pipeline_zero 계산. 월별 min_cov(severe=50%)로 risk_level_rule/rule_trigger 산출. dq_year_unknown/amount_parse_fail 집계 포함.
-- **D5 report base JSON**: top_deals_2026는 동일 커넥션에서 deal_norm을 사용해 모드 필터 + 2026 + status NOT IN(Convert, Lost) + amount desc로 TOP_DEALS_LIMIT까지 채워 deals_top에 넣는다. severity 정렬 후 summary counts/tier_groups/data_quality/meta(db_hash, as_of, generated_at, mode, report_id) 생성.
+- **D5 report base JSON**: top_deals_2026는 동일 커넥션에서 deal_norm을 사용해 모드 필터 + 2026 + status NOT IN(Convert, Lost) + amount desc로 TOP_DEALS_LIMIT(10)까지 채워 deals_top에 넣는다. severity 정렬 후 summary counts/tier_groups/data_quality/meta(as_of, db_version=mtime ISO, db_hash=sha256(mtime) 16자, report_id, generated_at) 생성.
 - **D6 에이전트 체인(LLM/폴백)**: registry→orchestrator→CounterpartyCardAgent v1 실행. LLMConfig.from_env(provider=openai & 키 없으면 비활성) 기준; LLM 미설정 시 fallback_blockers/evidence/actions로 채워 카드 필드를 보존한다. deal_norm을 외부에서 재조회하지 않고 base rows + deals_top을 그대로 사용.
-- **D7 스케줄/캐시**: run_daily_counterparty_risk_job(_all_modes)에서 DB 안정창(기본 180s) 확인 후 스냅샷 복사 → 보고서 생성 → `_atomic_write`로 캐시 저장 → status.json 업데이트 → retention에서 status 파일은 보존. file_lock은 POSIX(fcntl)/Windows(msvcrt) 모두 지원.
+- **D7 스케줄/캐시**: run_daily_counterparty_risk_job(_all_modes)에서 DB 안정창(기본 180s) 확인 후 스냅샷 복사 → 보고서 생성 → `_atomic_write`로 캐시 저장 → status.json 업데이트 → retention에서 status 파일은 보존. generator_version=d7-v1, job_run_id는 YYYYMMDD_HHMMSS. file_lock은 POSIX(fcntl)/Windows(msvcrt) 모두 지원.
 - **프런트 후처리(DRI universe 투영)**: 백엔드 결과를 org_tables_v2.html에서 offline/online DRI override 맵으로 투영·target 재계산 후 summary 재계산한다(백엔드 파이프라인에는 영향 없음).
 
 ## Coupling Map

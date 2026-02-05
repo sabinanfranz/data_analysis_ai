@@ -1,6 +1,6 @@
 ---
 title: 테스트 & QA (PJT2)
-last_synced: 2026-02-04
+last_synced: 2026-02-05
 sync_source:
   - tests/test_deal_normalizer.py
   - tests/test_org_tier.py
@@ -28,7 +28,7 @@ sync_source:
 - Convert/Lost 제외: coverage/baseline 집계에서 agg_bucket=IGNORE.
 - target/coverage/gap/risk_level_rule 계산은 deal_normalizer.py 규칙(min_cov/severe_threshold/pipeline_zero)과 일치해야 한다.
 - 티어: S0~P2 임계값, 삼성전자 이름 포함 시 tier=None(타깃 가산 없음).
-- LLM 미설정/실패 시에도 fallback evidence/actions가 채워져 리포트 JSON이 항상 필드를 보존해야 한다.
+- LLM 미설정/실패(LLM_PROVIDER!=openai, OPENAI_API_KEY 없음, OpenAI SDK 미설치 등) 시에도 fallback evidence/actions가 채워져 리포트 JSON이 항상 필드를 보존해야 한다.
 - cache miss → generate(force) → serve 플로우와 last_success 폴백(meta.is_stale) 동작이 보장되어야 한다.
 - deal_norm TEMP 스코프 유지: LLM/프런트가 별도 커넥션으로 deal_norm을 재조회하지 않아 `no such table: deal_norm`이 발생하지 않아야 한다.
 - 단위 테스트:

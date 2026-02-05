@@ -73,8 +73,8 @@ sync_source:
 
 ### 조직/People/Deal 뷰어
 - 초기 데이터: `/api/initial-data`(orgs/people/deals/memos). 회사 선택 → `/orgs/{id}/people` → 사람 선택 → `/people/{id}/deals|memos`, 딜 선택 → `/deals/{id}/memos`.
-- JSON 카드: `/orgs/{id}/won-groups-json` 캐시. upper_org 미선택 시 JSON 버튼 비활성 + 안내, 선택 시 전체/선택 JSON 모달, compact 버튼은 `/won-groups-json-compact`.
-- 메모 모달: htmlBody 있으면 sanitizer(태그 div/table/thead/tbody/tr/th/td/caption, 링크 검증+`_blank`/`noopener`), 없으면 text pre-wrap. 테스트 `org_tables_v2_frontend.test.js`가 <br>/CRLF 정규화, JSON 버튼 활성조건을 검증한다.
+- JSON 카드: `/orgs/{id}/won-groups-json` 캐시. upper_org 미선택 시 JSON 버튼 비활성 + 안내, 선택 시 전체/선택 JSON 모달, compact 버튼은 `/won-groups-json-compact`. JSON/간소화 JSON/Daily Report 팝업은 공용 json 모달을 사용하며 `deals-modal-wide`(가로 min(96vw, 1400px), 세로 min(90vh, 900px)) + `deals-modal-scroll`에서 XY 스크롤, `code-body`는 `white-space: pre`로 가로 스크롤 가능.
+- 메모 모달: `deals-modal-wide` + 내부 `deals-modal-scroll`(XY 스크롤). htmlBody 있으면 sanitizer(태그 div/table/thead/tbody/tr/th/td/caption, 링크 검증+`_blank`/`noopener`)로 렌더, 없으면 text를 `white-space: pre`로 표시해 긴 줄 가로 스크롤 허용. 테스트 `org_tables_v2_frontend.test.js`가 <br>/CRLF 정규화, JSON 버튼 활성조건을 검증한다.
 
 ### StatePath 24→25
 - 서버 호출은 segment/sort/limit만 전달, 나머지 필터는 모두 클라이언트 상태(Quick Filters, 패턴 전이/셀/rail, seed/dir, risk/open/scaleUp). Snapshot/Pattern/Table/Legend/Core JSON copy가 동일 상태를 공유하며 “전체 해제”는 클라 상태만 리셋.
@@ -117,6 +117,7 @@ sync_source:
 - `/deal-check/edu1|edu2` → 정렬/메모 버튼/partFilter 적용(자식 메뉴) 확인; planningSheetLink http(s)일 때만 링크.
 - 온라인 리텐션 → endDate asc 정렬, 금액/코스ID/start/end 모두 존재하는지 확인.
 - JSON/StatePath/딜 모달이 ESC/백드롭으로 닫히고 내용이 해당 데이터와 일치하는지 확인.
+- JSON/메모/Daily Report 모달이 `deals-modal-wide` 규격(가로 96vw~1400px, 세로 90vh~900px)으로 열리고, 긴 한 줄 텍스트에서 가로 스크롤이 실제로 표시되는지 확인.
 
 ## Refactor-Planning Notes (Facts Only)
 - 단일 HTML에 모든 로직/스타일/데이터 캐시가 들어있어 변경 영향이 광범위하다.

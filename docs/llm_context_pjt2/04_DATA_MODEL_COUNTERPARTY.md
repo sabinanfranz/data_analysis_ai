@@ -1,10 +1,11 @@
 ---
 title: 데이터 모델/조인 규칙 (PJT2) – 카운터파티 기준
-last_synced: 2026-02-04
+last_synced: 2026-02-05
 sync_source:
   - salesmap_latest.db
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py
+  - dashboard/server/agents/counterparty_card/agent.py
 ---
 
 # 데이터 모델/조인 규칙 (PJT2) – 카운터파티 기준

@@ -84,6 +84,7 @@ sync_source:
 - **2025-12-24**: PowerShell 실행 가이드 업데이트, 스냅샷 rename/체크포인트 폴백 로직 강화(`replace_file_with_retry`, `CheckpointManager.save_table`). 문서(05/11) 최신화.
 - **2026-01-06**: 2026 P&L/월별 체결액 화면 고도화(T/E 열, current month 하이라이트, assumption bar, deals 모달), `/performance/*` API 및 테스트 정렬/집계 보강. 2026 카운터파티 DRI 화면/필터 정렬 개선(`renderRankCounterpartyDriScreen`, `/rank/2025-top100-counterparty-dri` 캐시 사용).
 - **2026-01-27**: 문의 인입 현황(2026) UX 개편(기업규모 상단 버튼 필터, 과정포맷/카테고리 2단 아코디언, `카테고리` 컬럼이 추가된 공용 딜 모달) 및 online_first 필터를 온라인 3종에만 적용하도록 백엔드 수정. docs/06, 09 동기화.
+- **2026-02-05**: 모달 레이아웃 통일 — JSON/간소화 JSON/Daily Report/메모 모달을 `deals-modal-wide`+`deals-modal-scroll`로 확장(가로 96vw~1400px, 세로 90vh~900px)하고 `code-body`·plain memo를 `white-space: pre`로 변경해 가로 스크롤 지원. docs/08, 09 반영.
 
 ## Refactor-Planning Notes (Facts Only)
 - llm_context 하위 문서 일부는 2025-12 기준 내용을 포함하고 있어 최근 업데이트와 어긋날 수 있으므로 순차적으로 last_synced를 맞추며 내용 검증이 필요하다.

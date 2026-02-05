@@ -1,6 +1,6 @@
 ---
 title: LLM Context Pack (PJT2) 인덱스 – 카운터파티 리스크 리포트
-last_synced: 2026-02-04
+last_synced: 2026-02-05
 sync_source:
   - docs/llm_context_pjt2/01_GLOSSARY_llm.md
   - docs/llm_context_pjt2/02_ARCHITECTURE_llm.md
@@ -53,6 +53,8 @@ sync_source:
 - 캐시: `report_cache/{as_of}.json`, LLM 캐시 `report_cache/llm/{as_of}/{db_hash}/...`, 스냅샷 `report_work/salesmap_snapshot_<as_of>_<HHMMSS>.db`.
 - 스케줄러: APScheduler `REPORT_CRON`(기본 0 8 * * *, TZ=Asia/Seoul), `REPORT_MODES`로 모드 리스트 제어, `ENABLE_SCHEDULER=0`이면 startup 훅에서 건너뜀. Progress L1은 `PROGRESS_CRON`/`ENABLE_PROGRESS_SCHEDULER`로 별도 제어.
 - LLM: env 설정 시 OpenAI 호출, 키 미설정/미지원 시 fallback-only. 프롬프트는 `dashboard/server/agents/counterparty_card/prompts/{mode}/v1/*.txt`, 없으면 빈 문자열로 호출된다.
+- 메타: report 생성 시 meta.db_version(입력 DB mtime ISO), db_signature(mtime-size), db_hash(sha256 mtime 16자), generator_version(d7-v1), job_run_id가 기록된다.
+- .env 로딩: `dashboard/server/main.py`가 startup 전에 `load_dotenv()`를 시도하며 `.env`는 .gitignore에 포함된다.
 
 ## Coupling Map
 - 코드 근거: `dashboard/server/deal_normalizer.py`, `counterparty_llm.py`, `report_scheduler.py`, `org_tables_api.py`, `org_tables_v2.html`.

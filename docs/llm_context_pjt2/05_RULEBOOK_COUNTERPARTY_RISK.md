@@ -1,6 +1,6 @@
 ---
 title: 규칙집 (PJT2) – 카운터파티 리스크 리포트 MVP
-last_synced: 2026-02-04
+last_synced: 2026-02-05
 sync_source:
   - dashboard/server/deal_normalizer.py
   - dashboard/server/counterparty_llm.py

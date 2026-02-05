@@ -2,13 +2,14 @@
 title: LLM 연동/캐시 (PJT2) – 31.6
 last_synced: 2026-02-05
 sync_source:
+  - dashboard/server/agents/counterparty_card/agent.py
+  - dashboard/server/counterparty_llm.py
+  - dashboard/server/agents/core/canonicalize.py
   - dashboard/server/markdown_compact.py
   - dashboard/server/agents/target_attainment/agent.py
+  - dashboard/server/agents/target_attainment/schema.py
   - dashboard/server/org_tables_api.py
   - org_tables_v2.html
-  - dashboard/server/agents/daily_report_v2/orchestrator.py
-  - dashboard/server/agents/target_attainment/schema.py
-  - dashboard/server/llm_target_attainment.py
 ---
 
 # LLM 연동/캐시 (PJT2) – 31.6

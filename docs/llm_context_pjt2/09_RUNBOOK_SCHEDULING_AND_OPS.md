@@ -1,6 +1,6 @@
 ---
 title: 운영 런북 (PJT2) – 스케줄링/로그/폴백
-last_synced: 2026-02-04
+last_synced: 2026-02-05
 sync_source:
   - dashboard/server/report_scheduler.py
   - dashboard/server/org_tables_api.py
@@ -28,7 +28,7 @@ sync_source:
 - 환경 기본값: CACHE_DIR=report_cache, WORK_DIR=report_work, DB_RETRY=10, DB_RETRY_INTERVAL_SEC=30, CACHE_RETENTION_DAYS=14.
 - DB 시그니처: `mtime-size` 문자열을 meta.status에 기록.
 - 캐시 파일: tmp write + fsync + rename(atomic).
-- retention: CACHE_RETENTION_DAYS 초과 json/jsonl/스냅샷을 정리하되 status 파일은 건드리지 않는다.
+- retention: CACHE_RETENTION_DAYS 초과 json/jsonl/스냅샷을 정리하되 status 파일은 건드리지 않는다(run_logs/*.jsonl 포함).
 
 ## Coupling Map
 - 스케줄/캐시/락: `dashboard/server/report_scheduler.py` (run_daily_counterparty_risk_job/all_modes, get_cached_report, start_scheduler).

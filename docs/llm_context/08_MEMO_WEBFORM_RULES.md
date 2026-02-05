@@ -43,7 +43,7 @@ sync_source:
 
 ### 프런트 렌더 규칙 (org_tables_v2.html)
 - JSON 버튼: 회사 미선택 또는 upper_org 미선택 시 비활성화 안내, 선택 시 `/won-groups-json` 캐시 후 upper_org 필터(`filterWonGroupByUpper`).
-- 메모 모달: htmlBody가 있으면 whitelist sanitizer(div/table/thead/tbody/tr/th/td/caption, 링크 href 검증+`_blank`/`noopener`)로 렌더, 없으면 text `pre-wrap`.
+- 메모 모달: `deals-modal-wide` + `deals-modal-scroll`를 사용해 가로·세로 스크롤을 제공. htmlBody가 있으면 whitelist sanitizer(div/table/thead/tbody/tr/th/td/caption, 링크 href 검증+`_blank`/`noopener`)로 렌더, 없으면 text를 `white-space: pre`로 표시해 긴 줄 가로 스크롤 허용.
 - webform 모달: `{name,date}`만 표시, date는 문자열 또는 배열 그대로 표시.
 
 ## Invariants (Must Not Break)

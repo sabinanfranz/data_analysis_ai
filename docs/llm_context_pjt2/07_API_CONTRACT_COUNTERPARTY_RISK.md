@@ -1,6 +1,6 @@
 ---
 title: API 계약 (PJT2) – /api/report/counterparty-risk
-last_synced: 2026-02-04
+last_synced: 2026-02-05
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/report_scheduler.py

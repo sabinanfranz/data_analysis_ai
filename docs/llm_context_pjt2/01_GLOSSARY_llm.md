@@ -1,6 +1,6 @@
 ---
 title: 용어집 (PJT2)
-last_synced: 2026-02-04
+last_synced: 2026-02-05
 sync_source:
   - salesmap_latest.db
   - dashboard/server/deal_normalizer.py
@@ -27,6 +27,7 @@ sync_source:
 - **risk_level_rule**: target=0→양호/TARGET_ZERO; pipeline_zero→심각/PIPELINE_ZERO; coverage_ratio<0.5*min_cov→심각; coverage_ratio<min_cov→보통; gap<=0→양호; 그 외 양호/ON_TRACK.
 - **LLM 필드**: `risk_level_llm`, `top_blockers`, `evidence_bullets(3)`, `recommended_actions(2~3)`는 CounterpartyCardAgent 출력/폴백으로, 규칙 risk_level을 덮지 않는다.
 - **해시/버전**: `db_signature = mtime-size`(scheduler), `db_hash = sha256(db mtime)[:16]`(deal_normalizer), `llm_input_hash = sha256(canonical payload)`(CounterpartyCard), `prompt_version = v1`.
+- **signals 필드**: `last_contact_date`, `lost_90d_count`, `lost_90d_reasons`는 현재 집계되지 않으며 0/None placeholder로 유지된다.
 
 ## Coupling Map
 - DB 컬럼: `people."소속 상위 조직"`, `deal."상태"`, `"과정포맷"`, `"금액"`, `"예상 체결액"`, `"계약 체결일"`, `"수주 예정일"`, `"수강시작일"`, `"성사 가능성"`, `organization."이름"`.

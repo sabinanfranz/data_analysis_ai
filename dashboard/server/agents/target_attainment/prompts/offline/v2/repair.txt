@@ -1,0 +1,8 @@
+# target_attainment_repair
+너는 JSON 수리기다.
+아래 텍스트를 "유효한 JSON 오브젝트"로만 변환해 출력하라.
+- 마크다운/코드펜스/추가 설명 금지
+- 오직 JSON만 출력
+
+[TEXT]
+{raw_text}

@@ -14,7 +14,7 @@
 * `...\docs\llm_context\02_ARCHITECTURE.md`
 * `...\docs\llm_context\03_REPO_MAP.md`
 * `...\docs\llm_context\04_DATA_MODEL_SQLITE.md`
-* `...\docs\llm_context\05_SNAPSHOT_PIPELINE_CONTRACT.md`
+* `...\docs\llm_context\05_SNAPSHOT_PIPELINE_CONTRACT.md`ㄷ
 * `...\docs\llm_context\06_API_CONTRACT_CORE.md`
 * `...\docs\llm_context\07_API_CONTRACT_RANKINGS.md`
 * `...\docs\llm_context\08_MEMO_WEBFORM_RULES.md`

@@ -3082,27 +3082,11 @@ def get_won_groups_json(
     person_memos: Dict[str, List[Dict[str, Any]]] = {}
     deal_memos: Dict[str, List[Dict[str, Any]]] = {}
     org_memos: List[Dict[str, Any]] = []
-    debug_won_json = os.getenv("DEBUG_WON_JSON") == "1"
-    debug_memo_log_count = 0
     for memo in memo_rows:
         created_at_raw = _row_get(memo, "createdAt")
         date_only = _date_only(created_at_raw)
         cleaned = _clean_form_memo(memo["text"])
         html_body = _row_get(memo, "htmlBody")
-        if debug_won_json and debug_memo_log_count < 3:
-            try:
-                memo_keys = list(memo.keys())
-            except Exception:
-                memo_keys = []
-            created_at_val = memo["createdAt"] if "createdAt" in memo_keys else None
-            logging.warning(
-                "[won-json-debug] memo_type=%s has_keys=%s keys=%s createdAt=%s",
-                type(memo),
-                hasattr(memo, "keys"),
-                memo_keys,
-                created_at_val,
-            )
-            debug_memo_log_count += 1
         if cleaned == "":
             # Skip low-value form memos
             continue

@@ -24,24 +24,6 @@ from .agents.daily_report_v2.orchestrator import run_pipeline as run_daily_repor
 
 router = APIRouter(prefix="/api")
 
-# TODO: remove _debug/won-json-runtime after won-json memo.get investigation is resolved.
-if os.getenv("DEBUG_WON_JSON") == "1":
-
-    @router.get("/_debug/won-json-runtime")
-    def debug_won_json_runtime() -> dict:
-        import dashboard.server.database as db_mod
-        from pathlib import Path
-
-        db_file = Path(db_mod.__file__).resolve()
-        text = db_file.read_text(encoding="utf-8", errors="ignore")
-        occurrences = [idx + 1 for idx, line in enumerate(text.splitlines()) if "created_at_ts" in line][:20]
-        return {
-            "db_file": str(db_file),
-            "db_mtime": db_file.stat().st_mtime,
-            "has_memo_get_createdAt": 'memo.get("createdAt")' in text,
-            "created_at_ts_occurrences": occurrences,
-        }
-
 
 @router.get("/sizes")
 def get_sizes() -> dict:
@@ -519,7 +501,7 @@ def post_target_attainment(
                     "error": "PAYLOAD_TOO_LARGE",
                     "max_bytes": MAX_TARGET_ATTAINMENT_REQUEST_BYTES,
                     "bytes": len(json.dumps(payload_dict, ensure_ascii=False).encode("utf-8")),
-                    "hint": "upperOrg 1개 그룹만 포함되도록 compact JSON을 축소하세요.",
+                    "hint": "입력이 너무 크면 /api/orgs/{orgId}/won-groups-markdown-compact?max_deals=...&deal_memo_limit=...&max_output_chars=... 로 축소한 뒤 다시 시도하세요.",
                 },
             )
         return run_target_attainment(

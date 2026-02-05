@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import logging
 import os
 import time
@@ -10,6 +11,7 @@ from typing import Any, Dict, List
 import httpx
 from fastapi import HTTPException
 
+from dashboard.server.markdown_compact import won_groups_compact_to_markdown
 from ..core.cache_store import build_cache_key, load as load_cache, save_atomic as save_cache
 from ..core.json_guard import ensure_json_object_or_error, parse_json_object
 from ..core.prompt_store import PromptStore
@@ -19,6 +21,9 @@ from .schema import TargetAttainmentRequest, estimate_request_bytes, hash_payloa
 logger = logging.getLogger(__name__)
 
 DEFAULT_PROMPT_VERSION = "v1"
+DEFAULT_CONTEXT_FORMAT = "md"
+ALLOWED_CONTEXT_FORMATS = {"md", "json"}
+ALLOWED_PROMPT_VERSIONS = {"v1", "v2"}
 
 
 def _env_llm_settings() -> Dict[str, Any]:
@@ -40,6 +45,20 @@ def _env_llm_settings() -> Dict[str, Any]:
         "temperature": temperature,
         "max_tokens": max_tokens,
     }
+
+
+def _get_context_format() -> str:
+    val = (os.getenv("TARGET_ATTAINMENT_CONTEXT_FORMAT") or DEFAULT_CONTEXT_FORMAT).strip().lower()
+    if val not in ALLOWED_CONTEXT_FORMATS:
+        return DEFAULT_CONTEXT_FORMAT
+    return val
+
+
+def _get_prompt_version() -> str:
+    val = (os.getenv("TARGET_ATTAINMENT_PROMPT_VERSION") or "v2").strip().lower()
+    if val not in ALLOWED_PROMPT_VERSIONS:
+        return "v2"
+    return val
 
 
 def _post_openai_once(url: str, headers: Dict[str, str], payload: Dict[str, Any], *, timeout: float) -> Dict[str, Any]:
@@ -144,7 +163,17 @@ class TargetAttainmentAgent:
     def _cache_path(self, cache_key: str, variant: str) -> Path:
         return Path(self.cache_root) / variant / f"{cache_key}.json"
 
-    def run(self, request: TargetAttainmentRequest, *, variant: str, debug: bool, nocache: bool = False, include_input: bool = False) -> Dict[str, Any]:
+    def run(
+        self,
+        request: TargetAttainmentRequest,
+        *,
+        variant: str,
+        debug: bool,
+        nocache: bool = False,
+        include_input: bool = False,
+        context_format: str | None = None,
+        prompt_version: str | None = None,
+    ) -> Dict[str, Any]:
         if request.target_2026 < 0 or request.actual_2026 < 0:
             raise HTTPException(
                 status_code=400,
@@ -156,7 +185,26 @@ class TargetAttainmentAgent:
         input_hash = hash_payload(payload_dict)
         numbers = self._build_numbers(request)
 
-        prompts = self.prompt_store.load_set(variant, self.version)
+        chosen_context_format = (context_format or _get_context_format()).strip().lower()
+        if chosen_context_format not in ALLOWED_CONTEXT_FORMATS:
+            chosen_context_format = DEFAULT_CONTEXT_FORMAT
+        chosen_prompt_version = (prompt_version or _get_prompt_version()).strip().lower()
+        if chosen_prompt_version not in ALLOWED_PROMPT_VERSIONS:
+            chosen_prompt_version = "v2"
+
+        # SSOT note:
+        # - request_md: frontend already fetched server-rendered compact-info-md/v1.1 via /orgs/{id}/won-groups-markdown-compact
+        # - derived_md: server-side uses the same SSOT renderer (dashboard.server.markdown_compact.won_groups_compact_to_markdown)
+        #   to avoid drift from the JS preview renderer (wonGroupsCompactToMarkdown), which is UI-only.
+        md_from_request = None
+        if isinstance(getattr(request, "won_group_markdown", None), str):
+            md_from_request = request.won_group_markdown.strip()
+            if md_from_request == "":
+                md_from_request = None
+
+        context_source_for_cache = "request_md" if md_from_request else chosen_context_format
+
+        prompts = self.prompt_store.load_set(variant, chosen_prompt_version)
         prompt_hash = prompts.get("prompt_hash", "")
         settings = _env_llm_settings()
         start_ts = time.monotonic()
@@ -167,9 +215,21 @@ class TargetAttainmentAgent:
             prompt_hash=prompt_hash,
             model=settings.get("model", ""),
             variant=variant,
+            extra=f"{chosen_prompt_version}|{chosen_context_format}|{context_source_for_cache}",
         )
         used_cache = False
         used_repair = False
+
+        context_meta: Dict[str, Any] = {
+            "context_format": chosen_context_format,
+            "context_source": context_source_for_cache,
+            "prompt_version": chosen_prompt_version,
+            "context_md_chars": None,
+            "context_md_truncated": False,
+            "context_md_head": None,
+            "context_md_hash": None,
+            "fallback_reason": None,
+        }
 
         # cache read
         cache_path = self._cache_path(cache_key, variant)
@@ -182,7 +242,15 @@ class TargetAttainmentAgent:
                     duration_ms = int((time.monotonic() - start_ts) * 1000)
                     used_cache = True
                     return self._attach_meta_if_needed(
-                        result, debug, input_hash, prompt_hash, payload_bytes, used_cache, used_repair, duration_ms
+                        result,
+                        debug,
+                        input_hash,
+                        prompt_hash,
+                        payload_bytes,
+                        used_cache,
+                        used_repair,
+                        duration_ms,
+                        extra_meta=context_meta,
                     )
 
         if self._llm_disabled(settings):
@@ -193,11 +261,51 @@ class TargetAttainmentAgent:
             )
 
         # Build prompts
-        compact_json = json.dumps(request.won_group_json_compact, ensure_ascii=False, separators=(",", ":"))
+        compact_json = json.dumps(request.won_group_json_compact, ensure_ascii=False, separators=(",", ":")) if request.won_group_json_compact is not None else "null"
+        context_source = chosen_context_format
+        context_payload_for_prompt = compact_json
+        md_text: str | None = None
+
+        if md_from_request:
+            md_text = md_from_request
+            context_meta["context_source"] = "request_md"
+            context_meta["context_md_chars"] = len(md_text)
+            context_meta["context_md_truncated"] = "(truncated due to size limit)" in md_text
+            context_meta["context_md_head"] = md_text[:400]
+            context_meta["context_md_hash"] = hashlib.sha256(md_text.encode("utf-8")).hexdigest()
+            context_payload_for_prompt = f"```markdown\n{md_text}\n```"
+        elif chosen_context_format == "md":
+            try:
+                md_text = won_groups_compact_to_markdown(
+                    request.won_group_json_compact or {},
+                    scope_label="UPPER_SELECTED",
+                    max_people=60,
+                    max_deals=200,
+                    deal_memo_limit=10,
+                    memo_max_chars=240,
+                    redact_phone=True,
+                    max_output_chars=200_000,
+                )
+                if not md_text or md_text.strip() == "" or md_text.strip() == "데이터가 없습니다.":
+                    raise ValueError("empty_md_context")
+                context_payload_for_prompt = f"```markdown\n{md_text}\n```"
+                context_meta["context_source"] = "derived_md"
+                context_meta["context_md_chars"] = len(md_text)
+                context_meta["context_md_truncated"] = "(truncated due to size limit)" in md_text
+                context_meta["context_md_head"] = md_text[:400]
+                context_meta["context_md_hash"] = hashlib.sha256(md_text.encode("utf-8")).hexdigest()
+            except Exception as exc:
+                context_source = "json_fallback"
+                context_meta["context_source"] = "json_fallback"
+                context_meta["fallback_reason"] = str(exc)[:200]
+                context_payload_for_prompt = compact_json
+        else:
+            context_meta["context_source"] = "json"
+
         user_prompt = prompts["user"].format(
             target_2026=request.target_2026,
             actual_2026=request.actual_2026,
-            won_group_json_compact_json=compact_json,
+            won_group_json_compact_json=context_payload_for_prompt,
         )
         messages = [
             {"role": "system", "content": prompts["system"]},
@@ -272,10 +380,27 @@ class TargetAttainmentAgent:
                 save_cache(cache_path, {"output": store_obj})
 
             if include_input:
-                parsed["__llm_input"] = {"calls": llm_calls}
+                parsed["__llm_input"] = {
+                    "calls": llm_calls,
+                    "context_format": context_meta.get("context_format"),
+                    "context_source": context_meta.get("context_source"),
+                    "prompt_version": context_meta.get("prompt_version"),
+                    "context_md_chars": context_meta.get("context_md_chars"),
+                    "context_md_truncated": context_meta.get("context_md_truncated"),
+                    "context_md_head": context_meta.get("context_md_head"),
+                    "fallback_reason": context_meta.get("fallback_reason"),
+                }
 
             return self._attach_meta_if_needed(
-                parsed, debug, input_hash, prompt_hash, payload_bytes, used_cache, used_repair, duration_ms
+                parsed,
+                debug,
+                input_hash,
+                prompt_hash,
+                payload_bytes,
+                used_cache,
+                used_repair,
+                duration_ms,
+                extra_meta=context_meta,
             )
         except (httpx.ReadTimeout, httpx.ConnectTimeout, httpx.TimeoutException) as exc:
             duration_ms = int((time.monotonic() - start_ts) * 1000)
@@ -289,9 +414,26 @@ class TargetAttainmentAgent:
                 "numbers": numbers,
             }
             if include_input:
-                err_obj["__llm_input"] = {"calls": llm_calls}
+                err_obj["__llm_input"] = {
+                    "calls": llm_calls,
+                    "context_format": context_meta.get("context_format"),
+                    "context_source": context_meta.get("context_source"),
+                    "prompt_version": context_meta.get("prompt_version"),
+                    "context_md_chars": context_meta.get("context_md_chars"),
+                    "context_md_truncated": context_meta.get("context_md_truncated"),
+                    "context_md_head": context_meta.get("context_md_head"),
+                    "fallback_reason": context_meta.get("fallback_reason"),
+                }
             return self._attach_meta_if_needed(
-                err_obj, debug, input_hash, prompt_hash, payload_bytes, used_cache, used_repair, duration_ms
+                err_obj,
+                debug,
+                input_hash,
+                prompt_hash,
+                payload_bytes,
+                used_cache,
+                used_repair,
+                duration_ms,
+                extra_meta=context_meta,
             )
         except Exception as exc:  # pragma: no cover - defensive logging
             logger.exception(
@@ -308,9 +450,26 @@ class TargetAttainmentAgent:
             duration_ms = int((time.monotonic() - start_ts) * 1000)
             parsed = {"error": "TARGET_ATTAINMENT_LLM_ERROR", "message": str(exc), "raw": raw_text, "numbers": numbers}
             if include_input:
-                parsed["__llm_input"] = {"calls": llm_calls}
+                parsed["__llm_input"] = {
+                    "calls": llm_calls,
+                    "context_format": context_meta.get("context_format"),
+                    "context_source": context_meta.get("context_source"),
+                    "prompt_version": context_meta.get("prompt_version"),
+                    "context_md_chars": context_meta.get("context_md_chars"),
+                    "context_md_truncated": context_meta.get("context_md_truncated"),
+                    "context_md_head": context_meta.get("context_md_head"),
+                    "fallback_reason": context_meta.get("fallback_reason"),
+                }
             return self._attach_meta_if_needed(
-                parsed, debug, input_hash, prompt_hash, payload_bytes, used_cache, used_repair, duration_ms
+                parsed,
+                debug,
+                input_hash,
+                prompt_hash,
+                payload_bytes,
+                used_cache,
+                used_repair,
+                duration_ms,
+                extra_meta=context_meta,
             )
 
     def _attach_meta_if_needed(
@@ -323,10 +482,11 @@ class TargetAttainmentAgent:
         used_cache: bool,
         used_repair: bool,
         duration_ms: int,
+        extra_meta: Dict[str, Any] | None = None,
     ) -> Dict[str, Any]:
         if debug:
             result = {**result}
-            result["__meta"] = build_meta(
+            meta = build_meta(
                 input_hash=input_hash,
                 prompt_hash=prompt_hash,
                 payload_bytes=payload_bytes,
@@ -334,6 +494,9 @@ class TargetAttainmentAgent:
                 used_repair=used_repair,
                 duration_ms=duration_ms,
             )
+            if extra_meta:
+                meta.update(extra_meta)
+            result["__meta"] = meta
         return result
 
 
@@ -350,6 +513,16 @@ def run_target_attainment(
     Compatibility wrapper used by the API adapter.
     """
     variant_key = variant or getattr(req, "mode", "offline")
+    context_format = _get_context_format()
+    prompt_version = _get_prompt_version()
     agent = TargetAttainmentAgent()
     # payload_bytes currently not used inside agent, but kept for signature parity
-    return agent.run(req, variant=variant_key, debug=debug, nocache=nocache, include_input=include_input)
+    return agent.run(
+        req,
+        variant=variant_key,
+        debug=debug,
+        nocache=nocache,
+        include_input=include_input,
+        context_format=context_format,
+        prompt_version=prompt_version,
+    )

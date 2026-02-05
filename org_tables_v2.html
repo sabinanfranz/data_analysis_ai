@@ -2863,6 +2863,7 @@
       sizes: null,
       wonGroupJsonByOrg: new Map(),
       wonGroupJsonCompactByOrg: new Map(),
+      wonGroupMarkdownByOrgUpper: new Map(),
       statePathByOrg: new Map(),
       orgMemos: new Map(),
       peopleByOrg: new Map(),
@@ -3399,6 +3400,26 @@
       }
     }
 
+    async function copyPlainText(text, successMessage) {
+      const payload = typeof text === "string" ? text : "";
+      if (!payload.trim()) {
+        showToast("복사할 텍스트가 없습니다.", "error");
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(payload);
+        showToast(successMessage || "텍스트를 복사했습니다.", "success");
+      } catch (_) {
+        const textarea = document.createElement("textarea");
+        textarea.value = payload;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        showToast(successMessage || "텍스트를 복사했습니다.", "success");
+      }
+    }
+
     function toModalText(data) {
       if (typeof data === "string") {
         return data;
@@ -3444,25 +3465,65 @@
       const body = state.jsonModal.body;
       body.innerHTML = "";
 
-      const mkLabel = (t) => {
-        const el = document.createElement("div");
-        el.style.fontWeight = "700";
-        el.style.margin = "10px 0 6px";
-        el.textContent = t;
-        return el;
+      const mkHeader = (label, copyHandler) => {
+        const wrap = document.createElement("div");
+        wrap.style.display = "flex";
+        wrap.style.alignItems = "center";
+        wrap.style.gap = "8px";
+        wrap.style.margin = "10px 0 6px";
+
+        const titleEl = document.createElement("div");
+        titleEl.style.fontWeight = "700";
+        titleEl.textContent = label;
+        wrap.appendChild(titleEl);
+
+        if (typeof copyHandler === "function") {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "chip";
+          btn.textContent = "복사";
+          btn.addEventListener("click", copyHandler);
+          wrap.appendChild(btn);
+        }
+        return wrap;
       };
-      const mkPre = (obj) => {
+
+      const mkPre = (text) => {
         const pre = document.createElement("pre");
         pre.style.margin = "0";
         pre.style.whiteSpace = "pre-wrap";
-        pre.textContent = toJsonText(obj);
+        pre.textContent = text;
         return pre;
       };
 
-      body.appendChild(mkLabel("LLM OUTPUT"));
-      body.appendChild(mkPre(outputObj));
-      body.appendChild(mkLabel("LLM INPUT (actual request payload)"));
-      body.appendChild(mkPre(inputObj));
+      const inputJsonText = toJsonText(inputObj);
+      const mdText =
+        typeof inputObj?.__request?.won_group_markdown === "string"
+          ? inputObj.__request.won_group_markdown
+          : typeof inputObj?.won_group_markdown === "string"
+          ? inputObj.won_group_markdown
+          : null;
+
+      body.appendChild(
+        mkHeader("LLM OUTPUT", () => copyJsonData(outputObj, "LLM OUTPUT을 복사했습니다."))
+      );
+      body.appendChild(mkPre(toJsonText(outputObj)));
+
+      body.appendChild(
+        mkHeader("LLM INPUT (actual request payload)", () =>
+          copyJsonData(inputObj, "LLM INPUT(JSON)을 복사했습니다.")
+        )
+      );
+      body.appendChild(mkPre(inputJsonText));
+
+      if (mdText) {
+        body.appendChild(
+          mkHeader(`LLM INPUT (MD · ${mdText.length} chars)`, () =>
+            copyPlainText(mdText, "LLM INPUT(MD)을 복사했습니다.")
+          )
+        );
+        body.appendChild(mkPre(mdText));
+      }
 
       state.jsonModal.backdrop.style.display = "flex";
     }
@@ -7318,6 +7379,53 @@
       return data;
     }
 
+    function buildWonGroupMdCacheKey(orgId, upperOrg, params) {
+      const p = params || {};
+      const upper = normalizeUpperOrg(upperOrg || "");
+      return [
+        orgId || "",
+        upper,
+        `max_deals=${p.max_deals ?? ""}`,
+        `max_people=${p.max_people ?? ""}`,
+        `max_output_chars=${p.max_output_chars ?? ""}`,
+        `deal_memo_limit=${p.deal_memo_limit ?? ""}`,
+        `memo_max_chars=${p.memo_max_chars ?? ""}`,
+        `redact_phone=${p.redact_phone ? 1 : 0}`,
+      ].join("||");
+    }
+
+    async function getWonGroupsMarkdownCompactCached(orgId, upperOrg, params = {}) {
+      if (!orgId) throw new Error("orgId is required");
+      const defaults = {
+        max_deals: 200,
+        max_people: 60,
+        deal_memo_limit: 10,
+        memo_max_chars: 240,
+        redact_phone: 1,
+        max_output_chars: 120000,
+        format: "json",
+      };
+      const p = { ...defaults, ...(params || {}) };
+      const cacheKey = buildWonGroupMdCacheKey(orgId, upperOrg, p);
+      if (cache.wonGroupMarkdownByOrgUpper.has(cacheKey)) {
+        return cache.wonGroupMarkdownByOrgUpper.get(cacheKey);
+      }
+      const qs = new URLSearchParams();
+      qs.set("upper_org", upperOrg || "");
+      if (p.max_deals !== undefined) qs.set("max_deals", String(p.max_deals));
+      if (p.max_people !== undefined) qs.set("max_people", String(p.max_people));
+      if (p.deal_memo_limit !== undefined) qs.set("deal_memo_limit", String(p.deal_memo_limit));
+      if (p.memo_max_chars !== undefined) qs.set("memo_max_chars", String(p.memo_max_chars));
+      if (p.redact_phone !== undefined) qs.set("redact_phone", p.redact_phone ? "1" : "0");
+      if (p.max_output_chars !== undefined) qs.set("max_output_chars", String(p.max_output_chars));
+      qs.set("format", p.format || "json");
+
+      const data = await fetchJson(`/orgs/${orgId}/won-groups-markdown-compact?${qs.toString()}`);
+      const md = data?.markdown || data?.md || "";
+      cache.wonGroupMarkdownByOrgUpper.set(cacheKey, md);
+      return md;
+    }
+
     async function loadStatePath(orgId) {
       if (!orgId) {
         showToast("회사를 선택하세요.", "info");
@@ -8555,53 +8663,80 @@
       });
     }
 
-    function buildDailyReportV2RowKey(row) {
+    function buildDailyReportV2RowKey(row, ctxLabel = "ctx=md_request_v1.1") {
       const upper = normalizeUpperOrg(row.upperOrg || "");
-      return `${row.orgId}||${upper}||${Number(row.target) || 0}||${Number(row.actual) || 0}`;
+      return `${row.orgId}||${upper}||${Number(row.target) || 0}||${Number(row.actual) || 0}||${ctxLabel || "ctx"}`;
     }
 
+    // LLM 입력 컨텍스트 SSOT:
+    // - Daily Report(출강) LLM 호출은 반드시 서버 렌더러(/api/orgs/{id}/won-groups-markdown-compact)가 생성한
+    //   compact-info-md/v1.1 markdown을 사용한다.
+    // - JS 렌더러 wonGroupsCompactToMarkdown는 뷰어 UI(간소화 버튼) 전용이며 LLM 요청에는 사용하지 않는다.
     async function handleDailyReportV2OfflineRowClick({ orgId, orgName, upperOrg, target, actual }, rowEl = null) {
       const st = state.dailyReportV2Offline;
       if (!st.llmCache) st.llmCache = new Map();
       if (!st.llmInflight) st.llmInflight = new Map();
       if (!st.inFlightRowKeys) st.inFlightRowKeys = new Set();
-      const rowKey = buildDailyReportV2RowKey({ orgId, upperOrg, target, actual });
+      // rowKey에 컨텍스트 라벨을 포함해 JSON/MD/재시도 캐시 오염을 막는다.
+      const CTX_MD = "ctx=md_request_v1.1";
+      const CTX_MD_RETRY = "ctx=md_request_v1.1_retry1";
+      const CTX_JSON_FALLBACK = "ctx=json_fallback";
+      const rowKeys = {
+        md: buildDailyReportV2RowKey({ orgId, upperOrg, target, actual }, CTX_MD),
+        mdRetry: buildDailyReportV2RowKey({ orgId, upperOrg, target, actual }, CTX_MD_RETRY),
+        jsonFallback: buildDailyReportV2RowKey({ orgId, upperOrg, target, actual }, CTX_JSON_FALLBACK),
+      };
+      const rowKeyOrder = [rowKeys.md, rowKeys.mdRetry, rowKeys.jsonFallback];
       const title = `Target Attainment · ${orgName || orgId || ""} / ${upperOrg || ""}`;
 
-      const cached = st.llmCache.get(rowKey);
+      const findFirstCache = () => {
+        for (const k of rowKeyOrder) {
+          if (st.llmCache.has(k)) {
+            return { key: k, value: st.llmCache.get(k) };
+          }
+        }
+        return null;
+      };
+
+      const cached = findFirstCache();
       if (cached) {
-        if (cached.__llm_input) {
-          const outOnly = { ...cached };
+        const data = cached.value;
+        if (data.__llm_input) {
+          const outOnly = { ...data };
           delete outOnly.__llm_input;
-          openJsonModalOutputAndInput(title, outOnly, cached.__llm_input);
+          openJsonModalOutputAndInput(title, outOnly, data.__llm_input);
         } else {
-          openJsonModal(title, cached);
+          openJsonModal(title, data);
         }
         return;
       }
 
-      if (st.inFlightRowKeys.has(rowKey)) {
+      const findFirstInflight = () => {
+        for (const k of rowKeyOrder) {
+          if (st.llmInflight.has(k)) return { key: k, promise: st.llmInflight.get(k) };
+        }
+        return null;
+      };
+
+      const inflight = findFirstInflight();
+      if (inflight) {
         openJsonModal(title, { loading: true, note: "request in progress", orgId, upperOrg, target_2026: target, actual_2026: actual });
+        try {
+          const inflightResult = await inflight.promise;
+          openJsonModal(title, inflightResult);
+        } catch (err) {
+          openJsonModal(title, { error: "LLM_CALL_FAILED", message: err?.message || String(err), orgId, upperOrg });
+        }
         return;
       }
 
       openJsonModal(title, { loading: true, orgId, upperOrg, target_2026: target, actual_2026: actual });
 
-      if (st.llmInflight.has(rowKey)) {
-        try {
-          const inflightResult = await st.llmInflight.get(rowKey);
-          openJsonModal(title, inflightResult);
-          return;
-        } catch (err) {
-          openJsonModal(title, { error: "LLM_CALL_FAILED", message: err?.message || String(err), orgId, upperOrg });
-          return;
-        }
-      }
-
       if (rowEl) rowEl.classList.add("row-loading");
-      st.inFlightRowKeys.add(rowKey);
+      rowKeyOrder.forEach((k) => st.inFlightRowKeys.add(k));
 
       const promise = (async () => {
+        let rowKeyActive = rowKeys.md;
         try {
           const compact = await getWonGroupsJsonCompactCached(orgId);
           const { filtered, available } = filterWonGroupByUpperWithFallback(compact, upperOrg);
@@ -8612,62 +8747,138 @@
               upperOrg,
               availableUppers: available,
             };
-            st.llmCache.set(rowKey, errObj);
+            st.llmCache.set(rowKeyActive, errObj);
             return errObj;
           }
 
-          const body = {
+          const baseBody = {
             orgId,
             orgName,
             upperOrg,
             mode: "offline",
             target_2026: Number(target) || 0,
             actual_2026: Number(actual) || 0,
-            won_group_json_compact: filtered,
           };
 
           const TARGET_ATTAINMENT_TIMEOUT_MS = 120000; // align with server TARGET_ATTAINMENT_TIMEOUT default 120s
           const TIMEOUT_MS = TARGET_ATTAINMENT_TIMEOUT_MS;
           let respJson = null;
-          try {
-            respJson = await Promise.race([postJson("/llm/target-attainment?include_input=1", body), timeoutAfter(TIMEOUT_MS, "LLM_CALL_TIMEOUT")]);
-          } catch (err) {
-            const errObj = {
-              error: err?.message === "LLM_CALL_TIMEOUT" ? "LLM_CALL_TIMEOUT" : "LLM_CALL_FAILED",
-              orgId,
-              upperOrg,
-              status: err?.status ?? null,
-              message: err?.message || String(err),
-              body: err?.payload ?? null,
-            };
-            st.llmCache.set(rowKey, errObj);
-            return errObj;
+          let mdText = null;
+          let contextLabel = CTX_MD;
+          let mdParamsUsed = {
+            max_deals: 200,
+            max_people: 60,
+            deal_memo_limit: 10,
+            memo_max_chars: 240,
+            redact_phone: 1,
+            max_output_chars: 120000,
+          };
+          let retriedOn413 = false;
+
+          const buildBodyMd = (md) => ({ ...baseBody, won_group_markdown: md });
+          const buildBodyJson = (jsonFiltered) => ({ ...baseBody, won_group_json_compact: jsonFiltered });
+
+          async function fetchMdOrFallback(params, labelOnUse) {
+            const md = await getWonGroupsMarkdownCompactCached(orgId, upperOrg, params);
+            if (!md || !md.trim()) throw new Error("EMPTY_MD_CONTEXT");
+            contextLabel = labelOnUse;
+            rowKeyActive = labelOnUse === CTX_MD ? rowKeys.md : rowKeys.mdRetry;
+            mdParamsUsed = params;
+            return md;
           }
 
-          st.llmCache.set(rowKey, respJson);
-          const llmInput = respJson && respJson.__llm_input ? respJson.__llm_input : null;
-          if (llmInput) {
-            const outputOnly = { ...respJson };
-            delete outputOnly.__llm_input;
-            openJsonModalOutputAndInput(title, outputOnly, llmInput);
-          } else {
-            openJsonModal(title, respJson);
+          try {
+            mdText = await fetchMdOrFallback(mdParamsUsed, CTX_MD);
+          } catch (err) {
+            showToast("MD 컨텍스트 로드 실패 → JSON으로 폴백", "warning");
+            contextLabel = CTX_JSON_FALLBACK;
+            rowKeyActive = rowKeys.jsonFallback;
           }
-          return respJson;
+
+          try {
+            const bodyToSend = mdText ? buildBodyMd(mdText) : buildBodyJson(filtered);
+            respJson = await Promise.race([
+              postJson("/llm/target-attainment?include_input=1", bodyToSend),
+              timeoutAfter(TIMEOUT_MS, "LLM_CALL_TIMEOUT"),
+            ]);
+          } catch (err) {
+            if (err?.status === 413 && mdText && !retriedOn413) {
+              retriedOn413 = true;
+              showToast("LLM 요청이 커서 1회 축소 후 재시도합니다.", "warning");
+              const retryParams = {
+                ...mdParamsUsed,
+                max_deals: 120,
+                max_output_chars: 80000,
+              };
+              try {
+                mdText = await fetchMdOrFallback(retryParams, CTX_MD_RETRY);
+                const retryBody = buildBodyMd(mdText);
+                respJson = await Promise.race([
+                  postJson("/llm/target-attainment?include_input=1", retryBody),
+                  timeoutAfter(TIMEOUT_MS, "LLM_CALL_TIMEOUT"),
+                ]);
+              } catch (retryErr) {
+                const errObj = {
+                  error: retryErr?.status === 413 ? "PAYLOAD_TOO_LARGE" : "LLM_CALL_FAILED",
+                  orgId,
+                  upperOrg,
+                  status: retryErr?.status ?? null,
+                  message: retryErr?.message || String(retryErr),
+                  body: retryErr?.payload ?? null,
+                  md_params: retryParams,
+                };
+                showToast("데이터가 커서 축약 후에도 전송 실패(413). max_deals/max_output_chars를 더 줄이세요.", "error");
+                st.llmCache.set(rowKeys.mdRetry, errObj);
+                return errObj;
+              }
+            } else {
+              const errObj = {
+                error: err?.message === "LLM_CALL_TIMEOUT" ? "LLM_CALL_TIMEOUT" : "LLM_CALL_FAILED",
+                orgId,
+                upperOrg,
+                status: err?.status ?? null,
+                message: err?.message || String(err),
+                body: err?.payload ?? null,
+              };
+              st.llmCache.set(rowKeyActive, errObj);
+              return errObj;
+            }
+          }
+
+          const bodyUsed =
+            mdText && contextLabel !== CTX_JSON_FALLBACK ? buildBodyMd(mdText) : buildBodyJson(filtered);
+          const respForCache = { ...respJson };
+          const llmInput = respJson && respJson.__llm_input ? { ...respJson.__llm_input } : null;
+          if (llmInput) {
+            delete respForCache.__llm_input;
+            llmInput.__request = bodyUsed;
+          }
+          const finalObj = llmInput ? { ...respForCache, __llm_input: llmInput } : respForCache;
+
+          st.llmCache.set(rowKeyActive, finalObj);
+
+          if (llmInput) {
+            openJsonModalOutputAndInput(title, respForCache, llmInput);
+          } else {
+            openJsonModal(title, finalObj);
+          }
+          return finalObj;
         } catch (err) {
           const errObj = { error: "COMPACT_FETCH_FAILED", orgId, upperOrg, message: err?.message || String(err) };
-          st.llmCache.set(rowKey, errObj);
+          st.llmCache.set(rowKeyActive, errObj);
           return errObj;
         }
       })();
 
-      st.llmInflight.set(rowKey, promise);
+      rowKeyOrder.forEach((k) => st.llmInflight.set(k, promise));
       try {
         const result = await promise;
         openJsonModal(title, result);
       } finally {
-        st.llmInflight.delete(rowKey);
-        st.inFlightRowKeys.delete(rowKey);
+        rowKeyOrder.forEach((k) => {
+          st.llmInflight.delete(k);
+          st.inFlightRowKeys.delete(k);
+        });
         if (rowEl) rowEl.classList.remove("row-loading");
       }
     }

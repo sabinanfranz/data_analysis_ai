@@ -1,14 +1,14 @@
 ---
 title: LLM 연동/캐시 (PJT2) – 31.6
-last_synced: 2026-02-04
+last_synced: 2026-02-05
 sync_source:
-  - dashboard/server/counterparty_llm.py
-  - dashboard/server/agents/registry.py
-  - dashboard/server/agents/core/orchestrator.py
-  - dashboard/server/agents/counterparty_card/agent.py
-  - dashboard/server/report/composer.py
-  - dashboard/server/deal_normalizer.py
-  - docs/llm_context_pjt2/05_RULEBOOK_COUNTERPARTY_RISK.md
+  - dashboard/server/markdown_compact.py
+  - dashboard/server/agents/target_attainment/agent.py
+  - dashboard/server/org_tables_api.py
+  - org_tables_v2.html
+  - dashboard/server/agents/daily_report_v2/orchestrator.py
+  - dashboard/server/agents/target_attainment/schema.py
+  - dashboard/server/llm_target_attainment.py
 ---
 
 # LLM 연동/캐시 (PJT2) – 31.6
@@ -39,6 +39,36 @@ sync_source:
 - Canonicalization: 키 정렬, 문자열 trim+공백 축약+NFC, 숫자 round6, 딜 amount desc·id asc, 메모 date desc; JSON dumps(separators=",", ":") 후 sha256.
 - 프롬프트: `dashboard/server/agents/counterparty_card/prompts/{mode}/v1/{system|user|repair}.txt`(주석 `#` 무시, 없으면 빈 문자열). CounterpartyCardAgent.version="v1".
 - Blocker 라벨 허용집합: PIPELINE_ZERO/BUDGET/DECISION_MAKER/APPROVAL_DELAY/LOW_PRIORITY/COMPETITOR/FIT_UNCLEAR/NO_RESPONSE/PRICE_TERM/SCHEDULE_RESOURCE. 폴백은 pipeline_zero 우선, regex 점수 상위 3개, 매치 없으면 FIT_UNCLEAR.
+
+### New flags / rollback (target_attainment)
+- 입력 SSOT: LLM 컨텍스트로 사용하는 MD는 `dashboard/server/markdown_compact.py:won_groups_compact_to_markdown`(compact-info-md/v1.1) 결과다. 프런트 Daily Report는 `/api/orgs/{orgId}/won-groups-markdown-compact`로 받아 `won_group_markdown`에 담아 /llm/target-attainment에 전달한다. JS 렌더러 `wonGroupsCompactToMarkdown`는 뷰어 UI 전용이다.
+- TARGET_ATTAINMENT_CONTEXT_FORMAT: md | json (default md). derived_md 경로가 md일 때 compact JSON을 SSOT 렌더러로 변환한다. 변환 실패 시 json_fallback.
+- TARGET_ATTAINMENT_PROMPT_VERSION: v1 | v2 (default v2). v2 프롬프트는 “Context는 compact-info-md/v1.1 markdown”임을 명시한다.
+- include_input=1 또는 debug=1 메타 필드: context_format, context_source(request_md|derived_md|json|json_fallback), prompt_version, context_md_chars, context_md_truncated, context_md_head, context_md_hash, fallback_reason. (MD 본문 전체는 응답에 포함하지 않는다.)
+- 요청 스키마: won_group_markdown(옵션 문자열) 또는 won_group_json_compact(옵션 dict) 중 하나 필수. 512,000 bytes 초과 시 PAYLOAD_TOO_LARGE.
+- 롤백: env로 context_format=json 또는 prompt_version=v1 설정 후 재기동 → 기존 JSON 컨텍스트/프롬프트로 복귀. 프런트 Phase B 문제가 있으면 won_group_markdown 전송을 중단하고 이전 JSON body로 되돌리면 된다.
+
+### 413(PAYLOAD_TOO_LARGE) 대응 가이드 (target_attainment)
+- 한도: 512,000 bytes(request body). Markdown이 길 때 413이 발생할 수 있다.
+- 축소 방법: `/api/orgs/{id}/won-groups-markdown-compact?upper_org=...&max_deals=120&max_output_chars=80000&deal_memo_limit=10&memo_max_chars=240&redact_phone=1&format=json` 처럼 max_deals/max_output_chars를 낮춰 재생성한다. 프런트 Daily Report는 1회 자동 재시도(200→120 deals, 120k→80k chars).
+
+### 예시 호출
+- won-groups-markdown-compact:
+  ```
+  curl -s "$API_BASE/orgs/ORG123/won-groups-markdown-compact?upper_org=삼성전자&max_deals=200&max_output_chars=120000&format=json"
+  ```
+- /llm/target-attainment (markdown only):
+  ```
+  curl -s -X POST "$API_BASE/llm/target-attainment?include_input=1" \
+    -H "Content-Type: application/json" \
+    -d '{"orgId":"ORG123","orgName":"샘플","upperOrg":"삼성전자","mode":"offline","target_2026":100,"actual_2026":50,"won_group_markdown":"# md..."}'
+  ```
+
+### include_input=1 디버그 읽는 법 (target_attainment)
+- context_source: request_md(프런트가 서버 MD를 전달), derived_md(서버가 compact→MD 변환), json, json_fallback.
+- context_format/prompt_version: 사용된 플래그 확인.
+- context_md_chars/context_md_truncated/context_md_head/context_md_hash: 주입된 MD 요약.
+- fallback_reason: derived_md 실패 시 원인 문자열(200자 이내).
 
 ## Coupling Map
 - 구현: `dashboard/server/agents/counterparty_card/*`(payload/hash/fallback/cache), `counterparty_llm.py`(호환 어댑터), `deal_normalizer.py`(orchestrator+composer 병합).

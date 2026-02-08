@@ -392,6 +392,16 @@ def get_pl_progress_summary(year: int = Query(2026, description="연도 (기본 
         raise HTTPException(status_code=500, detail=str(exc))
 
 
+@router.get("/performance/pl-progress-2026/actual-overrides")
+def get_pl_progress_actual_overrides(year: int = Query(2026, description="연도 (기본 2026)")) -> dict:
+    try:
+        return db.get_pl_progress_actual_overrides(year=year)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
 @router.get("/performance/pl-progress-2026/deals")
 def get_pl_progress_deals(
     year: int = Query(2026, description="연도 (기본 2026)"),

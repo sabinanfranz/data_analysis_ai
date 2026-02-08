@@ -13,7 +13,10 @@ sync_source:
 
 ## Behavioral Contract
 ### 로컬 실행
-- 백엔드: `python -m uvicorn dashboard.server.main:app --host 0.0.0.0 --port 8000 --reload`
+- 백엔드(공식): `python -m uvicorn dashboard.server.main:app --host 0.0.0.0 --port 8000 --reload`
+  - 호환 경로(legacy): `uvicorn app.main:app --reload --port 8000`
+  - 두 경로 모두 동일 FastAPI 앱을 가리킨다. 배포/CI는 공식 경로(`dashboard.server.main:app`)를 사용한다.
+  - 반드시 프로젝트 루트(`data_analysis_ai`)에서 실행한다.
   - DB_PATH 기본 `salesmap_latest.db`; 파일 없으면 `/api/*` 500.
 - 프런트: `python -m http.server 8001` 후 `http://localhost:8001/org_tables_v2.html` (또는 파일을 직접 열기). API_BASE는 origin+/api, origin 없을 때 `http://localhost:8000/api`.
 - 의존성: `python -m venv .venv && .venv/ Scripts/ pip install -r requirements.txt` (Windows 경로는 `\.venv\Scripts\pip`).
@@ -50,7 +53,8 @@ sync_source:
 - 캐시(성능/DRI/PL 등)가 DB mtime 기반 메모리에 남아 DB 교체 후 재시작/새로고침 전까지 이전 데이터를 반환.
 
 ## Verification
-- 로컬: uvicorn 기동 후 `curl http://localhost:8000/api/health` → `{status:"ok"}` 확인, `/api/orgs` 호출 성공.
+- 로컬(공식): `python -m uvicorn dashboard.server.main:app --host 0.0.0.0 --port 8000 --reload` 기동 후 `curl http://localhost:8000/api/health` → `{status:"ok"}` 확인, `/api/orgs` 호출 성공.
+- 로컬(호환): `uvicorn app.main:app --reload --port 8000` 기동 후 동일하게 `/api/health` 확인.
 - 컨테이너: `DB_URL` 설정 후 `bash start.sh`; 다운로드 크기 50MB 이상, `/app/salesmap_latest.db` 심링크 존재 확인.
 - 스냅샷: 실행 후 `logs/run_history.jsonl`에 final_db_path/log_path/backup_path 기록, DB가 해당 경로인지 확인.
 - 프런트: 새 DB 배포 후 브라우저 새로고침 시 최신 데이터 표시, 새로고침 없이 남은 캐시가 있는지 확인.

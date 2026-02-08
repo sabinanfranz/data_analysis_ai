@@ -2299,13 +2299,57 @@
   </div>
 
   <script>
-    const API_BASE = (() => {
-      const origin = window.location.origin;
-      if (origin && origin !== "null" && origin.startsWith("http")) {
-        return origin.replace(/\/$/, "") + "/api";
+    const API_BASE_OVERRIDE_KEY = "org_tables_api_base_override";
+
+    function normalizeApiBase(base) {
+      const raw = String(base || "").trim().replace(/\/+$/, "");
+      if (!raw) return "";
+      if (/\/api$/i.test(raw)) return raw;
+      return `${raw}/api`;
+    }
+
+    function buildApiBaseCandidates() {
+      const candidates = [];
+      const pushCandidate = (base) => {
+        const normalized = normalizeApiBase(base);
+        if (!normalized) return;
+        if (!candidates.includes(normalized)) candidates.push(normalized);
+      };
+
+      try {
+        const qs = new URLSearchParams(window.location.search || "");
+        pushCandidate(qs.get("apiBase"));
+      } catch (err) {
+        // ignore malformed query strings
       }
-      return "http://localhost:8000/api";
-    })();
+
+      try {
+        pushCandidate(window.localStorage?.getItem(API_BASE_OVERRIDE_KEY));
+      } catch (err) {
+        // ignore localStorage access errors
+      }
+
+      const origin = window.location.origin;
+      const host = window.location.hostname || "";
+      const protocol = window.location.protocol || "http:";
+      const isHttpOrigin = origin && origin !== "null" && /^https?:/i.test(origin);
+
+      if (isHttpOrigin) {
+        pushCandidate(origin);
+        const isLocalHost = host === "localhost" || host === "127.0.0.1";
+        if (isLocalHost) {
+          pushCandidate(`${protocol}//${host}:8000`);
+          pushCandidate(`${protocol}//${host === "localhost" ? "127.0.0.1" : "localhost"}:8000`);
+        }
+      }
+
+      pushCandidate("http://localhost:8000");
+      pushCandidate("http://127.0.0.1:8000");
+      return candidates;
+    }
+
+    const API_BASE_CANDIDATES = buildApiBaseCandidates();
+    let API_BASE = API_BASE_CANDIDATES[0] || "http://localhost:8000/api";
     const PART_STRUCTURE = {
       "기업교육 1팀": {
         "1파트": ["김솔이", "황초롱", "김정은", "김동찬", "정태윤", "서정연", "오진선", "공새봄", "김별"],
@@ -2814,6 +2858,7 @@
         loading: false,
         error: null,
         summary: null,
+        actualOverrides: null,
         dealsCache: new Map(),
         assumptions: { ...DEFAULT_PNL_ASSUMPTIONS },
         assumptionDraft: getDefaultPnlDrafts(),
@@ -3653,8 +3698,8 @@
           return 72;
         }
         if (key === "courseFormat") {
-          const min = 90;
-          const max = compact ? 180 : 240;
+          const min = compact ? 56 : 90;
+          const max = compact ? 160 : 240;
           return Math.max(min, Math.min(max, width));
         }
         if (key === "expectedAmount") {
@@ -4320,8 +4365,48 @@
       }
     }
 
+    function updateApiBaseLabel() {
+      document.querySelectorAll("#apiBaseLabel").forEach((el) => {
+        el.textContent = API_BASE;
+      });
+    }
+
+    function isNetworkFetchError(err) {
+      const msg = String(err?.message || err || "");
+      return err instanceof TypeError || /Failed to fetch|NetworkError|Load failed/i.test(msg);
+    }
+
+    async function fetchWithApiBase(path, init) {
+      const candidates = [API_BASE, ...API_BASE_CANDIDATES.filter((base) => base !== API_BASE)];
+      const tried = [];
+      let lastNetworkError = null;
+      for (const base of candidates) {
+        tried.push(base);
+        try {
+          const resp = await fetch(`${base}${path}`, init);
+          const hasNext = tried.length < candidates.length;
+          if (!resp.ok && resp.status === 404 && hasNext) {
+            // Typical dev mismatch: frontend origin points to static server without /api routes.
+            continue;
+          }
+          if (base !== API_BASE) {
+            API_BASE = base;
+            updateApiBaseLabel();
+            console.warn("[api] API_BASE switched", { base });
+          }
+          return resp;
+        } catch (err) {
+          if (!isNetworkFetchError(err)) throw err;
+          lastNetworkError = err;
+        }
+      }
+      const wrapped = new Error(`Failed to fetch (tried: ${tried.join(", ")})`);
+      if (lastNetworkError) wrapped.cause = lastNetworkError;
+      throw wrapped;
+    }
+
     async function fetchJson(path) {
-      const resp = await fetch(`${API_BASE}${path}`);
+      const resp = await fetchWithApiBase(path);
       if (!resp.ok) {
         const txt = await resp.text();
         throw new Error(txt || resp.statusText);
@@ -4330,7 +4415,7 @@
     }
 
     async function postJson(path, body) {
-      const resp = await fetch(`${API_BASE}${path}`, {
+      const resp = await fetchWithApiBase(path, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body ?? {}),
@@ -4669,7 +4754,7 @@
     }
 
     async function fetchBlob(path) {
-      const resp = await fetch(`${API_BASE}${path}`);
+      const resp = await fetchWithApiBase(path);
       if (!resp.ok) {
         const txt = await resp.text();
         throw new Error(txt || resp.statusText);
@@ -4793,6 +4878,16 @@
       params.set("year", year);
       const data = await fetchJson(`/performance/pl-progress-2026/summary?${params.toString()}`);
       state.perfPlProgress2026.summary = data;
+      return data;
+    }
+
+    async function loadPlProgress2026ActualOverrides(year = 2026) {
+      const cached = state.perfPlProgress2026.actualOverrides;
+      if (cached && cached.year === year) return cached;
+      const params = new URLSearchParams();
+      params.set("year", year);
+      const data = await fetchJson(`/performance/pl-progress-2026/actual-overrides?${params.toString()}`);
+      state.perfPlProgress2026.actualOverrides = data;
       return data;
     }
 
@@ -5398,6 +5493,78 @@
       }
 
       return cloned;
+    }
+
+    function applyActualOverridesToPnlData(data, actualPayload) {
+      if (!data || !Array.isArray(data.rows)) {
+        return { data, replacedCellSet: new Set() };
+      }
+
+      const months = Array.isArray(data.months) ? data.months.slice() : [];
+      const monthSet = new Set(months);
+      const cloned = {
+        ...data,
+        rows: data.rows.map((row) => ({ ...row, values: { ...(row.values || {}) } })),
+      };
+      const rowMap = new Map(cloned.rows.map((row) => [row.key, row]));
+      const replacedCellSet = new Set();
+      const overrides = (actualPayload && actualPayload.overrides) || {};
+
+      Object.entries(overrides).forEach(([rowKey, monthMap]) => {
+        const row = rowMap.get(rowKey);
+        if (!row || !monthMap || typeof monthMap !== "object") return;
+        if (!row.values) row.values = {};
+        Object.entries(monthMap).forEach(([month, rawVal]) => {
+          if (!monthSet.has(month)) return;
+          const n = rawVal === null || rawVal === undefined ? null : Number(rawVal);
+          row.values[`${month}_E`] = Number.isFinite(n) ? n : null;
+          replacedCellSet.add(`${rowKey}|${month}|E`);
+        });
+      });
+
+      const yearECol = (cloned.columns || []).find((col) => col && col.kind === "YEAR" && col.variant === "E");
+      const yearEKey = yearECol ? yearECol.key : null;
+      const toNum = (v) => {
+        const n = Number(v);
+        return Number.isFinite(n) ? n : null;
+      };
+      const sumMonthlyE = (rowKey) => {
+        const row = rowMap.get(rowKey);
+        if (!row) return null;
+        let total = 0;
+        let hasAny = false;
+        months.forEach((month) => {
+          const v = toNum(row.values?.[`${month}_E`]);
+          if (Number.isFinite(v)) {
+            total += v;
+            hasAny = true;
+          }
+        });
+        return hasAny ? total : null;
+      };
+
+      cloned.rows.forEach((row) => {
+        if (!yearEKey) return;
+        if (row.key === "OP_MARGIN") return;
+        row.values[yearEKey] = sumMonthlyE(row.key);
+      });
+
+      const opMarginRow = rowMap.get("OP_MARGIN");
+      if (opMarginRow && opMarginRow.values) {
+        months.forEach((month) => {
+          const rev = toNum(rowMap.get("REV_TOTAL")?.values?.[`${month}_E`]);
+          const op = toNum(rowMap.get("OP")?.values?.[`${month}_E`]);
+          const margin = rev !== null && rev > 0 && op !== null ? (op / rev) * 100 : null;
+          opMarginRow.values[`${month}_E`] = margin;
+        });
+        if (yearEKey) {
+          const revYear = toNum(rowMap.get("REV_TOTAL")?.values?.[yearEKey]);
+          const opYear = toNum(rowMap.get("OP")?.values?.[yearEKey]);
+          opMarginRow.values[yearEKey] = revYear !== null && revYear > 0 && opYear !== null ? (opYear / revYear) * 100 : null;
+        }
+      }
+
+      return { data: cloned, replacedCellSet };
     }
 
     function isOnlineCourseFormat(v) {
@@ -7787,7 +7954,7 @@
 
     async function initOrgScreen() {
       bindGlobalModalsOnce();
-      document.getElementById("apiBaseLabel").textContent = API_BASE;
+      updateApiBaseLabel();
       updateStatePathButton();
       document.getElementById("sizeSelect").addEventListener("change", async (e) => {
         state.size = e.target.value;
@@ -8013,9 +8180,7 @@
       }
       state.dealCheck[teamKey].loading = true;
       try {
-        const res = await fetch(`${API_BASE}${cfg.apiPath}`);
-        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-        const data = await res.json();
+        const data = await fetchJson(cfg.apiPath);
         const items = data.items || [];
         cache.dealCheck[teamKey] = items;
         state.dealCheck[teamKey].items = items;
@@ -8194,6 +8359,7 @@
               <td data-col="teamSignature">${row.teamSignature || "-"}</td>
               <td data-col="personName">${customerCell}</td>
               <td data-col="dealName">${dealLink}</td>
+              <td data-col="createdAt">${formatDateYYMMDD(row.createdAt)}</td>
               <td data-col="courseFormat">${row.courseFormat || "-"}</td>
               <td data-col="planning">${renderPlanningLinkCell(row.planningSheetLink)}</td>
               <td data-col="part">${part}</td>
@@ -8224,6 +8390,7 @@
               <col data-col="teamSignature" style="width:15ch; min-width:15ch; max-width:15ch;" />
               <col data-col="personName" style="width:8ch; min-width:8ch; max-width:8ch;" />
               <col data-col="dealName" />
+              <col data-col="createdAt" />
               <col data-col="courseFormat" />
               <col data-col="planning" style="min-width:6ch; width:6ch;" />
               <col data-col="part" />
@@ -8241,6 +8408,7 @@
               <th data-col="teamSignature">팀(명함/메일서명)</th>
               <th data-col="personName">담당자</th>
               <th data-col="dealName">딜 이름</th>
+              <th data-col="createdAt">생성 날짜</th>
               <th data-col="courseFormat">과정포맷</th>
               <th data-col="planning">기획</th>
               <th data-col="part">파트</th>
@@ -11292,14 +11460,26 @@
           <div class="control-row">
             <div>
               <h1>2026 P&L 진행율매출</h1>
-              <div class="muted" id="plProgressMeta">단위: 억</div>
             </div>
             <div class="spacer"></div>
             <span class="pill muted">2026-01 ~ 2026-12</span>
           </div>
-          <div id="pnlAssumptionsBar"></div>
         </section>
-        <section class="card">
+        <section class="card compact-header">
+          <div class="control-row">
+            <h3>Actual 반영</h3>
+            <div class="spacer"></div>
+          </div>
+          <div class="muted" id="plProgressMetaActual">단위: 억</div>
+          <div id="plProgressActualTableWrap" class="muted">불러오는 중...</div>
+        </section>
+        <section class="card compact-header">
+          <div class="control-row">
+            <h3>기존 계산</h3>
+            <div class="spacer"></div>
+          </div>
+          <div id="pnlAssumptionsBar"></div>
+          <div class="muted" id="plProgressMetaBase">단위: 억</div>
           <div id="plProgressTableWrap" class="muted">불러오는 중...</div>
         </section>
         <div id="pnlAssumpModalBackdrop">
@@ -11313,8 +11493,10 @@
         </div>
       `;
 
+      const actualTableWrap = document.getElementById("plProgressActualTableWrap");
       const tableWrap = document.getElementById("plProgressTableWrap");
-      const metaEl = document.getElementById("plProgressMeta");
+      const actualMetaEl = document.getElementById("plProgressMetaActual");
+      const metaEl = document.getElementById("plProgressMetaBase");
       const assumptionsBar = document.getElementById("pnlAssumptionsBar");
       const assumpModal = document.getElementById("pnlAssumpModalBackdrop");
       const assumpModalBody = document.getElementById("pnlAssumpModalBody");
@@ -11371,13 +11553,143 @@
         assumpModalClose.addEventListener("click", () => closeAssumpModal());
       }
 
+      const renderTable = (
+        targetEl,
+        data,
+        {
+          tableMode = "base",
+          replacedCellSet = new Set(),
+          metaTarget = null,
+          metaText = "단위: 억 · (T)=Target / (E)=Expected",
+        } = {}
+      ) => {
+        if (!targetEl) return;
+        if (!data || !data.rows || !data.rows.length) {
+          targetEl.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+          if (metaTarget) metaTarget.textContent = metaText;
+          return;
+        }
+        const columns = data.columns || [];
+        const yearCols = columns.filter((c) => c.kind === "YEAR");
+        const monthCols = (data.months || []).flatMap((m) => columns.filter((c) => c.month === m));
+        const orderedCols = [...yearCols, ...monthCols];
+
+        const now = new Date();
+        const currentYYMM = `${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+        const headerRow1 = [
+          `<th class="col-item mp-kind sticky-col" rowspan="2">항목</th>`,
+          `<th class="group col-year year-group" colspan="${yearCols.length}">${data.year || 2026} 전체</th>`,
+          ...data.months.map((m) => {
+            const cls = m === currentYYMM ? "group col-month month-group is-current-month-group" : "group col-month month-group";
+            return `<th class="${cls}" colspan="2">${m}</th>`;
+          }),
+        ].join("");
+
+        const headerRow2 = orderedCols
+          .map((col) => {
+            const isYear = col.kind === "YEAR";
+            const isT = col.variant === "T";
+            const isE = col.variant === "E";
+            const extra = [];
+            if (isYear && isT) extra.push("year-start");
+            if (isYear && isE) extra.push("year-end");
+            if (!isYear && isT) extra.push("month-start");
+            if (col.month === currentYYMM) {
+              extra.push("is-current-month");
+              if (isT) extra.push("current-month-start");
+              if (isE) extra.push("current-month-end");
+            }
+            const badge = isT ? '<span class="badge badge-t">T</span>' : '<span class="badge badge-e">E</span>';
+            return `<th class="${["col-year", "col-month", isT ? "col-t" : "col-e", ...extra].filter(Boolean).join(" ")}"><div class="pnl-head-right">${badge}</div></th>`;
+          })
+          .join("");
+
+        const bodyRows =
+          data.rows
+            .map((row) => {
+              const cells = orderedCols
+                .map((col) => {
+                  const val = row.values ? row.values[col.key] : null;
+                  const isClickable =
+                    col.variant === "E" &&
+                    col.kind !== "YEAR" &&
+                    (row.key === "REV_TOTAL" || row.key === "REV_ONLINE" || row.key === "REV_OFFLINE");
+                  const display = row.format === "percent" ? formatPercentValue(val) : formatEokMax2(val);
+                  const rail = row.key === "REV_TOTAL" ? "TOTAL" : row.key === "REV_ONLINE" ? "ONLINE" : "OFFLINE";
+                  const isZero = !Number.isFinite(Number(val)) || Number(val) <= 0;
+                  const isReplacedByActual =
+                    tableMode === "actual" &&
+                    isClickable &&
+                    col.month &&
+                    replacedCellSet.has(`${row.key}|${col.month}|E`);
+                  const classes = [
+                    col.kind === "YEAR" ? "col-year" : "",
+                    col.kind === "YEAR" && col.variant === "T" ? "year-start" : "",
+                    col.kind === "YEAR" && col.variant === "E" ? "year-end" : "",
+                    col.variant === "T" ? "col-t" : "col-e",
+                    col.kind !== "YEAR" && col.variant === "T" ? "month-start" : "",
+                    col.month === currentYYMM ? "is-current-month" : "",
+                    col.month === currentYYMM && col.variant === "T" ? "current-month-start" : "",
+                    col.month === currentYYMM && col.variant === "E" ? "current-month-end" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ");
+                  if (isClickable) {
+                    if (isReplacedByActual || isZero) {
+                      const disableClass = ["mp-cell-btn", isZero ? "is-zero" : "", isReplacedByActual ? "is-disabled" : ""]
+                        .filter(Boolean)
+                        .join(" ");
+                      const disableTitle = isReplacedByActual ? "Actual 반영 셀은 팝업이 비활성화됩니다." : "";
+                      const disabledDisplay = isReplacedByActual ? display : formatEokMax2(0);
+                      return `<td class="${classes} mp-num"><span class="${disableClass}" title="${disableTitle}"><span class="pnl-num">${disabledDisplay}</span></span></td>`;
+                    }
+                    return `<td class="${classes} mp-num clickable"><button type="button" class="mp-cell-btn" data-pl-cell="1" data-month="${col.month}" data-rail="${rail}"><span class="pnl-num">${display}</span></button></td>`;
+                  }
+                  return `<td class="${classes} mp-num"><span class="pnl-num">${display}</span></td>`;
+                })
+                .join("");
+              const labelCls = row.level ? `row-label level-${row.level} col-item` : "row-label col-item";
+              return `<tr><td class="${labelCls} sticky-col"><span class="pnl-item">${row.label}</span></td>${cells}</tr>`;
+            })
+            .join("");
+
+        targetEl.innerHTML = `
+          <div class="table-wrap full perf-table-wrap">
+            <table class="perf-table mp-monthly-table pl-progress-table pnl-table" style="--item-col-w: 190px; --year-col-w: 110px;">
+              <thead>
+                <tr>${headerRow1}</tr>
+                <tr>${headerRow2}</tr>
+              </thead>
+              <tbody>
+                ${bodyRows}
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        targetEl.querySelectorAll("[data-pl-cell]").forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            const month = e.currentTarget.getAttribute("data-month");
+            const rail = e.currentTarget.getAttribute("data-rail");
+            await openPlProgressDealsModal({ month, rail, variant: "E" });
+          });
+        });
+
+        if (metaTarget) metaTarget.textContent = metaText;
+      };
+
       const renderWithAssumptions = () => {
         if (!state.perfPlProgress2026.summary) return;
         const adjusted = applyAssumptionsToPnlData(
           state.perfPlProgress2026.summary,
           state.perfPlProgress2026.assumptions
         );
-        renderTable(adjusted);
+        renderTable(tableWrap, adjusted, {
+          tableMode: "base",
+          metaTarget: metaEl,
+          metaText: "단위: 억 · (T)=Target / (E)=Expected",
+        });
       };
 
       const renderAssumptionsUI = () => {
@@ -11539,119 +11851,38 @@
         }
       };
 
-      const renderTable = (data) => {
-        if (!data || !data.rows || !data.rows.length) {
-          tableWrap.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
-          return;
-        }
-        const columns = data.columns || [];
-        const yearCols = columns.filter((c) => c.kind === "YEAR");
-        const monthCols = (data.months || []).flatMap((m) => columns.filter((c) => c.month === m));
-        const orderedCols = [...yearCols, ...monthCols];
-
-        const now = new Date();
-        const currentYYMM = `${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, "0")}`;
-
-        const headerRow1 = [
-          `<th class="col-item mp-kind sticky-col" rowspan="2">항목</th>`,
-          `<th class="group col-year year-group" colspan="${yearCols.length}">${data.year || 2026} 전체</th>`,
-          ...data.months.map((m) => {
-            const cls = m === currentYYMM ? "group col-month month-group is-current-month-group" : "group col-month month-group";
-            return `<th class="${cls}" colspan="2">${m}</th>`;
-          }),
-        ].join("");
-
-        const headerRow2 = orderedCols
-          .map((col) => {
-            const isYear = col.kind === "YEAR";
-            const isT = col.variant === "T";
-            const isE = col.variant === "E";
-            const extra = [];
-            if (isYear && isT) extra.push("year-start");
-            if (isYear && isE) extra.push("year-end");
-            if (!isYear && isT) extra.push("month-start");
-            if (col.month === currentYYMM) {
-              extra.push("is-current-month");
-              if (isT) extra.push("current-month-start");
-              if (isE) extra.push("current-month-end");
-            }
-            const badge = isT ? '<span class="badge badge-t">T</span>' : '<span class="badge badge-e">E</span>';
-            return `<th class="${["col-year", "col-month", isT ? "col-t" : "col-e", ...extra].filter(Boolean).join(" ")}"><div class="pnl-head-right">${badge}</div></th>`;
-          })
-          .join("");
-
-        const bodyRows =
-          data.rows
-            .map((row) => {
-              const cells = orderedCols
-                .map((col) => {
-                  const val = row.values ? row.values[col.key] : null;
-                  const isClickable =
-                    col.variant === "E" &&
-                    col.kind !== "YEAR" &&
-                    (row.key === "REV_TOTAL" || row.key === "REV_ONLINE" || row.key === "REV_OFFLINE");
-                  const display = row.format === "percent" ? formatPercentValue(val) : formatEokMax2(val);
-                  const rail = row.key === "REV_TOTAL" ? "TOTAL" : row.key === "REV_ONLINE" ? "ONLINE" : "OFFLINE";
-                  const isZero = !Number.isFinite(Number(val)) || Number(val) <= 0;
-                  const classes = [
-                    col.kind === "YEAR" ? "col-year" : "",
-                    col.kind === "YEAR" && col.variant === "T" ? "year-start" : "",
-                    col.kind === "YEAR" && col.variant === "E" ? "year-end" : "",
-                    col.variant === "T" ? "col-t" : "col-e",
-                    col.kind !== "YEAR" && col.variant === "T" ? "month-start" : "",
-                    col.month === currentYYMM ? "is-current-month" : "",
-                    col.month === currentYYMM && col.variant === "T" ? "current-month-start" : "",
-                    col.month === currentYYMM && col.variant === "E" ? "current-month-end" : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" ");
-                  if (isClickable) {
-                    return `<td class="${classes} mp-num clickable">${isZero ? `<span class="mp-cell-btn is-zero">${formatEokMax2(0)}</span>` : `<button type="button" class="mp-cell-btn" data-pl-cell="1" data-month="${col.month}" data-rail="${rail}"><span class="pnl-num">${display}</span></button>`}</td>`;
-                  }
-                  return `<td class="${classes} mp-num"><span class="pnl-num">${display}</span></td>`;
-                })
-                .join("");
-              const labelCls = row.level ? `row-label level-${row.level} col-item` : "row-label col-item";
-              return `<tr><td class="${labelCls} sticky-col"><span class="pnl-item">${row.label}</span></td>${cells}</tr>`;
-            })
-            .join("");
-
-        tableWrap.innerHTML = `
-          <div class="table-wrap full perf-table-wrap">
-            <table class="perf-table mp-monthly-table pl-progress-table pnl-table" style="--item-col-w: 190px; --year-col-w: 110px;">
-              <thead>
-                <tr>${headerRow1}</tr>
-                <tr>${headerRow2}</tr>
-              </thead>
-              <tbody>
-                ${bodyRows}
-              </tbody>
-            </table>
-          </div>
-        `;
-
-        tableWrap.querySelectorAll("[data-pl-cell]").forEach((btn) => {
-          btn.addEventListener("click", async (e) => {
-            const month = e.currentTarget.getAttribute("data-month");
-            const rail = e.currentTarget.getAttribute("data-rail");
-            await openPlProgressDealsModal({ month, rail, variant: "E" });
-          });
-        });
-
-        if (metaEl) {
-          metaEl.textContent = `단위: 억 · (T)=Target / (E)=Expected`;
-        }
-      };
-
       renderAssumptionsUI();
 
       try {
-        const data = await loadPlProgress2026Summary(2026);
-        state.perfPlProgress2026.summary = data;
+        const summary = await loadPlProgress2026Summary(2026);
+        state.perfPlProgress2026.summary = summary;
         renderWithAssumptions();
+
+        try {
+          const actual = await loadPlProgress2026ActualOverrides(2026);
+          state.perfPlProgress2026.actualOverrides = actual;
+          const applied = applyActualOverridesToPnlData(summary, actual);
+          const monthsLabel = Array.isArray(actual.months) && actual.months.length ? actual.months.join(", ") : "-";
+          const metaTokens = [
+            "단위: 억 · (T)=Target / (E)=Expected",
+            `Actual 반영월: ${monthsLabel}`,
+          ];
+          if (actual?.meta?.actual_file_mtime) metaTokens.push(`actual_mtime:${actual.meta.actual_file_mtime}`);
+          renderTable(actualTableWrap, applied.data, {
+            tableMode: "actual",
+            replacedCellSet: applied.replacedCellSet,
+            metaTarget: actualMetaEl,
+            metaText: metaTokens.join(" · "),
+          });
+        } catch (actualErr) {
+          if (actualTableWrap) actualTableWrap.innerHTML = `<div class="muted">오류: ${actualErr.message}</div>`;
+          if (actualMetaEl) actualMetaEl.textContent = "단위: 억 · actual 로드 실패";
+          showToast(`P&L actual 데이터를 불러오지 못했습니다: ${actualErr.message}`, "error");
+        }
       } catch (err) {
         state.perfPlProgress2026.error = err;
         if (tableWrap) tableWrap.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+        if (actualTableWrap) actualTableWrap.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
         showToast(`P&L 진행율매출을 불러오지 못했습니다: ${err.message}`, "error");
       } finally {
         state.perfPlProgress2026.loading = false;

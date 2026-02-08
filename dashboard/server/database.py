@@ -19,6 +19,7 @@ print(f"[db] Using DB_PATH={DB_PATH_ENV}")
 DB_PATH = Path(DB_PATH_ENV)
 EXISTING_2024_FOR_2025_ENV = "EXISTING_2024_FOR_2025_LIST_PATH"
 EXISTING_2024_FOR_2025_DEFAULT_PATH = Path(__file__).parent / "resources" / "existing_orgs_2024_for_2025.txt"
+PL_2026_ACTUAL_RESOURCE_PATH = Path(__file__).parent / "resources" / "2026 PnL actual.txt"
 DATE_KST_MODE = os.getenv("DATE_KST_MODE", "legacy").lower()
 if DATE_KST_MODE not in {"legacy", "shadow", "strict"}:
     logging.warning("Invalid DATE_KST_MODE=%s. Falling back to legacy.", DATE_KST_MODE)
@@ -172,6 +173,7 @@ _PERF_MONTHLY_CLOSE_RATE_CACHE: Dict[Tuple[Path, float, Path, Optional[float]], 
 _PERF_MONTHLY_CLOSE_RATE_SUMMARY_CACHE: Dict[Tuple[Path, float, Path, Optional[float], str, str, str, str], Dict[str, Any]] = {}
 _PL_PROGRESS_PAYLOAD_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
 _PL_PROGRESS_SUMMARY_CACHE: Dict[Tuple[Path, float, int], Dict[str, Any]] = {}
+_PL_PROGRESS_ACTUAL_FILE_CACHE: Dict[Tuple[Path, float], Dict[str, Any]] = {}
 _QC_MONTHLY_REVENUE_CACHE: Dict[Tuple[Path, float, str, int, int, Optional[str], Optional[float]], Dict[str, Any]] = {}
 _ACCOUNTING_COURSE_ID_CACHE: Dict[Tuple[Path, Optional[float]], Set[str]] = {}
 _EXISTING_2024_FOR_2025_NAME_CACHE: Dict[Tuple[Path, Optional[float]], Set[str]] = {}
@@ -3229,6 +3231,8 @@ def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any
         planning_col_expr = f"{_dq(planning_col)} AS planning_sheet_link" if planning_col else "NULL AS planning_sheet_link"
         lost_col = _pick_column(conn, "deal", ["LOST 확정일", "Lost 확정일", "lost_confirmed_at"])
         lost_col_expr = f"d.{_q(lost_col)} AS lost_confirmed_date_raw" if lost_col else "NULL AS lost_confirmed_date_raw"
+        created_col = _pick_column(conn, "deal", ["생성 날짜", "생성일", "createdAt", "created_at", "created_at_utc"])
+        created_col_expr = f"{_dq(created_col)} AS created_at" if created_col else "NULL AS created_at"
         won_rows = _fetch_all(
             conn,
             'SELECT organizationId AS org_id, "금액" AS amount '
@@ -3254,7 +3258,7 @@ def get_deal_check(team_key: str, db_path: Path = DB_PATH) -> List[Dict[str, Any
             "  d.id AS deal_id, "
             "  d.peopleId AS people_id, "
             "  d.organizationId AS deal_org_id, "
-            "  d.\"생성 날짜\" AS created_at, "
+            f"  {created_col_expr}, "
             "  d.\"이름\" AS deal_name, "
             "  d.\"과정포맷\" AS course_format, "
             "  d.\"담당자\" AS owner_json, "
@@ -5804,6 +5808,130 @@ def _round2(val: Optional[float]) -> Optional[float]:
     if val is None:
         return None
     return round(float(val), 4)
+
+
+def _pl_progress_label_to_key_map() -> Dict[str, str]:
+    return {label: key for key, label, _, _ in _PL_PROGRESS_ROWS}
+
+
+def _parse_pl_actual_value(raw: Any) -> Optional[float]:
+    if raw is None:
+        return None
+    if isinstance(raw, bool):
+        return None
+    if isinstance(raw, str):
+        text = raw.strip()
+        if not text or text == "-":
+            return None
+        try:
+            num = float(text)
+        except (TypeError, ValueError):
+            return None
+    elif isinstance(raw, (int, float)):
+        num = float(raw)
+    else:
+        return None
+    if num != num or num in {float("inf"), float("-inf")}:
+        return None
+    return num
+
+
+def _load_pl_progress_actual_file(
+    resource_path: Path = PL_2026_ACTUAL_RESOURCE_PATH,
+) -> Dict[str, Any]:
+    if not resource_path.exists():
+        raise FileNotFoundError(f"PL actual resource not found at {resource_path}")
+
+    stat = resource_path.stat()
+    cache_key = (resource_path, stat.st_mtime)
+    cached = _PL_PROGRESS_ACTUAL_FILE_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    with resource_path.open("r", encoding="utf-8") as f:
+        payload = json.load(f)
+    if not isinstance(payload, list):
+        raise ValueError("PL actual resource must be a JSON list")
+
+    label_to_key = _pl_progress_label_to_key_map()
+    by_row: Dict[str, Dict[str, Optional[float]]] = {}
+    months: Set[str] = set()
+    unmapped_categories: Set[str] = set()
+
+    for row in payload:
+        if not isinstance(row, dict):
+            continue
+        category = str(row.get("category") or "").strip()
+        if not category:
+            continue
+        row_key = label_to_key.get(category)
+        if not row_key:
+            unmapped_categories.add(category)
+            continue
+        data_obj = row.get("data")
+        if not isinstance(data_obj, dict):
+            continue
+        row_months = by_row.setdefault(row_key, {})
+        for month_key_raw, value_obj in data_obj.items():
+            month_key = str(month_key_raw or "").strip()
+            if not re.fullmatch(r"\d{4}", month_key):
+                continue
+            raw_a = value_obj.get("A") if isinstance(value_obj, dict) else value_obj
+            parsed = _parse_pl_actual_value(raw_a)
+            row_months[month_key] = parsed
+            months.add(month_key)
+
+    parsed_payload = {
+        "overrides": by_row,
+        "months": sorted(months),
+        "unmapped_categories": sorted(unmapped_categories),
+        "actual_file_path": str(resource_path),
+        "actual_file_mtime": int(stat.st_mtime),
+    }
+    _PL_PROGRESS_ACTUAL_FILE_CACHE[cache_key] = parsed_payload
+    return parsed_payload
+
+
+def get_pl_progress_actual_overrides(
+    year: int = 2026,
+    db_path: Path = DB_PATH,
+    resource_path: Path = PL_2026_ACTUAL_RESOURCE_PATH,
+) -> Dict[str, Any]:
+    months_for_year = set(_month_keys_for_year(year))
+    parsed = _load_pl_progress_actual_file(resource_path=resource_path)
+    raw_overrides = parsed.get("overrides") or {}
+
+    overrides: Dict[str, Dict[str, Optional[float]]] = {}
+    used_months: Set[str] = set()
+    for row_key, month_map in raw_overrides.items():
+        if not isinstance(month_map, dict):
+            continue
+        filtered = {month: val for month, val in month_map.items() if month in months_for_year}
+        if not filtered:
+            continue
+        overrides[row_key] = filtered
+        used_months.update(filtered.keys())
+
+    snapshot_version: Optional[str] = None
+    try:
+        if db_path.exists():
+            snapshot_version = f"db_mtime:{int(db_path.stat().st_mtime)}"
+    except Exception:
+        snapshot_version = None
+
+    return {
+        "year": year,
+        "months": sorted(used_months),
+        "overrides": overrides,
+        "meta": {
+            "snapshot_version": snapshot_version,
+            "actual_file_path": parsed.get("actual_file_path"),
+            "actual_file_mtime": parsed.get("actual_file_mtime"),
+            "unmapped_categories": parsed.get("unmapped_categories", []),
+            "rowCount": len(overrides),
+            "monthCount": len(used_months),
+        },
+    }
 
 
 def _load_pl_progress_payload(year: int = 2026, db_path: Path = DB_PATH) -> Dict[str, Any]:

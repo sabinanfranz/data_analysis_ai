@@ -684,3 +684,384 @@ test("counterparty owners cell renders single line without <br/> or newline", ()
     throw new Error("owners cell contains newline");
   }
 });
+
+test("applyActualOverridesToPnlData replaces monthly E and recomputes yearly E/OP margin", () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({}), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const applyActual = vm.runInContext("applyActualOverridesToPnlData", ctx);
+
+  const summary = {
+    year: 2026,
+    months: ["2601", "2602"],
+    columns: [
+      { key: "Y2026_T", kind: "YEAR", variant: "T" },
+      { key: "Y2026_E", kind: "YEAR", variant: "E" },
+      { key: "2601_T", kind: "MONTH", variant: "T", month: "2601" },
+      { key: "2601_E", kind: "MONTH", variant: "E", month: "2601" },
+      { key: "2602_T", kind: "MONTH", variant: "T", month: "2602" },
+      { key: "2602_E", kind: "MONTH", variant: "E", month: "2602" },
+    ],
+    rows: [
+      {
+        key: "REV_TOTAL",
+        format: "eok",
+        values: { Y2026_E: 3, "2601_E": 1, "2602_E": 2 },
+      },
+      {
+        key: "REV_ONLINE",
+        format: "eok",
+        values: { Y2026_E: 1, "2601_E": 0.4, "2602_E": 0.6 },
+      },
+      {
+        key: "REV_OFFLINE",
+        format: "eok",
+        values: { Y2026_E: 2, "2601_E": 0.6, "2602_E": 1.4 },
+      },
+      {
+        key: "OP",
+        format: "eok",
+        values: { Y2026_E: 0.3, "2601_E": 0.1, "2602_E": 0.2 },
+      },
+      {
+        key: "OP_MARGIN",
+        format: "percent",
+        values: { Y2026_E: 10, "2601_E": 10, "2602_E": 10 },
+      },
+    ],
+  };
+
+  const actualPayload = {
+    overrides: {
+      REV_TOTAL: { "2601": 6.65 },
+      REV_ONLINE: { "2601": null },
+      OP: { "2601": -2.9 },
+    },
+  };
+
+  const result = applyActual(summary, actualPayload);
+  const rows = new Map((result.data.rows || []).map((row) => [row.key, row]));
+
+  assert.strictEqual(rows.get("REV_TOTAL").values["2601_E"], 6.65);
+  assert.strictEqual(rows.get("REV_ONLINE").values["2601_E"], null);
+  assert.ok(Math.abs(rows.get("REV_TOTAL").values.Y2026_E - 8.65) < 1e-9);
+  assert.ok(Math.abs(rows.get("OP").values.Y2026_E - (-2.7)) < 1e-9);
+  assert.ok(result.replacedCellSet.has("REV_TOTAL|2601|E"));
+  assert.ok(result.replacedCellSet.has("REV_ONLINE|2601|E"));
+  assert.ok(result.replacedCellSet.has("OP|2601|E"));
+
+  const monthMargin = rows.get("OP_MARGIN").values["2601_E"];
+  const yearMargin = rows.get("OP_MARGIN").values.Y2026_E;
+  assert.ok(Math.abs(monthMargin - ((-2.9 / 6.65) * 100)) < 1e-9);
+  assert.ok(Math.abs(yearMargin - ((-2.7 / 8.65) * 100)) < 1e-9);
+
+  // original input object should remain unchanged
+  assert.strictEqual(summary.rows[0].values["2601_E"], 1);
+  assert.strictEqual(summary.rows[1].values["2601_E"], 0.4);
+});
+
+test("buildApiBaseCandidates includes localhost:8000 fallback for dev frontend origin", () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: {
+      location: {
+        origin: "http://localhost:8001",
+        hostname: "localhost",
+        protocol: "http:",
+        search: "",
+      },
+      localStorage: { getItem: () => null },
+    },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({}), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+    TypeError,
+  };
+  sandbox.global = sandbox;
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const candidates = vm.runInContext("buildApiBaseCandidates()", ctx);
+  assert.ok(Array.isArray(candidates) && candidates.length > 0);
+  assert.strictEqual(candidates[0], "http://localhost:8001/api");
+  assert.ok(candidates.includes("http://localhost:8000/api"));
+});
+
+test("fetchJson falls back to alternate API base when first base is unreachable", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const calls = [];
+  const sandbox = {
+    console,
+    window: {
+      location: {
+        origin: "http://localhost:8001",
+        hostname: "localhost",
+        protocol: "http:",
+        search: "",
+      },
+      localStorage: { getItem: () => null },
+    },
+    document: docStub,
+    fetch: async (url) => {
+      calls.push(url);
+      if (String(url).startsWith("http://localhost:8001/api")) {
+        throw new TypeError("Failed to fetch");
+      }
+      if (String(url).startsWith("http://localhost:8000/api")) {
+        return {
+          ok: true,
+          json: async () => ({ status: "ok" }),
+          text: async () => '{"status":"ok"}',
+        };
+      }
+      return {
+        ok: false,
+        statusText: "not found",
+        text: async () => "not found",
+      };
+    },
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+    TypeError,
+  };
+  sandbox.global = sandbox;
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const fetchJson = vm.runInContext("fetchJson", ctx);
+  const data = await fetchJson("/health");
+  assert.strictEqual(data.status, "ok");
+  assert.ok(calls.some((u) => String(u).startsWith("http://localhost:8001/api")));
+  assert.ok(calls.some((u) => String(u).startsWith("http://localhost:8000/api")));
+  const currentApiBase = vm.runInContext("API_BASE", ctx);
+  assert.strictEqual(currentApiBase, "http://localhost:8000/api");
+});
+
+test("fetchJson falls back to alternate API base when first base returns 404", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const calls = [];
+  const sandbox = {
+    console,
+    window: {
+      location: {
+        origin: "http://localhost:8001",
+        hostname: "localhost",
+        protocol: "http:",
+        search: "",
+      },
+      localStorage: { getItem: () => null },
+    },
+    document: docStub,
+    fetch: async (url) => {
+      calls.push(url);
+      if (String(url).startsWith("http://localhost:8001/api")) {
+        return {
+          ok: false,
+          status: 404,
+          statusText: "Not Found",
+          text: async () => "not found",
+        };
+      }
+      if (String(url).startsWith("http://localhost:8000/api")) {
+        return {
+          ok: true,
+          json: async () => ({ status: "ok" }),
+          text: async () => '{"status":"ok"}',
+        };
+      }
+      return {
+        ok: false,
+        status: 500,
+        statusText: "error",
+        text: async () => "error",
+      };
+    },
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+    TypeError,
+  };
+  sandbox.global = sandbox;
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const fetchJson = vm.runInContext("fetchJson", ctx);
+  const data = await fetchJson("/health");
+  assert.strictEqual(data.status, "ok");
+  assert.ok(calls.some((u) => String(u).startsWith("http://localhost:8001/api")));
+  assert.ok(calls.some((u) => String(u).startsWith("http://localhost:8000/api")));
+  const currentApiBase = vm.runInContext("API_BASE", ctx);
+  assert.strictEqual(currentApiBase, "http://localhost:8000/api");
+});
+
+test("renderDealCheckTable shows createdAt column between dealName and courseFormat in YYMMDD", () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const renderDealCheckTable = vm.runInContext("renderDealCheckTable", ctx);
+  const rendered = renderDealCheckTable(
+    "edu1",
+    [
+      {
+        dealId: "deal-1",
+        dealName: "신규 제안",
+        createdAt: "2025-01-02",
+        courseFormat: "구독제(온라인)",
+        orgId: "org-1",
+        orgName: "테스트기업",
+        owners: ["김솔이"],
+        memoCount: 0,
+        expectedCloseDate: "2025-02-03",
+        expectedAmount: 100000000,
+        personId: "person-1",
+        personName: "담당자",
+        probability: "높음",
+      },
+    ],
+    { includeTier: false }
+  );
+
+  const dealHead = '<th data-col="dealName">딜 이름</th>';
+  const createdHead = '<th data-col="createdAt">생성 날짜</th>';
+  const formatHead = '<th data-col="courseFormat">과정포맷</th>';
+  assert.ok(rendered.includes(createdHead), "createdAt header missing");
+  assert.ok(rendered.includes('<td data-col="createdAt">250102</td>'), "createdAt row value is not YYMMDD");
+  assert.ok(rendered.indexOf(dealHead) < rendered.indexOf(createdHead), "createdAt header should be after dealName");
+  assert.ok(
+    rendered.indexOf(createdHead) < rendered.indexOf(formatHead),
+    "createdAt header should be before courseFormat"
+  );
+});
+
+test("fitColumnsToContent clamps compact courseFormat width to 56~160px", () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  docStub.createElement = (tag) => {
+    if (tag === "canvas") {
+      return {
+        getContext: () => ({
+          measureText: (text) => ({ width: String(text || "").length * 8 }),
+        }),
+      };
+    }
+    return new StubElement();
+  };
+
+  const sandbox = {
+    console,
+    window: {
+      location: { origin: "http://localhost" },
+      getComputedStyle: () => ({ font: "12px sans-serif" }),
+    },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const fitColumnsToContent = vm.runInContext("fitColumnsToContent", ctx);
+  fitColumnsToContent._canvas = null;
+
+  const colMap = new Map([
+    ["courseFormat", { style: {} }],
+    ["createdAt", { style: {} }],
+    ["expectedCloseDate", { style: {} }],
+  ]);
+  const tableEl = {
+    querySelector: (selector) => {
+      const m = /col\[data-col="([^"]+)"\]/.exec(selector);
+      if (!m) return null;
+      return colMap.get(m[1]) || null;
+    },
+  };
+
+  fitColumnsToContent(
+    tableEl,
+    [{ courseFormat: "A", createdAt: "2025-01-01", expectedCloseDate: "2025-01-02", owners: [] }],
+    { compact: true, includeTier: false, inferPartFn: () => "-" }
+  );
+  const minWidth = Number.parseFloat(colMap.get("courseFormat").style.width);
+  assert.strictEqual(minWidth, 56, "compact min width should be 56px");
+
+  fitColumnsToContent(
+    tableEl,
+    [
+      {
+        courseFormat: "X".repeat(200),
+        createdAt: "2025-01-01",
+        expectedCloseDate: "2025-01-02",
+        owners: [],
+      },
+    ],
+    { compact: true, includeTier: false, inferPartFn: () => "-" }
+  );
+  const maxWidth = Number.parseFloat(colMap.get("courseFormat").style.width);
+  assert.strictEqual(maxWidth, 160, "compact max width should be 160px");
+});

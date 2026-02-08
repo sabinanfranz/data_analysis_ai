@@ -72,7 +72,7 @@ sync_source:
 - 프로젝트 개요: Salesmap API → `salesmap_first_page_snapshot.py` → SQLite(DB) → FastAPI(`/dashboard/server`) → 프런트(`org_tables_v2.html`).
 - 폴더 가이드: 스냅샷(`salesmap_first_page_snapshot.py`), 백엔드(`dashboard/server/database.py`, `org_tables_api.py`), 프런트(`org_tables_v2.html`), 문서 세트(00~14), 테스트(`tests/`).
 - 먼저 익힐 개념: HTTP 백오프/재시도, FastAPI GET 라우터, SQLite PRAGMA, 프런트 fetch/캐시(Map), 메모/웹폼 정제(utm/동의 키 드롭), pytest 기본, `node --test` 개념.
-- 실행 예시: 백엔드 `uvicorn dashboard.server.main:app --host 0.0.0.0 --port 8000`; 프런트 `python -m http.server 8001`; 스냅샷 `SALESMAP_TOKEN=... python salesmap_first_page_snapshot.py --db-path salesmap_latest.db`; 웹폼만 `python salesmap_first_page_snapshot.py --webform-only --db-path salesmap_latest.db`.
+- 실행 예시: 백엔드(공식) `uvicorn dashboard.server.main:app --host 0.0.0.0 --port 8000`, 호환 `uvicorn app.main:app --reload --port 8000`; 프런트 `python -m http.server 8001`; 스냅샷 `SALESMAP_TOKEN=... python salesmap_first_page_snapshot.py --db-path salesmap_latest.db`; 웹폼만 `python salesmap_first_page_snapshot.py --webform-only --db-path salesmap_latest.db`.
 - 코드 읽기 순서: 06/07/09/05/11/08 SSOT 문서 → `dashboard/server/database.py`(won JSON/webform 정제, 집계) → `org_tables_v2.html`(상태/캐시/JSON 버튼 활성화 조건) → 스냅샷 스크립트(백오프/체크포인트/백업) → 주요 테스트.
 - 실습 과제 예시: API 필터 추가 후 프런트 연동, JSON 모달 검색 추가, 스냅샷 옵션(샘플/제한) 추가 등.
 

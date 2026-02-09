@@ -450,6 +450,27 @@
       gap: 6px;
     }
 
+    /* 2026 P&L base card spacing tune */
+    .card.compact-header.pnl-base-card {
+      gap: 3px;
+    }
+
+    .pnl-base-card .pnl-base-title {
+      margin: 0.415em 0;
+    }
+
+    .pnl-base-card .pnl-assumptions {
+      margin-top: 5px;
+    }
+
+    .pnl-base-meta-pill {
+      font-size: 11px;
+      max-width: 62%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .dealcheck-screen .card {
       min-height: auto;
     }
@@ -11458,28 +11479,19 @@
       contentRoot.innerHTML = `
         <section class="card compact-header">
           <div class="control-row">
-            <div>
-              <h1>2026 P&L 진행율매출</h1>
-            </div>
-            <div class="spacer"></div>
-            <span class="pill muted">2026-01 ~ 2026-12</span>
-          </div>
-        </section>
-        <section class="card compact-header">
-          <div class="control-row">
             <h3>Actual 반영</h3>
             <div class="spacer"></div>
+            <span class="pill muted" id="plProgressMetaActualPill">단위: 억</span>
           </div>
-          <div class="muted" id="plProgressMetaActual">단위: 억</div>
           <div id="plProgressActualTableWrap" class="muted">불러오는 중...</div>
         </section>
-        <section class="card compact-header">
+        <section class="card compact-header pnl-base-card">
           <div class="control-row">
-            <h3>기존 계산</h3>
+            <h3 class="pnl-base-title">기존 계산</h3>
             <div class="spacer"></div>
+            <span class="pill muted pnl-base-meta-pill" id="plProgressMetaBasePill">단위: 억 · (T)=Target / (E)=Expected</span>
           </div>
           <div id="pnlAssumptionsBar"></div>
-          <div class="muted" id="plProgressMetaBase">단위: 억</div>
           <div id="plProgressTableWrap" class="muted">불러오는 중...</div>
         </section>
         <div id="pnlAssumpModalBackdrop">
@@ -11495,8 +11507,8 @@
 
       const actualTableWrap = document.getElementById("plProgressActualTableWrap");
       const tableWrap = document.getElementById("plProgressTableWrap");
-      const actualMetaEl = document.getElementById("plProgressMetaActual");
-      const metaEl = document.getElementById("plProgressMetaBase");
+      const actualMetaEl = document.getElementById("plProgressMetaActualPill");
+      const metaEl = document.getElementById("plProgressMetaBasePill");
       const assumptionsBar = document.getElementById("pnlAssumptionsBar");
       const assumpModal = document.getElementById("pnlAssumpModalBackdrop");
       const assumpModalBody = document.getElementById("pnlAssumpModalBody");
@@ -11676,7 +11688,10 @@
           });
         });
 
-        if (metaTarget) metaTarget.textContent = metaText;
+        if (metaTarget) {
+          metaTarget.textContent = metaText;
+          metaTarget.title = metaText;
+        }
       };
 
       const renderWithAssumptions = () => {

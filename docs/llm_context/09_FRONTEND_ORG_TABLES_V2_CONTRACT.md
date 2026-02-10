@@ -1,6 +1,6 @@
 ---
 title: org_tables_v2 프런트 계약
-last_synced: 2026-02-04
+last_synced: 2026-02-10
 sync_source:
   - org_tables_v2.html
   - dashboard/server/org_tables_api.py
@@ -69,6 +69,15 @@ sync_source:
 - 메뉴 정의 `DEALCHECK_MENU_DEFS`: 부모 edu1/edu2, 자식 part1/part2/online. 사이드바 라벨은 깊이에 따라 `↳` 접두어(online inquiries 메뉴만 suppressArrow).
 - API: `/deal-check/edu1|edu2` (또는 `/deal-check?team=`). 정렬 orgWon2025Total desc → createdAt asc → dealId asc. memoCount join, planningSheetLink는 http(s)일 때만 링크.
 - 자식 메뉴는 클라에서 owners→파트 룩업(`getDealCheckPartLookup`)으로 필터. 섹션 순서: 리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인.
+- 상단 필터: `데이원 구성원` 오른쪽에 상태 체크박스(`Won/Lost 포함`, `Won만 보기`, `Lost만 보기`)를 제공. 기본값은 `Won/Lost 포함`만 체크, `Won만 보기`/`Lost만 보기`는 해제.
+  - `Won/Lost 포함` ON(only 체크 없음): SQL/Won/Lost 모두 표시.
+  - `Won/Lost 포함` OFF(only 체크 없음): SQL만 표시.
+  - `Won만 보기` ON: SQL/Lost 제외, Won만 표시.
+  - `Lost만 보기` ON: SQL/Won 제외, Lost만 표시.
+  - `Won만 보기` + `Lost만 보기` 동시 ON: SQL 제외, Won/Lost만 표시.
+  - `Won만 보기`/`Lost만 보기`는 `Won/Lost 포함`보다 우선 적용된다(only 모드 우선).
+  - `Won/Lost 포함`을 다시 ON으로 켜면 only 체크는 자동 해제된다.
+  - 상태 필터 선택 상태는 딜체크 메뉴별(`teamKey::partFilter`)로 유지.
 - QC 화면: `/qc/deal-errors/summary` 카드 + `/qc/deal-errors/person` 모달. 규칙 세트는 R1~R16이 오더이며 UI는 R1~R15만 노출, issueCodes에서 R17 제거.
 
 ### 조직/People/Deal 뷰어
@@ -91,6 +100,7 @@ sync_source:
 - Close-rate: 과정포맷별 표, metric 순서 고정, close_rate 셀 버튼 없음.
 - DRI: orgWon2025 desc→cpTotal2025 desc 정렬, owners2025 우선순위(people.owner_json→deal.owner_json), target26 override 강조.
 - 딜체크: 모든 메뉴가 동일 renderer 사용, 정렬 orgWon2025Total desc→createdAt asc→dealId asc, memoCount 0 시 비활성 버튼, planningSheetLink http(s)만 링크.
+- 딜체크 상태 필터: `Won/Lost 포함`은 SQL 기준에 Won/Lost 포함 여부를 제어하고, `Won만 보기`/`Lost만 보기`는 only 모드로 우선 적용된다. only 둘 다 ON이면 Won/Lost만 표시, `Won/Lost 포함` ON 재선택 시 only는 리셋된다.
 - 온라인 리텐션: start/end/amount/course_id 필수, end 2024-10~2027-12 범위 필터, 정렬 endDate asc→orgName asc→dealId asc.
 - JSON/StatePath 모달/딜 모달/DRI 모달은 ESC/백드롭/X로 닫혀야 하고 공유 DOM id를 사용해야 한다.
 
@@ -115,6 +125,11 @@ sync_source:
 - Close-rate 표에서 metric 순서/버튼 상태, deals 모달 분모 규칙 확인.
 - `/rank/2025-top100-counterparty-dri` → 검색/DRI/팀&파트 필터가 즉시 반영되고 정렬이 유지되는지, 행 클릭 시 detail 모달 열리는지 확인.
 - `/deal-check/edu1|edu2` → 정렬/메모 버튼/partFilter 적용(자식 메뉴) 확인; planningSheetLink http(s)일 때만 링크.
+- 딜체크 상단 상태 필터(`Won/Lost 포함`, `Won만 보기`, `Lost만 보기`)가 경우의 수별로 동작하는지 확인:
+  - include ON + only OFF=전체(SQL/Won/Lost), include OFF + only OFF=SQL만.
+  - won only/lost only/both only에서 각각 Won만/Lost만/Won+Lost만 표시되는지.
+  - include를 ON으로 다시 켰을 때 only가 해제되는지.
+  - 메뉴별 선택 상태가 복원되는지.
 - 온라인 리텐션 → endDate asc 정렬, 금액/코스ID/start/end 모두 존재하는지 확인.
 - JSON/StatePath/딜 모달이 ESC/백드롭으로 닫히고 내용이 해당 데이터와 일치하는지 확인.
 - JSON/메모/Daily Report 모달이 `deals-modal-wide` 규격(가로 96vw~1400px, 세로 90vh~900px)으로 열리고, 긴 한 줄 텍스트에서 가로 스크롤이 실제로 표시되는지 확인.

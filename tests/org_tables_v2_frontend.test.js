@@ -433,6 +433,90 @@ test("computeTeamPartSummary maps owners and DRI rule", async () => {
   assert.strictEqual(trailing.dri, "O");
 });
 
+test("dealcheck status filter helpers support include mode and only mode", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const getDefaultDealCheckStatusFilterState = vm.runInContext("getDefaultDealCheckStatusFilterState", ctx);
+  const setDealCheckIncludeWonLost = vm.runInContext("setDealCheckIncludeWonLost", ctx);
+  const setDealCheckOnlyChecks = vm.runInContext("setDealCheckOnlyChecks", ctx);
+  const matchDealCheckStatusFilter = vm.runInContext("matchDealCheckStatusFilter", ctx);
+
+  let state = getDefaultDealCheckStatusFilterState();
+  assert.strictEqual(state.includeWonLost, true);
+  assert.strictEqual(state.wonOnly, false);
+  assert.strictEqual(state.lostOnly, false);
+  assert.strictEqual(matchDealCheckStatusFilter("sql", state), true);
+  assert.strictEqual(matchDealCheckStatusFilter("won", state), true);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", state), true);
+
+  state = setDealCheckIncludeWonLost(state, false);
+  assert.strictEqual(state.includeWonLost, false);
+  assert.strictEqual(state.wonOnly, false);
+  assert.strictEqual(state.lostOnly, false);
+  assert.strictEqual(matchDealCheckStatusFilter("sql", state), true);
+  assert.strictEqual(matchDealCheckStatusFilter("won", state), false);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", state), false);
+
+  const includeOnWonOnly = setDealCheckOnlyChecks(setDealCheckIncludeWonLost(state, true), true, false);
+  assert.strictEqual(includeOnWonOnly.includeWonLost, true);
+  assert.strictEqual(includeOnWonOnly.wonOnly, true);
+  assert.strictEqual(includeOnWonOnly.lostOnly, false);
+  assert.strictEqual(matchDealCheckStatusFilter("sql", includeOnWonOnly), false);
+  assert.strictEqual(matchDealCheckStatusFilter("won", includeOnWonOnly), true);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", includeOnWonOnly), false);
+
+  state = setDealCheckOnlyChecks(state, true, false);
+  assert.strictEqual(state.includeWonLost, false);
+  assert.strictEqual(state.wonOnly, true);
+  assert.strictEqual(state.lostOnly, false);
+  assert.strictEqual(matchDealCheckStatusFilter("sql", state), false);
+  assert.strictEqual(matchDealCheckStatusFilter("won", state), true);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", state), false);
+
+  state = setDealCheckOnlyChecks(state, false, true);
+  assert.strictEqual(state.includeWonLost, false);
+  assert.strictEqual(state.wonOnly, false);
+  assert.strictEqual(state.lostOnly, true);
+  assert.strictEqual(matchDealCheckStatusFilter("sql", state), false);
+  assert.strictEqual(matchDealCheckStatusFilter("won", state), false);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", state), true);
+
+  const bothOnly = setDealCheckOnlyChecks(state, true, true);
+  assert.strictEqual(bothOnly.includeWonLost, false);
+  assert.strictEqual(bothOnly.wonOnly, true);
+  assert.strictEqual(bothOnly.lostOnly, true);
+  assert.strictEqual(matchDealCheckStatusFilter("sql", bothOnly), false);
+  assert.strictEqual(matchDealCheckStatusFilter("won", bothOnly), true);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", bothOnly), true);
+
+  const includeReset = setDealCheckIncludeWonLost(bothOnly, true);
+  assert.strictEqual(includeReset.includeWonLost, true);
+  assert.strictEqual(includeReset.wonOnly, false);
+  assert.strictEqual(includeReset.lostOnly, false);
+  assert.strictEqual(matchDealCheckStatusFilter("sql", includeReset), true);
+  assert.strictEqual(matchDealCheckStatusFilter("won", includeReset), true);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", includeReset), true);
+});
+
 test("renderWonSummary shows new columns and team/part/DRI", async () => {
   const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
   const scriptContent = extractScript(html);

@@ -475,6 +475,64 @@
       min-height: auto;
     }
 
+    .dealcheck-filter-row {
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .dealcheck-filter-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .dealcheck-owner-filter {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .dealcheck-status-filter {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-left: 10px;
+      border-left: 1px solid rgba(156, 163, 175, 0.35);
+    }
+
+    .dealcheck-status-item {
+      display: inline-flex;
+      gap: 5px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .dealcheck-status-item input[type="checkbox"] {
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    .dealcheck-summary-pill {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 900px) {
+      .dealcheck-status-filter {
+        border-left: 0;
+        padding-left: 0;
+      }
+      .dealcheck-summary-pill {
+        white-space: normal;
+      }
+    }
+
     .card h2.dealcheck-retention-title {
       font-size: 30px;
       font-weight: 800;
@@ -2962,6 +3020,7 @@
       onlineRetention2026: null,
     };
     const DEALCHECK_OWNER_FILTER_BY_MENU = new Map();
+    const DEALCHECK_STATUS_FILTER_BY_MENU = new Map();
     const NAME_TO_TEAM_PART = buildNameToTeamPartIndex(PART_STRUCTURE);
 
     function showToast(message, tone = "info") {
@@ -3011,6 +3070,60 @@
       const trimmed = (name || "").trim();
       if (!trimmed) return "";
       return stripTrailingLetter(trimmed);
+    }
+
+    function getDefaultDealCheckStatusFilterState() {
+      return {
+        includeWonLost: true,
+        wonOnly: false,
+        lostOnly: false,
+      };
+    }
+
+    function normalizeDealCheckStatusFilterState(rawState) {
+      const defaults = getDefaultDealCheckStatusFilterState();
+      const raw = rawState && typeof rawState === "object" ? rawState : {};
+      const includeWonLost = raw.includeWonLost === undefined ? defaults.includeWonLost : Boolean(raw.includeWonLost);
+      const wonOnly = raw.wonOnly === undefined ? defaults.wonOnly : Boolean(raw.wonOnly);
+      const lostOnly = raw.lostOnly === undefined ? defaults.lostOnly : Boolean(raw.lostOnly);
+      return { includeWonLost, wonOnly, lostOnly };
+    }
+
+    function setDealCheckIncludeWonLost(filterState, includeWonLost) {
+      const normalized = normalizeDealCheckStatusFilterState(filterState);
+      if (includeWonLost) {
+        return {
+          includeWonLost: true,
+          wonOnly: false,
+          lostOnly: false,
+        };
+      }
+      return {
+        includeWonLost: false,
+        wonOnly: normalized.wonOnly,
+        lostOnly: normalized.lostOnly,
+      };
+    }
+
+    function setDealCheckOnlyChecks(filterState, wonOnly, lostOnly) {
+      const normalized = normalizeDealCheckStatusFilterState(filterState);
+      return {
+        includeWonLost: normalized.includeWonLost,
+        wonOnly: Boolean(wonOnly),
+        lostOnly: Boolean(lostOnly),
+      };
+    }
+
+    function getDealCheckStatusFilterState(menuKey) {
+      const normalized = normalizeDealCheckStatusFilterState(DEALCHECK_STATUS_FILTER_BY_MENU.get(menuKey));
+      DEALCHECK_STATUS_FILTER_BY_MENU.set(menuKey, normalized);
+      return { ...normalized };
+    }
+
+    function setDealCheckStatusFilterState(menuKey, rawState) {
+      const normalized = normalizeDealCheckStatusFilterState(rawState);
+      DEALCHECK_STATUS_FILTER_BY_MENU.set(menuKey, normalized);
+      return { ...normalized };
     }
 
     const PART_LOOKUP_CACHE = {};
@@ -3066,6 +3179,24 @@
         if (normalizeOwnerName(name) === ownerFilterNormalized) return true;
       }
       return false;
+    }
+
+    function matchDealCheckStatusFilter(status, statusFilterState) {
+      const statusNorm = (status || "").toString().trim().toLowerCase();
+      const st = normalizeDealCheckStatusFilterState(statusFilterState);
+      const hasWonOnly = Boolean(st.wonOnly);
+      const hasLostOnly = Boolean(st.lostOnly);
+
+      // "Won만 보기"/"Lost만 보기" is explicit and takes precedence.
+      if (hasWonOnly || hasLostOnly) {
+        if (statusNorm === "won") return hasWonOnly;
+        if (statusNorm === "lost") return hasLostOnly;
+        return false;
+      }
+
+      if (!statusNorm || statusNorm === "sql") return true;
+      if (statusNorm === "won" || statusNorm === "lost") return Boolean(st.includeWonLost);
+      return true;
     }
 
     function resolveOwnerTeamPart(name) {
@@ -8460,6 +8591,10 @@
         ownerFilter = "ALL";
         DEALCHECK_OWNER_FILTER_BY_MENU.set(menuKey, ownerFilter);
       }
+      let statusFilterState = getDealCheckStatusFilterState(menuKey);
+      const statusIncludeCheckedAttr = statusFilterState.includeWonLost ? " checked" : "";
+      const statusWonCheckedAttr = statusFilterState.wonOnly ? " checked" : "";
+      const statusLostCheckedAttr = statusFilterState.lostOnly ? " checked" : "";
       const ownerFilterOptions = [
         `<option value="ALL"${ownerFilter === "ALL" ? " selected" : ""}>전체</option>`,
         ...ownerRoster.map((name) => {
@@ -8471,13 +8606,29 @@
       contentRoot.innerHTML = `
         <div class="dealcheck-screen" data-team="${teamKey}">
         <section class="card" id="${teamKey}SummaryCard">
-          <div class="control-row" style="gap: 8px; align-items: center;">
-            <div class="dealcheck-owner-filter" style="display:flex; gap:6px; align-items:center;">
-              <label class="muted" for="${teamKey}OwnerFilterSelect">데이원 구성원</label>
-              <select id="${teamKey}OwnerFilterSelect">${ownerFilterOptions}</select>
+          <div class="control-row dealcheck-filter-row">
+            <div class="dealcheck-filter-group">
+              <div class="dealcheck-owner-filter">
+                <label class="muted" for="${teamKey}OwnerFilterSelect">데이원 구성원</label>
+                <select id="${teamKey}OwnerFilterSelect">${ownerFilterOptions}</select>
+              </div>
+              <div class="dealcheck-status-filter" role="group" aria-label="상태 필터">
+                <label class="dealcheck-status-item" for="${teamKey}StatusIncludeWonLost">
+                  <input type="checkbox" id="${teamKey}StatusIncludeWonLost"${statusIncludeCheckedAttr} />
+                  <span>Won/Lost 포함</span>
+                </label>
+                <label class="dealcheck-status-item" for="${teamKey}StatusWon">
+                  <input type="checkbox" id="${teamKey}StatusWon"${statusWonCheckedAttr} />
+                  <span>Won만 보기</span>
+                </label>
+                <label class="dealcheck-status-item" for="${teamKey}StatusLost">
+                  <input type="checkbox" id="${teamKey}StatusLost"${statusLostCheckedAttr} />
+                  <span>Lost만 보기</span>
+                </label>
+              </div>
             </div>
             <div class="spacer"></div>
-            <span class="pill muted" style="white-space: nowrap;" id="${teamKey}SummaryCount">R(S0~P2-비온라인) 0 / R(S0~P2-온라인) 0 / N(온라인) 0 / R(P3~P5-온라인) 0 / R(P3~P5-비온라인) 0 / N(비온라인) 0</span>
+            <span class="pill muted dealcheck-summary-pill" id="${teamKey}SummaryCount">R(S0~P2-비온라인) 0 / R(S0~P2-온라인) 0 / N(온라인) 0 / R(P3~P5-온라인) 0 / R(P3~P5-비온라인) 0 / N(비온라인) 0</span>
           </div>
         </section>
         <section class="card" id="${teamKey}RetHighOfflineCard">
@@ -8546,13 +8697,17 @@
       const newOfflineBody = document.getElementById(`${teamKey}NewOfflineBody`);
 
       const ownerFilterSelect = document.getElementById(`${teamKey}OwnerFilterSelect`);
+      const statusIncludeWonLostCheckbox = document.getElementById(`${teamKey}StatusIncludeWonLost`);
+      const statusWonCheckbox = document.getElementById(`${teamKey}StatusWon`);
+      const statusLostCheckbox = document.getElementById(`${teamKey}StatusLost`);
       let latestRawItems = null;
       const applyFiltersAndRender = (items) => {
         const itemsAfterPart = Array.isArray(items)
           ? items.filter((row) => matchDealCheckPartFilter(teamKey, row.owners, partFilter))
           : [];
         const ownerFiltered = itemsAfterPart.filter((row) => matchDealCheckOwnerFilter(row.owners, ownerFilter));
-        renderAll(ownerFiltered);
+        const statusFiltered = ownerFiltered.filter((row) => matchDealCheckStatusFilter(row.status, statusFilterState));
+        renderAll(statusFiltered);
       };
       if (ownerFilterSelect) {
         ownerFilterSelect.value = ownerFilter;
@@ -8562,6 +8717,50 @@
           if (latestRawItems) applyFiltersAndRender(latestRawItems);
         });
       }
+
+      const syncStatusFilterUi = () => {
+        const normalized = normalizeDealCheckStatusFilterState(statusFilterState);
+        statusFilterState = normalized;
+        if (statusIncludeWonLostCheckbox) {
+          statusIncludeWonLostCheckbox.checked = normalized.includeWonLost;
+        }
+        if (statusWonCheckbox) {
+          statusWonCheckbox.checked = normalized.wonOnly;
+        }
+        if (statusLostCheckbox) {
+          statusLostCheckbox.checked = normalized.lostOnly;
+        }
+      };
+
+      const applyStatusFilterState = (nextState) => {
+        statusFilterState = setDealCheckStatusFilterState(menuKey, nextState);
+        syncStatusFilterUi();
+        if (latestRawItems) applyFiltersAndRender(latestRawItems);
+      };
+
+      if (statusIncludeWonLostCheckbox) {
+        statusIncludeWonLostCheckbox.addEventListener("change", (e) => {
+          const checked = Boolean(e.target.checked);
+          const next = setDealCheckIncludeWonLost(statusFilterState, checked);
+          applyStatusFilterState(next);
+        });
+      }
+
+      const handleWonLostCheckboxChange = () => {
+        const normalized = normalizeDealCheckStatusFilterState(statusFilterState);
+        const nextWonOnly = statusWonCheckbox ? Boolean(statusWonCheckbox.checked) : normalized.wonOnly;
+        const nextLostOnly = statusLostCheckbox ? Boolean(statusLostCheckbox.checked) : normalized.lostOnly;
+        const next = setDealCheckOnlyChecks(normalized, nextWonOnly, nextLostOnly);
+        applyStatusFilterState(next);
+      };
+
+      if (statusWonCheckbox) {
+        statusWonCheckbox.addEventListener("change", handleWonLostCheckboxChange);
+      }
+      if (statusLostCheckbox) {
+        statusLostCheckbox.addEventListener("change", handleWonLostCheckboxChange);
+      }
+      syncStatusFilterUi();
 
       const attachHandlers = (container) => {
         container.querySelectorAll('button[data-action="deal-memo"]').forEach((btn) => {

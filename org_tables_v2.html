@@ -1293,34 +1293,17 @@
     }
 
     .pnl-top-split {
-      display: flex;
-      gap: 0;
-      align-items: flex-start;
+      display: block;
     }
 
     .pnl-top-left {
-      flex: 0 0 66.666%;
+      width: 100%;
       min-width: 0;
-      padding-right: 10px;
+      padding-right: 0;
     }
 
     .pnl-top-right {
-      flex: 0 0 33.333%;
-      min-width: 0;
-    }
-
-    @media (max-width: 1100px) {
-      .pnl-top-split {
-        flex-direction: column;
-      }
-      .pnl-top-left {
-        flex-basis: auto;
-        width: 100%;
-        padding-right: 0;
-      }
-      .pnl-top-right {
-        display: none;
-      }
+      display: none;
     }
 
     .pnl-assump-row {
@@ -1328,13 +1311,7 @@
       gap: 8px;
       align-items: stretch;
       min-width: 0;
-      flex-wrap: nowrap;
-    }
-
-    @media (max-width: 1100px) {
-      .pnl-assump-row {
-        flex-wrap: wrap;
-      }
+      flex-wrap: wrap;
     }
 
     .pnl-field {
@@ -1342,12 +1319,12 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 10px;
       background: rgba(255, 255, 255, 0.04);
-      min-width: 0;
+      min-width: 176px;
       height: var(--pnl-lever-h);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      flex: 1 1 0;
+      flex: 1 1 176px;
     }
 
     .pnl-field .label {
@@ -1363,23 +1340,28 @@
       display: flex;
       gap: 6px;
       align-items: center;
+      min-width: 0;
     }
 
     .pnl-field input {
-      width: 100%;
-      min-width: 0;
+      width: auto;
+      min-width: 68px;
+      flex: 1 1 68px;
       height: 34px;
       background: rgba(0, 0, 0, 0.25);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 10px;
       padding: 6px 8px;
       color: rgba(255, 255, 255, 0.92);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
     }
 
     .pnl-field .unit {
       font-size: 11px;
       color: rgba(255, 255, 255, 0.7);
       white-space: nowrap;
+      flex: 0 0 auto;
     }
 
     .pnl-field.is-dirty {
@@ -1390,6 +1372,7 @@
     .pnl-step {
       width: 34px;
       height: 34px;
+      flex: 0 0 34px;
       border-radius: 10px;
       border: 1px solid rgba(255, 255, 255, 0.14);
       background: rgba(255, 255, 255, 0.06);

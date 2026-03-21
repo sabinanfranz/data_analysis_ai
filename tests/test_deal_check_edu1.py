@@ -217,6 +217,11 @@ class DealCheckTest(unittest.TestCase):
                 self.assertIn("planningSheetLink", row)
                 self.assertIsNone(row["planningSheetLink"])
 
+            edu_all_items = db.get_deal_check("edu_all", db_path=db_path)
+            edu_all_ids = [row["dealId"] for row in edu_all_items]
+            self.assertEqual(edu_all_ids, ["deal-c1", "deal-a0", "deal-a1", "deal-b1"])
+            self.assertEqual({row["orgId"] for row in edu_all_items}, {"orgA", "orgB", "orgC"})
+
             with self.assertRaises(ValueError):
                 db.get_deal_check("unknown", db_path=db_path)
         finally:

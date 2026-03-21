@@ -2569,6 +2569,13 @@
     };
 
     const DEALCHECK_TEAMS = {
+      edu_all: {
+        id: "edu-all-dealcheck",
+        label: "교육 전체 딜체크",
+        apiPath: "/deal-check/edu-all",
+        partTeamKey: null,
+        menuOrder: 3,
+      },
       edu1: {
         id: "edu1-dealcheck",
         label: "교육 1팀 딜체크",
@@ -2586,6 +2593,7 @@
     };
 
     const DEALCHECK_MENU_DEFS = [
+      { id: DEALCHECK_TEAMS.edu_all.id, label: DEALCHECK_TEAMS.edu_all.label, teamKey: "edu_all", partFilter: null, parentId: null },
       { id: DEALCHECK_TEAMS.edu1.id, label: DEALCHECK_TEAMS.edu1.label, teamKey: "edu1", partFilter: null, parentId: null },
       { id: "edu1-dealcheck-part1", label: "교육 1팀 1파트 딜체크", teamKey: "edu1", partFilter: "part1", parentId: DEALCHECK_TEAMS.edu1.id },
       { id: "edu1-dealcheck-part2", label: "교육 1팀 2파트 딜체크", teamKey: "edu1", partFilter: "part2", parentId: DEALCHECK_TEAMS.edu1.id },
@@ -2751,6 +2759,7 @@
       rankPeopleUpperFilter: "",
       mismatchSize: "대기업",
       dealCheck: {
+        edu_all: { loading: false, error: null, items: [] },
         edu1: { loading: false, error: null, items: [] },
         edu2: { loading: false, error: null, items: [] },
       },
@@ -2997,6 +3006,7 @@
       statepathPortfolioByKey: new Map(),
       rank2025CounterpartyDriBySize: new Map(),
       dealCheck: {
+        edu_all: null,
         edu1: null,
         edu2: null,
       },
@@ -3113,6 +3123,18 @@
 
     function getDealCheckPartLookup(teamKey) {
       if (PART_LOOKUP_CACHE[teamKey]) return PART_LOOKUP_CACHE[teamKey];
+      if (teamKey === "edu_all") {
+        const edu1Lookup = getDealCheckPartLookup("edu1");
+        const edu2Lookup = getDealCheckPartLookup("edu2");
+        const mergeSets = (...sets) => new Set(sets.flatMap((set) => Array.from(set || [])));
+        const lookup = {
+          part1: mergeSets(edu1Lookup.part1, edu2Lookup.part1),
+          part2: mergeSets(edu1Lookup.part2, edu2Lookup.part2),
+          online: mergeSets(edu1Lookup.online, edu2Lookup.online),
+        };
+        PART_LOOKUP_CACHE[teamKey] = lookup;
+        return lookup;
+      }
       const cfg = DEALCHECK_TEAMS[teamKey];
       const team = (cfg && PART_STRUCTURE[cfg.partTeamKey]) || {};
       const buildSet = (names) =>
@@ -3259,9 +3281,30 @@
       return { ownersText, teamPartText, dri };
     }
 
+    function shortDealCheckTeamLabel(team) {
+      const text = String(team || "").trim();
+      if (text === "기업교육 1팀") return "1팀";
+      if (text === "기업교육 2팀") return "2팀";
+      return text.replace(/^기업교육\s*/g, "");
+    }
+
     function inferPartFromOwners(teamKey, owners) {
       const names = Array.isArray(owners) ? owners : [];
       if (!names.length) return "미매핑";
+      if (teamKey === "edu_all") {
+        const teamParts = new Set();
+        names.forEach((name) => {
+          const resolved = resolveOwnerTeamPart(name);
+          if (!resolved.team || !resolved.part) return;
+          const shortTeam = shortDealCheckTeamLabel(resolved.team);
+          if (!shortTeam) return;
+          teamParts.add(`${shortTeam} ${resolved.part}`);
+        });
+        if (!teamParts.size) return "미매핑";
+        return ["1팀 1파트", "1팀 2파트", "2팀 1파트", "2팀 2파트", "2팀 온라인셀"]
+          .filter((label) => teamParts.has(label))
+          .join("+");
+      }
       const lookup = getDealCheckPartLookup(teamKey);
       const parts = new Set();
       names.forEach((name) => {

@@ -517,6 +517,47 @@ test("dealcheck status filter helpers support include mode and only mode", async
   assert.strictEqual(matchDealCheckStatusFilter("lost", includeReset), true);
 });
 
+test("교육 전체 딜체크 메뉴가 최상단에 추가되고 전체 owner/파트 helper가 동작한다", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const dealcheckMenuDefs = vm.runInContext("DEALCHECK_MENU_DEFS", ctx);
+  const getDealCheckRosterNames = vm.runInContext("getDealCheckRosterNames", ctx);
+  const inferPartFromOwners = vm.runInContext("inferPartFromOwners", ctx);
+
+  assert.strictEqual(dealcheckMenuDefs[0].id, "edu-all-dealcheck");
+  assert.strictEqual(dealcheckMenuDefs[0].teamKey, "edu_all");
+  assert.strictEqual(dealcheckMenuDefs[0].parentId, null);
+
+  const roster = getDealCheckRosterNames("edu_all", null);
+  assert.ok(roster.includes("김솔이"));
+  assert.ok(roster.includes("권노을"));
+  assert.ok(roster.includes("강진우"));
+
+  assert.strictEqual(inferPartFromOwners("edu_all", ["김솔이"]), "1팀 1파트");
+  assert.strictEqual(inferPartFromOwners("edu_all", ["권노을"]), "2팀 1파트");
+  assert.strictEqual(inferPartFromOwners("edu_all", ["강진우"]), "2팀 온라인셀");
+  assert.strictEqual(inferPartFromOwners("edu_all", ["김솔이", "강진우"]), "1팀 1파트+2팀 온라인셀");
+});
+
 test("renderWonSummary shows new columns and team/part/DRI", async () => {
   const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
   const scriptContent = extractScript(html);

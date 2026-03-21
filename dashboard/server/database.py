@@ -772,6 +772,10 @@ def _parse_owner_names_normalized(raw: Any) -> List[str]:
 def _dealcheck_members(team_key: str) -> Set[str]:
     if team_key in _DEALCHECK_MEMBER_CACHE:
         return _DEALCHECK_MEMBER_CACHE[team_key]
+    if team_key == "edu_all":
+        members = _dealcheck_members("edu1") | _dealcheck_members("edu2")
+        _DEALCHECK_MEMBER_CACHE[team_key] = members
+        return members
     cfg = TEAM_CONFIG.get(team_key)
     if not cfg:
         raise ValueError(f"Unknown teamKey: {team_key}")
@@ -788,7 +792,7 @@ def _dealcheck_members(team_key: str) -> Set[str]:
 def _dealcheck_team_members(team_key: Optional[str]) -> Optional[Set[str]]:
     if team_key is None:
         return None
-    if team_key not in {"edu1", "edu2"}:
+    if team_key not in {"edu_all", "edu1", "edu2"}:
         raise ValueError(f"Unknown teamKey: {team_key}")
     return _dealcheck_members(team_key)
 
@@ -1196,6 +1200,10 @@ PART_STRUCTURE = {
 }
 
 TEAM_CONFIG = {
+    "edu_all": {
+        "label": "교육 전체 딜체크",
+        "part_team_key": None,
+    },
     "edu1": {
         "label": "교육 1팀 딜체크",
         "part_team_key": "기업교육 1팀",

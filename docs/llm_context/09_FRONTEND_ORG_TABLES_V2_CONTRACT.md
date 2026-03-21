@@ -66,9 +66,10 @@ sync_source:
 - 데이터: `/ops/2026-online-retention` → 상태 Won, 생성≥2024-01-01, 과정포맷 온라인 3종, 금액/수강시작/수강종료/코스ID 필수, end 2024-10~2027-12 범위. 섹션을 수강종료월별로 그룹핑, 정렬 endDate asc → orgName asc → dealId asc. owners는 deal.owner_json 우선, 없으면 people.owner_json.
 
 ### 딜체크/QC
-- 메뉴 정의 `DEALCHECK_MENU_DEFS`: 부모 edu1/edu2, 자식 part1/part2/online. 사이드바 라벨은 깊이에 따라 `↳` 접두어(online inquiries 메뉴만 suppressArrow).
-- API: `/deal-check/edu1|edu2` (또는 `/deal-check?team=`). 정렬 orgWon2025Total desc → createdAt asc → dealId asc. memoCount join, planningSheetLink는 http(s)일 때만 링크.
+- 메뉴 정의 `DEALCHECK_MENU_DEFS`: 최상단에 부모 `교육 전체 딜체크` 1개를 추가하고, 기존 부모 edu1/edu2와 자식 part1/part2/online 구조는 유지한다. 사이드바 라벨은 깊이에 따라 `↳` 접두어(online inquiries 메뉴만 suppressArrow).
+- API: `/deal-check/edu-all|edu1|edu2` (또는 `/deal-check?team=`). `edu-all`은 교육 1팀+교육 2팀 owner 합집합이며 공공은 제외. 정렬 orgWon2025Total desc → createdAt asc → dealId asc. memoCount join, planningSheetLink는 http(s)일 때만 링크.
 - 자식 메뉴는 클라에서 owners→파트 룩업(`getDealCheckPartLookup`)으로 필터. 섹션 순서: 리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인.
+- `교육 전체 딜체크`는 부모 화면만 추가하고 별도 하위 메뉴는 만들지 않는다. 이 화면의 `파트` 컬럼은 `1팀 1파트`, `2팀 온라인셀`처럼 팀+파트 문자열을 사용한다.
 - 상단 필터: `데이원 구성원` 오른쪽에 상태 체크박스(`Won/Lost 포함`, `Won만 보기`, `Lost만 보기`)를 제공. 기본값은 `Won/Lost 포함`만 체크, `Won만 보기`/`Lost만 보기`는 해제.
   - `Won/Lost 포함` ON(only 체크 없음): SQL/Won/Lost 모두 표시.
   - `Won/Lost 포함` OFF(only 체크 없음): SQL만 표시.
@@ -124,7 +125,8 @@ sync_source:
 - `/performance/monthly-inquiries/summary` → size 버튼 전환, parent/child 토글, 모달 카테고리(공백→미기재) 확인.
 - Close-rate 표에서 metric 순서/버튼 상태, deals 모달 분모 규칙 확인.
 - `/rank/2025-top100-counterparty-dri` → 검색/DRI/팀&파트 필터가 즉시 반영되고 정렬이 유지되는지, 행 클릭 시 detail 모달 열리는지 확인.
-- `/deal-check/edu1|edu2` → 정렬/메모 버튼/partFilter 적용(자식 메뉴) 확인; planningSheetLink http(s)일 때만 링크.
+- `/deal-check/edu-all|edu1|edu2` → 정렬/메모 버튼/partFilter 적용(자식 메뉴) 확인; planningSheetLink http(s)일 때만 링크.
+- `교육 전체 딜체크`가 `교육 1팀 딜체크` 위에 부모 메뉴로 추가되고 하위 메뉴가 없는지, owner filter가 1팀+2팀 합집합인지, `파트` 컬럼이 팀+파트 문자열로 보이는지 확인.
 - 딜체크 상단 상태 필터(`Won/Lost 포함`, `Won만 보기`, `Lost만 보기`)가 경우의 수별로 동작하는지 확인:
   - include ON + only OFF=전체(SQL/Won/Lost), include OFF + only OFF=SQL만.
   - won only/lost only/both only에서 각각 Won만/Lost만/Won+Lost만 표시되는지.

@@ -75,8 +75,8 @@ sync_source:
   - variant T는 항상 빈 리스트. 정렬: recognizedAmount DESC → amountUsed DESC → dealName DESC. limit 1–2000.
 
 ### Deal Check / QC
-- `GET /api/deal-check?team=edu1|edu2` (필수) → 상태 SQL/Won/Lost/LOST 딜 중 팀 소유자 포함. window: Won/Lost는 최근 10 영업일 내(계약/LOST/expected). 정렬 orgWon2025Total DESC → createdAt ASC → dealId ASC. 필드: memoCount, planningSheetLink(컬럼 없으면 null), isRetention(orgWon2025Total>0), owner_names, expectedAmount, course_format 등.
-- `GET /api/deal-check/edu1` / `.../edu2` → 위 래퍼.
+- `GET /api/deal-check?team=edu_all|edu1|edu2` (필수) → 상태 SQL/Won/Lost/LOST 딜 중 팀 소유자 포함. `edu_all`은 교육 1팀+교육 2팀 owner 합집합이며 공공은 제외. window: Won/Lost는 최근 10 영업일 내(계약/LOST/expected). 정렬 orgWon2025Total DESC → createdAt ASC → dealId ASC. 필드: memoCount, planningSheetLink(컬럼 없으면 null), isRetention(orgWon2025Total>0), owner_names, expectedAmount, course_format 등.
+- `GET /api/deal-check/edu-all` / `.../edu1` / `.../edu2` → 위 래퍼.
 - QC
   - `GET /api/qc/deal-errors/summary?team=all|edu1|edu2|public`
   - `GET /api/qc/deal-errors/person?owner=&team=`

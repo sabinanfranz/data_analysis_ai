@@ -2657,8 +2657,8 @@
           { id: "biz-perf-pl-progress-2026", label: "2026 P&L" },
           ...PERF_MONTHLY_MENU_DEFS.map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
           // ✅ 구 "카운터파티 리스크(일간)" → 2026 Daily Report(출강) (id 유지)
-          { id: "counterparty-risk-daily", label: "2026 Daily Report(출강)" },
-          { id: "counterparty-risk-daily-online", label: "2026 Daily Report(온라인)" },
+          { id: "counterparty-risk-daily", label: "2026 Daily Report(출강)", hidden: true },
+          { id: "counterparty-risk-daily-online", label: "2026 Daily Report(온라인)", hidden: true },
         ],
       },
       {

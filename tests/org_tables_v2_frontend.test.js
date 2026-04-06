@@ -1296,3 +1296,61 @@ test("fitColumnsToContent clamps compact courseFormat width to 56~160px", () => 
   const maxWidth = Number.parseFloat(colMap.get("courseFormat").style.width);
   assert.strictEqual(maxWidth, 160, "compact max width should be 160px");
 });
+
+test("daily report menus are hidden in sidebar config but still reachable by hash", () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStubA = createDocumentStub();
+  const sandboxA = {
+    console,
+    window: { location: { origin: "http://localhost", hash: "" } },
+    document: docStubA,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandboxA.global = sandboxA;
+  const ctxA = vm.createContext(sandboxA);
+  vm.runInContext(scriptContent, ctxA);
+
+  const menuSections = vm.runInContext("MENU_SECTIONS", ctxA);
+  const menuIds = vm.runInContext("MENU_IDS", ctxA);
+  const renderers = vm.runInContext("MENU_RENDERERS", ctxA);
+
+  const perfSection = menuSections.find((section) => section.sectionId === "perf");
+  assert.ok(perfSection, "perf section is missing");
+  const offlineItem = perfSection.items.find((item) => item.id === "counterparty-risk-daily");
+  const onlineItem = perfSection.items.find((item) => item.id === "counterparty-risk-daily-online");
+  assert.ok(offlineItem && offlineItem.hidden === true, "offline daily report menu should be hidden");
+  assert.ok(onlineItem && onlineItem.hidden === true, "online daily report menu should be hidden");
+
+  assert.strictEqual(menuIds.has("counterparty-risk-daily"), true, "offline menu id should remain routable");
+  assert.strictEqual(menuIds.has("counterparty-risk-daily-online"), true, "online menu id should remain routable");
+  assert.strictEqual(typeof renderers["counterparty-risk-daily"], "function");
+  assert.strictEqual(typeof renderers["counterparty-risk-daily-online"], "function");
+
+  const docStubB = createDocumentStub();
+  const sandboxB = {
+    console,
+    window: { location: { origin: "http://localhost", hash: "#counterparty-risk-daily-online" } },
+    document: docStubB,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandboxB.global = sandboxB;
+  const ctxB = vm.createContext(sandboxB);
+  vm.runInContext(scriptContent, ctxB);
+
+  const getInitialMenuId = vm.runInContext("getInitialMenuId", ctxB);
+  assert.strictEqual(getInitialMenuId(), "counterparty-risk-daily-online");
+});

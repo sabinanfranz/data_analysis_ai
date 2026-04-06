@@ -558,6 +558,112 @@ test("교육 전체 딜체크 메뉴가 최상단에 추가되고 전체 owner/�
   assert.strictEqual(inferPartFromOwners("edu_all", ["김솔이", "강진우"]), "1팀 1파트+2팀 온라인셀");
 });
 
+test("loadBizPerfSummary caches by team+year and uses year-specific range", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const calls = [];
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async (url) => {
+      calls.push(url);
+      return {
+        ok: true,
+        json: async () => ({ months: [], segments: [] }),
+        text: async () => "{}",
+      };
+    },
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const loadBizPerfSummary = vm.runInContext("loadBizPerfSummary", ctx);
+
+  await loadBizPerfSummary({ teamKey: "edu1", year: 2026 });
+  await loadBizPerfSummary({ teamKey: "edu1", year: 2026 }); // cache hit
+  await loadBizPerfSummary({ teamKey: "edu1", year: 2025 });
+
+  assert.strictEqual(calls.length, 2, "year-specific cache should avoid duplicate same-year fetch");
+
+  const first = new URL(calls[0]);
+  assert.strictEqual(first.pathname, "/api/performance/monthly-amounts/summary");
+  assert.strictEqual(first.searchParams.get("from"), "2026-01");
+  assert.strictEqual(first.searchParams.get("to"), "2026-12");
+  assert.strictEqual(first.searchParams.get("team"), "edu1");
+
+  const second = new URL(calls[1]);
+  assert.strictEqual(second.pathname, "/api/performance/monthly-amounts/summary");
+  assert.strictEqual(second.searchParams.get("from"), "2025-01");
+  assert.strictEqual(second.searchParams.get("to"), "2025-12");
+  assert.strictEqual(second.searchParams.get("team"), "edu1");
+});
+
+test("monthly year helpers filter month keys and current-month highlighting key", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const pickPerfMonthlyMonthsByYear = vm.runInContext("pickPerfMonthlyMonthsByYear", ctx);
+  const getPerfMonthlyCurrentMonthKey = vm.runInContext("getPerfMonthlyCurrentMonthKey", ctx);
+  const renderBizPerfCard = vm.runInContext("renderBizPerfCard", ctx);
+
+  const picked = pickPerfMonthlyMonthsByYear(["2501", "2512", "2601", "2603"], 2026);
+  assert.strictEqual(JSON.stringify(picked), JSON.stringify(["2601", "2603"]));
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentYYMM = `${String(currentYear).slice(2)}${String(now.getMonth() + 1).padStart(2, "0")}`;
+  assert.strictEqual(getPerfMonthlyCurrentMonthKey(currentYear), currentYYMM);
+  assert.strictEqual(getPerfMonthlyCurrentMonthKey(currentYear - 1), null);
+
+  const cardHtml = renderBizPerfCard(
+    {
+      key: "ALL",
+      label: "ALL",
+      rows: [
+        {
+          key: "TOTAL",
+          label: "TOTAL",
+          byMonth: { "2603": 1, "2604": 2 },
+          dealCountByMonth: { "2603": 1, "2604": 1 },
+        },
+      ],
+    },
+    ["2603", "2604"],
+    "2604",
+  );
+  assert.ok(cardHtml.includes('<th class="is-current-month">2604</th>'));
+  assert.ok(cardHtml.includes('<td class="is-current-month">'));
+});
+
 test("renderWonSummary shows new columns and team/part/DRI", async () => {
   const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
   const scriptContent = extractScript(html);

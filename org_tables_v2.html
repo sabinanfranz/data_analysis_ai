@@ -1280,6 +1280,16 @@
       border-right: 2px solid rgba(255, 255, 255, 0.28);
     }
 
+    .mp-monthly-table .is-current-month {
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+    }
+
+    .mp-monthly-table .is-current-month .mp-cell-btn,
+    .mp-monthly-table .is-current-month .mp-cell-btn.is-zero {
+      font-weight: 650;
+    }
+
     :root {
       --pnl-lever-h: 72px;
       --pnl-btn-gap: 8px;
@@ -2893,6 +2903,7 @@
         loading: false,
         error: null,
         summaryCache: new Map(),
+        selectedYear: 2026,
       },
       monthlyRevenue: {
         team: "",
@@ -4954,14 +4965,45 @@
     let target2026Cache = null;
     let target2026AllCache = null;
     let pnlAssumptionTimer = null;
-    async function loadBizPerfSummary({ teamKey = null } = {}) {
-      const cacheKey = teamKey || "all";
+
+    function normalizePerfMonthlyYear(year) {
+      const parsed = Number(year);
+      return parsed === 2025 || parsed === 2026 ? parsed : 2026;
+    }
+
+    function getPerfMonthlyRange(year) {
+      const normalized = normalizePerfMonthlyYear(year);
+      return {
+        from: `${normalized}-01`,
+        to: `${normalized}-12`,
+      };
+    }
+
+    function pickPerfMonthlyMonthsByYear(months, year) {
+      if (!Array.isArray(months) || !months.length) return [];
+      const normalized = normalizePerfMonthlyYear(year);
+      const prefix = String(normalized).slice(2);
+      const selected = months.map((m) => String(m)).filter((m) => m.startsWith(prefix));
+      return selected.length ? selected : months.map((m) => String(m));
+    }
+
+    function getPerfMonthlyCurrentMonthKey(year) {
+      const normalized = normalizePerfMonthlyYear(year);
+      const now = new Date();
+      if (now.getFullYear() !== normalized) return null;
+      return `${String(normalized).slice(2)}${String(now.getMonth() + 1).padStart(2, "0")}`;
+    }
+
+    async function loadBizPerfSummary({ teamKey = null, year = 2026 } = {}) {
+      const normalizedYear = normalizePerfMonthlyYear(year);
+      const cacheKey = `${teamKey || "all"}|${normalizedYear}`;
       if (state.perfMonthly.summaryCache.has(cacheKey)) {
         return state.perfMonthly.summaryCache.get(cacheKey);
       }
+      const range = getPerfMonthlyRange(normalizedYear);
       const params = new URLSearchParams();
-      params.set("from", "2025-01");
-      params.set("to", "2026-12");
+      params.set("from", range.from);
+      params.set("to", range.to);
       if (teamKey) params.set("team", teamKey);
       const data = await fetchJson(`/performance/monthly-amounts/summary?${params.toString()}`);
       state.perfMonthly.summaryCache.set(cacheKey, data);
@@ -10648,11 +10690,16 @@
       return rows;
     }
 
-    function renderPerfMonthlySummaryTable(rows, months = []) {
+    function renderPerfMonthlySummaryTable(rows, months = [], currentMonthKey = null) {
       if (!rows || !rows.length || !months.length) {
         return `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
       }
-      const headerCells = months.map((m) => `<th class="num">${m}</th>`).join("");
+      const headerCells = months
+        .map((m) => {
+          const cls = m === currentMonthKey ? "num is-current-month" : "num";
+          return `<th class="${cls}">${m}</th>`;
+        })
+        .join("");
       const bodyRows = rows
         .map((row) => {
           return `
@@ -10661,8 +10708,9 @@
               ${months
                 .map((m) => {
                   const raw = (row.byMonth || {})[m];
-                  if (raw === null) return `<td class="num">-</td>`;
-                  return `<td class="num">${formatEok1(raw || 0)}</td>`;
+                  const tdClass = m === currentMonthKey ? "num is-current-month" : "num";
+                  if (raw === null) return `<td class="${tdClass}">-</td>`;
+                  return `<td class="${tdClass}">${formatEok1(raw || 0)}</td>`;
                 })
                 .join("")}
             </tr>
@@ -10695,8 +10743,13 @@
       `;
     }
 
-    function renderBizPerfCard(segment, months = []) {
-      const headerCells = months.map((m) => `<th>${m}</th>`).join("");
+    function renderBizPerfCard(segment, months = [], currentMonthKey = null) {
+      const headerCells = months
+        .map((m) => {
+          const cls = m === currentMonthKey ? "is-current-month" : "";
+          return `<th class="${cls}">${m}</th>`;
+        })
+        .join("");
       const bodyRows =
         (segment.rows || [])
           .map((row) => {
@@ -10709,8 +10762,9 @@
                     const v = vals[m] || 0;
                     const cnt = (row.dealCountByMonth || {})[m] || 0;
                     const disabled = cnt === 0;
+                    const tdClass = m === currentMonthKey ? "is-current-month" : "";
                     return `
-                      <td>
+                      <td class="${tdClass}">
                         ${disabled
                           ? `<span class="mp-cell-btn is-zero">${formatEok1(0)}</span>`
                           : `<button type="button" class="mp-cell-btn" data-perf-cell="1" data-segment="${segment.key}" data-row="${row.key}" data-month="${m}">${formatEok1(v)}</button>`}
@@ -11133,77 +11187,111 @@
     async function renderBizPerfMonthly(contentRoot, options = {}) {
       const teamKey = options.teamKey || null;
       const titleText = options.label || "월별 체결액";
-      state.perfMonthly.loading = true;
-      state.perfMonthly.error = null;
-      contentRoot.innerHTML = `
-        <section class="card compact-header">
-          <div class="control-row">
-            <div>
-              <h1>${escapeHtml(titleText)}</h1>
-              <div class="muted" id="perfMonthlyMeta">단위: 억(표기 생략) / 클릭 시 딜 목록 표시</div>
+      state.perfMonthly.selectedYear = normalizePerfMonthlyYear(state.perfMonthly.selectedYear);
+
+      const renderFrame = (year) => {
+        const normalizedYear = normalizePerfMonthlyYear(year);
+        const range = getPerfMonthlyRange(normalizedYear);
+        contentRoot.innerHTML = `
+          <section class="card compact-header">
+            <div class="control-row">
+              <div>
+                <h1>${escapeHtml(titleText)}</h1>
+                <div class="muted" id="perfMonthlyMeta">단위: 억(표기 생략) / 클릭 시 딜 목록 표시</div>
+              </div>
+              <div class="spacer"></div>
+              <div id="perfMonthlyYearToggle" class="seg-tabs">
+                <button type="button" class="seg-btn ${normalizedYear === 2025 ? "active" : ""}" data-perf-monthly-year="2025" aria-pressed="${normalizedYear === 2025}">2025</button>
+                <button type="button" class="seg-btn ${normalizedYear === 2026 ? "active" : ""}" data-perf-monthly-year="2026" aria-pressed="${normalizedYear === 2026}">2026</button>
+              </div>
+              <span class="pill muted">${range.from} ~ ${range.to}</span>
             </div>
-            <div class="spacer"></div>
-            <span class="pill muted">2025-01 ~ 2026-12</span>
+          </section>
+          <div id="perfMonthlySummary">
+            <div class="muted card" style="padding: 12px;">불러오는 중...</div>
           </div>
-        </section>
-        <div id="perfMonthlySummary">
-          <div class="muted card" style="padding: 12px;">불러오는 중...</div>
-        </div>
-        <div id="perfMonthlyCards" style="display:flex; flex-direction:column; gap:12px;">
-          <div class="muted">불러오는 중...</div>
-        </div>
-      `;
+          <div id="perfMonthlyCards" style="display:flex; flex-direction:column; gap:12px;">
+            <div class="muted">불러오는 중...</div>
+          </div>
+        `;
+      };
 
-      const cardsRoot = document.getElementById("perfMonthlyCards");
-      const metaEl = document.getElementById("perfMonthlyMeta");
-      const summaryRoot = document.getElementById("perfMonthlySummary");
+      const renderYear = async (year) => {
+        const normalizedYear = normalizePerfMonthlyYear(year);
+        state.perfMonthly.selectedYear = normalizedYear;
+        state.perfMonthly.loading = true;
+        state.perfMonthly.error = null;
+        renderFrame(normalizedYear);
 
-      const attachCellHandlers = () => {
-        cardsRoot.querySelectorAll("[data-perf-cell]").forEach((btn) => {
-          btn.addEventListener("click", async (e) => {
-            const segment = e.currentTarget.getAttribute("data-segment");
-            const row = e.currentTarget.getAttribute("data-row");
-            const month = e.currentTarget.getAttribute("data-month");
-            await openBizPerfDealsModal(segment, row, month, { teamKey });
+        const cardsRoot = document.getElementById("perfMonthlyCards");
+        const metaEl = document.getElementById("perfMonthlyMeta");
+        const summaryRoot = document.getElementById("perfMonthlySummary");
+
+        const attachYearToggleHandlers = () => {
+          const yearToggleRoot = document.getElementById("perfMonthlyYearToggle");
+          if (!yearToggleRoot) return;
+          yearToggleRoot.querySelectorAll("[data-perf-monthly-year]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              if (state.perfMonthly.loading) return;
+              const nextYear = normalizePerfMonthlyYear(btn.getAttribute("data-perf-monthly-year"));
+              if (nextYear === state.perfMonthly.selectedYear) return;
+              void renderYear(nextYear);
+            });
           });
-        });
+        };
+
+        const attachCellHandlers = () => {
+          cardsRoot.querySelectorAll("[data-perf-cell]").forEach((btn) => {
+            btn.addEventListener("click", async (e) => {
+              const segment = e.currentTarget.getAttribute("data-segment");
+              const row = e.currentTarget.getAttribute("data-row");
+              const month = e.currentTarget.getAttribute("data-month");
+              await openBizPerfDealsModal(segment, row, month, { teamKey });
+            });
+          });
+        };
+
+        const renderCards = (data, months, currentMonthKey) => {
+          if (!data || !data.segments || !data.segments.length) {
+            cardsRoot.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
+            return;
+          }
+          const snapshot = data.meta && data.meta.snapshot_version ? ` · ${data.meta.snapshot_version}` : "";
+          if (metaEl) {
+            metaEl.textContent = `단위: 억(표기 생략) / 클릭 시 딜 목록 표시${snapshot}`;
+          }
+          cardsRoot.innerHTML = data.segments.map((seg) => renderBizPerfCard(seg, months, currentMonthKey)).join("");
+          attachCellHandlers();
+        };
+
+        const renderSummary = (data, months, currentMonthKey) => {
+          if (!summaryRoot) return;
+          if (!data || !months.length) {
+            summaryRoot.innerHTML = `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
+            return;
+          }
+          const rows = buildPerfMonthlySummaryRows(data);
+          summaryRoot.innerHTML = renderPerfMonthlySummaryTable(rows, months, currentMonthKey);
+        };
+
+        attachYearToggleHandlers();
+        try {
+          const data = await loadBizPerfSummary({ teamKey, year: normalizedYear });
+          const months = pickPerfMonthlyMonthsByYear(data.months || [], normalizedYear);
+          const currentMonthKey = getPerfMonthlyCurrentMonthKey(normalizedYear);
+          renderSummary(data, months, currentMonthKey);
+          renderCards(data, months, currentMonthKey);
+        } catch (err) {
+          state.perfMonthly.error = err;
+          if (summaryRoot) summaryRoot.innerHTML = `<div class="card"><div class="muted">오류: ${err.message}</div></div>`;
+          if (cardsRoot) cardsRoot.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
+          showToast(`월별 체결액을 불러오지 못했습니다: ${err.message}`, "error");
+        } finally {
+          state.perfMonthly.loading = false;
+        }
       };
 
-      const renderCards = (data) => {
-        if (!data || !data.segments || !data.segments.length) {
-          cardsRoot.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
-          return;
-        }
-        const snapshot = data.meta && data.meta.snapshot_version ? ` · ${data.meta.snapshot_version}` : "";
-        if (metaEl) {
-          metaEl.textContent = `단위: 억(표기 생략) / 클릭 시 딜 목록 표시${snapshot}`;
-        }
-        cardsRoot.innerHTML = data.segments.map((seg) => renderBizPerfCard(seg, data.months || [])).join("");
-        attachCellHandlers();
-      };
-
-      const renderSummary = (data) => {
-        if (!summaryRoot) return;
-        if (!data || !data.months || !data.months.length) {
-          summaryRoot.innerHTML = `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
-          return;
-        }
-        const rows = buildPerfMonthlySummaryRows(data);
-        summaryRoot.innerHTML = renderPerfMonthlySummaryTable(rows, data.months);
-      };
-
-      try {
-        const data = await loadBizPerfSummary({ teamKey });
-        renderSummary(data);
-        renderCards(data);
-      } catch (err) {
-        state.perfMonthly.error = err;
-        if (summaryRoot) summaryRoot.innerHTML = `<div class="card"><div class="muted">오류: ${err.message}</div></div>`;
-        if (cardsRoot) cardsRoot.innerHTML = `<div class="muted">오류: ${err.message}</div>`;
-        showToast(`월별 체결액을 불러오지 못했습니다: ${err.message}`, "error");
-      } finally {
-        state.perfMonthly.loading = false;
-      }
+      await renderYear(state.perfMonthly.selectedYear);
     }
 
     function renderBizPerfMonthlyInquiriesTable(rows, months = [], selectedSize = "대기업") {

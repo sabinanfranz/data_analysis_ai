@@ -22,6 +22,13 @@
       --success: #22c55e;
       --error: #f87171;
       --shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+      --mp-q1-bg: rgba(56, 189, 248, 0.10);
+      --mp-q2-bg: rgba(16, 185, 129, 0.10);
+      --mp-q3-bg: rgba(245, 158, 11, 0.10);
+      --mp-q4-bg: rgba(244, 114, 182, 0.10);
+      --mp-agg-h1-bg: rgba(148, 163, 184, 0.14);
+      --mp-agg-q1-bg: rgba(56, 189, 248, 0.16);
+      --mp-agg-q2-bg: rgba(16, 185, 129, 0.16);
     }
 
     * {
@@ -940,6 +947,41 @@
       table-layout: fixed;
     }
 
+    .mp-monthly-table thead th.mp-col-q1,
+    .mp-monthly-table td.mp-col-q1 {
+      background: var(--mp-q1-bg);
+    }
+
+    .mp-monthly-table thead th.mp-col-q2,
+    .mp-monthly-table td.mp-col-q2 {
+      background: var(--mp-q2-bg);
+    }
+
+    .mp-monthly-table thead th.mp-col-q3,
+    .mp-monthly-table td.mp-col-q3 {
+      background: var(--mp-q3-bg);
+    }
+
+    .mp-monthly-table thead th.mp-col-q4,
+    .mp-monthly-table td.mp-col-q4 {
+      background: var(--mp-q4-bg);
+    }
+
+    .mp-monthly-table thead th.mp-col-agg-h1,
+    .mp-monthly-table td.mp-col-agg-h1 {
+      background: var(--mp-agg-h1-bg);
+    }
+
+    .mp-monthly-table thead th.mp-col-agg-q1,
+    .mp-monthly-table td.mp-col-agg-q1 {
+      background: var(--mp-agg-q1-bg);
+    }
+
+    .mp-monthly-table thead th.mp-col-agg-q2,
+    .mp-monthly-table td.mp-col-agg-q2 {
+      background: var(--mp-agg-q2-bg);
+    }
+
     .mp-monthly-table th,
     .mp-monthly-table td,
     .mp-monthly-table .mp-cell-btn {
@@ -1285,8 +1327,7 @@
     }
 
     .mp-monthly-table .is-current-month {
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24), inset 0 -9999px rgba(255, 255, 255, 0.04);
     }
 
     .mp-monthly-table .is-current-month .mp-cell-btn,
@@ -10763,6 +10804,23 @@
       return (monthKeys || []).reduce((acc, monthKey) => acc + Number((byMonth || {})[monthKey] || 0), 0);
     }
 
+    function getPerfAggBgClass(aggKey) {
+      if (aggKey === "h1") return "mp-col-agg-h1";
+      if (aggKey === "q1") return "mp-col-agg-q1";
+      if (aggKey === "q2") return "mp-col-agg-q2";
+      return "";
+    }
+
+    function getPerfMonthBgClass(monthKey) {
+      const text = String(monthKey || "");
+      const mm = Number(text.slice(-2));
+      if (mm >= 1 && mm <= 3) return "mp-col-q1";
+      if (mm >= 4 && mm <= 6) return "mp-col-q2";
+      if (mm >= 7 && mm <= 9) return "mp-col-q3";
+      if (mm >= 10 && mm <= 12) return "mp-col-q4";
+      return "";
+    }
+
     function buildPerfMonthlyColgroup(months = [], show2026AggCols = false) {
       const monthCols = Array.isArray(months) ? months.length : 0;
       const aggCols = show2026AggCols ? PERF_MONTHLY_2026_AGG_DEFS.length : 0;
@@ -10841,11 +10899,12 @@
       }
       const colgroup = buildPerfMonthlyColgroup(months, show2026AggCols);
       const aggHeaderCells = show2026AggCols
-        ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => `<th class="num">${agg.label}</th>`).join("")
+        ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => `<th class="num ${getPerfAggBgClass(agg.key)}">${agg.label}</th>`).join("")
         : "";
       const headerCells = months
         .map((m) => {
-          const cls = m === currentMonthKey ? "num is-current-month" : "num";
+          const bgCls = getPerfMonthBgClass(m);
+          const cls = m === currentMonthKey ? `num ${bgCls} is-current-month` : `num ${bgCls}`;
           return `<th class="${cls}">${m}</th>`;
         })
         .join("");
@@ -10858,14 +10917,15 @@
                 show2026AggCols
                   ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => {
                       const sumVal = sumPerfMonthlyByMonths(row.byMonth, agg.months);
-                      return `<td class="num">${formatEok1(sumVal)}</td>`;
+                      return `<td class="num ${getPerfAggBgClass(agg.key)}">${formatEok1(sumVal)}</td>`;
                     }).join("")
                   : ""
               }
               ${months
                 .map((m) => {
                   const raw = (row.byMonth || {})[m];
-                  const tdClass = m === currentMonthKey ? "num is-current-month" : "num";
+                  const bgCls = getPerfMonthBgClass(m);
+                  const tdClass = m === currentMonthKey ? `num ${bgCls} is-current-month` : `num ${bgCls}`;
                   if (raw === null) return `<td class="${tdClass}">-</td>`;
                   return `<td class="${tdClass}">${formatEok1(raw || 0)}</td>`;
                 })
@@ -10905,12 +10965,13 @@
     function renderBizPerfCard(segment, months = [], currentMonthKey = null, show2026AggCols = false) {
       const colgroup = buildPerfMonthlyColgroup(months, show2026AggCols);
       const aggHeaderCells = show2026AggCols
-        ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => `<th>${agg.label}</th>`).join("")
+        ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => `<th class="${getPerfAggBgClass(agg.key)}">${agg.label}</th>`).join("")
         : "";
       const totalCols = 1 + (show2026AggCols ? PERF_MONTHLY_2026_AGG_DEFS.length : 0) + months.length;
       const headerCells = months
         .map((m) => {
-          const cls = m === currentMonthKey ? "is-current-month" : "";
+          const bgCls = getPerfMonthBgClass(m);
+          const cls = m === currentMonthKey ? `${bgCls} is-current-month` : bgCls;
           return `<th class="${cls}">${m}</th>`;
         })
         .join("");
@@ -10925,7 +10986,7 @@
                   show2026AggCols
                     ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => {
                         const sumVal = sumPerfMonthlyByMonths(vals, agg.months);
-                        return `<td>${formatEok1(sumVal)}</td>`;
+                        return `<td class="${getPerfAggBgClass(agg.key)}">${formatEok1(sumVal)}</td>`;
                       }).join("")
                     : ""
                 }
@@ -10934,7 +10995,8 @@
                     const v = vals[m] || 0;
                     const cnt = (row.dealCountByMonth || {})[m] || 0;
                     const disabled = cnt === 0;
-                    const tdClass = m === currentMonthKey ? "is-current-month" : "";
+                    const bgCls = getPerfMonthBgClass(m);
+                    const tdClass = m === currentMonthKey ? `${bgCls} is-current-month` : bgCls;
                     return `
                       <td class="${tdClass}">
                         ${disabled

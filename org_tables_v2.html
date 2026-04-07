@@ -2655,7 +2655,9 @@
         defaultOpen: true,
         items: [
           { id: "biz-perf-pl-progress-2026", label: "2026 P&L" },
-          ...PERF_MONTHLY_MENU_DEFS.map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
+          ...PERF_MONTHLY_MENU_DEFS
+            .filter((d) => d.id !== "biz-perf-monthly-edu1" && d.id !== "biz-perf-monthly-edu2")
+            .map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
           // ✅ 구 "카운터파티 리스크(일간)" → 2026 Daily Report(출강) (id 유지)
           { id: "counterparty-risk-daily", label: "2026 Daily Report(출강)", hidden: true },
           { id: "counterparty-risk-daily-online", label: "2026 Daily Report(온라인)", hidden: true },
@@ -2672,6 +2674,15 @@
           { id: "rank-2025-counterparty-dri", label: "2026 카운터파티 DRI" },
           { id: "ops-2026-online-retention", label: "2026 온라인 리텐션" },
           ...DEALCHECK_MENU_DEFS.map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
+        ],
+      },
+      {
+        sectionId: "org-perf",
+        title: "조직별 퍼포먼스",
+        defaultOpen: true,
+        items: [
+          { id: "biz-perf-monthly-edu1", label: "2026 1팀 월별 체결액" },
+          { id: "biz-perf-monthly-edu2", label: "2026 2팀 월별 체결액" },
         ],
       },
       {

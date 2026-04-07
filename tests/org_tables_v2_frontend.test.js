@@ -1354,3 +1354,56 @@ test("daily report menus are hidden in sidebar config but still reachable by has
   const getInitialMenuId = vm.runInContext("getInitialMenuId", ctxB);
   assert.strictEqual(getInitialMenuId(), "counterparty-risk-daily-online");
 });
+
+test("org performance section is inserted under ops and contains non-arrow team monthly menus", () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost", hash: "" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const menuSections = vm.runInContext("MENU_SECTIONS", ctx);
+  const sectionIds = menuSections.map((s) => s.sectionId);
+  const opsIdx = sectionIds.indexOf("ops");
+  const orgPerfIdx = sectionIds.indexOf("org-perf");
+  const analysisIdx = sectionIds.indexOf("analysis");
+  assert.ok(opsIdx >= 0 && orgPerfIdx >= 0 && analysisIdx >= 0, "expected section ids missing");
+  assert.ok(opsIdx < orgPerfIdx && orgPerfIdx < analysisIdx, "org-perf should be placed between ops and analysis");
+
+  const perfSection = menuSections.find((s) => s.sectionId === "perf");
+  const orgPerfSection = menuSections.find((s) => s.sectionId === "org-perf");
+  assert.ok(perfSection, "perf section missing");
+  assert.ok(orgPerfSection, "org-perf section missing");
+
+  assert.strictEqual(
+    perfSection.items.some((item) => item.id === "biz-perf-monthly-edu1"),
+    false,
+    "edu1 monthly menu should be removed from perf section",
+  );
+  assert.strictEqual(
+    perfSection.items.some((item) => item.id === "biz-perf-monthly-edu2"),
+    false,
+    "edu2 monthly menu should be removed from perf section",
+  );
+
+  const edu1 = orgPerfSection.items.find((item) => item.id === "biz-perf-monthly-edu1");
+  const edu2 = orgPerfSection.items.find((item) => item.id === "biz-perf-monthly-edu2");
+  assert.ok(edu1, "org-perf should include edu1 monthly menu");
+  assert.ok(edu2, "org-perf should include edu2 monthly menu");
+  assert.strictEqual(edu1.label.startsWith("↳"), false, "edu1 label should not include arrow prefix");
+  assert.strictEqual(edu2.label.startsWith("↳"), false, "edu2 label should not include arrow prefix");
+});

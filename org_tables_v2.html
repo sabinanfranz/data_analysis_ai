@@ -2428,7 +2428,7 @@
         "2파트": ["강지선", "정하영", "박범규", "하승민", "이은서", "김세연", "이주연"],
       },
       "기업교육 2팀": {
-        "1파트": ["권노을", "이윤지B", "이현진", "김민선", "강연정", "방신우", "홍제환", "정선희"],
+        "1파트": ["권노을", "이윤지", "이현진", "김민선", "강연정", "방신우", "홍제환", "정선희"],
         "2파트": ["정다혜", "임재우", "송승희", "손승완", "김윤지", "손지훈", "홍예진"],
         "온라인셀": ["강진우", "강다현", "이수빈"],
       },
@@ -3098,6 +3098,7 @@
     function getDefaultDealCheckStatusFilterState() {
       return {
         includeWonLost: true,
+        includeWonOnly: false,
         wonOnly: false,
         lostOnly: false,
       };
@@ -3107,9 +3108,10 @@
       const defaults = getDefaultDealCheckStatusFilterState();
       const raw = rawState && typeof rawState === "object" ? rawState : {};
       const includeWonLost = raw.includeWonLost === undefined ? defaults.includeWonLost : Boolean(raw.includeWonLost);
+      const includeWonOnly = raw.includeWonOnly === undefined ? defaults.includeWonOnly : Boolean(raw.includeWonOnly);
       const wonOnly = raw.wonOnly === undefined ? defaults.wonOnly : Boolean(raw.wonOnly);
       const lostOnly = raw.lostOnly === undefined ? defaults.lostOnly : Boolean(raw.lostOnly);
-      return { includeWonLost, wonOnly, lostOnly };
+      return { includeWonLost, includeWonOnly, wonOnly, lostOnly };
     }
 
     function setDealCheckIncludeWonLost(filterState, includeWonLost) {
@@ -3117,12 +3119,32 @@
       if (includeWonLost) {
         return {
           includeWonLost: true,
+          includeWonOnly: false,
           wonOnly: false,
           lostOnly: false,
         };
       }
       return {
         includeWonLost: false,
+        includeWonOnly: normalized.includeWonOnly,
+        wonOnly: normalized.wonOnly,
+        lostOnly: normalized.lostOnly,
+      };
+    }
+
+    function setDealCheckIncludeWonOnly(filterState, includeWonOnly) {
+      const normalized = normalizeDealCheckStatusFilterState(filterState);
+      if (includeWonOnly) {
+        return {
+          includeWonLost: false,
+          includeWonOnly: true,
+          wonOnly: false,
+          lostOnly: false,
+        };
+      }
+      return {
+        includeWonLost: normalized.includeWonLost,
+        includeWonOnly: false,
         wonOnly: normalized.wonOnly,
         lostOnly: normalized.lostOnly,
       };
@@ -3130,8 +3152,10 @@
 
     function setDealCheckOnlyChecks(filterState, wonOnly, lostOnly) {
       const normalized = normalizeDealCheckStatusFilterState(filterState);
+      const hasOnlyMode = Boolean(wonOnly) || Boolean(lostOnly);
       return {
-        includeWonLost: normalized.includeWonLost,
+        includeWonLost: hasOnlyMode ? false : normalized.includeWonLost,
+        includeWonOnly: hasOnlyMode ? false : normalized.includeWonOnly,
         wonOnly: Boolean(wonOnly),
         lostOnly: Boolean(lostOnly),
       };
@@ -3227,6 +3251,13 @@
         if (statusNorm === "won") return hasWonOnly;
         if (statusNorm === "lost") return hasLostOnly;
         return false;
+      }
+
+      if (Boolean(st.includeWonOnly)) {
+        if (!statusNorm || statusNorm === "sql") return true;
+        if (statusNorm === "won") return true;
+        if (statusNorm === "lost") return false;
+        return true;
       }
 
       if (!statusNorm || statusNorm === "sql") return true;
@@ -8680,6 +8711,7 @@
       }
       let statusFilterState = getDealCheckStatusFilterState(menuKey);
       const statusIncludeCheckedAttr = statusFilterState.includeWonLost ? " checked" : "";
+      const statusIncludeWonOnlyCheckedAttr = statusFilterState.includeWonOnly ? " checked" : "";
       const statusWonCheckedAttr = statusFilterState.wonOnly ? " checked" : "";
       const statusLostCheckedAttr = statusFilterState.lostOnly ? " checked" : "";
       const ownerFilterOptions = [
@@ -8703,6 +8735,10 @@
                 <label class="dealcheck-status-item" for="${teamKey}StatusIncludeWonLost">
                   <input type="checkbox" id="${teamKey}StatusIncludeWonLost"${statusIncludeCheckedAttr} />
                   <span>Won/Lost 포함</span>
+                </label>
+                <label class="dealcheck-status-item" for="${teamKey}StatusIncludeWonOnly">
+                  <input type="checkbox" id="${teamKey}StatusIncludeWonOnly"${statusIncludeWonOnlyCheckedAttr} />
+                  <span>Won 포함(SQL+Won)</span>
                 </label>
                 <label class="dealcheck-status-item" for="${teamKey}StatusWon">
                   <input type="checkbox" id="${teamKey}StatusWon"${statusWonCheckedAttr} />
@@ -8785,6 +8821,7 @@
 
       const ownerFilterSelect = document.getElementById(`${teamKey}OwnerFilterSelect`);
       const statusIncludeWonLostCheckbox = document.getElementById(`${teamKey}StatusIncludeWonLost`);
+      const statusIncludeWonOnlyCheckbox = document.getElementById(`${teamKey}StatusIncludeWonOnly`);
       const statusWonCheckbox = document.getElementById(`${teamKey}StatusWon`);
       const statusLostCheckbox = document.getElementById(`${teamKey}StatusLost`);
       let latestRawItems = null;
@@ -8811,6 +8848,9 @@
         if (statusIncludeWonLostCheckbox) {
           statusIncludeWonLostCheckbox.checked = normalized.includeWonLost;
         }
+        if (statusIncludeWonOnlyCheckbox) {
+          statusIncludeWonOnlyCheckbox.checked = normalized.includeWonOnly;
+        }
         if (statusWonCheckbox) {
           statusWonCheckbox.checked = normalized.wonOnly;
         }
@@ -8829,6 +8869,14 @@
         statusIncludeWonLostCheckbox.addEventListener("change", (e) => {
           const checked = Boolean(e.target.checked);
           const next = setDealCheckIncludeWonLost(statusFilterState, checked);
+          applyStatusFilterState(next);
+        });
+      }
+
+      if (statusIncludeWonOnlyCheckbox) {
+        statusIncludeWonOnlyCheckbox.addEventListener("change", (e) => {
+          const checked = Boolean(e.target.checked);
+          const next = setDealCheckIncludeWonOnly(statusFilterState, checked);
           applyStatusFilterState(next);
         });
       }

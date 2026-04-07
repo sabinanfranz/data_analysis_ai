@@ -457,11 +457,15 @@ test("dealcheck status filter helpers support include mode and only mode", async
 
   const getDefaultDealCheckStatusFilterState = vm.runInContext("getDefaultDealCheckStatusFilterState", ctx);
   const setDealCheckIncludeWonLost = vm.runInContext("setDealCheckIncludeWonLost", ctx);
+  const setDealCheckIncludeWonOnly = vm.runInContext("setDealCheckIncludeWonOnly", ctx);
   const setDealCheckOnlyChecks = vm.runInContext("setDealCheckOnlyChecks", ctx);
   const matchDealCheckStatusFilter = vm.runInContext("matchDealCheckStatusFilter", ctx);
+  const getDealCheckStatusFilterState = vm.runInContext("getDealCheckStatusFilterState", ctx);
+  const setDealCheckStatusFilterState = vm.runInContext("setDealCheckStatusFilterState", ctx);
 
   let state = getDefaultDealCheckStatusFilterState();
   assert.strictEqual(state.includeWonLost, true);
+  assert.strictEqual(state.includeWonOnly, false);
   assert.strictEqual(state.wonOnly, false);
   assert.strictEqual(state.lostOnly, false);
   assert.strictEqual(matchDealCheckStatusFilter("sql", state), true);
@@ -470,22 +474,49 @@ test("dealcheck status filter helpers support include mode and only mode", async
 
   state = setDealCheckIncludeWonLost(state, false);
   assert.strictEqual(state.includeWonLost, false);
+  assert.strictEqual(state.includeWonOnly, false);
   assert.strictEqual(state.wonOnly, false);
   assert.strictEqual(state.lostOnly, false);
   assert.strictEqual(matchDealCheckStatusFilter("sql", state), true);
   assert.strictEqual(matchDealCheckStatusFilter("won", state), false);
   assert.strictEqual(matchDealCheckStatusFilter("lost", state), false);
 
+  state = setDealCheckIncludeWonOnly(state, true);
+  assert.strictEqual(state.includeWonLost, false);
+  assert.strictEqual(state.includeWonOnly, true);
+  assert.strictEqual(state.wonOnly, false);
+  assert.strictEqual(state.lostOnly, false);
+  assert.strictEqual(matchDealCheckStatusFilter("sql", state), true);
+  assert.strictEqual(matchDealCheckStatusFilter("won", state), true);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", state), false);
+
+  const includeAllReset = setDealCheckIncludeWonLost(state, true);
+  assert.strictEqual(includeAllReset.includeWonLost, true);
+  assert.strictEqual(includeAllReset.includeWonOnly, false);
+  assert.strictEqual(includeAllReset.wonOnly, false);
+  assert.strictEqual(includeAllReset.lostOnly, false);
+  assert.strictEqual(matchDealCheckStatusFilter("sql", includeAllReset), true);
+  assert.strictEqual(matchDealCheckStatusFilter("won", includeAllReset), true);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", includeAllReset), true);
+
+  const includeWonOnlyAgain = setDealCheckIncludeWonOnly(includeAllReset, true);
+  assert.strictEqual(includeWonOnlyAgain.includeWonLost, false);
+  assert.strictEqual(includeWonOnlyAgain.includeWonOnly, true);
+  assert.strictEqual(includeWonOnlyAgain.wonOnly, false);
+  assert.strictEqual(includeWonOnlyAgain.lostOnly, false);
+
   const includeOnWonOnly = setDealCheckOnlyChecks(setDealCheckIncludeWonLost(state, true), true, false);
-  assert.strictEqual(includeOnWonOnly.includeWonLost, true);
+  assert.strictEqual(includeOnWonOnly.includeWonLost, false);
+  assert.strictEqual(includeOnWonOnly.includeWonOnly, false);
   assert.strictEqual(includeOnWonOnly.wonOnly, true);
   assert.strictEqual(includeOnWonOnly.lostOnly, false);
   assert.strictEqual(matchDealCheckStatusFilter("sql", includeOnWonOnly), false);
   assert.strictEqual(matchDealCheckStatusFilter("won", includeOnWonOnly), true);
   assert.strictEqual(matchDealCheckStatusFilter("lost", includeOnWonOnly), false);
 
-  state = setDealCheckOnlyChecks(state, true, false);
+  state = setDealCheckOnlyChecks(includeWonOnlyAgain, true, false);
   assert.strictEqual(state.includeWonLost, false);
+  assert.strictEqual(state.includeWonOnly, false);
   assert.strictEqual(state.wonOnly, true);
   assert.strictEqual(state.lostOnly, false);
   assert.strictEqual(matchDealCheckStatusFilter("sql", state), false);
@@ -494,6 +525,7 @@ test("dealcheck status filter helpers support include mode and only mode", async
 
   state = setDealCheckOnlyChecks(state, false, true);
   assert.strictEqual(state.includeWonLost, false);
+  assert.strictEqual(state.includeWonOnly, false);
   assert.strictEqual(state.wonOnly, false);
   assert.strictEqual(state.lostOnly, true);
   assert.strictEqual(matchDealCheckStatusFilter("sql", state), false);
@@ -502,6 +534,7 @@ test("dealcheck status filter helpers support include mode and only mode", async
 
   const bothOnly = setDealCheckOnlyChecks(state, true, true);
   assert.strictEqual(bothOnly.includeWonLost, false);
+  assert.strictEqual(bothOnly.includeWonOnly, false);
   assert.strictEqual(bothOnly.wonOnly, true);
   assert.strictEqual(bothOnly.lostOnly, true);
   assert.strictEqual(matchDealCheckStatusFilter("sql", bothOnly), false);
@@ -510,11 +543,21 @@ test("dealcheck status filter helpers support include mode and only mode", async
 
   const includeReset = setDealCheckIncludeWonLost(bothOnly, true);
   assert.strictEqual(includeReset.includeWonLost, true);
+  assert.strictEqual(includeReset.includeWonOnly, false);
   assert.strictEqual(includeReset.wonOnly, false);
   assert.strictEqual(includeReset.lostOnly, false);
   assert.strictEqual(matchDealCheckStatusFilter("sql", includeReset), true);
   assert.strictEqual(matchDealCheckStatusFilter("won", includeReset), true);
   assert.strictEqual(matchDealCheckStatusFilter("lost", includeReset), true);
+
+  const menuA = setDealCheckStatusFilterState("edu1::ALLPART", setDealCheckIncludeWonOnly(getDefaultDealCheckStatusFilterState(), true));
+  const menuB = setDealCheckStatusFilterState("edu2::ALLPART", setDealCheckOnlyChecks(getDefaultDealCheckStatusFilterState(), false, true));
+  assert.strictEqual(menuA.includeWonOnly, true);
+  assert.strictEqual(menuB.lostOnly, true);
+  assert.strictEqual(getDealCheckStatusFilterState("edu1::ALLPART").includeWonOnly, true);
+  assert.strictEqual(getDealCheckStatusFilterState("edu1::ALLPART").lostOnly, false);
+  assert.strictEqual(getDealCheckStatusFilterState("edu2::ALLPART").includeWonOnly, false);
+  assert.strictEqual(getDealCheckStatusFilterState("edu2::ALLPART").lostOnly, true);
 });
 
 test("교육 전체 딜체크 메뉴가 최상단에 추가되고 전체 owner/파트 helper가 동작한다", async () => {

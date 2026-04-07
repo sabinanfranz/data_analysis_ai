@@ -748,6 +748,7 @@ test("monthly year helpers filter month keys and current-month highlighting key"
   const getPerfMonthlyCurrentMonthKey = vm.runInContext("getPerfMonthlyCurrentMonthKey", ctx);
   const renderBizPerfCard = vm.runInContext("renderBizPerfCard", ctx);
   const renderPerfMonthlySummaryTable = vm.runInContext("renderPerfMonthlySummaryTable", ctx);
+  const buildPerfMonthlyColgroup = vm.runInContext("buildPerfMonthlyColgroup", ctx);
 
   const picked = pickPerfMonthlyMonthsByYear(["2501", "2512", "2601", "2603"], 2026);
   assert.strictEqual(JSON.stringify(picked), JSON.stringify(["2601", "2603"]));
@@ -813,6 +814,7 @@ test("monthly year helpers filter month keys and current-month highlighting key"
   assert.ok(summaryHtml2026.includes(">26 1Q<"));
   assert.ok(summaryHtml2026.includes(">26 2Q<"));
   assert.ok(summaryHtml2026.includes(">21.0<"));
+  assert.ok(summaryHtml2026.includes("<colgroup>"));
 
   const summaryHtml2025 = renderPerfMonthlySummaryTable(
     [{ label: "전체 합산", byMonth: { "2501": 1, "2502": 2, "2503": 3 } }],
@@ -823,6 +825,15 @@ test("monthly year helpers filter month keys and current-month highlighting key"
   assert.ok(!summaryHtml2025.includes("26 1H"));
   assert.ok(!summaryHtml2025.includes("26 1Q"));
   assert.ok(!summaryHtml2025.includes("26 2Q"));
+
+  const colgroup2026 = buildPerfMonthlyColgroup(["2601", "2602", "2603", "2604", "2605", "2606"], true);
+  const colgroup2025 = buildPerfMonthlyColgroup(["2501", "2502", "2503"], false);
+  assert.ok(colgroup2026.includes('data-col-kind="1"'));
+  assert.ok(colgroup2026.includes('width:24.0000%'));
+  assert.ok((colgroup2026.match(/data-col-value="1"/g) || []).length === 9, "2026 should have 9 value columns");
+  assert.ok(colgroup2026.includes('width:8.4444%'), "2026 value width should be evenly distributed");
+  assert.ok((colgroup2025.match(/data-col-value="1"/g) || []).length === 3, "2025 should have 3 value columns");
+  assert.ok(colgroup2025.includes('width:25.3333%'), "2025 value width should be evenly distributed");
 });
 
 test("renderWonSummary shows new columns and team/part/DRI", async () => {

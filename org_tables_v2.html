@@ -936,6 +936,10 @@
     }
 
     /* 월별 체결액 전용 테이블/셀 스타일 */
+    .mp-monthly-table {
+      table-layout: fixed;
+    }
+
     .mp-monthly-table th,
     .mp-monthly-table td,
     .mp-monthly-table .mp-cell-btn {
@@ -10759,6 +10763,24 @@
       return (monthKeys || []).reduce((acc, monthKey) => acc + Number((byMonth || {})[monthKey] || 0), 0);
     }
 
+    function buildPerfMonthlyColgroup(months = [], show2026AggCols = false) {
+      const monthCols = Array.isArray(months) ? months.length : 0;
+      const aggCols = show2026AggCols ? PERF_MONTHLY_2026_AGG_DEFS.length : 0;
+      const valueCols = monthCols + aggCols;
+      const kindWidthPct = 24;
+      const valueWidthPct = valueCols > 0 ? 76 / valueCols : 76;
+      const fmt = (v) => Number(v).toFixed(4);
+      const valueColsHtml = Array.from({ length: valueCols })
+        .map(() => `<col data-col-value="1" style="width:${fmt(valueWidthPct)}%;" />`)
+        .join("");
+      return `
+        <colgroup>
+          <col data-col-kind="1" style="width:${fmt(kindWidthPct)}%;" />
+          ${valueColsHtml}
+        </colgroup>
+      `;
+    }
+
     function buildPerfMonthlySummaryRows(data) {
       const months = (data && data.months) || [];
       if (!months.length) return [];
@@ -10817,6 +10839,7 @@
       if (!rows || !rows.length || !months.length) {
         return `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
       }
+      const colgroup = buildPerfMonthlyColgroup(months, show2026AggCols);
       const aggHeaderCells = show2026AggCols
         ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => `<th class="num">${agg.label}</th>`).join("")
         : "";
@@ -10862,6 +10885,7 @@
           </div>
           <div class="table-wrap full perf-table-wrap">
             <table class="perf-table mp-monthly-table mp-monthly-summary-table">
+              ${colgroup}
               <thead>
                 <tr>
               <th class="sticky-col mp-kind align-left">구분</th>
@@ -10879,9 +10903,11 @@
     }
 
     function renderBizPerfCard(segment, months = [], currentMonthKey = null, show2026AggCols = false) {
+      const colgroup = buildPerfMonthlyColgroup(months, show2026AggCols);
       const aggHeaderCells = show2026AggCols
         ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => `<th>${agg.label}</th>`).join("")
         : "";
+      const totalCols = 1 + (show2026AggCols ? PERF_MONTHLY_2026_AGG_DEFS.length : 0) + months.length;
       const headerCells = months
         .map((m) => {
           const cls = m === currentMonthKey ? "is-current-month" : "";
@@ -10921,7 +10947,7 @@
               </tr>
             `;
           })
-          .join("") || `<tr><td class="sticky-col muted" colspan="${months.length + 1}">데이터가 없습니다.</td></tr>`;
+          .join("") || `<tr><td class="sticky-col muted" colspan="${totalCols}">데이터가 없습니다.</td></tr>`;
 
       return `
         <section class="card">
@@ -10932,6 +10958,7 @@
           </div>
           <div class="table-wrap full perf-table-wrap">
             <table class="perf-table mp-monthly-table">
+              ${colgroup}
               <thead>
                 <tr>
                   <th class="sticky-col mp-kind">구분</th>

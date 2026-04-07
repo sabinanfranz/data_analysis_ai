@@ -1407,3 +1407,50 @@ test("org performance section is inserted under ops and contains non-arrow team 
   assert.strictEqual(edu1.label.startsWith("↳"), false, "edu1 label should not include arrow prefix");
   assert.strictEqual(edu2.label.startsWith("↳"), false, "edu2 label should not include arrow prefix");
 });
+
+test("analysis section starts with inquiries and close-rate menus, removed from perf section", () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost", hash: "" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const menuSections = vm.runInContext("MENU_SECTIONS", ctx);
+  const renderers = vm.runInContext("MENU_RENDERERS", ctx);
+  const perfSection = menuSections.find((s) => s.sectionId === "perf");
+  const analysisSection = menuSections.find((s) => s.sectionId === "analysis");
+  assert.ok(perfSection, "perf section missing");
+  assert.ok(analysisSection, "analysis section missing");
+
+  assert.strictEqual(
+    perfSection.items.some((item) => item.id === "biz-perf-monthly-edu2-inquiries"),
+    false,
+    "inquiries menu should be removed from perf section",
+  );
+  assert.strictEqual(
+    perfSection.items.some((item) => item.id === "biz-perf-monthly-close-rate-2026"),
+    false,
+    "close-rate menu should be removed from perf section",
+  );
+
+  assert.strictEqual(analysisSection.items[0]?.id, "biz-perf-monthly-edu2-inquiries");
+  assert.strictEqual(analysisSection.items[1]?.id, "biz-perf-monthly-close-rate-2026");
+  assert.strictEqual(analysisSection.items[0]?.label, "2026 문의 인입 현황");
+  assert.strictEqual(analysisSection.items[1]?.label, "2026 체결률 현황");
+  assert.strictEqual(typeof renderers["biz-perf-monthly-edu2-inquiries"], "function");
+  assert.strictEqual(typeof renderers["biz-perf-monthly-close-rate-2026"], "function");
+});

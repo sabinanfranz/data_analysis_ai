@@ -2656,7 +2656,13 @@
         items: [
           { id: "biz-perf-pl-progress-2026", label: "2026 P&L" },
           ...PERF_MONTHLY_MENU_DEFS
-            .filter((d) => d.id !== "biz-perf-monthly-edu1" && d.id !== "biz-perf-monthly-edu2")
+            .filter(
+              (d) =>
+                d.id !== "biz-perf-monthly-edu1" &&
+                d.id !== "biz-perf-monthly-edu2" &&
+                d.id !== "biz-perf-monthly-edu2-inquiries" &&
+                d.id !== "biz-perf-monthly-close-rate-2026",
+            )
             .map((d) => ({ id: d.id, label: menuLabelWithArrow(d), parentId: d.parentId })),
           // ✅ 구 "카운터파티 리스크(일간)" → 2026 Daily Report(출강) (id 유지)
           { id: "counterparty-risk-daily", label: "2026 Daily Report(출강)", hidden: true },
@@ -2690,6 +2696,8 @@
         title: "분석 메뉴",
         defaultOpen: true,
         items: [
+          { id: "biz-perf-monthly-edu2-inquiries", label: "2026 문의 인입 현황" },
+          { id: "biz-perf-monthly-close-rate-2026", label: "2026 체결률 현황" },
           { id: "statepath-2425", label: "StatePath 24→25" },
           { id: "rank-2025", label: "2025 체결액 순위" },
           { id: "org-view", label: "조직/People/Deal 뷰어" },

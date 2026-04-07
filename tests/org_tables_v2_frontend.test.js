@@ -747,6 +747,7 @@ test("monthly year helpers filter month keys and current-month highlighting key"
   const pickPerfMonthlyMonthsByYear = vm.runInContext("pickPerfMonthlyMonthsByYear", ctx);
   const getPerfMonthlyCurrentMonthKey = vm.runInContext("getPerfMonthlyCurrentMonthKey", ctx);
   const renderBizPerfCard = vm.runInContext("renderBizPerfCard", ctx);
+  const renderPerfMonthlySummaryTable = vm.runInContext("renderPerfMonthlySummaryTable", ctx);
 
   const picked = pickPerfMonthlyMonthsByYear(["2501", "2512", "2601", "2603"], 2026);
   assert.strictEqual(JSON.stringify(picked), JSON.stringify(["2601", "2603"]));
@@ -765,16 +766,63 @@ test("monthly year helpers filter month keys and current-month highlighting key"
         {
           key: "TOTAL",
           label: "TOTAL",
-          byMonth: { "2603": 1, "2604": 2 },
-          dealCountByMonth: { "2603": 1, "2604": 1 },
+          byMonth: {
+            "2601": 100_000_000,
+            "2602": 200_000_000,
+            "2603": 300_000_000,
+            "2604": 400_000_000,
+            "2605": 500_000_000,
+            "2606": 600_000_000,
+          },
+          dealCountByMonth: { "2601": 1, "2602": 1, "2603": 1, "2604": 1, "2605": 1, "2606": 1 },
         },
       ],
     },
-    ["2603", "2604"],
+    ["2601", "2602", "2603", "2604", "2605", "2606"],
     "2604",
+    true,
   );
   assert.ok(cardHtml.includes('<th class="is-current-month">2604</th>'));
   assert.ok(cardHtml.includes('<td class="is-current-month">'));
+  assert.ok(cardHtml.includes(">26 1H<"));
+  assert.ok(cardHtml.includes(">26 1Q<"));
+  assert.ok(cardHtml.includes(">26 2Q<"));
+  assert.ok(cardHtml.includes(">21.0<"), "1H sum should be rendered");
+  assert.ok(cardHtml.includes(">6.0<"), "1Q sum should be rendered");
+  assert.ok(cardHtml.includes(">15.0<"), "2Q sum should be rendered");
+
+  const summaryHtml2026 = renderPerfMonthlySummaryTable(
+    [
+      {
+        label: "전체 합산",
+        byMonth: {
+          "2601": 100_000_000,
+          "2602": 200_000_000,
+          "2603": 300_000_000,
+          "2604": 400_000_000,
+          "2605": 500_000_000,
+          "2606": 600_000_000,
+        },
+      },
+    ],
+    ["2601", "2602", "2603", "2604", "2605", "2606"],
+    null,
+    true,
+  );
+  assert.ok(summaryHtml2026.includes(">26 1H<"));
+  assert.ok(summaryHtml2026.includes(">26 1Q<"));
+  assert.ok(summaryHtml2026.includes(">26 2Q<"));
+  assert.ok(summaryHtml2026.includes(">21.0<"));
+
+  const summaryHtml2025 = renderPerfMonthlySummaryTable(
+    [{ label: "전체 합산", byMonth: { "2501": 1, "2502": 2, "2503": 3 } }],
+    ["2501", "2502", "2503"],
+    null,
+    false,
+  );
+  assert.ok(!summaryHtml2025.includes("26 1H"));
+  assert.ok(!summaryHtml2025.includes("26 1Q"));
+  assert.ok(!summaryHtml2025.includes("26 2Q"));
 });
 
 test("renderWonSummary shows new columns and team/part/DRI", async () => {

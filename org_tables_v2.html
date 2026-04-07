@@ -10749,6 +10749,15 @@
       "2611": 10.0,
       "2612": 11.0,
     };
+    const PERF_MONTHLY_2026_AGG_DEFS = [
+      { key: "h1", label: "26 1H", months: ["2601", "2602", "2603", "2604", "2605", "2606"] },
+      { key: "q1", label: "26 1Q", months: ["2601", "2602", "2603"] },
+      { key: "q2", label: "26 2Q", months: ["2604", "2605", "2606"] },
+    ];
+
+    function sumPerfMonthlyByMonths(byMonth, monthKeys) {
+      return (monthKeys || []).reduce((acc, monthKey) => acc + Number((byMonth || {})[monthKey] || 0), 0);
+    }
 
     function buildPerfMonthlySummaryRows(data) {
       const months = (data && data.months) || [];
@@ -10804,10 +10813,13 @@
       return rows;
     }
 
-    function renderPerfMonthlySummaryTable(rows, months = [], currentMonthKey = null) {
+    function renderPerfMonthlySummaryTable(rows, months = [], currentMonthKey = null, show2026AggCols = false) {
       if (!rows || !rows.length || !months.length) {
         return `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
       }
+      const aggHeaderCells = show2026AggCols
+        ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => `<th class="num">${agg.label}</th>`).join("")
+        : "";
       const headerCells = months
         .map((m) => {
           const cls = m === currentMonthKey ? "num is-current-month" : "num";
@@ -10819,6 +10831,14 @@
           return `
             <tr>
               <td class="sticky-col mp-kind align-left">${row.label}</td>
+              ${
+                show2026AggCols
+                  ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => {
+                      const sumVal = sumPerfMonthlyByMonths(row.byMonth, agg.months);
+                      return `<td class="num">${formatEok1(sumVal)}</td>`;
+                    }).join("")
+                  : ""
+              }
               ${months
                 .map((m) => {
                   const raw = (row.byMonth || {})[m];
@@ -10845,6 +10865,7 @@
               <thead>
                 <tr>
               <th class="sticky-col mp-kind align-left">구분</th>
+                  ${aggHeaderCells}
                   ${headerCells}
                 </tr>
               </thead>
@@ -10857,7 +10878,10 @@
       `;
     }
 
-    function renderBizPerfCard(segment, months = [], currentMonthKey = null) {
+    function renderBizPerfCard(segment, months = [], currentMonthKey = null, show2026AggCols = false) {
+      const aggHeaderCells = show2026AggCols
+        ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => `<th>${agg.label}</th>`).join("")
+        : "";
       const headerCells = months
         .map((m) => {
           const cls = m === currentMonthKey ? "is-current-month" : "";
@@ -10871,6 +10895,14 @@
             return `
               <tr>
                 <td class="sticky-col">${row.label || row.key}</td>
+                ${
+                  show2026AggCols
+                    ? PERF_MONTHLY_2026_AGG_DEFS.map((agg) => {
+                        const sumVal = sumPerfMonthlyByMonths(vals, agg.months);
+                        return `<td>${formatEok1(sumVal)}</td>`;
+                      }).join("")
+                    : ""
+                }
                 ${months
                   .map((m) => {
                     const v = vals[m] || 0;
@@ -10903,6 +10935,7 @@
               <thead>
                 <tr>
                   <th class="sticky-col mp-kind">구분</th>
+                  ${aggHeaderCells}
                   ${headerCells}
                 </tr>
               </thead>
@@ -11367,7 +11400,7 @@
           });
         };
 
-        const renderCards = (data, months, currentMonthKey) => {
+        const renderCards = (data, months, currentMonthKey, show2026AggCols) => {
           if (!data || !data.segments || !data.segments.length) {
             cardsRoot.innerHTML = `<div class="muted">데이터가 없습니다.</div>`;
             return;
@@ -11376,18 +11409,20 @@
           if (metaEl) {
             metaEl.textContent = `단위: 억(표기 생략) / 클릭 시 딜 목록 표시${snapshot}`;
           }
-          cardsRoot.innerHTML = data.segments.map((seg) => renderBizPerfCard(seg, months, currentMonthKey)).join("");
+          cardsRoot.innerHTML = data.segments
+            .map((seg) => renderBizPerfCard(seg, months, currentMonthKey, show2026AggCols))
+            .join("");
           attachCellHandlers();
         };
 
-        const renderSummary = (data, months, currentMonthKey) => {
+        const renderSummary = (data, months, currentMonthKey, show2026AggCols) => {
           if (!summaryRoot) return;
           if (!data || !months.length) {
             summaryRoot.innerHTML = `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
             return;
           }
           const rows = buildPerfMonthlySummaryRows(data);
-          summaryRoot.innerHTML = renderPerfMonthlySummaryTable(rows, months, currentMonthKey);
+          summaryRoot.innerHTML = renderPerfMonthlySummaryTable(rows, months, currentMonthKey, show2026AggCols);
         };
 
         attachYearToggleHandlers();
@@ -11395,8 +11430,9 @@
           const data = await loadBizPerfSummary({ teamKey, scopeKey, year: normalizedYear });
           const months = pickPerfMonthlyMonthsByYear(data.months || [], normalizedYear);
           const currentMonthKey = getPerfMonthlyCurrentMonthKey(normalizedYear);
-          renderSummary(data, months, currentMonthKey);
-          renderCards(data, months, currentMonthKey);
+          const show2026AggCols = normalizedYear === 2026;
+          renderSummary(data, months, currentMonthKey, show2026AggCols);
+          renderCards(data, months, currentMonthKey, show2026AggCols);
         } catch (err) {
           state.perfMonthly.error = err;
           if (summaryRoot) summaryRoot.innerHTML = `<div class="card"><div class="muted">오류: ${err.message}</div></div>`;

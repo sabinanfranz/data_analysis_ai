@@ -182,6 +182,51 @@ def _init_db_with_team_filter(path: Path) -> None:
     conn.close()
 
 
+def _init_db_with_scope_filter(path: Path) -> None:
+    conn = sqlite3.connect(path)
+    conn.executescript(
+        """
+        CREATE TABLE organization (id TEXT PRIMARY KEY, "이름" TEXT, "기업 규모" TEXT);
+        CREATE TABLE people (id TEXT PRIMARY KEY, organizationId TEXT, "이름" TEXT, "소속 상위 조직" TEXT);
+        CREATE TABLE deal (
+            id TEXT PRIMARY KEY,
+            peopleId TEXT,
+            organizationId TEXT,
+            "이름" TEXT,
+            "상태" TEXT,
+            "금액" REAL,
+            "예상 체결액" REAL,
+            "계약 체결일" TEXT,
+            "수주 예정일" TEXT,
+            "수강시작일" TEXT,
+            "수강종료일" TEXT,
+            "성사 가능성" TEXT,
+            "과정포맷" TEXT,
+            "코스 ID" TEXT,
+            "담당자" TEXT
+        );
+        """
+    )
+    organizations = [(f"org-{idx}", f"조직{idx}", "대기업") for idx in range(1, 7)]
+    people = [(f"p-{idx}", f"org-{idx}", f"고객{idx}", f"본부{idx}") for idx in range(1, 7)]
+    deals = [
+        ("d-edu1-p1", "p-1", "org-1", "딜-edu1-p1", "Won", 100.0, None, "2025-01-10", None, "2025-01-05", "2025-01-20", "확정", "집합", "COURSE-1", '["김솔이"]'),
+        ("d-edu1-p2", "p-2", "org-2", "딜-edu1-p2", "Won", 110.0, None, "2025-01-11", None, "2025-01-06", "2025-01-21", "확정", "집합", "COURSE-2", '["강지선"]'),
+        ("d-edu2-p1", "p-3", "org-3", "딜-edu2-p1", "Won", 200.0, None, "2025-01-12", None, "2025-01-07", "2025-01-22", "확정", "집합", "COURSE-3", '["권노을"]'),
+        ("d-edu2-p2", "p-4", "org-4", "딜-edu2-p2", "Won", 210.0, None, "2025-01-13", None, "2025-01-08", "2025-01-23", "확정", "집합", "COURSE-4", '["정다혜"]'),
+        ("d-edu2-online", "p-5", "org-5", "딜-edu2-online", "Won", 220.0, None, "2025-01-14", None, "2025-01-09", "2025-01-24", "확정", "구독제(온라인)", "COURSE-5", '["강진우"]'),
+        ("d-public", "p-6", "org-6", "딜-public", "Won", 300.0, None, "2025-01-15", None, "2025-01-10", "2025-01-25", "확정", "집합", "COURSE-6", '["이준석"]'),
+    ]
+    conn.executemany('INSERT INTO organization (id, "이름", "기업 규모") VALUES (?, ?, ?)', organizations)
+    conn.executemany('INSERT INTO people (id, organizationId, "이름", "소속 상위 조직") VALUES (?, ?, ?, ?)', people)
+    conn.executemany(
+        'INSERT INTO deal (id, peopleId, organizationId, "이름", "상태", "금액", "예상 체결액", "계약 체결일", "수주 예정일", "수강시작일", "수강종료일", "성사 가능성", "과정포맷", "코스 ID", "담당자") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        deals,
+    )
+    conn.commit()
+    conn.close()
+
+
 class PerfMonthlyContractsTest(unittest.TestCase):
     def test_summary_and_deals_alignment(self) -> None:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as tmp:
@@ -293,6 +338,53 @@ class PerfMonthlyContractsTest(unittest.TestCase):
             self.assertEqual(deals2["dealCount"], 1)
             self.assertEqual(deals2["items"][0]["dealId"], "d-edu2")
             self.assertAlmostEqual(deals2["totalAmount"], 200.0)
+        finally:
+            db_path.unlink(missing_ok=True)
+
+    def test_scope_filtering_aligns_summary_and_deals(self) -> None:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as tmp:
+            db_path = Path(tmp.name)
+        _init_db_with_scope_filter(db_path)
+        try:
+            summary_p1 = db.get_perf_monthly_amounts_summary(db_path=db_path, team="edu1", scope="edu1_p1")
+            rows_p1 = {row["key"]: row for row in {seg["key"]: seg for seg in summary_p1["segments"]}["ALL"]["rows"]}
+            self.assertEqual(rows_p1["TOTAL"]["byMonth"]["2501"], 100.0)
+            self.assertEqual(rows_p1["TOTAL"]["dealCountByMonth"]["2501"], 1)
+            self.assertEqual(summary_p1["meta"]["scope"], "edu1_p1")
+
+            summary_online = db.get_perf_monthly_amounts_summary(db_path=db_path, team="edu2", scope="edu2_online")
+            rows_online = {row["key"]: row for row in {seg["key"]: seg for seg in summary_online["segments"]}["ALL"]["rows"]}
+            self.assertEqual(rows_online["TOTAL"]["byMonth"]["2501"], 220.0)
+            self.assertEqual(rows_online["TOTAL"]["dealCountByMonth"]["2501"], 1)
+
+            summary_public = db.get_perf_monthly_amounts_summary(db_path=db_path, scope="public_all")
+            rows_public = {row["key"]: row for row in {seg["key"]: seg for seg in summary_public["segments"]}["ALL"]["rows"]}
+            self.assertEqual(rows_public["TOTAL"]["byMonth"]["2501"], 300.0)
+            self.assertEqual(rows_public["TOTAL"]["dealCountByMonth"]["2501"], 1)
+
+            deals_p1 = db.get_perf_monthly_amounts_deals(
+                segment="ALL",
+                row="TOTAL",
+                month="2501",
+                team="edu1",
+                scope="edu1_p1",
+                db_path=db_path,
+            )
+            self.assertEqual(deals_p1["dealCount"], 1)
+            self.assertEqual(deals_p1["items"][0]["dealId"], "d-edu1-p1")
+            self.assertAlmostEqual(deals_p1["totalAmount"], 100.0)
+            self.assertEqual(deals_p1["meta"]["scope"], "edu1_p1")
+
+            deals_public = db.get_perf_monthly_amounts_deals(
+                segment="ALL",
+                row="TOTAL",
+                month="2501",
+                scope="public_all",
+                db_path=db_path,
+            )
+            self.assertEqual(deals_public["dealCount"], 1)
+            self.assertEqual(deals_public["items"][0]["dealId"], "d-public")
+            self.assertAlmostEqual(deals_public["totalAmount"], 300.0)
         finally:
             db_path.unlink(missing_ok=True)
 

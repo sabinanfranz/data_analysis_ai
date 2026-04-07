@@ -95,7 +95,7 @@ def get_deal_memos(deal_id: str, limit: int = Query(200, ge=1, le=500)) -> dict:
 
 
 @router.get("/deal-check")
-def get_deal_check(team: str = Query(..., description="팀 키 (edu_all|edu1|edu2)")) -> dict:
+def get_deal_check(team: str = Query(..., description="팀 키 (edu_all|edu1|edu2|public)")) -> dict:
     try:
         return {"items": db.get_deal_check(team)}
     except ValueError as exc:
@@ -299,10 +299,11 @@ def get_rank_2025_summary_by_size(
 def get_performance_monthly_amounts_summary(
     from_month: str = Query("2025-01", description="시작 YYYY-MM"),
     to_month: str = Query("2026-12", description="종료 YYYY-MM"),
-    team: str | None = Query(None, description="edu1|edu2 (선택)"),
+    team: str | None = Query(None, description="edu1|edu2|public (선택)"),
+    scope: str | None = Query(None, description="edu1_p1|edu1_p2|edu2_p1|edu2_p2|edu2_online|public_all (선택)"),
 ) -> dict:
     try:
-        return db.get_perf_monthly_amounts_summary(from_month=from_month, to_month=to_month, team=team)
+        return db.get_perf_monthly_amounts_summary(from_month=from_month, to_month=to_month, team=team, scope=scope)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
     except FileNotFoundError as exc:
@@ -314,10 +315,11 @@ def get_performance_monthly_amounts_deals(
     segment: str = Query(..., description="세그먼트 키"),
     row: str = Query(..., description="CONTRACT|CONFIRMED|HIGH"),
     month: str = Query(..., description="YYMM (예: 2501)"),
-    team: str | None = Query(None, description="edu1|edu2 (선택)"),
+    team: str | None = Query(None, description="edu1|edu2|public (선택)"),
+    scope: str | None = Query(None, description="edu1_p1|edu1_p2|edu2_p1|edu2_p2|edu2_online|public_all (선택)"),
 ) -> dict:
     try:
-        return db.get_perf_monthly_amounts_deals(segment=segment, row=row, month=month, team=team)
+        return db.get_perf_monthly_amounts_deals(segment=segment, row=row, month=month, team=team, scope=scope)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
     except FileNotFoundError as exc:

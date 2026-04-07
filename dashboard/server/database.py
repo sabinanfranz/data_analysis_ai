@@ -792,7 +792,7 @@ def _dealcheck_members(team_key: str) -> Set[str]:
 def _dealcheck_team_members(team_key: Optional[str]) -> Optional[Set[str]]:
     if team_key is None:
         return None
-    if team_key not in {"edu_all", "edu1", "edu2"}:
+    if team_key not in {"edu_all", "edu1", "edu2", "public"}:
         raise ValueError(f"Unknown teamKey: {team_key}")
     return _dealcheck_members(team_key)
 
@@ -2113,6 +2113,30 @@ def _perf_close_rate_scope_members(scope: str) -> Optional[Set[str]]:
         return part_members("기업교육 2팀", "2파트")
     if scope == "edu2_online":
         return part_members("기업교육 2팀", "온라인셀")
+    raise ValueError(f"Unknown scope: {scope}")
+
+
+def _perf_monthly_scope_members(scope: Optional[str]) -> Optional[Set[str]]:
+    if not scope:
+        return None
+
+    def part_members(team_key: str, part_key: str) -> Set[str]:
+        team = PART_STRUCTURE.get(team_key, {})
+        raw = team.get(part_key, [])
+        return {normalize_owner_name(n) for n in raw if n}
+
+    if scope == "edu1_p1":
+        return part_members("기업교육 1팀", "1파트")
+    if scope == "edu1_p2":
+        return part_members("기업교육 1팀", "2파트")
+    if scope == "edu2_p1":
+        return part_members("기업교육 2팀", "1파트")
+    if scope == "edu2_p2":
+        return part_members("기업교육 2팀", "2파트")
+    if scope == "edu2_online":
+        return part_members("기업교육 2팀", "온라인셀")
+    if scope == "public_all":
+        return part_members("공공교육팀", "전체")
     raise ValueError(f"Unknown scope: {scope}")
 
 
@@ -5436,6 +5460,7 @@ def get_perf_monthly_amounts_summary(
     from_month: str = "2025-01",
     to_month: str = "2026-12",
     team: Optional[str] = None,
+    scope: Optional[str] = None,
     db_path: Path = DB_PATH,
 ) -> Dict[str, Any]:
     """
@@ -5448,16 +5473,16 @@ def get_perf_monthly_amounts_summary(
         raise ValueError("from/to month range is empty")
 
     payload = _load_perf_monthly_data(db_path)
-    team_members = _dealcheck_team_members(team)
+    allowed_members = _perf_monthly_scope_members(scope) if scope else _dealcheck_team_members(team)
     stat = db_path.stat()
-    cache_key = (db_path, stat.st_mtime, from_month, to_month, team or "all")
+    cache_key = (db_path, stat.st_mtime, from_month, to_month, team or "all", scope or "none")
     cached = _PERF_MONTHLY_SUMMARY_CACHE.get(cache_key)
     if cached is not None:
         return cached
 
     rows_data = [row for row in payload["rows"] if row["month"] in month_set]
-    if team_members is not None:
-        rows_data = [row for row in rows_data if _owners_match_team(row.get("day1_owner_names"), team_members)]
+    if allowed_members is not None:
+        rows_data = [row for row in rows_data if _owners_match_team(row.get("day1_owner_names"), allowed_members)]
     segments_result: List[Dict[str, Any]] = []
     for seg in _perf_segments():
         bucket_data: Dict[str, Dict[str, Any]] = {}
@@ -5493,7 +5518,7 @@ def get_perf_monthly_amounts_summary(
     result = {
         "months": months,
         "segments": segments_result,
-        "meta": {"snapshot_version": payload.get("snapshot_version"), "team": team},
+        "meta": {"snapshot_version": payload.get("snapshot_version"), "team": team, "scope": scope},
     }
     _PERF_MONTHLY_SUMMARY_CACHE[cache_key] = result
     return result
@@ -5504,6 +5529,7 @@ def get_perf_monthly_amounts_deals(
     row: str,
     month: str,
     team: Optional[str] = None,
+    scope: Optional[str] = None,
     db_path: Path = DB_PATH,
 ) -> Dict[str, Any]:
     """
@@ -5521,7 +5547,7 @@ def get_perf_monthly_amounts_deals(
         raise ValueError(f"Unknown row: {row}")
 
     payload = _load_perf_monthly_data(db_path)
-    team_members = _dealcheck_team_members(team)
+    allowed_members = _perf_monthly_scope_members(scope) if scope else _dealcheck_team_members(team)
     seg_def = seg_defs[segment]
     items: List[Dict[str, Any]] = []
     buckets_for_row: Set[str] = {"CONTRACT", "CONFIRMED", "HIGH"} if row == "TOTAL" else {row}
@@ -5531,7 +5557,7 @@ def get_perf_monthly_amounts_deals(
             continue
         if deal["bucket"] not in buckets_for_row:
             continue
-        if team_members is not None and not _owners_match_team(deal.get("day1_owner_names"), team_members):
+        if allowed_members is not None and not _owners_match_team(deal.get("day1_owner_names"), allowed_members):
             continue
         if not seg_def["predicate"](deal):
             continue
@@ -5571,7 +5597,7 @@ def get_perf_monthly_amounts_deals(
         "dealCount": len(items),
         "items": items,
         "note": "성사 확정/높음은 금액이 없으면 예상 체결액을 합산합니다.",
-        "meta": {"snapshot_version": payload.get("snapshot_version"), "team": team},
+        "meta": {"snapshot_version": payload.get("snapshot_version"), "team": team, "scope": scope},
     }
 
 

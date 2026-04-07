@@ -2600,6 +2600,13 @@
         partTeamKey: "기업교육 2팀",
         menuOrder: 5,
       },
+      public: {
+        id: "public-dealcheck",
+        label: "공공교육팀 딜체크",
+        apiPath: "/deal-check?team=public",
+        partTeamKey: "공공교육팀",
+        menuOrder: 6,
+      },
     };
 
     const DEALCHECK_MENU_DEFS = [
@@ -2611,11 +2618,18 @@
       { id: "edu2-dealcheck-part1", label: "교육 2팀 1파트 딜체크", teamKey: "edu2", partFilter: "part1", parentId: DEALCHECK_TEAMS.edu2.id },
       { id: "edu2-dealcheck-part2", label: "교육 2팀 2파트 딜체크", teamKey: "edu2", partFilter: "part2", parentId: DEALCHECK_TEAMS.edu2.id },
       { id: "edu2-dealcheck-online", label: "교육 2팀 온라인셀 딜체크", teamKey: "edu2", partFilter: "online", parentId: DEALCHECK_TEAMS.edu2.id },
+      { id: DEALCHECK_TEAMS.public.id, label: DEALCHECK_TEAMS.public.label, teamKey: "public", partFilter: null, parentId: null },
     ];
     const PERF_MONTHLY_MENU_DEFS = [
       { id: "biz-perf-monthly", label: "2026 월별 체결액", teamKey: null, parentId: null, kind: "monthly-amounts" },
-      { id: "biz-perf-monthly-edu1", label: "2026 1팀 월별 체결액", teamKey: "edu1", parentId: "biz-perf-monthly", kind: "monthly-amounts" },
-      { id: "biz-perf-monthly-edu2", label: "2026 2팀 월별 체결액", teamKey: "edu2", parentId: "biz-perf-monthly", kind: "monthly-amounts" },
+      { id: "biz-perf-monthly-edu1", label: "2026 1팀 월별 체결액", teamKey: "edu1", scopeKey: null, parentId: "biz-perf-monthly", kind: "monthly-amounts" },
+      { id: "biz-perf-monthly-edu2", label: "2026 2팀 월별 체결액", teamKey: "edu2", scopeKey: null, parentId: "biz-perf-monthly", kind: "monthly-amounts" },
+      { id: "biz-perf-monthly-edu1-part1", label: "2026 1팀 1파트 월별 체결액", teamKey: "edu1", scopeKey: "edu1_p1", parentId: null, kind: "monthly-amounts" },
+      { id: "biz-perf-monthly-edu1-part2", label: "2026 1팀 2파트 월별 체결액", teamKey: "edu1", scopeKey: "edu1_p2", parentId: null, kind: "monthly-amounts" },
+      { id: "biz-perf-monthly-edu2-part1", label: "2026 2팀 1파트 월별 체결액", teamKey: "edu2", scopeKey: "edu2_p1", parentId: null, kind: "monthly-amounts" },
+      { id: "biz-perf-monthly-edu2-part2", label: "2026 2팀 2파트 월별 체결액", teamKey: "edu2", scopeKey: "edu2_p2", parentId: null, kind: "monthly-amounts" },
+      { id: "biz-perf-monthly-edu2-online", label: "2026 2팀 온라인셀 월별 체결액", teamKey: "edu2", scopeKey: "edu2_online", parentId: null, kind: "monthly-amounts" },
+      { id: "biz-perf-monthly-public", label: "2026 공공교육팀 월별 체결액", teamKey: null, scopeKey: "public_all", parentId: null, kind: "monthly-amounts" },
       {
         id: "biz-perf-monthly-edu2-inquiries",
         label: "2026 문의 인입 현황",
@@ -2632,6 +2646,17 @@
         suppressArrow: true,
       },
     ];
+    const ORG_PERF_MONTHLY_MENU_ITEMS = [
+      { id: "biz-perf-monthly-edu1", label: "2026 1팀 월별 체결액" },
+      { id: "biz-perf-monthly-edu2", label: "2026 2팀 월별 체결액" },
+      { id: "biz-perf-monthly-edu1-part1", label: "2026 1팀 1파트 월별 체결액" },
+      { id: "biz-perf-monthly-edu1-part2", label: "2026 1팀 2파트 월별 체결액" },
+      { id: "biz-perf-monthly-edu2-part1", label: "2026 2팀 1파트 월별 체결액" },
+      { id: "biz-perf-monthly-edu2-part2", label: "2026 2팀 2파트 월별 체결액" },
+      { id: "biz-perf-monthly-edu2-online", label: "2026 2팀 온라인셀 월별 체결액" },
+      { id: "biz-perf-monthly-public", label: "2026 공공교육팀 월별 체결액" },
+    ];
+    const ORG_PERF_MONTHLY_MENU_IDS = new Set(ORG_PERF_MONTHLY_MENU_ITEMS.map((item) => item.id));
 
     function menuLabelWithArrow(def) {
       if (def && def.suppressArrow) return def.label;
@@ -2658,8 +2683,7 @@
           ...PERF_MONTHLY_MENU_DEFS
             .filter(
               (d) =>
-                d.id !== "biz-perf-monthly-edu1" &&
-                d.id !== "biz-perf-monthly-edu2" &&
+                !ORG_PERF_MONTHLY_MENU_IDS.has(d.id) &&
                 d.id !== "biz-perf-monthly-edu2-inquiries" &&
                 d.id !== "biz-perf-monthly-close-rate-2026",
             )
@@ -2686,10 +2710,7 @@
         sectionId: "org-perf",
         title: "조직별 퍼포먼스",
         defaultOpen: true,
-        items: [
-          { id: "biz-perf-monthly-edu1", label: "2026 1팀 월별 체결액" },
-          { id: "biz-perf-monthly-edu2", label: "2026 2팀 월별 체결액" },
-        ],
+        items: ORG_PERF_MONTHLY_MENU_ITEMS,
       },
       {
         sectionId: "analysis",
@@ -2747,7 +2768,8 @@
       } else if (def.kind === "monthly-close-rate") {
         MENU_RENDERERS[def.id] = (root) => renderBizPerfMonthlyCloseRate2026(root, { label: def.label });
       } else {
-        MENU_RENDERERS[def.id] = (root) => renderBizPerfMonthly(root, { teamKey: def.teamKey, label: def.label });
+        MENU_RENDERERS[def.id] = (root) =>
+          renderBizPerfMonthly(root, { teamKey: def.teamKey, scopeKey: def.scopeKey || null, label: def.label });
       }
     });
 
@@ -2791,6 +2813,7 @@
         edu_all: { loading: false, error: null, items: [] },
         edu1: { loading: false, error: null, items: [] },
         edu2: { loading: false, error: null, items: [] },
+        public: { loading: false, error: null, items: [] },
       },
       rankMultipliers: {
         S0: 1.5,
@@ -3039,6 +3062,7 @@
         edu_all: null,
         edu1: null,
         edu2: null,
+        public: null,
       },
       onlineRetention2026: null,
     };
@@ -3193,6 +3217,17 @@
       const team = (cfg && PART_STRUCTURE[cfg.partTeamKey]) || {};
       const buildSet = (names) =>
         new Set((names || []).map((n) => normalizeOwnerName(n)).filter(Boolean));
+      if (teamKey === "public") {
+        const all = buildSet(team["전체"]);
+        const lookup = {
+          part1: new Set(),
+          part2: new Set(),
+          online: new Set(),
+          all,
+        };
+        PART_LOOKUP_CACHE[teamKey] = lookup;
+        return lookup;
+      }
       const lookup = {
         part1: buildSet(team["1파트"]),
         part2: buildSet(team["2파트"]),
@@ -3206,7 +3241,9 @@
       const lookup = getDealCheckPartLookup(teamKey) || {};
       const toArr = (set) => Array.from(set || []);
       let names = [];
-      if (partFilter === "part1") names = toArr(lookup.part1);
+      if (teamKey === "public") {
+        names = toArr(lookup.all);
+      } else if (partFilter === "part1") names = toArr(lookup.part1);
       else if (partFilter === "part2") names = toArr(lookup.part2);
       else if (partFilter === "online") names = toArr(lookup.online);
       else names = [...toArr(lookup.part1), ...toArr(lookup.part2), ...toArr(lookup.online)];
@@ -3367,6 +3404,14 @@
           .join("+");
       }
       const lookup = getDealCheckPartLookup(teamKey);
+      if (teamKey === "public") {
+        for (const name of names) {
+          const normalized = normalizeOwnerName(name);
+          if (!normalized) continue;
+          if (lookup.all && lookup.all.has(normalized)) return "전체";
+        }
+        return "미매핑";
+      }
       const parts = new Set();
       names.forEach((name) => {
         const normalized = normalizeOwnerName(name);
@@ -5044,9 +5089,9 @@
       return `${String(normalized).slice(2)}${String(now.getMonth() + 1).padStart(2, "0")}`;
     }
 
-    async function loadBizPerfSummary({ teamKey = null, year = 2026 } = {}) {
+    async function loadBizPerfSummary({ teamKey = null, scopeKey = null, year = 2026 } = {}) {
       const normalizedYear = normalizePerfMonthlyYear(year);
-      const cacheKey = `${teamKey || "all"}|${normalizedYear}`;
+      const cacheKey = `${teamKey || "all"}|${scopeKey || "noscope"}|${normalizedYear}`;
       if (state.perfMonthly.summaryCache.has(cacheKey)) {
         return state.perfMonthly.summaryCache.get(cacheKey);
       }
@@ -5055,17 +5100,19 @@
       params.set("from", range.from);
       params.set("to", range.to);
       if (teamKey) params.set("team", teamKey);
+      if (scopeKey) params.set("scope", scopeKey);
       const data = await fetchJson(`/performance/monthly-amounts/summary?${params.toString()}`);
       state.perfMonthly.summaryCache.set(cacheKey, data);
       return data;
     }
 
-    async function loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey = null } = {}) {
+    async function loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey = null, scopeKey = null } = {}) {
       const params = new URLSearchParams();
       params.set("segment", segmentKey);
       params.set("row", rowKey);
       params.set("month", monthKey);
       if (teamKey) params.set("team", teamKey);
+      if (scopeKey) params.set("scope", scopeKey);
       return fetchJson(`/performance/monthly-amounts/deals?${params.toString()}`);
     }
 
@@ -10879,6 +10926,7 @@
 
     async function openBizPerfDealsModal(segmentKey, rowKey, monthKey, options = {}) {
       const teamKey = options.teamKey || null;
+      const scopeKey = options.scopeKey || null;
       const kind = options.kind || "monthly-amounts";
       const isInquiries = kind === "monthly-inquiries";
       const isCloseRate = kind === "monthly-close-rate";
@@ -10906,7 +10954,7 @@
             scope: options.scope || "all",
           });
         } else {
-          data = await loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey });
+          data = await loadBizPerfDeals(segmentKey, rowKey, monthKey, { teamKey, scopeKey });
         }
         const titleLabel = `${(data.segment && data.segment.label) || segmentKey} · ${formatPerfMonthLabel(
           data.month,
@@ -11253,6 +11301,7 @@
 
     async function renderBizPerfMonthly(contentRoot, options = {}) {
       const teamKey = options.teamKey || null;
+      const scopeKey = options.scopeKey || null;
       const titleText = options.label || "월별 체결액";
       state.perfMonthly.selectedYear = normalizePerfMonthlyYear(state.perfMonthly.selectedYear);
 
@@ -11313,7 +11362,7 @@
               const segment = e.currentTarget.getAttribute("data-segment");
               const row = e.currentTarget.getAttribute("data-row");
               const month = e.currentTarget.getAttribute("data-month");
-              await openBizPerfDealsModal(segment, row, month, { teamKey });
+              await openBizPerfDealsModal(segment, row, month, { teamKey, scopeKey });
             });
           });
         };
@@ -11343,7 +11392,7 @@
 
         attachYearToggleHandlers();
         try {
-          const data = await loadBizPerfSummary({ teamKey, year: normalizedYear });
+          const data = await loadBizPerfSummary({ teamKey, scopeKey, year: normalizedYear });
           const months = pickPerfMonthlyMonthsByYear(data.months || [], normalizedYear);
           const currentMonthKey = getPerfMonthlyCurrentMonthKey(normalizedYear);
           renderSummary(data, months, currentMonthKey);

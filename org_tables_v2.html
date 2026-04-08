@@ -1173,6 +1173,9 @@
     .pnl-table {
       border-collapse: separate;
       border-spacing: 0;
+      table-layout: auto;
+      width: max-content;
+      min-width: 100%;
     }
 
     .pnl-table th,
@@ -1184,6 +1187,17 @@
     .pnl-table th.col-item,
     .pnl-table td.col-item {
       text-align: left !important;
+      min-width: var(--item-col-w, 190px);
+    }
+
+    .pnl-table th.col-year,
+    .pnl-table td.col-year {
+      min-width: var(--year-col-w, 110px);
+    }
+
+    .pnl-table th.col-month,
+    .pnl-table td.col-month {
+      min-width: 72px;
     }
 
     .pnl-table thead th {

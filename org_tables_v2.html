@@ -2814,7 +2814,12 @@
         MENU_RENDERERS[def.id] = (root) => renderBizPerfMonthlyCloseRate2026(root, { label: def.label });
       } else {
         MENU_RENDERERS[def.id] = (root) =>
-          renderBizPerfMonthly(root, { teamKey: def.teamKey, scopeKey: def.scopeKey || null, label: def.label });
+          renderBizPerfMonthly(root, {
+            teamKey: def.teamKey,
+            scopeKey: def.scopeKey || null,
+            label: def.label,
+            hideTargetValues: ORG_PERF_MONTHLY_MENU_IDS.has(def.id),
+          });
       }
     });
 
@@ -10839,7 +10844,8 @@
       `;
     }
 
-    function buildPerfMonthlySummaryRows(data) {
+    function buildPerfMonthlySummaryRows(data, options = {}) {
+      const hideTargetValues = Boolean(options.hideTargetValues);
       const months = (data && data.months) || [];
       if (!months.length) return [];
       const segMap = new Map();
@@ -10861,6 +10867,10 @@
       const buildTargetRow = () => {
         const byMonth = {};
         months.forEach((m) => {
+          if (hideTargetValues) {
+            byMonth[m] = null;
+            return;
+          }
           const key = String(m || "");
           if (key.startsWith("25")) {
             byMonth[m] = null;
@@ -11425,6 +11435,7 @@
       const teamKey = options.teamKey || null;
       const scopeKey = options.scopeKey || null;
       const titleText = options.label || "월별 체결액";
+      const hideTargetValues = Boolean(options.hideTargetValues);
       state.perfMonthly.selectedYear = normalizePerfMonthlyYear(state.perfMonthly.selectedYear);
 
       const renderFrame = (year) => {
@@ -11510,7 +11521,7 @@
             summaryRoot.innerHTML = `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
             return;
           }
-          const rows = buildPerfMonthlySummaryRows(data);
+          const rows = buildPerfMonthlySummaryRows(data, { hideTargetValues });
           summaryRoot.innerHTML = renderPerfMonthlySummaryTable(rows, months, currentMonthKey, show2026AggCols);
         };
 

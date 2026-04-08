@@ -751,6 +751,7 @@ test("monthly year helpers filter month keys and current-month highlighting key"
   const buildPerfMonthlyColgroup = vm.runInContext("buildPerfMonthlyColgroup", ctx);
   const getPerfMonthBgClass = vm.runInContext("getPerfMonthBgClass", ctx);
   const getPerfAggBgClass = vm.runInContext("getPerfAggBgClass", ctx);
+  const buildPerfMonthlySummaryRows = vm.runInContext("buildPerfMonthlySummaryRows", ctx);
 
   const picked = pickPerfMonthlyMonthsByYear(["2501", "2512", "2601", "2603"], 2026);
   assert.strictEqual(JSON.stringify(picked), JSON.stringify(["2601", "2603"]));
@@ -855,6 +856,28 @@ test("monthly year helpers filter month keys and current-month highlighting key"
   assert.strictEqual(getPerfAggBgClass("h1"), "mp-col-agg-h1");
   assert.strictEqual(getPerfAggBgClass("q1"), "mp-col-agg-q1");
   assert.strictEqual(getPerfAggBgClass("q2"), "mp-col-agg-q2");
+
+  const targetRowsDefault = buildPerfMonthlySummaryRows(
+    {
+      months: ["2501", "2601", "2602"],
+      segments: [],
+    },
+    {},
+  );
+  assert.strictEqual(targetRowsDefault[0].label, "목표 체결액");
+  assert.strictEqual(targetRowsDefault[0].byMonth["2501"], null);
+  assert.strictEqual(targetRowsDefault[0].byMonth["2601"], 1280000000);
+
+  const targetRowsHidden = buildPerfMonthlySummaryRows(
+    {
+      months: ["2501", "2601", "2602"],
+      segments: [],
+    },
+    { hideTargetValues: true },
+  );
+  assert.strictEqual(targetRowsHidden[0].byMonth["2501"], null);
+  assert.strictEqual(targetRowsHidden[0].byMonth["2601"], null);
+  assert.strictEqual(targetRowsHidden[0].byMonth["2602"], null);
 });
 
 test("renderWonSummary shows new columns and team/part/DRI", async () => {

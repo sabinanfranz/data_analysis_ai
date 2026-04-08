@@ -1187,12 +1187,16 @@
     .pnl-table th.col-item,
     .pnl-table td.col-item {
       text-align: left !important;
-      min-width: var(--item-col-w, 190px);
+      width: 1%;
+      min-width: 0;
+      white-space: nowrap;
     }
 
     .pnl-table th.col-year,
     .pnl-table td.col-year {
-      min-width: var(--year-col-w, 110px);
+      width: 1%;
+      min-width: 0;
+      white-space: nowrap;
     }
 
     .pnl-table th.col-month,
@@ -1305,15 +1309,17 @@
 
     .pnl-table .pnl-item {
       display: block;
-      width: 100%;
+      width: auto;
       text-align: left !important;
+      white-space: nowrap;
     }
 
     .pnl-table .pnl-head-right {
       display: flex;
       justify-content: flex-end;
       align-items: center;
-      width: 100%;
+      width: auto;
+      white-space: nowrap;
     }
 
     .pnl-table .is-current-month {

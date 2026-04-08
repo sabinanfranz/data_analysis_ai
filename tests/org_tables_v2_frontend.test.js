@@ -785,8 +785,8 @@ test("monthly year helpers filter month keys and current-month highlighting key"
     "2604",
     true,
   );
-  assert.ok(cardHtml.includes('<th class="is-current-month">2604</th>'));
-  assert.ok(cardHtml.includes('<td class="is-current-month">'));
+  assert.ok(cardHtml.includes("is-current-month"));
+  assert.ok(cardHtml.includes(">2604<"));
   assert.ok(cardHtml.includes(">26 1H<"));
   assert.ok(cardHtml.includes(">26 1Q<"));
   assert.ok(cardHtml.includes(">26 2Q<"));

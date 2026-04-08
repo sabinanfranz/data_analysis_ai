@@ -22,20 +22,30 @@
       --success: #22c55e;
       --error: #f87171;
       --shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
-      --mp-q1-head-bg: #0284c7;
-      --mp-q2-head-bg: #16a34a;
-      --mp-q3-head-bg: #f59e0b;
-      --mp-q4-head-bg: #e11d8a;
-      --mp-q1-cell-bg: rgba(2, 132, 199, 0.52);
-      --mp-q2-cell-bg: rgba(22, 163, 74, 0.52);
-      --mp-q3-cell-bg: rgba(245, 158, 11, 0.55);
-      --mp-q4-cell-bg: rgba(225, 29, 138, 0.50);
-      --mp-agg-h1-head-bg: #7c3aed;
+      --mp-q1-head-bg: #0b79d0;
+      --mp-q1-cell-bg: #133b5c;
+      --mp-q1-fg: #f8fafc;
+      --mp-q2-head-bg: #15803d;
+      --mp-q2-cell-bg: #183926;
+      --mp-q2-fg: #f8fafc;
+      --mp-q3-head-bg: #b45309;
+      --mp-q3-cell-bg: #4a2a0a;
+      --mp-q3-fg: #fff7ed;
+      --mp-q4-head-bg: #be185d;
+      --mp-q4-cell-bg: #4a1431;
+      --mp-q4-fg: #fdf2f8;
+      --mp-agg-h1-head-bg: #6d28d9;
+      --mp-agg-h1-cell-bg: #312e81;
+      --mp-agg-h1-fg: #f5f3ff;
       --mp-agg-q1-head-bg: #0891b2;
-      --mp-agg-q2-head-bg: #059669;
-      --mp-agg-h1-cell-bg: rgba(124, 58, 237, 0.56);
-      --mp-agg-q1-cell-bg: rgba(8, 145, 178, 0.56);
-      --mp-agg-q2-cell-bg: rgba(5, 150, 105, 0.56);
+      --mp-agg-q1-cell-bg: #164e63;
+      --mp-agg-q1-fg: #ecfeff;
+      --mp-agg-q2-head-bg: #0f766e;
+      --mp-agg-q2-cell-bg: #134e4a;
+      --mp-agg-q2-fg: #f0fdfa;
+      --mp-current-month-ring: rgba(255, 255, 255, 0.9);
+      --mp-current-month-overlay: rgba(255, 255, 255, 0.08);
+      --mp-current-month-button-ring: rgba(255, 255, 255, 0.6);
     }
 
     * {
@@ -954,26 +964,26 @@
       table-layout: fixed;
     }
 
-    .mp-monthly-table thead th.mp-col-q1 { background: var(--mp-q1-head-bg); color: #f8fafc; }
-    .mp-monthly-table td.mp-col-q1 { background: var(--mp-q1-cell-bg); color: #f8fafc; }
+    .mp-monthly-table thead th.mp-col-q1 { background: var(--mp-q1-head-bg); color: var(--mp-q1-fg); }
+    .mp-monthly-table td.mp-col-q1 { background: var(--mp-q1-cell-bg); color: var(--mp-q1-fg); }
 
-    .mp-monthly-table thead th.mp-col-q2 { background: var(--mp-q2-head-bg); color: #0b1220; }
-    .mp-monthly-table td.mp-col-q2 { background: var(--mp-q2-cell-bg); color: #0b1220; }
+    .mp-monthly-table thead th.mp-col-q2 { background: var(--mp-q2-head-bg); color: var(--mp-q2-fg); }
+    .mp-monthly-table td.mp-col-q2 { background: var(--mp-q2-cell-bg); color: var(--mp-q2-fg); }
 
-    .mp-monthly-table thead th.mp-col-q3 { background: var(--mp-q3-head-bg); color: #0b1220; }
-    .mp-monthly-table td.mp-col-q3 { background: var(--mp-q3-cell-bg); color: #0b1220; }
+    .mp-monthly-table thead th.mp-col-q3 { background: var(--mp-q3-head-bg); color: var(--mp-q3-fg); }
+    .mp-monthly-table td.mp-col-q3 { background: var(--mp-q3-cell-bg); color: var(--mp-q3-fg); }
 
-    .mp-monthly-table thead th.mp-col-q4 { background: var(--mp-q4-head-bg); color: #f8fafc; }
-    .mp-monthly-table td.mp-col-q4 { background: var(--mp-q4-cell-bg); color: #f8fafc; }
+    .mp-monthly-table thead th.mp-col-q4 { background: var(--mp-q4-head-bg); color: var(--mp-q4-fg); }
+    .mp-monthly-table td.mp-col-q4 { background: var(--mp-q4-cell-bg); color: var(--mp-q4-fg); }
 
-    .mp-monthly-table thead th.mp-col-agg-h1 { background: var(--mp-agg-h1-head-bg); color: #f8fafc; }
-    .mp-monthly-table td.mp-col-agg-h1 { background: var(--mp-agg-h1-cell-bg); color: #f8fafc; }
+    .mp-monthly-table thead th.mp-col-agg-h1 { background: var(--mp-agg-h1-head-bg); color: var(--mp-agg-h1-fg); }
+    .mp-monthly-table td.mp-col-agg-h1 { background: var(--mp-agg-h1-cell-bg); color: var(--mp-agg-h1-fg); }
 
-    .mp-monthly-table thead th.mp-col-agg-q1 { background: var(--mp-agg-q1-head-bg); color: #0b1220; }
-    .mp-monthly-table td.mp-col-agg-q1 { background: var(--mp-agg-q1-cell-bg); color: #0b1220; }
+    .mp-monthly-table thead th.mp-col-agg-q1 { background: var(--mp-agg-q1-head-bg); color: var(--mp-agg-q1-fg); }
+    .mp-monthly-table td.mp-col-agg-q1 { background: var(--mp-agg-q1-cell-bg); color: var(--mp-agg-q1-fg); }
 
-    .mp-monthly-table thead th.mp-col-agg-q2 { background: var(--mp-agg-q2-head-bg); color: #0b1220; }
-    .mp-monthly-table td.mp-col-agg-q2 { background: var(--mp-agg-q2-cell-bg); color: #0b1220; }
+    .mp-monthly-table thead th.mp-col-agg-q2 { background: var(--mp-agg-q2-head-bg); color: var(--mp-agg-q2-fg); }
+    .mp-monthly-table td.mp-col-agg-q2 { background: var(--mp-agg-q2-cell-bg); color: var(--mp-agg-q2-fg); }
 
     .mp-monthly-table th,
     .mp-monthly-table td,
@@ -1320,13 +1330,16 @@
     }
 
     .mp-monthly-table .is-current-month {
-      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.78), inset 0 -9999px rgba(255, 255, 255, 0.08);
+      box-shadow:
+        inset 0 3px 0 var(--mp-current-month-ring),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+        inset 0 -9999px var(--mp-current-month-overlay);
     }
 
     .mp-monthly-table .is-current-month .mp-cell-btn,
     .mp-monthly-table .is-current-month .mp-cell-btn.is-zero {
       font-weight: 650;
-      border-color: rgba(255, 255, 255, 0.55);
+      border-color: var(--mp-current-month-button-ring);
     }
 
     :root {

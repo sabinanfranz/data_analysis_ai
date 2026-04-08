@@ -22,13 +22,20 @@
       --success: #22c55e;
       --error: #f87171;
       --shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
-      --mp-q1-bg: rgba(56, 189, 248, 0.10);
-      --mp-q2-bg: rgba(16, 185, 129, 0.10);
-      --mp-q3-bg: rgba(245, 158, 11, 0.10);
-      --mp-q4-bg: rgba(244, 114, 182, 0.10);
-      --mp-agg-h1-bg: rgba(148, 163, 184, 0.14);
-      --mp-agg-q1-bg: rgba(56, 189, 248, 0.16);
-      --mp-agg-q2-bg: rgba(16, 185, 129, 0.16);
+      --mp-q1-head-bg: #0284c7;
+      --mp-q2-head-bg: #16a34a;
+      --mp-q3-head-bg: #f59e0b;
+      --mp-q4-head-bg: #e11d8a;
+      --mp-q1-cell-bg: rgba(2, 132, 199, 0.52);
+      --mp-q2-cell-bg: rgba(22, 163, 74, 0.52);
+      --mp-q3-cell-bg: rgba(245, 158, 11, 0.55);
+      --mp-q4-cell-bg: rgba(225, 29, 138, 0.50);
+      --mp-agg-h1-head-bg: #7c3aed;
+      --mp-agg-q1-head-bg: #0891b2;
+      --mp-agg-q2-head-bg: #059669;
+      --mp-agg-h1-cell-bg: rgba(124, 58, 237, 0.56);
+      --mp-agg-q1-cell-bg: rgba(8, 145, 178, 0.56);
+      --mp-agg-q2-cell-bg: rgba(5, 150, 105, 0.56);
     }
 
     * {
@@ -947,40 +954,26 @@
       table-layout: fixed;
     }
 
-    .mp-monthly-table thead th.mp-col-q1,
-    .mp-monthly-table td.mp-col-q1 {
-      background: var(--mp-q1-bg);
-    }
+    .mp-monthly-table thead th.mp-col-q1 { background: var(--mp-q1-head-bg); color: #f8fafc; }
+    .mp-monthly-table td.mp-col-q1 { background: var(--mp-q1-cell-bg); color: #f8fafc; }
 
-    .mp-monthly-table thead th.mp-col-q2,
-    .mp-monthly-table td.mp-col-q2 {
-      background: var(--mp-q2-bg);
-    }
+    .mp-monthly-table thead th.mp-col-q2 { background: var(--mp-q2-head-bg); color: #0b1220; }
+    .mp-monthly-table td.mp-col-q2 { background: var(--mp-q2-cell-bg); color: #0b1220; }
 
-    .mp-monthly-table thead th.mp-col-q3,
-    .mp-monthly-table td.mp-col-q3 {
-      background: var(--mp-q3-bg);
-    }
+    .mp-monthly-table thead th.mp-col-q3 { background: var(--mp-q3-head-bg); color: #0b1220; }
+    .mp-monthly-table td.mp-col-q3 { background: var(--mp-q3-cell-bg); color: #0b1220; }
 
-    .mp-monthly-table thead th.mp-col-q4,
-    .mp-monthly-table td.mp-col-q4 {
-      background: var(--mp-q4-bg);
-    }
+    .mp-monthly-table thead th.mp-col-q4 { background: var(--mp-q4-head-bg); color: #f8fafc; }
+    .mp-monthly-table td.mp-col-q4 { background: var(--mp-q4-cell-bg); color: #f8fafc; }
 
-    .mp-monthly-table thead th.mp-col-agg-h1,
-    .mp-monthly-table td.mp-col-agg-h1 {
-      background: var(--mp-agg-h1-bg);
-    }
+    .mp-monthly-table thead th.mp-col-agg-h1 { background: var(--mp-agg-h1-head-bg); color: #f8fafc; }
+    .mp-monthly-table td.mp-col-agg-h1 { background: var(--mp-agg-h1-cell-bg); color: #f8fafc; }
 
-    .mp-monthly-table thead th.mp-col-agg-q1,
-    .mp-monthly-table td.mp-col-agg-q1 {
-      background: var(--mp-agg-q1-bg);
-    }
+    .mp-monthly-table thead th.mp-col-agg-q1 { background: var(--mp-agg-q1-head-bg); color: #0b1220; }
+    .mp-monthly-table td.mp-col-agg-q1 { background: var(--mp-agg-q1-cell-bg); color: #0b1220; }
 
-    .mp-monthly-table thead th.mp-col-agg-q2,
-    .mp-monthly-table td.mp-col-agg-q2 {
-      background: var(--mp-agg-q2-bg);
-    }
+    .mp-monthly-table thead th.mp-col-agg-q2 { background: var(--mp-agg-q2-head-bg); color: #0b1220; }
+    .mp-monthly-table td.mp-col-agg-q2 { background: var(--mp-agg-q2-cell-bg); color: #0b1220; }
 
     .mp-monthly-table th,
     .mp-monthly-table td,
@@ -1327,12 +1320,13 @@
     }
 
     .mp-monthly-table .is-current-month {
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24), inset 0 -9999px rgba(255, 255, 255, 0.04);
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.78), inset 0 -9999px rgba(255, 255, 255, 0.08);
     }
 
     .mp-monthly-table .is-current-month .mp-cell-btn,
     .mp-monthly-table .is-current-month .mp-cell-btn.is-zero {
       font-weight: 650;
+      border-color: rgba(255, 255, 255, 0.55);
     }
 
     :root {

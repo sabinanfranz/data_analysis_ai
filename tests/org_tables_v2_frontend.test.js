@@ -433,7 +433,7 @@ test("computeTeamPartSummary maps owners and DRI rule", async () => {
   assert.strictEqual(trailing.dri, "O");
 });
 
-test("dealcheck status filter helpers support include mode and only mode", async () => {
+test("dealcheck status filter helpers support independent sql/won/lost toggles", async () => {
   const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
   const scriptContent = extractScript(html);
 
@@ -456,108 +456,115 @@ test("dealcheck status filter helpers support include mode and only mode", async
   vm.runInContext(scriptContent, ctx);
 
   const getDefaultDealCheckStatusFilterState = vm.runInContext("getDefaultDealCheckStatusFilterState", ctx);
-  const setDealCheckIncludeWonLost = vm.runInContext("setDealCheckIncludeWonLost", ctx);
-  const setDealCheckIncludeWonOnly = vm.runInContext("setDealCheckIncludeWonOnly", ctx);
-  const setDealCheckOnlyChecks = vm.runInContext("setDealCheckOnlyChecks", ctx);
   const matchDealCheckStatusFilter = vm.runInContext("matchDealCheckStatusFilter", ctx);
   const getDealCheckStatusFilterState = vm.runInContext("getDealCheckStatusFilterState", ctx);
   const setDealCheckStatusFilterState = vm.runInContext("setDealCheckStatusFilterState", ctx);
 
   let state = getDefaultDealCheckStatusFilterState();
-  assert.strictEqual(state.includeWonLost, true);
-  assert.strictEqual(state.includeWonOnly, false);
-  assert.strictEqual(state.wonOnly, false);
-  assert.strictEqual(state.lostOnly, false);
+  assert.strictEqual(state.sql, true);
+  assert.strictEqual(state.won, true);
+  assert.strictEqual(state.lost, true);
   assert.strictEqual(matchDealCheckStatusFilter("sql", state), true);
   assert.strictEqual(matchDealCheckStatusFilter("won", state), true);
   assert.strictEqual(matchDealCheckStatusFilter("lost", state), true);
 
-  state = setDealCheckIncludeWonLost(state, false);
-  assert.strictEqual(state.includeWonLost, false);
-  assert.strictEqual(state.includeWonOnly, false);
-  assert.strictEqual(state.wonOnly, false);
-  assert.strictEqual(state.lostOnly, false);
+  state = { sql: true, won: false, lost: false };
   assert.strictEqual(matchDealCheckStatusFilter("sql", state), true);
   assert.strictEqual(matchDealCheckStatusFilter("won", state), false);
   assert.strictEqual(matchDealCheckStatusFilter("lost", state), false);
 
-  state = setDealCheckIncludeWonOnly(state, true);
-  assert.strictEqual(state.includeWonLost, false);
-  assert.strictEqual(state.includeWonOnly, true);
-  assert.strictEqual(state.wonOnly, false);
-  assert.strictEqual(state.lostOnly, false);
-  assert.strictEqual(matchDealCheckStatusFilter("sql", state), true);
-  assert.strictEqual(matchDealCheckStatusFilter("won", state), true);
-  assert.strictEqual(matchDealCheckStatusFilter("lost", state), false);
-
-  const includeAllReset = setDealCheckIncludeWonLost(state, true);
-  assert.strictEqual(includeAllReset.includeWonLost, true);
-  assert.strictEqual(includeAllReset.includeWonOnly, false);
-  assert.strictEqual(includeAllReset.wonOnly, false);
-  assert.strictEqual(includeAllReset.lostOnly, false);
-  assert.strictEqual(matchDealCheckStatusFilter("sql", includeAllReset), true);
-  assert.strictEqual(matchDealCheckStatusFilter("won", includeAllReset), true);
-  assert.strictEqual(matchDealCheckStatusFilter("lost", includeAllReset), true);
-
-  const includeWonOnlyAgain = setDealCheckIncludeWonOnly(includeAllReset, true);
-  assert.strictEqual(includeWonOnlyAgain.includeWonLost, false);
-  assert.strictEqual(includeWonOnlyAgain.includeWonOnly, true);
-  assert.strictEqual(includeWonOnlyAgain.wonOnly, false);
-  assert.strictEqual(includeWonOnlyAgain.lostOnly, false);
-
-  const includeOnWonOnly = setDealCheckOnlyChecks(setDealCheckIncludeWonLost(state, true), true, false);
-  assert.strictEqual(includeOnWonOnly.includeWonLost, false);
-  assert.strictEqual(includeOnWonOnly.includeWonOnly, false);
-  assert.strictEqual(includeOnWonOnly.wonOnly, true);
-  assert.strictEqual(includeOnWonOnly.lostOnly, false);
-  assert.strictEqual(matchDealCheckStatusFilter("sql", includeOnWonOnly), false);
-  assert.strictEqual(matchDealCheckStatusFilter("won", includeOnWonOnly), true);
-  assert.strictEqual(matchDealCheckStatusFilter("lost", includeOnWonOnly), false);
-
-  state = setDealCheckOnlyChecks(includeWonOnlyAgain, true, false);
-  assert.strictEqual(state.includeWonLost, false);
-  assert.strictEqual(state.includeWonOnly, false);
-  assert.strictEqual(state.wonOnly, true);
-  assert.strictEqual(state.lostOnly, false);
+  state = { sql: false, won: true, lost: false };
   assert.strictEqual(matchDealCheckStatusFilter("sql", state), false);
   assert.strictEqual(matchDealCheckStatusFilter("won", state), true);
   assert.strictEqual(matchDealCheckStatusFilter("lost", state), false);
 
-  state = setDealCheckOnlyChecks(state, false, true);
-  assert.strictEqual(state.includeWonLost, false);
-  assert.strictEqual(state.includeWonOnly, false);
-  assert.strictEqual(state.wonOnly, false);
-  assert.strictEqual(state.lostOnly, true);
+  state = { sql: false, won: false, lost: true };
   assert.strictEqual(matchDealCheckStatusFilter("sql", state), false);
   assert.strictEqual(matchDealCheckStatusFilter("won", state), false);
   assert.strictEqual(matchDealCheckStatusFilter("lost", state), true);
 
-  const bothOnly = setDealCheckOnlyChecks(state, true, true);
-  assert.strictEqual(bothOnly.includeWonLost, false);
-  assert.strictEqual(bothOnly.includeWonOnly, false);
-  assert.strictEqual(bothOnly.wonOnly, true);
-  assert.strictEqual(bothOnly.lostOnly, true);
-  assert.strictEqual(matchDealCheckStatusFilter("sql", bothOnly), false);
-  assert.strictEqual(matchDealCheckStatusFilter("won", bothOnly), true);
-  assert.strictEqual(matchDealCheckStatusFilter("lost", bothOnly), true);
+  state = { sql: true, won: true, lost: false };
+  assert.strictEqual(matchDealCheckStatusFilter("sql", state), true);
+  assert.strictEqual(matchDealCheckStatusFilter("won", state), true);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", state), false);
 
-  const includeReset = setDealCheckIncludeWonLost(bothOnly, true);
-  assert.strictEqual(includeReset.includeWonLost, true);
-  assert.strictEqual(includeReset.includeWonOnly, false);
-  assert.strictEqual(includeReset.wonOnly, false);
-  assert.strictEqual(includeReset.lostOnly, false);
-  assert.strictEqual(matchDealCheckStatusFilter("sql", includeReset), true);
-  assert.strictEqual(matchDealCheckStatusFilter("won", includeReset), true);
-  assert.strictEqual(matchDealCheckStatusFilter("lost", includeReset), true);
+  state = { sql: true, won: false, lost: true };
+  assert.strictEqual(matchDealCheckStatusFilter("sql", state), true);
+  assert.strictEqual(matchDealCheckStatusFilter("won", state), false);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", state), true);
 
-  const menuA = setDealCheckStatusFilterState("edu1::ALLPART", setDealCheckIncludeWonOnly(getDefaultDealCheckStatusFilterState(), true));
-  const menuB = setDealCheckStatusFilterState("edu2::ALLPART", setDealCheckOnlyChecks(getDefaultDealCheckStatusFilterState(), false, true));
-  assert.strictEqual(menuA.includeWonOnly, true);
-  assert.strictEqual(menuB.lostOnly, true);
-  assert.strictEqual(getDealCheckStatusFilterState("edu1::ALLPART").includeWonOnly, true);
-  assert.strictEqual(getDealCheckStatusFilterState("edu1::ALLPART").lostOnly, false);
-  assert.strictEqual(getDealCheckStatusFilterState("edu2::ALLPART").includeWonOnly, false);
-  assert.strictEqual(getDealCheckStatusFilterState("edu2::ALLPART").lostOnly, true);
+  state = { sql: false, won: true, lost: true };
+  assert.strictEqual(matchDealCheckStatusFilter("sql", state), false);
+  assert.strictEqual(matchDealCheckStatusFilter("won", state), true);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", state), true);
+
+  state = { sql: false, won: false, lost: false };
+  assert.strictEqual(matchDealCheckStatusFilter("sql", state), false);
+  assert.strictEqual(matchDealCheckStatusFilter("won", state), false);
+  assert.strictEqual(matchDealCheckStatusFilter("lost", state), false);
+
+  const menuA = setDealCheckStatusFilterState("edu1::ALLPART", { sql: true, won: false, lost: true });
+  const menuB = setDealCheckStatusFilterState("edu2::ALLPART", { sql: false, won: true, lost: false });
+  assert.strictEqual(menuA.sql, true);
+  assert.strictEqual(menuA.won, false);
+  assert.strictEqual(menuA.lost, true);
+  assert.strictEqual(menuB.sql, false);
+  assert.strictEqual(menuB.won, true);
+  assert.strictEqual(menuB.lost, false);
+  assert.strictEqual(getDealCheckStatusFilterState("edu1::ALLPART").won, false);
+  assert.strictEqual(getDealCheckStatusFilterState("edu1::ALLPART").lost, true);
+  assert.strictEqual(getDealCheckStatusFilterState("edu2::ALLPART").sql, false);
+  assert.strictEqual(getDealCheckStatusFilterState("edu2::ALLPART").won, true);
+});
+
+test("dealcheck probability filter helpers support single-choice matching and per-menu state", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const normalizeDealCheckProbabilityFilter = vm.runInContext("normalizeDealCheckProbabilityFilter", ctx);
+  const matchDealCheckProbabilityFilter = vm.runInContext("matchDealCheckProbabilityFilter", ctx);
+  const getDealCheckProbabilityFilterState = vm.runInContext("getDealCheckProbabilityFilterState", ctx);
+  const setDealCheckProbabilityFilterState = vm.runInContext("setDealCheckProbabilityFilterState", ctx);
+
+  assert.strictEqual(normalizeDealCheckProbabilityFilter(""), "ALL");
+  assert.strictEqual(normalizeDealCheckProbabilityFilter("확정"), "확정");
+  assert.strictEqual(normalizeDealCheckProbabilityFilter("LOST"), "LOST");
+  assert.strictEqual(normalizeDealCheckProbabilityFilter("unknown"), "ALL");
+
+  assert.strictEqual(matchDealCheckProbabilityFilter("확정", "ALL"), true);
+  assert.strictEqual(matchDealCheckProbabilityFilter("확정", "확정"), true);
+  assert.strictEqual(matchDealCheckProbabilityFilter("높음", "확정"), false);
+  assert.strictEqual(matchDealCheckProbabilityFilter("확정/높음", "확정"), true);
+  assert.strictEqual(matchDealCheckProbabilityFilter("확정/높음", "높음"), true);
+  assert.strictEqual(matchDealCheckProbabilityFilter("확정/높음", "LOST"), false);
+  assert.strictEqual(matchDealCheckProbabilityFilter("LOST", "LOST"), true);
+  assert.strictEqual(matchDealCheckProbabilityFilter("-", "LOST"), false);
+
+  const menuA = setDealCheckProbabilityFilterState("edu1::ALLPART", "높음");
+  const menuB = setDealCheckProbabilityFilterState("edu2::ALLPART", "LOST");
+  assert.strictEqual(menuA, "높음");
+  assert.strictEqual(menuB, "LOST");
+  assert.strictEqual(getDealCheckProbabilityFilterState("edu1::ALLPART"), "높음");
+  assert.strictEqual(getDealCheckProbabilityFilterState("edu2::ALLPART"), "LOST");
+  assert.strictEqual(getDealCheckProbabilityFilterState("public::ALLPART"), "ALL");
 });
 
 test("교육 전체 딜체크 메뉴가 최상단에 추가되고 전체 owner/파트 helper가 동작한다", async () => {

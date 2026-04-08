@@ -3138,6 +3138,7 @@
     };
     const DEALCHECK_OWNER_FILTER_BY_MENU = new Map();
     const DEALCHECK_STATUS_FILTER_BY_MENU = new Map();
+    const DEALCHECK_PROBABILITY_FILTER_BY_MENU = new Map();
     const NAME_TO_TEAM_PART = buildNameToTeamPartIndex(PART_STRUCTURE);
 
     function showToast(message, tone = "info") {
@@ -3191,68 +3192,19 @@
 
     function getDefaultDealCheckStatusFilterState() {
       return {
-        includeWonLost: true,
-        includeWonOnly: false,
-        wonOnly: false,
-        lostOnly: false,
+        sql: true,
+        won: true,
+        lost: true,
       };
     }
 
     function normalizeDealCheckStatusFilterState(rawState) {
       const defaults = getDefaultDealCheckStatusFilterState();
       const raw = rawState && typeof rawState === "object" ? rawState : {};
-      const includeWonLost = raw.includeWonLost === undefined ? defaults.includeWonLost : Boolean(raw.includeWonLost);
-      const includeWonOnly = raw.includeWonOnly === undefined ? defaults.includeWonOnly : Boolean(raw.includeWonOnly);
-      const wonOnly = raw.wonOnly === undefined ? defaults.wonOnly : Boolean(raw.wonOnly);
-      const lostOnly = raw.lostOnly === undefined ? defaults.lostOnly : Boolean(raw.lostOnly);
-      return { includeWonLost, includeWonOnly, wonOnly, lostOnly };
-    }
-
-    function setDealCheckIncludeWonLost(filterState, includeWonLost) {
-      const normalized = normalizeDealCheckStatusFilterState(filterState);
-      if (includeWonLost) {
-        return {
-          includeWonLost: true,
-          includeWonOnly: false,
-          wonOnly: false,
-          lostOnly: false,
-        };
-      }
-      return {
-        includeWonLost: false,
-        includeWonOnly: normalized.includeWonOnly,
-        wonOnly: normalized.wonOnly,
-        lostOnly: normalized.lostOnly,
-      };
-    }
-
-    function setDealCheckIncludeWonOnly(filterState, includeWonOnly) {
-      const normalized = normalizeDealCheckStatusFilterState(filterState);
-      if (includeWonOnly) {
-        return {
-          includeWonLost: false,
-          includeWonOnly: true,
-          wonOnly: false,
-          lostOnly: false,
-        };
-      }
-      return {
-        includeWonLost: normalized.includeWonLost,
-        includeWonOnly: false,
-        wonOnly: normalized.wonOnly,
-        lostOnly: normalized.lostOnly,
-      };
-    }
-
-    function setDealCheckOnlyChecks(filterState, wonOnly, lostOnly) {
-      const normalized = normalizeDealCheckStatusFilterState(filterState);
-      const hasOnlyMode = Boolean(wonOnly) || Boolean(lostOnly);
-      return {
-        includeWonLost: hasOnlyMode ? false : normalized.includeWonLost,
-        includeWonOnly: hasOnlyMode ? false : normalized.includeWonOnly,
-        wonOnly: Boolean(wonOnly),
-        lostOnly: Boolean(lostOnly),
-      };
+      const sql = raw.sql === undefined ? defaults.sql : Boolean(raw.sql);
+      const won = raw.won === undefined ? defaults.won : Boolean(raw.won);
+      const lost = raw.lost === undefined ? defaults.lost : Boolean(raw.lost);
+      return { sql, won, lost };
     }
 
     function getDealCheckStatusFilterState(menuKey) {
@@ -3350,26 +3302,42 @@
     function matchDealCheckStatusFilter(status, statusFilterState) {
       const statusNorm = (status || "").toString().trim().toLowerCase();
       const st = normalizeDealCheckStatusFilterState(statusFilterState);
-      const hasWonOnly = Boolean(st.wonOnly);
-      const hasLostOnly = Boolean(st.lostOnly);
-
-      // "Won만 보기"/"Lost만 보기" is explicit and takes precedence.
-      if (hasWonOnly || hasLostOnly) {
-        if (statusNorm === "won") return hasWonOnly;
-        if (statusNorm === "lost") return hasLostOnly;
-        return false;
-      }
-
-      if (Boolean(st.includeWonOnly)) {
-        if (!statusNorm || statusNorm === "sql") return true;
-        if (statusNorm === "won") return true;
-        if (statusNorm === "lost") return false;
-        return true;
-      }
-
-      if (!statusNorm || statusNorm === "sql") return true;
-      if (statusNorm === "won" || statusNorm === "lost") return Boolean(st.includeWonLost);
+      if (!statusNorm) return Boolean(st.sql);
+      if (statusNorm === "sql") return Boolean(st.sql);
+      if (statusNorm === "won") return Boolean(st.won);
+      if (statusNorm === "lost") return Boolean(st.lost);
       return true;
+    }
+
+    function normalizeDealCheckProbabilityFilter(value) {
+      const raw = String(value || "ALL").trim();
+      if (!raw || raw === "ALL") return "ALL";
+      if (["확정", "높음", "낮음", "LOST"].includes(raw)) return raw;
+      return "ALL";
+    }
+
+    function getDealCheckProbabilityFilterState(menuKey) {
+      const normalized = normalizeDealCheckProbabilityFilter(DEALCHECK_PROBABILITY_FILTER_BY_MENU.get(menuKey));
+      DEALCHECK_PROBABILITY_FILTER_BY_MENU.set(menuKey, normalized);
+      return normalized;
+    }
+
+    function setDealCheckProbabilityFilterState(menuKey, value) {
+      const normalized = normalizeDealCheckProbabilityFilter(value);
+      DEALCHECK_PROBABILITY_FILTER_BY_MENU.set(menuKey, normalized);
+      return normalized;
+    }
+
+    function matchDealCheckProbabilityFilter(probability, selected) {
+      const normalizedSelected = normalizeDealCheckProbabilityFilter(selected);
+      if (normalizedSelected === "ALL") return true;
+      const display = formatProbability(probability);
+      if (!display || display === "-") return false;
+      const tokens = String(display)
+        .split("/")
+        .map((part) => part.trim())
+        .filter(Boolean);
+      return tokens.includes(normalizedSelected);
     }
 
     function resolveOwnerTeamPart(name) {
@@ -8826,11 +8794,11 @@
         ownerFilter = "ALL";
         DEALCHECK_OWNER_FILTER_BY_MENU.set(menuKey, ownerFilter);
       }
+      let probabilityFilter = getDealCheckProbabilityFilterState(menuKey);
       let statusFilterState = getDealCheckStatusFilterState(menuKey);
-      const statusIncludeCheckedAttr = statusFilterState.includeWonLost ? " checked" : "";
-      const statusIncludeWonOnlyCheckedAttr = statusFilterState.includeWonOnly ? " checked" : "";
-      const statusWonCheckedAttr = statusFilterState.wonOnly ? " checked" : "";
-      const statusLostCheckedAttr = statusFilterState.lostOnly ? " checked" : "";
+      const statusSqlCheckedAttr = statusFilterState.sql ? " checked" : "";
+      const statusWonCheckedAttr = statusFilterState.won ? " checked" : "";
+      const statusLostCheckedAttr = statusFilterState.lost ? " checked" : "";
       const ownerFilterOptions = [
         `<option value="ALL"${ownerFilter === "ALL" ? " selected" : ""}>전체</option>`,
         ...ownerRoster.map((name) => {
@@ -8839,6 +8807,15 @@
           return `<option value="${esc}"${selectedAttr}>${esc}</option>`;
         }),
       ].join("");
+      const probabilityFilterOptions = [
+        { value: "ALL", label: "전체" },
+        { value: "확정", label: "확정" },
+        { value: "높음", label: "높음" },
+        { value: "낮음", label: "낮음" },
+        { value: "LOST", label: "LOST" },
+      ]
+        .map(({ value, label }) => `<option value="${value}"${probabilityFilter === value ? " selected" : ""}>${label}</option>`)
+        .join("");
       contentRoot.innerHTML = `
         <div class="dealcheck-screen" data-team="${teamKey}">
         <section class="card" id="${teamKey}SummaryCard">
@@ -8848,22 +8825,22 @@
                 <label class="muted" for="${teamKey}OwnerFilterSelect">데이원 구성원</label>
                 <select id="${teamKey}OwnerFilterSelect">${ownerFilterOptions}</select>
               </div>
+              <div class="dealcheck-owner-filter">
+                <label class="muted" for="${teamKey}ProbabilityFilterSelect">성사 가능성</label>
+                <select id="${teamKey}ProbabilityFilterSelect">${probabilityFilterOptions}</select>
+              </div>
               <div class="dealcheck-status-filter" role="group" aria-label="상태 필터">
-                <label class="dealcheck-status-item" for="${teamKey}StatusIncludeWonLost">
-                  <input type="checkbox" id="${teamKey}StatusIncludeWonLost"${statusIncludeCheckedAttr} />
-                  <span>Won/Lost 포함</span>
-                </label>
-                <label class="dealcheck-status-item" for="${teamKey}StatusIncludeWonOnly">
-                  <input type="checkbox" id="${teamKey}StatusIncludeWonOnly"${statusIncludeWonOnlyCheckedAttr} />
-                  <span>Won 포함(SQL+Won)</span>
+                <label class="dealcheck-status-item" for="${teamKey}StatusSql">
+                  <input type="checkbox" id="${teamKey}StatusSql"${statusSqlCheckedAttr} />
+                  <span>SQL</span>
                 </label>
                 <label class="dealcheck-status-item" for="${teamKey}StatusWon">
                   <input type="checkbox" id="${teamKey}StatusWon"${statusWonCheckedAttr} />
-                  <span>Won만 보기</span>
+                  <span>Won</span>
                 </label>
                 <label class="dealcheck-status-item" for="${teamKey}StatusLost">
                   <input type="checkbox" id="${teamKey}StatusLost"${statusLostCheckedAttr} />
-                  <span>Lost만 보기</span>
+                  <span>Lost</span>
                 </label>
               </div>
             </div>
@@ -8937,8 +8914,8 @@
       const newOfflineBody = document.getElementById(`${teamKey}NewOfflineBody`);
 
       const ownerFilterSelect = document.getElementById(`${teamKey}OwnerFilterSelect`);
-      const statusIncludeWonLostCheckbox = document.getElementById(`${teamKey}StatusIncludeWonLost`);
-      const statusIncludeWonOnlyCheckbox = document.getElementById(`${teamKey}StatusIncludeWonOnly`);
+      const probabilityFilterSelect = document.getElementById(`${teamKey}ProbabilityFilterSelect`);
+      const statusSqlCheckbox = document.getElementById(`${teamKey}StatusSql`);
       const statusWonCheckbox = document.getElementById(`${teamKey}StatusWon`);
       const statusLostCheckbox = document.getElementById(`${teamKey}StatusLost`);
       let latestRawItems = null;
@@ -8948,7 +8925,10 @@
           : [];
         const ownerFiltered = itemsAfterPart.filter((row) => matchDealCheckOwnerFilter(row.owners, ownerFilter));
         const statusFiltered = ownerFiltered.filter((row) => matchDealCheckStatusFilter(row.status, statusFilterState));
-        renderAll(statusFiltered);
+        const probabilityFiltered = statusFiltered.filter((row) =>
+          matchDealCheckProbabilityFilter(row.probability, probabilityFilter)
+        );
+        renderAll(probabilityFiltered);
       };
       if (ownerFilterSelect) {
         ownerFilterSelect.value = ownerFilter;
@@ -8958,21 +8938,25 @@
           if (latestRawItems) applyFiltersAndRender(latestRawItems);
         });
       }
+      if (probabilityFilterSelect) {
+        probabilityFilterSelect.value = probabilityFilter;
+        probabilityFilterSelect.addEventListener("change", (e) => {
+          probabilityFilter = setDealCheckProbabilityFilterState(menuKey, e.target.value || "ALL");
+          if (latestRawItems) applyFiltersAndRender(latestRawItems);
+        });
+      }
 
       const syncStatusFilterUi = () => {
         const normalized = normalizeDealCheckStatusFilterState(statusFilterState);
         statusFilterState = normalized;
-        if (statusIncludeWonLostCheckbox) {
-          statusIncludeWonLostCheckbox.checked = normalized.includeWonLost;
-        }
-        if (statusIncludeWonOnlyCheckbox) {
-          statusIncludeWonOnlyCheckbox.checked = normalized.includeWonOnly;
+        if (statusSqlCheckbox) {
+          statusSqlCheckbox.checked = normalized.sql;
         }
         if (statusWonCheckbox) {
-          statusWonCheckbox.checked = normalized.wonOnly;
+          statusWonCheckbox.checked = normalized.won;
         }
         if (statusLostCheckbox) {
-          statusLostCheckbox.checked = normalized.lostOnly;
+          statusLostCheckbox.checked = normalized.lost;
         }
       };
 
@@ -8982,35 +8966,24 @@
         if (latestRawItems) applyFiltersAndRender(latestRawItems);
       };
 
-      if (statusIncludeWonLostCheckbox) {
-        statusIncludeWonLostCheckbox.addEventListener("change", (e) => {
-          const checked = Boolean(e.target.checked);
-          const next = setDealCheckIncludeWonLost(statusFilterState, checked);
-          applyStatusFilterState(next);
-        });
-      }
-
-      if (statusIncludeWonOnlyCheckbox) {
-        statusIncludeWonOnlyCheckbox.addEventListener("change", (e) => {
-          const checked = Boolean(e.target.checked);
-          const next = setDealCheckIncludeWonOnly(statusFilterState, checked);
-          applyStatusFilterState(next);
-        });
-      }
-
-      const handleWonLostCheckboxChange = () => {
+      const handleStatusCheckboxChange = () => {
         const normalized = normalizeDealCheckStatusFilterState(statusFilterState);
-        const nextWonOnly = statusWonCheckbox ? Boolean(statusWonCheckbox.checked) : normalized.wonOnly;
-        const nextLostOnly = statusLostCheckbox ? Boolean(statusLostCheckbox.checked) : normalized.lostOnly;
-        const next = setDealCheckOnlyChecks(normalized, nextWonOnly, nextLostOnly);
+        const next = {
+          sql: statusSqlCheckbox ? Boolean(statusSqlCheckbox.checked) : normalized.sql,
+          won: statusWonCheckbox ? Boolean(statusWonCheckbox.checked) : normalized.won,
+          lost: statusLostCheckbox ? Boolean(statusLostCheckbox.checked) : normalized.lost,
+        };
         applyStatusFilterState(next);
       };
 
+      if (statusSqlCheckbox) {
+        statusSqlCheckbox.addEventListener("change", handleStatusCheckboxChange);
+      }
       if (statusWonCheckbox) {
-        statusWonCheckbox.addEventListener("change", handleWonLostCheckboxChange);
+        statusWonCheckbox.addEventListener("change", handleStatusCheckboxChange);
       }
       if (statusLostCheckbox) {
-        statusLostCheckbox.addEventListener("change", handleWonLostCheckboxChange);
+        statusLostCheckbox.addEventListener("change", handleStatusCheckboxChange);
       }
       syncStatusFilterUi();
 

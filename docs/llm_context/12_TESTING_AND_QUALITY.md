@@ -1,6 +1,6 @@
 ---
 title: 테스트 & 품질 가이드
-last_synced: 2026-02-04
+last_synced: 2026-04-13
 sync_source:
   - tests/
   - org_tables_v2.html
@@ -18,6 +18,7 @@ sync_source:
   - `test_perf_monthly_contracts.py`: 월별 체결액 summary/deals row·segment·24개월 키·amount/expected 대체.
   - `test_perf_monthly_close_rate_summary.py`, `test_perf_monthly_close_rate_contract.py`: close-rate summary/deals scope/cust 필터, metric 분모/분자 규칙.
   - `test_perf_monthly_inquiries.py`, `test_perf_monthly_inquiries_online_first_filter.py`, `test_perf_monthly_inquiries_org_join.py`: 문의 인입 size×format×category 구조, online_first FALSE 제외 규칙, org join.
+  - `tests/org_tables_v2_frontend.test.js`: 문의 인입 연도 토글(2025/2026), 연도별 summary cache key, 선택 연도 12개월 렌더, size 필터 상태 유지.
   - `test_pl_progress_2026.py`, `test_pl_progress_targets.py`: P&L Target/Expected, excluded 카운트, deals 정렬.
   - `test_api_counterparty_dri.py`: DRI 정렬(orgWon2025→cpTotal2025), ONLINE 판정, owners 우선순위, limit/offset, overrides.
   - `test_rank_2025_deals.py`, `test_rank_2025_deals_people.py`, `test_mismatched_deals_2025.py`, `test_won_totals_by_size.py`, `test_won_summary.py`: 랭킹/이상치/요약 정렬·필터.
@@ -28,7 +29,7 @@ sync_source:
   - `test_date_kst.py`, `test_datetime_kst_normalization.py`, `test_no_raw_date_ops.py`: 날짜 파싱(KST 변환), raw date 미반환 보장.
   - `test_counterparty_*`(card_agent/llm/risk_rule/target/targets_loader): Counterparty 파이프라인 로직/모델/룰 검증.
   - `test_build_org_tables.py`, `test_build_org_mindmap.py`: 정적 HTML 빌더 CLI/데이터 포함 여부.
-  - `org_tables_v2_frontend.test.js`: 프런트 JS 함수(loadOrgDetail, autoSelect, memo modal 정규화, JSON 버튼 enable/disable, StatePath export) 검증.
+  - `org_tables_v2_frontend.test.js`: 프런트 JS 함수(loadOrgDetail, autoSelect, memo modal 정규화, JSON 버튼 enable/disable, StatePath export)와 월별 체결액 집계/colgroup, 조직별 퍼포먼스 target placeholder, P&L column fit, 딜체크 상태 3체크, 성사 가능성 드롭다운 매칭/메뉴별 상태 저장을 검증.
 
 ## Invariants (Must Not Break)
 - 24개월 키(2501~2612)와 row 순서(TOTAL→CONTRACT→CONFIRMED→HIGH, close-rate metrics total→confirmed→high→low→lost→close_rate)는 고정.

@@ -729,6 +729,54 @@ test("loadBizPerfDeals forwards optional scope key", async () => {
   assert.strictEqual(url.searchParams.get("scope"), "edu2_online");
 });
 
+test("loadBizPerfInquirySummary caches by year and uses year-specific range", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const calls = [];
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async (url) => {
+      calls.push(url);
+      return {
+        ok: true,
+        json: async () => ({ months: [], rows: [], meta: {} }),
+        text: async () => "{}",
+      };
+    },
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const loadBizPerfInquirySummary = vm.runInContext("loadBizPerfInquirySummary", ctx);
+  await loadBizPerfInquirySummary(2026);
+  await loadBizPerfInquirySummary(2026);
+  await loadBizPerfInquirySummary(2025);
+
+  assert.strictEqual(calls.length, 2, "inquiry summary cache should separate only by year");
+
+  const first = new URL(calls[0]);
+  assert.strictEqual(first.pathname, "/api/performance/monthly-inquiries/summary");
+  assert.strictEqual(first.searchParams.get("from"), "2026-01");
+  assert.strictEqual(first.searchParams.get("to"), "2026-12");
+
+  const second = new URL(calls[1]);
+  assert.strictEqual(second.pathname, "/api/performance/monthly-inquiries/summary");
+  assert.strictEqual(second.searchParams.get("from"), "2025-01");
+  assert.strictEqual(second.searchParams.get("to"), "2025-12");
+});
+
 test("monthly year helpers filter month keys and current-month highlighting key", async () => {
   const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
   const scriptContent = extractScript(html);
@@ -885,6 +933,111 @@ test("monthly year helpers filter month keys and current-month highlighting key"
   assert.strictEqual(targetRowsHidden[0].byMonth["2501"], null);
   assert.strictEqual(targetRowsHidden[0].byMonth["2601"], null);
   assert.strictEqual(targetRowsHidden[0].byMonth["2602"], null);
+});
+
+test("renderBizPerfMonthlyInquiries supports year toggle and renders selected year's months", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const fetchCalls = [];
+  const responses = {
+    "/performance/monthly-inquiries/summary?from=2026-01&to=2026-12": {
+      months: ["2601", "2602"],
+      rows: [
+        {
+          level: 1,
+          sizeGroup: "대기업",
+          courseFormat: "출강",
+          categoryGroup: null,
+          rowKey: "출강||__ALL__",
+          countByMonth: { "2601": 2, "2602": 0 },
+        },
+        {
+          level: 2,
+          sizeGroup: "대기업",
+          courseFormat: "출강",
+          categoryGroup: "생성형AI",
+          rowKey: "출강||생성형AI",
+          countByMonth: { "2601": 1, "2602": 0 },
+        },
+      ],
+      meta: { snapshot_version: "db_mtime:1" },
+    },
+    "/performance/monthly-inquiries/summary?from=2025-01&to=2025-12": {
+      months: ["2501", "2502"],
+      rows: [
+        {
+          level: 1,
+          sizeGroup: "대기업",
+          courseFormat: "출강",
+          categoryGroup: null,
+          rowKey: "출강||__ALL__",
+          countByMonth: { "2501": 3, "2502": 1 },
+        },
+      ],
+      meta: { snapshot_version: "db_mtime:1" },
+    },
+  };
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async (url) => {
+      fetchCalls.push(url);
+      const u = new URL(url);
+      const key = `${u.pathname.replace(/^\/api/, "")}?${u.searchParams.toString()}`;
+      const data = responses[key];
+      if (!data) {
+        return { ok: false, statusText: "not found", text: async () => "not found" };
+      }
+      return {
+        ok: true,
+        json: async () => data,
+        text: async () => JSON.stringify(data),
+      };
+    },
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const renderBizPerfMonthlyInquiries = vm.runInContext("renderBizPerfMonthlyInquiries", ctx);
+  const state = vm.runInContext("state", ctx);
+  const root = docStub.getElementById("contentRoot");
+
+  await renderBizPerfMonthlyInquiries(root, { label: "2026 문의 인입 현황", teamKey: "edu2" });
+
+  assert.strictEqual(state.perfMonthlyInquiries.selectedYear, 2026);
+  assert.ok(root.innerHTML.includes('data-perf-monthly-inquiry-year="2025"'));
+  assert.ok(root.innerHTML.includes('data-perf-monthly-inquiry-year="2026"'));
+
+  const table2026 = docStub.getElementById("perfMonthlyInquiryTable").innerHTML;
+  assert.ok(table2026.includes(">2601<"));
+  assert.ok(table2026.includes(">2602<"));
+  assert.ok(!table2026.includes(">2501<"));
+  assert.ok(table2026.includes('data-month="2601"'));
+  assert.ok(table2026.includes("2026-01 ~ 2026-12"));
+
+  state.perfMonthlyInquiries.selectedYear = 2025;
+  await renderBizPerfMonthlyInquiries(root, { label: "2026 문의 인입 현황", teamKey: "edu2" });
+
+  const table2025 = docStub.getElementById("perfMonthlyInquiryTable").innerHTML;
+  assert.ok(table2025.includes(">2501<"));
+  assert.ok(table2025.includes(">2502<"));
+  assert.ok(!table2025.includes(">2601<"));
+  assert.ok(table2025.includes('data-month="2501"'));
+  assert.ok(table2025.includes("2025-01 ~ 2025-12"));
+
+  assert.strictEqual(fetchCalls.length, 2, "year-specific inquiry summary requests should be cached separately");
 });
 
 test("renderWonSummary shows new columns and team/part/DRI", async () => {

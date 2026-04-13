@@ -1,6 +1,6 @@
 ---
 title: org_tables_v2 프런트 계약
-last_synced: 2026-02-10
+last_synced: 2026-04-13
 sync_source:
   - org_tables_v2.html
   - dashboard/server/org_tables_api.py
@@ -34,13 +34,18 @@ sync_source:
 - API: `/performance/pl-progress-2026/summary` → 연간 T/E + 2601~2612 T/E. 현재 YYMM 헤더/셀에 `is-current-month-group`/`is-current-month` 클래스.
 - Assumptions 바: 온라인/출강 공헌이익률, 월 제작/마케팅/인건비를 입력·증감 버튼으로 수정, dirty 상태는 `is-dirty` 클래스. `pnlAssumpInfoBtn` 모달에 제외 건수·snapshot_version·가정 노출, `pnlResetAssumptionsBtn`으로 기본값 복구.
 - 클릭 가능 셀: 월별 E 컬럼의 REV_TOTAL/REV_ONLINE/REV_OFFLINE만 버튼(`data-pl-cell`)으로, `/performance/pl-progress-2026/deals` 호출. 정렬 recognizedAmount desc → amountUsed desc → dealName desc. variant=T는 항상 빈 결과.
+- P&L 테이블은 `pnl-table` 전용 레이아웃을 사용하며, `항목`/`연간 T/E(2026 전체)` 칼럼은 content-fit 폭, 월별 칼럼은 별도 최소폭을 유지한다. 최근 월별 체결액 표 개선은 P&L 공통 폭 규칙에 영향을 주지 않아야 한다.
 
 ### 월별 체결액 (`renderBizPerfMonthly`)
 - API: `/performance/monthly-amounts/summary`(from/to=2025-01~2026-12, months 24개, rows TOTAL→CONTRACT→CONFIRMED→HIGH, segment 11종). dealCount=0 셀은 `<span class="mp-cell-btn is-zero">`.
-- 하위 메뉴 edu1/edu2는 team 파라미터 전달. 셀 클릭 시 `/performance/monthly-amounts/deals`, 정렬 amount>0 → expectedAmount → dealName ASC, 모달 테이블 16컬럼(카테고리 포함) fixed colgroup.
+- 화면은 2025/2026 연도 토글을 가지며, 2026 탭에서만 `26 1H`, `26 1Q`, `26 2Q` 집계 칼럼을 `구분` 오른쪽에 추가 노출한다. 이 집계는 API 필드가 아니라 프런트에서 월별 값 합산으로 계산한다.
+- 요약표와 세그먼트 카드표는 동일 `colgroup` 규칙을 공유하며, 2026 분기/집계 컬럼은 고대비 컬러링을 사용한다. 현재월은 셀 fill이 아니라 칼럼 boundary(좌우 1px) 강조만 사용한다.
+- `조직별 퍼포먼스` 하위 메뉴(1팀/2팀/파트/온라인셀/공공)는 같은 renderer를 쓰되, `목표 체결액` 행을 placeholder `-`로 표시한다. `사업부 퍼포먼스 > 2026 월별 체결액`은 기존 타깃 값을 유지한다.
+- 하위 메뉴 edu1/edu2/part/public은 team/scope 파라미터를 전달한다. 셀 클릭 시 `/performance/monthly-amounts/deals`, 정렬 amount>0 → expectedAmount → dealName ASC, 모달 테이블 16컬럼(카테고리 포함) fixed colgroup.
 
 ### 문의 인입 (2팀 전용, `renderBizPerfMonthlyInquiries`)
-- API: `/performance/monthly-inquiries/summary` 한 번 호출 후 클라이언트에서 규모 버튼 필터(대/중견/중소/공공/대학교/기타/미기재, 기본 대기업) 적용. 버튼 `data-inq-size` + `is-active`/`aria-pressed`.
+- 화면은 `2025/2026` 연도 토글을 가진다. 토글 전환 시 `/performance/monthly-inquiries/summary?from=<year>-01&to=<year>-12`를 연도별로 호출하고, 선택 연도의 12개월만 렌더한다. 기본 연도는 `2026`.
+- API 응답 후 클라이언트에서 규모 버튼 필터(대/중견/중소/공공/대학교/기타/미기재, 기본 대기업) 적용. 버튼 `data-inq-size` + `is-active`/`aria-pressed`. 연도 전환 후에도 선택 규모 상태는 유지한다.
 - 테이블: sticky 2컬럼(과정포맷, 카테고리). parent 행(level1, rowKey=`<fmt>||__ALL__`)만 기본 노출, child 행(level2, rowKey=`<fmt>||<cat>`, cat=온라인/생성형AI/DT/직무별교육/스킬/기타/미기재)은 `display:none` 초기화.
 - parent `<tr.inq-parent>` 클릭 → 동일 parentId child 토글, caret ▸/▾ 전환. count=0은 span.is-zero, >0은 버튼(`data-perf-kind="monthly-inquiries" data-segment data-row data-month`).
 - 모달: 월별 체결액 모달 재사용, 제목만 “월별 문의 인입”, teamKey=edu2, kind="monthly-inquiries". 카테고리 컬럼 추가, 공백/null은 "미기재".
@@ -67,18 +72,12 @@ sync_source:
 
 ### 딜체크/QC
 - 메뉴 정의 `DEALCHECK_MENU_DEFS`: 최상단에 부모 `교육 전체 딜체크` 1개를 추가하고, 기존 부모 edu1/edu2와 자식 part1/part2/online 구조는 유지한다. 사이드바 라벨은 깊이에 따라 `↳` 접두어(online inquiries 메뉴만 suppressArrow).
-- API: `/deal-check/edu-all|edu1|edu2` (또는 `/deal-check?team=`). `edu-all`은 교육 1팀+교육 2팀 owner 합집합이며 공공은 제외. 정렬 orgWon2025Total desc → createdAt asc → dealId asc. memoCount join, planningSheetLink는 http(s)일 때만 링크.
+- API: `/deal-check/edu-all|edu1|edu2` (또는 `/deal-check?team=public`). `edu-all`은 교육 1팀+교육 2팀 owner 합집합이며 공공은 제외. 정렬 orgWon2025Total desc → createdAt asc → dealId asc. memoCount join, planningSheetLink는 http(s)일 때만 링크.
 - 자식 메뉴는 클라에서 owners→파트 룩업(`getDealCheckPartLookup`)으로 필터. 섹션 순서: 리텐션 S0~P2 비온라인→온라인→신규 온라인→리텐션 P3~P5 온라인→비온라인→신규 비온라인.
 - `교육 전체 딜체크`는 부모 화면만 추가하고 별도 하위 메뉴는 만들지 않는다. 이 화면의 `파트` 컬럼은 `1팀 1파트`, `2팀 온라인셀`처럼 팀+파트 문자열을 사용한다.
-- 상단 필터: `데이원 구성원` 오른쪽에 상태 체크박스(`Won/Lost 포함`, `Won만 보기`, `Lost만 보기`)를 제공. 기본값은 `Won/Lost 포함`만 체크, `Won만 보기`/`Lost만 보기`는 해제.
-  - `Won/Lost 포함` ON(only 체크 없음): SQL/Won/Lost 모두 표시.
-  - `Won/Lost 포함` OFF(only 체크 없음): SQL만 표시.
-  - `Won만 보기` ON: SQL/Lost 제외, Won만 표시.
-  - `Lost만 보기` ON: SQL/Won 제외, Lost만 표시.
-  - `Won만 보기` + `Lost만 보기` 동시 ON: SQL 제외, Won/Lost만 표시.
-  - `Won만 보기`/`Lost만 보기`는 `Won/Lost 포함`보다 우선 적용된다(only 모드 우선).
-  - `Won/Lost 포함`을 다시 ON으로 켜면 only 체크는 자동 해제된다.
-  - 상태 필터 선택 상태는 딜체크 메뉴별(`teamKey::partFilter`)로 유지.
+- 상단 필터: `데이원 구성원` 오른쪽에 `성사 가능성` single-choice 드롭다운(`전체`, `확정`, `높음`, `낮음`, `LOST`)과 상태 체크박스(`SQL`, `Won`, `Lost`)를 제공한다. 기본값은 `전체` + 세 상태 모두 체크다.
+- 상태 체크박스는 독립 토글이다. 체크 해제한 상태의 딜만 숨기고, 다시 체크하면 즉시 재표시한다. 상태/owner/probability 선택 상태는 딜체크 메뉴별(`teamKey::partFilter`)로 유지된다.
+- 성사 가능성 드롭다운은 `formatProbability(row.probability)` 표시값 기준으로 `/` 토큰 분리 후 exact match 한다. `전체`는 항상 통과다.
 - QC 화면: `/qc/deal-errors/summary` 카드 + `/qc/deal-errors/person` 모달. 규칙 세트는 R1~R16이 오더이며 UI는 R1~R15만 노출, issueCodes에서 R17 제거.
 
 ### 조직/People/Deal 뷰어
@@ -101,7 +100,7 @@ sync_source:
 - Close-rate: 과정포맷별 표, metric 순서 고정, close_rate 셀 버튼 없음.
 - DRI: orgWon2025 desc→cpTotal2025 desc 정렬, owners2025 우선순위(people.owner_json→deal.owner_json), target26 override 강조.
 - 딜체크: 모든 메뉴가 동일 renderer 사용, 정렬 orgWon2025Total desc→createdAt asc→dealId asc, memoCount 0 시 비활성 버튼, planningSheetLink http(s)만 링크.
-- 딜체크 상태 필터: `Won/Lost 포함`은 SQL 기준에 Won/Lost 포함 여부를 제어하고, `Won만 보기`/`Lost만 보기`는 only 모드로 우선 적용된다. only 둘 다 ON이면 Won/Lost만 표시, `Won/Lost 포함` ON 재선택 시 only는 리셋된다.
+- 딜체크 상태 필터: `SQL`, `Won`, `Lost` 3체크가 독립 토글이며 기본값은 모두 ON이다. `성사 가능성` 드롭다운은 `전체/확정/높음/낮음/LOST` 단일 선택이다.
 - 온라인 리텐션: start/end/amount/course_id 필수, end 2024-10~2027-12 범위 필터, 정렬 endDate asc→orgName asc→dealId asc.
 - JSON/StatePath 모달/딜 모달/DRI 모달은 ESC/백드롭/X로 닫혀야 하고 공유 DOM id를 사용해야 한다.
 
@@ -125,13 +124,12 @@ sync_source:
 - `/performance/monthly-inquiries/summary` → size 버튼 전환, parent/child 토글, 모달 카테고리(공백→미기재) 확인.
 - Close-rate 표에서 metric 순서/버튼 상태, deals 모달 분모 규칙 확인.
 - `/rank/2025-top100-counterparty-dri` → 검색/DRI/팀&파트 필터가 즉시 반영되고 정렬이 유지되는지, 행 클릭 시 detail 모달 열리는지 확인.
-- `/deal-check/edu-all|edu1|edu2` → 정렬/메모 버튼/partFilter 적용(자식 메뉴) 확인; planningSheetLink http(s)일 때만 링크.
+- `/deal-check/edu-all|edu1|edu2|public` → 정렬/메모 버튼/partFilter 적용(자식 메뉴) 확인; planningSheetLink http(s)일 때만 링크.
 - `교육 전체 딜체크`가 `교육 1팀 딜체크` 위에 부모 메뉴로 추가되고 하위 메뉴가 없는지, owner filter가 1팀+2팀 합집합인지, `파트` 컬럼이 팀+파트 문자열로 보이는지 확인.
-- 딜체크 상단 상태 필터(`Won/Lost 포함`, `Won만 보기`, `Lost만 보기`)가 경우의 수별로 동작하는지 확인:
-  - include ON + only OFF=전체(SQL/Won/Lost), include OFF + only OFF=SQL만.
-  - won only/lost only/both only에서 각각 Won만/Lost만/Won+Lost만 표시되는지.
-  - include를 ON으로 다시 켰을 때 only가 해제되는지.
-  - 메뉴별 선택 상태가 복원되는지.
+- 딜체크 상단 필터가 새 규칙대로 동작하는지 확인:
+  - `SQL/Won/Lost` 3체크가 독립적으로 on/off 되는지.
+  - `성사 가능성` 드롭다운(`전체/확정/높음/낮음/LOST`)이 즉시 반영되는지.
+  - 메뉴별(`teamKey::partFilter`)로 owner/status/probability 선택 상태가 각각 복원되는지.
 - 온라인 리텐션 → endDate asc 정렬, 금액/코스ID/start/end 모두 존재하는지 확인.
 - JSON/StatePath/딜 모달이 ESC/백드롭으로 닫히고 내용이 해당 데이터와 일치하는지 확인.
 - JSON/메모/Daily Report 모달이 `deals-modal-wide` 규격(가로 96vw~1400px, 세로 90vh~900px)으로 열리고, 긴 한 줄 텍스트에서 가로 스크롤이 실제로 표시되는지 확인.
@@ -140,4 +138,4 @@ sync_source:
 - 단일 HTML에 모든 로직/스타일/데이터 캐시가 들어있어 변경 영향이 광범위하다.
 - 딜 모달/JSON/StatePath 모달이 공유되어 상태 충돌 위험이 있으므로 모달 초기화 유틸이 필요하다.
 - 백엔드 상수(ONLINE_COURSE_FORMATS, PL_2026_TARGET 등)와 프런트 상수가 중복되어 상수 변경 시 양쪽 동기화가 필요하다.
-- 성능/문의/체결률/DRI/StatePath/Targetboard가 모두 클라이언트 필터/계산을 사용하므로 서버 파라미터 추가 시 프런트 상태/캐시 구조를 함께 변경해야 한다.
+- 성능/문의/체결률/DRI/StatePath/Targetboard/딜체크가 모두 클라이언트 필터/계산을 사용하므로 서버 파라미터 추가 시 프런트 상태/캐시 구조를 함께 변경해야 한다.

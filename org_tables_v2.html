@@ -3030,6 +3030,7 @@
         loading: false,
         error: null,
         summaryCache: new Map(),
+        selectedYear: 2026,
         ui: { sizeGroup: "대기업" },
       },
       perfMonthlyCloseRate: {
@@ -5154,14 +5155,16 @@
       return fetchJson(`/performance/monthly-amounts/deals?${params.toString()}`);
     }
 
-    async function loadBizPerfInquirySummary() {
-      const cacheKey = "all";
+    async function loadBizPerfInquirySummary(year = 2026) {
+      const normalizedYear = normalizePerfMonthlyYear(year);
+      const cacheKey = `all|${normalizedYear}`;
       if (state.perfMonthlyInquiries.summaryCache.has(cacheKey)) {
         return state.perfMonthlyInquiries.summaryCache.get(cacheKey);
       }
       const params = new URLSearchParams();
-      params.set("from", "2025-01");
-      params.set("to", "2026-12");
+      const range = getPerfMonthlyRange(normalizedYear);
+      params.set("from", range.from);
+      params.set("to", range.to);
       const data = await fetchJson(`/performance/monthly-inquiries/summary?${params.toString()}`);
       state.perfMonthlyInquiries.summaryCache.set(cacheKey, data);
       return data;
@@ -11539,7 +11542,7 @@
       await renderYear(state.perfMonthly.selectedYear);
     }
 
-    function renderBizPerfMonthlyInquiriesTable(rows, months = [], selectedSize = "대기업") {
+    function renderBizPerfMonthlyInquiriesTable(rows, months = [], selectedSize = "대기업", rangeLabel = "2025-01 ~ 2026-12") {
       if (!rows || !rows.length || !months.length) {
         return `<div class="card"><div class="muted">데이터가 없습니다.</div></div>`;
       }
@@ -11635,7 +11638,7 @@
           <div class="control-row">
             <h3>문의 인입 현황 (딜 생성 건수)</h3>
             <div class="spacer"></div>
-            <span class="pill muted">2025-01 ~ 2026-12</span>
+            <span class="pill muted">${escapeHtml(rangeLabel)}</span>
           </div>
           <div class="table-wrap full perf-table-wrap">
             <table class="perf-table mp-monthly-table">
@@ -11662,97 +11665,134 @@
     async function renderBizPerfMonthlyInquiries(contentRoot, options = {}) {
       const teamKey = options.teamKey || null;
       const titleText = options.label || "월별 문의 인입 현황";
-      state.perfMonthlyInquiries.loading = true;
-      state.perfMonthlyInquiries.error = null;
+      state.perfMonthlyInquiries.selectedYear = normalizePerfMonthlyYear(state.perfMonthlyInquiries.selectedYear);
       const SIZE_ORDER = ["대기업", "중견기업", "중소기업", "공공기관", "대학교", "기타", "미기재"];
-      contentRoot.innerHTML = `
-        <section class="card compact-header">
-          <div class="control-row">
-            <div>
-              <h1>${escapeHtml(titleText)}</h1>
-              <div class="muted" id="perfMonthlyInquiryMeta">단위: 건 / 클릭 시 딜 목록 표시</div>
+      const renderFrame = (year) => {
+        const normalizedYear = normalizePerfMonthlyYear(year);
+        const range = getPerfMonthlyRange(normalizedYear);
+        contentRoot.innerHTML = `
+          <section class="card compact-header">
+            <div class="control-row">
+              <div>
+                <h1>${escapeHtml(titleText)}</h1>
+                <div class="muted" id="perfMonthlyInquiryMeta">단위: 건 / 클릭 시 딜 목록 표시</div>
+              </div>
+              <div class="spacer"></div>
+              <div id="perfMonthlyInquiryYearToggle" class="seg-tabs">
+                <button type="button" class="seg-btn ${normalizedYear === 2025 ? "active" : ""}" data-perf-monthly-inquiry-year="2025" aria-pressed="${normalizedYear === 2025}">2025</button>
+                <button type="button" class="seg-btn ${normalizedYear === 2026 ? "active" : ""}" data-perf-monthly-inquiry-year="2026" aria-pressed="${normalizedYear === 2026}">2026</button>
+              </div>
+              <span class="pill muted">${range.from} ~ ${range.to}</span>
             </div>
-            <div class="spacer"></div>
-            <span class="pill muted">2025-01 ~ 2026-12</span>
+          </section>
+          <div class="inq-sizebar" id="inqSizeBar"></div>
+          <div id="perfMonthlyInquiryTable">
+            <div class="muted card" style="padding: 12px;">불러오는 중...</div>
           </div>
-        </section>
-        <div class="inq-sizebar" id="inqSizeBar"></div>
-        <div id="perfMonthlyInquiryTable">
-          <div class="muted card" style="padding: 12px;">불러오는 중...</div>
-        </div>
-      `;
+        `;
+      };
 
-      const tableRoot = document.getElementById("perfMonthlyInquiryTable");
-      const metaEl = document.getElementById("perfMonthlyInquiryMeta");
-      const sizeBar = document.getElementById("inqSizeBar");
-      let latestData = null;
+      const renderYear = async (year) => {
+        const normalizedYear = normalizePerfMonthlyYear(year);
+        state.perfMonthlyInquiries.selectedYear = normalizedYear;
+        state.perfMonthlyInquiries.loading = true;
+        state.perfMonthlyInquiries.error = null;
+        renderFrame(normalizedYear);
 
-      const renderSizeBar = (selected) =>
-        SIZE_ORDER.map(
-          (s) =>
-            `<button type="button" class="inq-size-btn ${s === selected ? "is-active" : ""}" data-inq-size="${s}" aria-pressed="${
-              s === selected
-            }">${s}</button>`,
-        ).join("");
+        const tableRoot = document.getElementById("perfMonthlyInquiryTable");
+        const metaEl = document.getElementById("perfMonthlyInquiryMeta");
+        const sizeBar = document.getElementById("inqSizeBar");
+        let latestData = null;
 
-      const drawTable = (data) => {
-        const selected = state.perfMonthlyInquiries.ui.sizeGroup || "대기업";
-        if (sizeBar) {
-          sizeBar.innerHTML = renderSizeBar(selected);
-        }
-        if (metaEl) {
-          const snapshot = data.meta && data.meta.snapshot_version ? ` · ${data.meta.snapshot_version}` : "";
-          metaEl.textContent = `단위: 건 / 클릭 시 딜 목록 표시${snapshot}`;
-        }
+        const renderSizeBar = (selected) =>
+          SIZE_ORDER.map(
+            (s) =>
+              `<button type="button" class="inq-size-btn ${s === selected ? "is-active" : ""}" data-inq-size="${s}" aria-pressed="${
+                s === selected
+              }">${s}</button>`,
+          ).join("");
+
+        const drawTable = (data) => {
+          const selected = state.perfMonthlyInquiries.ui.sizeGroup || "대기업";
+          if (sizeBar) {
+            sizeBar.innerHTML = renderSizeBar(selected);
+          }
+          if (metaEl) {
+            const snapshot = data.meta && data.meta.snapshot_version ? ` · ${data.meta.snapshot_version}` : "";
+            metaEl.textContent = `단위: 건 / 클릭 시 딜 목록 표시${snapshot}`;
+          }
+          const months = pickPerfMonthlyMonthsByYear(data.months || [], normalizedYear);
+          const range = getPerfMonthlyRange(normalizedYear);
           let rowsForSize = (data.rows || []).filter((r) => r.sizeGroup === selected);
           if (rowsForSize.some((r) => r.sizeGroup !== selected)) {
             console.warn("Monthly inquiries rows contained mixed sizeGroup; enforcing selected filter", { selected });
             rowsForSize = rowsForSize.filter((r) => r.sizeGroup === selected);
           }
-        tableRoot.innerHTML = renderBizPerfMonthlyInquiriesTable(rowsForSize, data.months || [], selected);
-      };
+          tableRoot.innerHTML = renderBizPerfMonthlyInquiriesTable(
+            rowsForSize,
+            months,
+            selected,
+            `${range.from} ~ ${range.to}`,
+          );
+        };
 
-      const attachHandlers = () => {
-        tableRoot.addEventListener("click", async (e) => {
-          const btn = e.target.closest("button[data-perf-cell][data-perf-kind='monthly-inquiries']");
-          if (btn) {
-            const segment = btn.getAttribute("data-segment");
-            const row = btn.getAttribute("data-row");
-            const month = btn.getAttribute("data-month");
-            await openBizPerfDealsModal(segment, row, month, { teamKey, kind: "monthly-inquiries" });
-            return;
+        const attachHandlers = () => {
+          const yearToggleRoot = document.getElementById("perfMonthlyInquiryYearToggle");
+          if (yearToggleRoot) {
+            yearToggleRoot.querySelectorAll("[data-perf-monthly-inquiry-year]").forEach((btn) => {
+              btn.addEventListener("click", () => {
+                if (state.perfMonthlyInquiries.loading) return;
+                const nextYear = normalizePerfMonthlyYear(btn.getAttribute("data-perf-monthly-inquiry-year"));
+                if (nextYear === state.perfMonthlyInquiries.selectedYear) return;
+                void renderYear(nextYear);
+              });
+            });
           }
-          const parentRow = e.target.closest("tr.inq-parent");
-          if (!parentRow) return;
-          const pid = parentRow.getAttribute("data-parent-id");
-          const expanded = parentRow.getAttribute("aria-expanded") === "true";
-          parentRow.setAttribute("aria-expanded", expanded ? "false" : "true");
-          const caret = parentRow.querySelector(".inq-caret");
-          if (caret) caret.textContent = expanded ? "▸" : "▾";
-          tableRoot.querySelectorAll(`tr.inq-child[data-parent-id="${pid}"]`).forEach((tr) => {
-            tr.style.display = expanded ? "none" : "";
+          tableRoot.addEventListener("click", async (e) => {
+            const btn = e.target.closest("button[data-perf-cell][data-perf-kind='monthly-inquiries']");
+            if (btn) {
+              const segment = btn.getAttribute("data-segment");
+              const row = btn.getAttribute("data-row");
+              const month = btn.getAttribute("data-month");
+              await openBizPerfDealsModal(segment, row, month, { teamKey, kind: "monthly-inquiries" });
+              return;
+            }
+            const parentRow = e.target.closest("tr.inq-parent");
+            if (!parentRow) return;
+            const pid = parentRow.getAttribute("data-parent-id");
+            const expanded = parentRow.getAttribute("aria-expanded") === "true";
+            parentRow.setAttribute("aria-expanded", expanded ? "false" : "true");
+            const caret = parentRow.querySelector(".inq-caret");
+            if (caret) caret.textContent = expanded ? "▸" : "▾";
+            tableRoot.querySelectorAll(`tr.inq-child[data-parent-id="${pid}"]`).forEach((tr) => {
+              tr.style.display = expanded ? "none" : "";
+            });
           });
-        });
-        sizeBar.addEventListener("click", (e) => {
-          const btn = e.target.closest("button[data-inq-size]");
-          if (!btn) return;
-          const sg = btn.getAttribute("data-inq-size");
-          state.perfMonthlyInquiries.ui.sizeGroup = sg;
+          if (sizeBar) {
+            sizeBar.addEventListener("click", (e) => {
+              const btn = e.target.closest("button[data-inq-size]");
+              if (!btn) return;
+              const sg = btn.getAttribute("data-inq-size");
+              state.perfMonthlyInquiries.ui.sizeGroup = sg;
+              drawTable(latestData);
+            });
+          }
+        };
+
+        try {
+          latestData = await loadBizPerfInquirySummary(normalizedYear);
           drawTable(latestData);
-        });
+          attachHandlers();
+        } catch (err) {
+          state.perfMonthlyInquiries.error = err;
+          if (tableRoot) tableRoot.innerHTML = `<div class="muted card" style="padding:12px;">오류: ${err.message}</div>`;
+          showToast(`문의 인입 현황을 불러오지 못했습니다: ${err.message}`, "error");
+        } finally {
+          state.perfMonthlyInquiries.loading = false;
+        }
       };
 
-      try {
-        latestData = await loadBizPerfInquirySummary();
-        drawTable(latestData);
-        attachHandlers();
-      } catch (err) {
-        state.perfMonthlyInquiries.error = err;
-        if (tableRoot) tableRoot.innerHTML = `<div class="muted card" style="padding:12px;">오류: ${err.message}</div>`;
-        showToast(`문의 인입 현황을 불러오지 못했습니다: ${err.message}`, "error");
-      } finally {
-        state.perfMonthlyInquiries.loading = false;
-      }
+      await renderYear(state.perfMonthlyInquiries.selectedYear);
     }
 
     async function renderBizPerfMonthlyCloseRate2026(contentRoot, options = {}) {

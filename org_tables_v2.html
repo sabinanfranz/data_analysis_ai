@@ -2852,8 +2852,8 @@
     const MENU_SECTION_STORAGE_PREFIX = "menu_section_open__";
     const DEFAULT_MENU_ID = "target-2026";
     const DEFAULT_PNL_ASSUMPTIONS = {
-      onlineContribMarginRate: 0.85,
-      offlineContribMarginRate: 0.55,
+      onlineContribCostRate: 0.125,
+      offlineContribCostRate: 0.40,
       monthlyProdCost: 0.2,
       monthlyMktCost: 0.3,
       monthlyLaborCost: 6.0,
@@ -2861,8 +2861,8 @@
 
     function getDefaultPnlDrafts() {
       return {
-        onlineContribMarginRate: (DEFAULT_PNL_ASSUMPTIONS.onlineContribMarginRate * 100).toFixed(1),
-        offlineContribMarginRate: (DEFAULT_PNL_ASSUMPTIONS.offlineContribMarginRate * 100).toFixed(1),
+        onlineContribCostRate: (DEFAULT_PNL_ASSUMPTIONS.onlineContribCostRate * 100).toFixed(1),
+        offlineContribCostRate: (DEFAULT_PNL_ASSUMPTIONS.offlineContribCostRate * 100).toFixed(1),
         monthlyProdCost: DEFAULT_PNL_ASSUMPTIONS.monthlyProdCost.toFixed(1),
         monthlyMktCost: DEFAULT_PNL_ASSUMPTIONS.monthlyMktCost.toFixed(1),
         monthlyLaborCost: DEFAULT_PNL_ASSUMPTIONS.monthlyLaborCost.toFixed(1),
@@ -5770,11 +5770,11 @@
         return has ? total : null;
       };
 
-      const onlineMargin = Number(
-        assumptions.onlineContribMarginRate ?? DEFAULT_PNL_ASSUMPTIONS.onlineContribMarginRate
+      const onlineCostRate = Number(
+        assumptions.onlineContribCostRate ?? DEFAULT_PNL_ASSUMPTIONS.onlineContribCostRate
       );
-      const offlineMargin = Number(
-        assumptions.offlineContribMarginRate ?? DEFAULT_PNL_ASSUMPTIONS.offlineContribMarginRate
+      const offlineCostRate = Number(
+        assumptions.offlineContribCostRate ?? DEFAULT_PNL_ASSUMPTIONS.offlineContribCostRate
       );
       const monthlyProd = Number(assumptions.monthlyProdCost ?? DEFAULT_PNL_ASSUMPTIONS.monthlyProdCost);
       const monthlyMkt = Number(assumptions.monthlyMktCost ?? DEFAULT_PNL_ASSUMPTIONS.monthlyMktCost);
@@ -5789,12 +5789,12 @@
         const revOffline = toNum(rowMap.get("REV_OFFLINE")?.values?.[suffix]);
         const revTotalVal = toNum(rowMap.get("REV_TOTAL")?.values?.[suffix]) ?? sumNullable([revOnline, revOffline]);
 
-        const contribOnline = revOnline === null ? null : revOnline * (1 - onlineMargin);
-        const contribOffline = revOffline === null ? null : revOffline * (1 - offlineMargin);
+        const contribOnline = revOnline === null ? null : revOnline * onlineCostRate;
+        const contribOffline = revOffline === null ? null : revOffline * offlineCostRate;
         const contribTotal = sumNullable([contribOnline, contribOffline]);
 
-        const profitOnline = revOnline === null ? null : revOnline - (contribOnline ?? 0);
-        const profitOffline = revOffline === null ? null : revOffline - (contribOffline ?? 0);
+        const profitOnline = revOnline === null ? null : revOnline - contribOnline;
+        const profitOffline = revOffline === null ? null : revOffline - contribOffline;
         const profitTotal = sumNullable([profitOnline, profitOffline]);
 
         const fixedOther = revOffline === null ? null : 1.0 + revOffline * 0.05;
@@ -12139,8 +12139,8 @@
         lines.push(metaTokens.filter(Boolean).join(" · "));
         const a = state.perfPlProgress2026.assumptions;
         lines.push(
-          `공헌이익률 온라인 ${((a.onlineContribMarginRate ?? 0) * 100).toFixed(1)}% · 출강 ${(
-            (a.offlineContribMarginRate ?? 0) * 100
+          `공헌비용률 온라인 ${((a.onlineContribCostRate ?? 0) * 100).toFixed(1)}% · 출강 ${(
+            (a.offlineContribCostRate ?? 0) * 100
           ).toFixed(1)}%`
         );
         lines.push(
@@ -12315,8 +12315,8 @@
         const draft = state.perfPlProgress2026.assumptionDraft || getDefaultPnlDrafts();
         state.perfPlProgress2026.assumptionDraft = draft;
         const fields = [
-          { key: "onlineContribMarginRate", label: "공헌이익률(온라인)", unit: "%", type: "rate" },
-          { key: "offlineContribMarginRate", label: "공헌이익률(출강)", unit: "%", type: "rate" },
+          { key: "onlineContribCostRate", label: "공헌비용률(온라인)", unit: "%", type: "rate" },
+          { key: "offlineContribCostRate", label: "공헌비용률(출강)", unit: "%", type: "rate" },
           { key: "monthlyProdCost", label: "월 제작비", unit: "억", type: "amount" },
           { key: "monthlyMktCost", label: "월 마케팅비", unit: "억", type: "amount" },
           { key: "monthlyLaborCost", label: "월 인건비", unit: "억", type: "amount" },

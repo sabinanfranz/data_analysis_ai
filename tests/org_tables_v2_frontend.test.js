@@ -1040,6 +1040,96 @@ test("renderBizPerfMonthlyInquiries supports year toggle and renders selected ye
   assert.strictEqual(fetchCalls.length, 2, "year-specific inquiry summary requests should be cached separately");
 });
 
+test("P&L assumptions defaults and recalculation use contribution cost rates", async () => {
+  const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
+  const scriptContent = extractScript(html);
+
+  const docStub = createDocumentStub();
+  const sandbox = {
+    console,
+    window: { location: { origin: "http://localhost" } },
+    document: docStub,
+    fetch: async () => ({ ok: true, json: async () => ({ items: [] }), text: async () => "{}" }),
+    setTimeout,
+    clearTimeout,
+    Map,
+    Set,
+    URL,
+    URLSearchParams,
+  };
+  sandbox.global = sandbox;
+
+  const ctx = vm.createContext(sandbox);
+  vm.runInContext(scriptContent, ctx);
+
+  const defaults = vm.runInContext("DEFAULT_PNL_ASSUMPTIONS", ctx);
+  const applyAssumptionsToPnlData = vm.runInContext("applyAssumptionsToPnlData", ctx);
+
+  assert.strictEqual(defaults.onlineContribCostRate, 0.125);
+  assert.strictEqual(defaults.offlineContribCostRate, 0.4);
+  assert.ok(scriptContent.includes("공헌비용률(온라인)"));
+  assert.ok(scriptContent.includes("공헌비용률(출강)"));
+
+  const rowKeys = [
+    "REV_TOTAL",
+    "REV_ONLINE",
+    "REV_OFFLINE",
+    "COST_CONTRIB_TOTAL",
+    "COST_CONTRIB_ONLINE",
+    "COST_CONTRIB_OFFLINE",
+    "PROFIT_CONTRIB_TOTAL",
+    "PROFIT_CONTRIB_ONLINE",
+    "PROFIT_CONTRIB_OFFLINE",
+    "COST_FIXED_TOTAL",
+    "COST_FIXED_PROD",
+    "COST_FIXED_MKT",
+    "COST_FIXED_LABOR",
+    "COST_FIXED_RENT",
+    "COST_FIXED_OTHER",
+    "OP",
+    "OP_MARGIN",
+  ];
+  const rows = rowKeys.map((key) => ({
+    key,
+    label: key,
+    format: key === "OP_MARGIN" ? "percent" : "eok",
+    values: {
+      "2601_E": key === "REV_TOTAL" ? 3.0 : key === "REV_ONLINE" ? 1.0 : key === "REV_OFFLINE" ? 2.0 : null,
+      "Y2026_E": key === "REV_TOTAL" ? 3.0 : key === "REV_ONLINE" ? 1.0 : key === "REV_OFFLINE" ? 2.0 : null,
+    },
+  }));
+
+  const adjusted = applyAssumptionsToPnlData(
+    {
+      year: 2026,
+      months: ["2601"],
+      columns: [
+        { key: "Y2026_E", kind: "YEAR", variant: "E" },
+        { key: "2601_E", kind: "MONTH", variant: "E", month: "2601" },
+      ],
+      rows,
+    },
+    defaults,
+  );
+  const rowMap = new Map(adjusted.rows.map((row) => [row.key, row]));
+  const approx = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-9, `${actual} !== ${expected}`);
+
+  approx(rowMap.get("COST_CONTRIB_ONLINE").values["2601_E"], 0.125);
+  approx(rowMap.get("COST_CONTRIB_OFFLINE").values["2601_E"], 0.8);
+  approx(rowMap.get("COST_CONTRIB_TOTAL").values["2601_E"], 0.925);
+  approx(rowMap.get("PROFIT_CONTRIB_ONLINE").values["2601_E"], 0.875);
+  approx(rowMap.get("PROFIT_CONTRIB_OFFLINE").values["2601_E"], 1.2);
+  approx(rowMap.get("PROFIT_CONTRIB_TOTAL").values["2601_E"], 2.075);
+  approx(rowMap.get("COST_FIXED_PROD").values["2601_E"], 0.2);
+  approx(rowMap.get("COST_FIXED_MKT").values["2601_E"], 0.3);
+  approx(rowMap.get("COST_FIXED_LABOR").values["2601_E"], 6);
+  approx(rowMap.get("COST_FIXED_RENT").values["2601_E"], 0.9);
+  approx(rowMap.get("COST_FIXED_OTHER").values["2601_E"], 1.1);
+  approx(rowMap.get("COST_FIXED_TOTAL").values["2601_E"], 8.5);
+  approx(rowMap.get("OP").values["2601_E"], -6.425);
+  approx(rowMap.get("OP_MARGIN").values["2601_E"], -214.16666666666666);
+});
+
 test("renderWonSummary shows new columns and team/part/DRI", async () => {
   const html = fs.readFileSync(path.join(process.cwd(), "org_tables_v2.html"), "utf8");
   const scriptContent = extractScript(html);

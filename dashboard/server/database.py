@@ -6141,8 +6141,8 @@ def get_pl_progress_summary(year: int = 2026, db_path: Path = DB_PATH) -> Dict[s
             online_rev = data_variant[variant][month]["online"]
             offline_rev = data_variant[variant][month]["offline"]
             total_rev = online_rev + offline_rev
-            contrib_cost_online = online_rev * 0.15
-            contrib_cost_offline = offline_rev * 0.45
+            contrib_cost_online = online_rev * 0.125
+            contrib_cost_offline = offline_rev * 0.40
             contrib_cost_total = contrib_cost_online + contrib_cost_offline
             profit_online = online_rev - contrib_cost_online
             profit_offline = offline_rev - contrib_cost_offline

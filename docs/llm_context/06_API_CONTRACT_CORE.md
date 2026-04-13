@@ -1,6 +1,6 @@
 ---
 title: 핵심 조회 API 계약 (org_tables_v2.html 사용)
-last_synced: 2026-02-04
+last_synced: 2026-04-13
 sync_source:
   - dashboard/server/org_tables_api.py
   - dashboard/server/database.py
@@ -70,13 +70,14 @@ sync_source:
 - `GET /api/performance/monthly-close-rate/deals?segment=&row=&month=&cust=all|new|existing&scope=...&course=&metric=`
   - row 형식 `<course_group>||<metric>` 필수 또는 course+metric로 조합. month YYMM 필수. metric ∈ {total,confirmed,high,low,lost,close_rate}. metric=total|close_rate는 분모 전체 딜, 나머지는 해당 버킷만 포함. meta에 numerator/denominator/close_rate 포함.
 - `GET /api/performance/pl-progress-2026/summary?year=2026`
-  - columns: 연간 T/E + 월별 T/E(YYMM). Target(T)=`PL_2026_TARGET`; Expected(E)=recognized_by_month(억 단위, 소수 4). meta.excluded {missing_dates, missing_amount, invalid_date_range}. 캐시 `_PL_PROGRESS_SUMMARY_CACHE`.
+  - columns: 연간 T/E + 월별 T/E(YYMM). Target(T)=`PL_2026_TARGET_FULL` 하드코딩 값. Expected(E)=recognized_by_month(억 단위, 소수 4) 기반 계산이며 기본 공헌비용률은 온라인 `12.5%`, 출강 `40.0%`, 고정비는 제작비 `0.2`, 마케팅비 `0.3`, 인건비 `6.0`, 임대료=`인건비×15%`, 기타=`1.0+출강매출×5%`. meta.excluded {missing_dates, missing_amount, invalid_date_range}. 캐시 `_PL_PROGRESS_SUMMARY_CACHE`.
 - `GET /api/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E&limit=500&offset=0`
   - variant T는 항상 빈 리스트. 정렬: recognizedAmount DESC → amountUsed DESC → dealName DESC. limit 1–2000.
 
 ### Deal Check / QC
-- `GET /api/deal-check?team=edu_all|edu1|edu2` (필수) → 상태 SQL/Won/Lost/LOST 딜 중 팀 소유자 포함. `edu_all`은 교육 1팀+교육 2팀 owner 합집합이며 공공은 제외. window: Won/Lost는 최근 10 영업일 내(계약/LOST/expected). 정렬 orgWon2025Total DESC → createdAt ASC → dealId ASC. 필드: memoCount, planningSheetLink(컬럼 없으면 null), isRetention(orgWon2025Total>0), owner_names, expectedAmount, course_format 등.
+- `GET /api/deal-check?team=edu_all|edu1|edu2|public` (필수) → 상태 SQL/Won/Lost/LOST 딜 중 팀 소유자 포함. `edu_all`은 교육 1팀+교육 2팀 owner 합집합이며 공공은 제외. window: Won/Lost는 최근 10 영업일 내(계약/LOST/expected). 정렬 orgWon2025Total DESC → createdAt ASC → dealId ASC. 필드: memoCount, planningSheetLink(컬럼 없으면 null), isRetention(orgWon2025Total>0), owner_names, expectedAmount, course_format, probability 등.
 - `GET /api/deal-check/edu-all` / `.../edu1` / `.../edu2` → 위 래퍼.
+- 프런트는 위 raw payload 위에서 추가로 `partFilter`, `데이원 구성원`, `상태(SQL/Won/Lost)` 체크박스, `성사 가능성(전체/확정/높음/낮음/LOST)` 드롭다운을 클라이언트 후처리로 적용한다. 서버 응답 스키마는 이 UI 필터 추가로 바뀌지 않는다.
 - QC
   - `GET /api/qc/deal-errors/summary?team=all|edu1|edu2|public`
   - `GET /api/qc/deal-errors/person?owner=&team=`

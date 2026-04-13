@@ -32,7 +32,7 @@ sync_source:
 
 ### P&L 2026 (`renderBizPerfPlProgress2026`)
 - API: `/performance/pl-progress-2026/summary` → 연간 T/E + 2601~2612 T/E. 현재 YYMM 헤더/셀에 `is-current-month-group`/`is-current-month` 클래스.
-- Assumptions 바: 온라인/출강 공헌이익률, 월 제작/마케팅/인건비를 입력·증감 버튼으로 수정, dirty 상태는 `is-dirty` 클래스. `pnlAssumpInfoBtn` 모달에 제외 건수·snapshot_version·가정 노출, `pnlResetAssumptionsBtn`으로 기본값 복구.
+- Assumptions 바: 온라인/출강 공헌비용률, 월 제작/마케팅/인건비를 입력·증감 버튼으로 수정, dirty 상태는 `is-dirty` 클래스. 기본값은 온라인 `12.5%`, 출강 `40.0%`, 제작비 `0.2`, 마케팅비 `0.3`, 인건비 `6.0`. `pnlAssumpInfoBtn` 모달에 제외 건수·snapshot_version·가정 노출, `pnlResetAssumptionsBtn`으로 기본값 복구.
 - 클릭 가능 셀: 월별 E 컬럼의 REV_TOTAL/REV_ONLINE/REV_OFFLINE만 버튼(`data-pl-cell`)으로, `/performance/pl-progress-2026/deals` 호출. 정렬 recognizedAmount desc → amountUsed desc → dealName desc. variant=T는 항상 빈 결과.
 - P&L 테이블은 `pnl-table` 전용 레이아웃을 사용하며, `항목`/`연간 T/E(2026 전체)` 칼럼은 content-fit 폭, 월별 칼럼은 별도 최소폭을 유지한다. 최근 월별 체결액 표 개선은 P&L 공통 폭 규칙에 영향을 주지 않아야 한다.
 

@@ -86,16 +86,28 @@ class PlProgress2026Test(unittest.TestCase):
             rows = {row["key"]: row for row in summary["rows"]}
             rev_online = rows["REV_ONLINE"]["values"]
             rev_offline = rows["REV_OFFLINE"]["values"]
+            cost_online = rows["COST_CONTRIB_ONLINE"]["values"]
+            cost_offline = rows["COST_CONTRIB_OFFLINE"]["values"]
+            profit_online = rows["PROFIT_CONTRIB_ONLINE"]["values"]
+            profit_offline = rows["PROFIT_CONTRIB_OFFLINE"]["values"]
 
             # Target 그대로 반영 (온라인+출강 합계)
-            self.assertAlmostEqual(rows["REV_TOTAL"]["values"]["2601_T"], 5.8)
-            self.assertAlmostEqual(rows["REV_OFFLINE"]["values"]["2605_T"], 12.4)
+            self.assertAlmostEqual(rows["REV_TOTAL"]["values"]["2601_T"], 8.2)
+            self.assertAlmostEqual(rows["REV_OFFLINE"]["values"]["2605_T"], 12.5)
 
             # Recognized amounts (E) from deals
             self.assertAlmostEqual(rev_online["2601_E"], 1.0)
             self.assertAlmostEqual(rev_offline["2601_E"], 34 / 31, places=4)  # 17/31 * 2억 / 1e8
             self.assertAlmostEqual(rev_offline["2602_E"], 28 / 31, places=4)
             self.assertAlmostEqual(rev_offline["2603_E"], 3.0)
+
+            # New cost-rate assumptions in base E: online 12.5%, offline 40.0%
+            self.assertAlmostEqual(cost_online["2601_E"], 0.125, places=4)
+            self.assertAlmostEqual(cost_offline["2601_E"], (34 / 31) * 0.40, places=4)
+            self.assertAlmostEqual(cost_offline["2602_E"], (28 / 31) * 0.40, places=4)
+            self.assertAlmostEqual(cost_offline["2603_E"], 1.2, places=4)
+            self.assertAlmostEqual(profit_online["2601_E"], 0.875, places=4)
+            self.assertAlmostEqual(profit_offline["2601_E"], (34 / 31) * 0.60, places=4)
 
             meta_excluded = summary["meta"]["excluded"]
             self.assertEqual(meta_excluded.get("missing_dates"), 1)

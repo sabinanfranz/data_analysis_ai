@@ -70,7 +70,7 @@ sync_source:
 - `GET /api/performance/monthly-close-rate/deals?segment=&row=&month=&cust=all|new|existing&scope=...&course=&metric=`
   - row 형식 `<course_group>||<metric>` 필수 또는 course+metric로 조합. month YYMM 필수. metric ∈ {total,confirmed,high,low,lost,close_rate}. metric=total|close_rate는 분모 전체 딜, 나머지는 해당 버킷만 포함. meta에 numerator/denominator/close_rate 포함.
 - `GET /api/performance/pl-progress-2026/summary?year=2026`
-  - columns: 연간 T/E + 월별 T/E(YYMM). Target(T)=`PL_2026_TARGET_FULL` 하드코딩 값. Expected(E)=recognized_by_month(억 단위, 소수 4) 기반 계산이며 기본 공헌비용률은 온라인 `12.5%`, 출강 `40.0%`, 고정비는 제작비 `0.2`, 마케팅비 `0.3`, 인건비 `6.0`, 임대료=`인건비×15%`, 기타=`1.0+출강매출×5%`. meta.excluded {missing_dates, missing_amount, invalid_date_range}. 캐시 `_PL_PROGRESS_SUMMARY_CACHE`.
+  - columns: 연간 T/E + 월별 T/E(YYMM). Target(T)=`PL_2026_TARGET_FULL` 하드코딩 값. Expected(E)=recognized_by_month(억 단위, 소수 4) 기반 계산이며 기본 공헌비용률은 온라인 `12.5%`, 출강 `40.0%`, 고정비는 제작비 `0.2`, 마케팅비 `0.15`, 인건비 `6.0`, 임대료=`인건비×15%`, 기타=`1.0+출강매출×5%`. meta.excluded {missing_dates, missing_amount, invalid_date_range}. 캐시 `_PL_PROGRESS_SUMMARY_CACHE`.
 - `GET /api/performance/pl-progress-2026/deals?year=2026&month=YYMM&rail=TOTAL|ONLINE|OFFLINE&variant=E&limit=500&offset=0`
   - variant T는 항상 빈 리스트. 정렬: recognizedAmount DESC → amountUsed DESC → dealName DESC. limit 1–2000.
 

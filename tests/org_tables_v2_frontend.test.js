@@ -1121,13 +1121,13 @@ test("P&L assumptions defaults and recalculation use contribution cost rates", a
   approx(rowMap.get("PROFIT_CONTRIB_OFFLINE").values["2601_E"], 1.2);
   approx(rowMap.get("PROFIT_CONTRIB_TOTAL").values["2601_E"], 2.075);
   approx(rowMap.get("COST_FIXED_PROD").values["2601_E"], 0.2);
-  approx(rowMap.get("COST_FIXED_MKT").values["2601_E"], 0.3);
+  approx(rowMap.get("COST_FIXED_MKT").values["2601_E"], 0.15);
   approx(rowMap.get("COST_FIXED_LABOR").values["2601_E"], 6);
   approx(rowMap.get("COST_FIXED_RENT").values["2601_E"], 0.9);
   approx(rowMap.get("COST_FIXED_OTHER").values["2601_E"], 1.1);
-  approx(rowMap.get("COST_FIXED_TOTAL").values["2601_E"], 8.5);
-  approx(rowMap.get("OP").values["2601_E"], -6.425);
-  approx(rowMap.get("OP_MARGIN").values["2601_E"], -214.16666666666666);
+  approx(rowMap.get("COST_FIXED_TOTAL").values["2601_E"], 8.35);
+  approx(rowMap.get("OP").values["2601_E"], -6.275);
+  approx(rowMap.get("OP_MARGIN").values["2601_E"], -209.16666666666666);
 });
 
 test("renderWonSummary shows new columns and team/part/DRI", async () => {

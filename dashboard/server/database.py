@@ -6148,7 +6148,7 @@ def get_pl_progress_summary(year: int = 2026, db_path: Path = DB_PATH) -> Dict[s
             profit_offline = offline_rev - contrib_cost_offline
             profit_total = profit_online + profit_offline
             fixed_prod = 0.2
-            fixed_mkt = 0.3
+            fixed_mkt = 0.15
             fixed_labor = 6.0
             fixed_rent = fixed_labor * 0.15
             fixed_other = 1.0 + (offline_rev * 0.05)
